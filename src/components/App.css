@@ -1,0 +1,53 @@
+.container {
+  padding: 16px;
+}
+
+.seedForm {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.seedForm .formGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seedForm .label {
+  text-align: center;
+}
+
+.seedForm .submitButton {
+  align-self: center;
+}
+
+.footer {
+  /* position: ; */
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #e9ecef;
+  /* color: white; */
+  text-align: center;
+}
+
+html, .App, #root {
+  height: 100%;
+}
+.App {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+
+}
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
+}
+
+.jumbotron {
+  /* box-shadow: -10px -10px -5px grey; */
+}

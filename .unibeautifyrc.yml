@@ -1,0 +1,12 @@
+TypeScript:
+  beautifiers: ["Prettier"]
+  indent_style: tab
+  # end_with_semicolon: true
+  quotes: single
+  # end_with_comma: true
+JavaScript:
+  beautifiers: ["Prettier"]
+  indent_style: tab
+  # end_with_semicolon: true
+  quotes: single
+  # end_with_comma: true
