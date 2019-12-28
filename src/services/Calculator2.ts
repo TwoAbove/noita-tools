@@ -56,7 +56,7 @@ export class NollaPrng {
 }
 
 export class MaterialPicker {
-	LIQUIDS = [
+	static LIQUIDS = [
 		'water',
 		'water_ice',
 		'water_swamp',
@@ -81,7 +81,7 @@ export class MaterialPicker {
 		'magic_liquid_invisibility'
 	];
 
-	ALCHEMY = [
+	static ALCHEMY = [
 		'sand',
 		'bone',
 		'soil',
@@ -107,8 +107,8 @@ export class MaterialPicker {
 
 	constructor(prng: NollaPrng, worldSeed: number /* uint */) {
 		this.PRNG = prng;
-		this.PickMaterials(this.LIQUIDS, 3);
-		this.PickMaterials(this.ALCHEMY, 1);
+		this.PickMaterials(MaterialPicker.LIQUIDS, 3);
+		this.PickMaterials(MaterialPicker.ALCHEMY, 1);
 		this.ShuffleList(worldSeed);
 		this.PRNG.Next();
 		this.PRNG.Next();

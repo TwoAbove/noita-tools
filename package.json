@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
     "react": "^16.12.0",
+    "react-beautiful-dnd": "^12.2.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.0",
     "reactstrap": "^8.2.0",
@@ -22,7 +23,7 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "serve -s build",
+    "start": "yarn build && serve -s build",
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -33,17 +34,14 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      ">0.2%", "not dead", "not op_mini all"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "devDependencies": {
-    "@types/reactstrap": "^8.2.0"
+    "@types/reactstrap": "^8.2.0",
+    "react-app-rewired": "^2.1.5",
+    "workerize": "^0.1.8",
+    "workerize-loader": "^1.1.0"
   }
 }

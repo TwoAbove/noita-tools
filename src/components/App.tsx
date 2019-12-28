@@ -1,15 +1,12 @@
 import React from 'react';
 import { Jumbotron, Container, Row, Col } from 'reactstrap';
 
-import { MaterialPicker } from '../services/Calculator2';
-
-import SeedForm from './SeedForm';
-import MaterialList from './MaterialList';
+import RecipesForSeed from './RecipesForSeed/RecipesForSeed';
+import SeedFromRecipes from './SeedFromRecipes/SeedFromRecipes';
 
 import './App.css';
 
 const App: React.FC = () => {
-	const [data, setData] = React.useState();
 	return (
 		<div className="App">
 			<div className="content">
@@ -19,24 +16,14 @@ const App: React.FC = () => {
 					<p className="lead text-center">
 						Get Lively Concoction and Alchemic Precursor recipes for your seed
 					</p>
+					<p className="lead text-center">
+						Get a seed from desired Lively Concoction and Alchemic Precursor
+						ingredients
+					</p>
 				</Jumbotron>
-				<Container className="container">
-					<Row>
-						<Col xs={12} sm={6}>
-							<SeedForm
-								onSubmit={seed =>
-									setData(MaterialPicker.PickForSeed(parseInt(seed, 10)))
-								}
-							/>
-						</Col>
-					</Row>
-					<Row>
-						<Col xs={12} sm={6}>
-							{data && (
-								<MaterialList seed={data.seed} LC={data.LC} AP={data.AP} />
-							)}
-						</Col>
-					</Row>
+				<Container className="shadow-lg p-3 mb-5 bg-white rounded">
+					<RecipesForSeed />
+					<SeedFromRecipes />
 				</Container>
 			</div>
 			<footer className="footer font-small blue">
