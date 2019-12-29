@@ -1,7 +1,7 @@
 import { MaterialPicker } from '../services/Calculator2';
 
 const includesAll = (arr: string[], target: string[]) =>
-	target.every(v => arr.includes(v));
+	arr.length ? target.every(v => arr.includes(v)) : true;
 
 interface ISeedSolverConfig {
 	apIngredients: string[];

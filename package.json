@@ -26,9 +26,9 @@
   },
   "scripts": {
     "start": "yarn build && serve -s build",
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "dev": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -36,9 +36,15 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%", "not dead", "not op_mini all"
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
     ],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
     "@types/reactstrap": "^8.2.0",

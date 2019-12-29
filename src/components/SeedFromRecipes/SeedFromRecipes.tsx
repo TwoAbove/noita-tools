@@ -7,7 +7,6 @@ import ListSelect from '../ListSelect';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import { SeedSolver } from '../../workers/seedCalculator.worker';
-// console.log('SeedCalculator', SeedCalculator.expensive);
 // const seedCalculator = (SeedCalculator as any)() as any;
 
 import SeedSearchResult from './SeedSearchResult';
