@@ -1,9 +1,21 @@
 import React from 'react';
 import { Jumbotron, Container, Row, Col, Button } from 'reactstrap';
 
-interface ISeedSearchResultProps {}
+import MaterialList from '../RecipesForSeed/MaterialList';
+
+interface ISeedSearchResultProps {
+	LC: string[];
+	AP: string[];
+	seed: string;
+}
 const SeedSearchResult = (props: ISeedSearchResultProps) => {
-	return <div>SeedSearchResult</div>;
+	const { seed, LC, AP } = props;
+	return (
+		<div>
+			Seed: {seed}
+			<MaterialList LC={LC} AP={AP} />
+		</div>
+	);
 };
 
 export default SeedSearchResult;

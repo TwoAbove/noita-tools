@@ -1,17 +1,15 @@
 import React from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
-interface ISeedFormProps {
+interface IMaterialListProps {
 	LC: string[];
 	AP: string[];
-	seed: string;
 }
 
-const SeedForm = (props: ISeedFormProps) => {
-	const { LC, AP, seed } = props;
+const MaterialList = (props: IMaterialListProps) => {
+	const { LC, AP } = props;
 	return (
 		<div>
-			seed: {seed}
 			<div>
 				Lively Concoction:
 				<ListGroup>
@@ -28,4 +26,4 @@ const SeedForm = (props: ISeedFormProps) => {
 	);
 };
 
-export default SeedForm;
+export default MaterialList;

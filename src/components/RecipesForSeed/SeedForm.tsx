@@ -22,12 +22,12 @@ const SeedForm = (props: ISeedFormProps) => {
 	return (
 		<Form className="seedForm" onSubmit={handleSubmit}>
 			<FormGroup className="formGroup" row>
-				<Label className="label" for="seed">
+				<Label className="label" for="seedForm.seed">
 					Seed
 				</Label>
 				<Col>
 					<Input
-						id="seed"
+						id="seedForm.seed"
 						type="number"
 						value={seed}
 						onChange={handleNameChange}
