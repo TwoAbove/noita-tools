@@ -57,10 +57,14 @@ export class SeedSolver {
 	}
 
 	public async update(config: ISeedSolverConfig = {}) {
-		this.lcIngredients = config.lcIngredients || [];
-		this.apIngredients = config.apIngredients || [];
 		if (config.currentSeed) {
 			this.currentSeed = config.currentSeed;
+		}
+		if (config.apIngredients) {
+			this.apIngredients = config.apIngredients || [];
+		}
+		if (config.lcIngredients) {
+			this.lcIngredients = config.lcIngredients || [];
 		}
 	}
 
