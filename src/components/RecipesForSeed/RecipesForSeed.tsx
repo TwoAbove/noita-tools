@@ -23,7 +23,8 @@ const RecipesForSeed = () => {
 			</Row>
 			<Row>
 				<Col xs={12} sm={6}>
-					{data && <MaterialList seed={data.seed} LC={data.LC} AP={data.AP} />}
+					{data && `Seed: ${data.seed}`}
+					{data && <MaterialList LC={data.LC} AP={data.AP} />}
 				</Col>
 			</Row>
 		</Container>

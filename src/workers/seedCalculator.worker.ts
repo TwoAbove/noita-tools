@@ -1,9 +1,9 @@
-// block for `time` ms, then return the number of loops we could run in that time:
-export async function expensive(time: number) {
-	let start = Date.now(),
-		count = 0;
-	while (Date.now() - start < time) count++;
-	return count;
-}
+import * as Comlink from 'comlink';
 
-export default {};
+import { SeedSolver } from './seedCalculator';
+
+const seedSolver = new SeedSolver();
+
+Comlink.expose(seedSolver);
+
+export default null as any;
