@@ -240,7 +240,7 @@ const SeedFromRecipes = () => {
 				</Container>
 				<Container>
 					<Row>
-						<p>Alchemic Precursor:</p>z
+						<p>Alchemic Precursor:</p>
 					</Row>
 					<RecipeIngredientsPicker
 						selected={apIngredientsSelected}

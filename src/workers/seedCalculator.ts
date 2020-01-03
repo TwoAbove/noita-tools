@@ -52,6 +52,7 @@ export class SeedSolver {
 
 	public async start() {
 		this.currentSeed++;
+		this.shouldCancel = false;
 		this.running = true;
 		this.work();
 	}
