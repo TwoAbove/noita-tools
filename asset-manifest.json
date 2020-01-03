@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/noita-tools/static/css/main.2615142b.chunk.css",
+    "main.js": "/noita-tools/static/js/main.3d3e471d.chunk.js",
+    "main.js.map": "/noita-tools/static/js/main.3d3e471d.chunk.js.map",
+    "runtime-main.js": "/noita-tools/static/js/runtime-main.b61bfcc0.js",
+    "runtime-main.js.map": "/noita-tools/static/js/runtime-main.b61bfcc0.js.map",
+    "static/css/2.64a99b10.chunk.css": "/noita-tools/static/css/2.64a99b10.chunk.css",
+    "static/js/2.4687912e.chunk.js": "/noita-tools/static/js/2.4687912e.chunk.js",
+    "static/js/2.4687912e.chunk.js.map": "/noita-tools/static/js/2.4687912e.chunk.js.map",
+    "9040a3ad1e5471028eae.worker.js": "/noita-tools/9040a3ad1e5471028eae.worker.js",
+    "9040a3ad1e5471028eae.worker.js.map": "/noita-tools/9040a3ad1e5471028eae.worker.js.map",
+    "index.html": "/noita-tools/index.html",
+    "precache-manifest.83c37a8100af914d7f47e8b0a9f419eb.js": "/noita-tools/precache-manifest.83c37a8100af914d7f47e8b0a9f419eb.js",
+    "service-worker.js": "/noita-tools/service-worker.js",
+    "static/css/2.64a99b10.chunk.css.map": "/noita-tools/static/css/2.64a99b10.chunk.css.map",
+    "static/css/main.2615142b.chunk.css.map": "/noita-tools/static/css/main.2615142b.chunk.css.map",
+    "static/js/2.4687912e.chunk.js.LICENSE": "/noita-tools/static/js/2.4687912e.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b61bfcc0.js",
+    "static/css/2.64a99b10.chunk.css",
+    "static/js/2.4687912e.chunk.js",
+    "static/css/main.2615142b.chunk.css",
+    "static/js/main.3d3e471d.chunk.js"
+  ]
+}
