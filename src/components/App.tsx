@@ -3,6 +3,7 @@ import { Jumbotron, Container, Row, Col } from 'reactstrap';
 
 import RecipesForSeed from './RecipesForSeed/RecipesForSeed';
 import SeedFromRecipes from './SeedFromRecipes/SeedFromRecipes';
+import Donate from './Donate';
 
 import './App.css';
 
@@ -27,6 +28,10 @@ const App: React.FC = () => {
 				</Container>
 			</div>
 			<footer className="footer font-small blue">
+				<div className="footer-copyright text-center py-2">
+					Donate to get this tool its own domain name!
+				</div>
+				<Donate />
 				<div className="footer-copyright text-center py-2">
 					© 2020 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
 				</div>
