@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "86c675f07c30d61d4948e67022aafc0a",
-    "url": "/noita-tools/9040a3ad1e5471028eae.worker.js"
+    "revision": "ab1870abb1ecd6442fb5d2f37a7c2c6c",
+    "url": "/noita-tools/9ad6edc2fccd6d7acce4.worker.js"
   },
   {
-    "revision": "ff55664543f9315fc7a447ca5a045a24",
+    "revision": "d5554d27063b902b8e404d492cb35d15",
     "url": "/noita-tools/index.html"
   },
   {
@@ -12,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/noita-tools/static/css/2.64a99b10.chunk.css"
   },
   {
-    "revision": "a3bdfceb0ae2599f33e7",
+    "revision": "10097e438e7926369320",
     "url": "/noita-tools/static/css/main.2615142b.chunk.css"
   },
   {
@@ -24,8 +24,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/noita-tools/static/js/2.4687912e.chunk.js.LICENSE"
   },
   {
-    "revision": "a3bdfceb0ae2599f33e7",
-    "url": "/noita-tools/static/js/main.3d3e471d.chunk.js"
+    "revision": "10097e438e7926369320",
+    "url": "/noita-tools/static/js/main.bbbb9cc3.chunk.js"
   },
   {
     "revision": "5f2aaa29314af7ddbe3b",
