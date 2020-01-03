@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/noita-tools/precache-manifest.83c37a8100af914d7f47e8b0a9f419eb.js"
+  "/noita-tools/precache-manifest.e30db182f2e2fade1bdf54e8edc5e0ca.js"
 );
 
 self.addEventListener('message', (event) => {
