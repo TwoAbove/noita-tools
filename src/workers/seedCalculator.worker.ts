@@ -1,6 +1,6 @@
 import * as Comlink from 'comlink';
 
-import { SeedSolver } from './seedCalculator';
+import { SeedSolver } from '../services/seedCalculator';
 
 const seedSolver = new SeedSolver();
 

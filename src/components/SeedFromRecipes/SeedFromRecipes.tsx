@@ -18,7 +18,7 @@ import { MaterialPicker } from '../../services/Calculator2';
 
 import ListSelect from '../ListSelect';
 
-import { SeedSolver as _SeedSolver } from '../../workers/seedCalculator';
+import { SeedSolver as _SeedSolver } from '../../services/seedCalculator';
 import SeedSolverWorker from '../../workers/seedCalculator.worker';
 
 import MaterialList from '../RecipesForSeed/MaterialList';
@@ -52,7 +52,7 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 				<Row>
 					<Col>
 						<p {...(!enoughAlchemy ? { className: 'text-danger' } : {})}>
-							At least one (1) of:
+							Select none or at least one (1) of:
 						</p>
 					</Col>
 					<Col>
@@ -76,7 +76,7 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 				<Row>
 					<Col>
 						<p {...(!enoughLiquids ? { className: 'text-danger' } : {})}>
-							At least two (2) of:{' '}
+							Select none or at least two (2) of:{' '}
 						</p>
 					</Col>
 					<Col>
@@ -100,10 +100,14 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 	);
 };
 
-const enoughLiquids = (selected: Set<string>) =>
-	MaterialPicker.LIQUIDS.filter(value => selected.has(value)).length >= 2;
-const enoughAlchemy = (selected: Set<string>) =>
-	MaterialPicker.ALCHEMY.filter(value => selected.has(value)).length >= 1;
+const enoughLiquids = (selected: Set<string>) => {
+	const liquids = MaterialPicker.LIQUIDS.filter(value => selected.has(value));
+	return liquids.length === 0 || liquids.length >= 2;
+};
+const enoughAlchemy = (selected: Set<string>) => {
+	const alchemy = MaterialPicker.ALCHEMY.filter(value => selected.has(value));
+	return alchemy.length === 0 || alchemy.length >= 1;
+};
 
 const useSeedSolver = createComlink<typeof _SeedSolver>(
 	() => new SeedSolverWorker()

@@ -25,7 +25,10 @@ export class SeedSolver {
 	}
 
 	private async work() {
-		while (!this.shouldCancel && this.currentSeed < 2_147_483_647) {
+		while (!this.shouldCancel && this.currentSeed < 4_294_967_294) {
+			if (this.currentSeed % 10000 === 0) {
+				console.log(`On seed ${this.currentSeed}`);
+			}
 			const found: any = await new Promise(async res => {
 				setTimeout(() => {
 					const { LC, AP } = MaterialPicker.PickForSeed(this.currentSeed);
