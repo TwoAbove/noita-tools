@@ -14,7 +14,7 @@ const App: React.FC = () => {
 				<Jumbotron>
 					<h1 className="display-3 text-center">Noita Helpers</h1>
 					<hr />
-					<h2 className="display-3 text-center">Warning! Canculator out of date. I'm working on an update</h1>
+					<h2 className="display-3 text-center">Warning! Canculator out of date. I'm working on an update</h2>
 					<hr />
 					<p className="lead text-center">
 						Get Lively Concoction and Alchemic Precursor recipes for your seed
