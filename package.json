@@ -1,6 +1,6 @@
 {
   "name": "noita-helper",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "homepage": "https://noita-tools.herokuapp.com/",
   "dependencies": {
@@ -35,7 +35,7 @@
     "workerize": "^0.1.8"
   },
   "scripts": {
-    "start": "yarn build && serve -s build",
+    "start": "yarn build && serve build",
     "dev": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
