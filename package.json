@@ -2,7 +2,7 @@
   "name": "noita-helper",
   "version": "1.1.0",
   "private": true,
-  "homepage": "https://twoabove.github.io/noita-tools/",
+  "homepage": "https://noita-tools.herokuapp.com/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
