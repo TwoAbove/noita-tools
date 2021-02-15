@@ -41,6 +41,7 @@ module.exports = (config, env) => {
 	if (!loaderListRule) {
 		throw new Error('No found loader config list');
 	}
+
 	loaderListRule.oneOf.unshift({
 		test: /\.worker\.(js|mjs|ts)$/,
 		include: appSrc,
@@ -70,9 +71,7 @@ module.exports = (config, env) => {
 							'react-scripts'
 						]
 					),
-					plugins: [
-						...loaderListRule.oneOf[1].options.plugins,
-					],
+					plugins: [...loaderListRule.oneOf[2].options.plugins],
 					// This is a feature of `babel-loader` for webpack (not Babel itself).
 					// It enables caching results in ./node_modules/.cache/babel-loader/
 					// directory for faster rebuilds.

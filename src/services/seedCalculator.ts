@@ -37,7 +37,7 @@ export class SeedSolver {
 					if (allLC && allAP) {
 						return res({ LC, AP });
 					}
-					res();
+					res(false);
 				}, 0);
 			});
 			if (found) {

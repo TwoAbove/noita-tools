@@ -7,7 +7,7 @@ import SeedForm from './SeedForm';
 import MaterialList from './MaterialList';
 
 const RecipesForSeed = () => {
-	const [data, setData] = React.useState();
+	const [data, setData] = React.useState<any>();
 
 	return (
 		<Container className="container shadow-sm mb-5">
