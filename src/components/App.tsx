@@ -26,13 +26,13 @@ const App: React.FC = () => {
 						ingredients
 					</p>
 				</Jumbotron>
-				<Container className="p-4 mb-5 bg-white rounded">
+				<Container className="shadow-lg p-3 mb-5 bg-white rounded">
 					<RecipesForSeed />
 					<SeedFromRecipes />
 				</Container>
 			</div>
 			<footer className="footer font-small blue">
-				<div className="footer text-center py-2">Ideas? Issues? Click <a href="https://github.com/TwoAbove/noita-tools/issues/new/choose">here</a> </div>
+				<div className="footer text-center py-2">Issues? Create an issue <a href="https://github.com/TwoAbove/noita-tools/issues/new/choose">here</a> </div>
 				<div className="footer-copyright text-center py-2">
 					Donate to get this tool its own domain name!
 				</div>

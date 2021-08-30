@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "es5",
     "lib": [
-      "webworker",
       "dom",
       "dom.iterable",
       "esnext"
@@ -14,7 +13,6 @@
     "strict": true,
     "downlevelIteration": true,
     "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": false,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,

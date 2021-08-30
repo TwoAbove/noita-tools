@@ -18,22 +18,18 @@ export class SeedSolver {
 	private running = false;
 	private count = 0;
 	private currentSeed = 0;
-	private offset = 0;
-	private step = 1;
 
-	private infocb?: (info: ReturnType<SeedSolver["getInfo"]>) => void;
-
-	public init(offset: number = 0, step: number = 1) {
-		this.offset = offset;
-		this.step = step;
+	constructor(config: ISeedSolverConfig = {}) {
+		this.lcIngredients = config.lcIngredients || [];
+		this.apIngredients = config.apIngredients || [];
 	}
 
 	private async work() {
 		while (!this.shouldCancel && this.currentSeed < 4_294_967_294) {
-			if (this.count % 100 === 0) {
-				this.sendInfo();
+			if (this.currentSeed % 10000 === 0) {
+				console.log(`On seed ${this.currentSeed}`);
 			}
-			const found: any = await new Promise(res => { // Free the event loop
+			const found: any = await new Promise(async res => {
 				setTimeout(() => {
 					const { LC, AP } = MaterialPicker.PickForSeed(this.currentSeed);
 					const allLC = includesAll(this.lcIngredients, LC);
@@ -51,15 +47,14 @@ export class SeedSolver {
 				this.AP = AP;
 				break;
 			}
-			this.currentSeed += this.step;
+			this.currentSeed++;
 			this.count++;
 		}
-		this.currentSeed += this.step;
 		this.running = false;
-		this.sendInfo();
 	}
 
 	public async start() {
+		this.currentSeed++;
 		this.shouldCancel = false;
 		this.running = true;
 		this.work();
@@ -67,7 +62,7 @@ export class SeedSolver {
 
 	public async update(config: ISeedSolverConfig = {}) {
 		if (config.currentSeed) {
-			this.currentSeed = config.currentSeed + this.offset;
+			this.currentSeed = config.currentSeed;
 		}
 		if (config.apIngredients) {
 			this.apIngredients = config.apIngredients || [];
@@ -82,26 +77,14 @@ export class SeedSolver {
 		this.running = false;
 	}
 
-
-	public onInfo(cb: (info: ReturnType<SeedSolver["getInfo"]>) => void) {
-		this.infocb = cb;
-		// return cb(this.getInfo());
-	}
-	private sendInfo() {
-		if (this.infocb) {
-			this.infocb(this.getInfo());
-		}
-	}
-	public getInfo() {
+	public async getInfo() {
 		return {
 			count: this.count,
 			currentSeed: this.currentSeed,
 			foundSeed: this.foundSeed,
 			running: this.running,
 			LC: this.LC,
-			AP: this.AP,
-			apIngredients: this.apIngredients,
-			lcIngredients: this.lcIngredients,
+			AP: this.AP
 		};
 	}
 

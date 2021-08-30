@@ -1,25 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.84a7f942.chunk.css",
-    "main.js": "/static/js/main.2595051d.chunk.js",
-    "main.js.map": "/static/js/main.2595051d.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.3aed2d6e.js",
-    "runtime-main.js.map": "/static/js/runtime-main.3aed2d6e.js.map",
-    "static/css/2.983f79de.chunk.css": "/static/css/2.983f79de.chunk.css",
-    "static/js/2.9742e037.chunk.js": "/static/js/2.9742e037.chunk.js",
-    "static/js/2.9742e037.chunk.js.map": "/static/js/2.9742e037.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.983f79de.chunk.css.map": "/static/css/2.983f79de.chunk.css.map",
-    "static/css/main.84a7f942.chunk.css.map": "/static/css/main.84a7f942.chunk.css.map",
-    "static/js/2.9742e037.chunk.js.LICENSE.txt": "/static/js/2.9742e037.chunk.js.LICENSE.txt",
-    "static/js/seedCalculator.worker.ba9842d0.worker.js": "/static/js/seedCalculator.worker.ba9842d0.worker.js",
-    "static/js/seedCalculator.worker.ba9842d0.worker.js.map": "/static/js/seedCalculator.worker.ba9842d0.worker.js.map"
+    "main.css": "/noita-tools/static/css/main.2615142b.chunk.css",
+    "main.js": "/noita-tools/static/js/main.a91c99b5.chunk.js",
+    "main.js.map": "/noita-tools/static/js/main.a91c99b5.chunk.js.map",
+    "runtime-main.js": "/noita-tools/static/js/runtime-main.b61bfcc0.js",
+    "runtime-main.js.map": "/noita-tools/static/js/runtime-main.b61bfcc0.js.map",
+    "static/css/2.64a99b10.chunk.css": "/noita-tools/static/css/2.64a99b10.chunk.css",
+    "static/js/2.c914f4de.chunk.js": "/noita-tools/static/js/2.c914f4de.chunk.js",
+    "static/js/2.c914f4de.chunk.js.map": "/noita-tools/static/js/2.c914f4de.chunk.js.map",
+    "821e5f9b5aaeea303031.worker.js": "/noita-tools/821e5f9b5aaeea303031.worker.js",
+    "821e5f9b5aaeea303031.worker.js.map": "/noita-tools/821e5f9b5aaeea303031.worker.js.map",
+    "index.html": "/noita-tools/index.html",
+    "precache-manifest.4f2931a7defdde7af6ee2b35d20e66d3.js": "/noita-tools/precache-manifest.4f2931a7defdde7af6ee2b35d20e66d3.js",
+    "service-worker.js": "/noita-tools/service-worker.js",
+    "static/css/2.64a99b10.chunk.css.map": "/noita-tools/static/css/2.64a99b10.chunk.css.map",
+    "static/css/main.2615142b.chunk.css.map": "/noita-tools/static/css/main.2615142b.chunk.css.map",
+    "static/js/2.c914f4de.chunk.js.LICENSE": "/noita-tools/static/js/2.c914f4de.chunk.js.LICENSE"
   },
   "entrypoints": [
-    "static/js/runtime-main.3aed2d6e.js",
-    "static/css/2.983f79de.chunk.css",
-    "static/js/2.9742e037.chunk.js",
-    "static/css/main.84a7f942.chunk.css",
-    "static/js/main.2595051d.chunk.js"
+    "static/js/runtime-main.b61bfcc0.js",
+    "static/css/2.64a99b10.chunk.css",
+    "static/js/2.c914f4de.chunk.js",
+    "static/css/main.2615142b.chunk.css",
+    "static/js/main.a91c99b5.chunk.js"
   ]
 }
