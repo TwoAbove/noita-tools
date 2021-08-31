@@ -40,9 +40,6 @@ jest.mock('../../workers/seedCalculator.worker', () => {
 
 
 describe('SeedSolverHandler', () => {
-  it('should be defined', () => {
-    expect(SeedSolver).toBeDefined();
-  });
   it('Should solve', async () => {
     const startFrom = 12341000;
     const seedSolver = new SeedSolver(10);
@@ -52,7 +49,7 @@ describe('SeedSolverHandler', () => {
       apIngredients: ['lava', 'honey', 'blood']
     });
     seedSolver.start();
-    const found = await new Promise((res) => {
+    const found = await new Promise<ReturnType<SeedSolver["getInfo"]>>((res) => {
       setInterval(() => {
         const data = seedSolver.getInfo();
         if (data.some(d => d.foundSeed)) {

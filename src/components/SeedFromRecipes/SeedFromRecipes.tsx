@@ -132,7 +132,6 @@ const SeedFromRecipes = () => {
 	const running = solverInfo.find(info => info.running) !== undefined;
 	const update = async () => {
 		const info = seedSolver.getInfo();
-		console.log('info', info);
 		if (info.length) {
 			setSolverInfo(info);
 		}
