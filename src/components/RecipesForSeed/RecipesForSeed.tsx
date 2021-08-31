@@ -10,7 +10,7 @@ const RecipesForSeed = () => {
 	const [data, setData] = React.useState<any>();
 
 	return (
-		<Container className="container shadow-sm mb-5">
+		<Container className="container shadow-lg mb-5">
 			<h4>LC and AP ingredients for a seed</h4>
 			<Row>
 				<Col xs={12} sm={6}>

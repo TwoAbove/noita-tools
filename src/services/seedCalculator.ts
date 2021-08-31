@@ -9,27 +9,38 @@ interface ISeedSolverConfig {
 	currentSeed?: number;
 }
 export class SeedSolver {
-	private apIngredients!: string[];
-	private lcIngredients!: string[];
-	private AP!: string[];
-	private LC!: string[];
-	private shouldCancel = false;
-	private foundSeed?: number;
-	private running = false;
-	private count = 0;
-	private currentSeed = 0;
+	apIngredients!: string[];
+	lcIngredients!: string[];
+	AP!: string[];
+	LC!: string[];
+	shouldCancel = false;
+	foundSeed?: number;
+	running = false;
+	count = 0;
+	currentSeed = 0;
+	offset = 0;
+	step = 1;
+	infoFreq = 100;
 
-	constructor(config: ISeedSolverConfig = {}) {
-		this.lcIngredients = config.lcIngredients || [];
-		this.apIngredients = config.apIngredients || [];
+	infocb?: (info: ReturnType<SeedSolver["getInfo"]>) => void;
+
+	constructor(offset: number = 0, step: number = 1) {
+		this.init(offset, step);
 	}
 
-	private async work() {
+	init(offset: number, step: number) {
+		this.offset = offset;
+		this.step = step;
+	}
+
+	async work() {
+		this.running = true;
+		this.shouldCancel = false;
 		while (!this.shouldCancel && this.currentSeed < 4_294_967_294) {
-			if (this.currentSeed % 10000 === 0) {
-				console.log(`On seed ${this.currentSeed}`);
+			if (this.count && this.count % this.infoFreq === 0) {
+				this.sendInfo();
 			}
-			const found: any = await new Promise(async res => {
+			const found: any = await new Promise(res => { // Free the event loop
 				setTimeout(() => {
 					const { LC, AP } = MaterialPicker.PickForSeed(this.currentSeed);
 					const allLC = includesAll(this.lcIngredients, LC);
@@ -47,22 +58,22 @@ export class SeedSolver {
 				this.AP = AP;
 				break;
 			}
-			this.currentSeed++;
+			this.currentSeed += this.step;
 			this.count++;
 		}
 		this.running = false;
+		this.sendInfo();
+		this.currentSeed += this.step;
 	}
 
-	public async start() {
-		this.currentSeed++;
-		this.shouldCancel = false;
-		this.running = true;
-		this.work();
+	async start() {
+		this.foundSeed = undefined;
+		return this.work();
 	}
 
-	public async update(config: ISeedSolverConfig = {}) {
-		if (config.currentSeed) {
-			this.currentSeed = config.currentSeed;
+	async update(config: ISeedSolverConfig = {}) {
+		if (typeof config.currentSeed === 'number') {
+			this.currentSeed = config.currentSeed + this.offset;
 		}
 		if (config.apIngredients) {
 			this.apIngredients = config.apIngredients || [];
@@ -72,31 +83,43 @@ export class SeedSolver {
 		}
 	}
 
-	public async stop() {
+	async stop() {
 		this.shouldCancel = true;
 		this.running = false;
 	}
 
-	public async getInfo() {
-		return {
+
+	onInfo(cb: (info: ReturnType<SeedSolver["getInfo"]>) => void) {
+		this.infocb = cb;
+		// return cb(this.getInfo());
+	}
+	sendInfo() {
+		if (this.infocb) {
+			this.infocb(this.getInfo());
+		}
+	}
+	getInfo() {
+		return Object.assign({}, {
 			count: this.count,
 			currentSeed: this.currentSeed,
 			foundSeed: this.foundSeed,
 			running: this.running,
 			LC: this.LC,
-			AP: this.AP
-		};
+			AP: this.AP,
+			apIngredients: this.apIngredients,
+			lcIngredients: this.lcIngredients,
+		});
 	}
 
-	public async getCount() {
+	async getCount() {
 		return this.count;
 	}
 
-	public async getCurrentSeed() {
+	async getCurrentSeed() {
 		return this.currentSeed;
 	}
 
-	public async getFoundSeed() {
+	async getFoundSeed() {
 		return this.foundSeed;
 	}
 }

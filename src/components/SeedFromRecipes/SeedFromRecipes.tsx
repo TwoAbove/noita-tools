@@ -1,5 +1,4 @@
 import React from 'react';
-import useComlink, { createComlink } from 'react-use-comlink';
 import {
 	Jumbotron,
 	ButtonGroup,
@@ -11,7 +10,8 @@ import {
 	Row,
 	Col,
 	Button,
-	Spinner
+	Spinner,
+
 } from 'reactstrap';
 
 import { MaterialPicker } from '../../services/Calculator2';
@@ -22,6 +22,7 @@ import { SeedSolver as _SeedSolver } from '../../services/seedCalculator';
 import SeedSolverWorker from '../../workers/seedCalculator.worker';
 
 import MaterialList from '../RecipesForSeed/MaterialList';
+import SeedSolver from './SeedSolverHandler';
 
 interface IRecipeIngredientsPickerProps {
 	enoughLiquids: boolean;
@@ -43,28 +44,31 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 	} = props;
 	const ColProps = {
 		xs: '12',
-		sm: '6',
-		ml: '3'
+		lg: '6'
 	};
 	return (
 		<Row>
 			<Col {...ColProps}>
-				<Row>
-					<Col>
-						<p {...(!enoughAlchemy ? { className: 'text-danger' } : {})}>
-							Select none or at least one (1) of:
-						</p>
-					</Col>
-					<Col>
-						<ButtonGroup>
-							<Button color="primary" onClick={() => onSelectAll('ALCHEMY')}>
-								Select All
-							</Button>
-							<Button color="primary" onClick={() => onDeselectAll('ALCHEMY')}>
-								Deselect All
-							</Button>
-						</ButtonGroup>
-					</Col>
+				<Row className="justify-content-center p-2">
+					<Row>
+						<Col>
+							<p {...(!enoughAlchemy ? { className: 'text-danger' } : {})}>
+								Select none or at least one (1) of:
+							</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<ButtonGroup>
+								<Button color="primary" onClick={() => onSelectAll('ALCHEMY')}>
+									Select All
+								</Button>
+								<Button color="primary" onClick={() => onDeselectAll('ALCHEMY')}>
+									Deselect All
+								</Button>
+							</ButtonGroup>
+						</Col>
+					</Row>
 				</Row>
 				<ListSelect
 					items={MaterialPicker.ALCHEMY}
@@ -73,22 +77,26 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 				/>
 			</Col>
 			<Col {...ColProps}>
-				<Row>
-					<Col>
-						<p {...(!enoughLiquids ? { className: 'text-danger' } : {})}>
-							Select none or at least two (2) of:{' '}
-						</p>
-					</Col>
-					<Col>
-						<ButtonGroup>
-							<Button color="primary" onClick={() => onSelectAll('LIQUIDS')}>
-								Select All
-							</Button>
-							<Button color="primary" onClick={() => onDeselectAll('LIQUIDS')}>
-								Deselect All
-							</Button>
-						</ButtonGroup>
-					</Col>
+				<Row className="justify-content-center p-2">
+					<Row>
+						<Col>
+							<p {...(!enoughLiquids ? { className: 'text-danger' } : {})}>
+								Select none or at least two (2) of:{' '}
+							</p>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<ButtonGroup>
+								<Button color="primary" onClick={() => onSelectAll('LIQUIDS')}>
+									Select All
+								</Button>
+								<Button color="primary" onClick={() => onDeselectAll('LIQUIDS')}>
+									Deselect All
+								</Button>
+							</ButtonGroup>
+						</Col>
+					</Row>
 				</Row>
 				<ListSelect
 					items={MaterialPicker.LIQUIDS}
@@ -109,86 +117,105 @@ const enoughAlchemy = (selected: Set<string>) => {
 	return alchemy.length === 0 || alchemy.length >= 1;
 };
 
-const useSeedSolver = createComlink<typeof _SeedSolver>(
-	() => new SeedSolverWorker()
-);
-
 const SeedFromRecipes = () => {
-	const [apIngredientsSelected, setApIngredientsSelected] = React.useState<
-		Set<string>
-	>(new Set());
-	const [lcIngredientsSelected, setLcIngredientsSelected] = React.useState<
-		Set<string>
-	>(new Set());
-
-	const SeedSolver = useSeedSolver();
+	const [apIngredientsSelected, setApIngredientsSelected] = React.useState<Set<string>>(new Set());
+	const [lcIngredientsSelected, setLcIngredientsSelected] = React.useState<Set<string>>(new Set());
+	const [useCores, setUseCores] = React.useState<number>(1);
+	const [seedSolver, setSeedSolver] = React.useState(new SeedSolver(useCores));
 
 	const [seed, setSeed] = React.useState('');
 	const handleSeedChange = (e: any) => {
 		setSeed(e.target.value);
 	};
 
-	const [solverInfo, setSolverInfo] = React.useState<any>({});
-	const getSeedSolver = async (): Promise<any> => {
-		const newSeedSolver = SeedSolver.proxy;
-		return await newSeedSolver;
+	const [solverInfo, setSolverInfo] = React.useState<ReturnType<SeedSolver["getInfo"]>>([]);
+	const running = solverInfo.find(info => info.running) !== undefined;
+	const update = async () => {
+		const info = seedSolver.getInfo();
+		if (info.length) {
+			setSolverInfo(info);
+		}
 	};
 
-	const update = async () => {
-		const solver = await getSeedSolver();
-		if (!solver) return;
-		const info = await solver.getInfo();
-		setSolverInfo({ ...info });
+	const handleMultithreading = () => {
+		const concurrency = navigator.hardwareConcurrency || 1;
+		if (concurrency > 1) {
+			setUseCores(concurrency - 1);
+		}
+		if (useCores > 1) {
+			setUseCores(1);
+		}
 	};
 
 	React.useEffect(() => {
-		const id = setInterval(() => update(), 250);
-	}, []);
+		const id = setInterval(() => update(), 1000);
+		return () => clearInterval(id);
+	});
 
 	React.useEffect(
 		() => {
 			const work = async () => {
-				const solver = await getSeedSolver();
-
-				await solver.update({
+				await seedSolver.destroy();
+				const newSeedSolver = new SeedSolver(useCores);
+				const newSeed = parseInt(seed);
+				newSeedSolver.update({
 					apIngredients: Array.from(apIngredientsSelected),
-					lcIngredients: Array.from(lcIngredientsSelected)
+					lcIngredients: Array.from(lcIngredientsSelected),
+					currentSeed: newSeed
 				});
+				if (!isNaN(newSeed)) {
+					newSeedSolver.update({
+						currentSeed: newSeed
+					});
+				}
+
+				setSeedSolver(newSeedSolver);
 			};
 			work();
+		},
+		[useCores]
+	);
+
+	React.useEffect(
+		() => {
+			seedSolver.update({
+				apIngredients: Array.from(apIngredientsSelected),
+				lcIngredients: Array.from(lcIngredientsSelected)
+			});
 		},
 		[apIngredientsSelected, lcIngredientsSelected]
 	);
 
 	React.useEffect(
 		() => {
-			const work = async () => {
-				const solver = await getSeedSolver();
-				const newSeed = parseInt(seed);
-				if (isNaN(newSeed)) {
-					return;
-				}
-				await solver.update({
-					currentSeed: newSeed
-				});
-			};
 
-			work();
+			const newSeed = parseInt(seed);
+			if (isNaN(newSeed)) {
+				return;
+			}
+			seedSolver.update({
+				currentSeed: newSeed
+			});
 		},
 		[seed]
 	);
 
 	const startCalculation = async () => {
-		const solver = await getSeedSolver();
-		if (solver) {
-			await solver.start();
-		}
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				lcIngredientsSelected: [...lcIngredientsSelected],
+				apIngredientsSelected: [...apIngredientsSelected]
+			})
+		};
+		fetch('/data', requestOptions);
+
+		await seedSolver.start();
 	};
+
 	const stopCalculation = async () => {
-		const solver = await getSeedSolver();
-		if (solver) {
-			await solver.stop();
-		}
+		await seedSolver.stop();
 	};
 
 	const handleSelectAll = (update: any, set: Set<string>) => (type: string) => {
@@ -217,15 +244,18 @@ const SeedFromRecipes = () => {
 		enoughAlchemy(apIngredientsSelected);
 	const hasEnoughAll = hasEnoughLiquids && hasEnoughAlchemy;
 	return (
-		<Container className="container shadow-sm">
+		<Container className="col container shadow-lg">
 			<h4>Calculate a seed from the desired LC and AP ingredients</h4>
 			<p>Lists can be left blank if any combination will do. </p>
 			<p>
 				The resulting seed's LC and AP ingredients will be from the selected
 				values.
 			</p>
+			<p>
+				Do keep in mind that some combinations may not be possible.
+			</p>
 			<Row>
-				<Container>
+				<Container className="col container-sm">
 					<p>Lively Concoction:</p>
 					<RecipeIngredientsPicker
 						selected={lcIngredientsSelected}
@@ -242,7 +272,7 @@ const SeedFromRecipes = () => {
 						)}
 					/>
 				</Container>
-				<Container>
+				<Container className="col container-sm">
 					<Row>
 						<p>Alchemic Precursor:</p>
 					</Row>
@@ -271,7 +301,7 @@ const SeedFromRecipes = () => {
 								<Input
 									id="SeedFromRecipes.seed"
 									type="number"
-									disabled={solverInfo.running}
+									disabled={running}
 									value={seed}
 									onChange={handleSeedChange}
 								/>
@@ -282,42 +312,59 @@ const SeedFromRecipes = () => {
 				<Col />
 			</Row>
 			<Row>
-				<Col>
-					<ButtonGroup>
-						<Button
-							color="primary"
-							disabled={solverInfo.running || !hasEnoughAll}
-							onClick={() => startCalculation()}
-						>
-							Find next
-						</Button>
-						<Button
-							color="primary"
-							disabled={!solverInfo.running}
-							onClick={() => stopCalculation()}
-						>
-							Stop
-						</Button>
-					</ButtonGroup>
+				<Col className="m-3">
+					{navigator.hardwareConcurrency &&
+						<Col className="m-3">
+							<Row className="m-3">
+								<Button onClick={handleMultithreading} color={useCores > 1 ? 'success' : 'secondary'}>
+									Multithreading {useCores > 1 ? 'on' : 'off'}
+								</Button>
+							</Row>
+							<Row className="m-3">
+								Multithreading will slow down your PC, but will use the whole CPU. You may get several results at once if you have enough cores.
+							</Row>
+						</Col>
+					}
+					<Row className="m-3">
+						<ButtonGroup>
+							<Button
+								color="primary"
+								disabled={running || !hasEnoughAll}
+								onClick={() => startCalculation()}
+							>
+								Find next
+							</Button>
+							<Button
+								color="primary"
+								disabled={!running}
+								onClick={() => stopCalculation()}
+							>
+								Stop
+							</Button>
+						</ButtonGroup>
+					</Row>
 				</Col>
 			</Row>
-			{solverInfo.running && (
+			{running && (
 				<Row>
 					<Col>
 						<Spinner type="grow" color="info" />
 					</Col>
 				</Row>
 			)}
-			{!solverInfo.running && (
+			<Container>
 				<Row>
-					<Col>
-						Current seed : {solverInfo.currentSeed}
-						{solverInfo.foundSeed && (
-							<MaterialList LC={solverInfo.LC} AP={solverInfo.AP} />
-						)}
-					</Col>
+					{solverInfo.map((info, index) => (
+						<Col className="mb-4" xs={6} md={3} key={info.foundSeed}>
+							Current seed: {info.currentSeed}
+							{info.foundSeed && (
+								<MaterialList LC={info.LC} AP={info.AP} />
+							)}
+						</Col>
+					))}
 				</Row>
-			)}
+			</Container>
+
 		</Container>
 	);
 };
