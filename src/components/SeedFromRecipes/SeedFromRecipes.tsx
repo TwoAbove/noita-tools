@@ -128,12 +128,13 @@ const SeedFromRecipes = () => {
 		setSeed(e.target.value);
 	};
 
-	const [solverInfo, setSolverInfo] = React.useState<any>({});
-
+	const [solverInfo, setSolverInfo] = React.useState<ReturnType<SeedSolver["getInfo"]>>([]);
+	const running = solverInfo.find(info => info.running) !== undefined;
 	const update = async () => {
 		const info = seedSolver.getInfo();
-		if (info) {
-			setSolverInfo({ ...info });
+		console.log('info', info);
+		if (info.length) {
+			setSolverInfo(info);
 		}
 	};
 
@@ -251,6 +252,9 @@ const SeedFromRecipes = () => {
 				The resulting seed's LC and AP ingredients will be from the selected
 				values.
 			</p>
+			<p>
+				Do keep in mind that some combinations may not be possible.
+			</p>
 			<Row>
 				<Container className="col container-sm">
 					<p>Lively Concoction:</p>
@@ -298,7 +302,7 @@ const SeedFromRecipes = () => {
 								<Input
 									id="SeedFromRecipes.seed"
 									type="number"
-									disabled={solverInfo.running}
+									disabled={running}
 									value={seed}
 									onChange={handleSeedChange}
 								/>
@@ -318,7 +322,7 @@ const SeedFromRecipes = () => {
 								</Button>
 							</Row>
 							<Row className="m-3">
-								Multithreading will slow down your PC, but will use the whole CPU.
+								Multithreading will slow down your PC, but will use the whole CPU. You may get several results at once if you have enough cores.
 							</Row>
 						</Col>
 					}
@@ -326,14 +330,14 @@ const SeedFromRecipes = () => {
 						<ButtonGroup>
 							<Button
 								color="primary"
-								disabled={solverInfo.running || !hasEnoughAll}
+								disabled={running || !hasEnoughAll}
 								onClick={() => startCalculation()}
 							>
 								Find next
 							</Button>
 							<Button
 								color="primary"
-								disabled={!solverInfo.running}
+								disabled={!running}
 								onClick={() => stopCalculation()}
 							>
 								Stop
@@ -342,23 +346,26 @@ const SeedFromRecipes = () => {
 					</Row>
 				</Col>
 			</Row>
-			{solverInfo.running && (
+			{running && (
 				<Row>
 					<Col>
 						<Spinner type="grow" color="info" />
 					</Col>
 				</Row>
 			)}
-			{(
+			<Container>
 				<Row>
-					<Col>
-						Current seed: {solverInfo.currentSeed}
-						{solverInfo.foundSeed && (
-							<MaterialList LC={solverInfo.LC} AP={solverInfo.AP} />
-						)}
-					</Col>
+					{solverInfo.map((info, index) => (
+						<Col className="mb-4" xs={6} md={3} key={info.foundSeed}>
+							Current seed: {info.currentSeed}
+							{info.foundSeed && (
+								<MaterialList LC={info.LC} AP={info.AP} />
+							)}
+						</Col>
+					))}
 				</Row>
-			)}
+			</Container>
+
 		</Container>
 	);
 };

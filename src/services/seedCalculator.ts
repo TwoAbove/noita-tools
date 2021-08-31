@@ -34,6 +34,8 @@ export class SeedSolver {
 	}
 
 	async work() {
+		this.running = true;
+		this.shouldCancel = false;
 		while (!this.shouldCancel && this.currentSeed < 4_294_967_294) {
 			if (this.count && this.count % this.infoFreq === 0) {
 				this.sendInfo();
@@ -65,8 +67,7 @@ export class SeedSolver {
 	}
 
 	async start() {
-		this.shouldCancel = false;
-		this.running = true;
+		this.foundSeed = undefined;
 		return this.work();
 	}
 
