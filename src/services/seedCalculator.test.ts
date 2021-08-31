@@ -1,7 +1,5 @@
 import { SeedSolver } from './seedCalculator';
 import { MaterialPicker } from '../services/Calculator2';
-import { assert } from 'console';
-
 
 describe("SeedSolver", () => {
   it('Should find a correct seed', async () => {

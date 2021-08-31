@@ -10,12 +10,12 @@ export class WorkerHandler extends EventTarget {
     super();
     this.worker = new SeedSolverWorker();
     this.worker.postMessage({ type: 'init', offset, step });
-    this.worker.addEventListener('message', e => {
-      switch (e.data.type) {
+    this.worker.addEventListener('message', ({ data }) => {
+      switch (data.type) {
         case 'info':
-          this.latestData = e.data.data;
-          if (e.data.foundSeed) {
-            this.dispatchEvent(new CustomEvent('foundSeed', { detail: e.data.data }));
+          this.latestData = data.data;
+          if (data.data.foundSeed) {
+            this.dispatchEvent(new CustomEvent('foundSeed', { detail: data.data }));
           }
           break;
       }
