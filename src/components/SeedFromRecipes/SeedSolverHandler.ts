@@ -69,29 +69,22 @@ export default class SeedSolver {
     }
   }
 
-  public getInfo(): ReturnType<_SeedSolver["getInfo"]> | undefined {
+  public getInfo(): ReturnType<_SeedSolver["getInfo"]>[] {
     const allInfo = this.workerList.map(worker => worker.latestData!).filter(Boolean);
     allInfo.sort((a, b) => a.currentSeed - b.currentSeed);
     if (allInfo.length === 0) {
-      return undefined;
+      return [];
+    }
+    const hasFoundSeed = allInfo.filter(info => info.foundSeed);
+    if (hasFoundSeed.length) {
+      return hasFoundSeed;
     }
     const res = allInfo.reduce((acc, cur) => {
       acc.count += cur.count;
       acc.currentSeed = Math.min(acc.currentSeed || cur.currentSeed, cur.currentSeed);
-      if (cur.foundSeed) {
-        acc.foundSeed = Math.min(acc.foundSeed || cur.foundSeed, cur.foundSeed);
-      }
       acc.running = acc.running || cur.running;
-      if (!acc.LC) {
-        acc.LC = cur.LC;
-      }
-      if (!acc.AP) {
-        acc.AP = cur.AP;
-      }
-      acc.apIngredients = cur.apIngredients;
-      acc.lcIngredients = cur.lcIngredients;
       return acc;
     }, { count: 0 } as ReturnType<_SeedSolver["getInfo"]>);
-    return res;
+    return [res];
   }
 }

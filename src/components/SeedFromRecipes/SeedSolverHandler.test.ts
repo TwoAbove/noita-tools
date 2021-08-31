@@ -55,11 +55,13 @@ describe('SeedSolverHandler', () => {
     const found = await new Promise((res) => {
       setInterval(() => {
         const data = seedSolver.getInfo();
-        if (data?.foundSeed) {
+        if (data.some(d => d.foundSeed)) {
           res(data);
         }
       }, 10);
     });
-    expect(found.currentSeed).toBe(12341234);
+    expect(found.length).toBe(2);
+    expect(found[0].currentSeed).toBe(12341234);
+    expect(found[1].currentSeed).toBe(12341235);
   });
 });
