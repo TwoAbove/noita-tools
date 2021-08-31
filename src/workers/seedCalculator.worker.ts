@@ -27,4 +27,6 @@ seedSolver.onInfo((data) => {
   self.postMessage({ type: "info", data });
 });
 
+export { seedSolver };
+
 export default null as any;

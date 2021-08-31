@@ -9,28 +9,33 @@ interface ISeedSolverConfig {
 	currentSeed?: number;
 }
 export class SeedSolver {
-	private apIngredients!: string[];
-	private lcIngredients!: string[];
-	private AP!: string[];
-	private LC!: string[];
-	private shouldCancel = false;
-	private foundSeed?: number;
-	private running = false;
-	private count = 0;
-	private currentSeed = 0;
-	private offset = 0;
-	private step = 1;
+	apIngredients!: string[];
+	lcIngredients!: string[];
+	AP!: string[];
+	LC!: string[];
+	shouldCancel = false;
+	foundSeed?: number;
+	running = false;
+	count = 0;
+	currentSeed = 0;
+	offset = 0;
+	step = 1;
+	infoFreq = 100;
 
-	private infocb?: (info: ReturnType<SeedSolver["getInfo"]>) => void;
+	infocb?: (info: ReturnType<SeedSolver["getInfo"]>) => void;
 
-	public init(offset: number = 0, step: number = 1) {
+	constructor(offset: number = 0, step: number = 1) {
+		this.init(offset, step);
+	}
+
+	init(offset: number, step: number) {
 		this.offset = offset;
 		this.step = step;
 	}
 
-	private async work() {
+	async work() {
 		while (!this.shouldCancel && this.currentSeed < 4_294_967_294) {
-			if (this.count % 100 === 0) {
+			if (this.count && this.count % this.infoFreq === 0) {
 				this.sendInfo();
 			}
 			const found: any = await new Promise(res => { // Free the event loop
@@ -54,19 +59,19 @@ export class SeedSolver {
 			this.currentSeed += this.step;
 			this.count++;
 		}
-		this.currentSeed += this.step;
 		this.running = false;
 		this.sendInfo();
+		this.currentSeed += this.step;
 	}
 
-	public async start() {
+	async start() {
 		this.shouldCancel = false;
 		this.running = true;
-		this.work();
+		return this.work();
 	}
 
-	public async update(config: ISeedSolverConfig = {}) {
-		if (config.currentSeed) {
+	async update(config: ISeedSolverConfig = {}) {
+		if (typeof config.currentSeed === 'number') {
 			this.currentSeed = config.currentSeed + this.offset;
 		}
 		if (config.apIngredients) {
@@ -77,23 +82,23 @@ export class SeedSolver {
 		}
 	}
 
-	public async stop() {
+	async stop() {
 		this.shouldCancel = true;
 		this.running = false;
 	}
 
 
-	public onInfo(cb: (info: ReturnType<SeedSolver["getInfo"]>) => void) {
+	onInfo(cb: (info: ReturnType<SeedSolver["getInfo"]>) => void) {
 		this.infocb = cb;
 		// return cb(this.getInfo());
 	}
-	private sendInfo() {
+	sendInfo() {
 		if (this.infocb) {
 			this.infocb(this.getInfo());
 		}
 	}
-	public getInfo() {
-		return {
+	getInfo() {
+		return Object.assign({}, {
 			count: this.count,
 			currentSeed: this.currentSeed,
 			foundSeed: this.foundSeed,
@@ -102,18 +107,18 @@ export class SeedSolver {
 			AP: this.AP,
 			apIngredients: this.apIngredients,
 			lcIngredients: this.lcIngredients,
-		};
+		});
 	}
 
-	public async getCount() {
+	async getCount() {
 		return this.count;
 	}
 
-	public async getCurrentSeed() {
+	async getCurrentSeed() {
 		return this.currentSeed;
 	}
 
-	public async getFoundSeed() {
+	async getFoundSeed() {
 		return this.foundSeed;
 	}
 }

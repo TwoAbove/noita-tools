@@ -2,7 +2,7 @@
 import SeedSolverWorker from '../../workers/seedCalculator.worker';
 import { SeedSolver as _SeedSolver } from '../../services/seedCalculator';
 
-class WorkerHandler extends EventTarget {
+export class WorkerHandler extends EventTarget {
   latestData?: ReturnType<_SeedSolver["getInfo"]>;
   worker: Worker;
 
@@ -26,7 +26,7 @@ class WorkerHandler extends EventTarget {
   }
 }
 
-class SeedSolver {
+export default class SeedSolver {
   public workerList: WorkerHandler[] = [];
 
   constructor(workerCount: number = 1) {
@@ -95,5 +95,3 @@ class SeedSolver {
     return res;
   }
 }
-
-export default SeedSolver;
