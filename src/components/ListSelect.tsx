@@ -1,12 +1,8 @@
-import React from 'react';
-import {
-	Jumbotron,
-	Container,
-	Row,
-	Col,
-	ListGroupItem,
-	ListGroup
-} from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { ListGroup } from 'react-bootstrap';
+import { capitalize } from '../services/helpers';
+
+import GameInfoProvider from '../services/SeedInfo/infoHandler';
 
 interface IOptionProps {
 	name: string;
@@ -17,12 +13,13 @@ interface IOptionProps {
 const Option = (props: IOptionProps) => {
 	const { name, selected, handleClick } = props;
 	return (
-		<ListGroupItem
-			{...(selected ? { color: 'success' } : {})}
+		<ListGroup.Item
+			// {...(selected ? { color: 'success' } : {})}
+			variant={selected ? 'success' : 'default'}
 			onClick={handleClick}
 		>
 			{name}
-		</ListGroupItem>
+		</ListGroup.Item>
 	);
 };
 
@@ -32,8 +29,36 @@ interface IListSelectProps {
 	onUpdate: (selected: Set<string>) => void;
 }
 
+const waitToLoad = (gameInfoProvider): Promise<void> =>
+	new Promise(async res => {
+		if (!gameInfoProvider) {
+			return res();
+		}
+		while (!gameInfoProvider.ready) {
+			await new Promise(r => setTimeout(r, 50));
+		}
+		return res();
+	});
+
 const ListSelect = (props: IListSelectProps) => {
 	const { selected, items } = props;
+	const [, setData] = useState<ReturnType<GameInfoProvider['provideAll']>>();
+	const updateData = () => {
+		const data = gameInfoProvider.provideAll();
+		setData(data);
+	};
+	const [gameInfoProvider] = useState(() => new GameInfoProvider({}));
+	useEffect(() => {
+		waitToLoad(gameInfoProvider).then(() => {
+			const data = gameInfoProvider.provideAll();
+			setData(data);
+			gameInfoProvider.addEventListener('update', event => {
+				updateData();
+			});
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [gameInfoProvider]);
+
 	const handleSelectedChanged = (selected: Set<string>) => {
 		if (props.onUpdate) {
 			props.onUpdate(selected);
@@ -48,12 +73,17 @@ const ListSelect = (props: IListSelectProps) => {
 		}
 		handleSelectedChanged(newSelected);
 	};
+	if (!gameInfoProvider.ready) {
+		return <div>Loading</div>;
+	}
 	return (
 		<ListGroup>
 			{items.map(item => (
 				<Option
 					key={item}
-					name={item}
+					name={capitalize(
+						gameInfoProvider.providers.material.provide(item).translated_name
+					)}
 					selected={selected.has(item)}
 					handleClick={() => handleClick(item)}
 				/>

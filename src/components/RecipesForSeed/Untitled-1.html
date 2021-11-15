@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1/dist/tailwind.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.4.x/dist/typography.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css" rel="stylesheet" type="text/css"/>
+    <link href="index.css" rel="stylesheet" type="text/css"/>
+    <script src="lib/noita_random.js"></script>
+    <script src="scripts/random.js"></script>
+    <script src="requirements.js"></script>
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+    <title>Noita Seed Tool</title>
+
+    <meta name="og:title" content="Noita Seed Tool"/>
+    <meta name="og:description" content="Noita fungal shift and perk calculator with search functionality."/>
+    <meta name="og:image" content="https://cr4xy.dev/noita/favicon.png"/>
+  </head>
+
+  <body>
+    <a href="https://github.com/cr4xy/noita-seed-tool" class="github-corner" aria-label="View source on GitHub">
+      <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+      </svg>
+    </a>
+    <style>
+      .github-corner:hover .octo-arm {
+        animation: octocat-wave 560ms ease-in-out;
+      }
+
+      @keyframes octocat-wave {
+
+        0%,
+        100% {
+          transform: rotate(0);
+        }
+
+        20%,
+        60% {
+          transform: rotate(-25deg);
+        }
+
+        40%,
+        80% {
+          transform: rotate(10deg);
+        }
+      }
+
+      @media (max-width:500px) {
+        .github-corner:hover .octo-arm {
+          animation: none;
+        }
+
+        .github-corner .octo-arm {
+          animation: octocat-wave 560ms ease-in-out;
+        }
+      }
+    </style>
+    <div class="md:container md:mx-auto p-4">
+      <h1 class="prose lg:prose-xl">Noita Seed Tool</h1>
+      <div id="app">
+        <div :class="['modal', displayPerkDeck ? 'modal-open' : '']">
+          <div class="modal-box" style="max-width: 64rem">
+            <h1 class="prose prose-sm lg:prose-lg">Perk Deck</h1>
+            <div class="divider" style="margin-top: 0.5rem; margin-bottom: 0.5rem;"></div>
+            <div class="flex flex-row items-center flex-wrap">
+              <div v-for="(perk, index) in seedInfo.perkDeck" :title="perk.ui_name" class="perk">
+                <img :src="'data:image/png;base64,' + perk.ui_icon" class="w-16 h-16">
+              </div>
+              <div class="flex-grow"></div>
+              <div class="modal-action">
+                <a class="btn btn-primary" @click="hidePerkDeck">Close</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-control w-64">
+          <label class="label">
+            <span class="label-text">Seed</span>
+          </label>
+          <input type="number" placeholder="Seed" v-model="seed" class="input input-bordered" min="0">
+          <label class="label">
+            <a href="javascript:void(0)" class="label-text-alt" @click="generateSeed">Random Seed</a>
+          </label>
+        </div>
+        <div class="collapse w-6/12 border rounded-box border-base-300 collapse-arrow" id="search-for-seed-container">
+          <input type="checkbox" v-model="showSeedCriteria">
+          <div class="collapse-title text-xl font-medium">
+            Search for Seed
+          </div>
+          <div class="collapse-content">
+            <table class="table table-zebra m-auto">
+              <thead>
+                <th>Type</th>
+                <th>Requirement</th>
+                <th></th>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in seedCriteria" :key="index">
+                  <td class="align-top relative">
+                    <select class="select select-bordered w-full max-w-xs" @change="e => changeCriteriaType(index, e.target.value)">
+                      <option disabled="disabled">Choose a type</option>
+                      <option v-for="(req, i) in availableRequirements" :value="i" :selected="availableRequirements.indexOf(item.constructor) === i">{{ req.displayName }}</option>
+                    </select>
+                    <label class="btn btn-xs absolute -bottom-3 left-0 z-10 border-base-300" v-if="index + 1 < seedCriteria.length">
+                      <span class="label-text">or&nbsp;</span>
+                      <input type="checkbox" class="checkbox checkbox-xs" v-model="seedCriteria[index].or">
+                    </label>
+                  </td>
+                  <td>
+                    <div v-if="item.type === 'StartingFlask'" class="whitespace-normal">
+                      <label>
+                        Flask Material
+                        <select class="select select-bordered w-full max-w-xs capitalize" v-model="seedCriteria[index].material">
+                          <option disabled="disabled" selected="selected">Choose a flask material</option>
+                          <option v-for="(material, i) in item.requirement.provider.materials" :value="material" class="capitalize">{{ translateMaterial(material) }}</option>
+                        </select>
+                      </label>
+                    </div>
+                    <div v-if="item.type === 'StartingSpell'" class="whitespace-normal">
+                      <label>
+                        Spell
+                        <select class="select select-bordered w-full max-w-xs capitalize" v-model="seedCriteria[index].spell">
+                          <option disabled="disabled" selected="selected">Choose a spell</option>
+                          <option v-for="(spell, i) in item.requirement.provider.spells" :value="spell" class="capitalize">{{ spell }}</option>
+                        </select>
+                      </label>
+                    </div>
+                    <div v-if="item.type === 'StartingBombSpell'" class="whitespace-normal">
+                      <label>
+                        Bomb Spell
+                        <select class="select select-bordered w-full max-w-xs capitalize" v-model="seedCriteria[index].spell">
+                          <option disabled="disabled" selected="selected">Choose a bomb spell</option>
+                          <option v-for="(spell, i) in item.requirement.provider.spells" :value="spell" class="capitalize">{{ spell }}</option>
+                        </select>
+                      </label>
+                    </div>
+                    <div v-else-if="item.type === 'Rain'" class="whitespace-normal">
+                      <label>
+                        Rain Material
+                        <select class="select select-bordered w-full max-w-xs capitalize" v-model="seedCriteria[index].material">
+                          <option disabled="disabled" selected="selected">Choose a rain material</option>
+                          <option value="" class="capitalize">(no rain)</option>
+                          <option v-for="(rainType, i) in item.requirement.provider.rainTypes" :value="rainType.rain_material" class="capitalize">{{ translateMaterial(rainType.rain_material) }}</option>
+                        </select>
+                      </label>
+                    </div>
+                    <div v-else-if="item.type === 'Perk'" class="whitespace-normal">
+                      <label>
+                        Level
+                        <select class="select select-bordered w-full max-w-xs" v-model="seedCriteria[index].level">
+                          <option disabled="disabled" selected="selected">Choose a level</option>
+                          <option value="-1">(any)</option>
+                          <option v-for="(temple, i) in item.requirement.provider.temples">{{ i + 1 }}</option>
+                        </select>
+                      </label>
+                      <br>
+                      <label>
+                        Perk
+                        <select class="select select-bordered w-full max-w-xs" v-model="seedCriteria[index].perk">
+                          <option disabled="disabled" selected="selected">Choose a perk</option>
+                          <option v-for="(perk, i) in sortedPerks" :value="perk.id" :key="perk.id">{{ perk.ui_name }}</option>
+                        </select>
+                      </label>
+                    </div>
+                    <div v-else-if="item.type === 'FungalShift'" class="whitespace-normal">
+                      <label>
+                        Iteration
+                        <br>
+                        <select class="select select-bordered w-full max-w-xs" v-model="seedCriteria[index].iterations">
+                          <option disabled="disabled" selected="selected">Choose a iteration</option>
+                          <option value="-1">(any)</option>
+                          <option v-for="i in 20">{{ i }}</option>
+                        </select>
+                      </label>
+                      <br>
+                      <label>
+                        From
+                        <select class="select select-bordered w-full max-w-xs capitalize" v-model="seedCriteria[index].fromMaterial">
+                          <option disabled="disabled" selected="selected">Choose a from-material</option>
+                          <option value="" class="capitalize">(any)</option>
+                          <option class="capitalize" value="(flask)">{{ translateMaterial('(flask)') }}</option>
+                          <optgroup v-for="(fromMats, i) in item.requirement.provider.data.materials_from" :key="i" :label="translateMaterial(fromMats.name_material || fromMats.materials[0])" class="capitalize">
+                            <option v-for="(mat, j) in fromMats.materials" :value="mat" :key="j" class="capitalize">{{ translateMaterial(mat) }}</option>
+                          </optgroup>
+                        </select>
+                      </label>
+                      <br>
+                      <label>
+                        To
+                        <select class="select select-bordered w-full max-w-xs capitalize" v-model="seedCriteria[index].toMaterial">
+                          <option disabled="disabled" selected="selected">Choose a to-material</option>
+                          <option value="" class="capitalize">(any)</option>
+                          <option class="capitalize" value="(flask)">{{ translateMaterial('(flask)') }}</option>
+                          <option v-for="(mat, i) in item.requirement.provider.data.materials_to" :value="mat.material" :key="i" class="capitalize">{{ translateMaterial(mat.material) }}</option>
+                        </select>
+                      </label>
+                    </div>
+                    <div v-else-if="item.type === 'BiomeModifier'" class="whitespace-normal">
+                      <label>
+                        Biome
+                        <br>
+                        <select class="select select-bordered w-full max-w-xs capitalize" v-model="seedCriteria[index].biome">
+                          <option disabled="disabled" selected="selected">Choose a biome</option>
+                          <!--<option value="">(any)</option>-->
+                          <option v-for="(biome, i) in item.requirement.provider.biomeNames" :value="biome.id" :key="i" v-if="translateBiome(biome.id)" class="capitalize">{{ translateBiome(biome.id) }}</option>
+                        </select>
+                      </label>
+                      <br>
+                      <label>
+                        Modifier
+                        <br>
+                        <select class="select select-bordered w-full max-w-xs capitalize" v-model="seedCriteria[index].modifier">
+                          <option disabled="disabled" selected="selected">Choose a modifier</option>
+                          <!--<option value="">(any)</option>-->
+                          <option v-for="(modifier, i) in item.requirement.provider.modifiers" :value="modifier.id" :key="i" class="capitalize">{{ translateModifier(modifier.id) }}</option>
+                        </select>
+                      </label>
+                    </div>
+                  </td>
+                  <td class="align-top text-right">
+                    <button class="btn btn-sm btn-primary" @click="copyCriteria(index)">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                      </svg>
+                    </button>
+                    <button class="btn btn-sm btn-primary" @click="removeCriteria(index)">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3">
+                    <div class="flex flex-row">
+                      <button class="btn btn-primary" @click="addCriteria">+</button>
+                      <div class="flex-grow"></div>
+                      <div class="px-5">
+                        <pre>seed criteria: {{ seedcriteriatext }}</pre>
+                      </div>
+                      <div class="flex-grow"></div>
+                      <div class="flex flex-col w-36">
+                        <div class="flex-grow"></div>
+                        <div class="text-right">
+                          <button class="btn btn-accent mb-2" @click="copySeedSearchLink">Copy Link</button>
+                        </div>
+                        <div v-if="!searchingSeed" class="text-right">
+                          <label class="cursor-pointer label">
+                            <span class="label-text">All CPU Cores</span>
+                            <input type="checkbox" checked="checked" class="checkbox" v-model="searchUseAllCores">
+                          </label>
+                          <button class="btn btn-secondary" @click="searchSeed">Search</button>
+                        </div>
+                        <div v-else="v-else" class="text-right">
+                          <div>
+                            <span>Searched seeds:<br>{{ seedSearchCountStr }}</span>
+                          </div>
+                          <button class="btn btn-secondary" @click="cancelSeedSearch">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="flex flex-row" v-if="seed > 0">
+          <div class="flex flex-col inline-flex w-72">
+            <h2>Perks (<a href="javascript:void(0)" class="link link-hover" @click="showPerkDeck">show deck</a>)</h2>
+            <div class="p-4">
+              <div class="w-full flex flex-row justify-between">
+                <button class="btn btn-sm w-4 block" @click="perksGoWest">&lt;</button>
+                <span class="block capitalize">{{ perkWorldOffsetText }}</span>
+                <button class="btn btn-sm w-4 block" @click="perksGoEast">&gt;</button>
+              </div>
+              <div class="flex flex-row justify-between items-center" v-for="(perkList, level) in seedInfo.perks">
+                <div v-for="(perk, index) in perkList" :title="perk.ui_name" :class="['cursor-pointer', 'perk', pickedPerks[perkWorldOffset]?.[level] === perk.id ? 'perk-active' : '']" @click="onClickPerk(level, perk.id)">
+                  <img :src="'data:image/png;base64,' + perk.ui_icon" class="w-16 h-16">
+                </div>
+                <div class="btn btn-ghost w-16 h-16" title="Reroll: right-click to unroll" @click="increasePerkRerolls(level)" @contextmenu.prevent="decreasePerkRerolls(level)">
+                  <div class="perk-reroll text-right w-full h-full">
+                    <span v-show="perkRerolls[perkWorldOffset]?.[level] > 0">{{ perkRerolls[perkWorldOffset]?.[level] }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ml-1 flex flex-col inline-flex w-64 min-w-max justify-between">
+            <h2>Fungal Shifts</h2>
+            <div class="form-control">
+              <label class="cursor-pointer label">
+                <span class="label-text">Holding flask</span>
+                <input type="checkbox" checked="checked" class="checkbox" v-model="fungalHoldingFlaskAll">
+              </label>
+            </div>
+            <div class="flex flex-row p-2 pr-0 w-full fungal-shift" v-for="(shift, level) in seedInfo.fungalShifts">
+              <div class="mr-1">{{ level + 1 }}</div>
+              <div>
+                <!-- from -->
+                <div v-for="(mat, i) in shift[0]" class="capitalize" :style="{ backgroundColor: getMaterialColorHex(mat) }">{{ translateMaterial(mat) }}</div>
+              </div>
+              <div class="text-center m-auto">
+                <div class="whitespace-nowrap">-></div>
+              </div>
+              <div class="my-auto">
+                <!-- to -->
+                <div class="capitalize" :style="{ backgroundColor: getMaterialColorHex(shift[1]) }">{{ translateMaterial(shift[1]) }}</div>
+              </div>
+              <div class="form-control">
+                <label class="label lbl-holding-flask">
+                  <input type="checkbox" checked="checked" class="checkbox" v-model="fungalHoldingFlasks[level]">
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="ml-1 flex flex-col inline-flex w-64 min-w-max">
+            <h2>Biome Modifiers</h2>
+            <div v-for="(modifier, biome) in seedInfo.biomeModifiers" v-if="modifier && isPrimaryBiome(biome)" class="biome-modifier p-2 w-full">
+              <div class="relative w-full">
+                <span class="capitalize">{{ translateBiome(biome) }}</span>
+                <div class="absolute bottom-0 flex flex-row min-w-max w-full h-16">
+                  <div class="w-20 bg-cover bg-no-repeat" :style="{ backgroundImage: 'url(\'data:image/png;base64,' + modifier.ui_decoration_file + '\')' }"></div>
+                  <div class="w-full bg-cover bg-no-repeat" :style="{ backgroundImage: 'url(\'data:image/png;base64,' + modifier.ui_decoration_file + '\')', backgroundPositionX: '50%', backgroundSize: '200% 100%' }"></div>
+                  <div class="w-20 bg-cover bg-no-repeat" :style="{ backgroundImage: 'url(\'data:image/png;base64,' + modifier.ui_decoration_file + '\')', backgroundPositionX: '100%' }"></div>
+                </div>
+                <div class="h-16 flex items-center justify-center px-14 text-center capitalize">
+                  <span class="z-10" :title="modifier.ui_description">{{ translateModifier(modifier.id) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ml-1 w-4/12">
+            <div class="shadow flex flex-wrap rounded">
+              <div class="stat">
+                <div class="stat-title">Rain Type</div>
+                <div class="stat-value">{{ seedInfo.rainType[0] ? seedInfo.rainType[1] : 'no rain' }}</div>
+                <div class="stat-desc">{{ (seedInfo.rainType[2] * 100).toFixed(10) + '% likely' }}</div>
+              </div>
+              <div class="stat">
+                <div class="stat-title">Starting Flask</div>
+                <div class="stat-value capitalize">{{ translateMaterial(seedInfo.startingFlask) }}</div>
+                <!--<div class="stat-desc">{{ (seedInfo.rainType[2] * 100).toFixed(10) + '% likely' }}</div>-->
+              </div>
+              <div class="stat">
+                <div class="stat-title">Starting Spell</div>
+                <div class="stat-value">{{ seedInfo.startingSpell }}</div>
+                <!--<div class="stat-desc">{{ (seedInfo.rainType[2] * 100).toFixed(10) + '% likely' }}</div>-->
+              </div>
+              <div class="stat">
+                <div class="stat-title">Starting Bomb Spell</div>
+                <div class="stat-value">{{ seedInfo.startingBombSpell }}</div>
+                <!--<div class="stat-desc">{{ (seedInfo.rainType[2] * 100).toFixed(10) + '% likely' }}</div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <footer>
+          <span>&copy; Cr4xy 2021 -
+            <a class="link link-hover" href="//noitagame.com">Noita</a>
+            by
+            <a class="link link-hover" href="//nollagames.com">Nolla Games</a>
+          </span>
+        </footer>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+
+</html>
