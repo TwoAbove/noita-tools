@@ -1,5 +1,4 @@
 // import { Remote, wrap, releaseProxy, proxy } from 'comlink';
-import SeedSolverWorker from '../../workers/seedCalculator.worker';
 import { SeedSolver as _SeedSolver } from '../../services/seedCalculator';
 
 export class WorkerHandler extends EventTarget {
@@ -8,7 +7,7 @@ export class WorkerHandler extends EventTarget {
 
   constructor(offset: number, step: number) {
     super();
-    this.worker = new SeedSolverWorker();
+    this.worker = new Worker(new URL('../../workers/seedCalculator.worker.ts', import.meta.url));
     this.worker.postMessage({ type: 'init', offset, step });
     this.worker.addEventListener('message', ({ data }) => {
       switch (data.type) {
