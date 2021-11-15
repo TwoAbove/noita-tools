@@ -1,10 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import "bootswatch/dist/spacelab/bootstrap.min.css";
-// import "bootswatch/dist/litera/bootstrap.min.css";
-
+import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 
 import App from './components/App';
