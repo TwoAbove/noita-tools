@@ -1,23 +1,34 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Jumbotron, Container, Row, Col } from 'reactstrap';
+
+import { MaterialPicker } from '../../services/Calculator2';
 
 import SeedForm from './SeedForm';
-import SeedDataOutput from './SeedDataOutput';
+import MaterialList from './MaterialList';
 
-const SeedData = () => {
-	const [seed, setSeed] = React.useState<any>('');
+const RecipesForSeed = () => {
+	const [data, setData] = React.useState<any>();
 
 	return (
 		<Container className="container shadow-lg mb-5">
 			<h4>LC and AP ingredients for a seed</h4>
 			<Row>
-				<Col xs={12} xl={6}>
-					<SeedForm onSubmit={seed => setSeed(seed)} />
+				<Col xs={12} sm={6}>
+					<SeedForm
+						onSubmit={seed =>
+							setData(MaterialPicker.PickForSeed(parseInt(seed, 10)))
+						}
+					/>
 				</Col>
 			</Row>
-			{seed ? <SeedDataOutput seed={seed} /> : null}
+			<Row>
+				<Col xs={12} sm={6}>
+					{data && `Seed: ${data.seed}`}
+					{data && <MaterialList LC={data.LC} AP={data.AP} />}
+				</Col>
+			</Row>
 		</Container>
 	);
 };
 
-export default SeedData;
+export default RecipesForSeed;

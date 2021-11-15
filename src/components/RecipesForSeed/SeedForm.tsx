@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Stack } from 'react-bootstrap';
+import { Button, Input, Label, Form, FormGroup, Col } from 'reactstrap';
 
 interface ISeedFormProps {
 	onSubmit(seed: string): void;
@@ -20,22 +20,23 @@ const SeedForm = (props: ISeedFormProps) => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit}>
-			<Form.Label className="label" htmlFor="seedForm.seed">
-				Enter the seed number to get information about it
-			</Form.Label>
-			<Stack direction="horizontal" gap={5}>
-				<Form.Control
-					id="seedForm.seed"
-					placeholder="Seed"
-					type="number"
-					value={seed}
-					onChange={handleNameChange}
-				/>
-				<Button className="me-3" type="submit" color="primary">
-					Submit
-				</Button>
-			</Stack>
+		<Form className="seedForm" onSubmit={handleSubmit}>
+			<FormGroup className="formGroup" row>
+				<Label className="label" for="seedForm.seed">
+					Seed
+				</Label>
+				<Col>
+					<Input
+						id="seedForm.seed"
+						type="number"
+						value={seed}
+						onChange={handleNameChange}
+					/>
+				</Col>
+			</FormGroup>
+			<Button className="submitButton" type="submit" color="primary">
+				Submit
+			</Button>
 		</Form>
 	);
 };

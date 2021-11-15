@@ -1,23 +1,27 @@
 import React from 'react';
 import {
+	Jumbotron,
 	ButtonGroup,
 	Form,
 	FormGroup,
 	Container,
-	Stack,
-	// Input,
-	// Label,
+	Input,
+	Label,
 	Row,
 	Col,
 	Button,
-	Spinner
-} from 'react-bootstrap';
+	Spinner,
+
+} from 'reactstrap';
 
 import { MaterialPicker } from '../../services/Calculator2';
 
 import ListSelect from '../ListSelect';
 
-import SeedDataOutput from '../RecipesForSeed/SeedDataOutput';
+import { SeedSolver as _SeedSolver } from '../../services/seedCalculator';
+import SeedSolverWorker from '../../workers/seedCalculator.worker';
+
+import MaterialList from '../RecipesForSeed/MaterialList';
 import SeedSolver from './SeedSolverHandler';
 
 interface IRecipeIngredientsPickerProps {
@@ -39,14 +43,13 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 		enoughAlchemy
 	} = props;
 	const ColProps = {
-		xs: 12,
-		lg: 6,
-		className: 'mb-3 mt-3'
+		xs: '12',
+		lg: '6'
 	};
 	return (
-		<Row className="pb-3">
+		<Row>
 			<Col {...ColProps}>
-				<Row className="justify-content-center pb-2">
+				<Row className="justify-content-center p-2">
 					<Row>
 						<Col>
 							<p {...(!enoughAlchemy ? { className: 'text-danger' } : {})}>
@@ -56,17 +59,11 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 					</Row>
 					<Row>
 						<Col>
-							<ButtonGroup size="sm">
-								<Button
-									variant="outline-primary"
-									onClick={() => onSelectAll('ALCHEMY')}
-								>
+							<ButtonGroup>
+								<Button color="primary" onClick={() => onSelectAll('ALCHEMY')}>
 									Select All
 								</Button>
-								<Button
-									variant="outline-primary"
-									onClick={() => onDeselectAll('ALCHEMY')}
-								>
+								<Button color="primary" onClick={() => onDeselectAll('ALCHEMY')}>
 									Deselect All
 								</Button>
 							</ButtonGroup>
@@ -80,7 +77,7 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 				/>
 			</Col>
 			<Col {...ColProps}>
-				<Row className="justify-content-center pb-2">
+				<Row className="justify-content-center p-2">
 					<Row>
 						<Col>
 							<p {...(!enoughLiquids ? { className: 'text-danger' } : {})}>
@@ -90,17 +87,11 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 					</Row>
 					<Row>
 						<Col>
-							<ButtonGroup size="sm">
-								<Button
-									variant="outline-primary"
-									onClick={() => onSelectAll('LIQUIDS')}
-								>
+							<ButtonGroup>
+								<Button color="primary" onClick={() => onSelectAll('LIQUIDS')}>
 									Select All
 								</Button>
-								<Button
-									variant="outline-primary"
-									onClick={() => onDeselectAll('LIQUIDS')}
-								>
+								<Button color="primary" onClick={() => onDeselectAll('LIQUIDS')}>
 									Deselect All
 								</Button>
 							</ButtonGroup>
@@ -127,26 +118,24 @@ const enoughAlchemy = (selected: Set<string>) => {
 };
 
 const SeedFromRecipes = () => {
-	const [apIngredientsSelected, setApIngredientsSelected] = React.useState<
-		Set<string>
-	>(new Set());
-	const [lcIngredientsSelected, setLcIngredientsSelected] = React.useState<
-		Set<string>
-	>(new Set());
+	const [apIngredientsSelected, setApIngredientsSelected] = React.useState<Set<string>>(new Set());
+	const [lcIngredientsSelected, setLcIngredientsSelected] = React.useState<Set<string>>(new Set());
 	const [useCores, setUseCores] = React.useState<number>(1);
-	const [seedSolver, setSeedSolver] = React.useState(
-		() => new SeedSolver(useCores)
-	);
+	const [seedSolver, setSeedSolver] = React.useState(new SeedSolver(useCores));
 
-	const [seed, setSeed] = React.useState('1');
+	const [seed, setSeed] = React.useState('');
 	const handleSeedChange = (e: any) => {
 		setSeed(e.target.value);
 	};
 
-	const [solverInfo, setSolverInfo] = React.useState<
-		ReturnType<SeedSolver['getInfo']>
-	>([]);
+	const [solverInfo, setSolverInfo] = React.useState<ReturnType<SeedSolver["getInfo"]>>([]);
 	const running = solverInfo.find(info => info.running) !== undefined;
+	const update = async () => {
+		const info = seedSolver.getInfo();
+		if (info.length) {
+			setSolverInfo(info);
+		}
+	};
 
 	const handleMultithreading = () => {
 		const concurrency = navigator.hardwareConcurrency || 1;
@@ -159,41 +148,57 @@ const SeedFromRecipes = () => {
 	};
 
 	React.useEffect(() => {
-		const update = async () => {
-			const info = seedSolver.getInfo();
-			if (info.length) {
-				setSolverInfo(info);
-			}
-		};
-
 		const id = setInterval(() => update(), 1000);
 		return () => clearInterval(id);
-	}, [seedSolver]);
+	});
 
-	React.useEffect(() => {
-		const work = async () => {
-			await seedSolver.destroy();
-			const newSeedSolver = new SeedSolver(useCores);
-			const newSeed = parseInt(seed);
-			newSeedSolver.update({
-				apIngredients: Array.from(apIngredientsSelected),
-				lcIngredients: Array.from(lcIngredientsSelected),
-				currentSeed: newSeed
-			});
-			if (!isNaN(newSeed)) {
+	React.useEffect(
+		() => {
+			const work = async () => {
+				await seedSolver.destroy();
+				const newSeedSolver = new SeedSolver(useCores);
+				const newSeed = parseInt(seed);
 				newSeedSolver.update({
+					apIngredients: Array.from(apIngredientsSelected),
+					lcIngredients: Array.from(lcIngredientsSelected),
 					currentSeed: newSeed
 				});
-			}
+				if (!isNaN(newSeed)) {
+					newSeedSolver.update({
+						currentSeed: newSeed
+					});
+				}
 
-			setSeedSolver(newSeedSolver);
-		};
-		work();
-	}, // useEffect is used here inidiomaticly, but I'm not sure how to better do this
-	// seedSolver is both used and set here, so running this
-	// again will create a loop
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	[useCores, apIngredientsSelected, lcIngredientsSelected, seed]);
+				setSeedSolver(newSeedSolver);
+			};
+			work();
+		},
+		[useCores]
+	);
+
+	React.useEffect(
+		() => {
+			seedSolver.update({
+				apIngredients: Array.from(apIngredientsSelected),
+				lcIngredients: Array.from(lcIngredientsSelected)
+			});
+		},
+		[apIngredientsSelected, lcIngredientsSelected]
+	);
+
+	React.useEffect(
+		() => {
+
+			const newSeed = parseInt(seed);
+			if (isNaN(newSeed)) {
+				return;
+			}
+			seedSolver.update({
+				currentSeed: newSeed
+			});
+		},
+		[seed]
+	);
 
 	const startCalculation = async () => {
 		const requestOptions = {
@@ -246,12 +251,12 @@ const SeedFromRecipes = () => {
 				The resulting seed's LC and AP ingredients will be from the selected
 				values.
 			</p>
-			<p>Do keep in mind that some combinations may not be possible.</p>
+			<p>
+				Do keep in mind that some combinations may not be possible.
+			</p>
 			<Row>
 				<Container className="col container-sm">
-					<Row className="ms-2 me-2 ps-2 sticky-top bg-white rounded shadow-sm">
-						Lively Concoction:
-					</Row>
+					<p>Lively Concoction:</p>
 					<RecipeIngredientsPicker
 						selected={lcIngredientsSelected}
 						onUpdate={setLcIngredientsSelected}
@@ -268,8 +273,8 @@ const SeedFromRecipes = () => {
 					/>
 				</Container>
 				<Container className="col container-sm">
-					<Row className="ms-2 me-2 ps-2 sticky-top bg-white rounded shadow-sm">
-						Alchemic Precursor:
+					<Row>
+						<p>Alchemic Precursor:</p>
 					</Row>
 					<RecipeIngredientsPicker
 						selected={apIngredientsSelected}
@@ -289,13 +294,11 @@ const SeedFromRecipes = () => {
 			</Row>
 			<Row>
 				<Col xs={12} sm={6}>
-					<Form onSubmit={e => e.preventDefault()}>
-						<FormGroup>
+					<Form className="seedForm" onSubmit={e => e.preventDefault()}>
+						<FormGroup className="formGroup" row>
+							<Label for="SeedFromRecipes.seed">Start search from seed: </Label>
 							<Col>
-								<Form.Label htmlFor="SeedFromRecipes.seed">
-									Start search from seed:{' '}
-								</Form.Label>
-								<Form.Control
+								<Input
 									id="SeedFromRecipes.seed"
 									type="number"
 									disabled={running}
@@ -310,24 +313,19 @@ const SeedFromRecipes = () => {
 			</Row>
 			<Row>
 				<Col className="m-3">
-					{navigator.hardwareConcurrency && (
-						<Col className="">
+					{navigator.hardwareConcurrency &&
+						<Col className="m-3">
 							<Row className="m-3">
-								<Button
-									onClick={handleMultithreading}
-									variant={useCores > 1 ? 'success' : 'secondary'}
-								>
+								<Button onClick={handleMultithreading} color={useCores > 1 ? 'success' : 'secondary'}>
 									Multithreading {useCores > 1 ? 'on' : 'off'}
 								</Button>
 							</Row>
 							<Row className="m-3">
-								Multithreading will slow down your PC, but will use the whole
-								CPU. You may get several results at once if you have enough
-								cores.
+								Multithreading will slow down your PC, but will use the whole CPU. You may get several results at once if you have enough cores.
 							</Row>
 						</Col>
-					)}
-					<Row className="p-3">
+					}
+					<Row className="m-3">
 						<ButtonGroup>
 							<Button
 								color="primary"
@@ -350,25 +348,23 @@ const SeedFromRecipes = () => {
 			{running && (
 				<Row>
 					<Col>
-						<Spinner animation="grow" color="info" />
+						<Spinner type="grow" color="info" />
 					</Col>
 				</Row>
 			)}
 			<Container>
-				<Stack gap={5}>
+				<Row>
 					{solverInfo.map((info, index) => (
-						<Container
-							className="mb-4"
-							key={info.foundSeed || info.currentSeed}
-						>
+						<Col className="mb-4" xs={6} md={3} key={info.foundSeed}>
 							Current seed: {info.currentSeed}
 							{info.foundSeed && (
-								<SeedDataOutput seed={`${info.currentSeed}`} />
+								<MaterialList LC={info.LC} AP={info.AP} />
 							)}
-						</Container>
+						</Col>
 					))}
-				</Stack>
+				</Row>
 			</Container>
+
 		</Container>
 	);
 };
