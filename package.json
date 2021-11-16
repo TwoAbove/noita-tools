@@ -56,7 +56,7 @@
   },
   "scripts": {
     "start": "node ./server",
-    "dev": "concurrently 'nodemon ./server' 'craco start'",
+    "dev": "concurrently 'nodemon ./server' 'craco start' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write noita_random.cpp; do sh build.sh; done;'",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",

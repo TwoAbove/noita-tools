@@ -5,20 +5,22 @@ import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { capitalize } from '../../../services/helpers';
 
 interface IAlchemyProps {
-	LC: string[];
-	AP: string[];
+	alchemy: {
+		LC: string[];
+		AP: string[]
+	}
 	infoProvider: GameInfoProvider;
 }
 
 const Alchemy = (props: IAlchemyProps) => {
-	const { LC, AP, infoProvider } = props;
+	const { alchemy, infoProvider } = props;
 	return (
 		<Container>
 			<Stack direction="horizontal">
 				<div>
 					Lively Concoction:
 					<ListGroup>
-						{LC.map(l => (
+						{alchemy.LC.map(l => (
 							<ListGroupItem key={l}>
 								{capitalize(
 									infoProvider.providers.material.provide(l).translated_name
@@ -31,7 +33,7 @@ const Alchemy = (props: IAlchemyProps) => {
 				<div>
 					Alchemic Precursor:
 					<ListGroup>
-						{AP.map(l => (
+						{alchemy.AP.map(l => (
 							<ListGroupItem key={l}>
 								{capitalize(
 									infoProvider.providers.material.provide(l).translated_name

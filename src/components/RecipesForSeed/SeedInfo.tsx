@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import Alchemy from './SeedInfoViews/Alchemy';
@@ -11,6 +11,8 @@ import Biome from './SeedInfoViews/Biome';
 import FungalShifts from './SeedInfoViews/FungalShifts';
 import Perks from './SeedInfoViews/Perks';
 
+import { SpoilerContext } from '../SpoilerContext';
+
 interface ISeedInfoProps {
 	data: ReturnType<GameInfoProvider['provideAll']>;
 	infoProvider: GameInfoProvider; // This should be a context in the future
@@ -18,6 +20,8 @@ interface ISeedInfoProps {
 
 const SeedInfo = (props: ISeedInfoProps) => {
 	const { data, infoProvider } = props;
+	const [spoil, setSpoiler] = useContext(SpoilerContext);
+
 	return (
 		<div>
 			<Row>
@@ -27,11 +31,9 @@ const SeedInfo = (props: ISeedInfoProps) => {
 					<Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
 				</Col>
 				<Col>
-					<Alchemy
-						infoProvider={infoProvider}
-						LC={data.alchemy.LC}
-						AP={data.alchemy.AP}
-					/>
+					{spoil && (
+						<Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
+					)}
 					<FungalShifts
 						infoProvider={infoProvider}
 						fungalData={data.fungalShifts}

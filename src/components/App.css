@@ -10,7 +10,6 @@
   background-color: #f4f6f8;
   /* color: white; */
   text-align: center;
-  z-index: -1;
 }
 
 html, .App, #root {

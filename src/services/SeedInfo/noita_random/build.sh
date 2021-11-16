@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# To watch, use
+# while inotifywait -e close_write noita_random.cpp; do sh build.sh; doneSetting
+
 emcc --bind -Os -o noita_random.js \
   --std=c++17 \
   --extern-pre-js="pre.js" \

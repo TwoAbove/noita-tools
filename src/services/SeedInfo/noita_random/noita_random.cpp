@@ -1,14 +1,10 @@
 // Thanks to kaliuresis!
 // Check out his orb atlas repository: https://github.com/kaliuresis/noa
-#include <stdint.h>
-#include <math.h>
+// #include <stdint.h>
+// #include <math.h>
 #include <string>
-#include <iterator>
 #include <vector>
-#include <algorithm>
-#include <numeric>
-#include <functional>
-#include <limits.h>
+// #include <limits.h>
 
 typedef unsigned int uint;
 
@@ -98,12 +94,6 @@ public:
     static const int SEED_BASE = 23456789 + 1 + 11 * 11;
     double Seed;
 
-    NollaPrng(uint seed, int seedBase = SEED_BASE)
-    {
-        Seed = (double)(seedBase + seed);
-        Next();
-    }
-
     NollaPrng(double seed)
     {
         Seed = seed;
@@ -184,19 +174,22 @@ public:
 
     void ShuffleList(uint worldSeed)
     {
-        NollaPrng *prng = new NollaPrng((uint)(worldSeed >> 1) + 12534);
-        // Toxic sludge, blood, and soil for first
+        NollaPrng *prng = new NollaPrng((worldSeed >> 1) + 12534);
+
         for (int i = Materials.size() - 1; i >= 0; i--)
         {
-            int rand = (int)(prng->Next() * (i + 1));
-            std::swap(Materials[i], Materials[rand]);
+            int rand = prng->Next() * (i + 1);
+            string tmp = Materials[i];
+            Materials[i] = Materials[rand];
+            Materials[rand] = tmp;
         }
+        delete prng;
     }
 };
 
 static string _PickForSeed(uint worldSeed)
 {
-    NollaPrng *prng = new NollaPrng(worldSeed * 0.17127000 + 1323.59030000);
+    NollaPrng *prng = new NollaPrng(((double)worldSeed * 0.17127000) + 1323.59030000);
     // Preheat random!
     for (int i = 0; i < 5; i++)
     {
@@ -204,23 +197,9 @@ static string _PickForSeed(uint worldSeed)
     }
 
     MaterialPicker *lc = new MaterialPicker(prng, worldSeed);
-    string slc = "lc:" + accumulate(
-                             std::next(lc->Materials.begin()),
-                             lc->Materials.end() - 1,
-                             lc->Materials[0],
-                             [](string a, string b)
-                             {
-                                 return a + "," + b;
-                             });
+    string slc = "lc:" + lc->Materials[0] + "," + lc->Materials[1] + "," + lc->Materials[2]; // + "," + lc->Materials[3];
     MaterialPicker *ap = new MaterialPicker(prng, worldSeed);
-    string sap = "ap:" + accumulate(
-                             std::next(ap->Materials.begin()),
-                             ap->Materials.end() - 1,
-                             ap->Materials[0],
-                             [](string a, string b)
-                             {
-                                 return a + "," + b;
-                             });
+    string sap = "ap:" + ap->Materials[0] + "," + ap->Materials[1] + "," + ap->Materials[2]; // + "," + ap->Materials[3];
 
     delete prng;
     delete lc;

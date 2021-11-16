@@ -19,7 +19,6 @@ const FungalShifts = (props: IFungalShiftsProps) => {
 		infoProvider.config.fungalHoldingFlasks.findIndex(f => f === false) === -1;
 	const toggleHoldingAll = () => {
 		const newConfig = fungalData.map(() => !holdingAll);
-		console.log('newConfig', newConfig);
 		infoProvider.updateConfig({ fungalHoldingFlasks: newConfig });
 	};
 
