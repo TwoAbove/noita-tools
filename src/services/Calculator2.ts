@@ -56,23 +56,59 @@ export class NollaPrng {
 }
 
 export class MaterialPicker {
-	static LIQUIDS = ["acid", "alcohol", "blood",
-		"blood_fungi", "blood_worm", "cement",
-		"lava", "berserkium", "pheromone",
-		"levitatium", "hastium", "invisiblium",
-		"concentrated_mana", "acceleratium", "ambrosia",
-		"teleportatium", "unstable_polymorphine", "unstable_teleportatium",
-		"worm_pheromone", "flummoxium", "mud",
-		"oil", "poison", "toxic_sludge",
-		"swamp", "urine", "water",
-		"water_ice", "water_swamp", "chaotic_polymorphine"];
+	static LIQUIDS = [
+		'acid',
+		'alcohol',
+		'blood',
+		'blood_fungi',
+		'blood_worm',
+		'cement',
+		'lava',
+		'magic_liquid_berserk',
+		'magic_liquid_charm',
+		'magic_liquid_faster_levitation',
+		'magic_liquid_faster_levitation_and_movement',
+		'magic_liquid_invisibility',
+		'magic_liquid_mana_regeneration',
+		'magic_liquid_movement_faster',
+		'magic_liquid_protection_all',
+		'magic_liquid_teleportation',
+		'magic_liquid_unstable_polymorph',
+		'magic_liquid_unstable_teleportation',
+		'magic_liquid_worm_attractor',
+		'material_confusion',
+		'mud',
+		'oil',
+		'poison',
+		'radioactive_liquid_yellow',
+		'swamp',
+		'urine',
+		'water',
+		'water_ice',
+		'water_swamp',
+		'magic_liquid_random_polymorph'
+	];
 
-	static ALCHEMY = ["bone", "brass", "coal",
-		"copper", "diamond", "fungus",
-		"gold", "grass", "gunpowder",
-		"gunpowder_explosive", "rotten_meat", "sand",
-		"silver", "slime", "snow",
-		"soil", "wax", "honey"];
+	static ALCHEMY = [
+		'bone_box2d',
+		'brass',
+		'coal',
+		'copper',
+		'diamond',
+		'fungus_loose',
+		'gold',
+		'grass',
+		'gunpowder',
+		'gunpowder_explosive',
+		'rotten_meat',
+		'sand_petrify',
+		'silver',
+		'slime',
+		'snow_b2',
+		'soil',
+		'wax',
+		'honey'
+	];
 
 	PRNG: NollaPrng;
 	Materials: string[] = [];

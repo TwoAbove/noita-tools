@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootswatch/dist/spacelab/bootstrap.min.css";
+// import "bootswatch/dist/litera/bootstrap.min.css";
+
 import './index.css';
 
 import App from './components/App';
 
 import * as serviceWorker from './serviceWorker';
 
-console.log('v 1.1.1');
+console.log('v 2.1.4');
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
