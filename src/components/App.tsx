@@ -3,6 +3,7 @@ import { Container, Tabs, Tab, Stack, Form } from 'react-bootstrap';
 
 import RecipesForSeed from './RecipesForSeed/RecipesForSeed';
 import SeedFromRecipes from './SeedFromRecipes/SeedFromRecipes';
+import LiveSeedStats from './LiveSeedStats/LiveSeedStats';
 import Donate from './Donate';
 
 import './App.css';

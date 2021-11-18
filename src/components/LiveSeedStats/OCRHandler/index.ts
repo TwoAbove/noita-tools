@@ -92,7 +92,7 @@ class OCRHandler extends EventTarget {
       track.stop();
     });
     this.loop = false;
-    this.mediaStream = undefined;
+    delete this.mediaStream;
     this.onUpdate();
   }
 

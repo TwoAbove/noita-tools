@@ -128,6 +128,7 @@ const LiveSeedStats = () => {
 				setLastSeed(event.detail.seed);
 				seedLink!.sendSeed(event.detail.seed);
 			}
+			// console.log('seed', event.detail.seed);
 		});
 		setOcrHandler(ocrHandler);
 	}, [seedLink, forceUpdate]);

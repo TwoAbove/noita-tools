@@ -5,12 +5,11 @@ const bodyParser = require('body-parser');
 const socketIO = require('socket.io');
 
 const PORT = process.env.PORT || 3001;
-// const sequelize = new Sequelize(process.env.SEQUELIZE_STRING);
 
 const app = express();
 
 app.use(morgan('combined'));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 app.post('/data', (req, res) => {
 	console.log(req.body);
@@ -85,7 +84,6 @@ io.on('connection', socket => {
 	socket.on('seed', seed => {
 		socket.to(roomNumber).emit('seed', seed);
 	});
-
 });
 
 io.of('/').adapter.on('delete-room', room => {
