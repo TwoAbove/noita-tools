@@ -12,7 +12,7 @@ const RecipesForSeed = () => {
 	return (
 		<Container className="container shadow-lg mb-5">
 			<h4>Seed info</h4>
-			<p>Get lots of information about a seed, like perks in holy mountains, fungal shifts, etc.</p>
+			<p>Get information about a seed, like perks in holy mountains, fungal shifts, etc.</p>
 			<Row>
 				<Col xs={12} sm={6}>
 					<SeedForm

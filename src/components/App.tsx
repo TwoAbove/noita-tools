@@ -25,12 +25,23 @@ const SpoilerChange = props => {
 };
 
 const Header = props => {
+	// noita-tools.herokuapp.com
+	const hostname = window.location.hostname;
+	const notNewUrl = !hostname.includes('noitool.com');
 	return (
 		<Stack direction="horizontal">
 			<div className="w-25"></div>
 			<Stack className="w-50">
 				<h1 className="display-3 m-1 mb-3 text-center">Noitool</h1>
 				<h6 className="display-6 m-1 text-center">Noita tools and helpers</h6>
+				{notNewUrl && (
+					<p className="m-1 text-center">
+						Use the new url!{' '}
+						<a className="link-primary" href="https://www.noitool.com/">
+							https://www.noitool.com/
+						</a>{' '}
+					</p>
+				)}
 			</Stack>
 			<div className="w-25"></div>
 		</Stack>
@@ -62,7 +73,7 @@ const App: React.FC = () => {
 							<Tab
 								mountOnEnter
 								eventKey="LiveSeedStats"
-								title="Live game helper"
+								title="Live game helper (beta)"
 							>
 								<LiveSeedStats />
 							</Tab>
