@@ -141,7 +141,7 @@ const LiveSeedStats = () => {
 
 	const onClickScannerStart = async () => {
 		await ocrHandler?.startCapture({});
-		await seedLink?.getRoom();
+		await seedLink?.host();
 	};
 	const onClickScannerStop = async () => {
 		await ocrHandler?.stopCapture();

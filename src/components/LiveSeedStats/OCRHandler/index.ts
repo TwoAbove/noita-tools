@@ -63,6 +63,10 @@ class OCRHandler extends EventTarget {
 
   async startTesseract() {
     const worker = Tesseract.createWorker({
+      errorHandler: (e) => {
+        console.error(e);
+        this.startTesseract();
+      }
       // logger: (m: any) => console.log(m),
     });
 

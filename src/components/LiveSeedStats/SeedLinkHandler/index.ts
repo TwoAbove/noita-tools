@@ -25,8 +25,8 @@ class SeedLinkHandler extends SocketHandler {
 		this.io.emit('seed', seed);
 	}
 
-	async getRoom() {
-		this.io.emit('get_room');
+	async host() {
+		this.io.emit('host');
 	}
 
 	async joinRoom(room) {
