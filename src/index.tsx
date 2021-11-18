@@ -11,7 +11,7 @@ import App from './components/App';
 
 import * as serviceWorker from './serviceWorker';
 
-console.log('v 1.1.1');
+console.log('v 2.1.4');
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
