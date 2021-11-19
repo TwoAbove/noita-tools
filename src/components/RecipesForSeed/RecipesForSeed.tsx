@@ -5,7 +5,7 @@ import SeedForm from './SeedForm';
 import SeedDataOutput from './SeedDataOutput';
 
 const SeedData = () => {
-	const [seed, setSeed] = React.useState<any>('123');
+	const [seed, setSeed] = React.useState<any>('');
 
 	return (
 		<Container className="container shadow-lg mb-5">
