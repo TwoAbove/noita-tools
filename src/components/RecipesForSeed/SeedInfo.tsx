@@ -30,7 +30,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 					{/* <Rain infoProvider={infoProvider} rainData={data.rainType} /> */}
 					<Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
 				</Col>
-				<Col>
+				<Col lg={5}>
 					{spoil && (
 						<Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
 					)}

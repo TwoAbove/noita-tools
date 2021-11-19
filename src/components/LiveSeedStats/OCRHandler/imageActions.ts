@@ -119,8 +119,8 @@ export const crop = (
 export const enhance = (data: HTMLCanvasElement): HTMLCanvasElement => {
 	const canvas = createImage(data.width, data.height);
 	const ctx = canvas.getContext('2d')!;
-	ctx.filter = 'brightness(500%) contrast(250%)';
-	ctx.imageSmoothingEnabled = true;
+	ctx.filter = 'brightness(600%) contrast(400%)';
+	ctx.imageSmoothingEnabled = false;
 	ctx.imageSmoothingQuality = 'high';
 	ctx.drawImage(data, 0, 0);
 	const pixels = getPixels(canvas);
