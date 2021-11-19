@@ -107,9 +107,7 @@ const Perks = (props: IPerksProps) => {
           </Button>
         </Stack>
         <div className="ms-auto" />
-        <div className="ms-auto" />
         <Button onClick={() => handleReset()}>Reset</Button>
-        <div className="ms-auto" />
         <div className="ms-auto" />
         <div style={{
           display: 'flex',
