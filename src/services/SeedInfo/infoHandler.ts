@@ -35,9 +35,9 @@ export class AlchemyInfoProvider extends InfoProvider {
     const res = this.randoms.PickForSeed(seed);
     const [LC, AP] = res.split(';');
     return {
-			LC: LC.split(':')[1].split(','),
-			AP: AP.split(':')[1].split(',')
-		};
+      LC: LC.split(':')[1].split(','),
+      AP: AP.split(':')[1].split(',')
+    };
   }
 }
 
@@ -524,7 +524,7 @@ export class FungalInfoProvider extends InfoProvider {
   data = fungalMaterialsData;
   _G = new Global();
 
-  fungal_shift(entity: null, x: null, y: null, debug_no_limits: boolean, holding_flask: boolean): [string[], string] {
+  fungal_shift(entity: null, x: null, y: null, debug_no_limits: boolean): { flaskTo:boolean, flaskFrom: boolean, from: string[], to: string } {
     //let parent = EntityGetParent(entity);
     //if (parent != 0) {
     //	entity = parent
@@ -533,7 +533,7 @@ export class FungalInfoProvider extends InfoProvider {
     let iter = Number(this._G.GetValue("fungal_shift_iteration", "0"));
     this._G.SetValue("fungal_shift_iteration", String(iter + 1));
     if (iter > 20 && !debug_no_limits) {
-      return [[], ""];
+      return { flaskTo: false, flaskFrom: false, from: [], to: '' };
     }
 
     this.randoms.SetRandomSeed(89346, 42345 + iter);
@@ -541,29 +541,25 @@ export class FungalInfoProvider extends InfoProvider {
     let converted_any = false;
 
     let rnd = this.randoms.random_create(9123, 58925 + iter); // TODO: store for next change
-    let _from = this.randoms.pick_random_from_table_weighted(rnd, this.data.materials_from);
+    let from = this.randoms.pick_random_from_table_weighted(rnd, this.data.materials_from);
     let to = this.randoms.pick_random_from_table_weighted(rnd, this.data.materials_to);
-    let held_material = holding_flask ? "(flask)" : null;// get_held_item_material(entity);
-    // let from_material_name = "";
 
+    let flaskFrom = false;
+    let flaskTo = false;
     // if a potion is equipped, randomly use main material from potion as one of the materials
-    if (held_material && this.randoms.random_nexti(rnd, 1, 100) <= 75) {
+    if (this.randoms.random_nexti(rnd, 1, 100) <= 75) {
       if (this.randoms.random_nexti(rnd, 1, 100) <= 50) {
-        (_from as any)= {}
-        _from.materials = [
-          held_material
-        ]
+        flaskFrom = true;
       } else {
-        (to as any) = {}
-        to.material = held_material
+        flaskTo = true;
       }
     }
 
     let from_materials: string[] = [];
     // apply effects
     let to_material = to.material;
-    for (let i = 0; i < _from.materials.length; i++) {
-      let it = _from.materials[i];
+    for (let i = 0; i < from.materials.length; i++) {
+      let it = from.materials[i];
       let from_material = it;
 
       // convert
@@ -574,25 +570,17 @@ export class FungalInfoProvider extends InfoProvider {
         //return [from_material, to_material];
       }
     }
-    return [from_materials, to_material];
+    return { flaskTo, flaskFrom, from: from_materials, to: to_material };
   }
 
 
-  provide(maxShifts?: number, holdingFlasks?: any[]) {
-
-
+  provide(maxShifts?: number) {
     let debug_no_limits = false;
-
-
     this._G.SetValue("fungal_shift_iteration", "0")
-
     const shifts: Array<ReturnType<FungalInfoProvider['fungal_shift']>> = [];
     if (!maxShifts || maxShifts === -1) maxShifts = 20;
     for (let i = 0; i < maxShifts; i++) {
-      let hf: any;
-      if (Array.isArray(holdingFlasks)) hf = holdingFlasks ? holdingFlasks[i] : null;
-      else hf = holdingFlasks;
-      shifts.push(this.fungal_shift(null, null, null, false, hf));
+      shifts.push(this.fungal_shift(null, null, null, false));
     }
 
     return shifts;
@@ -685,7 +673,7 @@ export class BiomeModifierInfoProvider extends InfoProvider {
   provide() {
     let biome_modifiers = this.modifiers;
 
-    let result: {[biome: string]: ReturnType<BiomeModifierInfoProvider['get_modifier']>} = {};
+    let result: { [biome: string]: ReturnType<BiomeModifierInfoProvider['get_modifier']> } = {};
 
     let biomes = this.biomes;
 
@@ -1187,7 +1175,7 @@ export class GameInfoProvider extends EventTarget {
       startingBombSpell: this.providers.startingBombSpell.provide(),
       perks: this.providers.perk.provide(this.config.pickedPerks, undefined, true, this.config.perkWorldOffset, this.config.perkRerolls),
       perkDeck: this.providers.perk.getPerkDeck(true),
-      fungalShifts: this.providers.fungalShift.provide(undefined, this.config.fungalHoldingFlasks),
+      fungalShifts: this.providers.fungalShift.provide(undefined),
       biomeModifiers: this.providers.biomeModifier.provide()
     };
   }
@@ -1198,7 +1186,6 @@ interface IProviderConfig {
   perkRerolls: number[][];
   pickedPerks: any[];
   perkWorldOffset: number;
-  fungalHoldingFlasks: any[];
 }
 
 export default GameInfoProvider;
