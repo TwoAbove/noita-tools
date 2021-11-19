@@ -103,6 +103,12 @@ class OCRHandler extends EventTarget {
         throw new Error('Cannot get bitmap');
       }
       const seed = await this.getSeedFromImage();
+      if (!seed) {
+        continue;
+      }
+      if (parseInt(seed, 10) > 4294967295) {
+        continue;
+      }
       if (seed) {
         this.dispatchEvent(new CustomEvent('seed', { detail: { seed } }));
       }

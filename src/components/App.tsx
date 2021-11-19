@@ -5,6 +5,7 @@ import RecipesForSeed from './RecipesForSeed/RecipesForSeed';
 import SeedFromRecipes from './SeedFromRecipes/SeedFromRecipes';
 import LiveSeedStats from './LiveSeedStats/LiveSeedStats';
 import Donate from './Donate';
+import useLocalStorage from '../services/useLocalStorage';
 
 import './App.css';
 import { SpoilerProvider, SpoilerContext } from './SpoilerContext';
@@ -50,13 +51,33 @@ const Header = props => {
 };
 
 const App: React.FC = () => {
+	const [tab, setTab] = useLocalStorage(
+		'last-tab',
+		'RecipesForSeed',
+		d => {
+			return d || 'RecipesForSeed';
+		},
+		s => {
+			return s;
+		}
+	);
+
+	const handleTab = key => {
+		setTab(key);
+	};
+
 	return (
 		<SpoilerProvider>
 			<div className="App bg-gradient">
 				<div className="content shadow-sm bg-body rounded">
 					<Header />
 					<Container className="mb-5 bg-white rounded">
-						<Tabs defaultActiveKey="RecipesForSeed" id="main-tabs" className="">
+						<Tabs
+							defaultActiveKey={tab}
+							onSelect={handleTab}
+							id="main-tabs"
+							className=""
+						>
 							<Tab
 								mountOnEnter
 								eventKey="RecipesForSeed"

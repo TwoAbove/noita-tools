@@ -159,7 +159,7 @@ const LiveSeedStats = () => {
 			{!everythingReady ? <div>Loading...</div> :
 				<Stack>
 					<Col className="mb-5" xs={12}>
-						<Watch ready={socketReady} room={seedLink?.room} onSetRoom={(seed) => seedLink?.joinRoom(seed)} seed={lastSeed || seedLink?.seed} />
+						<Watch ready={socketReady} room={seedLink?.room} onSetRoom={(room) => seedLink?.joinRoom(room)} seed={lastSeed || seedLink?.seed} />
 					</Col>
 					<Col className="mb-2" xs={12}>
 						<Host ready={everythingReady} hostRoom={seedLink?.hostRoom} recording={!!ocrHandler?.mediaStream} onClickStartHosting={onClickScannerStart} onClickStopHosting={onClickScannerStop} />
