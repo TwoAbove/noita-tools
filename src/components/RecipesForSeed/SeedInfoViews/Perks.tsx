@@ -131,6 +131,7 @@ const Perks = (props: IPerksProps) => {
         </Row>
 
         {perks.map((row, level) => {
+          const rerollsForLevel = infoProvider.config.perkRerolls[offset] ? infoProvider.config.perkRerolls[offset][level] : 0;
           return (
             <Row key={`${offset}-${level}`}>
               {row.map(perk => {
@@ -151,11 +152,18 @@ const Perks = (props: IPerksProps) => {
               <Col>
                 <Button
                   variant="outline-primary"
+                  onClick={handleRerollUndo(level)}
+                  size="sm"
+                  disabled={!rerollsForLevel}
+                >
+                  {"<"}
+                </Button>
+                <Button
+                  variant="outline-primary"
                   onClick={handleReroll(level)}
-                  onContextMenu={handleRerollUndo(level)}
                   size="sm"
                 >
-                  Reroll
+                  {">"}
                 </Button>
               </Col>
             </Row>
