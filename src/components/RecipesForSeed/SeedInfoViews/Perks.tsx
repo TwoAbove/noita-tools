@@ -144,7 +144,7 @@ const Perks = (props: IPerksProps) => {
                       className={`${infoProvider.config.pickedPerks[offset]?.[level] === perk.id ? 'border border-3 p-1' : ''}`}
                       src={`data:image/png;base64,${perk.ui_icon}`}
                       alt={`${perk.ui_name}`}
-                      style={{ width: '3rem', 'image-rendering': 'crisp-edges' }}
+                      style={{ width: '3rem', 'image-rendering': 'crisp-edges' } as any}
                     />
                   </Col>
                 );
