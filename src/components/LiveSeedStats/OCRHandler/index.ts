@@ -152,12 +152,12 @@ class OCRHandler extends EventTarget {
     const res = await this.tesseractWorker.recognize(t);
 
     const i = res.data.words.findIndex(w => {
-      return w.text.toLowerCase().includes('seed');
+      return w.text.match(/^\d{7,13}$/);
     });
     if (i === -1) {
       return;
     }
-    const seed = res.data.words[i + 1];
+    const seed = res.data.words[i];
     if (!seed) { return; }
     let text = '';
     seed.symbols.forEach((s, i) => {
