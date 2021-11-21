@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import loadRandom, { IRandom } from './random';
 
-import rainData from './data/rain.json';
-import startingMaterialsData from './data/starting-flask-materials.json';
-import perksData from './data/perks_new.json';
-import templeData from './data/temple-locations.json';
-import fungalMaterialsData from './data/fungal-materials.json';
 import biomeModifiersData from './data/biome_modifiers.json';
 import biomeNamesData from './data/biome_names.json';
-import materialsData from './data/materials.json';
 import biomesData from './data/biome_names.json';
+import fungalMaterialsData from './data/fungal-materials.json';
+import materialsData from './data/materials.json';
+import perksData from './data/perks_new.json';
+import rainData from './data/rain.json';
+import spellData from './data/spells.json';
+import startingMaterialsData from './data/starting-flask-materials.json';
+import templeData from './data/temple-locations.json';
 
 const nthify = (num) => {
   let n = num % 10;
@@ -28,6 +29,99 @@ export abstract class InfoProvider {
     this.randoms = randoms;
   }
   abstract provide(...args: any[]): any;
+}
+
+export class ShopInfoProvider extends InfoProvider {
+  temples = templeData;
+  biomes = [
+    null, // 0
+    0,
+    0,
+    0,
+    1,
+    1, // 5
+    1,
+    2,
+    2,
+    2,
+    2, // 10
+    2,
+    2,
+    3,
+    3,
+    3, // 15
+    3,
+    4,
+    4,
+    4,
+    4, // 20
+    5,
+    5,
+    5,
+    5,
+    6, // 25
+    6,
+    6,
+    6,
+    6,
+    6, // 30
+    6,
+    6,
+    6,
+  ]
+
+  generate_shop_item(x: number, y: number, cheap_item: boolean, biomeid_?: number, is_stealable?: boolean) {
+    // Todo: scripts/items/generate_shop_item.lua
+  }
+
+  generate_shop_wand(x: number, y: number, cheap_item: boolean, biomeid_?: number) {
+    // Todo: scripts/items/generate_shop_item.lua
+  }
+
+  spawn_all_shopitems(x: number, y: number, pickedPerks: string[][]) {
+    this.randoms.SetRandomSeed(x, y);
+
+    const numberOfExtraItems = pickedPerks.flat().filter(p => p === "EXTRA_SHOP_ITEM").length;
+    const count = 5 + numberOfExtraItems; // GlobalsGetValue( "TEMPLE_SHOP_ITEM_COUNT", "5" );
+
+    const width = 132
+    const item_width = width / count
+    const sale_item_i = this.randoms.Random(1, count);
+    const type = this.randoms.Random(0, 100) <= 50 ? 'item' : 'wand';
+    const items: any[] = [];
+    for (let i = 1; i <= count; i++) {
+      if (type === 'item') {
+        items.push([
+          this.generate_shop_item(x + (i - 1) * item_width, y, i === sale_item_i, undefined, true),
+          this.generate_shop_item(x + (i - 1) * item_width, y - 30, false, undefined, true)
+        ]);
+      } else {
+        items.push(this.generate_shop_wand(x + (i - 1) * item_width, y, i === sale_item_i));
+      }
+    }
+    return {
+      type,
+      items
+    }
+  }
+
+  provide(pickedPerks: string[][] = [], worldOffset: number = 0, tx = 0, ty = 0) {
+    const res: Array<{
+      type: string;
+      items: any[];
+    }> = [];
+    for (let i = 0; i < this.temples.length; i++) {
+      const temple = this.temples[i];
+      // Magic numbers taken from src/services/SeedInfo/infoHandler.check.ts
+      let offsetX = 0 - 299, offsetY = 0 - 15;
+      if (worldOffset !== 0) {
+        offsetX += 35840 * worldOffset;
+        if (i + 1 === this.temples.length) break;
+      }
+      res.push(this.spawn_all_shopitems(temple.x + offsetX, temple.y + offsetY, pickedPerks))
+    }
+    return res;
+  }
 }
 
 export class AlchemyInfoProvider extends InfoProvider {
@@ -524,7 +618,7 @@ export class FungalInfoProvider extends InfoProvider {
   data = fungalMaterialsData;
   _G = new Global();
 
-  fungal_shift(entity: null, x: null, y: null, debug_no_limits: boolean): { flaskTo:boolean, flaskFrom: boolean, from: string[], to: string } {
+  fungal_shift(entity: null, x: null, y: null, debug_no_limits: boolean): { flaskTo: boolean, flaskFrom: boolean, from: string[], to: string } {
     //let parent = EntityGetParent(entity);
     //if (parent != 0) {
     //	entity = parent
@@ -833,6 +927,7 @@ export abstract class SeedRequirement {
 interface IProviders {
   alchemy: AlchemyInfoProvider;
   rain: RainInfoProvider;
+  shop: ShopInfoProvider;
   startingFlask: StartingFlaskInfoProvider;
   startingSpell: StartingSpellInfoProvider;
   startingBombSpell: StartingBombSpellInfoProvider;
@@ -1123,6 +1218,7 @@ export class GameInfoProvider extends EventTarget {
       startingFlask: new StartingFlaskInfoProvider(this.randoms),
       startingSpell: new StartingSpellInfoProvider(this.randoms),
       startingBombSpell: new StartingBombSpellInfoProvider(this.randoms),
+      shop: new ShopInfoProvider(this.randoms),
       perk: new PerkInfoProvider(this.randoms),
       fungalShift: new FungalInfoProvider(this.randoms),
       biomeModifier: new BiomeModifierInfoProvider(this.randoms),
@@ -1173,6 +1269,7 @@ export class GameInfoProvider extends EventTarget {
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),
       startingBombSpell: this.providers.startingBombSpell.provide(),
+      shop: this.providers.shop.provide(this.config.pickedPerks),
       perks: this.providers.perk.provide(this.config.pickedPerks, undefined, true, this.config.perkWorldOffset, this.config.perkRerolls),
       perkDeck: this.providers.perk.getPerkDeck(true),
       fungalShifts: this.providers.fungalShift.provide(undefined),
