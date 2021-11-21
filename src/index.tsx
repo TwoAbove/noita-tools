@@ -11,7 +11,9 @@ import App from './components/App';
 
 import * as serviceWorker from './serviceWorker';
 
-console.log('v 2.2.0');
+// import './services/SeedInfo/infoHandler.check';
+
+console.log('v 2.3.0');
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

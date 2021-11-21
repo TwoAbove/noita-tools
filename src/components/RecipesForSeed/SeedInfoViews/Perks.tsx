@@ -1,16 +1,19 @@
 import React from 'react';
 import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
 
-import { PerkInfoProvider } from '../../../services/SeedInfo/infoHandler';
+import { PerkInfoProvider, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler';
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
+import WandIcon from '../../Icons/Wand';
+import LightBulletIcon from '../../Icons/LightBullet';
 
 interface IPerksProps {
+  shop: ReturnType<ShopInfoProvider['provide']>;
   perks: ReturnType<PerkInfoProvider['provide']>;
   infoProvider: GameInfoProvider;
 }
 
 const Perks = (props: IPerksProps) => {
-  const { perks, infoProvider } = props;
+  const { perks, shop, infoProvider } = props;
   const offset = infoProvider.config.perkWorldOffset;
   const totalRerolls = infoProvider.config.perkRerolls.reduce(
     (c, n) => c + n.reduce((cc, nn) => cc + nn, 0),
@@ -120,20 +123,16 @@ const Perks = (props: IPerksProps) => {
         </div>
         <div className="ms-auto" />
       </Stack>
+      <div className="mb-3"/>
       <Stack gap={3}>
-        <Row key={`floor`}>
-          <Col></Col>
-          <Col></Col>
-          <Col></Col>
-          <Col>
-
-          </Col>
-        </Row>
-
         {perks.map((row, level) => {
+          const type = shop[level].type;
           const rerollsForLevel = infoProvider.config.perkRerolls[offset] ? infoProvider.config.perkRerolls[offset][level] : 0;
           return (
             <Row key={`${offset}-${level}`}>
+              <Col xs={2}>
+                {type === 'wand' ? <WandIcon /> : <LightBulletIcon />}
+              </Col>
               {row.map(perk => {
                 return (
                   <Col
@@ -144,7 +143,7 @@ const Perks = (props: IPerksProps) => {
                       className={`${infoProvider.config.pickedPerks[offset]?.[level] === perk.id ? 'border border-3 p-1' : ''}`}
                       src={`data:image/png;base64,${perk.ui_icon}`}
                       alt={`${perk.ui_name}`}
-                      style={{ width: '3rem', 'image-rendering': 'crisp-edges' } as any}
+                      style={{ width: '3rem', imageRendering: 'crisp-edges' }}
                     />
                   </Col>
                 );

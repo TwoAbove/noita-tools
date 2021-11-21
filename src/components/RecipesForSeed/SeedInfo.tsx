@@ -26,7 +26,11 @@ const SeedInfo = (props: ISeedInfoProps) => {
 		<div>
 			<Row>
 				<Col lg={7}>
-					<Perks infoProvider={infoProvider} perks={data.perks} />
+					<Perks
+						infoProvider={infoProvider}
+						shop={data.shop}
+						perks={data.perks}
+					/>
 					{/* <Rain infoProvider={infoProvider} rainData={data.rainType} /> */}
 					<Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
 				</Col>
