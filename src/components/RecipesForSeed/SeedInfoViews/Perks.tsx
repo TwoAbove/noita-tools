@@ -129,7 +129,7 @@ const Perks = (props: IPerksProps) => {
           const type = shop[level].type;
           const rerollsForLevel = infoProvider.config.perkRerolls[offset] ? infoProvider.config.perkRerolls[offset][level] : 0;
           return (
-            <Row key={`${offset}-${level}`}>
+            <Row className="align-items-center" key={`${offset}-${level}`}>
               <Col xs={2}>
                 {type === 'wand' ? <WandIcon /> : <LightBulletIcon />}
               </Col>
