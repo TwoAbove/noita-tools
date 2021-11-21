@@ -1,0 +1,5634 @@
+[
+  {
+    "id": "BOMB",
+    "mana": 25,
+    "name": "$action_bomb",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/bomb.png",
+    "max_uses": 3,
+    "description": "$actiondesc_bomb",
+    "spawn_level": "0,1,2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/bomb.xml",
+    "spawn_probability": "1,1,1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/bomb.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "LIGHT_BULLET",
+    "mana": 5,
+    "name": "$action_light_bullet",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/light_bullet.png",
+    "description": "$actiondesc_light_bullet",
+    "spawn_level": "0,1,2",
+    "spawn_probability": "2,1,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/light_bullet.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/light_bullet_unidentified.png"
+  },
+  {
+    "id": "LIGHT_BULLET_TRIGGER",
+    "mana": 10,
+    "name": "$action_light_bullet_trigger",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/light_bullet_trigger.png",
+    "description": "$actiondesc_light_bullet_trigger",
+    "spawn_level": "0,1,2,3",
+    "spawn_probability": "1,0.5,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/light_bullet.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/light_bullet_trigger_unidentified.png"
+  },
+  {
+    "id": "LIGHT_BULLET_TRIGGER_2",
+    "mana": 15,
+    "name": "$action_light_bullet_trigger_2",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/light_bullet_trigger_2.png",
+    "description": "$actiondesc_light_bullet_trigger_2",
+    "spawn_level": "2,3,5,6,10",
+    "spawn_probability": "1,0.5,1,1,0.2",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/light_bullet_blue.xml"
+    ]
+  },
+  {
+    "id": "LIGHT_BULLET_TIMER",
+    "mana": 10,
+    "name": "$action_light_bullet_timer",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/light_bullet_timer.png",
+    "description": "$actiondesc_light_bullet_timer",
+    "spawn_level": "1,2,3",
+    "spawn_probability": "0.5,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/light_bullet.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/light_bullet_timer_unidentified.png"
+  },
+  {
+    "id": "BULLET",
+    "mana": 20,
+    "name": "$action_bullet",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/bullet.png",
+    "description": "$actiondesc_bullet",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bullet.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bullet_unidentified.png"
+  },
+  {
+    "id": "BULLET_TRIGGER",
+    "mana": 35,
+    "name": "$action_bullet_trigger",
+    "price": 190,
+    "sprite": "data/ui_gfx/gun_actions/bullet_trigger.png",
+    "description": "$actiondesc_bullet_trigger",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bullet.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bullet_trigger_unidentified.png"
+  },
+  {
+    "id": "BULLET_TIMER",
+    "mana": 35,
+    "name": "$action_bullet_timer",
+    "price": 190,
+    "sprite": "data/ui_gfx/gun_actions/bullet_timer.png",
+    "description": "$actiondesc_bullet_timer",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bullet.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bullet_timer_unidentified.png"
+  },
+  {
+    "id": "HEAVY_BULLET",
+    "mana": 30,
+    "name": "$action_heavy_bullet",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/heavy_bullet.png",
+    "description": "$actiondesc_heavy_bullet",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.5,1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bullet_heavy.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/heavy_bullet_unidentified.png"
+  },
+  {
+    "id": "HEAVY_BULLET_TRIGGER",
+    "mana": 40,
+    "name": "$action_heavy_bullet_trigger",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/heavy_bullet_trigger.png",
+    "description": "$actiondesc_heavy_bullet_trigger",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bullet_heavy.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/heavy_bullet_trigger_unidentified.png"
+  },
+  {
+    "id": "HEAVY_BULLET_TIMER",
+    "mana": 40,
+    "name": "$action_heavy_bullet_timer",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/heavy_bullet_timer.png",
+    "description": "$actiondesc_heavy_bullet_timer",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bullet_heavy.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/heavy_bullet_timer_unidentified.png"
+  },
+  {
+    "id": "AIR_BULLET",
+    "mana": 5,
+    "name": "$action_air_bullet",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/air_bullet.png",
+    "description": "$actiondesc_air_bullet",
+    "spawn_level": "1,2",
+    "spawn_probability": "1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/light_bullet_air.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/air_bullet_unidentified.png"
+  },
+  {
+    "id": "SLOW_BULLET",
+    "mana": 30,
+    "name": "$action_slow_bullet",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/slow_bullet.png",
+    "description": "$actiondesc_slow_bullet",
+    "spawn_level": "1,2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/bullet_slow.xml",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bullet_slow.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slow_bullet_unidentified.png"
+  },
+  {
+    "id": "SLOW_BULLET_TRIGGER",
+    "mana": 50,
+    "name": "$action_slow_bullet_trigger",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/slow_bullet_trigger.png",
+    "description": "$actiondesc_slow_bullet_trigger",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/bullet_slow.xml",
+    "spawn_probability": "0.5,0.5,0.5,0.5,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bullet_slow.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slow_bullet_trigger_unidentified.png"
+  },
+  {
+    "id": "SLOW_BULLET_TIMER",
+    "mana": 50,
+    "name": "$action_slow_bullet_timer",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/slow_bullet_timer.png",
+    "description": "$actiondesc_slow_bullet_timer",
+    "spawn_level": "1,2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/bullet_slow.xml",
+    "spawn_probability": "0.5,0.5,0.5,0.5,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bullet_slow.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slow_bullet_timer_unidentified.png"
+  },
+  {
+    "id": "BLACK_HOLE",
+    "mana": 180,
+    "name": "$action_black_hole",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/black_hole.png",
+    "max_uses": 3,
+    "description": "$actiondesc_black_hole",
+    "spawn_level": "0,2,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/black_hole.xml",
+    "never_unlimited": true,
+    "spawn_probability": "0.8,0.8,0.8,0.8",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/black_hole.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_unidentified.png"
+  },
+  {
+    "id": "BLACK_HOLE_DEATH_TRIGGER",
+    "mana": 200,
+    "name": "$action_black_hole_death_trigger",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/black_hole_timer.png",
+    "max_uses": 3,
+    "description": "$actiondesc_black_hole_death_trigger",
+    "spawn_level": "2,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/black_hole.xml",
+    "never_unlimited": true,
+    "spawn_probability": "0.5,0.5,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/black_hole.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_unidentified.png"
+  },
+  {
+    "id": "BLACK_HOLE_BIG",
+    "mana": 240,
+    "name": "$action_black_hole_big",
+    "price": 320,
+    "sprite": "data/ui_gfx/gun_actions/black_hole_big.png",
+    "max_uses": 6,
+    "description": "$actiondesc_black_hole_big",
+    "spawn_level": "1,3,5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/black_hole_big.xml",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/black_hole_big.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_big_unidentified.png"
+  },
+  {
+    "id": "BLACK_HOLE_GIGA",
+    "mana": 500,
+    "name": "$action_black_hole_giga",
+    "price": 600,
+    "sprite": "data/ui_gfx/gun_actions/black_hole_giga.png",
+    "max_uses": 6,
+    "description": "$actiondesc_black_hole_giga",
+    "spawn_level": "10",
+    "custom_xml_file": "data/entities/misc/custom_cards/black_hole_giga.xml",
+    "never_unlimited": true,
+    "spawn_probability": "1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/black_hole_giga.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_black_hole",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_big_unidentified.png"
+  },
+  {
+    "id": "TENTACLE_PORTAL",
+    "mana": 140,
+    "name": "$action_tentacle_portal",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/tentacle_portal.png",
+    "max_uses": 5,
+    "description": "$actiondesc_tentacle_portal",
+    "spawn_level": "1,2,3,4,10",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.2",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/tentacle_portal.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "SPITTER",
+    "mana": 5,
+    "name": "$action_spitter",
+    "price": 110,
+    "sprite": "data/ui_gfx/gun_actions/spitter.png",
+    "description": "$actiondesc_spitter",
+    "spawn_level": "0,1,2,3",
+    "spawn_probability": "1,1,1,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/spitter.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spitter_unidentified.png"
+  },
+  {
+    "id": "SPITTER_TIMER",
+    "mana": 10,
+    "name": "$action_spitter_timer",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/spitter_timer.png",
+    "description": "$actiondesc_spitter_timer",
+    "spawn_level": "0,1,2,3",
+    "spawn_probability": "0.5,0.5,0.5,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/spitter.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spitter_timer_unidentified.png"
+  },
+  {
+    "id": "SPITTER_TIER_2",
+    "mana": 25,
+    "name": "$action_spitter_tier_2",
+    "price": 190,
+    "sprite": "data/ui_gfx/gun_actions/spitter_green.png",
+    "description": "$actiondesc_spitter_tier_2",
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "1,1,1,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/spitter_tier_2.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spitter_unidentified.png"
+  },
+  {
+    "id": "SPITTER_TIER_2_TIMER",
+    "mana": 30,
+    "name": "$action_spitter_tier_2_timer",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/spitter_green_timer.png",
+    "description": "$actiondesc_spitter_tier_2_timer",
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "0.5,0.5,0.5,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/spitter_tier_2.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spitter_unidentified.png"
+  },
+  {
+    "id": "SPITTER_TIER_3",
+    "mana": 40,
+    "name": "$action_spitter_tier_3",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/spitter_purple.png",
+    "description": "$actiondesc_spitter_tier_3",
+    "spawn_level": "3,4,5,6",
+    "spawn_probability": "0.8,0.8,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/spitter_tier_3.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spitter_unidentified.png"
+  },
+  {
+    "id": "SPITTER_TIER_3_TIMER",
+    "mana": 45,
+    "name": "$action_spitter_tier_3_timer",
+    "price": 260,
+    "sprite": "data/ui_gfx/gun_actions/spitter_purple_timer.png",
+    "description": "$actiondesc_spitter_tier_3_timer",
+    "spawn_level": "4,5,6",
+    "spawn_probability": "0.5,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/spitter_tier_3.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spitter_unidentified.png"
+  },
+  {
+    "id": "BUBBLESHOT",
+    "mana": 5,
+    "name": "$action_bubbleshot",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/bubbleshot.png",
+    "description": "$actiondesc_bubbleshot",
+    "spawn_level": "0,1,2,3",
+    "spawn_probability": "1,1,1,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bubbleshot.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bubbleshot_unidentified.png"
+  },
+  {
+    "id": "BUBBLESHOT_TRIGGER",
+    "mana": 16,
+    "name": "$action_bubbleshot_trigger",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/bubbleshot_trigger.png",
+    "description": "$actiondesc_bubbleshot_trigger",
+    "spawn_level": "1,2,3",
+    "spawn_probability": "0.5,0.5,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bubbleshot.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bubbleshot_trigger_unidentified.png"
+  },
+  {
+    "id": "DISC_BULLET",
+    "mana": 20,
+    "name": "$action_disc_bullet",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/disc_bullet.png",
+    "description": "$actiondesc_disc_bullet",
+    "spawn_level": "0,2,4",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/disc_bullet.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/disc_bullet_unidentified.png"
+  },
+  {
+    "id": "DISC_BULLET_BIG",
+    "mana": 38,
+    "name": "$action_disc_bullet_big",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/disc_bullet_big.png",
+    "description": "$actiondesc_disc_bullet_big",
+    "spawn_level": "0,2,4,10",
+    "spawn_probability": "0.6,0.6,0.6,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/disc_bullet_big.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/disc_bullet_unidentified.png"
+  },
+  {
+    "id": "DISC_BULLET_BIGGER",
+    "mana": 70,
+    "name": "$action_omega_disc_bullet",
+    "price": 270,
+    "sprite": "data/ui_gfx/gun_actions/omega_disc_bullet.png",
+    "description": "$actiondesc_omega_disc_bullet",
+    "spawn_level": "2,3,5,10",
+    "spawn_probability": "0.1,0.6,1.0,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/disc_bullet_bigger.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_everything",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/disc_bullet_unidentified.png"
+  },
+  {
+    "id": "BOUNCY_ORB",
+    "mana": 20,
+    "name": "$action_bouncy_orb",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/bouncy_orb.png",
+    "description": "$actiondesc_bouncy_orb",
+    "spawn_level": "0,2,4",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bouncy_orb.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/disc_bullet_unidentified.png"
+  },
+  {
+    "id": "BOUNCY_ORB_TIMER",
+    "mana": 50,
+    "name": "$action_bouncy_orb_timer",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/bouncy_orb_timer.png",
+    "description": "$actiondesc_bouncy_orb_timer",
+    "spawn_level": "0,2,4",
+    "spawn_probability": "0.5,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bouncy_orb.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/disc_bullet_unidentified.png"
+  },
+  {
+    "id": "RUBBER_BALL",
+    "mana": 5,
+    "name": "$action_rubber_ball",
+    "price": 60,
+    "sprite": "data/ui_gfx/gun_actions/rubber_ball.png",
+    "description": "$actiondesc_rubber_ball",
+    "spawn_level": "0,1,6",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/rubber_ball.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rubber_ball_unidentified.png"
+  },
+  {
+    "id": "ARROW",
+    "mana": 15,
+    "name": "$action_arrow",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/arrow.png",
+    "description": "$actiondesc_arrow",
+    "spawn_level": "1,2,4,5",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/arrow.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/arrow_unidentified.png"
+  },
+  {
+    "id": "POLLEN",
+    "mana": 10,
+    "name": "$action_pollen",
+    "price": 110,
+    "sprite": "data/ui_gfx/gun_actions/pollen.png",
+    "description": "$actiondesc_pollen",
+    "spawn_level": "0,1,3,4",
+    "spawn_probability": "0.6,1,1,0.8",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/pollen.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/arrow_unidentified.png"
+  },
+  {
+    "id": "LANCE",
+    "mana": 30,
+    "name": "$action_lance",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/lance.png",
+    "description": "$actiondesc_lance",
+    "spawn_level": "1,2,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/lance.xml",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/lance.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/lance_unidentified.png"
+  },
+  {
+    "id": "ROCKET",
+    "mana": 70,
+    "name": "$action_rocket",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/rocket.png",
+    "max_uses": 10,
+    "description": "$actiondesc_rocket",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/rocket.xml",
+    "spawn_probability": "1,1,1,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/rocket.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "ROCKET_TIER_2",
+    "mana": 90,
+    "name": "$action_rocket_tier_2",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/rocket_tier_2.png",
+    "max_uses": 8,
+    "description": "$actiondesc_rocket_tier_2",
+    "spawn_level": "2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/rocket_tier_2.xml",
+    "spawn_probability": "0.5,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/rocket_tier_2.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "ROCKET_TIER_3",
+    "mana": 120,
+    "name": "$action_rocket_tier_3",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/rocket_tier_3.png",
+    "max_uses": 6,
+    "description": "$actiondesc_rocket_tier_3",
+    "spawn_level": "2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/rocket_tier_3.xml",
+    "spawn_probability": "0.25,0.5,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/rocket_tier_3.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "GRENADE",
+    "mana": 50,
+    "name": "$action_grenade",
+    "price": 170,
+    "sprite": "data/ui_gfx/gun_actions/grenade.png",
+    "max_uses": 25,
+    "description": "$actiondesc_grenade",
+    "spawn_level": "0,1,2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/grenade.xml",
+    "spawn_probability": "1,1,0.5,0.25,0.25",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/grenade.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/grenade_unidentified.png"
+  },
+  {
+    "id": "GRENADE_TRIGGER",
+    "mana": 50,
+    "name": "$action_grenade_trigger",
+    "price": 210,
+    "sprite": "data/ui_gfx/gun_actions/grenade_trigger.png",
+    "max_uses": 25,
+    "description": "$actiondesc_grenade_trigger",
+    "spawn_level": "0,1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/grenade_trigger.xml",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.5,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/grenade.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/grenade_trigger_unidentified.png"
+  },
+  {
+    "id": "GRENADE_TIER_2",
+    "mana": 90,
+    "name": "$action_grenade_tier_2",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/grenade_tier_2.png",
+    "max_uses": 20,
+    "description": "$actiondesc_grenade_tier_2",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/grenade_tier_2.xml",
+    "spawn_probability": "0.5,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/grenade_tier_2.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/grenade_unidentified.png"
+  },
+  {
+    "id": "GRENADE_TIER_3",
+    "mana": 90,
+    "name": "$action_grenade_tier_3",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/grenade_tier_3.png",
+    "max_uses": 20,
+    "description": "$actiondesc_grenade_tier_3",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/grenade_tier_3.xml",
+    "spawn_probability": "0.25,0.5,0.75,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/grenade_tier_3.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/grenade_unidentified.png"
+  },
+  {
+    "id": "GRENADE_ANTI",
+    "mana": 50,
+    "name": "$action_grenade_anti",
+    "price": 170,
+    "sprite": "data/ui_gfx/gun_actions/grenade_anti.png",
+    "max_uses": 25,
+    "description": "$actiondesc_grenade_anti",
+    "spawn_level": "0,1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/grenade.xml",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/grenade_anti.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/grenade_unidentified.png"
+  },
+  {
+    "id": "GRENADE_LARGE",
+    "mana": 80,
+    "name": "$action_grenade_large",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/grenade_large.png",
+    "max_uses": 35,
+    "description": "$actiondesc_grenade_large",
+    "spawn_level": "0,1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/grenade.xml",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/grenade_large.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/grenade_unidentified.png"
+  },
+  {
+    "id": "MINE",
+    "mana": 20,
+    "name": "$action_mine",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/mine.png",
+    "max_uses": 15,
+    "description": "$actiondesc_mine",
+    "spawn_level": "1,3,4,6",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/mine.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/mine_unidentified.png"
+  },
+  {
+    "id": "MINE_DEATH_TRIGGER",
+    "mana": 20,
+    "name": "$action_mine_death_trigger",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/mine_death_trigger.png",
+    "max_uses": 15,
+    "description": "$actiondesc_mine_death_trigger",
+    "spawn_level": "2,6",
+    "spawn_probability": "1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/mine.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/mine_death_trigger_unidentified.png"
+  },
+  {
+    "id": "PIPE_BOMB",
+    "mana": 20,
+    "name": "$action_pipe_bomb",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/pipe_bomb.png",
+    "max_uses": 20,
+    "description": "$actiondesc_pipe_bomb",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/pipe_bomb.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/pipe_bomb_unidentified.png"
+  },
+  {
+    "id": "PIPE_BOMB_DEATH_TRIGGER",
+    "mana": 20,
+    "name": "$action_pipe_bomb_death_trigger",
+    "price": 230,
+    "sprite": "data/ui_gfx/gun_actions/pipe_bomb_death_trigger.png",
+    "max_uses": 20,
+    "description": "$actiondesc_pipe_bomb_death_trigger",
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/pipe_bomb.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/pipe_bomb_death_trigger_unidentified.png"
+  },
+  {
+    "id": "EXPLODING_DEER",
+    "mana": 120,
+    "name": "$action_exploding_deer",
+    "price": 170,
+    "sprite": "data/ui_gfx/gun_actions/exploding_deer.png",
+    "max_uses": 10,
+    "description": "$actiondesc_exploding_deer",
+    "spawn_level": "3,4,5",
+    "spawn_probability": "0.6,0.6,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/exploding_deer.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_exploding_deer",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/exploding_deer_unidentified.png"
+  },
+  {
+    "id": "EXPLODING_DUCKS",
+    "mana": 100,
+    "name": "$action_exploding_ducks",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/duck_2.png",
+    "max_uses": 20,
+    "description": "$actiondesc_exploding_ducks",
+    "spawn_level": "3,4,5",
+    "spawn_probability": "0.6,0.8,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/duck.xml",
+      3
+    ],
+    "spawn_requires_flag": "card_unlocked_exploding_deer",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/exploding_deer_unidentified.png"
+  },
+  {
+    "id": "WORM_SHOT",
+    "mana": 150,
+    "name": "$action_worm_shot",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/worm.png",
+    "max_uses": 10,
+    "description": "$actiondesc_worm_shot",
+    "spawn_level": "3,4,5",
+    "never_unlimited": true,
+    "spawn_probability": "0.6,0.8,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/worm_shot.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_exploding_deer",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/exploding_deer_unidentified.png"
+  },
+  {
+    "id": "BOMB_DETONATOR",
+    "mana": 50,
+    "name": "$action_bomb_detonator",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/pipe_bomb_detonator.png",
+    "description": "$actiondesc_bomb_detonator",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/bomb_detonator.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/meteor_unidentified.png"
+  },
+  {
+    "id": "LASER",
+    "mana": 30,
+    "name": "$action_laser",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/laser.png",
+    "description": "$actiondesc_laser",
+    "spawn_level": "1,2,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/laser.xml",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/laser.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/laser_unidentified.png"
+  },
+  {
+    "id": "MEGALASER",
+    "mana": 110,
+    "name": "$action_megalaser",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/megalaser.png",
+    "description": "$actiondesc_megalaser",
+    "spawn_level": "3,4,5,6,10",
+    "spawn_probability": "0.6,0.6,0.6,0.6,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/megalaser.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/megalaser_unidentified.png"
+  },
+  {
+    "id": "LIGHTNING",
+    "mana": 70,
+    "name": "$action_lightning",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/lightning.png",
+    "description": "$actiondesc_lightning",
+    "spawn_level": "1,2,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/lightning.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/lightning_unidentified.png"
+  },
+  {
+    "id": "BALL_LIGHTNING",
+    "mana": 70,
+    "name": "$action_ball_lightning",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/ball_lightning.png",
+    "description": "$actiondesc_ball_lightning",
+    "spawn_level": "1,2,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
+    "spawn_probability": "0.2,0.2,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/ball_lightning.xml",
+      3
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/lightning_unidentified.png"
+  },
+  {
+    "id": "LASER_EMITTER",
+    "mana": 60,
+    "name": "$action_laser_emitter",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/laser_emitter.png",
+    "description": "$actiondesc_laser_emitter",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.2,1,1,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/orb_laseremitter.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/laser_unidentified.png"
+  },
+  {
+    "id": "LASER_EMITTER_FOUR",
+    "mana": 80,
+    "name": "$action_laser_emitter_four",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/laser_emitter_four.png",
+    "description": "$actiondesc_laser_emitter_four",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.2,1,0.2,0.5,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/orb_laseremitter.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/laser_unidentified.png"
+  },
+  {
+    "id": "LASER_EMITTER_CUTTER",
+    "mana": 40,
+    "name": "$action_laser_emitter_cutter",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/laser_emitter_cutter.png",
+    "description": "$actiondesc_laser_emitter_cutter",
+    "spawn_level": "0,1,2,3,4",
+    "spawn_probability": "0.2,0.3,1,0.5,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/orb_laseremitter_cutter.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/laser_unidentified.png"
+  },
+  {
+    "id": "DIGGER",
+    "mana": 0,
+    "name": "$action_digger",
+    "price": 70,
+    "sprite": "data/ui_gfx/gun_actions/digger.png",
+    "description": "$actiondesc_digger",
+    "spawn_level": "1,2",
+    "sound_loop_tag": "sound_digger",
+    "spawn_probability": "1,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/digger.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/digger_unidentified.png"
+  },
+  {
+    "id": "POWERDIGGER",
+    "mana": 0,
+    "name": "$action_powerdigger",
+    "price": 110,
+    "sprite": "data/ui_gfx/gun_actions/powerdigger.png",
+    "description": "$actiondesc_powerdigger",
+    "spawn_level": "2,3,4",
+    "sound_loop_tag": "sound_digger",
+    "spawn_probability": "0.5,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/powerdigger.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/powerdigger_unidentified.png"
+  },
+  {
+    "id": "CHAINSAW",
+    "mana": 1,
+    "name": "$action_chainsaw",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/chainsaw.png",
+    "description": "$actiondesc_chainsaw",
+    "spawn_level": "0,2",
+    "sound_loop_tag": "sound_chainsaw",
+    "spawn_probability": "1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/chainsaw.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chainsaw_unidentified.png"
+  },
+  {
+    "id": "LUMINOUS_DRILL",
+    "mana": 10,
+    "name": "$action_luminous_drill",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/luminous_drill.png",
+    "description": "$actiondesc_luminous_drill",
+    "spawn_level": "0,2",
+    "sound_loop_tag": "sound_digger",
+    "spawn_probability": "1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/luminous_drill.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chainsaw_unidentified.png"
+  },
+  {
+    "id": "LASER_LUMINOUS_DRILL",
+    "mana": 30,
+    "name": "$action_luminous_drill_timer",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/luminous_drill_timer.png",
+    "description": "$actiondesc_luminous_drill_timer",
+    "spawn_level": "0,2",
+    "sound_loop_tag": "sound_digger",
+    "spawn_probability": "1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/luminous_drill.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chainsaw_unidentified.png"
+  },
+  {
+    "id": "TENTACLE",
+    "mana": 20,
+    "name": "$action_tentacle",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/tentacle.png",
+    "description": "$actiondesc_tentacle",
+    "spawn_level": "3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/tentacle.xml",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/tentacle.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_tentacle",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/tentacle_unidentified.png"
+  },
+  {
+    "id": "TENTACLE_TIMER",
+    "mana": 20,
+    "name": "$action_tentacle_timer",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/tentacle_timer.png",
+    "description": "$actiondesc_tentacle_timer",
+    "spawn_level": "3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/tentacle_timer.xml",
+    "spawn_probability": "0.6,0.6,0.6,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/tentacle.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_tentacle",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/tentacle_timer_unidentified.png"
+  },
+  {
+    "id": "HEAL_BULLET",
+    "mana": 15,
+    "name": "$action_heal_bullet",
+    "price": 60,
+    "sprite": "data/ui_gfx/gun_actions/heal_bullet.png",
+    "max_uses": 20,
+    "description": "$actiondesc_heal_bullet",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/heal_bullet.xml",
+    "never_unlimited": true,
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/heal_bullet.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/heal_bullet_unidentified.png"
+  },
+  {
+    "id": "SPIRAL_SHOT",
+    "mana": 50,
+    "name": "$action_spiral_shot",
+    "price": 190,
+    "sprite": "data/ui_gfx/gun_actions/spiral_shot.png",
+    "max_uses": 15,
+    "description": "$actiondesc_spiral_shot",
+    "spawn_level": "4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/spiral_shot.xml",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/spiral_shot.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_spiral_shot",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png"
+  },
+  {
+    "id": "MAGIC_SHIELD",
+    "mana": 40,
+    "name": "$action_magic_shield",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/magic_shield.png",
+    "description": "$actiondesc_magic_shield",
+    "spawn_level": "2,4,5,6",
+    "spawn_probability": "0.5,0.5,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/magic_shield_start.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png"
+  },
+  {
+    "id": "BIG_MAGIC_SHIELD",
+    "mana": 60,
+    "name": "$action_big_magic_shield",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/big_magic_shield.png",
+    "description": "$actiondesc_big_magic_shield",
+    "spawn_level": "2,4,5,6,10",
+    "spawn_probability": "0.2,0.2,0.5,0.5,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/big_magic_shield_start.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png"
+  },
+  {
+    "id": "CHAIN_BOLT",
+    "mana": 80,
+    "name": "$action_chain_bolt",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/chain_bolt.png",
+    "description": "$actiondesc_chain_bolt",
+    "spawn_level": "0,4,5,6",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/chain_bolt.xml"
+    ]
+  },
+  {
+    "id": "FIREBALL",
+    "mana": 70,
+    "name": "$action_fireball",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/fireball.png",
+    "max_uses": 15,
+    "description": "$actiondesc_fireball",
+    "spawn_level": "0,3,4,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/fireball.xml",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/fireball.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/fireball_unidentified.png"
+  },
+  {
+    "id": "METEOR",
+    "mana": 150,
+    "name": "$action_meteor",
+    "price": 280,
+    "sprite": "data/ui_gfx/gun_actions/meteor.png",
+    "max_uses": 10,
+    "description": "$actiondesc_meteor",
+    "spawn_level": "4,5,6,10",
+    "spawn_probability": "0.6,0.6,0.6,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/meteor.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/meteor_unidentified.png"
+  },
+  {
+    "id": "FLAMETHROWER",
+    "mana": 20,
+    "name": "$action_flamethrower",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/flamethrower.png",
+    "max_uses": 60,
+    "description": "$actiondesc_flamethrower",
+    "spawn_level": "2,3,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/flamethrower.xml",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/flamethrower.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/flamethrower_unidentified.png"
+  },
+  {
+    "id": "ICEBALL",
+    "mana": 90,
+    "name": "$action_iceball",
+    "price": 260,
+    "sprite": "data/ui_gfx/gun_actions/iceball.png",
+    "max_uses": 15,
+    "description": "$actiondesc_iceball",
+    "spawn_level": "2,3,4,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/iceball.xml",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/iceball.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/fireball_unidentified.png"
+  },
+  {
+    "id": "SLIMEBALL",
+    "mana": 20,
+    "name": "$action_slimeball",
+    "price": 130,
+    "sprite": "data/ui_gfx/gun_actions/slimeball.png",
+    "description": "$actiondesc_slimeball",
+    "spawn_level": "0,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/slimeball.xml",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/slime.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "DARKFLAME",
+    "mana": 90,
+    "name": "$action_darkflame",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/darkflame.png",
+    "max_uses": 60,
+    "description": "$actiondesc_darkflame",
+    "spawn_level": "3,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/darkflame.xml",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/darkflame.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/darkflame_unidentified.png"
+  },
+  {
+    "id": "MISSILE",
+    "mana": 60,
+    "name": "$action_missile",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/missile.png",
+    "max_uses": 20,
+    "description": "$actiondesc_missile",
+    "spawn_level": "1,2,3,5",
+    "spawn_probability": "0.5,0.5,1,1"
+  },
+  {
+    "id": "FUNKY_SPELL",
+    "mana": 5,
+    "name": "???",
+    "price": 50,
+    "sprite": "data/ui_gfx/gun_actions/machinegun_bullet.png",
+    "description": "???",
+    "spawn_level": "6,10",
+    "spawn_probability": "0.1,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/machinegun_bullet.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_funky",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/light_bullet_unidentified.png"
+  },
+  {
+    "id": "PEBBLE",
+    "mana": 120,
+    "name": "$action_pebble",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/pebble.png",
+    "max_uses": 10,
+    "description": "$actiondesc_pebble",
+    "spawn_level": "1,2,4,6",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/pebble_player.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/pebble_unidentified.png"
+  },
+  {
+    "id": "DYNAMITE",
+    "mana": 50,
+    "name": "$action_dynamite",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/dynamite.png",
+    "max_uses": 16,
+    "description": "$actiondesc_dynamite",
+    "spawn_level": "0,1,2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/tnt.xml",
+    "spawn_probability": "1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/tnt.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/dynamite_unidentified.png"
+  },
+  {
+    "id": "GLITTER_BOMB",
+    "mana": 70,
+    "name": "$action_glitter_bomb",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/glitter_bomb.png",
+    "max_uses": 16,
+    "description": "$actiondesc_glitter_bomb",
+    "spawn_level": "0,1,2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/glitter_bomb.xml",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/glitter_bomb.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/dynamite_unidentified.png"
+  },
+  {
+    "id": "BUCKSHOT",
+    "mana": 25,
+    "name": "$action_buckshot",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/buckshot.png",
+    "description": "$actiondesc_buckshot",
+    "spawn_level": "0,1,2,3,4",
+    "spawn_probability": "1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/buckshot_player.xml",
+      3
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/dynamite_unidentified.png"
+  },
+  {
+    "id": "FREEZING_GAZE",
+    "mana": 45,
+    "name": "$action_freezing_gaze",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/freezing_gaze.png",
+    "max_uses": 20,
+    "description": "$actiondesc_freezing_gaze",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/freezing_gaze_beam.xml",
+      12
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/dynamite_unidentified.png"
+  },
+  {
+    "id": "GLOWING_BOLT",
+    "mana": 65,
+    "name": "$action_glowing_bolt",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/glowing_bolt.png",
+    "description": "$actiondesc_glowing_bolt",
+    "spawn_level": "3,4,5,10",
+    "spawn_probability": "1,1,1,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/glowing_bolt.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/dynamite_unidentified.png"
+  },
+  {
+    "id": "SPORE_POD",
+    "mana": 20,
+    "name": "$action_spore_pod",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/spore_pod.png",
+    "description": "$actiondesc_spore_pod",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/spore_pod.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spore_pod_unidentified.png"
+  },
+  {
+    "id": "GLUE_SHOT",
+    "mana": 25,
+    "name": "$action_glue_shot",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/glue_shot.png",
+    "description": "$actiondesc_glue_shot",
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "0.6,0.2,0.2,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/glue_shot.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/dynamite_unidentified.png"
+  },
+  {
+    "id": "BOMB_HOLY",
+    "mana": 300,
+    "name": "$action_bomb_holy",
+    "price": 400,
+    "sprite": "data/ui_gfx/gun_actions/bomb_holy.png",
+    "max_uses": 2,
+    "description": "$actiondesc_bomb_holy",
+    "spawn_level": "2,3,4,5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/bomb_holy.xml",
+    "spawn_probability": "0.2,0.2,0.2,0.2,0.2,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/bomb_holy.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_bomb_holy",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "BOMB_HOLY_GIGA",
+    "mana": 600,
+    "name": "$action_bomb_holy_giga",
+    "price": 600,
+    "sprite": "data/ui_gfx/gun_actions/bomb_holy_giga.png",
+    "max_uses": 2,
+    "description": "$actiondesc_bomb_holy_giga",
+    "spawn_level": "10",
+    "custom_xml_file": "data/entities/misc/custom_cards/bomb_holy_giga.xml",
+    "never_unlimited": true,
+    "spawn_probability": "1",
+    "related_projectiles": [
+      "data/entities/projectiles/bomb_holy_giga.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_bomb_holy_giga",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "PROPANE_TANK",
+    "mana": 75,
+    "name": "$action_propane_tank",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/propane_tank.png",
+    "max_uses": 10,
+    "description": "$actiondesc_propane_tank",
+    "spawn_level": "0,1,2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/propane_tank.xml",
+    "spawn_probability": "0,0,1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/propane_tank.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "BOMB_CART",
+    "mana": 75,
+    "name": "$action_bomb_cart",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/bomb_cart.png",
+    "max_uses": 6,
+    "description": "$actiondesc_bomb_cart",
+    "spawn_level": "0,1,2,3,4,5,6",
+    "spawn_probability": "0,0,0.6,0.6,0.6,0.6,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/bomb_cart.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "CURSED_ORB",
+    "mana": 40,
+    "name": "$action_cursed_orb",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/cursed_orb.png",
+    "description": "$actiondesc_cursed_orb",
+    "spawn_level": "1,2,3",
+    "spawn_probability": "0.3,0.2,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/orb_cursed.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/disc_bullet_unidentified.png"
+  },
+  {
+    "id": "EXPANDING_ORB",
+    "mana": 70,
+    "name": "$action_expanding_orb",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/expanding_orb.png",
+    "description": "$actiondesc_expanding_orb",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.5,0.5,1.0,1.0,1.0",
+    "related_projectiles": [
+      "data/entities/projectiles/orb_expanding.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/disc_bullet_unidentified.png"
+  },
+  {
+    "id": "CRUMBLING_EARTH",
+    "mana": 240,
+    "name": "$action_crumbling_earth",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/crumbling_earth.png",
+    "max_uses": 3,
+    "description": "$actiondesc_crumbling_earth",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/crumbling_earth.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_crumbling_earth",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "SUMMON_ROCK",
+    "mana": 100,
+    "name": "$action_summon_rock",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/summon_rock.png",
+    "max_uses": 3,
+    "description": "$actiondesc_summon_rock",
+    "spawn_level": "0,1,2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/summon_rock.xml",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8,0.8",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/rock.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "SUMMON_EGG",
+    "mana": 100,
+    "name": "$action_summon_egg",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/summon_egg.png",
+    "max_uses": 2,
+    "description": "$actiondesc_summon_egg",
+    "spawn_level": "0,1,2,3,4,5,6",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8,0.8",
+    "related_projectiles": [
+      "data/entities/items/pickup/egg_monster.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "SUMMON_HOLLOW_EGG",
+    "mana": 30,
+    "name": "$action_summon_hollow_egg",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/summon_hollow_egg.png",
+    "description": "$actiondesc_summon_hollow_egg",
+    "spawn_level": "0,1,2,3,4,5,6",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8,0.8",
+    "related_projectiles": [
+      "data/entities/items/pickup/egg_hollow.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "TNTBOX",
+    "mana": 40,
+    "name": "$action_tntbox",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/tntbox.png",
+    "max_uses": 15,
+    "description": "$actiondesc_tntbox",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/tntbox.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "TNTBOX_BIG",
+    "mana": 40,
+    "name": "$action_tntbox_big",
+    "price": 170,
+    "sprite": "data/ui_gfx/gun_actions/tntbox_big.png",
+    "max_uses": 15,
+    "description": "$actiondesc_tntbox_big",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/tntbox_big.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "SWARM_FLY",
+    "mana": 70,
+    "name": "$action_swarm_fly",
+    "price": 90,
+    "sprite": "data/ui_gfx/gun_actions/swarm_fly.png",
+    "description": "$actiondesc_swarm_fly",
+    "spawn_level": "2,4,5,6",
+    "spawn_probability": "0.2,0.2,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/swarm_fly.xml",
+      5
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png"
+  },
+  {
+    "id": "SWARM_FIREBUG",
+    "mana": 80,
+    "name": "$action_swarm_firebug",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/swarm_firebug.png",
+    "description": "$actiondesc_swarm_firebug",
+    "spawn_level": "2,4,5,6",
+    "spawn_probability": "0.2,0.2,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/swarm_firebug.xml",
+      4
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png"
+  },
+  {
+    "id": "SWARM_WASP",
+    "mana": 90,
+    "name": "$action_swarm_wasp",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/swarm_wasp.png",
+    "description": "$actiondesc_swarm_wasp",
+    "spawn_level": "2,4,5,6",
+    "spawn_probability": "0.2,0.2,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/swarm_wasp.xml",
+      6
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png"
+  },
+  {
+    "id": "FRIEND_FLY",
+    "mana": 120,
+    "name": "$action_friend_fly",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/friend_fly.png",
+    "description": "$actiondesc_friend_fly",
+    "spawn_level": "4,5,6",
+    "spawn_probability": "0.2,0.5,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/friend_fly.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png"
+  },
+  {
+    "id": "ACIDSHOT",
+    "mana": 20,
+    "name": "$action_acidshot",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/acidshot.png",
+    "max_uses": 20,
+    "description": "$actiondesc_acidshot",
+    "spawn_level": "1,2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/acidshot.xml",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/acidshot.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/acidshot_unidentified.png"
+  },
+  {
+    "id": "THUNDERBALL",
+    "mana": 120,
+    "name": "$action_thunderball",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/thunderball.png",
+    "max_uses": 3,
+    "description": "$actiondesc_thunderball",
+    "spawn_level": "2,4,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/thunderball.xml",
+    "spawn_probability": "1,1,1,0.2",
+    "related_projectiles": [
+      "data/entities/projectiles/thunderball.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/thunderball_unidentified.png"
+  },
+  {
+    "id": "FIREBOMB",
+    "mana": 10,
+    "name": "$action_firebomb",
+    "price": 90,
+    "sprite": "data/ui_gfx/gun_actions/firebomb.png",
+    "description": "$actiondesc_firebomb",
+    "spawn_level": "1,2,3",
+    "custom_xml_file": "data/entities/misc/custom_cards/firebomb.xml",
+    "spawn_probability": "1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/firebomb.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/firebomb_unidentified.png"
+  },
+  {
+    "id": "SOILBALL",
+    "mana": 5,
+    "name": "$action_soilball",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/soil.png",
+    "description": "$actiondesc_soilball",
+    "spawn_level": "1,2,3,5",
+    "spawn_probability": "1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/chunk_of_soil.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/firebomb_unidentified.png"
+  },
+  {
+    "id": "DEATH_CROSS",
+    "mana": 80,
+    "name": "$action_death_cross",
+    "price": 210,
+    "sprite": "data/ui_gfx/gun_actions/death_cross.png",
+    "description": "$actiondesc_death_cross",
+    "spawn_level": "1,2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/death_cross.xml",
+    "spawn_probability": "1,0.6,0.6,0.6,0.6,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/death_cross.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/death_cross_unidentified.png"
+  },
+  {
+    "id": "DEATH_CROSS_BIG",
+    "mana": 150,
+    "name": "$action_death_cross_big",
+    "price": 310,
+    "sprite": "data/ui_gfx/gun_actions/death_cross_big.png",
+    "max_uses": 8,
+    "description": "$actiondesc_death_cross_big",
+    "spawn_level": "2,3,4,5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/death_cross.xml",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.2",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/death_cross_big.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/death_cross_unidentified.png"
+  },
+  {
+    "id": "INFESTATION",
+    "mana": 40,
+    "name": "$action_infestation",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/infestation.png",
+    "description": "$actiondesc_infestation",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.1,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/infestation.xml",
+      10
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rubber_ball_unidentified.png"
+  },
+  {
+    "id": "WALL_HORIZONTAL",
+    "mana": 70,
+    "name": "$action_wall_horizontal",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/wall_horizontal.png",
+    "description": "$actiondesc_wall_horizontal",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/wall_horizontal.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "WALL_VERTICAL",
+    "mana": 70,
+    "name": "$action_wall_vertical",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/wall_vertical.png",
+    "description": "$actiondesc_wall_vertical",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/wall_vertical.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "WALL_SQUARE",
+    "mana": 70,
+    "name": "$action_wall_square",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/wall_square.png",
+    "max_uses": 20,
+    "description": "$actiondesc_wall_square",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/wall_square.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "TEMPORARY_WALL",
+    "mana": 40,
+    "name": "$action_temporary_wall",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/temporary_wall.png",
+    "max_uses": 20,
+    "description": "$actiondesc_temporary_wall",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.1,0.1,0.3,0.4,0.2,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/temporary_wall.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "TEMPORARY_PLATFORM",
+    "mana": 30,
+    "name": "$action_temporary_platform",
+    "price": 90,
+    "sprite": "data/ui_gfx/gun_actions/temporary_platform.png",
+    "max_uses": 20,
+    "description": "$actiondesc_temporary_platform",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.1,0.1,0.3,0.4,0.2,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/temporary_platform.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "PURPLE_EXPLOSION_FIELD",
+    "mana": 90,
+    "name": "$action_purple_explosion_field",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/purple_explosion_field.png",
+    "max_uses": 20,
+    "description": "$actiondesc_purple_explosion_field",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "1,1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/purple_explosion_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "DELAYED_SPELL",
+    "mana": 20,
+    "name": "$action_delayed_spell",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/delayed_spell.png",
+    "description": "$actiondesc_delayed_spell",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "1,1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/delayed_spell.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "LONG_DISTANCE_CAST",
+    "mana": 0,
+    "name": "$action_long_distance_cast",
+    "price": 90,
+    "sprite": "data/ui_gfx/gun_actions/long_distance_cast.png",
+    "description": "$actiondesc_long_distance_cast",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.6,0.6,0.6,0.6,0.6,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/long_distance_cast.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "TELEPORT_CAST",
+    "mana": 100,
+    "name": "$action_teleport_cast",
+    "price": 190,
+    "sprite": "data/ui_gfx/gun_actions/teleport_cast.png",
+    "description": "$actiondesc_teleport_cast",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.6,0.6,0.6,0.6,0.6,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/teleport_cast.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "SUPER_TELEPORT_CAST",
+    "mana": 20,
+    "name": "$action_super_teleport_cast",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/super_teleport_cast.png",
+    "description": "$actiondesc_super_teleport_cast",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.2,0.2,0.2,0.6,0.6,0.6",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/super_teleport_cast.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "MIST_RADIOACTIVE",
+    "mana": 40,
+    "name": "$action_mist_radioactive",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/mist_radioactive.png",
+    "description": "$actiondesc_mist_radioactive",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/mist_radioactive.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "MIST_ALCOHOL",
+    "mana": 40,
+    "name": "$action_mist_alcohol",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/mist_alcohol.png",
+    "description": "$actiondesc_mist_alcohol",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/mist_alcohol.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "MIST_SLIME",
+    "mana": 40,
+    "name": "$action_mist_slime",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/mist_slime.png",
+    "description": "$actiondesc_mist_slime",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/mist_slime.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "MIST_BLOOD",
+    "mana": 40,
+    "name": "$action_mist_blood",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/mist_blood.png",
+    "max_uses": 10,
+    "description": "$actiondesc_mist_blood",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/mist_blood.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "CIRCLE_FIRE",
+    "mana": 20,
+    "name": "$action_circle_fire",
+    "price": 170,
+    "sprite": "data/ui_gfx/gun_actions/circle_fire.png",
+    "max_uses": 15,
+    "description": "$actiondesc_circle_fire",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/circle_fire.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "CIRCLE_ACID",
+    "mana": 40,
+    "name": "$action_circle_acid",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/circle_acid.png",
+    "max_uses": 4,
+    "description": "$actiondesc_circle_acid",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/circle_acid.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "CIRCLE_OIL",
+    "mana": 20,
+    "name": "$action_circle_oil",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/circle_oil.png",
+    "max_uses": 15,
+    "description": "$actiondesc_circle_oil",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/circle_oil.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "CIRCLE_WATER",
+    "mana": 20,
+    "name": "$action_circle_water",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/circle_water.png",
+    "max_uses": 15,
+    "description": "$actiondesc_circle_water",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/circle_water.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/slimeball_unidentified.png"
+  },
+  {
+    "id": "MATERIAL_WATER",
+    "mana": 0,
+    "name": "$action_material_water",
+    "price": 110,
+    "sprite": "data/ui_gfx/gun_actions/material_water.png",
+    "description": "$actiondesc_material_water",
+    "spawn_level": "1,2,3,4,5",
+    "sound_loop_tag": "sound_spray",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/material_water.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/material_water_unidentified.png"
+  },
+  {
+    "id": "MATERIAL_OIL",
+    "mana": 0,
+    "name": "$action_material_oil",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/material_oil.png",
+    "description": "$actiondesc_material_oil",
+    "spawn_level": "1,2,3,4,5",
+    "sound_loop_tag": "sound_spray",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/material_oil.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/material_oil_unidentified.png"
+  },
+  {
+    "id": "MATERIAL_BLOOD",
+    "mana": 0,
+    "name": "$action_material_blood",
+    "price": 130,
+    "sprite": "data/ui_gfx/gun_actions/material_blood.png",
+    "max_uses": 250,
+    "description": "$actiondesc_material_blood",
+    "spawn_level": "1,2,3,4,5",
+    "sound_loop_tag": "sound_spray",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/material_blood.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/material_blood_unidentified.png"
+  },
+  {
+    "id": "MATERIAL_ACID",
+    "mana": 0,
+    "name": "$action_material_acid",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/material_acid.png",
+    "description": "$actiondesc_material_acid",
+    "spawn_level": "2,3,4,5,6",
+    "sound_loop_tag": "sound_spray",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/material_acid.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/material_acid_unidentified.png"
+  },
+  {
+    "id": "MATERIAL_CEMENT",
+    "mana": 0,
+    "name": "$action_material_cement",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/material_cement.png",
+    "description": "$actiondesc_material_cement",
+    "spawn_level": "2,3,4,5,6",
+    "sound_loop_tag": "sound_spray",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/material_cement.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_material_cement",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/material_cement_unidentified.png"
+  },
+  {
+    "id": "TELEPORT_PROJECTILE",
+    "mana": 40,
+    "name": "$action_teleport_projectile",
+    "price": 130,
+    "sprite": "data/ui_gfx/gun_actions/teleport_projectile.png",
+    "description": "$actiondesc_teleport_projectile",
+    "spawn_level": "0,1,2,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/teleport_projectile.xml",
+    "spawn_probability": "0.6,0.6,0.6,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/teleport_projectile.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "TELEPORT_PROJECTILE_SHORT",
+    "mana": 20,
+    "name": "$action_teleport_projectile_short",
+    "price": 130,
+    "sprite": "data/ui_gfx/gun_actions/teleport_projectile_short.png",
+    "description": "$actiondesc_teleport_projectile_short",
+    "spawn_level": "0,1,2,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/teleport_projectile_short.xml",
+    "spawn_probability": "0.6,0.6,0.6,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/teleport_projectile_short.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "TELEPORT_PROJECTILE_STATIC",
+    "mana": 40,
+    "name": "$action_teleport_projectile_static",
+    "price": 90,
+    "sprite": "data/ui_gfx/gun_actions/teleport_projectile_static.png",
+    "description": "$actiondesc_teleport_projectile_static",
+    "spawn_level": "0,1,2,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/teleport_projectile_static.xml",
+    "spawn_probability": "0.6,0.6,0.6,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/teleport_projectile_static.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "SWAPPER_PROJECTILE",
+    "mana": 5,
+    "name": "$action_swapper_projectile",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/swapper_projectile.png",
+    "description": "$actiondesc_swapper_projectile",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.05,0.05,0.05,0.05,0.05,0.05",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/swapper.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/light_bullet_unidentified.png"
+  },
+  {
+    "id": "TELEPORT_PROJECTILE_CLOSER",
+    "mana": 20,
+    "name": "$action_teleport_closer",
+    "price": 130,
+    "sprite": "data/ui_gfx/gun_actions/teleport_projectile_closer.png",
+    "description": "$actiondesc_teleport_closer",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.6,0.6,0.6,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/teleport_projectile_closer.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "NUKE",
+    "mana": 200,
+    "name": "$action_nuke",
+    "price": 400,
+    "sprite": "data/ui_gfx/gun_actions/nuke.png",
+    "max_uses": 1,
+    "description": "$actiondesc_nuke",
+    "spawn_level": "1,5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/nuke.xml",
+    "spawn_probability": "0.3,1,1,0.2",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/nuke.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_nuke",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/nuke_unidentified.png"
+  },
+  {
+    "id": "NUKE_GIGA",
+    "mana": 500,
+    "name": "$action_nuke_giga",
+    "price": 800,
+    "sprite": "data/ui_gfx/gun_actions/nuke_giga.png",
+    "max_uses": 1,
+    "recursive": true,
+    "description": "$actiondesc_nuke_giga",
+    "spawn_level": "10",
+    "ai_never_uses": true,
+    "custom_xml_file": "data/entities/misc/custom_cards/nuke_giga.xml",
+    "never_unlimited": true,
+    "spawn_probability": "1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/nuke_giga.xml"
+    ],
+    "spawn_manual_unlock": true,
+    "spawn_requires_flag": "card_unlocked_nukegiga",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/nuke_unidentified.png"
+  },
+  {
+    "id": "FIREWORK",
+    "mana": 70,
+    "name": "$action_firework",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/fireworks.png",
+    "max_uses": 25,
+    "description": "$actiondesc_firework",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "1,1,1,1,1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/fireworks/firework_pink.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_firework",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "SUMMON_WANDGHOST",
+    "mana": 300,
+    "name": "$action_summon_wandghost",
+    "price": 420,
+    "sprite": "data/ui_gfx/gun_actions/summon_wandghost.png",
+    "max_uses": 1,
+    "description": "$actiondesc_summon_wandghost",
+    "spawn_level": "2,4,5,6,10",
+    "never_unlimited": true,
+    "spawn_probability": "0.08,0.1,0.1,0.1,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/wand_ghost_player.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "TOUCH_GOLD",
+    "mana": 300,
+    "name": "$action_touch_gold",
+    "price": 480,
+    "sprite": "data/ui_gfx/gun_actions/touch_gold.png",
+    "max_uses": 1,
+    "description": "$actiondesc_touch_gold",
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "never_unlimited": true,
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/touch_gold.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "TOUCH_WATER",
+    "mana": 280,
+    "name": "$action_touch_water",
+    "price": 420,
+    "sprite": "data/ui_gfx/gun_actions/touch_water.png",
+    "max_uses": 5,
+    "description": "$actiondesc_touch_water",
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/touch_water.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "TOUCH_OIL",
+    "mana": 260,
+    "name": "$action_touch_oil",
+    "price": 380,
+    "sprite": "data/ui_gfx/gun_actions/touch_oil.png",
+    "max_uses": 5,
+    "description": "$actiondesc_touch_oil",
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/touch_oil.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "TOUCH_ALCOHOL",
+    "mana": 240,
+    "name": "$action_touch_alcohol",
+    "price": 360,
+    "sprite": "data/ui_gfx/gun_actions/touch_alcohol.png",
+    "max_uses": 5,
+    "description": "$actiondesc_touch_alcohol",
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/touch_alcohol.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "TOUCH_BLOOD",
+    "mana": 270,
+    "name": "$action_touch_blood",
+    "price": 390,
+    "sprite": "data/ui_gfx/gun_actions/touch_blood.png",
+    "max_uses": 3,
+    "description": "$actiondesc_touch_blood",
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.5",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/touch_blood.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "TOUCH_SMOKE",
+    "mana": 230,
+    "name": "$action_touch_smoke",
+    "price": 350,
+    "sprite": "data/ui_gfx/gun_actions/touch_smoke.png",
+    "max_uses": 5,
+    "description": "$actiondesc_touch_smoke",
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/touch_smoke.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "DESTRUCTION",
+    "mana": 600,
+    "name": "$action_destruction",
+    "price": 600,
+    "sprite": "data/ui_gfx/gun_actions/destruction.png",
+    "max_uses": 5,
+    "description": "$actiondesc_destruction",
+    "spawn_level": "10",
+    "ai_never_uses": true,
+    "spawn_probability": "1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/destruction.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_destruction",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "BURST_2",
+    "mana": 0,
+    "name": "$action_burst_2",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/burst_2.png",
+    "description": "$actiondesc_burst_2",
+    "spawn_level": "0,1,2,3,4,5,6",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8,0.8",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/burst_2_unidentified.png"
+  },
+  {
+    "id": "BURST_3",
+    "mana": 2,
+    "name": "$action_burst_3",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/burst_3.png",
+    "description": "$actiondesc_burst_3",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.7,0.7,0.7,0.7,0.7,0.7",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/burst_3_unidentified.png"
+  },
+  {
+    "id": "BURST_4",
+    "mana": 5,
+    "name": "$action_burst_4",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/burst_4.png",
+    "description": "$actiondesc_burst_4",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/burst_4_unidentified.png"
+  },
+  {
+    "id": "BURST_8",
+    "mana": 30,
+    "name": "$action_burst_8",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/burst_8.png",
+    "description": "$actiondesc_burst_8",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,0.5",
+    "spawn_requires_flag": "card_unlocked_musicbox",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/burst_4_unidentified.png"
+  },
+  {
+    "id": "BURST_X",
+    "mana": 50,
+    "name": "$action_burst_x",
+    "price": 500,
+    "sprite": "data/ui_gfx/gun_actions/burst_x.png",
+    "max_uses": 30,
+    "description": "$actiondesc_burst_x",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,0.5",
+    "spawn_requires_flag": "card_unlocked_musicbox",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/burst_4_unidentified.png"
+  },
+  {
+    "id": "SCATTER_2",
+    "mana": 0,
+    "name": "$action_scatter_2",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/scatter_2.png",
+    "description": "$actiondesc_scatter_2",
+    "spawn_level": "0,1,2",
+    "spawn_probability": "0.8,0.8,0.8",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/scatter_2_unidentified.png"
+  },
+  {
+    "id": "SCATTER_3",
+    "mana": 1,
+    "name": "$action_scatter_3",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/scatter_3.png",
+    "description": "$actiondesc_scatter_3",
+    "spawn_level": "0,1,2,3",
+    "spawn_probability": "0.7,0.7,0.7,0.8",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/scatter_3_unidentified.png"
+  },
+  {
+    "id": "SCATTER_4",
+    "mana": 2,
+    "name": "$action_scatter_4",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/scatter_4.png",
+    "description": "$actiondesc_scatter_4",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.6,0.6,0.7,0.8,0.8,0.8",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/scatter_4_unidentified.png"
+  },
+  {
+    "id": "I_SHAPE",
+    "mana": 0,
+    "name": "$action_i_shape",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/i_shape.png",
+    "description": "$actiondesc_i_shape",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/i_shape_unidentified.png"
+  },
+  {
+    "id": "Y_SHAPE",
+    "mana": 2,
+    "name": "$action_y_shape",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/y_shape.png",
+    "description": "$actiondesc_y_shape",
+    "spawn_level": "0,1,2,3,4",
+    "spawn_probability": "0.8,0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/y_shape_unidentified.png"
+  },
+  {
+    "id": "T_SHAPE",
+    "mana": 3,
+    "name": "$action_t_shape",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/t_shape.png",
+    "description": "$actiondesc_t_shape",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/t_shape_unidentified.png"
+  },
+  {
+    "id": "W_SHAPE",
+    "mana": 3,
+    "name": "$action_w_shape",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/w_shape.png",
+    "description": "$actiondesc_w_shape",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.4,0.3,0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/w_shape_unidentified.png"
+  },
+  {
+    "id": "CIRCLE_SHAPE",
+    "mana": 6,
+    "name": "$action_circle_shape",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/circle_shape.png",
+    "description": "$actiondesc_circle_shape",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.1,0.2,0.3,0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/circle_shape_unidentified.png"
+  },
+  {
+    "id": "PENTAGRAM_SHAPE",
+    "mana": 5,
+    "name": "$action_pentagram_shape",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/pentagram_shape.png",
+    "description": "$actiondesc_pentagram_shape",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.4,0.4,0.3,0.2,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/pentagram_shape_unidentified.png"
+  },
+  {
+    "id": "SPREAD_REDUCE",
+    "mana": 1,
+    "name": "$action_spread_reduce",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/spread_reduce.png",
+    "description": "$actiondesc_spread_reduce",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "HEAVY_SPREAD",
+    "mana": 2,
+    "name": "$action_heavy_spread",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/heavy_spread.png",
+    "description": "$actiondesc_heavy_spread",
+    "spawn_level": "0,1,2,4,5,6",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png"
+  },
+  {
+    "id": "RECHARGE",
+    "mana": 12,
+    "name": "$action_recharge",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/recharge.png",
+    "description": "$actiondesc_recharge",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "1,1,1,1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "LIFETIME",
+    "mana": 40,
+    "name": "$action_lifetime",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/lifetime.png",
+    "description": "$actiondesc_lifetime",
+    "spawn_level": "3,4,5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/lifetime.xml",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "LIFETIME_DOWN",
+    "mana": 10,
+    "name": "$action_lifetime_down",
+    "price": 90,
+    "sprite": "data/ui_gfx/gun_actions/lifetime_down.png",
+    "description": "$actiondesc_lifetime_down",
+    "spawn_level": "3,4,5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/lifetime_down.xml",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "NOLLA",
+    "mana": 1,
+    "name": "$action_nolla",
+    "price": 50,
+    "sprite": "data/ui_gfx/gun_actions/nolla.png",
+    "description": "$actiondesc_nolla",
+    "spawn_level": "2,4,5,6,10",
+    "spawn_probability": "0.2,0.2,0.5,0.5,1",
+    "spawn_requires_flag": "card_unlocked_pyramid",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/nolla.xml"
+    ]
+  },
+  {
+    "id": "SLOW_BUT_STEADY",
+    "mana": 0,
+    "name": "$action_slow_but_steady",
+    "price": 50,
+    "sprite": "data/ui_gfx/gun_actions/slow_but_steady.png",
+    "description": "$actiondesc_slow_but_steady",
+    "spawn_level": "3,4,5,6,10",
+    "spawn_probability": "0.1,0.2,0.3,0.4,0.4",
+    "spawn_requires_flag": "card_unlocked_maths",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "EXPLOSION_REMOVE",
+    "mana": 0,
+    "name": "$action_explosion_remove",
+    "price": 50,
+    "sprite": "data/ui_gfx/gun_actions/explosion_remove.png",
+    "description": "$actiondesc_explosion_remove",
+    "spawn_level": "2,4,5,6",
+    "spawn_probability": "0.2,0.6,0.7,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/explosion_remove.xml"
+    ]
+  },
+  {
+    "id": "EXPLOSION_TINY",
+    "mana": 40,
+    "name": "$action_explosion_tiny",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/explosion_tiny.png",
+    "description": "$actiondesc_explosion_tiny",
+    "spawn_level": "2,4,5,6",
+    "spawn_probability": "0.2,0.6,0.7,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/explosion_tiny.xml"
+    ]
+  },
+  {
+    "id": "LASER_EMITTER_WIDER",
+    "mana": 10,
+    "name": "$action_laser_emitter_wider",
+    "price": 40,
+    "sprite": "data/ui_gfx/gun_actions/laser_emitter_wider.png",
+    "description": "$actiondesc_laser_emitter_wider",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/burn_trail_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/laser_emitter_wider.xml"
+    ]
+  },
+  {
+    "id": "MANA_REDUCE",
+    "mana": -30,
+    "name": "$action_mana_reduce",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/mana.png",
+    "description": "$actiondesc_mana_reduce",
+    "spawn_level": "1,2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/mana_reduce.xml",
+    "spawn_probability": "1,1,1,1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "BLOOD_MAGIC",
+    "mana": -100,
+    "name": "$action_blood_magic",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/blood_magic.png",
+    "description": "$actiondesc_blood_magic",
+    "spawn_level": "5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/blood_magic.xml",
+    "spawn_probability": "0.1,0.7,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/blood_sparks.xml"
+    ]
+  },
+  {
+    "id": "MONEY_MAGIC",
+    "mana": 30,
+    "name": "$action_money_magic",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/golden_punch.png",
+    "description": "$actiondesc_money_magic",
+    "spawn_level": "3,5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/money_magic.xml",
+    "spawn_probability": "0.2,0.8,0.1,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/gold_sparks.xml"
+    ]
+  },
+  {
+    "id": "BLOOD_TO_POWER",
+    "mana": 20,
+    "name": "$action_blood_to_power",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/blood_punch.png",
+    "description": "$actiondesc_blood_to_power",
+    "spawn_level": "2,5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/blood_to_power.xml",
+    "spawn_probability": "0.2,0.8,0.1,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/blood_sparks.xml"
+    ]
+  },
+  {
+    "id": "DUPLICATE",
+    "mana": 250,
+    "name": "$action_duplicate",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/duplicate.png",
+    "recursive": true,
+    "description": "$actiondesc_duplicate",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_mestari",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "QUANTUM_SPLIT",
+    "mana": 10,
+    "name": "$action_quantum_split",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/quantum_split.png",
+    "description": "$actiondesc_quantum_split",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.5,0.5,0.5,0.5,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/quantum_split.xml"
+    ]
+  },
+  {
+    "id": "GRAVITY",
+    "mana": 1,
+    "name": "$action_gravity",
+    "price": 50,
+    "sprite": "data/ui_gfx/gun_actions/gravity.png",
+    "description": "$actiondesc_gravity",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/w_shape_unidentified.png"
+  },
+  {
+    "id": "GRAVITY_ANTI",
+    "mana": 1,
+    "name": "$action_gravity_anti",
+    "price": 50,
+    "sprite": "data/ui_gfx/gun_actions/gravity_anti.png",
+    "description": "$actiondesc_gravity_anti",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/w_shape_unidentified.png"
+  },
+  {
+    "id": "SINEWAVE",
+    "mana": 0,
+    "name": "$action_sinewave",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/sinewave.png",
+    "description": "$actiondesc_sinewave",
+    "spawn_level": "2,4,6",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/sinewave.xml"
+    ]
+  },
+  {
+    "id": "CHAOTIC_ARC",
+    "mana": 0,
+    "name": "$action_chaotic_arc",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/chaotic_arc.png",
+    "description": "$actiondesc_chaotic_arc",
+    "spawn_level": "1,3,5",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/chaotic_arc.xml"
+    ]
+  },
+  {
+    "id": "PINGPONG_PATH",
+    "mana": 0,
+    "name": "$action_pingpong_path",
+    "price": 20,
+    "sprite": "data/ui_gfx/gun_actions/pingpong_path.png",
+    "description": "$actiondesc_pingpong_path",
+    "spawn_level": "1,3,5",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/pingpong_path.xml"
+    ]
+  },
+  {
+    "id": "AVOIDING_ARC",
+    "mana": 0,
+    "name": "$action_avoiding_arc",
+    "price": 30,
+    "sprite": "data/ui_gfx/gun_actions/avoiding_arc.png",
+    "description": "$actiondesc_avoiding_arc",
+    "spawn_level": "2,4,6",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/avoiding_arc.xml"
+    ]
+  },
+  {
+    "id": "FLOATING_ARC",
+    "mana": 0,
+    "name": "$action_floating_arc",
+    "price": 30,
+    "sprite": "data/ui_gfx/gun_actions/floating_arc.png",
+    "description": "$actiondesc_floating_arc",
+    "spawn_level": "1,3,5",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/floating_arc.xml"
+    ]
+  },
+  {
+    "id": "FLY_DOWNWARDS",
+    "mana": 0,
+    "name": "$action_fly_downwards",
+    "price": 30,
+    "sprite": "data/ui_gfx/gun_actions/fly_downwards.png",
+    "description": "$actiondesc_fly_downwards",
+    "spawn_level": "1,3,5",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/fly_downwards.xml"
+    ]
+  },
+  {
+    "id": "FLY_UPWARDS",
+    "mana": 0,
+    "name": "$action_fly_upwards",
+    "price": 20,
+    "sprite": "data/ui_gfx/gun_actions/fly_upwards.png",
+    "description": "$actiondesc_fly_upwards",
+    "spawn_level": "2,4,6",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/fly_upwards.xml"
+    ]
+  },
+  {
+    "id": "HORIZONTAL_ARC",
+    "mana": 0,
+    "name": "$action_horizontal_arc",
+    "price": 20,
+    "sprite": "data/ui_gfx/gun_actions/horizontal_arc.png",
+    "description": "$actiondesc_horizontal_arc",
+    "spawn_level": "1,3,5",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/horizontal_arc.xml"
+    ]
+  },
+  {
+    "id": "LINE_ARC",
+    "mana": 0,
+    "name": "$action_line_arc",
+    "price": 30,
+    "sprite": "data/ui_gfx/gun_actions/line_arc.png",
+    "description": "$actiondesc_line_arc",
+    "spawn_level": "1,3,5",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/line_arc.xml"
+    ]
+  },
+  {
+    "id": "ORBIT_SHOT",
+    "mana": 0,
+    "name": "$action_orbit_shot",
+    "price": 30,
+    "sprite": "data/ui_gfx/gun_actions/orbit_shot.png",
+    "description": "$actiondesc_orbit_shot",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.2,0.3,0.4,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/spiraling_shot.xml"
+    ]
+  },
+  {
+    "id": "SPIRALING_SHOT",
+    "mana": 0,
+    "name": "$action_spiraling_shot",
+    "price": 30,
+    "sprite": "data/ui_gfx/gun_actions/spiraling_shot.png",
+    "description": "$actiondesc_spiraling_shot",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.2,0.3,0.4,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/orbit_shot.xml"
+    ]
+  },
+  {
+    "id": "PHASING_ARC",
+    "mana": 2,
+    "name": "$action_phasing_arc",
+    "price": 170,
+    "sprite": "data/ui_gfx/gun_actions/phasing_arc.png",
+    "description": "$actiondesc_phasing_arc",
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "0.2,0.3,0.6,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/phasing_arc.xml"
+    ]
+  },
+  {
+    "id": "BOUNCE",
+    "mana": 0,
+    "name": "$action_bounce",
+    "price": 50,
+    "sprite": "data/ui_gfx/gun_actions/bounce.png",
+    "description": "$actiondesc_bounce",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "1,1,0.4,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bounce_unidentified.png"
+  },
+  {
+    "id": "REMOVE_BOUNCE",
+    "mana": 0,
+    "name": "$action_remove_bounce",
+    "price": 50,
+    "sprite": "data/ui_gfx/gun_actions/remove_bounce.png",
+    "description": "$actiondesc_remove_bounce",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.2,0.2,1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bounce_unidentified.png"
+  },
+  {
+    "id": "HOMING",
+    "mana": 70,
+    "name": "$action_homing",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/homing.png",
+    "description": "$actiondesc_homing",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.1,0.4,0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/homing.xml",
+      "data/entities/particles/tinyspark_white.xml"
+    ]
+  },
+  {
+    "id": "HOMING_SHORT",
+    "mana": 40,
+    "name": "$action_homing_short",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/homing_short.png",
+    "description": "$actiondesc_homing_short",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.4,0.8,1,0.4,0.1,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/homing_short.xml",
+      "data/entities/particles/tinyspark_white_weak.xml"
+    ]
+  },
+  {
+    "id": "HOMING_ROTATE",
+    "mana": 40,
+    "name": "$action_homing_rotate",
+    "price": 175,
+    "sprite": "data/ui_gfx/gun_actions/homing_rotate.png",
+    "description": "$actiondesc_homing_rotate",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/homing_rotate.xml",
+      "data/entities/particles/tinyspark_white.xml"
+    ]
+  },
+  {
+    "id": "HOMING_SHOOTER",
+    "mana": 10,
+    "name": "$action_homing_shooter",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/homing_shooter.png",
+    "description": "$actiondesc_homing_shooter",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.2,0.2,0.2,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/homing_shooter.xml",
+      "data/entities/particles/tinyspark_white.xml"
+    ]
+  },
+  {
+    "id": "AUTOAIM",
+    "mana": 25,
+    "name": "$action_autoaim",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/autoaim.png",
+    "description": "$actiondesc_autoaim",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/autoaim_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/autoaim.xml"
+    ]
+  },
+  {
+    "id": "HOMING_ACCELERATING",
+    "mana": 60,
+    "name": "$action_homing_accelerating",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/homing_accelerating.png",
+    "description": "$actiondesc_homing_accelerating",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.1,0.3,0.3,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/homing_accelerating.xml",
+      "data/entities/particles/tinyspark_white_small.xml"
+    ]
+  },
+  {
+    "id": "HOMING_CURSOR",
+    "mana": 30,
+    "name": "$action_homing_cursor",
+    "price": 175,
+    "sprite": "data/ui_gfx/gun_actions/homing_cursor.png",
+    "description": "$actiondesc_homing_cursor",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.7,0.7,0.4,0.4,1.0",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/homing_cursor.xml",
+      "data/entities/particles/tinyspark_white.xml"
+    ]
+  },
+  {
+    "id": "HOMING_AREA",
+    "mana": 60,
+    "name": "$action_homing_area",
+    "price": 175,
+    "sprite": "data/ui_gfx/gun_actions/homing_area.png",
+    "description": "$actiondesc_homing_area",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.2,0.4,0.6,0.7,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/homing_area.xml",
+      "data/entities/particles/tinyspark_white.xml"
+    ]
+  },
+  {
+    "id": "PIERCING_SHOT",
+    "mana": 140,
+    "name": "$action_piercing_shot",
+    "price": 190,
+    "sprite": "data/ui_gfx/gun_actions/piercing_shot.png",
+    "description": "$actiondesc_piercing_shot",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/piercing_shot.xml"
+    ]
+  },
+  {
+    "id": "CLIPPING_SHOT",
+    "mana": 160,
+    "name": "$action_clipping_shot",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/clipping_shot.png",
+    "description": "$actiondesc_clipping_shot",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/clipping_shot.xml"
+    ]
+  },
+  {
+    "id": "DAMAGE",
+    "mana": 5,
+    "name": "$action_damage",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/damage.png",
+    "description": "$actiondesc_damage",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/damage.xml",
+    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_yellow.xml"
+    ]
+  },
+  {
+    "id": "DAMAGE_RANDOM",
+    "mana": 15,
+    "name": "$action_damage_random",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/damage_random.png",
+    "description": "$actiondesc_damage_random",
+    "spawn_level": "3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/damage_random.xml",
+    "spawn_probability": "0.6,0.6,0.6",
+    "spawn_requires_flag": "card_unlocked_pyramid",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_yellow.xml"
+    ]
+  },
+  {
+    "id": "BLOODLUST",
+    "mana": 2,
+    "name": "$action_bloodlust",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/bloodlust.png",
+    "description": "$actiondesc_bloodlust",
+    "spawn_level": "1,3,4,5,6",
+    "spawn_probability": "0.2,0.3,0.6,0.6,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_red.xml"
+    ]
+  },
+  {
+    "id": "DAMAGE_FOREVER",
+    "mana": 0,
+    "name": "$action_damage_forever",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/damage_forever.png",
+    "max_uses": 20,
+    "description": "$actiondesc_damage_forever",
+    "spawn_level": "2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/damage_forever.xml",
+    "never_unlimited": true,
+    "spawn_probability": "0.2,0.4,0.6,0.4,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_red.xml"
+    ]
+  },
+  {
+    "id": "CRITICAL_HIT",
+    "mana": 5,
+    "name": "$action_critical_hit",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/critical_hit.png",
+    "description": "$actiondesc_critical_hit",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/critical_hit.xml",
+    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png"
+  },
+  {
+    "id": "AREA_DAMAGE",
+    "mana": 30,
+    "name": "$action_area_damage",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/area_damage.png",
+    "description": "$actiondesc_area_damage",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/area_damage.xml"
+    ]
+  },
+  {
+    "id": "SPELLS_TO_POWER",
+    "mana": 110,
+    "name": "$action_spells_to_power",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/spells_to_power.png",
+    "description": "$actiondesc_spells_to_power",
+    "spawn_level": "2,3,4,5,6,10",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.5,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/spells_to_power.xml"
+    ]
+  },
+  {
+    "id": "ESSENCE_TO_POWER",
+    "mana": 110,
+    "name": "$action_enemies_to_power",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/essence_to_power.png",
+    "description": "$actiondesc_enemies_to_power",
+    "spawn_level": "1,2,3,10",
+    "spawn_probability": "0.2,0.5,0.5,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/essence_to_power.xml"
+    ]
+  },
+  {
+    "id": "HEAVY_SHOT",
+    "mana": 7,
+    "name": "$action_heavy_shot",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/heavy_shot.png",
+    "description": "$actiondesc_heavy_shot",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/heavy_shot.xml",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/heavy_shot_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/heavy_shot.xml"
+    ]
+  },
+  {
+    "id": "LIGHT_SHOT",
+    "mana": 5,
+    "name": "$action_light_shot",
+    "price": 60,
+    "sprite": "data/ui_gfx/gun_actions/light_shot.png",
+    "description": "$actiondesc_light_shot",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/light_shot.xml",
+    "spawn_probability": "0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/heavy_shot_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/light_shot.xml"
+    ]
+  },
+  {
+    "id": "KNOCKBACK",
+    "mana": 5,
+    "name": "$action_knockback",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/knockback.png",
+    "description": "$actiondesc_knockback",
+    "spawn_level": "3,5",
+    "spawn_probability": "0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/knockback_unidentified.png"
+  },
+  {
+    "id": "RECOIL",
+    "mana": 5,
+    "name": "$action_recoil",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/recoil.png",
+    "description": "$actiondesc_recoil",
+    "spawn_level": "2,4",
+    "spawn_probability": "0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/recoil_unidentified.png"
+  },
+  {
+    "id": "RECOIL_DAMPER",
+    "mana": 5,
+    "name": "$action_recoil_damper",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/recoil_damper.png",
+    "description": "$actiondesc_recoil_damper",
+    "spawn_level": "3,6",
+    "spawn_probability": "0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/recoil_damper_unidentified.png"
+  },
+  {
+    "id": "SPEED",
+    "mana": 3,
+    "name": "$action_speed",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/speed.png",
+    "description": "$actiondesc_speed",
+    "spawn_level": "1,2,3",
+    "custom_xml_file": "data/entities/misc/custom_cards/speed.xml",
+    "spawn_probability": "1,0.5,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/speed_unidentified.png"
+  },
+  {
+    "id": "ACCELERATING_SHOT",
+    "mana": 20,
+    "name": "$action_accelerating_shot",
+    "price": 190,
+    "sprite": "data/ui_gfx/gun_actions/accelerating_shot.png",
+    "description": "$actiondesc_accelerating_shot",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/accelerating_shot.xml",
+    "spawn_probability": "0.5,0.5,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/heavy_shot_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/accelerating_shot.xml"
+    ]
+  },
+  {
+    "id": "DECELERATING_SHOT",
+    "mana": 10,
+    "name": "$action_decelerating_shot",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/decelerating_shot.png",
+    "description": "$actiondesc_decelerating_shot",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/decelerating_shot.xml",
+    "spawn_probability": "0.3,0.3,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/heavy_shot_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/decelerating_shot.xml"
+    ]
+  },
+  {
+    "id": "EXPLOSIVE_PROJECTILE",
+    "mana": 30,
+    "name": "$action_explosive_projectile",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/explosive_projectile.png",
+    "description": "$actiondesc_explosive_projectile",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/explosive_projectile.xml",
+    "spawn_probability": "1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png"
+  },
+  {
+    "id": "WATER_TO_POISON",
+    "mana": 30,
+    "name": "$action_water_to_poison",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/water_to_poison.png",
+    "description": "$actiondesc_water_to_poison",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/water_to_poison.xml",
+      "data/entities/particles/tinyspark_purple.xml"
+    ]
+  },
+  {
+    "id": "BLOOD_TO_ACID",
+    "mana": 30,
+    "name": "$action_blood_to_acid",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/blood_to_acid.png",
+    "description": "$actiondesc_blood_to_acid",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/blood_to_acid.xml",
+      "data/entities/particles/tinyspark_red.xml"
+    ]
+  },
+  {
+    "id": "LAVA_TO_BLOOD",
+    "mana": 30,
+    "name": "$action_lava_to_blood",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/lava_to_blood.png",
+    "description": "$actiondesc_lava_to_blood",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/lava_to_blood.xml",
+      "data/entities/particles/tinyspark_orange.xml"
+    ]
+  },
+  {
+    "id": "LIQUID_TO_EXPLOSION",
+    "mana": 40,
+    "name": "$action_liquid_to_explosion",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/liquid_to_explosion.png",
+    "description": "$actiondesc_liquid_to_explosion",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/liquid_to_explosion.xml",
+      "data/entities/particles/tinyspark_red.xml"
+    ]
+  },
+  {
+    "id": "TOXIC_TO_ACID",
+    "mana": 50,
+    "name": "$action_toxic_to_acid",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/toxic_to_acid.png",
+    "description": "$actiondesc_toxic_to_acid",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/toxic_to_acid.xml",
+      "data/entities/particles/tinyspark_green.xml"
+    ]
+  },
+  {
+    "id": "STATIC_TO_SAND",
+    "mana": 70,
+    "name": "$action_static_to_sand",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/static_to_sand.png",
+    "max_uses": 8,
+    "description": "$actiondesc_static_to_sand",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/static_to_sand.xml",
+      "data/entities/particles/tinyspark_yellow.xml"
+    ]
+  },
+  {
+    "id": "TRANSMUTATION",
+    "mana": 80,
+    "name": "$action_transmutation",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/transmutation.png",
+    "max_uses": 8,
+    "description": "$actiondesc_transmutation",
+    "spawn_level": "2,3,4,5,6,10",
+    "spawn_probability": "0.3,0.3,0.3,0.3,0.3,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/transmutation.xml",
+      "data/entities/particles/tinyspark_purple_bright.xml"
+    ]
+  },
+  {
+    "id": "RANDOM_EXPLOSION",
+    "mana": 120,
+    "name": "$action_random_explosion",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/random_explosion.png",
+    "max_uses": 30,
+    "description": "$actiondesc_random_explosion",
+    "spawn_level": "3,5,6",
+    "spawn_probability": "0.3,0.6,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/random_explosion.xml",
+      "data/entities/particles/tinyspark_purple_bright.xml"
+    ]
+  },
+  {
+    "id": "NECROMANCY",
+    "mana": 20,
+    "name": "$action_necromancy",
+    "price": 80,
+    "sprite": "data/ui_gfx/gun_actions/necromancy.png",
+    "description": "$actiondesc_necromancy",
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "0.6,0.6,0.6,0.6",
+    "spawn_requires_flag": "card_unlocked_necromancy",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png"
+  },
+  {
+    "id": "LIGHT",
+    "mana": 1,
+    "name": "$action_light",
+    "price": 20,
+    "sprite": "data/ui_gfx/gun_actions/light.png",
+    "description": "$actiondesc_light",
+    "spawn_level": "0,1,2,3,4",
+    "spawn_probability": "1,0.8,0.6,0.4,0.2",
+    "related_extra_entities": [
+      "data/entities/misc/light.xml"
+    ]
+  },
+  {
+    "id": "EXPLOSION",
+    "mana": 80,
+    "name": "$action_explosion",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/explosion.png",
+    "description": "$actiondesc_explosion",
+    "spawn_level": "0,2,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/explosion.xml",
+    "spawn_probability": "0.5,1,1,1",
+    "is_dangerous_blast": true,
+    "related_projectiles": [
+      "data/entities/projectiles/deck/explosion.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosion_unidentified.png"
+  },
+  {
+    "id": "EXPLOSION_LIGHT",
+    "mana": 80,
+    "name": "$action_explosion_light",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/explosion_light.png",
+    "description": "$actiondesc_explosion_light",
+    "spawn_level": "2,3,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/explosion_light.xml",
+    "spawn_probability": "0.5,1,1,1",
+    "is_dangerous_blast": true,
+    "related_projectiles": [
+      "data/entities/projectiles/deck/explosion_light.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosion_unidentified.png"
+  },
+  {
+    "id": "FIRE_BLAST",
+    "mana": 10,
+    "name": "$action_fire_blast",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/fire_blast.png",
+    "description": "$actiondesc_fire_blast",
+    "spawn_level": "0,1,3,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/fire_blast.xml",
+    "spawn_probability": "0.5,0.5,0.6,0.6",
+    "is_dangerous_blast": true,
+    "related_projectiles": [
+      "data/entities/projectiles/deck/fireblast.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/fire_blast_unidentified.png"
+  },
+  {
+    "id": "POISON_BLAST",
+    "mana": 30,
+    "name": "$action_poison_blast",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/poison_blast.png",
+    "description": "$actiondesc_poison_blast",
+    "spawn_level": "1,2,4,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/poison_blast.xml",
+    "spawn_probability": "0.5,0.6,0.6,0.5",
+    "is_dangerous_blast": true,
+    "related_projectiles": [
+      "data/entities/projectiles/deck/poison_blast.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/poison_blast_unidentified.png"
+  },
+  {
+    "id": "ALCOHOL_BLAST",
+    "mana": 30,
+    "name": "$action_alcohol_blast",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/alcohol_blast.png",
+    "description": "$actiondesc_alcohol_blast",
+    "spawn_level": "1,2,4,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/alcohol_blast.xml",
+    "spawn_probability": "0.5,0.6,0.6,0.5",
+    "is_dangerous_blast": true,
+    "related_projectiles": [
+      "data/entities/projectiles/deck/alcohol_blast.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/poison_blast_unidentified.png"
+  },
+  {
+    "id": "THUNDER_BLAST",
+    "mana": 110,
+    "name": "$action_thunder_blast",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/thunder_blast.png",
+    "description": "$actiondesc_thunder_blast",
+    "spawn_level": "1,3,5,6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/thunder_blast.xml",
+    "spawn_probability": "0.5,0.6,0.6,0.5,0.1",
+    "is_dangerous_blast": true,
+    "related_projectiles": [
+      "data/entities/projectiles/deck/thunder_blast.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/thunder_blast_unidentified.png"
+  },
+  {
+    "id": "BERSERK_FIELD",
+    "mana": 30,
+    "name": "$action_berserk_field",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/berserk_field.png",
+    "max_uses": 15,
+    "description": "$actiondesc_berserk_field",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.3,0.6,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/berserk_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/berserk_field_unidentified.png"
+  },
+  {
+    "id": "POLYMORPH_FIELD",
+    "mana": 50,
+    "name": "$action_polymorph_field",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/polymorph_field.png",
+    "max_uses": 5,
+    "description": "$actiondesc_polymorph_field",
+    "spawn_level": "0,1,2,3,4,5,6",
+    "spawn_probability": "0.3,0.3,0.3,0.8,0.8,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/polymorph_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/polymorph_field_unidentified.png"
+  },
+  {
+    "id": "CHAOS_POLYMORPH_FIELD",
+    "mana": 20,
+    "name": "$action_chaos_polymorph_field",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/chaos_polymorph_field.png",
+    "max_uses": 10,
+    "description": "$actiondesc_chaos_polymorph_field",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.3,0.3,0.5,0.6,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/chaos_polymorph_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chaos_polymorph_field_unidentified.png"
+  },
+  {
+    "id": "ELECTROCUTION_FIELD",
+    "mana": 60,
+    "name": "$action_electrocution_field",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/electrocution_field.png",
+    "max_uses": 15,
+    "description": "$actiondesc_electrocution_field",
+    "spawn_level": "1,3,5,6",
+    "spawn_probability": "0.3,0.6,0.8,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/electrocution_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electrocution_field_unidentified.png"
+  },
+  {
+    "id": "FREEZE_FIELD",
+    "mana": 50,
+    "name": "$action_freeze_field",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/freeze_field.png",
+    "max_uses": 15,
+    "description": "$actiondesc_freeze_field",
+    "spawn_level": "0,2,4,5",
+    "spawn_probability": "0.3,0.6,0.7,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/freeze_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_field_unidentified.png"
+  },
+  {
+    "id": "REGENERATION_FIELD",
+    "mana": 80,
+    "name": "$action_regeneration_field",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/regeneration_field.png",
+    "max_uses": 2,
+    "description": "$actiondesc_regeneration_field",
+    "spawn_level": "1,2,3,4",
+    "never_unlimited": true,
+    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/regeneration_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/regeneration_field_unidentified.png"
+  },
+  {
+    "id": "TELEPORTATION_FIELD",
+    "mana": 30,
+    "name": "$action_teleportation_field",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/teleportation_field.png",
+    "max_uses": 15,
+    "description": "$actiondesc_teleportation_field",
+    "spawn_level": "0,1,2,3,4,5",
+    "spawn_probability": "0.3,0.6,0.3,0.3,0.6,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/teleportation_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleportation_field_unidentified.png"
+  },
+  {
+    "id": "LEVITATION_FIELD",
+    "mana": 10,
+    "name": "$action_levitation_field",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/levitation_field.png",
+    "max_uses": 15,
+    "description": "$actiondesc_levitation_field",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.3,0.6,0.6,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/levitation_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/levitation_field_unidentified.png"
+  },
+  {
+    "id": "SHIELD_FIELD",
+    "mana": 20,
+    "name": "$action_shield_field",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/shield_field.png",
+    "max_uses": 10,
+    "description": "$actiondesc_shield_field",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/shield_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/shield_field_unidentified.png"
+  },
+  {
+    "id": "PROJECTILE_TRANSMUTATION_FIELD",
+    "mana": 120,
+    "name": "$action_projectile_transmutation_field",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/projectile_transmutation_field.png",
+    "max_uses": 6,
+    "description": "$actiondesc_projectile_transmutation_field",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/projectile_transmutation_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chaos_polymorph_field_unidentified.png"
+  },
+  {
+    "id": "PROJECTILE_THUNDER_FIELD",
+    "mana": 140,
+    "name": "$action_projectile_thunder_field",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/projectile_thunder_field.png",
+    "max_uses": 6,
+    "description": "$actiondesc_projectile_thunder_field",
+    "spawn_level": "3,4,5,6",
+    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/projectile_thunder_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chaos_polymorph_field_unidentified.png"
+  },
+  {
+    "id": "PROJECTILE_GRAVITY_FIELD",
+    "mana": 120,
+    "name": "$action_projectile_gravity_field",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/projectile_gravity_field.png",
+    "max_uses": 6,
+    "description": "$actiondesc_projectile_gravity_field",
+    "spawn_level": "2,5,6",
+    "spawn_probability": "0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/projectile_gravity_field.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chaos_polymorph_field_unidentified.png"
+  },
+  {
+    "id": "VACUUM_POWDER",
+    "mana": 40,
+    "name": "$action_vacuum_powder",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/vacuum_powder.png",
+    "max_uses": 20,
+    "description": "$actiondesc_vacuum_powder",
+    "spawn_level": "2,3,5,6",
+    "spawn_probability": "0.3,1,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/vacuum_powder.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chaos_polymorph_field_unidentified.png"
+  },
+  {
+    "id": "VACUUM_LIQUID",
+    "mana": 40,
+    "name": "$action_vacuum_liquid",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/vacuum_liquid.png",
+    "max_uses": 20,
+    "description": "$actiondesc_vacuum_liquid",
+    "spawn_level": "2,3,5,6",
+    "spawn_probability": "0.3,1,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/vacuum_liquid.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chaos_polymorph_field_unidentified.png"
+  },
+  {
+    "id": "VACUUM_ENTITIES",
+    "mana": 50,
+    "name": "$action_vacuum_entities",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/vacuum_entities.png",
+    "max_uses": 20,
+    "description": "$actiondesc_vacuum_entities",
+    "spawn_level": "2,3,5,6",
+    "spawn_probability": "0.3,1,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/vacuum_liquid.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/chaos_polymorph_field_unidentified.png"
+  },
+  {
+    "id": "SEA_LAVA",
+    "mana": 140,
+    "name": "$action_sea_lava",
+    "price": 350,
+    "sprite": "data/ui_gfx/gun_actions/sea_lava.png",
+    "max_uses": 3,
+    "description": "$actiondesc_sea_lava",
+    "spawn_level": "0,4,5,6",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/sea_lava.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_sea_lava",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_lava_unidentified.png"
+  },
+  {
+    "id": "SEA_ALCOHOL",
+    "mana": 140,
+    "name": "$action_sea_alcohol",
+    "price": 350,
+    "sprite": "data/ui_gfx/gun_actions/sea_alcohol.png",
+    "max_uses": 3,
+    "description": "$actiondesc_sea_alcohol",
+    "spawn_level": "0,4,5,6",
+    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/sea_alcohol.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_lava_unidentified.png"
+  },
+  {
+    "id": "SEA_OIL",
+    "mana": 140,
+    "name": "$action_sea_oil",
+    "price": 350,
+    "sprite": "data/ui_gfx/gun_actions/sea_oil.png",
+    "max_uses": 3,
+    "description": "$actiondesc_sea_oil",
+    "spawn_level": "0,4,5,6",
+    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/sea_oil.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_oil_unidentified.png"
+  },
+  {
+    "id": "SEA_WATER",
+    "mana": 140,
+    "name": "$action_sea_water",
+    "price": 350,
+    "sprite": "data/ui_gfx/gun_actions/sea_water.png",
+    "max_uses": 3,
+    "description": "$actiondesc_sea_water",
+    "spawn_level": "0,4,5,6",
+    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/sea_water.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_water_unidentified.png"
+  },
+  {
+    "id": "SEA_ACID",
+    "mana": 140,
+    "name": "$action_sea_acid",
+    "price": 350,
+    "sprite": "data/ui_gfx/gun_actions/sea_acid.png",
+    "max_uses": 3,
+    "description": "$actiondesc_sea_acid",
+    "spawn_level": "0,4,5,6",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/sea_acid.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_acid_unidentified.png"
+  },
+  {
+    "id": "SEA_ACID_GAS",
+    "mana": 140,
+    "name": "$action_sea_acid_gas",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/sea_acid_gas.png",
+    "max_uses": 3,
+    "description": "$actiondesc_sea_acid_gas",
+    "spawn_level": "0,4,5,6",
+    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/sea_acid_gas.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_acid_unidentified.png"
+  },
+  {
+    "id": "CLOUD_WATER",
+    "mana": 30,
+    "name": "$action_cloud_water",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/cloud_water.png",
+    "max_uses": 10,
+    "description": "$actiondesc_cloud_water",
+    "spawn_level": "0,1,2,3,4,5",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/cloud_water.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/cloud_water_unidentified.png"
+  },
+  {
+    "id": "CLOUD_OIL",
+    "mana": 20,
+    "name": "$action_cloud_oil",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/cloud_oil.png",
+    "max_uses": 15,
+    "description": "$actiondesc_cloud_oil",
+    "spawn_level": "0,1,2,3,4,5",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/cloud_oil.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/cloud_water_unidentified.png"
+  },
+  {
+    "id": "CLOUD_BLOOD",
+    "mana": 60,
+    "name": "$action_cloud_blood",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/cloud_blood.png",
+    "max_uses": 3,
+    "description": "$actiondesc_cloud_blood",
+    "spawn_level": "0,1,2,3,4,5",
+    "spawn_probability": "0.3,0.3,0.3,0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/cloud_blood.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/cloud_water_unidentified.png"
+  },
+  {
+    "id": "CLOUD_ACID",
+    "mana": 90,
+    "name": "$action_cloud_acid",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/cloud_acid.png",
+    "max_uses": 8,
+    "description": "$actiondesc_cloud_acid",
+    "spawn_level": "0,1,2,3,4,5",
+    "spawn_probability": "0.2,0.2,0.2,0.2,0.2,0.2",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/cloud_acid.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/cloud_water_unidentified.png"
+  },
+  {
+    "id": "CLOUD_THUNDER",
+    "mana": 90,
+    "name": "$action_cloud_thunder",
+    "price": 190,
+    "sprite": "data/ui_gfx/gun_actions/cloud_thunder.png",
+    "max_uses": 5,
+    "description": "$actiondesc_cloud_thunder",
+    "spawn_level": "0,1,2,3,4,5",
+    "spawn_probability": "0.3,0.3,0.3,0.3,0.3,0.3",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/cloud_thunder.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_cloud_thunder",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/cloud_water_unidentified.png"
+  },
+  {
+    "id": "ELECTRIC_CHARGE",
+    "mana": 8,
+    "name": "$action_electric_charge",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/electric_charge.png",
+    "description": "$actiondesc_electric_charge",
+    "spawn_level": "1,2,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
+    "spawn_probability": "1,1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/electricity.xml"
+    ]
+  },
+  {
+    "id": "MATTER_EATER",
+    "mana": 120,
+    "name": "$action_matter_eater",
+    "price": 280,
+    "sprite": "data/ui_gfx/gun_actions/matter_eater.png",
+    "max_uses": 10,
+    "description": "$actiondesc_matter_eater",
+    "spawn_level": "1,2,4,5,10",
+    "never_unlimited": true,
+    "spawn_probability": "0.1,1,0.1,0.1,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/matter_eater.xml"
+    ]
+  },
+  {
+    "id": "FREEZE",
+    "mana": 10,
+    "name": "$action_freeze",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/freeze.png",
+    "description": "$actiondesc_freeze",
+    "spawn_level": "1,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/freeze.xml",
+    "spawn_probability": "1,1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/freeze_charge.xml"
+    ]
+  },
+  {
+    "id": "HITFX_BURNING_CRITICAL_HIT",
+    "mana": 10,
+    "name": "$action_hitfx_burning_critical_hit",
+    "price": 70,
+    "sprite": "data/ui_gfx/gun_actions/burning_critical.png",
+    "description": "$actiondesc_hitfx_burning_critical_hit",
+    "spawn_level": "1,3,4,5",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "sprite_unidentified": "data/entities/misc/hitfx_burning_critical_hit.xml",
+    "related_extra_entities": [
+      "data/entities/particles/freeze_charge.xml"
+    ]
+  },
+  {
+    "id": "HITFX_CRITICAL_WATER",
+    "mana": 10,
+    "name": "$action_hitfx_critical_water",
+    "price": 70,
+    "sprite": "data/ui_gfx/gun_actions/critical_water.png",
+    "description": "$actiondesc_hitfx_critical_water",
+    "spawn_level": "1,3,4,5",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_critical_water.xml"
+    ]
+  },
+  {
+    "id": "HITFX_CRITICAL_OIL",
+    "mana": 10,
+    "name": "$action_hitfx_critical_oil",
+    "price": 70,
+    "sprite": "data/ui_gfx/gun_actions/critical_oil.png",
+    "description": "$actiondesc_hitfx_critical_oil",
+    "spawn_level": "1,3,4,5",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_critical_oil.xml"
+    ]
+  },
+  {
+    "id": "HITFX_CRITICAL_BLOOD",
+    "mana": 10,
+    "name": "$action_hitfx_critical_blood",
+    "price": 70,
+    "sprite": "data/ui_gfx/gun_actions/critical_blood.png",
+    "description": "$actiondesc_hitfx_critical_blood",
+    "spawn_level": "1,3,4,5",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_critical_blood.xml"
+    ]
+  },
+  {
+    "id": "HITFX_TOXIC_CHARM",
+    "mana": 70,
+    "name": "$action_hitfx_toxic_charm",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/charm_on_toxic.png",
+    "description": "$actiondesc_hitfx_toxic_charm",
+    "spawn_level": "1,3,4,5",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_toxic_charm.xml"
+    ]
+  },
+  {
+    "id": "HITFX_EXPLOSION_SLIME",
+    "mana": 20,
+    "name": "$action_hitfx_explosion_slime",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/explode_on_slime.png",
+    "description": "$actiondesc_hitfx_explosion_slime",
+    "spawn_level": "1,3,4,5",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_explode_slime.xml"
+    ]
+  },
+  {
+    "id": "HITFX_EXPLOSION_SLIME_GIGA",
+    "mana": 200,
+    "name": "$action_hitfx_explosion_slime_giga",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/explode_on_slime_giga.png",
+    "max_uses": 20,
+    "description": "$actiondesc_hitfx_explosion_slime_giga",
+    "spawn_level": "1,3,4,5",
+    "spawn_probability": "0.1,0.1,0.1,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_explode_slime_giga.xml",
+      "data/entities/particles/tinyspark_purple.xml"
+    ]
+  },
+  {
+    "id": "HITFX_EXPLOSION_ALCOHOL",
+    "mana": 20,
+    "name": "$action_hitfx_explosion_alcohol",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/explode_on_alcohol.png",
+    "description": "$actiondesc_hitfx_explosion_alcohol",
+    "spawn_level": "1,3,4,5",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_explode_alcohol.xml"
+    ]
+  },
+  {
+    "id": "HITFX_EXPLOSION_ALCOHOL_GIGA",
+    "mana": 200,
+    "name": "$action_hitfx_explosion_alcohol_giga",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/explode_on_alcohol_giga.png",
+    "max_uses": 20,
+    "description": "$actiondesc_hitfx_explosion_alcohol_giga",
+    "spawn_level": "1,3,4,5",
+    "spawn_probability": "0.1,0.1,0.1,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/freeze_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_explode_alcohol_giga.xml",
+      "data/entities/particles/tinyspark_orange.xml"
+    ]
+  },
+  {
+    "id": "HITFX_PETRIFY",
+    "mana": 10,
+    "name": "$action_petrify",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/petrify.png",
+    "description": "$actiondesc_petrify_a",
+    "spawn_level": "2,3,5,6",
+    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png"
+  },
+  {
+    "id": "ROCKET_DOWNWARDS",
+    "mana": 90,
+    "name": "$action_rocket_downwards",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/rocket_downwards.png",
+    "description": "$actiondesc_rocket_downwards",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.2,1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/rocket_downwards.xml"
+    ]
+  },
+  {
+    "id": "ROCKET_OCTAGON",
+    "mana": 100,
+    "name": "$action_rocket_octagon",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/rocket_octagon.png",
+    "description": "$actiondesc_rocket_octagon",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.5,0.5,0.5",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/rocket_octagon.xml"
+    ]
+  },
+  {
+    "id": "FIZZLE",
+    "mana": 0,
+    "name": "$action_fizzle",
+    "price": 0,
+    "sprite": "data/ui_gfx/gun_actions/fizzle.png",
+    "description": "$actiondesc_fizzle",
+    "spawn_level": "3,4,5",
+    "spawn_probability": "0.1,0.1,0.1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/fizzle.xml"
+    ]
+  },
+  {
+    "id": "BOUNCE_EXPLOSION",
+    "mana": 20,
+    "name": "$action_bounce_explosion",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/bounce_explosion.png",
+    "description": "$actiondesc_bounce_explosion",
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "0.2,0.6,0.8,0.8",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/bounce_explosion.xml"
+    ]
+  },
+  {
+    "id": "BOUNCE_SPARK",
+    "mana": 20,
+    "name": "$action_bounce_spark",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/bounce_spark.png",
+    "description": "$actiondesc_bounce_spark",
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.2,0.6,0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/bounce_spark.xml"
+    ]
+  },
+  {
+    "id": "BOUNCE_LASER",
+    "mana": 30,
+    "name": "$action_bounce_laser",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/bounce_laser.png",
+    "description": "$actiondesc_bounce_laser",
+    "spawn_level": "3,4,5",
+    "spawn_probability": "0.4,0.8,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/bounce_laser.xml"
+    ]
+  },
+  {
+    "id": "BOUNCE_LASER_EMITTER",
+    "mana": 40,
+    "name": "$action_bounce_laser_emitter",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/bounce_laser_emitter.png",
+    "description": "$actiondesc_bounce_laser_emitter",
+    "spawn_level": "3,4,5",
+    "spawn_probability": "0.4,0.8,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/bounce_laser_emitter.xml"
+    ]
+  },
+  {
+    "id": "BOUNCE_LARPA",
+    "mana": 80,
+    "name": "$action_bounce_larpa",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/bounce_larpa.png",
+    "description": "$actiondesc_bounce_larpa",
+    "spawn_level": "4,5,6",
+    "spawn_probability": "0.4,0.6,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/bounce_larpa.xml"
+    ]
+  },
+  {
+    "id": "FIREBALL_RAY",
+    "mana": 110,
+    "name": "$action_fireball_ray",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/fireball_ray.png",
+    "max_uses": 16,
+    "description": "$actiondesc_fireball_ray",
+    "spawn_level": "1,2,4,5",
+    "spawn_probability": "0.6,0.6,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/fireball_ray.xml"
+    ]
+  },
+  {
+    "id": "LIGHTNING_RAY",
+    "mana": 110,
+    "name": "$action_lightning_ray",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/lightning_ray.png",
+    "max_uses": 16,
+    "description": "$actiondesc_lightning_ray",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
+    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/lightning_ray.xml"
+    ]
+  },
+  {
+    "id": "TENTACLE_RAY",
+    "mana": 110,
+    "name": "$action_tentacle_ray",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/tentacle_ray.png",
+    "max_uses": 16,
+    "description": "$actiondesc_tentacle_ray",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/tentacle_ray.xml"
+    ]
+  },
+  {
+    "id": "LASER_EMITTER_RAY",
+    "mana": 110,
+    "name": "$action_laser_emitter_ray",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/laser_emitter_ray.png",
+    "max_uses": 16,
+    "description": "$actiondesc_laser_emitter_ray",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/laser_emitter_ray.xml"
+    ]
+  },
+  {
+    "id": "FIREBALL_RAY_LINE",
+    "mana": 130,
+    "name": "$action_fireball_ray_line",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/fireball_ray_line.png",
+    "max_uses": 20,
+    "description": "$actiondesc_fireball_ray_line",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.6,0.4,0.4,0.4,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/fireball_ray_line.xml"
+    ]
+  },
+  {
+    "id": "FIREBALL_RAY_ENEMY",
+    "mana": 90,
+    "name": "$action_fireball_ray_enemy",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/fireball_ray_enemy.png",
+    "max_uses": 20,
+    "description": "$actiondesc_fireball_ray_enemy",
+    "spawn_level": "1,2,4,5",
+    "spawn_probability": "0.6,0.6,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_fireball_ray_enemy.xml"
+    ]
+  },
+  {
+    "id": "LIGHTNING_RAY_ENEMY",
+    "mana": 90,
+    "name": "$action_lightning_ray_enemy",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/lightning_ray_enemy.png",
+    "max_uses": 20,
+    "description": "$actiondesc_lightning_ray_enemy",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
+    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_lightning_ray_enemy.xml"
+    ]
+  },
+  {
+    "id": "TENTACLE_RAY_ENEMY",
+    "mana": 90,
+    "name": "$action_tentacle_ray_enemy",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/tentacle_ray_enemy.png",
+    "max_uses": 20,
+    "description": "$actiondesc_tentacle_ray_enemy",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_tentacle_ray_enemy.xml"
+    ]
+  },
+  {
+    "id": "GRAVITY_FIELD_ENEMY",
+    "mana": 110,
+    "name": "$action_gravity_field_enemy",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/gravity_field_enemy.png",
+    "max_uses": 20,
+    "description": "$actiondesc_gravity_field_enemy",
+    "spawn_level": "1,2,4,5",
+    "spawn_probability": "0.6,0.6,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_gravity_field_enemy.xml"
+    ]
+  },
+  {
+    "id": "CURSE",
+    "mana": 30,
+    "name": "$action_curse",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/curse.png",
+    "description": "$actiondesc_curse",
+    "spawn_level": "2,3,5",
+    "spawn_probability": "0.6,0.8,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_curse.xml"
+    ]
+  },
+  {
+    "id": "CURSE_WITHER_PROJECTILE",
+    "mana": 50,
+    "name": "$action_curse_wither_projectile",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/curse_wither_projectile.png",
+    "description": "$actiondesc_curse_wither_projectile",
+    "spawn_level": "3,4,5,6",
+    "spawn_probability": "0.2,0.4,0.9,0.9",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_curse_wither_projectile.xml"
+    ]
+  },
+  {
+    "id": "CURSE_WITHER_EXPLOSION",
+    "mana": 50,
+    "name": "$action_curse_wither_explosion",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/curse_wither_explosion.png",
+    "description": "$actiondesc_curse_wither_explosion",
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "0.2,0.4,0.9,0.9",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_curse_wither_explosion.xml"
+    ]
+  },
+  {
+    "id": "CURSE_WITHER_MELEE",
+    "mana": 50,
+    "name": "$action_curse_wither_melee",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/curse_wither_melee.png",
+    "description": "$actiondesc_curse_wither_melee",
+    "spawn_level": "3,4,5,6",
+    "spawn_probability": "0.2,0.4,0.9,0.9",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_curse_wither_melee.xml"
+    ]
+  },
+  {
+    "id": "CURSE_WITHER_ELECTRICITY",
+    "mana": 50,
+    "name": "$action_curse_wither_electricity",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/curse_wither_electricity.png",
+    "description": "$actiondesc_curse_wither_electricity",
+    "spawn_level": "1,4,5,6",
+    "spawn_probability": "0.2,0.4,0.9,0.9",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/hitfx_curse_wither_electricity.xml"
+    ]
+  },
+  {
+    "id": "ORBIT_DISCS",
+    "mana": 70,
+    "name": "$action_orbit_discs",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/orbit_discs.png",
+    "description": "$actiondesc_orbit_discs",
+    "spawn_level": "1,2,4,5",
+    "spawn_probability": "0.2,0.8,0.4,0.2",
+    "spawn_requires_flag": "card_unlocked_dragon",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/orbit_discs.xml"
+    ]
+  },
+  {
+    "id": "ORBIT_FIREBALLS",
+    "mana": 40,
+    "name": "$action_orbit_fireballs",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/orbit_fireballs.png",
+    "description": "$actiondesc_orbit_fireballs",
+    "spawn_level": "0,1,2,4,5",
+    "spawn_probability": "0.5,0.2,0.8,0.4,0.2",
+    "spawn_requires_flag": "card_unlocked_dragon",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/orbit_fireballs.xml"
+    ]
+  },
+  {
+    "id": "ORBIT_NUKES",
+    "mana": 250,
+    "name": "$action_orbit_nukes",
+    "price": 400,
+    "sprite": "data/ui_gfx/gun_actions/orbit_nukes.png",
+    "max_uses": 3,
+    "description": "$actiondesc_orbit_nukes",
+    "spawn_level": "2,4,5,6,10",
+    "ai_never_uses": true,
+    "spawn_probability": "0.1,0.1,0.1,0.2,1",
+    "spawn_requires_flag": "card_unlocked_dragon",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/orbit_nukes.xml"
+    ]
+  },
+  {
+    "id": "ORBIT_LASERS",
+    "mana": 100,
+    "name": "$action_orbit_lasers",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/orbit_lasers.png",
+    "description": "$actiondesc_orbit_lasers",
+    "spawn_level": "1,2,4,5,10",
+    "spawn_probability": "0.2,0.8,0.4,0.2,0.2",
+    "spawn_requires_flag": "card_unlocked_dragon",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/orbit_lasers.xml"
+    ]
+  },
+  {
+    "id": "ORBIT_LARPA",
+    "mana": 90,
+    "name": "$action_orbit_larpa",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/orbit_larpa.png",
+    "description": "$actiondesc_orbit_larpa",
+    "spawn_level": "3,4,6,10",
+    "spawn_probability": "0.2,0.2,0.8,0.1",
+    "spawn_requires_flag": "card_unlocked_dragon",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/orbit_larpa.xml"
+    ]
+  },
+  {
+    "id": "CHAIN_SHOT",
+    "mana": 70,
+    "name": "$action_chain_shot",
+    "price": 240,
+    "sprite": "data/ui_gfx/gun_actions/chain_shot.png",
+    "description": "$actiondesc_chain_shot",
+    "spawn_level": "2,4,5",
+    "spawn_probability": "0.4,0.6,0.8",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/chain_shot.xml"
+    ]
+  },
+  {
+    "id": "ARC_ELECTRIC",
+    "mana": 15,
+    "name": "$action_arc_electric",
+    "price": 170,
+    "sprite": "data/ui_gfx/gun_actions/arc_electric.png",
+    "description": "$actiondesc_arc_electric",
+    "spawn_level": "2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/arc_electric.xml",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.8",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/arc_electric_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/arc_electric.xml"
+    ]
+  },
+  {
+    "id": "ARC_FIRE",
+    "mana": 15,
+    "name": "$action_arc_fire",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/arc_fire.png",
+    "description": "$actiondesc_arc_fire",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/arc_fire.xml",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/arc_fire_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/arc_fire.xml"
+    ]
+  },
+  {
+    "id": "ARC_GUNPOWDER",
+    "mana": 15,
+    "name": "$action_arc_gunpowder",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/arc_gunpowder.png",
+    "description": "$actiondesc_arc_gunpowder",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/arc_fire_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/arc_gunpowder.xml"
+    ]
+  },
+  {
+    "id": "ARC_POISON",
+    "mana": 15,
+    "name": "$action_arc_poison",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/arc_poison.png",
+    "description": "$actiondesc_arc_poison",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/arc_fire_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/arc_poison.xml"
+    ]
+  },
+  {
+    "id": "CRUMBLING_EARTH_PROJECTILE",
+    "mana": 45,
+    "name": "$action_crumbling_earth_projectile",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/crumbling_earth_projectile.png",
+    "max_uses": 15,
+    "description": "$actiondesc_crumbling_earth_projectile",
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/arc_fire_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/crumbling_earth_projectile.xml"
+    ]
+  },
+  {
+    "id": "X_RAY",
+    "mana": 100,
+    "name": "$action_x_ray",
+    "price": 230,
+    "sprite": "data/ui_gfx/gun_actions/x_ray.png",
+    "max_uses": 10,
+    "description": "$actiondesc_x_ray",
+    "spawn_level": "0,1,2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/xray.xml",
+    "spawn_probability": "0.8,1,1,0.8,0.6,0.4,0.2",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/xray.xml"
+    ],
+    "sprite_unidentified": "data/ui_gfx/gun_actions/x_ray_unidentified.png"
+  },
+  {
+    "id": "UNSTABLE_GUNPOWDER",
+    "mana": 15,
+    "name": "$action_unstable_gunpowder",
+    "price": 140,
+    "sprite": "data/ui_gfx/gun_actions/unstable_gunpowder.png",
+    "description": "$actiondesc_unstable_gunpowder",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/unstable_gunpowder.xml",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/unstable_gunpowder_unidentified.png"
+  },
+  {
+    "id": "ACID_TRAIL",
+    "mana": 15,
+    "name": "$action_acid_trail",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/acid_trail.png",
+    "description": "$actiondesc_acid_trail",
+    "spawn_level": "1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/acid_trail.xml",
+    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/acid_trail_unidentified.png"
+  },
+  {
+    "id": "POISON_TRAIL",
+    "mana": 10,
+    "name": "$action_poison_trail",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/poison_trail.png",
+    "description": "$actiondesc_poison_trail",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/poison_trail.xml",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/poison_trail_unidentified.png"
+  },
+  {
+    "id": "OIL_TRAIL",
+    "mana": 10,
+    "name": "$action_oil_trail",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/oil_trail.png",
+    "description": "$actiondesc_oil_trail",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/oil_trail.xml",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/oil_trail_unidentified.png"
+  },
+  {
+    "id": "WATER_TRAIL",
+    "mana": 10,
+    "name": "$action_water_trail",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/water_trail.png",
+    "description": "$actiondesc_water_trail",
+    "spawn_level": "1,2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/water_trail.xml",
+    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/oil_trail_unidentified.png"
+  },
+  {
+    "id": "GUNPOWDER_TRAIL",
+    "mana": 10,
+    "name": "$action_gunpowder_trail",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/gunpowder_trail.png",
+    "description": "$actiondesc_gunpowder_trail",
+    "spawn_level": "2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/gunpowder_trail.xml",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/oil_trail_unidentified.png"
+  },
+  {
+    "id": "FIRE_TRAIL",
+    "mana": 10,
+    "name": "$action_fire_trail",
+    "price": 130,
+    "sprite": "data/ui_gfx/gun_actions/fire_trail.png",
+    "description": "$actiondesc_fire_trail",
+    "spawn_level": "0,1,2,3,4",
+    "custom_xml_file": "data/entities/misc/custom_cards/fire_trail.xml",
+    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/fire_trail_unidentified.png"
+  },
+  {
+    "id": "BURN_TRAIL",
+    "mana": 5,
+    "name": "$action_burn_trail",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/burn_trail.png",
+    "description": "$actiondesc_burn_trail",
+    "spawn_level": "0,1,2",
+    "custom_xml_file": "data/entities/misc/custom_cards/burn_trail.xml",
+    "spawn_probability": "0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/burn_trail_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/burn.xml"
+    ]
+  },
+  {
+    "id": "TORCH",
+    "mana": 0,
+    "name": "$action_torch",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/torch.png",
+    "description": "$actiondesc_torch",
+    "spawn_level": "0,1,2",
+    "custom_xml_file": "data/entities/misc/custom_cards/torch.xml",
+    "spawn_probability": "1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/torch_unidentified.png"
+  },
+  {
+    "id": "TORCH_ELECTRIC",
+    "mana": 0,
+    "name": "$action_torch_electric",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/torch_electric.png",
+    "description": "$actiondesc_torch_electric",
+    "spawn_level": "0,1,2",
+    "custom_xml_file": "data/entities/misc/custom_cards/torch_electric.xml",
+    "spawn_probability": "1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/torch_unidentified.png"
+  },
+  {
+    "id": "ENERGY_SHIELD",
+    "name": "$action_energy_shield",
+    "price": 220,
+    "sprite": "data/ui_gfx/gun_actions/energy_shield.png",
+    "description": "$actiondesc_energy_shield",
+    "spawn_level": "1,2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/energy_shield.xml",
+    "spawn_probability": "0.05,0.6,0.6,0.6,0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/energy_shield_unidentified.png"
+  },
+  {
+    "id": "ENERGY_SHIELD_SECTOR",
+    "name": "$action_energy_shield_sector",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/energy_shield_sector.png",
+    "description": "$actiondesc_energy_shield_sector",
+    "spawn_level": "0,1,2,3,4,5",
+    "custom_xml_file": "data/entities/misc/custom_cards/energy_shield_sector.xml",
+    "spawn_probability": "0.05,0.6,0.6,0.6,0.6,0.6",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/energy_shield_sector_unidentified.png"
+  },
+  {
+    "id": "ENERGY_SHIELD_SHOT",
+    "mana": 5,
+    "name": "$action_energy_shield_shot",
+    "price": 180,
+    "sprite": "data/ui_gfx/gun_actions/energy_shield_shot.png",
+    "description": "$actiondesc_energy_shield_shot",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/energy_shield_shot_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/energy_shield_shot.xml"
+    ]
+  },
+  {
+    "id": "TINY_GHOST",
+    "mana": 0,
+    "name": "$action_tiny_ghost",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/tiny_ghost.png",
+    "description": "$actiondesc_tiny_ghost",
+    "spawn_level": "1,2,3,4,5,6",
+    "custom_xml_file": "data/entities/misc/custom_cards/tiny_ghost.xml",
+    "spawn_probability": "0.1,0.5,1,1,1,1",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/torch_unidentified.png"
+  },
+  {
+    "id": "OCARINA_A",
+    "mana": 1,
+    "name": "$action_ocarina_a",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/ocarina_a.png",
+    "description": "$actiondesc_ocarina_a",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/ocarina/ocarina_a.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_ocarina"
+  },
+  {
+    "id": "OCARINA_B",
+    "mana": 1,
+    "name": "$action_ocarina_b",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/ocarina_b.png",
+    "description": "$actiondesc_ocarina_b",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/ocarina/ocarina_b.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_ocarina"
+  },
+  {
+    "id": "OCARINA_C",
+    "mana": 1,
+    "name": "$action_ocarina_c",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/ocarina_c.png",
+    "description": "$actiondesc_ocarina_c",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/ocarina/ocarina_c.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_ocarina"
+  },
+  {
+    "id": "OCARINA_D",
+    "mana": 1,
+    "name": "$action_ocarina_d",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/ocarina_d.png",
+    "description": "$actiondesc_ocarina_d",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/ocarina/ocarina_d.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_ocarina"
+  },
+  {
+    "id": "OCARINA_E",
+    "mana": 1,
+    "name": "$action_ocarina_e",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/ocarina_e.png",
+    "description": "$actiondesc_ocarina_e",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/ocarina/ocarina_e.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_ocarina"
+  },
+  {
+    "id": "OCARINA_F",
+    "mana": 1,
+    "name": "$action_ocarina_f",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/ocarina_f.png",
+    "description": "$actiondesc_ocarina_f",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/ocarina/ocarina_f.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_ocarina"
+  },
+  {
+    "id": "OCARINA_GSHARP",
+    "mana": 1,
+    "name": "$action_ocarina_gsharp",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/ocarina_gsharp.png",
+    "description": "$actiondesc_ocarina_gsharp",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/ocarina/ocarina_gsharp.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_ocarina"
+  },
+  {
+    "id": "OCARINA_A2",
+    "mana": 1,
+    "name": "$action_ocarina_a2",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/ocarina_a2.png",
+    "description": "$actiondesc_ocarina_a2",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/ocarina/ocarina_a2.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_ocarina"
+  },
+  {
+    "id": "KANTELE_A",
+    "mana": 1,
+    "name": "$action_kantele_a",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/kantele_a.png",
+    "description": "$actiondesc_kantele_a",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/kantele/kantele_a.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_kantele"
+  },
+  {
+    "id": "KANTELE_D",
+    "mana": 1,
+    "name": "$action_kantele_d",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/kantele_d.png",
+    "description": "$actiondesc_kantele_d",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/kantele/kantele_d.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_kantele"
+  },
+  {
+    "id": "KANTELE_DIS",
+    "mana": 1,
+    "name": "$action_kantele_dis",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/kantele_dis.png",
+    "description": "$actiondesc_kantele_dis",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/kantele/kantele_dis.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_kantele"
+  },
+  {
+    "id": "KANTELE_E",
+    "mana": 1,
+    "name": "$action_kantele_e",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/kantele_e.png",
+    "description": "$actiondesc_kantele_e",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/kantele/kantele_e.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_kantele"
+  },
+  {
+    "id": "KANTELE_G",
+    "mana": 1,
+    "name": "$action_kantele_g",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/kantele_g.png",
+    "description": "$actiondesc_kantele_g",
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/kantele/kantele_g.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_kantele"
+  },
+  {
+    "id": "RANDOM_SPELL",
+    "mana": 5,
+    "name": "$action_random_spell",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/random_spell.png",
+    "recursive": true,
+    "description": "$actiondesc_random_spell",
+    "spawn_level": "3,4,5,6,10",
+    "spawn_probability": "0.2,0.3,0.1,0.1,0.5",
+    "spawn_requires_flag": "card_unlocked_pyramid",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "RANDOM_PROJECTILE",
+    "mana": 20,
+    "name": "$action_random_projectile",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/random_projectile.png",
+    "recursive": true,
+    "description": "$actiondesc_random_projectile",
+    "spawn_level": "2,4,5,6,10",
+    "spawn_probability": "0.2,0.4,0.1,0.1,0.5",
+    "spawn_requires_flag": "card_unlocked_pyramid",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "RANDOM_MODIFIER",
+    "mana": 20,
+    "name": "$action_random_modifier",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/random_modifier.png",
+    "recursive": true,
+    "description": "$actiondesc_random_modifier",
+    "spawn_level": "4,5,6,10",
+    "spawn_probability": "0.3,0.1,0.1,0.5",
+    "spawn_requires_flag": "card_unlocked_pyramid",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "RANDOM_STATIC_PROJECTILE",
+    "mana": 20,
+    "name": "$action_random_static_projectile",
+    "price": 160,
+    "sprite": "data/ui_gfx/gun_actions/random_static_projectile.png",
+    "recursive": true,
+    "description": "$actiondesc_random_static_projectile",
+    "spawn_level": "3,5,6,10",
+    "spawn_probability": "0.2,0.1,0.1,0.5",
+    "spawn_requires_flag": "card_unlocked_pyramid",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "DRAW_RANDOM",
+    "mana": 20,
+    "name": "$action_draw_random",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/draw_random.png",
+    "recursive": true,
+    "description": "$actiondesc_draw_random",
+    "spawn_level": "2,3,4,5,6,10",
+    "spawn_probability": "0.3,0.2,0.2,0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_pyramid",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "DRAW_RANDOM_X3",
+    "mana": 50,
+    "name": "$action_draw_random_x3",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/draw_random_x3.png",
+    "recursive": true,
+    "description": "$actiondesc_draw_random_x3",
+    "spawn_level": "3,4,5,6,10",
+    "spawn_probability": "0.1,0.3,0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_pyramid",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "DRAW_3_RANDOM",
+    "mana": 40,
+    "name": "$action_draw_3_random",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/draw_3_random.png",
+    "recursive": true,
+    "description": "$actiondesc_draw_3_random",
+    "spawn_level": "2,3,5,6,10",
+    "spawn_probability": "0.1,0.2,0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_pyramid",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "ALL_NUKES",
+    "mana": 600,
+    "name": "$action_all_nukes",
+    "price": 600,
+    "sprite": "data/ui_gfx/gun_actions/all_nukes.png",
+    "max_uses": 2,
+    "description": "$actiondesc_all_nukes",
+    "spawn_level": "6,10",
+    "ai_never_uses": true,
+    "never_unlimited": true,
+    "spawn_probability": "0.1,1",
+    "spawn_requires_flag": "card_unlocked_alchemy",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "ALL_DISCS",
+    "mana": 100,
+    "name": "$action_all_discs",
+    "price": 400,
+    "sprite": "data/ui_gfx/gun_actions/all_discs.png",
+    "description": "$actiondesc_all_discs",
+    "spawn_level": "0,6,10",
+    "spawn_probability": "0.1,0.05,1",
+    "spawn_requires_flag": "card_unlocked_alchemy",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "ALL_ROCKETS",
+    "mana": 100,
+    "name": "$action_all_rockets",
+    "price": 400,
+    "sprite": "data/ui_gfx/gun_actions/all_rockets.png",
+    "max_uses": 10,
+    "description": "$actiondesc_all_rockets",
+    "spawn_level": "1,6,10",
+    "never_unlimited": true,
+    "spawn_probability": "0.1,0.05,1",
+    "spawn_requires_flag": "card_unlocked_alchemy",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "ALL_DEATHCROSSES",
+    "mana": 80,
+    "name": "$action_all_deathcrosses",
+    "price": 350,
+    "sprite": "data/ui_gfx/gun_actions/all_deathcrosses.png",
+    "max_uses": 15,
+    "description": "$actiondesc_all_deathcrosses",
+    "spawn_level": "2,6,10",
+    "never_unlimited": true,
+    "spawn_probability": "0.1,0.05,1",
+    "spawn_requires_flag": "card_unlocked_alchemy",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "ALL_BLACKHOLES",
+    "mana": 200,
+    "name": "$action_all_blackholes",
+    "price": 500,
+    "sprite": "data/ui_gfx/gun_actions/all_blackholes.png",
+    "max_uses": 10,
+    "description": "$actiondesc_all_blackholes",
+    "spawn_level": "3,6,10",
+    "never_unlimited": true,
+    "spawn_probability": "0.1,0.05,1",
+    "spawn_requires_flag": "card_unlocked_alchemy",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "ALL_ACID",
+    "mana": 200,
+    "name": "$action_all_acid",
+    "price": 600,
+    "sprite": "data/ui_gfx/gun_actions/all_acid.png",
+    "description": "$actiondesc_all_acid",
+    "spawn_level": "4,6,10",
+    "spawn_probability": "0.1,0.05,1",
+    "spawn_requires_flag": "card_unlocked_alchemy",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png"
+  },
+  {
+    "id": "ALL_SPELLS",
+    "mana": 600,
+    "name": "$action_all_spells",
+    "price": 1000,
+    "sprite": "data/ui_gfx/gun_actions/all_spells.png",
+    "max_uses": 1,
+    "recursive": true,
+    "description": "$actiondesc_all_spells",
+    "spawn_level": "10",
+    "ai_never_uses": true,
+    "never_unlimited": true,
+    "spawn_probability": "1",
+    "spawn_manual_unlock": true,
+    "spawn_requires_flag": "card_unlocked_everything",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "SUMMON_PORTAL",
+    "mana": 50,
+    "name": "$action_summon_portal",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/summon_portal.png",
+    "max_uses": 7,
+    "description": "$actiondesc_summon_portal",
+    "spawn_level": "10",
+    "custom_xml_file": "data/entities/misc/custom_cards/summon_portal.xml",
+    "spawn_probability": "0",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "ADD_TRIGGER",
+    "mana": 10,
+    "name": "$action_add_trigger",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/trigger.png",
+    "description": "$actiondesc_add_trigger",
+    "spawn_level": "3,4,5,10",
+    "spawn_probability": "0.3,0.6,0.6,1",
+    "spawn_requires_flag": "card_unlocked_mestari",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png"
+  },
+  {
+    "id": "ADD_TIMER",
+    "mana": 20,
+    "name": "$action_add_timer",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/timer.png",
+    "description": "$actiondesc_add_timer",
+    "spawn_level": "3,4,5,10",
+    "spawn_probability": "0.3,0.6,0.6,1",
+    "spawn_requires_flag": "card_unlocked_mestari",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png"
+  },
+  {
+    "id": "ADD_DEATH_TRIGGER",
+    "mana": 20,
+    "name": "$action_add_death_trigger",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/death_trigger.png",
+    "description": "$actiondesc_add_death_trigger",
+    "spawn_level": "3,4,5,10",
+    "spawn_probability": "0.3,0.6,0.6,1",
+    "spawn_requires_flag": "card_unlocked_mestari",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png"
+  },
+  {
+    "id": "LARPA_CHAOS",
+    "mana": 100,
+    "name": "$action_larpa_chaos",
+    "price": 260,
+    "sprite": "data/ui_gfx/gun_actions/larpa_chaos.png",
+    "description": "$actiondesc_larpa_chaos",
+    "spawn_level": "2,3,4,5,10",
+    "spawn_probability": "0.1,0.2,0.3,0.4,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/larpa_chaos.xml"
+    ]
+  },
+  {
+    "id": "LARPA_DOWNWARDS",
+    "mana": 120,
+    "name": "$action_larpa_downwards",
+    "price": 290,
+    "sprite": "data/ui_gfx/gun_actions/larpa_downwards.png",
+    "description": "$actiondesc_larpa_downwards",
+    "spawn_level": "2,3,4,5,10",
+    "spawn_probability": "0.1,0.3,0.2,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/larpa_downwards.xml"
+    ]
+  },
+  {
+    "id": "LARPA_UPWARDS",
+    "mana": 120,
+    "name": "$action_larpa_upwards",
+    "price": 290,
+    "sprite": "data/ui_gfx/gun_actions/larpa_upwards.png",
+    "description": "$actiondesc_larpa_upwards",
+    "spawn_level": "2,3,4,5,10",
+    "spawn_probability": "0.1,0.1,0.2,0.4,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/larpa_upwards.xml"
+    ]
+  },
+  {
+    "id": "LARPA_CHAOS_2",
+    "mana": 150,
+    "name": "$action_larpa_chaos_2",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/larpa_chaos_2.png",
+    "description": "$actiondesc_larpa_chaos_2",
+    "spawn_level": "3,5,10",
+    "spawn_probability": "0.1,0.4,0.1",
+    "spawn_requires_flag": "card_unlocked_alchemy",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/larpa_chaos_2.xml"
+    ]
+  },
+  {
+    "id": "LARPA_DEATH",
+    "mana": 90,
+    "name": "$action_larpa_death",
+    "price": 150,
+    "sprite": "data/ui_gfx/gun_actions/larpa_death.png",
+    "max_uses": 30,
+    "description": "$actiondesc_larpa_death",
+    "spawn_level": "2,3,4,5,10",
+    "spawn_probability": "0.1,0.1,0.3,0.2,0.2",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/larpa_death.xml"
+    ]
+  },
+  {
+    "id": "ALPHA",
+    "mana": 30,
+    "name": "$action_alpha",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/alpha.png",
+    "recursive": true,
+    "description": "$actiondesc_alpha",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_duplicate",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "GAMMA",
+    "mana": 30,
+    "name": "$action_gamma",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/gamma.png",
+    "recursive": true,
+    "description": "$actiondesc_gamma",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_duplicate",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "TAU",
+    "mana": 80,
+    "name": "$action_tau",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/tau.png",
+    "recursive": true,
+    "description": "$actiondesc_tau",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_duplicate",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "OMEGA",
+    "mana": 300,
+    "name": "$action_omega",
+    "price": 600,
+    "sprite": "data/ui_gfx/gun_actions/omega.png",
+    "recursive": true,
+    "description": "$actiondesc_omega",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_duplicate",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "MU",
+    "mana": 120,
+    "name": "$action_mu",
+    "price": 500,
+    "sprite": "data/ui_gfx/gun_actions/mu.png",
+    "recursive": true,
+    "description": "$actiondesc_mu",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_duplicate",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "PHI",
+    "mana": 120,
+    "name": "$action_phi",
+    "price": 500,
+    "sprite": "data/ui_gfx/gun_actions/phi.png",
+    "recursive": true,
+    "description": "$actiondesc_phi",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_duplicate",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "SIGMA",
+    "mana": 120,
+    "name": "$action_sigma",
+    "price": 500,
+    "sprite": "data/ui_gfx/gun_actions/sigma.png",
+    "recursive": true,
+    "description": "$actiondesc_sigma",
+    "spawn_level": "4,5,10",
+    "spawn_probability": "0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_duplicate",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "ZETA",
+    "mana": 10,
+    "name": "$action_zeta",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/zeta.png",
+    "recursive": true,
+    "description": "$actiondesc_zeta",
+    "spawn_level": "1,2,3,10",
+    "spawn_probability": "0.2,0.8,0.6,0.1",
+    "spawn_manual_unlock": true,
+    "spawn_requires_flag": "card_unlocked_duplicate",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "DIVIDE_2",
+    "mana": 35,
+    "name": "$action_divide_2",
+    "price": 200,
+    "sprite": "data/ui_gfx/gun_actions/divide_2.png",
+    "description": "$actiondesc_divide_2",
+    "spawn_level": "3,5,6,10",
+    "spawn_probability": "0.2,0.3,0.2,1",
+    "spawn_requires_flag": "card_unlocked_musicbox",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "DIVIDE_3",
+    "mana": 50,
+    "name": "$action_divide_3",
+    "price": 250,
+    "sprite": "data/ui_gfx/gun_actions/divide_3.png",
+    "description": "$actiondesc_divide_3",
+    "spawn_level": "4,5,6,10",
+    "spawn_probability": "0.1,0.1,0.2,1",
+    "spawn_requires_flag": "card_unlocked_musicbox",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "DIVIDE_4",
+    "mana": 70,
+    "name": "$action_divide_4",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/divide_4.png",
+    "description": "$actiondesc_divide_4",
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.1,1",
+    "spawn_requires_flag": "card_unlocked_musicbox",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "DIVIDE_10",
+    "mana": 200,
+    "name": "$action_divide_10",
+    "price": 400,
+    "sprite": "data/ui_gfx/gun_actions/divide_10.png",
+    "max_uses": 5,
+    "description": "$actiondesc_divide_10",
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "spawn_requires_flag": "card_unlocked_divide",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "METEOR_RAIN",
+    "mana": 225,
+    "name": "$action_meteor_rain",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/meteor_rain.png",
+    "max_uses": 2,
+    "description": "$actiondesc_meteor_rain",
+    "spawn_level": "6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/meteor_rain.xml",
+    "never_unlimited": true,
+    "spawn_probability": "0.1,1",
+    "related_projectiles": [
+      "data/entities/projectiles/deck/meteor_rain_meteor.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_rain",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/effect_meteor_rain.xml"
+    ]
+  },
+  {
+    "id": "WORM_RAIN",
+    "mana": 225,
+    "name": "$action_worm_rain",
+    "price": 300,
+    "sprite": "data/ui_gfx/gun_actions/worm_rain.png",
+    "max_uses": 2,
+    "description": "$actiondesc_worm_rain",
+    "spawn_level": "6,10",
+    "custom_xml_file": "data/entities/misc/custom_cards/worm_rain.xml",
+    "never_unlimited": true,
+    "spawn_probability": "0.1,1",
+    "related_projectiles": [
+      "data/entities/animals/worm_big.xml"
+    ],
+    "spawn_requires_flag": "card_unlocked_rain",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "RESET",
+    "mana": 20,
+    "name": "$action_reset",
+    "price": 120,
+    "sprite": "data/ui_gfx/gun_actions/reset.png",
+    "recursive": true,
+    "description": "$actiondesc_reset",
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "spawn_requires_flag": "card_unlocked_mestari",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png"
+  },
+  {
+    "id": "IF_ENEMY",
+    "mana": 0,
+    "name": "$action_if_enemy",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/if_enemy.png",
+    "description": "$actiondesc_if_enemy",
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "spawn_requires_flag": "card_unlocked_maths",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "IF_PROJECTILE",
+    "mana": 0,
+    "name": "$action_if_projectile",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/if_projectile.png",
+    "description": "$actiondesc_if_projectile",
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "spawn_requires_flag": "card_unlocked_maths",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "IF_HP",
+    "mana": 0,
+    "name": "$action_if_hp",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/if_hp.png",
+    "description": "$actiondesc_if_hp",
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "spawn_requires_flag": "card_unlocked_maths",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "IF_HALF",
+    "mana": 0,
+    "name": "$action_if_half",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/if_half.png",
+    "description": "$actiondesc_if_half",
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "spawn_requires_flag": "card_unlocked_maths",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "IF_END",
+    "mana": 0,
+    "name": "$action_if_end",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/if_end.png",
+    "description": "$actiondesc_if_end",
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "spawn_requires_flag": "card_unlocked_maths",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "IF_ELSE",
+    "mana": 0,
+    "name": "$action_if_else",
+    "price": 10,
+    "sprite": "data/ui_gfx/gun_actions/if_else.png",
+    "description": "$actiondesc_if_else",
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "spawn_requires_flag": "card_unlocked_maths",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png"
+  },
+  {
+    "id": "COLOUR_RED",
+    "mana": 0,
+    "name": "$action_colour_red",
+    "price": 40,
+    "sprite": "data/ui_gfx/gun_actions/colour_red.png",
+    "description": "$actiondesc_colour_red",
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.2,0.2,0.2,0.2,0.2,0.2",
+    "spawn_requires_flag": "card_unlocked_paint",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_red.xml",
+      "data/entities/misc/colour_red.xml"
+    ]
+  },
+  {
+    "id": "COLOUR_ORANGE",
+    "mana": 0,
+    "name": "$action_colour_orange",
+    "price": 40,
+    "sprite": "data/ui_gfx/gun_actions/colour_orange.png",
+    "description": "$actiondesc_colour_orange",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_requires_flag": "card_unlocked_paint",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_red.xml",
+      "data/entities/misc/colour_orange.xml"
+    ]
+  },
+  {
+    "id": "COLOUR_GREEN",
+    "mana": 0,
+    "name": "$action_colour_green",
+    "price": 40,
+    "sprite": "data/ui_gfx/gun_actions/colour_green.png",
+    "description": "$actiondesc_colour_green",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_requires_flag": "card_unlocked_paint",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_red.xml",
+      "data/entities/misc/colour_green.xml"
+    ]
+  },
+  {
+    "id": "COLOUR_YELLOW",
+    "mana": 0,
+    "name": "$action_colour_yellow",
+    "price": 40,
+    "sprite": "data/ui_gfx/gun_actions/colour_yellow.png",
+    "description": "$actiondesc_colour_yellow",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_requires_flag": "card_unlocked_paint",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_red.xml",
+      "data/entities/misc/colour_yellow.xml"
+    ]
+  },
+  {
+    "id": "COLOUR_PURPLE",
+    "mana": 0,
+    "name": "$action_colour_purple",
+    "price": 40,
+    "sprite": "data/ui_gfx/gun_actions/colour_purple.png",
+    "description": "$actiondesc_colour_purple",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_requires_flag": "card_unlocked_paint",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_red.xml",
+      "data/entities/misc/colour_purple.xml"
+    ]
+  },
+  {
+    "id": "COLOUR_BLUE",
+    "mana": 0,
+    "name": "$action_colour_blue",
+    "price": 40,
+    "sprite": "data/ui_gfx/gun_actions/colour_blue.png",
+    "description": "$actiondesc_colour_blue",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_requires_flag": "card_unlocked_paint",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_red.xml",
+      "data/entities/misc/colour_blue.xml"
+    ]
+  },
+  {
+    "id": "COLOUR_RAINBOW",
+    "mana": 0,
+    "name": "$action_colour_rainbow",
+    "price": 40,
+    "sprite": "data/ui_gfx/gun_actions/colour_rainbow.png",
+    "description": "$actiondesc_colour_rainbow",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_requires_flag": "card_unlocked_paint",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_red.xml",
+      "data/entities/misc/colour_rainbow.xml"
+    ]
+  },
+  {
+    "id": "COLOUR_INVIS",
+    "mana": 0,
+    "name": "$action_colour_invis",
+    "price": 40,
+    "sprite": "data/ui_gfx/gun_actions/colour_invis.png",
+    "description": "$actiondesc_colour_invis",
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_requires_flag": "card_unlocked_paint",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/misc/colour_invis.xml"
+    ]
+  },
+  {
+    "id": "RAINBOW_TRAIL",
+    "mana": 0,
+    "name": "$action_rainbow_trail",
+    "price": 100,
+    "sprite": "data/ui_gfx/gun_actions/rainbow_trail.png",
+    "description": "$actiondesc_rainbow_trail",
+    "spawn_level": "10",
+    "custom_xml_file": "data/entities/misc/custom_cards/rainbow_trail.xml",
+    "spawn_probability": "0",
+    "spawn_requires_flag": "card_unlocked_rainbow_trail",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/oil_trail_unidentified.png"
+  }
+]
