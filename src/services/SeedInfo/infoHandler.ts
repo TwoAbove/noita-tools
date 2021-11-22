@@ -33,6 +33,7 @@ export abstract class InfoProvider {
 
 export class ShopInfoProvider extends InfoProvider {
   temples = templeData;
+  spells = spellData;
   biomes = [
     null, // 0
     0,
@@ -72,10 +73,120 @@ export class ShopInfoProvider extends InfoProvider {
 
   generate_shop_item(x: number, y: number, cheap_item: boolean, biomeid_?: number, is_stealable?: boolean) {
     // Todo: scripts/items/generate_shop_item.lua
+
+
+    let biomepixel = Math.floor(y / 512)
+    let biomeid = this.biomes[biomepixel] || 0;
+
+    if (biomepixel > 35) {
+      biomeid = 7;
+    }
+
+    if (!this.biomes[biomepixel] && !biomeid_) {
+      console.log("Unable to find biomeid for chunk at depth ", biomepixel);
+    }
+
+    if (biomeid_) {
+      biomeid = biomeid_;
+    }
+
+    if (!is_stealable) {
+      is_stealable = false
+    }
+
+    let item = "";
+    let cardcost = 0;
+
+    // --Note(Petri): Testing how much squaring the biomeid for prices affects things
+    let level = biomeid;
+    biomeid = biomeid * biomeid;
+
+    // This thing is in the engine
+    // item = GetRandomAction(x, y, level, 0)
+    cardcost = 0;
+
+    let price;
+
+    this.spells.forEach((spell, i) => {
+      if (spell.id.toLowerCase() === item.toLowerCase()) {
+        price = Math.max(Math.floor(((spell.price * 0.30) + (70 * biomeid)) / 10) * 10, 10)
+        cardcost = price
+        if (spell.spawn_requires_flag) {
+          let flag = spell.spawn_requires_flag
+          // In-engine function
+          // if (HasFlagPersistent(flag) == false) {
+          // print("Trying to spawn "..tostring(spell.id).. " even though flag "..tostring(flag).. " not set!!")
+          // }
+        }
+      }
+    });
+
+    if (cheap_item) {
+      cardcost = 0.5 * cardcost
+    }
+
+    if (biomeid >= 10) {
+      price = price * 5.0
+      cardcost = cardcost * 5.0
+    }
+
+    // let eid = CreateItemActionEntity(item, x, y)
+
+    // if (cheap_item) {
+    //   EntityLoad("data/entities/misc/sale_indicator.xml", x, y)
+    // }
+
+    // --let x, y = EntityGetTransform(entity_id)
+    // --SetRandomSeed(x, y)
+
+    let stealable_value = false
+    if (is_stealable) {
+      stealable_value = true
+    }
   }
 
   generate_shop_wand(x: number, y: number, cheap_item: boolean, biomeid_?: number) {
     // Todo: scripts/items/generate_shop_item.lua
+    let biomepixel = Math.floor(y / 512)
+    let biomeid = this.biomes[biomepixel] || 0;
+
+    if (biomepixel > 35) {
+      biomeid = 7;
+    }
+
+    if (!this.biomes[biomepixel] && !biomeid_) {
+      console.log("Unable to find biomeid for chunk at depth ", biomepixel);
+    }
+
+    if (biomeid_) {
+      biomeid = biomeid_;
+    }
+
+    if (biomeid < 1) { biomeid = 1; }
+    if (biomeid > 6) { biomeid = 6; }
+
+    let item = "data/entities/items/"
+    let cardcost = 0;
+
+    const r = this.randoms.Random(0, 100)
+    if (r <= 50) {
+      item = item + "wand_level_0"
+    } else {
+      item = item + "wand_unshuffle_0"
+    }
+
+    item = item + biomeid + ".xml"
+
+    // -- Note( Petri ): Testing how much squaring the biomeid for prices affects things
+    biomeid = (0.5 * biomeid) + (0.5 * biomeid * biomeid)
+    let wandcost = (50 + biomeid * 210) + (this.randoms.Random(-15, 15) * 10)
+
+    if (cheap_item) {
+      wandcost = 0.5 * wandcost
+    }
+    // In-engine
+    // const eid = EntityLoad( item, x, y )
+
   }
 
   spawn_all_shopitems(x: number, y: number, pickedPerks: string[][]) {
