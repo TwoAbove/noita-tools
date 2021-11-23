@@ -123,7 +123,7 @@ const Perks = (props: IPerksProps) => {
         </div>
         <div className="ms-auto" />
       </Stack>
-      <div className="mb-3"/>
+      <div className="mb-3" />
       <Stack gap={3}>
         {perks.map((row, level) => {
           const type = shop[level].type;
@@ -157,6 +157,9 @@ const Perks = (props: IPerksProps) => {
                 >
                   {"<"}
                 </Button>
+                <span className="m-1">
+                  {rerollsForLevel || 0}
+                </span>
                 <Button
                   variant="outline-primary"
                   onClick={handleReroll(level)}
