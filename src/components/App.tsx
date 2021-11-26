@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Container, Tabs, Tab, Stack, Form } from 'react-bootstrap';
 
 import RecipesForSeed from './RecipesForSeed/RecipesForSeed';
-import SeedFromRecipes from './SeedFromRecipes/SeedFromRecipes';
+import SearchSeeds from './SearchSeeds/SearchSeeds';
 import LiveSeedStats from './LiveSeedStats/LiveSeedStats';
 import Donate from './Donate';
 import useLocalStorage from '../services/useLocalStorage';
@@ -87,10 +87,10 @@ const App: React.FC = () => {
 							</Tab>
 							<Tab
 								mountOnEnter
-								eventKey="SeedFromRecipes"
+								eventKey="SearchSeeds"
 								title="Search For Seed"
 							>
-								<SeedFromRecipes />
+								<SearchSeeds />
 							</Tab>
 							<Tab
 								mountOnEnter

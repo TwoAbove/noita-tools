@@ -1,4 +1,8 @@
+/* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import get from 'lodash-es/get';
+import isEqual from 'lodash-es/isEqual';
+
 import loadRandom, { IRandom } from './random';
 
 import biomeModifiersData from './data/biome_modifiers.json';
@@ -11,15 +15,15 @@ import rainData from './data/rain.json';
 import spellData from './data/spells.json';
 import startingMaterialsData from './data/starting-flask-materials.json';
 import templeData from './data/temple-locations.json';
+import { includesAll } from '../helpers';
 
-const nthify = (num) => {
-  let n = num % 10;
-  if (num < 10 || (num > 20 && num < 30)) {
-    if (n === 1) return num + "st";
-    if (n === 2) return num + "nd";
-    if (n === 3) return num + "rd";
-  }
-  return num + "th";
+export interface IRule {
+  type: string;
+  params: any;
+  path: string;
+  // val shuold be a supported type by the structured clone algorithm:
+  // https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
+  val: any;
 }
 
 export abstract class InfoProvider {
@@ -29,6 +33,18 @@ export abstract class InfoProvider {
     this.randoms = randoms;
   }
   abstract provide(...args: any[]): any;
+
+  abstract test(rule: IRule): boolean;
+  //  {
+  //   let info = this.provide(...rule.params)
+  //   if (rule.path) {
+  //     info = get(info, rule.path);
+  //   }
+  //   info = Array.isArray(info) ? new Set(info) : info;
+  //   console.log('info', info);
+  //   console.log('rule.val', rule.val);
+  //   return isEqual(rule.val, info);
+  // }
 }
 
 export class ShopInfoProvider extends InfoProvider {
@@ -73,7 +89,6 @@ export class ShopInfoProvider extends InfoProvider {
 
   generate_shop_item(x: number, y: number, cheap_item: boolean, biomeid_?: number, is_stealable?: boolean) {
     // Todo: scripts/items/generate_shop_item.lua
-
 
     let biomepixel = Math.floor(y / 512)
     let biomeid = this.biomes[biomepixel] || 0;
@@ -166,13 +181,12 @@ export class ShopInfoProvider extends InfoProvider {
     if (biomeid > 6) { biomeid = 6; }
 
     let item = "data/entities/items/"
-    let cardcost = 0;
 
     const r = this.randoms.Random(0, 100)
     if (r <= 50) {
       item = item + "wand_level_0"
     } else {
-      item = item + "wand_unshuffle_0"
+      item = item + "wand_unshackle_0"
     }
 
     item = item + biomeid + ".xml"
@@ -203,11 +217,12 @@ export class ShopInfoProvider extends InfoProvider {
     for (let i = 1; i <= count; i++) {
       if (type === 'item') {
         items.push([
-          this.generate_shop_item(x + (i - 1) * item_width, y, i === sale_item_i, undefined, true),
-          this.generate_shop_item(x + (i - 1) * item_width, y - 30, false, undefined, true)
+          undefined, //this.generate_shop_item(x + (i - 1) * item_width, y, i === sale_item_i, undefined, true),
+          undefined //this.generate_shop_item(x + (i - 1) * item_width, y - 30, false, undefined, true)
         ]);
       } else {
-        items.push(this.generate_shop_wand(x + (i - 1) * item_width, y, i === sale_item_i));
+        items.push();
+        // items.push(this.generate_shop_wand(x + (i - 1) * item_width, y, i === sale_item_i));
       }
     }
     return {
@@ -233,16 +248,28 @@ export class ShopInfoProvider extends InfoProvider {
     }
     return res;
   }
+
+  test(rule: IRule): boolean {
+    let info = this.provide();
+    return true;
+  }
 }
 
 export class AlchemyInfoProvider extends InfoProvider {
-  provide(seed: number) {
-    const res = this.randoms.PickForSeed(seed);
+  provide() {
+    const res = this.randoms.PickForSeed();
     const [LC, AP] = res.split(';');
     return {
       LC: LC.split(':')[1].split(','),
       AP: AP.split(':')[1].split(',')
     };
+  }
+
+  test(rule: IRule): boolean {
+    let info = this.provide();
+    const allLC = includesAll(rule.val.LC, info.LC);
+    const allAP = includesAll(rule.val.AP, info.AP);
+    return allLC && allAP;
   }
 }
 
@@ -265,6 +292,11 @@ export class RainInfoProvider extends InfoProvider {
       pickedRain.rain_material,
       rainfall_chance * pickedRain.chance
     ];
+  }
+
+  test(rule: IRule): boolean {
+    let info = this.provide();
+    return true;
   }
 }
 
@@ -318,6 +350,11 @@ export class StartingFlaskInfoProvider extends InfoProvider {
         ]);
     }
     return material;
+  }
+
+  test(rule: IRule): boolean {
+    let info = this.provide();
+    return true;
   }
 }
 
@@ -385,6 +422,11 @@ export class StartingSpellInfoProvider extends InfoProvider {
     }
     return gun_action;
   }
+
+  test(rule: IRule): boolean {
+    let info = this.provide();
+    return true;
+  }
 }
 
 export class StartingBombSpellInfoProvider extends InfoProvider {
@@ -409,6 +451,11 @@ export class StartingBombSpellInfoProvider extends InfoProvider {
     else {
       return "BOMB";
     }
+  }
+
+  test(rule: IRule): boolean {
+    let info = this.provide();
+    return true;
   }
 }
 
@@ -469,12 +516,15 @@ export class PerkInfoProvider extends InfoProvider {
     }
     return perk_reroll_perks();
   }
+
   get_perk_flag_name(perk_id: string) {
     return "PERK_" + perk_id
   }
+
   get_perk_picked_flag_name(perk_id: string) {
     return "PERK_PICKED_" + perk_id
   }
+
   perk_spawn_many(perks: string | any[], x: number, y: number) {
     let result: any[] = [];
     let perk_count = parseFloat(this._G.GetValue("TEMPLE_PERK_COUNT", "3"))
@@ -721,7 +771,11 @@ export class PerkInfoProvider extends InfoProvider {
       }
     }
     return result;
+  }
 
+  test(rule: IRule): boolean {
+    let info = this.provide();
+    return true;
   }
 }
 
@@ -778,7 +832,6 @@ export class FungalInfoProvider extends InfoProvider {
     return { flaskTo, flaskFrom, from: from_materials, to: to_material };
   }
 
-
   provide(maxShifts?: number) {
     let debug_no_limits = false;
     this._G.SetValue("fungal_shift_iteration", "0")
@@ -789,7 +842,11 @@ export class FungalInfoProvider extends InfoProvider {
     }
 
     return shifts;
+  }
 
+  test(rule: IRule): boolean {
+    let info = this.provide();
+    return true;
   }
 }
 
@@ -822,7 +879,6 @@ export class BiomeModifierInfoProvider extends InfoProvider {
   get_modifier(modifier_id: string) {
     return this.modifiers.find(e => e.id === modifier_id);
   }
-
 
   biome_modifier_applies_to_biome(modifier: { requires_flag: any; does_not_apply_to_biome: string | any[]; apply_only_to_biome: string | any[]; }, biome_name: string) {
     if (!modifier) {
@@ -875,6 +931,7 @@ export class BiomeModifierInfoProvider extends InfoProvider {
 
     return this.randoms.random_next(ctx.rnd, 0.0, 1.0) <= chance_of_modifier;
   }
+
   provide() {
     let biome_modifiers = this.modifiers;
 
@@ -882,20 +939,14 @@ export class BiomeModifierInfoProvider extends InfoProvider {
 
     let biomes = this.biomes;
 
-
-
     let biome_modifier_fog_of_war_clear_at_player = biome_modifiers.find(e => e.id === "FOG_OF_WAR_CLEAR_AT_PLAYER");
     let biome_modifier_cosmetic_freeze = biome_modifiers.find(e => e.id === "FREEZING_COSMETIC");
-
-
-
 
     const set_modifier_if_has_none = (biome_name: string, modifier_id: string) => {
       if (!result[biome_name]) {
         result[biome_name] = this.get_modifier(modifier_id);
       }
     };
-
 
     let rnd = this.randoms.random_create(347893, 90734);
     let ctx: any = {};
@@ -962,8 +1013,12 @@ export class BiomeModifierInfoProvider extends InfoProvider {
 
     return result;
   }
-}
 
+  test(rule: IRule): boolean {
+    let info = this.provide();
+    return true;
+  }
+}
 
 export class MaterialInfoProvider extends InfoProvider {
   materials = materialsData // await this.loadAsync("data/materials.json");
@@ -982,8 +1037,13 @@ export class MaterialInfoProvider extends InfoProvider {
       translated_name: materialName
     };
   }
+
   translate(materialName: any) {
     return this.provide(materialName).translated_name;
+  }
+
+  test(rule: IRule): boolean {
+    return true;
   }
 }
 
@@ -997,48 +1057,25 @@ class BiomeInfoProvider extends InfoProvider {
       translated_name: biomeId
     };
   }
+
   isPrimary(biomeId: string) {
     let found = this.biomes.find(e => e.id === biomeId);
     return found && found.translated_name !== "";
   }
+
   translate(biomeName: any) {
     return this.provide(biomeName).translated_name;
   }
-}
 
-
-export abstract class SeedRequirement {
-  type: string;
-  name: string;
-  once: boolean;
-  provider; // There should be a generic way to use a specific infoprovider for types
-  providers: IProviders;
-  or?;
-
-  abstract displayName: string;
-
-  constructor(type: string, name: string, once: boolean, provider, providers: IProviders) {
-    this.type = type;
-    this.name = name;
-    this.once = once;
-    this.provider = provider;
-    this.providers = providers;
+  test(rule: IRule): boolean {
+    return true;
   }
-
-  abstract test(...args): boolean;
-  abstract textify(): string;
-  abstract serialize(): string;
-
-  // No static abstract :(
-  // https://github.com/microsoft/TypeScript/issues/34516
-  // Implement when it becomes available
-  abstract deserialize(str: string): SeedRequirement | undefined;
 }
 
 interface IProviders {
+  shop: ShopInfoProvider;
   alchemy: AlchemyInfoProvider;
   rain: RainInfoProvider;
-  shop: ShopInfoProvider;
   startingFlask: StartingFlaskInfoProvider;
   startingSpell: StartingSpellInfoProvider;
   startingBombSpell: StartingBombSpellInfoProvider;
@@ -1050,252 +1087,11 @@ interface IProviders {
   [key: string]: InfoProvider;
 }
 
-// +
-export class SeedRequirementStartingFlask extends SeedRequirement {
-  type = "StartingFlask";
-  displayName = "Starting Flask";
-  material;
-
-  constructor(providers: IProviders) {
-    super("StartingFlask", "Starting Flask", true, providers.startingFlask, providers);
-    this.material = this.provider.materials[0];
-  }
-  test(mat) {
-    return mat === this.provider.provide();
-  }
-  textify() {
-    return "Start with a " + this.providers.material.translate(this.material) + " flask"
-  }
-  serialize() {
-    return "sf-m" + this.material;
-  }
-  deserialize(str) {
-    if (!str.startsWith("sf")) return;
-    let req = new SeedRequirementStartingFlask(this.providers);
-    [req.material] = str.match(/^sf-m(.+?)$/).slice(1);
-    return req;
-  }
-}
-
-// +
-export class SeedRequirementStartingSpell extends SeedRequirement {
-  type = "StartingSpell";
-  displayName = "Starting Spell"
-  spell;
-
-  constructor(providers: IProviders) {
-    super("StartingSpell", "Starting Spell", true, providers.startingSpell, providers);
-    if (this.spell) return;
-    this.spell = this.provider.spells[0];
-  }
-  test(spell) {
-    return spell === this.provider.provide();
-  }
-  textify() {
-    return "Have " + this.spell + " as its starting spell"
-
-  }
-  serialize() {
-    return "ss-s" + this.spell;
-  }
-  deserialize(str) {
-    if (!str.startsWith("ss")) return;
-    let req = new SeedRequirementStartingSpell(this.providers);
-    [req.spell] = str.match(/^ss-s(.+?)$/).slice(1);
-    return req;
-  }
-}
-
-// +
-export class SeedRequirementStartingBombSpell extends SeedRequirement {
-  type = "StartingBombSpell";
-  spell;
-  displayName = "Starting Bomb Spell";
-
-  constructor(providers: IProviders) {
-    super("StartingBombSpell", "Starting Bomb Spell", true, providers.startingBombSpell, providers);
-    if (this.spell) return;
-    this.spell = this.provider.spells[0];
-  }
-  test(spell) {
-    return spell === this.provider.provide();
-  }
-  textify() {
-    return "Have " + this.spell + " as its starting bomb spell"
-
-  }
-  serialize() {
-    return "sbw-s" + this.spell;
-
-  }
-  deserialize(str) {
-    if (!str.startsWith("sbw")) return;
-    let req = new SeedRequirementStartingBombSpell(this.providers);
-    [req.spell] = str.match(/^sbw-s(.+?)$/).slice(1);
-    return req;
-  }
-}
-
-// +
-export class SeedRequirementRain extends SeedRequirement {
-  type = "Rain";
-  displayName = "Rain";
-  material = "";
-
-  constructor(providers: IProviders) {
-    super("Rain", "Rain", true, providers.rain, providers);
-  }
-  test(shouldRainMaterial) {
-    let [rains, rainMaterial] = this.provider.provide();
-    if (!rains) return !shouldRainMaterial;
-    return rainMaterial === shouldRainMaterial;
-  }
-  textify() {
-    if (this.material) {
-      return "Have " + this.providers.material.translate(this.material) + " rain";
-    }
-    return "Have no rain"
-  }
-  serialize() {
-    return "r-m" + this.material;
-  }
-  deserialize(str) {
-    if (!str.startsWith("r")) return;
-    let req = new SeedRequirementRain(this.providers);
-    [req.material] = str.match(/^r-m(.*?)$/).slice(1);
-    return req;
-  }
-}
-
-// +
-export class SeedRequirementPerk extends SeedRequirement {
-  type = "Perk";
-  level = 1;
-  perk;
-  displayName = "Perk";
-
-  constructor(providers: IProviders) {
-    super("Perk", "Perk", false, providers.perk, providers);
-    if (this.perk) return;
-    this.perk = this.provider.perks[0].id
-  }
-  test(level, perk) {
-    let perks = this.provider.provide(null, level);
-    if (level === -1) {
-      for (let i = 0; i < perks.length; i++) {
-        if (perks[i].indexOf(perk) !== -1) return true;
-      }
-      return false;
-    }
-    return perks[level - 1].indexOf(perk) !== -1;
-  }
-  textify() {
-    let str = "Have the perk '" + this.provider.perks.find(e => e.id === this.perk).ui_name + "'";
-    if (this.level !== -1) {
-      str += " in the " + nthify(this.level) + " level";
-    }
-    return str;
-  }
-  serialize() {
-    return "p-l" + this.level + "-p" + this.perk;
-  }
-  deserialize(str) {
-    if (!str.startsWith("p")) return;
-    let req = new SeedRequirementPerk(this.providers);
-    [req.level, req.perk] = str.match(/^p-l(-?\d+)-p(.+?)$/).slice(1);
-    return req;
-  }
-}
-
-// +
-export class SeedRequirementFungalShift extends SeedRequirement {
-  type = "FungalShift";
-  iterations = 1;
-  fromMaterial = "";
-  toMaterial = "";
-  displayName = "Fungal Shift";
-
-  constructor(providers: IProviders) {
-    super("FungalShift", "Fungal Shift", false, providers.fungalShift, providers);
-  }
-  test() {
-    let holdingFlask;
-    if (this.fromMaterial === "(flask)" || this.toMaterial === "(flask)") { holdingFlask = true; }
-    let shifts = this.provider.provide(this.iterations, holdingFlask);
-    const checkShift = (shift) => {
-      let fromMats = shift[0];
-      let toMat = shift[1];
-      if (this.fromMaterial) {
-        if (fromMats.indexOf(this.fromMaterial) === -1) return false;
-      }
-      if (this.toMaterial) {
-        if (toMat !== this.toMaterial) return false;
-      }
-      return true;
-    }
-    if (this.iterations === -1) {
-      for (let shift of shifts) {
-        if (!checkShift(shift)) continue;
-        return true;
-      }
-      return false;
-    }
-    return checkShift(shifts[this.iterations - 1]);
-  }
-  textify() {
-    if (this.iterations === -1) {
-      return "Have any fungal shift turn " + this.providers.material.translate(this.fromMaterial || "(anything)") + " to " + this.providers.material.translate(this.toMaterial || "(anything)")
-    } else {
-      return "Have the " + nthify(this.iterations) + " fungal shift turn " + this.providers.material.translate(this.fromMaterial || "(anything)") + " to " + this.providers.material.translate(this.toMaterial || "(anything)")
-    }
-  }
-  serialize() {
-    return "fs-i" + this.iterations + "-f" + this.fromMaterial + "-t" + this.toMaterial;
-  }
-  deserialize(str) {
-    if (!str.startsWith("fs")) return;
-    let req = new SeedRequirementFungalShift(this.providers);
-    [req.iterations, req.fromMaterial, req.toMaterial] = str.match(/^fs-i(-?\d+)-f(.*?)-t(.*?)$/).slice(1);
-    return req;
-  }
-}
-
-// +
-export class SeedRequirementBiomeModifier extends SeedRequirement {
-  type = "BiomeModifier";
-  biome = "coalmine";
-  modifier;
-  displayName = "Biome Modifier";
-
-  constructor(providers: IProviders) {
-    super("BiomeModifier", "Biome Modifier", false, providers.biomeModifier, providers);
-    if (this.modifier) return;
-    this.modifier = this.provider.modifiers[0].id;
-  }
-  test(biome, modifier) {
-    let biomeModifiers = this.provider.provide();
-    return biomeModifiers[biome] && biomeModifiers[biome].id === modifier;
-  }
-  textify() {
-    return "Have the biome modifier '" + this.modifier.replace(/_/g, " ").toLowerCase() + "' in " + this.providers.biome.translate(this.biome);
-  }
-  serialize() {
-    return "bm-b" + this.biome + "-m" + this.modifier;
-  }
-  deserialize(str) {
-    if (!str.startsWith("bm")) return;
-    let req = new SeedRequirementBiomeModifier(this.providers);
-    [req.biome, req.modifier] = str.match(/^bm-b(.+?)-m(.+?)$/).slice(1);
-    return req;
-  }
-}
-
 export class GameInfoProvider extends EventTarget {
   randoms!: IRandom;
   ready = false;
 
   providers!: IProviders;
-  requirements?: SeedRequirement[];
 
   config: IProviderConfig;
 
@@ -1311,7 +1107,6 @@ export class GameInfoProvider extends EventTarget {
     loadRandom().then((randoms) => {
       this.randoms = randoms;
       this.providers = this.buildInfoProviders();
-      this.requirements = this.buildRequirements();
       this.ready = true;
     });
   }
@@ -1338,44 +1133,11 @@ export class GameInfoProvider extends EventTarget {
     }
   }
 
-  buildRequirements(): SeedRequirement[] {
-    return [
-      new SeedRequirementStartingFlask(this.providers),
-      new SeedRequirementStartingSpell(this.providers),
-      new SeedRequirementStartingBombSpell(this.providers),
-      new SeedRequirementRain(this.providers),
-      new SeedRequirementPerk(this.providers),
-      new SeedRequirementFungalShift(this.providers),
-      new SeedRequirementBiomeModifier(this.providers)
-    ]
-  }
-
-  parseSeedCriteria(str: string) {
-    let result: SeedRequirement[] = [];
-    let parts = str.split(",");
-    for (let part of parts) {
-      let or = false;
-      if (part.endsWith(";")) {
-        part = part.slice(0, -1);
-        or = true;
-      }
-      for (let critertaType of this.requirements!) {
-        const criteria = critertaType.deserialize(part);
-        if (criteria) {
-          criteria.or = or;
-          result.push(criteria);
-          break;
-        }
-      }
-    }
-    return result;
-  }
-
   provideAll() {
     // I think the c++ code should be immutable. Idea for next refactor.
     this.randoms!.SetWorldSeed(Number(this.config.seed));
     return {
-      alchemy: this.providers.alchemy.provide(this.config.seed),
+      alchemy: this.providers.alchemy.provide(),
       rainType: this.providers.rain.provide(),
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),

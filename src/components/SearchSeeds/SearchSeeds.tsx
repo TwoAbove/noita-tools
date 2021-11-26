@@ -126,7 +126,7 @@ const enoughAlchemy = (selected: Set<string>) => {
 	return alchemy.length === 0 || alchemy.length >= 1;
 };
 
-const SeedFromRecipes = () => {
+const SearchSeeds = () => {
 	const [apIngredientsSelected, setApIngredientsSelected] = React.useState<
 		Set<string>
 	>(new Set());
@@ -176,8 +176,17 @@ const SeedFromRecipes = () => {
 			const newSeedSolver = new SeedSolver(useCores);
 			const newSeed = parseInt(seed);
 			newSeedSolver.update({
-				apIngredients: Array.from(apIngredientsSelected),
-				lcIngredients: Array.from(lcIngredientsSelected),
+				rules: [
+					{
+						type: 'alchemy',
+						path: '',
+						params: [],
+						val: {
+							LC: lcIngredientsSelected,
+							AP: apIngredientsSelected
+						}
+					}
+				],
 				currentSeed: newSeed
 			});
 			if (!isNaN(newSeed)) {
@@ -189,11 +198,9 @@ const SeedFromRecipes = () => {
 			setSeedSolver(newSeedSolver);
 		};
 		work();
-	}, // useEffect is used here inidiomaticly, but I'm not sure how to better do this
-	// seedSolver is both used and set here, so running this
-	// again will create a loop
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	[useCores, apIngredientsSelected, lcIngredientsSelected, seed]);
+	}, // again will create a loop // seedSolver is both used and set here, so running this // useEffect is used here inidiomaticly, but I'm not sure how to better do this
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[useCores, apIngredientsSelected, lcIngredientsSelected, seed]);
 
 	const startCalculation = async () => {
 		const requestOptions = {
@@ -240,7 +247,7 @@ const SeedFromRecipes = () => {
 	const hasEnoughAll = hasEnoughLiquids && hasEnoughAlchemy;
 	return (
 		<Container className="col container shadow-lg">
-			<h4>Calculate a seed from the desired LC and AP ingredients</h4>
+			<h4 className="mb-3">Find a seed with desired parameters</h4>
 			<p>Lists can be left blank if any combination will do. </p>
 			<p>
 				The resulting seed's LC and AP ingredients will be from the selected
@@ -292,11 +299,11 @@ const SeedFromRecipes = () => {
 					<Form onSubmit={e => e.preventDefault()}>
 						<FormGroup>
 							<Col>
-								<Form.Label htmlFor="SeedFromRecipes.seed">
+								<Form.Label htmlFor="SearchSeeds.seed">
 									Start search from seed:{' '}
 								</Form.Label>
 								<Form.Control
-									id="SeedFromRecipes.seed"
+									id="SearchSeeds.seed"
 									type="number"
 									disabled={running}
 									value={seed}
@@ -355,13 +362,15 @@ const SeedFromRecipes = () => {
 				</Row>
 			)}
 			<Container>
+				<h6>
+					Results:
+				</h6>
 				<Stack gap={5}>
 					{solverInfo.map((info, index) => (
 						<Container
 							className="mb-4"
 							key={info.foundSeed || info.currentSeed}
 						>
-							Current seed: {info.currentSeed}
 							{info.foundSeed && (
 								<SeedDataOutput seed={`${info.currentSeed}`} />
 							)}
@@ -373,4 +382,4 @@ const SeedFromRecipes = () => {
 	);
 };
 
-export default SeedFromRecipes;
+export default SearchSeeds;

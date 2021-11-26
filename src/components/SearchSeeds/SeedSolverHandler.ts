@@ -1,5 +1,5 @@
 // import { Remote, wrap, releaseProxy, proxy } from 'comlink';
-import { SeedSolver as _SeedSolver } from '../../services/seedCalculator';
+import { SeedSolver as _SeedSolver, ISeedSolverConfig } from '../../services/seedCalculator';
 
 export class WorkerHandler extends EventTarget {
   latestData?: ReturnType<_SeedSolver["getInfo"]>;
@@ -44,7 +44,7 @@ export default class SeedSolver {
     }
   };
 
-  public update(config: any) {
+  public update(config: ISeedSolverConfig) {
     for (const worker of this.workerList) {
       worker.worker.postMessage({ type: 'update', config });
     }
