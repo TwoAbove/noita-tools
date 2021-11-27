@@ -73,6 +73,11 @@ class OCRHandler extends EventTarget {
     await worker.load();
     await worker.loadLanguage('eng');
     await worker.initialize('eng');
+    await worker.setParameters({
+      tessjs_create_hocr: '0',
+      tessjs_create_tsv: '0',
+      tessjs_create_box: '0',
+    });
 
     this.tesseractWorker = worker;
   }
@@ -150,15 +155,14 @@ class OCRHandler extends EventTarget {
     ));
 
     const res = await this.tesseractWorker.recognize(t);
-
-    const i = res.data.words.findIndex(w => {
-      return w.text.toLowerCase().includes('seed');
-    });
-    if (i === -1) {
+    const secondLine = res.data.lines[1]; // seed is on the second line always
+    if (!secondLine) {
       return;
     }
-    const seed = res.data.words[i + 1];
-    if (!seed) { return; }
+    const seed = secondLine.words[1];
+    if (!seed) {
+      return;
+    }
     let text = '';
     seed.symbols.forEach((s, i) => {
       const letter = clearBg(crop(t, s.bbox.x0, s.bbox.y0, s.bbox.x1 - s.bbox.x0, s.bbox.y1 - s.bbox.y0));

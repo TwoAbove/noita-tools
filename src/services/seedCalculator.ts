@@ -3,7 +3,6 @@ import GameInfoHandler, { IRule } from '../services/SeedInfo/infoHandler';
 // const includesAll = (arr: string[], target: string[]) =>
 // 	arr.length ? target.every(v => arr.includes(v)) : true;
 
-// Ideally we use a JSON schema validator, but that might be overkill for this?
 export interface ISeedSolverConfig {
 	currentSeed?: number;
 	rules?: IRule[];
@@ -62,39 +61,6 @@ export class SeedSolver {
 		this.sendInfo();
 		this.currentSeed += this.step;
 	}
-
-	// async old_work() {
-	// 	this.running = true;
-	// 	this.shouldCancel = false;
-	// 	while (!this.shouldCancel && this.currentSeed < 4_294_967_294) {
-	// 		while (!this.gameInfoHandler.ready) {
-	// 			// Free the event loop to check for stop
-	// 			await new Promise(res => setTimeout(res, 0));
-	// 		}
-	// 		if (this.count && this.count % this.infoFreq === 0) {
-	// 			this.sendInfo();
-	// 			// Free the event loop to check for stop
-	// 			await new Promise(res => setTimeout(res, 0));
-	// 		}
-	// 		let found = false;
-	// 		this.gameInfoHandler.randoms!.SetWorldSeed(Number(this.currentSeed));
-	// 		const { LC, AP } = this.gameInfoHandler.providers!.alchemy.provide();
-	// 		// const allLC = includesAll(this.lcIngredients, LC);
-	// 		// const allAP = includesAll(this.apIngredients, AP);
-	// 		// if (allLC && allAP) {
-	// 		// found = true;
-	// 		// }
-	// 		if (found) {
-	// 			this.foundSeed = +this.currentSeed;
-	// 			break;
-	// 		}
-	// 		this.currentSeed += this.step;
-	// 		this.count++;
-	// 	}
-	// 	this.running = false;
-	// 	this.sendInfo();
-	// 	this.currentSeed += this.step;
-	// }
 
 	async start() {
 		this.foundSeed = undefined;

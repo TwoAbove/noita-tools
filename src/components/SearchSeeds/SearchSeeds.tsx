@@ -29,6 +29,7 @@ interface IRecipeIngredientsPickerProps {
 	onSelectAll: (part: string) => void;
 	onDeselectAll: (part: string) => void;
 }
+
 const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 	const {
 		selected,

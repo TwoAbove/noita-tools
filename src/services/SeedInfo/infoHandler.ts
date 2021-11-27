@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import get from 'lodash-es/get';
 import isEqual from 'lodash-es/isEqual';
+import includes from 'lodash-es/includes';
 
 import loadRandom, { IRandom } from './random';
 
@@ -16,11 +17,14 @@ import spellData from './data/spells.json';
 import startingMaterialsData from './data/starting-flask-materials.json';
 import templeData from './data/temple-locations.json';
 import { includesAll } from '../helpers';
+import { resolveAny } from 'dns/promises';
 
-export interface IRule {
+	// Ideally we use a JSON schema validator, but it doesn't handle sparse arrays well.
+  // Is there something to get deep sparse inclusion between js objects???
+  export interface IRule {
   type: string;
-  params: any;
-  path: string;
+  params?: any;
+  path?: string;
   // val shuold be a supported type by the structured clone algorithm:
   // https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
   val: any;
@@ -251,6 +255,13 @@ export class ShopInfoProvider extends InfoProvider {
 
   test(rule: IRule): boolean {
     let info = this.provide();
+    for (let i = 0; i <= info.length; i++) {
+      if (rule.val[i].type) {
+        if (rule.val[i].type !== info[i].type) {
+          return false;
+        }
+      }
+    }
     return true;
   }
 }
@@ -276,26 +287,33 @@ export class AlchemyInfoProvider extends InfoProvider {
 export class RainInfoProvider extends InfoProvider {
   rainTypes = rainData;
 
-  provide(): [isRaining: boolean, material: string, probability: number] {
+  provide(): { isRaining: boolean, material: string, probability: number } {
     let snows = false; // TODO..........
     let rainfall_chance = 1 / 15;
     let rnd = { x: 7893434, y: 3458934 };
-    let rains =
+    let isRaining =
       !snows && this.randoms.random_next(rnd, 0.0, 1.0) <= rainfall_chance; //-- rain is based on world seed
-    if (!rains) return [rains, '', 1 - rainfall_chance];
+    if (!isRaining) return { isRaining, material: '', probability: 1 - rainfall_chance };
     let pickedRain = this.randoms.pick_random_from_table_backwards(
       this.rainTypes,
       rnd
     );
-    return [
-      rains,
-      pickedRain.rain_material,
-      rainfall_chance * pickedRain.chance
-    ];
+    return {
+      isRaining,
+      material: pickedRain.rain_material,
+      probability: rainfall_chance * pickedRain.chance
+    };
   }
 
   test(rule: IRule): boolean {
     let info = this.provide();
+
+    for (const [key, val] of Object.entries(rule.val)) {
+      if (val !== info[key]) {
+        return false;
+      }
+    }
+
     return true;
   }
 }
@@ -354,6 +372,9 @@ export class StartingFlaskInfoProvider extends InfoProvider {
 
   test(rule: IRule): boolean {
     let info = this.provide();
+    if (rule.val) {
+      return rule.val === info;
+    }
     return true;
   }
 }
@@ -425,6 +446,9 @@ export class StartingSpellInfoProvider extends InfoProvider {
 
   test(rule: IRule): boolean {
     let info = this.provide();
+    if (rule.val) {
+      return rule.val === info;
+    }
     return true;
   }
 }
@@ -455,6 +479,9 @@ export class StartingBombSpellInfoProvider extends InfoProvider {
 
   test(rule: IRule): boolean {
     let info = this.provide();
+    if (rule.val) {
+      return rule.val === info;
+    }
     return true;
   }
 }
@@ -775,6 +802,14 @@ export class PerkInfoProvider extends InfoProvider {
 
   test(rule: IRule): boolean {
     let info = this.provide();
+    for (let i = 0; i <= info.length; i++) {
+      if (rule.val[i]) {
+        const perkInfo = info[i].map(p => p.id);
+        if (!includesAll(perkInfo, rule.val[i])) {
+          return false;
+        }
+      }
+    }
     return true;
   }
 }
@@ -846,6 +881,19 @@ export class FungalInfoProvider extends InfoProvider {
 
   test(rule: IRule): boolean {
     let info = this.provide();
+    for (let i = 0; i <= info.length; i++) {
+      if (rule.val[i]) {
+        for (const [key, val] of Object.entries(rule.val[i])) {
+          if (Array.isArray(info[key])) {
+            if (!includesAll(val as any, info[key])) {
+              return false;
+            };
+          } else if (info[key] !== val) {
+            return false;
+          }
+        }
+      }
+    }
     return true;
   }
 }
