@@ -15,7 +15,7 @@ interface IRandomf {
 	ProceduralRandomi(arg0: number, arg1: number, arg2: number, arg3: number): number;
 	SetRandomSeed(arg0: number, arg1: number): void;
 	SetWorldSeed(arg0: number): void;
-	PickForSeed(arg0: number): string;
+	PickForSeed(): string;
 }
 
 interface IRND {
