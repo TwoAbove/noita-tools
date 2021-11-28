@@ -67,7 +67,7 @@ class OCRHandler extends EventTarget {
         console.error(e);
         this.startTesseract();
       },
-      logger: this.canvasRef ? console.log : () => {},
+      logger: this.canvasRef ? console.log : () => { },
     });
 
     await worker.load();
@@ -182,7 +182,7 @@ class OCRHandler extends EventTarget {
       t += char;
       i++;
       return t;
-    }, '');
+    }, '').split(' ').join();
     this.onUpdate();
     return text;
   }
