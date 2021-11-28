@@ -278,8 +278,8 @@ export class AlchemyInfoProvider extends InfoProvider {
 
   test(rule: IRule): boolean {
     let info = this.provide();
-    const allLC = includesAll(rule.val.LC, info.LC);
-    const allAP = includesAll(rule.val.AP, info.AP);
+    const allLC = includesAll(Array.from(rule.val.LC), info.LC);
+    const allAP = includesAll(Array.from(rule.val.AP), info.AP);
     return allLC && allAP;
   }
 }
