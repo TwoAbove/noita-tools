@@ -49,7 +49,7 @@ export class SeedSolver {
 				await new Promise(res => setTimeout(res, 0));
 			}
 			this.gameInfoHandler.randoms!.SetWorldSeed(Number(this.currentSeed));
-			let found = !this.rules.find(r => !this.check(r));
+			const found = this.rules.every(r => this.check(r));
 			if (found) {
 				this.foundSeed = +this.currentSeed;
 				break;
