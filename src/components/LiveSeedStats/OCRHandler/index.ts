@@ -182,7 +182,7 @@ class OCRHandler extends EventTarget {
       t += char;
       i++;
       return t;
-    }, '').split(' ').join();
+    }, '').replace(/\s/g, '');
     this.onUpdate();
     return text;
   }
