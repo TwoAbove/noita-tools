@@ -19,11 +19,11 @@ const Description = () => {
 			</h5>
 			<p>
 				This will allow you to get seed information (like from <i>Recipes For Seed</i>) in real time by reading the
-				seed from your display during gameplay. Display data does not leave your machine.
-			</p>
-			<p>To start, open this page in your browser and start the game. Click "Start screen capture". Select the Noita window, or the whole screen where Noita will be running
+				seed from your display during gameplay. Display data does not leave your machine.<br/><br/>
+				To start, open this page in your browser and start the game. Click "Start screen capture". Select the Noita window, or the whole screen where Noita will be running
 				if the former is not available.
 			</p>
+			<p>Currently, only English localization is supported, but there are plans to make it language-agnostic</p>
 			<p>Input the code below on any other windows that you want your seed information to show up. (You can even share it!)</p>
 			<p></p>
 		</div>

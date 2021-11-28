@@ -168,7 +168,6 @@ class OCRHandler extends EventTarget {
     }
 
     const res = await this.tesseractWorker.recognize(img);
-    console.log('res.data', res.data);
     const secondLine = res.data.lines[1]; // seed is on the second line always
     if (!secondLine) {
       return;
