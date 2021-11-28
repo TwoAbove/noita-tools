@@ -187,18 +187,18 @@ public:
     }
 };
 
-static string _PickForSeed(uint worldSeed)
+static string _PickForSeed()
 {
-    NollaPrng *prng = new NollaPrng(((double)worldSeed * 0.17127000) + 1323.59030000);
+    NollaPrng *prng = new NollaPrng(((double)world_seed * 0.17127000) + 1323.59030000);
     // Preheat random!
     for (int i = 0; i < 5; i++)
     {
         prng->Next();
     }
 
-    MaterialPicker *lc = new MaterialPicker(prng, worldSeed);
+    MaterialPicker *lc = new MaterialPicker(prng, world_seed);
     string slc = "lc:" + lc->Materials[0] + "," + lc->Materials[1] + "," + lc->Materials[2]; // + "," + lc->Materials[3];
-    MaterialPicker *ap = new MaterialPicker(prng, worldSeed);
+    MaterialPicker *ap = new MaterialPicker(prng, world_seed);
     string sap = "ap:" + ap->Materials[0] + "," + ap->Materials[1] + "," + ap->Materials[2]; // + "," + ap->Materials[3];
 
     delete prng;
@@ -282,9 +282,9 @@ int ProceduralRandomi(double x, double y, double a, double b)
     return (int)Random(a, b);
 }
 
-string PickForSeed(uint seed)
+string PickForSeed()
 {
-    return _PickForSeed(seed);
+    return _PickForSeed();
 }
 
 #include <emscripten/bind.h>

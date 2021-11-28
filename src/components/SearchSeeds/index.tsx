@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 
 import LoadingComponent from '../LoadingComponent';
 
-const L = lazy(() => import('./SeedFromRecipes'));
+const L = lazy(() => import('./SearchSeeds'));
 
 const LazySeedFromRecipes = props => {
 	return (

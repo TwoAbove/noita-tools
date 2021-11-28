@@ -39,21 +39,27 @@ interface IQuadChar {
 	const data: ICharData = {};
 
 	for (const c of charData) {
-		if (!isNaN(+getChar(+c.$.id))) {
-			const i = await imageData
-				.clone()
-				.crop(+c.$.rect_x, +c.$.rect_y, +c.$.rect_w, +c.$.rect_h)
-				.autocrop({
-					tolerance: 0.5,
-					cropOnlyFrames: false,
-				}).scale(8, Jimp.RESIZE_NEAREST_NEIGHBOR);
-			data[getChar(+c.$.id)] = await i.getBase64Async(Jimp.MIME_PNG);
+		if (isNaN(+getChar(+c.$.id))) {
+			continue;
+		}
+		const i = await imageData
+			.clone()
+			.crop(+c.$.rect_x, +c.$.rect_y, +c.$.rect_w, +c.$.rect_h)
+			.autocrop({
+				tolerance: 0.5,
+				cropOnlyFrames: false
+			})
+			.scale(8, Jimp.RESIZE_NEAREST_NEIGHBOR);
+		data[getChar(+c.$.id)] = await i.getBase64Async(Jimp.MIME_PNG);
+		try {
 			// For debug
 			fs.writeFileSync(
 				path.resolve(__dirname, 'text', `"${getChar(+c.$.id)}".png`),
 				await i.getBufferAsync(Jimp.MIME_PNG),
 				{ flag: 'w+' }
 			);
+		} catch (e) {
+			console.error(e);
 		}
 	}
 

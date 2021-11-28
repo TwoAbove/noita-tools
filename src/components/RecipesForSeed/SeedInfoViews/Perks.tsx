@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
+import { Button, Col, Container, Stack } from 'react-bootstrap';
 
 import { PerkInfoProvider, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler';
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
@@ -129,8 +129,8 @@ const Perks = (props: IPerksProps) => {
           const type = shop[level].type;
           const rerollsForLevel = infoProvider.config.perkRerolls[offset] ? infoProvider.config.perkRerolls[offset][level] : 0;
           return (
-            <Row className="align-items-center" key={`${offset}-${level}`}>
-              <Col xs={2}>
+            <Stack direction="horizontal" key={`${offset}-${level}`}>
+              <Col xs={2} style={{marginRight: "-1rem"}}>
                 {type === 'wand' ? <WandIcon /> : <LightBulletIcon />}
               </Col>
               {row.map(perk => {
@@ -148,7 +148,7 @@ const Perks = (props: IPerksProps) => {
                   </Col>
                 );
               })}
-              <Col>
+              <Col xs={3} style={{margin: "-1rem"}}>
                 <Button
                   variant="outline-primary"
                   onClick={handleRerollUndo(level)}
@@ -168,7 +168,7 @@ const Perks = (props: IPerksProps) => {
                   {">"}
                 </Button>
               </Col>
-            </Row>
+            </Stack>
           );
         })}
       </Stack>
