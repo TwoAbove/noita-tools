@@ -85,9 +85,9 @@ export const diff = (
 	const d1 = g(img1);
 	const d2 = g(img2);
 	let count = 0;
-	for (let i = 0; i < d1.length; i ++) {
+	for (let i = 0; i < d1.length; i++) {
 		if (d1[i] !== d2[i]) {
-			count ++;
+			count++;
 		}
 	}
 	return count;
@@ -116,13 +116,38 @@ export const crop = (
 	return canvas;
 };
 
-export const enhance = (data: HTMLCanvasElement): HTMLCanvasElement => {
-	const canvas = createImage(data.width, data.height);
+export const invert = (img: HTMLCanvasElement): HTMLCanvasElement => {
+	const ctx = img.getContext('2d')!;
+	const imageData = ctx.getImageData(0, 0, img.width, img.height);
+	const data = imageData.data;
+	for (var i = 0; i < data.length; i += 4) {
+		// red
+		data[i] = 255 - data[i];
+		// green
+		data[i + 1] = 255 - data[i + 1];
+		// blue
+		data[i + 2] = 255 - data[i + 2];
+	}
+	return copyImage(imageData);
+};
+
+export const unAlpha = (img: HTMLCanvasElement): HTMLCanvasElement => {
+	const ctx = img.getContext('2d')!;
+	const imageData = ctx.getImageData(0, 0, img.width, img.height);
+	const data = imageData.data;
+	for (var i = 0; i < data.length; i += 4) {
+		data[i + 3] = 255;
+	}
+	return copyImage(imageData);
+};
+
+export const enhance = (img: HTMLCanvasElement): HTMLCanvasElement => {
+	const canvas = createImage(img.width, img.height);
 	const ctx = canvas.getContext('2d')!;
 	ctx.filter = 'brightness(600%) contrast(400%)';
 	ctx.imageSmoothingEnabled = false;
 	ctx.imageSmoothingQuality = 'high';
-	ctx.drawImage(data, 0, 0);
+	ctx.drawImage(img, 0, 0);
 	const pixels = getPixels(canvas);
 	toDark(pixels);
 	const thresholdImage = copyImage(pixels);

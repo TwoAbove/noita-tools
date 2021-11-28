@@ -1,4 +1,5 @@
 import font from '../font.json';
+import { invert, unAlpha } from './imageActions';
 
 export interface IFontCanvases {
 	[char: string]: HTMLCanvasElement;
@@ -19,11 +20,7 @@ const genCanvases = async (): Promise<IFontCanvases> => {
 						const ctx = canvas.getContext('2d')!;
 						ctx.imageSmoothingEnabled = false;
 						ctx.drawImage(img, 0, 0);
-
-						// const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-						// console.log(c, imageData.data);
-
-						fontCanvases[c] = canvas;
+						fontCanvases[c] = invert(unAlpha(canvas));
 						res();
 					};
 				})

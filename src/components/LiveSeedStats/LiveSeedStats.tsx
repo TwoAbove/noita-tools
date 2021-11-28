@@ -113,6 +113,7 @@ const LiveSeedStats = () => {
 	// We need a way for the OCR handler to notify of a state change.
 	// Maybe refactoring this is the way to go, but I'm not sure how to
 	// make it simpler?
+  // const canvasRef = useRef(null);
 
 	const [, updateState] = useState<any>();
 	const [lastSeed, setLastSeed] = useState<string>();
@@ -121,7 +122,9 @@ const LiveSeedStats = () => {
 	const [ocrHandler, setOcrHandler] = useState<OCRHandler>();
 	const [seedLink, setSeedLink] = useState<SeedLinkHandler>();
 	useEffect(() => {
-		const ocrHandler = new OCRHandler({});
+		const ocrHandler = new OCRHandler({
+			// canvasRef
+		});
 		ocrHandler.onUpdate = forceUpdate;
 		ocrHandler.addEventListener('seed', event => {
 			if (event.detail.seed) {
@@ -155,6 +158,7 @@ const LiveSeedStats = () => {
 
 	return (
 		<Container className="container shadow-lg">
+			{/* <canvas style={{}} ref={canvasRef} /> */}
 			<h4>Live seed data</h4>
 			{!everythingReady ? <div>Loading...</div> :
 				<Stack>
