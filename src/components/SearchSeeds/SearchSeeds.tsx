@@ -249,12 +249,13 @@ const SearchSeeds = () => {
 	return (
 		<Container className="col container shadow-lg">
 			<h4 className="mb-3">Find a seed with desired parameters</h4>
-			<p>Lists can be left blank if any combination will do. </p>
 			<p>
+				Lists can be left blank if any combination will do. <br />
 				The resulting seed's LC and AP ingredients will be from the selected
-				values.
+				values. <br />
+				Do keep in mind that some combinations may not be possible.
 			</p>
-			<p>Do keep in mind that some combinations may not be possible.</p>
+			<p>Additional seed search parameters and a better UI coming soon!</p>
 			<Row>
 				<Container className="col container-sm">
 					<Row className="ms-2 me-2 ps-2 sticky-top bg-white rounded shadow-sm">

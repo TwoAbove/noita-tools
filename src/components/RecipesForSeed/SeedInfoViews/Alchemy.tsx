@@ -29,7 +29,7 @@ const Alchemy = (props: IAlchemyProps) => {
 						))}
 					</ListGroup>
 				</div>
-        <div className="ms-auto" />
+        <div className="p-2 flex-grow-1" />
 				<div>
 					Alchemic Precursor:
 					<ListGroup>
