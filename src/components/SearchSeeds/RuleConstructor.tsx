@@ -105,7 +105,7 @@ const RuleConstructors = {
 const RuleConstructor = (props: IRuleConstructorProps) => {
   const { onSubmit } = props;
   const [selected, setSelected] = React.useState<keyof typeof RuleConstructors>(
-    'shop' as any
+    '' as any
   );
   const [configState, dispatch] = React.useReducer(configReducer, {});
 
