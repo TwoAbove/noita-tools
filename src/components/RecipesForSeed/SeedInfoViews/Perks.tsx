@@ -5,6 +5,7 @@ import { PerkInfoProvider, ShopInfoProvider } from '../../../services/SeedInfo/i
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
+import Clickable from '../../Icons/Clickable';
 
 interface IPerksProps {
   shop: ReturnType<ShopInfoProvider['provide']>;
@@ -15,8 +16,10 @@ interface IPerksProps {
 const Perks = (props: IPerksProps) => {
   const { perks, shop, infoProvider } = props;
   const offset = infoProvider.config.perkWorldOffset;
-  const totalRerolls = infoProvider.config.perkRerolls.reduce(
-    (c, n) => c + n.reduce((cc, nn) => cc + nn, 0),
+  const totalRerolls = Object.entries(infoProvider.config.perkRerolls).reduce(
+    (c, [, n]) => {
+      return c + n.reduce((cc, nn) => cc + nn, 0)
+    },
     0
   );
   const getPrice = (rerolls: number) => 200 * Math.pow(2, rerolls);
@@ -38,15 +41,15 @@ const Perks = (props: IPerksProps) => {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    const perks = [...infoProvider.config.perkRerolls];
-    if (!perks[offset]) {
-      perks[offset] = [];
+    const perkRerolls = infoProvider.config.perkRerolls;
+    if (!perkRerolls[offset]) {
+      perkRerolls[offset] = [];
     }
-    if (isNaN(perks[offset][level])) {
-      perks[offset][level] = 0;
+    if (isNaN(perkRerolls[offset][level])) {
+      perkRerolls[offset][level] = 0;
     }
-    perks[offset][level] += 1;
-    infoProvider.updateConfig({ perkRerolls: perks });
+    perkRerolls[offset][level] += 1;
+    infoProvider.updateConfig({ perkRerolls });
   };
   const handleRerollUndo = (level: number) => (
     e: React.MouseEvent<HTMLButtonElement>
@@ -130,7 +133,7 @@ const Perks = (props: IPerksProps) => {
           const rerollsForLevel = infoProvider.config.perkRerolls[offset] ? infoProvider.config.perkRerolls[offset][level] : 0;
           return (
             <Stack direction="horizontal" key={`${offset}-${level}`}>
-              <Col xs={2} style={{marginRight: "-1rem"}}>
+              <Col xs={2} style={{ marginRight: "-1rem" }}>
                 {type === 'wand' ? <WandIcon /> : <LightBulletIcon />}
               </Col>
               {row.map(perk => {
@@ -139,16 +142,18 @@ const Perks = (props: IPerksProps) => {
                     key={perk.ui_name}
                     onClick={handleClickPerk(level, perk.id)}
                   >
-                    <img
-                      className={`${infoProvider.config.pickedPerks[offset]?.[level] === perk.id ? 'border border-3 p-1' : ''}`}
-                      src={`data:image/png;base64,${perk.ui_icon}`}
-                      alt={`${perk.ui_name}`}
-                      style={{ width: '3rem', imageRendering: 'crisp-edges' }}
-                    />
+                    <Clickable
+                      clicked={infoProvider.config.pickedPerks[offset]?.[level] === perk.id}
+                    >
+                      <img
+                        style={{ width: '3rem', imageRendering: 'crisp-edges' }}
+                        src={`data:image/png;base64,${perk.ui_icon}`}
+                        alt={`${perk.ui_name}`} />
+                    </Clickable>
                   </Col>
                 );
               })}
-              <Col xs={3} style={{margin: "-1rem"}}>
+              <Col xs={3} style={{ margin: "-1rem" }}>
                 <Button
                   variant="outline-primary"
                   onClick={handleRerollUndo(level)}

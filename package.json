@@ -1,6 +1,6 @@
 {
   "name": "noita-helper",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "private": true,
   "homepage": "https://www.noitool.com/",
   "dependencies": {
@@ -34,6 +34,7 @@
     "comlink": "^4.3.1",
     "comlink-loader": "^2.0.0",
     "concurrently": "^6.4.0",
+    "fast-deep-equal": "^3.1.3",
     "image-capture": "^0.4.0",
     "jimp": "^0.16.1",
     "lodash-es": "^4.17.21",
@@ -43,6 +44,7 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-bootstrap": "^2.0.2",
     "react-dom": "^17.0.2",
+    "react-feather": "^2.0.9",
     "react-scripts": "^5.0.0-next.47",
     "rescript-worker-loader": "^1.0.4",
     "socket.io-client": "^4.4.0",

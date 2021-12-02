@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import "bootswatch/dist/spacelab/bootstrap.min.css";
-// import "bootswatch/dist/litera/bootstrap.min.css";
+// import "bootswatch/dist/spacelab/bootstrap.min.css";
+import "bootswatch/dist/cosmo/bootstrap.min.css";
 
 import './index.css';
 
@@ -13,7 +13,7 @@ import * as serviceWorker from './serviceWorker';
 
 // import './services/SeedInfo/infoHandler.check';
 
-console.log('v 2.4.2');
+console.log('v 2.5.0');
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
