@@ -256,7 +256,7 @@ export class ShopInfoProvider extends InfoProvider {
   test(rule: IRule): boolean {
     let info = this.provide();
     for (let i = 0; i <= info.length; i++) {
-      if (rule.val[i].type) {
+      if (rule.val[i]?.type) {
         if (rule.val[i].type !== info[i].type) {
           return false;
         }
