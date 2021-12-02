@@ -13,7 +13,7 @@ import * as serviceWorker from './serviceWorker';
 
 // import './services/SeedInfo/infoHandler.check';
 
-console.log('v 2.4.2');
+console.log('v 2.5.0');
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
