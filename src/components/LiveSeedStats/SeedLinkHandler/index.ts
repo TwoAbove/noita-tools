@@ -1,6 +1,6 @@
 import SocketHandler, {
 	SocketHandlerConfig
-} from '../../../services/SocketHandler';
+} from '../../../services/socketHandler';
 
 class SeedLinkHandler extends SocketHandler {
 	hostRoom?: string;
