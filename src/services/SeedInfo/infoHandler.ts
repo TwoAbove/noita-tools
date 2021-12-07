@@ -246,7 +246,7 @@ export class ShopInfoProvider extends InfoProvider {
       let offsetX = 0 - 299, offsetY = 0 - 15;
       if (worldOffset !== 0) {
         offsetX += 35840 * worldOffset;
-        if (i + 1 === this.temples.length) break;
+        if (!this.temples[i]) break;
       }
       res.push(this.spawn_all_shopitems(temple.x + offsetX, temple.y + offsetY, pickedPerks))
     }
@@ -1190,7 +1190,7 @@ export class GameInfoProvider extends EventTarget {
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),
       startingBombSpell: this.providers.startingBombSpell.provide(),
-      shop: this.providers.shop.provide(this.config.pickedPerks),
+      shop: this.providers.shop.provide(this.config.pickedPerks, this.config.perkWorldOffset),
       perks: this.providers.perk.provide(this.config.pickedPerks, undefined, true, this.config.perkWorldOffset, this.config.perkRerolls),
       perkDeck: this.providers.perk.getPerkDeck(true),
       fungalShifts: this.providers.fungalShift.provide(undefined),
