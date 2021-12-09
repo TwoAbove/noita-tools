@@ -6,22 +6,22 @@ import includes from 'lodash-es/includes';
 
 import loadRandom, { IRandom } from './random';
 
-import biomeModifiersData from './data/biome_modifiers.json';
-import biomeNamesData from './data/biome_names.json';
+import biomeModifiersData from './data/obj/biome_modifiers.json';
+import biomeNamesData from './data/obj/biome_names.json';
 import biomesData from './data/biome_names.json';
 import fungalMaterialsData from './data/fungal-materials.json';
 import materialsData from './data/materials.json';
-import perksData from './data/perks_new.json';
+import perksData from './data/obj/perks.json';
 import rainData from './data/rain.json';
-import spellData from './data/spells.json';
+import spellData from './data/obj/spells.json';
 import startingMaterialsData from './data/starting-flask-materials.json';
 import templeData from './data/temple-locations.json';
-import { includesAll } from '../helpers';
+import { includesAll, Merge, Objectify } from '../helpers';
 import { resolveAny } from 'dns/promises';
 
-	// Ideally we use a JSON schema validator, but it doesn't handle sparse arrays well.
-  // Is there something to get deep sparse inclusion between js objects???
-  export interface IRule {
+// Ideally we use a JSON schema validator, but it doesn't handle sparse arrays well.
+// Is there something to get deep sparse inclusion between js objects???
+export interface IRule {
   type: string;
   params?: any;
   path?: string;
@@ -53,7 +53,7 @@ export abstract class InfoProvider {
 
 export class ShopInfoProvider extends InfoProvider {
   temples = templeData;
-  spells = spellData;
+  spells = spellData as Objectify<typeof spellData>;
   biomes = [
     null, // 0
     0,
@@ -121,24 +121,21 @@ export class ShopInfoProvider extends InfoProvider {
     biomeid = biomeid * biomeid;
 
     // This thing is in the engine
-    // item = GetRandomAction(x, y, level, 0)
+    item = "bomb"; // GetRandomAction(x, y, level, 0)
     cardcost = 0;
 
     let price;
 
-    this.spells.forEach((spell, i) => {
-      if (spell.id.toLowerCase() === item.toLowerCase()) {
-        price = Math.max(Math.floor(((spell.price * 0.30) + (70 * biomeid)) / 10) * 10, 10)
-        cardcost = price
-        if (spell.spawn_requires_flag) {
-          let flag = spell.spawn_requires_flag
-          // In-engine function
-          // if (HasFlagPersistent(flag) == false) {
-          // print("Trying to spawn "..tostring(spell.id).. " even though flag "..tostring(flag).. " not set!!")
-          // }
-        }
-      }
-    });
+    const spell = this.spells[item.toUpperCase()];
+    price = Math.max(Math.floor(((spell.price * 0.30) + (70 * biomeid)) / 10) * 10, 10);
+    cardcost = price;
+    if (spell.spawn_requires_flag) {
+      let flag = spell.spawn_requires_flag
+      // In-engine function
+      // if (HasFlagPersistent(flag) == false) {
+      // print("Trying to spawn "..tostring(spell.id).. " even though flag "..tostring(flag).. " not set!!")
+      // }
+    }
 
     if (cheap_item) {
       cardcost = 0.5 * cardcost
@@ -504,7 +501,7 @@ export class Global {
 }
 
 export class PerkInfoProvider extends InfoProvider {
-  perks = perksData;
+  perks = perksData as Objectify<typeof perksData>;
   temples = templeData;
 
   _G = new Global();
@@ -585,8 +582,6 @@ export class PerkInfoProvider extends InfoProvider {
   }
 
   getPerkDeck(returnPerkObjects?: boolean) {
-    let perk_list = this.perks;
-
     let shuffle_table = (t: any[]) => {
       //assert( t, "shuffle_table() expected a table, got nil" )
       let iterations = t.length - 1;
@@ -634,8 +629,7 @@ export class PerkInfoProvider extends InfoProvider {
       const stackable_count = {};			// -1 = NON_STACKABLE otherwise the result is how many times can be stacked
 
       // function create_perk_pool
-      for (let i = 0; i < perk_list.length; i++) {
-        const perk_data = perk_list[i];
+      for (const perk_data of Object.values(this.perks)) {
         if ((table_contains(ignore_these, perk_data.id) === false) && (!perk_data.not_in_default_perk_pool)) {
           const perk_name = perk_data.id;
           let how_many_times = 1;
@@ -734,7 +728,7 @@ export class PerkInfoProvider extends InfoProvider {
     let result = perk_get_spawn_order();
     if (returnPerkObjects) {
       for (let i = 0; i < result.length; i++) {
-        result[i] = this.perks.find(f => f.id === result[i]);
+        result[i] = this.perks[result[i].id];
       }
     }
     return result;
@@ -747,7 +741,7 @@ export class PerkInfoProvider extends InfoProvider {
 
     this._G = new Global();
     let perkDeck = this.getPerkDeck();
-    type IPerk = typeof this.perks[number];
+    type IPerk = typeof this.perks[string];
     let result: IPerk[][] = [];
     let i: number, world = 0;
     this._G.SetValue("TEMPLE_PERK_COUNT", "3")
@@ -794,7 +788,7 @@ export class PerkInfoProvider extends InfoProvider {
     //console.log(_G)
     if (returnPerkObjects) {
       for (let i = 0; i < result.length; i++) {
-        result[i] = result[i].map((e: any) => this.perks.find(f => f.id === e) as any) as IPerk[];
+        result[i] = result[i].map((e: any) => this.perks[e]) as IPerk[];
       }
     }
     return result;
@@ -911,7 +905,7 @@ export class BiomeModifierInfoProvider extends InfoProvider {
     ["vault"],
     ["crypt"],
   ];
-  modifiers = biomeModifiersData;
+  modifiers = biomeModifiersData as Objectify<typeof biomeModifiersData>;
   biomeNames = biomeNamesData;
 
   CHANCE_OF_MODIFIER_PER_BIOME = 0.1;
@@ -925,7 +919,7 @@ export class BiomeModifierInfoProvider extends InfoProvider {
   }
 
   get_modifier(modifier_id: string) {
-    return this.modifiers.find(e => e.id === modifier_id);
+    return this.modifiers[modifier_id];
   }
 
   biome_modifier_applies_to_biome(modifier: { requires_flag: any; does_not_apply_to_biome: string | any[]; apply_only_to_biome: string | any[]; }, biome_name: string) {
@@ -987,8 +981,8 @@ export class BiomeModifierInfoProvider extends InfoProvider {
 
     let biomes = this.biomes;
 
-    let biome_modifier_fog_of_war_clear_at_player = biome_modifiers.find(e => e.id === "FOG_OF_WAR_CLEAR_AT_PLAYER");
-    let biome_modifier_cosmetic_freeze = biome_modifiers.find(e => e.id === "FREEZING_COSMETIC");
+    let biome_modifier_fog_of_war_clear_at_player = biome_modifiers["FOG_OF_WAR_CLEAR_AT_PLAYER"];
+    let biome_modifier_cosmetic_freeze = biome_modifiers["FREEZING_COSMETIC"];
 
     const set_modifier_if_has_none = (biome_name: string, modifier_id: string) => {
       if (!result[biome_name]) {
@@ -1006,7 +1000,7 @@ export class BiomeModifierInfoProvider extends InfoProvider {
       let biome_names = biomes[i];
       let modifier;
       if (this.has_modifiers(biome_names[0], ctx)) {
-        modifier = this.randoms.pick_random_from_table_weighted(rnd, biome_modifiers);
+        modifier = this.randoms.pick_random_from_table_weighted(rnd, Object.values(biome_modifiers));
       }
 
       for (let j = 0; j < biome_names.length; j++) {
@@ -1063,7 +1057,25 @@ export class BiomeModifierInfoProvider extends InfoProvider {
   }
 
   test(rule: IRule): boolean {
-    let info = this.provide();
+    let info = this.provide(); // TODO
+    return true;
+  }
+}
+
+export class SpellInfoProvider extends InfoProvider {
+  spells = spellData as Objectify<typeof spellData>;
+
+  provide(spellName: string) {
+    let found = this.spells[spellName];
+    if (found) return found;
+    console.warn("Could not find spell: " + spellName);
+    return {
+      id: spellName,
+      sprite: ''
+    };
+  }
+
+  test(rule: IRule): boolean {
     return true;
   }
 }
@@ -1176,6 +1188,7 @@ export class GameInfoProvider extends EventTarget {
       perk: new PerkInfoProvider(this.randoms),
       fungalShift: new FungalInfoProvider(this.randoms),
       biomeModifier: new BiomeModifierInfoProvider(this.randoms),
+      spells: new SpellInfoProvider(this.randoms),
       biome: new BiomeInfoProvider(this.randoms),
       material: new MaterialInfoProvider(this.randoms),
     }

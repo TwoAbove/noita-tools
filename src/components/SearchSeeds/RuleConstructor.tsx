@@ -19,6 +19,9 @@ import { IRule } from '../../services/SeedInfo/infoHandler';
 
 import Alchemy from './SearchViews/Alchemy';
 import Shop from './SearchViews/Shop';
+import StartingFlask from './SearchViews/StartingFlask';
+import StartingSpell from './SearchViews/StartingSpell';
+import StartingBombSpell from './SearchViews/StartingBomb';
 
 const genRules = (config: IConfig): IRule[] => {
   return Object.values(config);
@@ -72,18 +75,18 @@ const RuleConstructors = {
   },
   startingFlask: {
     Title: () => 'Starting Flask',
-    active: false,
-    Component: Shop
+    active: true,
+    Component: StartingFlask
   },
   startingSpell: {
     Title: () => 'Starting Spell',
-    active: false,
-    Component: Shop
+    active: true,
+    Component: StartingSpell
   },
   startingBombSpell: {
     Title: () => 'Starting Bomb Spell',
-    active: false,
-    Component: Shop
+    active: true,
+    Component: StartingBombSpell
   },
   perk: {
     Title: () => 'Perks',

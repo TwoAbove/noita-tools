@@ -7,6 +7,7 @@ import Alchemy from './SeedInfoViews/Alchemy';
 
 import GameInfoProvider from '../../services/SeedInfo/infoHandler';
 import Rain from './SeedInfoViews/Rain';
+import Start from './SeedInfoViews/Start';
 import Biome from './SeedInfoViews/Biome';
 import FungalShifts from './SeedInfoViews/FungalShifts';
 import Perks from './SeedInfoViews/Perks';
@@ -31,6 +32,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 						shop={data.shop}
 						perks={data.perks}
 					/>
+					<Start infoProvider={infoProvider} startingFlask={data.startingFlask} startingSpell={data.startingSpell} startingBombSpell={data.startingBombSpell} />
 					{/* <Rain infoProvider={infoProvider} rainData={data.rainType} /> */}
 					<Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
 				</Col>
