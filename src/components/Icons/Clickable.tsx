@@ -16,7 +16,7 @@ const Clickable = (props: IClickableProps | any) => {
   });
   return (
     <div
-      className={classNames(clicked && 'border border-3 p-1')}
+      className={classNames(clicked && 'border border-3 p-1 flex-shrink-1')}
     >
       {childrenWithProps}
     </div>

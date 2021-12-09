@@ -91,6 +91,7 @@ const Perks = (props: IPerksProps) => {
   return (
     <Container
       style={{
+        padding: 0,
         imageRendering: 'pixelated'
       }}
     >
@@ -133,27 +134,31 @@ const Perks = (props: IPerksProps) => {
           const rerollsForLevel = infoProvider.config.perkRerolls[offset] ? infoProvider.config.perkRerolls[offset][level] : 0;
           return (
             <Stack direction="horizontal" key={`${offset}-${level}`}>
-              <Col xs={2} style={{ marginRight: "-1rem" }}>
+              <Col xs={2}>
                 {type === 'wand' ? <WandIcon /> : <LightBulletIcon />}
               </Col>
-              {row.map(perk => {
-                return (
-                  <Col
-                    key={perk.ui_name}
-                    onClick={handleClickPerk(level, perk.id)}
-                  >
-                    <Clickable
-                      clicked={infoProvider.config.pickedPerks[offset]?.[level] === perk.id}
-                    >
-                      <img
-                        style={{ width: '3rem', imageRendering: 'crisp-edges' }}
-                        src={`data:image/png;base64,${perk.ui_icon}`}
-                        alt={`${perk.ui_name}`} />
-                    </Clickable>
-                  </Col>
-                );
-              })}
-              <Col xs={3} style={{ margin: "-1rem" }}>
+              <Col>
+                <Stack direction="horizontal" className="justify-content-center" gap={2} >
+                  {row.map(perk => {
+                    return (
+                      <div
+                        key={perk.ui_name}
+                        onClick={handleClickPerk(level, perk.id)}
+                      >
+                        <Clickable
+                          clicked={infoProvider.config.pickedPerks[offset]?.[level] === perk.id}
+                        >
+                          <img
+                            style={{ width: '3rem', imageRendering: 'crisp-edges' }}
+                            src={`data:image/png;base64,${perk.ui_icon}`}
+                            alt={`${perk.ui_name}`} />
+                        </Clickable>
+                      </div>
+                    );
+                  })}
+                </Stack>
+              </Col>
+              <Col xs={3}>
                 <Button
                   variant="outline-primary"
                   onClick={handleRerollUndo(level)}
