@@ -17,7 +17,7 @@ export class SeedSolver {
 	currentSeed = 0;
 	offset = 0;
 	step = 1;
-	infoFreq = 1000;
+	infoFreq = 25000;
 	rules!: IRule[];
 
 	infocb?: (info: ReturnType<SeedSolver['getInfo']>) => void;
@@ -48,7 +48,7 @@ export class SeedSolver {
 				// Free the event loop to check for stop
 				await new Promise(res => setTimeout(res, 0));
 			}
-			this.gameInfoHandler.randoms!.SetWorldSeed(Number(this.currentSeed));
+			this.gameInfoHandler.randoms!.SetWorldSeed(this.currentSeed);
 			const found = this.rules.every(r => this.check(r));
 			if (found) {
 				this.foundSeed = +this.currentSeed;

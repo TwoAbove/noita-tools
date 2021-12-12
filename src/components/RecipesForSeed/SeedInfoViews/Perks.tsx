@@ -51,22 +51,24 @@ const Perks = (props: IPerksProps) => {
     perkRerolls[offset][level] += 1;
     infoProvider.updateConfig({ perkRerolls });
   };
+
   const handleRerollUndo = (level: number) => (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    const perks = [...infoProvider.config.perkRerolls];
-    if (!perks[offset]) {
-      perks[offset] = [];
+    const perkRerolls = [...infoProvider.config.perkRerolls];
+    if (!perkRerolls[offset]) {
+      perkRerolls[offset] = [];
     }
-    if (isNaN(perks[offset][level])) {
-      perks[offset][level] = 0;
+    if (isNaN(perkRerolls[offset][level])) {
+      perkRerolls[offset][level] = 0;
     }
-    if (perks[offset][level] > 0) {
-      perks[offset][level] -= 1;
+    if (perkRerolls[offset][level] > 0) {
+      perkRerolls[offset][level] -= 1;
     }
-    infoProvider.updateConfig({ perkRerolls: perks });
+    infoProvider.updateConfig({ perkRerolls });
   };
+
   const handleClickPerk = (level: number, id: string) => () => {
     const pickedPerks = [...infoProvider.config.pickedPerks];
 
@@ -78,6 +80,7 @@ const Perks = (props: IPerksProps) => {
     }
     infoProvider.updateConfig({ pickedPerks });
   };
+
   const handleReset = () => {
     const pickedPerks = [];
     const perkRerolls = [];

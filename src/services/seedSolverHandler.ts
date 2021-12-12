@@ -27,6 +27,7 @@ export class WorkerHandler extends EventTarget {
 
 export default class SeedSolver {
   public workerList: WorkerHandler[] = [];
+  startTime!: number;
 
   constructor(workerCount: number = 1) {
     for (let i = 0; i < workerCount; i++) {
@@ -51,6 +52,7 @@ export default class SeedSolver {
   }
 
   public start() {
+    this.startTime = new Date().getTime();
     for (const worker of this.workerList) {
       worker.worker.postMessage({ type: 'start' });
     }
@@ -82,8 +84,12 @@ export default class SeedSolver {
       acc.count += cur.count;
       acc.currentSeed = Math.min(acc.currentSeed || cur.currentSeed, cur.currentSeed);
       acc.running = acc.running || cur.running;
+
       return acc;
     }, { count: 0 } as ReturnType<_SeedSolver["getInfo"]>);
+    const duration = new Date().getTime() - this.startTime;
+    const rate = res.currentSeed / duration;
+    (res as any).msLeft = Math.floor((4_294_967_294 - res.currentSeed) / rate);
     return [res];
   }
 }
