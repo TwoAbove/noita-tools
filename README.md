@@ -1,7 +1,21 @@
-# noita-tools
+# Noitool
 
-A web app for finding LC and AP values for a given seed
+A web app with many things Noita.
 
-The code for finding LC and AP values was transferred from [noita_unicorn](https://github.com/SaphireLattice/noita_unicorn)'s `Program.cs` from c# to typescript using [Bridge.NET](https://github.com/bridgedotnet/Bridge/)
+Helps you get a specific seed for your specific needs.
 
-Also, I will be taking inspiration from [cr4xy](https://cr4xy.dev/noita/) for extra features
+Current features include:
+
+* Get seed info
+* Search for a seed
+* Live seed info viewer
+
+
+## Technical details and implementation details that I found interesting
+
+The code for finding LC and AP values was transferred from [noita_unicorn](https://github.com/SaphireLattice/noita_unicorn)'s `Program.cs` from c# to c++.
+
+The c++ code is then compiled to wasm and is run in web workers (and partly in the main thread).
+The performance improvements are 20-fold by transferring seed functions (like randoms and lc & ap recipes) from a typescript implementation to c++.
+
+Also, I took inspiration from [cr4xy](https://cr4xy.dev/noita/) for extra features. You rock! <3
