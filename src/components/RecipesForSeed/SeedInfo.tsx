@@ -22,7 +22,6 @@ interface ISeedInfoProps {
 const SeedInfo = (props: ISeedInfoProps) => {
 	const { data, infoProvider } = props;
 	const [spoil, setSpoiler] = useContext(SpoilerContext);
-
 	return (
 		<div>
 			<Row>

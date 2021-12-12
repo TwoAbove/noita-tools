@@ -20,10 +20,15 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 
 let data = [];
+let stats = [];
 
 app.post('/data', (req, res) => {
-	console.log(req.body);
 	data.push(req.body);
+	res.send(200);
+});
+
+app.post('/stats', (req, res) => {
+	stats.push(req.body);
 	res.send(200);
 });
 
@@ -107,9 +112,10 @@ const upload = async () => {
 		bucketId: '93c80a630c6d59a37add0615',
 		fileName: `${new Date().toISOString()}.json`,
 		partSize: r.data.recommendedPartSize,
-		data: Buffer.from(JSON.stringify(data))
+		data: Buffer.from(JSON.stringify({data, stats}))
 	});
 	data = [];
+	stats = [];
 };
 
 cron.schedule('0 0 * * *', upload);
@@ -117,7 +123,7 @@ cron.schedule('0 0 * * *', upload);
 const shutdown = signal => err => {
 	if (err) console.error(err.stack || err);
 	setTimeout(() => {
-		console.log('Waited 5s, exiting non-gracefully');
+		console.error('Waited 5s, exiting non-gracefully');
 		process.exit(1);
 	}, 5000).unref();
 	Promise.all([upload(), new Promise(res => server.close(res))]).then(() => {

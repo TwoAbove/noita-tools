@@ -796,10 +796,9 @@ export class PerkInfoProvider extends InfoProvider {
 
   test(rule: IRule): boolean {
     let info = this.provide();
-    for (let i = 0; i <= info.length; i++) {
-      if (rule.val[i]) {
-        const perkInfo = info[i].map(p => p.id);
-        if (!includesAll(perkInfo, rule.val[i])) {
+    for (let i = 0; i < info.length; i++) {
+      if (rule.val[i].length) {
+        if (!includesAll(info[i] as any as string[], rule.val[i])) {
           return false;
         }
       }

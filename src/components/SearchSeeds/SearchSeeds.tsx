@@ -10,13 +10,17 @@ import {
 	Row,
 	Col,
 	Button,
-	Spinner
+	Spinner,
+	ProgressBar
 } from 'react-bootstrap';
+
+import humanize from 'humanize-duration';
 
 import SeedDataOutput from '../RecipesForSeed/SeedDataOutput';
 import SeedSolver from '../../services/seedSolverHandler';
 
 import RuleConstructor from './RuleConstructor';
+import useLocalStorage from '../../services/useLocalStorage';
 
 const Description = () => {
 	return (
@@ -27,13 +31,14 @@ const Description = () => {
 	);
 };
 
+const avg = (arr: number[]) => arr.reduce((p, c) => p + c, 0) / arr.length;
+const loc = (n: number) => new Intl.NumberFormat().format(n);
 
 const SearchSeeds = () => {
-	const [useCores, setUseCores] = React.useState<number>(1);
+	const [useCores, setUseCores] = useLocalStorage('useCores', 1, s => parseInt(s || "1", 10), t => `${t}`)
 	const [seedSolver, setSeedSolver] = React.useState(
 		() => new SeedSolver(useCores)
 	);
-
 	const [seed, setSeed] = React.useState('1');
 	const handleSeedChange = (e: any) => {
 		setSeed(e.target.value);
@@ -111,6 +116,10 @@ const SearchSeeds = () => {
 		await seedSolver.stop();
 	};
 
+	const seedsChecked = avg(solverInfo.map(i => i.currentSeed));
+	const totalSeeds = 4_294_967_294;
+	const percentChecked = Math.floor((seedsChecked / totalSeeds) * 100);
+
 	return (
 		<Container className="col container shadow-lg">
 			<Description />
@@ -185,6 +194,10 @@ const SearchSeeds = () => {
 				</Row>
 			)}
 			<Container>
+				{solverInfo[0]?.running && <div>
+					<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
+					Seeds checked: {loc(seedsChecked)} / {loc(totalSeeds)} (Estimated time left: {humanize((solverInfo[0] as any).msLeft, { maxDecimalPoints: 0 })})
+				</div>}
 				<h6>Results:</h6>
 				<Stack gap={5}>
 					{solverInfo.map((info, index) => (

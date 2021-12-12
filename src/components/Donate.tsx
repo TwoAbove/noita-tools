@@ -13,7 +13,7 @@ const Donate = () => {
 				type="image"
 				src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"
 				name="submit"
-				title="PayPal - The safer, easier way to pay online!"
+				title="PayPal"
 				alt="Donate with PayPal button"
 			/>
 		</form>

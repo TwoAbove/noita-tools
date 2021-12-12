@@ -22,6 +22,8 @@ import Shop from './SearchViews/Shop';
 import StartingFlask from './SearchViews/StartingFlask';
 import StartingSpell from './SearchViews/StartingSpell';
 import StartingBombSpell from './SearchViews/StartingBomb';
+import Rain from './SearchViews/Rain';
+import Perks from './SearchViews/Perks';
 
 const genRules = (config: IConfig): IRule[] => {
   return Object.values(config);
@@ -70,8 +72,8 @@ const RuleConstructors = {
   },
   rain: {
     Title: () => 'Rain',
-    active: false,
-    Component: Shop
+    active: true,
+    Component: Rain
   },
   startingFlask: {
     Title: () => 'Starting Flask',
@@ -90,8 +92,8 @@ const RuleConstructors = {
   },
   perk: {
     Title: () => 'Perks',
-    active: false,
-    Component: Shop
+    active: true,
+    Component: Perks
   },
   fungalShift: {
     Title: () => 'Fungal Shifts',

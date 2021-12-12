@@ -105,10 +105,10 @@ const App: React.FC = () => {
 				<footer className="footer font-small blue p-1 pt-3">
 					<Stack>
 						<div className="footer text-center py-2">
-							Ideas? Issues? Click{' '}
-							<a href="https://github.com/TwoAbove/noita-tools/issues/new/choose">
+							Ideas? Issues? Bugs? Click{' '}
+							<a target="_blank" rel="noreferrer" href="https://github.com/TwoAbove/noita-tools/discussions">
 								here
-							</a>{' '}
+							</a>!
 						</div>
 						<div className="footer-copyright text-center py-2">
 							Like this tool? Buy me a coffee!
