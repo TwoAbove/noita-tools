@@ -16,7 +16,7 @@ import {
 
 import humanize from 'humanize-duration';
 
-import SeedDataOutput from '../RecipesForSeed/SeedDataOutput';
+import SeedDataOutput from '../SeedInfo/SeedDataOutput';
 import SeedSolver from '../../services/seedSolverHandler';
 
 import RuleConstructor from './RuleConstructor';

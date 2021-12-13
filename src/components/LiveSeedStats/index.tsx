@@ -3,9 +3,9 @@ import { lazy } from '@loadable/component'
 
 import LoadingComponent from '../LoadingComponent';
 
-const L = lazy(() => import('./SearchSeeds'));
+const L = lazy(() => import('./LiveSeedStats'));
 
-const LazySearchSeeds = props => {
+const LazyLiveStats = props => {
 	return (
 		<Suspense fallback={<LoadingComponent />}>
 			<L {...props} />
@@ -13,4 +13,4 @@ const LazySearchSeeds = props => {
 	);
 };
 
-export default LazySearchSeeds;
+export default LazyLiveStats;

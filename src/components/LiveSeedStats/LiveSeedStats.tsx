@@ -6,7 +6,7 @@ import 'image-capture';
 // import ImageBitmapViewer from './ImageBitmapViewer';
 import OCRHandler from './OCRHandler/index';
 
-import SeedDataOutput from '../RecipesForSeed/SeedDataOutput';
+import SeedDataOutput from '../SeedInfo/SeedDataOutput';
 import SeedLinkHandler from './SeedLinkHandler';
 
 // const ocrHandler = new OCRHandler({});
@@ -18,7 +18,7 @@ const Description = () => {
 				Host
 			</h5>
 			<p>
-				This will allow you to get seed information (like from <i>Recipes For Seed</i>) in real time by reading the
+				This will allow you to get seed information (like from <i>Seed info</i>) in real time by reading the
 				seed from your display during gameplay. Display data does not leave your machine.<br/><br/>
 				To start, open this page in your browser and start the game. Click "Start screen capture". Select the Noita window, or the whole screen where Noita will be running
 				if the former is not available.

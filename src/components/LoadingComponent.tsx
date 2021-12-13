@@ -1,10 +1,11 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
+import { Container, ProgressBar } from 'react-bootstrap';
 
-const LoadingComponent = props => {
+const LoadingComponent = () => {
 	return (
-	<p>
-    Loading...
-  </p>
+		<Container className="container shadow-lg mb-5">
+			<ProgressBar animated now={100} />
+		</Container>
 	);
 };
 
