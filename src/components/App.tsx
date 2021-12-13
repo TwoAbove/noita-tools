@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Container, Tabs, Tab, Stack, Form } from 'react-bootstrap';
 
-import RecipesForSeed from './RecipesForSeed/RecipesForSeed';
-import SearchSeeds from './SearchSeeds/SearchSeeds';
-import LiveSeedStats from './LiveSeedStats/LiveSeedStats';
+import SeedInfo from './SeedInfo';
+import SearchSeeds from './SearchSeeds';
+import LiveSeedStats from './LiveSeedStats';
 import Donate from './Donate';
 import useLocalStorage from '../services/useLocalStorage';
 
@@ -53,9 +53,9 @@ const Header = props => {
 const App: React.FC = () => {
 	const [tab, setTab] = useLocalStorage(
 		'last-tab',
-		'RecipesForSeed',
+		'SeedInfo',
 		d => {
-			return d || 'RecipesForSeed';
+			return d || 'SeedInfo';
 		},
 		s => {
 			return s;
@@ -80,10 +80,10 @@ const App: React.FC = () => {
 						>
 							<Tab
 								mountOnEnter
-								eventKey="RecipesForSeed"
-								title="Recipes For Seed"
+								eventKey="SeedInfo"
+								title="Seed info"
 							>
-								<RecipesForSeed />
+								<SeedInfo />
 							</Tab>
 							<Tab
 								mountOnEnter

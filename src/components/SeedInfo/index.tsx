@@ -1,10 +1,11 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
+import { lazy } from '@loadable/component'
 
 import LoadingComponent from '../LoadingComponent';
 
 const L = lazy(() => import('./RecipesForSeed'));
 
-const LazyRecipesForSeed = props => {
+const LazySeedInfo = props => {
 	return (
 		<Suspense fallback={<LoadingComponent />}>
 			<L {...props} />
@@ -12,4 +13,4 @@ const LazyRecipesForSeed = props => {
 	);
 };
 
-export default LazyRecipesForSeed;
+export default LazySeedInfo;
