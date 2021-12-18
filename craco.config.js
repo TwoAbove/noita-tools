@@ -4,6 +4,8 @@ const fs = require('fs');
 
 const { addBeforeLoader, loaderByName } = require('@craco/craco');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+	.BundleAnalyzerPlugin;
 
 const setUpWorker = config => {
 	// Legacy worker-loader code
@@ -77,6 +79,11 @@ module.exports = {
 
 			return config;
 		},
+		plugins: [
+			new BundleAnalyzerPlugin({
+				analyzerMode: process.env.STATS || 'disabled'
+			})
+		],
 		// stats: 'errors-only',
 		asyncWebAssembly: true,
 		syncWebAssembly: true

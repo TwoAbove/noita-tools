@@ -14,23 +14,11 @@ import Clickable from '../../Icons/Clickable';
 import PerkSelect from '../../PerkSelect';
 import Icon from '../../Icons/Icon';
 import perkData from '../../../services/SeedInfo/data/obj/perks.json';
+import { Square } from '../../helpers';
 
 interface IPerksProps {
 	onUpdateConfig: (config: IRule) => void;
 }
-
-const Square = props => {
-	const { children, ...rest } = props;
-	return (
-		<div
-			{...rest}
-			style={{ width: 48, height: 48 }}
-			className={classNames('d-flex align-items-center justify-content-center')}
-		>
-			{children}
-		</div>
-	);
-};
 
 const getMaxPerksPerRow = (perks: string[][]): number[] => {
 	const res: number[] = [];
@@ -115,6 +103,7 @@ const Perks = (props: IPerksProps) => {
 
 	return (
 		<Container fluid>
+			<p>To delete a perk, click on it.</p>
 			<Row className="justify-content-center">
 				<Col xs={7}>
 					<Stack gap={3}>
