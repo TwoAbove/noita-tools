@@ -103,6 +103,7 @@ const Perks = (props: IPerksProps) => {
 
 	return (
 		<Container fluid>
+			<p>To delete a perk, click on it.</p>
 			<Row className="justify-content-center">
 				<Col xs={7}>
 					<Stack gap={3}>

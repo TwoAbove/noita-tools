@@ -66,6 +66,7 @@ const Biomes = (props: IBiomesProps) => {
 
 	return (
 		<Container fluid>
+			<p>To delete a modifier, click on it.</p>
 			<Stack gap={3}>
 				{Object.keys(biomeModifiers).map(biome => {
 					const name = capitalize(biomeNames[biome].translated_name!);
