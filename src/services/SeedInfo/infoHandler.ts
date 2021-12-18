@@ -1056,7 +1056,15 @@ export class BiomeModifierInfoProvider extends InfoProvider {
   }
 
   test(rule: IRule): boolean {
-    let info = this.provide(); // TODO
+    let info = this.provide();
+    for (const biome in rule.val) {
+      if (!info[biome]) {
+        return false;
+      }
+      if (!rule.val[biome].includes(info[biome].id)) {
+        return false;
+      }
+    }
     return true;
   }
 }
@@ -1106,7 +1114,7 @@ export class MaterialInfoProvider extends InfoProvider {
   }
 }
 
-class BiomeInfoProvider extends InfoProvider {
+export class BiomeInfoProvider extends InfoProvider {
   biomes = biomesData;
   provide(biomeId: string) {
     let found = this.biomes.find(e => e.id === biomeId);

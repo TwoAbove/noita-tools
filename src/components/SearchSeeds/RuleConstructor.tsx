@@ -18,6 +18,7 @@ import { Trash2, Plus } from 'react-feather';
 import { IRule } from '../../services/SeedInfo/infoHandler';
 
 import Alchemy from './SearchViews/Alchemy';
+import Biomes from './SearchViews/Biomes';
 import Shop from './SearchViews/Shop';
 import StartingFlask from './SearchViews/StartingFlask';
 import StartingSpell from './SearchViews/StartingSpell';
@@ -102,8 +103,8 @@ const RuleConstructors = {
   },
   biomeModifier: {
     Title: () => 'Biome Modifiers',
-    active: false,
-    Component: Shop
+    active: true,
+    Component: Biomes
   },
 };
 

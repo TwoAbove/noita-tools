@@ -5,18 +5,11 @@ import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
 
 import { IRule } from '../../../services/SeedInfo/infoHandler';
-import classNames from 'classnames';
 import Clickable from '../../Icons/Clickable';
+import { Square } from '../../helpers';
 
 interface IShopProps {
 	onUpdateConfig: (config: IRule) => void;
-}
-
-const Square = (props) => {
-	const { children, ...rest } = props;
-	return (<div {...rest} style={{ width: 48, height: 48 }} className={classNames("d-flex align-items-center justify-content-center")}>
-		{children}
-	</div>)
 }
 
 const Shop = (props: IShopProps) => {
