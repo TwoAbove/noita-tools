@@ -11,6 +11,8 @@ export const includesAll = (set: string[], test: string[]) =>
 export const includesSome = (set: string[], test: string[]) =>
 	set.length ? test.some(v => set.includes(v)) : false;
 
+export const localizeNumber = (n: number) => new Intl.NumberFormat().format(n);
+
 type CommonKeys<T> = keyof T;
 type AllKeys<T> = T extends any ? keyof T : never;
 type Subtract<A, C> = A extends C ? never : A;

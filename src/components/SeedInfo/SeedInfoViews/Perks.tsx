@@ -6,6 +6,7 @@ import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
 import Clickable from '../../Icons/Clickable';
+import { localizeNumber } from '../../../services/helpers';
 
 interface IPerksProps {
   shop: ReturnType<ShopInfoProvider['provide']>;
@@ -125,8 +126,8 @@ const Perks = (props: IPerksProps) => {
           alignSelf: 'stretch',
         }}>
           <span> Rerolls: {totalRerolls}</span>
-          <span> Next: {getPrice(totalRerolls)}</span>
-          <span> Total: {getTotal(totalRerolls)}</span>
+          <span> Next: {localizeNumber(getPrice(totalRerolls))}</span>
+          <span> Total: {localizeNumber(getTotal(totalRerolls))}</span>
         </div>
         <div className="ms-auto" />
       </Stack>
