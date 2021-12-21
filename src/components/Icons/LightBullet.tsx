@@ -10,7 +10,7 @@ const LightBulletIcon = (props: React.DetailedHTMLProps<React.ImgHTMLAttributes<
 				{...rest}
 				alt="Light_Bullet"
 				src={uri}
-				style={{ width: '3rem', imageRendering: 'crisp-edges' }}
+				style={{ width: '3rem', imageRendering: 'pixelated' }}
 			/>
 	);
 };

@@ -11,7 +11,7 @@ const Icon = (props: IIconProps & React.DetailedHTMLProps<React.ImgHTMLAttribute
 			{...rest}
 			alt={rest.alt}
 			src={uri}
-			style={{ width: '3rem', imageRendering: 'crisp-edges' }}
+			style={{ width: '3rem', imageRendering: 'pixelated' }}
 		/>
 	);
 };

@@ -82,9 +82,9 @@ export default class SeedSolver {
     }
     const res = allInfo.reduce((acc, cur) => {
       acc.count += cur.count;
-      acc.currentSeed = Math.min(acc.currentSeed || cur.currentSeed, cur.currentSeed);
+      acc.currentSeed = Math.max(acc.currentSeed || cur.currentSeed, cur.currentSeed);
       acc.running = acc.running || cur.running;
-
+      acc.avgExecTime = cur.avgExecTime;
       return acc;
     }, { count: 0 } as ReturnType<_SeedSolver["getInfo"]>);
     const duration = new Date().getTime() - this.startTime;

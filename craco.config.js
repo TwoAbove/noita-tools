@@ -27,8 +27,7 @@ module.exports = {
 			})
 		],
 		// stats: 'errors-only',
-		asyncWebAssembly: true,
-		syncWebAssembly: true
+		asyncWebAssembly: true
 	}
 	// style: {
 	//   postcss: {

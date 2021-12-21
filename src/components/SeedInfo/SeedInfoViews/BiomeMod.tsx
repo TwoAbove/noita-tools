@@ -41,7 +41,7 @@ const BiomeModifier = (props: IBiomeModifierProps) => {
 						backgroundRepeat: 'no-repeat',
 						backgroundImage: `url('data:image/png;base64,${modifierObject.ui_decoration_file}')`,
 						backgroundPositionX: '50%',
-						imageRendering: 'crisp-edges'
+						imageRendering: 'pixelated'
 					}}
 				></div>
 				<div

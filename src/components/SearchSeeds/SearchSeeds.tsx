@@ -10,7 +10,6 @@ import {
 	Row,
 	Col,
 	Button,
-	Spinner,
 	ProgressBar
 } from 'react-bootstrap';
 
@@ -186,17 +185,10 @@ const SearchSeeds = () => {
 					</Row>
 				</Col>
 			</Row>
-			{running && (
-				<Row>
-					<Col>
-						<Spinner animation="grow" color="info" />
-					</Col>
-				</Row>
-			)}
 			<Container>
 				{solverInfo[0]?.running && <div>
 					<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
-					Seeds checked: {loc(seedsChecked)} / {loc(totalSeeds)} (Estimated time left: {humanize((solverInfo[0] as any).msLeft, { maxDecimalPoints: 0 })})
+					Seeds checked: {loc(seedsChecked)} / {loc(totalSeeds)} (Estimated time left: {humanize((solverInfo[0] as any).msLeft, { round: true, units: ["h", "m"] })})
 				</div>}
 				<h6>Results:</h6>
 				<Stack gap={5}>
