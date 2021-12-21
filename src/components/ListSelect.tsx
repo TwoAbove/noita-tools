@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { capitalize } from '../services/helpers';
 
-import GameInfoProvider from '../services/SeedInfo/infoHandler';
+import { MaterialInfoProvider } from '../services/SeedInfo/infoHandler';
+
+const material = new MaterialInfoProvider({} as any);
 
 interface IOptionProps {
 	name: string;
@@ -10,6 +12,14 @@ interface IOptionProps {
 
 	handleClick: () => void;
 }
+
+const getTranslatedName = (s: string) => {
+	if (s.includes(',')) {
+		return s.split(',').map(m => capitalize(material.provide(m).translated_name)).join(', ');
+	}
+	return capitalize(material.provide(s).translated_name)
+}
+
 const Option = (props: IOptionProps) => {
 	const { name, selected, handleClick } = props;
 	return (
@@ -26,38 +36,11 @@ const Option = (props: IOptionProps) => {
 interface IListSelectProps {
 	selected: Set<string>;
 	items: string[];
-	onUpdate: (selected: Set<string>) => void;
+	onUpdate?: (selected: Set<string>) => void;
 }
-
-const waitToLoad = (gameInfoProvider): Promise<void> =>
-	new Promise(async res => {
-		if (!gameInfoProvider) {
-			return res();
-		}
-		while (!gameInfoProvider.ready) {
-			await new Promise(r => setTimeout(r, 50));
-		}
-		return res();
-	});
 
 const ListSelect = (props: IListSelectProps) => {
 	const { selected, items } = props;
-	const [, setData] = useState<ReturnType<GameInfoProvider['provideAll']>>();
-	const updateData = () => {
-		const data = gameInfoProvider.provideAll();
-		setData(data);
-	};
-	const [gameInfoProvider] = useState(() => new GameInfoProvider({}));
-	useEffect(() => {
-		waitToLoad(gameInfoProvider).then(() => {
-			const data = gameInfoProvider.provideAll();
-			setData(data);
-			gameInfoProvider.addEventListener('update', event => {
-				updateData();
-			});
-		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [gameInfoProvider]);
 
 	const handleSelectedChanged = (selected: Set<string>) => {
 		if (props.onUpdate) {
@@ -73,17 +56,13 @@ const ListSelect = (props: IListSelectProps) => {
 		}
 		handleSelectedChanged(newSelected);
 	};
-	if (!gameInfoProvider.ready) {
-		return <div>Loading</div>;
-	}
+
 	return (
 		<ListGroup>
 			{items.map(item => (
 				<Option
 					key={item}
-					name={capitalize(
-						gameInfoProvider.providers.material.provide(item).translated_name
-					)}
+					name={getTranslatedName(item)}
 					selected={selected.has(item)}
 					handleClick={() => handleClick(item)}
 				/>

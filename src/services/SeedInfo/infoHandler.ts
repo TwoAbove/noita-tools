@@ -1,9 +1,5 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import get from 'lodash-es/get';
-import isEqual from 'lodash-es/isEqual';
-import includes from 'lodash-es/includes';
-
 import loadRandom, { IRandom } from './random';
 
 import biomeModifiersData from './data/obj/biome_modifiers.json';
@@ -16,8 +12,7 @@ import rainData from './data/rain.json';
 import spellData from './data/obj/spells.json';
 import startingMaterialsData from './data/starting-flask-materials.json';
 import templeData from './data/temple-locations.json';
-import { includesAll, Merge, Objectify } from '../helpers';
-import { resolveAny } from 'dns/promises';
+import { includesAll, includesSome, Merge, Objectify } from '../helpers';
 
 // Ideally we use a JSON schema validator, but it doesn't handle sparse arrays well.
 // Is there something to get deep sparse inclusion between js objects???
@@ -872,19 +867,34 @@ export class FungalInfoProvider extends InfoProvider {
     return shifts;
   }
 
+  //   let info: {
+  //     flaskTo: boolean;
+  //     flaskFrom: boolean;
+  //     from: string[];
+  //     to: string;
+  // }[]
+
   test(rule: IRule): boolean {
     let info = this.provide();
     for (let i = 0; i <= info.length; i++) {
-      if (rule.val[i]) {
-        for (const [key, val] of Object.entries(rule.val[i])) {
-          if (Array.isArray(info[key])) {
-            if (!includesAll(val as any, info[key])) {
-              return false;
-            };
-          } else if (info[key] !== val) {
-            return false;
-          }
-        }
+      if (!rule.val[i]) {
+        continue;
+      }
+
+      if (rule.val[i].flaskTo && rule.val[i].flaskTo !== info[i].flaskTo) {
+        return false;
+      }
+
+      if (rule.val[i].flaskFrom && rule.val[i].flaskFrom !== info[i].flaskFrom) {
+        return false;
+      }
+
+      if (rule.val[i].from && !includesSome(rule.val[i].from, info[i].from)) {
+        return false;
+      }
+
+      if (rule.val[i].to && !rule.val[i].to.includes(info[i].to)) {
+        return false;
       }
     }
     return true;
