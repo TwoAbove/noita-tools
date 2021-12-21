@@ -20,6 +20,7 @@ import SeedSolver from '../../services/seedSolverHandler';
 
 import RuleConstructor from './RuleConstructor';
 import useLocalStorage from '../../services/useLocalStorage';
+import { localizeNumber } from '../../services/helpers';
 
 const Description = () => {
 	return (
@@ -31,7 +32,6 @@ const Description = () => {
 };
 
 const avg = (arr: number[]) => arr.reduce((p, c) => p + c, 0) / arr.length;
-const loc = (n: number) => new Intl.NumberFormat().format(n);
 
 const SearchSeeds = () => {
 	const [useCores, setUseCores] = useLocalStorage('useCores', 1, s => parseInt(s || "1", 10), t => `${t}`)
@@ -188,7 +188,7 @@ const SearchSeeds = () => {
 			<Container>
 				{solverInfo[0]?.running && <div>
 					<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
-					Seeds checked: {loc(seedsChecked)} / {loc(totalSeeds)} (Estimated time left: {humanize((solverInfo[0] as any).msLeft, { round: true, units: ["h", "m"] })})
+					Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverInfo[0] as any).msLeft, { round: true, units: ["h", "m"] })})
 				</div>}
 				<h6>Results:</h6>
 				<Stack gap={5}>
