@@ -8,13 +8,11 @@ export interface SocketHandlerConfig {}
 
 class SocketHandler extends EventTarget {
 	ready = false;
+	connected = false;
 	io = socketIOClient();
 
 	constructor(config: SocketHandlerConfig) {
 		super();
-
-		this.ready = true;
-
 		this.configIO();
 	}
 
@@ -27,6 +25,16 @@ class SocketHandler extends EventTarget {
 	configIO(): void {
 		this.io.on('connect', () => {
 			this.ready = true;
+			this.connected = true;
+		});
+		this.io.on('connect', () => {
+			this.ready = true;
+			this.connected = true;
+		});
+
+		this.io.on('disconnect', reason => {
+			console.log('disconnected: ', reason);
+			this.connected = false;
 		});
 	}
 

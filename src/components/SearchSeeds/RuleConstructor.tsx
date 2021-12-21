@@ -25,6 +25,7 @@ import StartingSpell from './SearchViews/StartingSpell';
 import StartingBombSpell from './SearchViews/StartingBomb';
 import Rain from './SearchViews/Rain';
 import Perks from './SearchViews/Perks';
+import FungalShifts from './SearchViews/FungalShifts';
 
 const genRules = (config: IConfig): IRule[] => {
   return Object.values(config);
@@ -98,8 +99,8 @@ const RuleConstructors = {
   },
   fungalShift: {
     Title: () => 'Fungal Shifts',
-    active: false,
-    Component: Shop
+    active: true,
+    Component: FungalShifts
   },
   biomeModifier: {
     Title: () => 'Biome Modifiers',
