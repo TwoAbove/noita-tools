@@ -152,7 +152,7 @@ const Perks = (props: IPerksProps) => {
                           clicked={infoProvider.config.pickedPerks[offset]?.[level] === perk.id}
                         >
                           <img
-                            style={{ width: '3rem', imageRendering: 'crisp-edges' }}
+                            style={{ width: '3rem', imageRendering: 'pixelated' }}
                             src={`data:image/png;base64,${perk.ui_icon}`}
                             alt={`${perk.ui_name}`} />
                         </Clickable>

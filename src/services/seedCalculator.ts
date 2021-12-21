@@ -19,6 +19,8 @@ export class SeedSolver {
 	step = 1;
 	infoFreq = 25000;
 	rules!: IRule[];
+	avgExecTime = 0;
+	sumExecTime = 0;
 
 	infocb?: (info: ReturnType<SeedSolver['getInfo']>) => void;
 
@@ -44,12 +46,18 @@ export class SeedSolver {
 				await new Promise(res => setTimeout(res, 0));
 			}
 			if (this.count && this.count % this.infoFreq === 0) {
+				this.avgExecTime = this.sumExecTime / this.infoFreq;
+				this.sumExecTime = 0;
 				this.sendInfo();
 				// Free the event loop to check for stop
 				await new Promise(res => setTimeout(res, 0));
 			}
+			const startTime = performance.now();
 			this.gameInfoHandler.randoms!.SetWorldSeed(this.currentSeed);
 			const found = this.rules.every(r => this.check(r));
+			const endTime = performance.now();
+			this.sumExecTime += endTime - startTime;
+
 			if (found) {
 				this.foundSeed = +this.currentSeed;
 				break;
@@ -96,6 +104,7 @@ export class SeedSolver {
 		return Object.assign(
 			{},
 			{
+				avgExecTime: this.avgExecTime,
 				count: this.count,
 				currentSeed: this.currentSeed,
 				foundSeed: this.foundSeed,

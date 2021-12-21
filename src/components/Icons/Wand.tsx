@@ -10,7 +10,7 @@ const WandIcon = (props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLIma
 			{...rest}
 			alt="Wand"
 			src={uri}
-			style={{ width: '3rem', imageRendering: 'crisp-edges' }}
+			style={{ width: '3rem', imageRendering: 'pixelated' }}
 		/>
 	);
 };
