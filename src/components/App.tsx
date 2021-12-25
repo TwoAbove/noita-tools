@@ -41,6 +41,7 @@ const NeedInputAlert = () => {
 	const handleClose = () => {
 		setShow(false);
 	};
+
 	return (
 		<Container>
 			<Alert show={show} variant="info" dismissible onClose={handleClose}>
