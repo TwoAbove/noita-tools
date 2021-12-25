@@ -28,7 +28,7 @@ getFCP(sendToAnalytics);
 getFID(sendToAnalytics);
 getTTFB(sendToAnalytics);
 
-console.log('v 2.6.0');
+console.log('v 2.6.1');
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
