@@ -7,9 +7,13 @@ export default function useLocalStorage<T>(
 	deserialize: (s: string | null) => T,
 	serialize: (t: T) => string
 ): [T, Dispatch<T>] {
-	const [value, setValue] = useState<T>(
-		() => deserialize(window.localStorage.getItem(key)) || initialValue
-	);
+	const [value, setValue] = useState<T>(() => {
+		const item = deserialize(window.localStorage.getItem(key));
+		if (typeof item === 'undefined') {
+			return initialValue;
+		}
+		return item;
+	});
 
 	const setItem = (newValue: T) => {
 		setValue(newValue);
@@ -26,7 +30,11 @@ export default function useLocalStorage<T>(
 	const handleStorage = useCallback(
 		(event: StorageEvent) => {
 			if (event.key === key && deserialize(event.newValue) !== value) {
-				setValue(deserialize(event.newValue) || initialValue);
+				let item = deserialize(window.localStorage.getItem(key));
+				if (typeof item === 'undefined') {
+					item = initialValue;
+				}
+				setValue(item);
 			}
 		},
 		[value]

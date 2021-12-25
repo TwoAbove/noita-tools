@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Container, Tabs, Tab, Stack, Form } from 'react-bootstrap';
+import { Alert, Container, Tabs, Tab, Stack, Form } from 'react-bootstrap';
 
 import SeedInfo from './SeedInfo';
 import SearchSeeds from './SearchSeeds';
@@ -23,6 +23,42 @@ const SpoilerChange = props => {
 				label="Enable alchemy spoilers"
 			/>
 		</div>
+	);
+};
+
+const NeedInputAlert = () => {
+	const [show, setShow] = useLocalStorage(
+		'show-need-feedback-alert',
+		true,
+		d => {
+			return d === 'true';
+		},
+		s => {
+			return s.toString();
+		}
+	);
+
+	const handleClose = () => {
+		setShow(false);
+	};
+	return (
+		<Container>
+			<Alert show={show} variant="info" dismissible onClose={handleClose}>
+				<div className="mt-2">
+					Thank you for using this tool! <br />
+					I want to improve it further, and need your feedback. <br />
+					Click{' '}
+					<a
+						href="https://github.com/TwoAbove/noita-tools/discussions/73"
+						target="_blank"
+						rel="noreferrer"
+					>
+						here
+					</a>{' '}
+					if you have any ideas!
+				</div>
+			</Alert>
+		</Container>
 	);
 };
 
@@ -71,6 +107,7 @@ const App: React.FC = () => {
 			<div className="App bg-gradient">
 				<div className="content shadow-sm bg-body rounded">
 					<Header />
+					<NeedInputAlert />
 					<Container className="mb-5 bg-white rounded">
 						<Tabs
 							defaultActiveKey={tab}
@@ -78,18 +115,10 @@ const App: React.FC = () => {
 							id="main-tabs"
 							className=""
 						>
-							<Tab
-								mountOnEnter
-								eventKey="SeedInfo"
-								title="Seed info"
-							>
+							<Tab mountOnEnter eventKey="SeedInfo" title="Seed info">
 								<SeedInfo />
 							</Tab>
-							<Tab
-								mountOnEnter
-								eventKey="SearchSeeds"
-								title="Search For Seed"
-							>
+							<Tab mountOnEnter eventKey="SearchSeeds" title="Search For Seed">
 								<SearchSeeds />
 							</Tab>
 							<Tab
@@ -106,9 +135,14 @@ const App: React.FC = () => {
 					<Stack>
 						<div className="footer text-center py-2">
 							Ideas? Issues? Bugs? Click{' '}
-							<a target="_blank" rel="noreferrer" href="https://github.com/TwoAbove/noita-tools/discussions">
+							<a
+								target="_blank"
+								rel="noreferrer"
+								href="https://github.com/TwoAbove/noita-tools/discussions"
+							>
 								here
-							</a>!
+							</a>
+							!
 						</div>
 						<div className="footer-copyright text-center py-2">
 							Like this tool? Buy me a coffee!

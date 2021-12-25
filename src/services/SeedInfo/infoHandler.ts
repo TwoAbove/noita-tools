@@ -503,10 +503,9 @@ export class PerkInfoProvider extends InfoProvider {
   _G = new Global();
 
   _getReroll(perkDeck: any[], amountOfPerks: number) {
-    let perks = perkDeck;
-    let perk_count = amountOfPerks;
-    let result: any[] = [];
-
+    const perks = perkDeck;
+    const perk_count = amountOfPerks;
+    const result: any[] = [];
     for (let i = 0; i < perk_count; i++) {
       let next_perk_index = Number(this._G.GetValue("TEMPLE_REROLL_PERK_INDEX", String(perks.length - 1)));
       let perk_id = perks[next_perk_index];
@@ -544,14 +543,12 @@ export class PerkInfoProvider extends InfoProvider {
   }
 
   perk_spawn_many(perks: string | any[], x: number, y: number) {
-    let result: any[] = [];
-    let perk_count = parseFloat(this._G.GetValue("TEMPLE_PERK_COUNT", "3"))
+    const result: any[] = [];
+    const perk_count = Number(this._G.GetValue("TEMPLE_PERK_COUNT", "3"))
 
-    let count = perk_count;
-
-    for (let i = 0; i < count; i++) {
-      let next_perk_index = parseFloat(this._G.GetValue("TEMPLE_NEXT_PERK_INDEX", "0"));
-      let perk_id = perks[next_perk_index];
+    for (let i = 0; i < perk_count; i++) {
+      let next_perk_index = Number(this._G.GetValue("TEMPLE_NEXT_PERK_INDEX", "0"));
+      const perk_id = perks[next_perk_index];
 
       //while( perk_id === undefined || perk_id === "" ) {
       //  // if we over flow
@@ -582,14 +579,13 @@ export class PerkInfoProvider extends InfoProvider {
 
   shuffle_table = (t: any[]) => {
     //assert( t, "shuffle_table() expected a table, got nil" )
-    let iterations = t.length - 1;
-    let j: number;
+    const iterations = t.length - 1;
 
     for (let i = iterations; i >= 1; i--) {
       //for i = iterations, 2, -1 do
-      j = this.randoms.Random(0, i);
+      const j = this.randoms.Random(0, i);
       //console.log("j", j);
-      let tmp = t[i];
+      const tmp = t[i];
       t[i] = t[j];
       t[j] = tmp;
       //[t[i], t[j]] = [t[j], t[i]];
@@ -606,7 +602,7 @@ export class PerkInfoProvider extends InfoProvider {
 
     // NON DETERMISTIC THINGS ARE ALLOWED TO HAPPEN
     // 4) Go through the perk list and "" the perks we've picked up
-
+    const hasFilter = ignore_these_ ? true : false;
     const ignore_these = ignore_these_ || {};
 
     const MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS = 4;
@@ -623,37 +619,44 @@ export class PerkInfoProvider extends InfoProvider {
 
     // function create_perk_pool
     for (const perk_data of this.perksArr) {
-      if ((this.table_contains(ignore_these, perk_data.id) === false) && (!perk_data.not_in_default_perk_pool)) {
-        const perk_name = perk_data.id;
-        let how_many_times = 1;
-        stackable_distances[perk_name] = -1;
-        stackable_count[perk_name] = -1;
+      if (hasFilter) {
+        if (this.table_contains(ignore_these, perk_data.id)) {
+          continue;
+        }
+      }
+      if (perk_data.not_in_default_perk_pool) {
+        continue;
+      }
 
-        if (perk_data.stackable === true) {
-          let max_perks = this.randoms.Random(1, 2);
-          // TODO( Petri ): We need a new variable that indicates how many times they can appear in the pool
-          if (perk_data.max_in_perk_pool) {
-            max_perks = this.randoms.Random(1, perk_data.max_in_perk_pool);
-          }
+      const perk_name = perk_data.id;
+      let how_many_times = 1;
+      stackable_distances[perk_name] = -1;
+      stackable_count[perk_name] = -1;
 
-          if (perk_data.stackable_maximum) {
-            stackable_count[perk_name] = perk_data.stackable_maximum;
-          } else {
-            stackable_count[perk_name] = DEFAULT_MAX_STACKABLE_PERK_COUNT;
-          }
-
-          if (perk_data.stackable_is_rare === true) {
-            max_perks = 1;
-          }
-
-          stackable_distances[perk_name] = perk_data.stackable_how_often_reappears || MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS;
-
-          how_many_times = this.randoms.Random(1, max_perks);
+      if (perk_data.stackable) {
+        let max_perks = this.randoms.Random(1, 2);
+        // TODO( Petri ): We need a new variable that indicates how many times they can appear in the pool
+        if (perk_data.max_in_perk_pool) {
+          max_perks = this.randoms.Random(1, perk_data.max_in_perk_pool);
         }
 
-        for (let j = 1; j <= how_many_times; j++) {
-          perk_deck.push(perk_name);
+        if (perk_data.stackable_maximum) {
+          stackable_count[perk_name] = perk_data.stackable_maximum;
+        } else {
+          stackable_count[perk_name] = DEFAULT_MAX_STACKABLE_PERK_COUNT;
         }
+
+        if (perk_data.stackable_is_rare) {
+          max_perks = 1;
+        }
+
+        stackable_distances[perk_name] = perk_data.stackable_how_often_reappears || MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS;
+
+        how_many_times = this.randoms.Random(1, max_perks);
+      }
+
+      for (let j = 1; j <= how_many_times; j++) {
+        perk_deck.push(perk_name);
       }
     }
 
@@ -720,9 +723,7 @@ export class PerkInfoProvider extends InfoProvider {
   }
 
   getPerkDeck(returnPerkObjects?: boolean) {
-
-
-    let result = this.perk_get_spawn_order();
+    const result = this.perk_get_spawn_order();
     if (returnPerkObjects) {
       for (let i = 0; i < result.length; i++) {
         result[i] = this.perks[result[i].id];
@@ -737,14 +738,14 @@ export class PerkInfoProvider extends InfoProvider {
     if (!maxLevels || maxLevels === -1) maxLevels = Infinity;
 
     this._G = new Global();
-    let perkDeck = this.getPerkDeck();
+    const perkDeck = this.getPerkDeck();
     type IPerk = typeof this.perks[string];
-    let result: IPerk[][] = [];
-    let i: number, world = 0;
+    const result: IPerk[][] = [];
+    let world = 0;
     this._G.SetValue("TEMPLE_PERK_COUNT", "3")
-    let temple_locations = this.temples;
+    const temple_locations = this.temples;
     while (true) {
-      i = 0;
+      let i = 0;
       for (let loc of temple_locations) {
         if (i >= maxLevels) break;
         let offsetX = 0, offsetY = 0;
@@ -792,7 +793,7 @@ export class PerkInfoProvider extends InfoProvider {
   }
 
   test(rule: IRule): boolean {
-    let info = this.provide();
+    const info = this.provide();
     for (let i = 0; i < info.length; i++) {
       if (rule.val[i].length) {
         if (!includesAll(info[i] as any as string[], rule.val[i])) {
