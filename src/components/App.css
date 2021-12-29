@@ -2,16 +2,6 @@
   padding: 16px;
 }
 
-.footer {
-  /* position: ; */
-  /* left: 0; */
-  /* bottom: 0; */
-  /* width: 100%; */
-  background-color: #f4f6f8;
-  /* color: white; */
-  text-align: center;
-}
-
 html, .App, #root {
   height: 100%;
 }

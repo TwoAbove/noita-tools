@@ -7,7 +7,7 @@ import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { capitalize } from '../../../services/helpers';
 
 const Flask = () => {
-	return <b>Flask</b>;
+	return <b className='text-info'>Flask</b>;
 };
 
 interface IShiftProps {
@@ -22,8 +22,9 @@ const Shift = (props: IShiftProps) => {
 	return (
 		<tr
 			className={classnames([
-				(data.flaskTo || data.flaskFrom) && 'table-light',
-				''
+				// (data.flaskTo || data.flaskFrom) && 'text-body',
+				// !(data.flaskTo || data.flaskFrom) && 'text-muted',
+				// ''
 			])}
 		>
 			<td className="col-auto">

@@ -45,6 +45,7 @@ const StartingBombSpell = (props: IStartingBombSpellProps) => {
 		<Container fluid>
 			<Row className="justify-content-evenly align-items-center">
 				{spellOptions.map((type, i) => {
+					const spell = spells.provide(type);
 					return (
 						<Col key={type}>
 							<Clickable
@@ -52,7 +53,7 @@ const StartingBombSpell = (props: IStartingBombSpellProps) => {
 								onClick={() => handleClicked(type)}
 								clicked={type === startingBombType}
 							>
-								<Icon uri={spells.provide(type).sprite} />
+								<Icon uri={spell.sprite} alt={spell.id} title={spell.id} />
 							</Clickable>
 						</Col>
 					);

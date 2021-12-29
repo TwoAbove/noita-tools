@@ -95,7 +95,7 @@ const Perks = (props: IPerksProps) => {
 			newPerks[i] = newPerks[i].slice(0, -1);
 		}
 		setPerks(newPerks);
-	}
+	};
 
 	const togglePerkSelect = (n = 0) => {
 		setSelectOpen(n);
@@ -103,7 +103,8 @@ const Perks = (props: IPerksProps) => {
 
 	return (
 		<Container fluid>
-			<p>To delete a perk, click on it. <br/>
+			<p>
+				To delete a perk, click on it. <br />
 				Compute-intensive. Use sparingly!
 			</p>
 			<Row className="justify-content-center">
@@ -116,7 +117,7 @@ const Perks = (props: IPerksProps) => {
 									key={i}
 								>
 									<Col xs={3}>Level {i + 1}</Col>
-									<Col >
+									<Col>
 										<Stack gap={3} direction="horizontal">
 											{row.map(perkId => {
 												return (
@@ -124,22 +125,24 @@ const Perks = (props: IPerksProps) => {
 														key={perkId}
 														onClick={() => handleDelete(perkId, i)}
 														uri={
-															'data:image/png;base64,' + perkData[perkId].ui_icon
+															'data:image/png;base64,' +
+															perkData[perkId].ui_icon
 														}
+														alt={perkData[perkId].ui_name}
+														title={perkData[perkId].ui_name}
 													/>
 												);
 											})}
 										</Stack>
 									</Col>
 									<Col className="me-auto">
-										{maxPerksPerRow[i] > row.length ?
-											<Button  onClick={() => togglePerkSelect(i)}>
-												<Square>
-													Add Perk
-												</Square>
-											</Button> :
+										{maxPerksPerRow[i] > row.length ? (
+											<Button onClick={() => togglePerkSelect(i)}>
+												<Square>Add Perk</Square>
+											</Button>
+										) : (
 											<Square>&nbsp;</Square>
-										}
+										)}
 									</Col>
 								</Row>
 							);

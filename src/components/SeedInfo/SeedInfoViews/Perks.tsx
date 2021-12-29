@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Col, Container, Stack } from 'react-bootstrap';
+import classnames from 'classnames';
 
 import { PerkInfoProvider, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler';
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
@@ -7,12 +8,36 @@ import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
 import Clickable from '../../Icons/Clickable';
 import { localizeNumber } from '../../../services/helpers';
+import Icon from '../../Icons/Icon';
+
+interface IPerkProps {
+  clicked: boolean;
+  perk: IPerksProps['perks'][number][number];
+  onClick: () => void;
+}
+const Perk = (props: IPerkProps) => {
+  const { clicked, perk, onClick } = props;
+  return (<div
+    onClick={onClick}
+  >
+    <Clickable
+      clicked={clicked}
+    >
+      <Icon
+        uri={`data:image/png;base64,${perk.ui_icon}`}
+        alt={`${perk.ui_name}`}
+        title={`${perk.ui_name}`}
+      />
+    </Clickable>
+  </div>)
+}
 
 interface IPerksProps {
   shop: ReturnType<ShopInfoProvider['provide']>;
   perks: ReturnType<PerkInfoProvider['provide']>;
   infoProvider: GameInfoProvider;
 }
+
 
 const Perks = (props: IPerksProps) => {
   const { perks, shop, infoProvider } = props;
@@ -93,7 +118,7 @@ const Perks = (props: IPerksProps) => {
   };
 
   return (
-    <Container
+    <div
       style={{
         padding: 0,
         imageRendering: 'pixelated'
@@ -134,8 +159,11 @@ const Perks = (props: IPerksProps) => {
       <div className="mb-3" />
       <Stack gap={3}>
         {perks.map((row, level) => {
+          const selectedGamble = infoProvider.config.pickedPerks[offset]?.[level] === 'GAMBLE';
           const type = shop[level].type;
           const rerollsForLevel = infoProvider.config.perkRerolls[offset] ? infoProvider.config.perkRerolls[offset][level] : 0;
+          const perksToShow = selectedGamble ? row.slice(0, -2) : row;
+          const lastTwoPerks = row.slice(-2);
           return (
             <Stack direction="horizontal" key={`${offset}-${level}`}>
               <Col xs={2}>
@@ -143,23 +171,34 @@ const Perks = (props: IPerksProps) => {
               </Col>
               <Col>
                 <Stack direction="horizontal" className="justify-content-center" gap={2} >
-                  {row.map(perk => {
-                    return (
-                      <div
-                        key={perk.ui_name}
-                        onClick={handleClickPerk(level, perk.id)}
-                      >
-                        <Clickable
-                          clicked={infoProvider.config.pickedPerks[offset]?.[level] === perk.id}
-                        >
-                          <img
-                            style={{ width: '3rem', imageRendering: 'pixelated' }}
-                            src={`data:image/png;base64,${perk.ui_icon}`}
-                            alt={`${perk.ui_name}`} />
-                        </Clickable>
-                      </div>
-                    );
+                  {perksToShow.map((perk, i) => {
+                    return <Perk
+                      key={perk.ui_name}
+                      onClick={handleClickPerk(level, perk.id)}
+                      clicked={infoProvider.config.pickedPerks[offset]?.[level] === perk.id}
+                      perk={perk}
+                    />
+
                   })}
+                  {selectedGamble && <div className="d-flex ms-2">
+                    {/* Hard coded to make it more pretty */}
+                    <div style={{ marginRight: '-1rem', marginTop: '-0.25rem', zIndex: 1 }}>
+                      <Perk
+                        key={lastTwoPerks[0].ui_name}
+                        onClick={handleClickPerk(level, lastTwoPerks[0].id)}
+                        clicked={infoProvider.config.pickedPerks[offset]?.[level] === lastTwoPerks[0].id}
+                        perk={lastTwoPerks[0]}
+                      />
+                    </div>
+                    <div style={{ marginTop: '0.25rem' }}>
+                      <Perk
+                        key={lastTwoPerks[1].ui_name}
+                        onClick={handleClickPerk(level, lastTwoPerks[1].id)}
+                        clicked={infoProvider.config.pickedPerks[offset]?.[level] === lastTwoPerks[1].id}
+                        perk={lastTwoPerks[1]}
+                      />
+                    </div>
+                  </div>}
                 </Stack>
               </Col>
               <Col xs={3}>
@@ -171,7 +210,7 @@ const Perks = (props: IPerksProps) => {
                 >
                   {"<"}
                 </Button>
-                <span className="m-1">
+                <span className="m-2">
                   {rerollsForLevel || 0}
                 </span>
                 <Button
@@ -186,7 +225,7 @@ const Perks = (props: IPerksProps) => {
           );
         })}
       </Stack>
-    </Container>
+    </div>
   );
 };
 

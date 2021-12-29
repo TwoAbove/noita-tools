@@ -184,7 +184,7 @@ const Alchemy = (props: IAlchemyProps) => {
       </Row>
       <Row>
         <Col>
-          <Row className="ms-2 me-2 ps-2 sticky-top bg-white rounded shadow-sm">
+          <Row className="ms-2 me-2 ps-2 sticky-top rounded shadow-sm">
             Lively Concoction:
           </Row>
           <RecipeIngredientsPicker
@@ -203,7 +203,7 @@ const Alchemy = (props: IAlchemyProps) => {
           />
         </Col>
         <Col>
-          <Row className="ms-2 me-2 ps-2 sticky-top bg-white rounded shadow-sm">
+          <Row className="ms-2 me-2 ps-2 sticky-top rounded shadow-sm">
             Alchemic Precursor:
           </Row>
           <RecipeIngredientsPicker

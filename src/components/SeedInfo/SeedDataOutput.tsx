@@ -55,7 +55,7 @@ const SeedDataOutput = (props: ISeedDataProps) => {
 		<>
 			{data ? (
 				<Row>
-					<Col className="p-3" xs={12} lg={12}>
+					<Col className="pt-3" xs={12} lg={12}>
 						{data && `Seed: ${seed}`}
 						{data && <SeedInfo infoProvider={gameInfoProvider!} data={data} />}
 					</Col>
