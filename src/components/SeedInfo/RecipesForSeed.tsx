@@ -8,8 +8,8 @@ const SeedData = () => {
 	const [seed, setSeed] = React.useState<any>('');
 
 	return (
-		<Container className="container shadow-lg mb-5">
-			<h4>Seed info</h4>
+		<div className="px-sm-3 px-2 pb-3 mb-5">
+			<h4 className='pt-3'>Seed info</h4>
 			<p>Get lots of information about a seed, like perks in holy mountains, fungal shifts, etc.</p>
 			<Row>
 				<Col xs={12} xl={6}>
@@ -17,7 +17,7 @@ const SeedData = () => {
 				</Col>
 			</Row>
 			{seed ? <SeedDataOutput seed={seed} /> : null}
-		</Container>
+		</div>
 	);
 };
 

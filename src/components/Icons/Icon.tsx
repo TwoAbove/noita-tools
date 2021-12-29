@@ -10,6 +10,7 @@ const Icon = (props: IIconProps & React.DetailedHTMLProps<React.ImgHTMLAttribute
 		<img
 			{...rest}
 			alt={rest.alt}
+			title={rest.title}
 			src={uri}
 			style={{ width: '3rem', imageRendering: 'pixelated' }}
 		/>

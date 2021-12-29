@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import "bootswatch/dist/spacelab/bootstrap.min.css";
-import 'bootswatch/dist/cosmo/bootstrap.min.css';
 
 import './index.css';
 
@@ -13,7 +12,9 @@ import * as serviceWorker from './serviceWorker';
 
 // import './services/SeedInfo/infoHandler.check';
 
-import { getCLS, getLCP, getFCP, getFID, getTTFB } from 'web-vitals';
+import reportWebVitals from './reportWebVitals';
+
+console.log('v 2.7.0');
 
 function sendToAnalytics(metric) {
 	const body = JSON.stringify(metric);
@@ -22,13 +23,7 @@ function sendToAnalytics(metric) {
 		fetch('/stats', { body, method: 'POST', keepalive: true });
 }
 
-getCLS(sendToAnalytics);
-getLCP(sendToAnalytics);
-getFCP(sendToAnalytics);
-getFID(sendToAnalytics);
-getTTFB(sendToAnalytics);
-
-console.log('v 2.6.1');
+reportWebVitals(sendToAnalytics);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

@@ -45,6 +45,7 @@ const StartingSpell = (props: IStartingSpellProps) => {
 		<Container fluid>
 			<Row className="justify-content-evenly align-items-center">
 				{spellOptions.map((type, i) => {
+					const spell = spells.provide(type);
 					return (
 						<Col key={type}>
 							<Clickable
@@ -52,12 +53,7 @@ const StartingSpell = (props: IStartingSpellProps) => {
 								onClick={() => handleClicked(type)}
 								clicked={type === startingSpellType}
 							>
-								<Icon
-									uri={
-										spells.provide(type).sprite
-									}
-								/>
-
+								<Icon uri={spell.sprite} alt={spell.id} title={spell.id} />
 							</Clickable>
 						</Col>
 					);

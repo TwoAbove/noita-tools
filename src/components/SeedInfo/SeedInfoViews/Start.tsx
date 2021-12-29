@@ -4,7 +4,8 @@ import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import {
 	StartingBombSpellInfoProvider,
 	StartingFlaskInfoProvider,
-	StartingSpellInfoProvider
+	StartingSpellInfoProvider,
+	SpellInfoProvider
 } from '../../../services/SeedInfo/infoHandler';
 import Icon from '../../Icons/Icon';
 
@@ -16,6 +17,8 @@ interface IStartProps {
 	infoProvider: GameInfoProvider;
 }
 
+const spells = new SpellInfoProvider({} as any);
+
 const Start = (props: IStartProps) => {
 	const {
 		startingFlask,
@@ -23,23 +26,16 @@ const Start = (props: IStartProps) => {
 		startingBombSpell,
 		infoProvider
 	} = props;
+	const startingSpellSpell = spells.provide(startingSpell.toUpperCase());
+	const startingBombSpellSpell = spells.provide(
+		startingBombSpell.toUpperCase()
+	);
 	return (
 		<div className="d-flex justify-content-between align-items-center">
 			<div className="m-3">Starting setup:</div>
 			<Stack className="justify-content-center" direction="horizontal" gap={3}>
-				<Icon
-					uri={
-						infoProvider.providers.spells.provide(startingSpell.toUpperCase())
-							.sprite
-					}
-				/>
-				<Icon
-					uri={
-						infoProvider.providers.spells.provide(
-							startingBombSpell.toUpperCase()
-						).sprite
-					}
-				/>
+				<Icon uri={startingSpellSpell.sprite} />
+				<Icon uri={startingBombSpellSpell.sprite} />
 				<div>{infoProvider.providers.material.translate(startingFlask)}</div>
 			</Stack>
 			<div className="flex-grow-1"></div>

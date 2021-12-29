@@ -23,7 +23,6 @@ const SeedInfo = (props: ISeedInfoProps) => {
 	const { data, infoProvider } = props;
 	const [spoil, setSpoiler] = useContext(SpoilerContext);
 	return (
-		<div>
 			<Row>
 				<Col lg={7}>
 					<Perks
@@ -45,7 +44,6 @@ const SeedInfo = (props: ISeedInfoProps) => {
 					/>
 				</Col>
 			</Row>
-		</div>
 	);
 };
 

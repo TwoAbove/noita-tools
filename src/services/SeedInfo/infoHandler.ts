@@ -542,9 +542,9 @@ export class PerkInfoProvider extends InfoProvider {
     return "PERK_PICKED_" + perk_id
   }
 
-  perk_spawn_many(perks: string | any[], x: number, y: number) {
+  perk_spawn_many(perks: string | any[], add = 0, x: number, y: number) {
     const result: any[] = [];
-    const perk_count = Number(this._G.GetValue("TEMPLE_PERK_COUNT", "3"))
+    const perk_count = Number(this._G.GetValue("TEMPLE_PERK_COUNT", "3")) + add;
 
     for (let i = 0; i < perk_count; i++) {
       let next_perk_index = Number(this._G.GetValue("TEMPLE_NEXT_PERK_INDEX", "0"));
@@ -753,7 +753,14 @@ export class PerkInfoProvider extends InfoProvider {
           offsetX += 35840 * worldOffset;
           if (i + 1 === temple_locations.length) break;
         }
-        let res = this.perk_spawn_many(perkDeck, loc.x + offsetX, loc.y + offsetY);
+        let add = 0;
+        if (perkPicks[world] && perkPicks[world][i]) {
+          if (perkPicks[world][i] === 'GAMBLE') {
+            add = 2;
+          }
+        }
+
+        let res = this.perk_spawn_many(perkDeck, add, loc.x + offsetX, loc.y + offsetY);
 
         if (rerolls && rerolls[world] && rerolls[world][i] > 0) {
           for (let j = 0; j < rerolls[world][i] - 1; j++) {

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Alert, Container, Tabs, Tab, Stack, Form } from 'react-bootstrap';
+import DarkModeToggle from 'react-dark-mode-toggle';
 
 import SeedInfo from './SeedInfo';
 import SearchSeeds from './SearchSeeds';
@@ -9,20 +10,32 @@ import useLocalStorage from '../services/useLocalStorage';
 
 import './App.css';
 import { SpoilerProvider, SpoilerContext } from './SpoilerContext';
+import { ThemeProvider, ThemeContext } from './ThemeContext';
 
 const SpoilerChange = props => {
 	const [spoil, setSpoiler] = useContext(SpoilerContext);
 	return (
-		<div>
-			<Form.Switch
-				checked={spoil}
-				onChange={e => {
-					setSpoiler(e.target.checked);
-				}}
-				id="custom-switch"
-				label="Enable alchemy spoilers"
-			/>
-		</div>
+		<Form.Switch
+			checked={spoil}
+			onChange={e => {
+				setSpoiler(e.target.checked);
+			}}
+			id="custom-switch"
+			label="Enable alchemy spoilers"
+		/>
+	);
+};
+
+const DarkMode = props => {
+	const [theme, setTheme] = useContext(ThemeContext);
+	return (
+		<DarkModeToggle
+			onChange={checked => {
+				setTheme(checked ? 'dark' : 'light');
+			}}
+			checked={theme === 'dark'}
+			size={60}
+		/>
 	);
 };
 
@@ -99,65 +112,89 @@ const App: React.FC = () => {
 		}
 	);
 
+	const [theme, setTheme] = useLocalStorage(
+		'use-dark-mode',
+		'light',
+		d => {
+			return d;
+		},
+		s => {
+			return s || 'light';
+		}
+	);
+
 	const handleTab = key => {
 		setTab(key);
 	};
 
 	return (
 		<SpoilerProvider>
-			<div className="App bg-gradient">
-				<div className="content shadow-sm bg-body rounded">
-					<Header />
-					<NeedInputAlert />
-					<Container className="mb-5 bg-white rounded">
-						<Tabs
-							defaultActiveKey={tab}
-							onSelect={handleTab}
-							id="main-tabs"
-							className=""
-						>
-							<Tab mountOnEnter eventKey="SeedInfo" title="Seed info">
-								<SeedInfo />
-							</Tab>
-							<Tab mountOnEnter eventKey="SearchSeeds" title="Search For Seed">
-								<SearchSeeds />
-							</Tab>
-							<Tab
-								mountOnEnter
-								eventKey="LiveSeedStats"
-								title="Live game helper (beta)"
+			<ThemeProvider>
+				<div className="App bg-gradient">
+					<div className="content bg-body rounded">
+						<Header />
+						<NeedInputAlert />
+						<Container fluid='sm' className="mb-5 p-0 rounded shadow-lg">
+							<Tabs
+								defaultActiveKey={tab}
+								onSelect={handleTab}
+								id="main-tabs"
+								className=""
 							>
-								<LiveSeedStats />
-							</Tab>
-						</Tabs>
-					</Container>
+								<Tab mountOnEnter eventKey="SeedInfo" title="Seed info">
+									<SeedInfo />
+								</Tab>
+								<Tab
+									mountOnEnter
+									eventKey="SearchSeeds"
+									title="Search For Seed"
+								>
+									<SearchSeeds />
+								</Tab>
+								<Tab
+									mountOnEnter
+									eventKey="LiveSeedStats"
+									title="Live game helper (beta)"
+								>
+									<LiveSeedStats />
+								</Tab>
+							</Tabs>
+						</Container>
+					</div>
+					<footer className="footer font-small p-1 pt-3">
+						<Stack>
+							<div className="footer text-center py-2">
+								Ideas? Issues? Bugs? Click{' '}
+								<a
+									target="_blank"
+									rel="noreferrer"
+									href="https://github.com/TwoAbove/noita-tools/discussions"
+								>
+									here
+								</a>
+								!
+							</div>
+							<div className="footer-copyright text-center py-2">
+								<div className='mb-1'>
+								Like this tool? Buy me a coffee!
+								</div>
+								<Donate />
+							</div>
+							<div className="mx-auto d-flex justify-content-center">
+								<div className="">
+									<SpoilerChange />
+								</div>
+								<div className="ms-3">
+									<DarkMode />
+								</div>
+							</div>
+							<div className="footer-copyright text-center py-2">
+								© 2021 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
+							</div>
+						</Stack>
+					</footer>
 				</div>
-				<footer className="footer font-small blue p-1 pt-3">
-					<Stack>
-						<div className="footer text-center py-2">
-							Ideas? Issues? Bugs? Click{' '}
-							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://github.com/TwoAbove/noita-tools/discussions"
-							>
-								here
-							</a>
-							!
-						</div>
-						<div className="footer-copyright text-center py-2">
-							Like this tool? Buy me a coffee!
-							<Donate />
-						</div>
-						<div className="mx-auto">
-							<SpoilerChange />
-						</div>
-						<div className="footer-copyright text-center py-2">
-							© 2021 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
-						</div>
-					</Stack>
-				</footer>
-			</div>
+			</ThemeProvider>
 		</SpoilerProvider>
 	);
 };
