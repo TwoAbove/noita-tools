@@ -506,11 +506,11 @@ export class PerkInfoProvider extends InfoProvider {
     return this.perks[id];
   }
 
-  _getReroll(perkDeck: any[], amountOfPerks: number) {
+  _getReroll(perkDeck: any[], add = 0, amountOfPerks: number) {
     const perks = perkDeck;
     const perk_count = amountOfPerks;
     const result: any[] = [];
-    for (let i = 0; i < perk_count; i++) {
+    for (let i = 0; i < perk_count + add; i++) {
       let next_perk_index = Number(this._G.GetValue("TEMPLE_REROLL_PERK_INDEX", String(perks.length - 1)));
       let perk_id = perks[next_perk_index];
 
@@ -538,6 +538,18 @@ export class PerkInfoProvider extends InfoProvider {
     return result;
   }
 
+  _getNextPerk(perks: any[]) {
+    let next_perk_index = Number(this._G.GetValue("TEMPLE_NEXT_PERK_INDEX", "0"));
+    const perk_id = perks[next_perk_index];
+    next_perk_index++;
+    if (next_perk_index >= perks.length) {
+      next_perk_index = 0;
+    }
+    this._G.SetValue("TEMPLE_NEXT_PERK_INDEX", String(next_perk_index))
+    this._G.GameAddFlagRun(this.get_perk_flag_name(perk_id))
+    return perk_id;
+  }
+
   get_perk_flag_name(perk_id: string) {
     return "PERK_" + perk_id
   }
@@ -546,32 +558,13 @@ export class PerkInfoProvider extends InfoProvider {
     return "PERK_PICKED_" + perk_id
   }
 
-  perk_spawn_many(perks: string | any[], add = 0, x: number, y: number) {
+  perk_spawn_many(perks: any[], add = 0) {
     const result: any[] = [];
     const perk_count = Number(this._G.GetValue("TEMPLE_PERK_COUNT", "3")) + add;
 
     for (let i = 0; i < perk_count; i++) {
-      let next_perk_index = Number(this._G.GetValue("TEMPLE_NEXT_PERK_INDEX", "0"));
-      const perk_id = perks[next_perk_index];
-
-      //while( perk_id === undefined || perk_id === "" ) {
-      //  // if we over flow
-      //  perks[next_perk_index] = "LEGGY_FEET"
-      //  next_perk_index = next_perk_index + 1
-      //  if (next_perk_index > perks.length) then
-      //    next_perk_index = 0;
-      //  }
-      //  perk_id = perks[next_perk_index];
-      //}
-
-      next_perk_index++;
-      if (next_perk_index >= perks.length) {
-        next_perk_index = 0;
-      }
-      this._G.SetValue("TEMPLE_NEXT_PERK_INDEX", String(next_perk_index))
-
-      this._G.GameAddFlagRun(this.get_perk_flag_name(perk_id))
-      result.push(perk_id)
+      const nextPerk = this._getNextPerk(perks);
+      result.push(nextPerk)
     }
     return result;
   }
@@ -757,25 +750,33 @@ export class PerkInfoProvider extends InfoProvider {
           offsetX += 35840 * worldOffset;
           if (i + 1 === temple_locations.length) break;
         }
-        let add = 0;
+        let gambleSelected = false;
         if (perkPicks[world] && perkPicks[world][i]) {
           if (perkPicks[world][i] === 'GAMBLE') {
-            add = 2;
+            gambleSelected = true;
           }
         }
 
-        let res = this.perk_spawn_many(perkDeck, add, loc.x + offsetX, loc.y + offsetY);
+        let res = this.perk_spawn_many(perkDeck, 0);
 
         if (rerolls && rerolls[world] && rerolls[world][i] > 0) {
           for (let j = 0; j < rerolls[world][i] - 1; j++) {
-            this._getReroll(perkDeck, res.length);
+            this._getReroll(perkDeck, 0, res.length);
           }
-          let rerollRes = this._getReroll(perkDeck, res.length);
+          let rerollRes = this._getReroll(perkDeck, 0, res.length);
           if (world === worldOffset) {
+            if (gambleSelected) {
+              rerollRes.push(this._getNextPerk(perkDeck));
+              rerollRes.push(this._getNextPerk(perkDeck));
+            }
             result.push(rerollRes);
           }
         } else {
           if (world === worldOffset) {
+            if (gambleSelected) {
+              res.push(this._getNextPerk(perkDeck));
+              res.push(this._getNextPerk(perkDeck));
+            }
             result.push(res);
           }
         }
