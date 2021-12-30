@@ -112,17 +112,6 @@ const App: React.FC = () => {
 		}
 	);
 
-	const [theme, setTheme] = useLocalStorage(
-		'use-dark-mode',
-		'light',
-		d => {
-			return d;
-		},
-		s => {
-			return s || 'light';
-		}
-	);
-
 	const handleTab = key => {
 		setTab(key);
 	};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Stack } from 'react-bootstrap';
+import { Stack } from 'react-bootstrap';
 
 import SeedForm from './SeedForm';
 import SeedDataOutput from './SeedDataOutput';

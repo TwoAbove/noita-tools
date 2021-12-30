@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Dispatch, useCallback, useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 
 export default function useLocalStorage<T>(
 	key: string,

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Col, Container, Stack } from 'react-bootstrap';
-import classnames from 'classnames';
+import { Button, Col, Stack } from 'react-bootstrap';
 
 import { PerkInfoProvider, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler';
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
