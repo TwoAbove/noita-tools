@@ -1,4 +1,4 @@
-import { createContext, lazy, Suspense, useEffect } from 'react';
+import { createContext, Suspense, useEffect } from 'react';
 import useLocalStorage from '../services/useLocalStorage';
 
 const lightThemeUrl =
