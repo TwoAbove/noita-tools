@@ -10,26 +10,37 @@ import Clickable from '../../Icons/Clickable';
 import { localizeNumber } from '../../../services/helpers';
 import Icon from '../../Icons/Icon';
 
+const lotteryPerk = new PerkInfoProvider({} as any).getPerk('PERKS_LOTTERY');
+
 interface IPerkProps {
+  rerollable?: boolean;
   clicked: boolean;
   perk: IPerksProps['perks'][number][number];
   onClick: () => void;
 }
+
 const Perk = (props: IPerkProps) => {
-  const { clicked, perk, onClick } = props;
-  return (<div
-    onClick={onClick}
-  >
-    <Clickable
-      clicked={clicked}
-    >
-      <Icon
-        uri={`data:image/png;base64,${perk.ui_icon}`}
-        alt={`${perk.ui_name}`}
-        title={`${perk.ui_name}`}
-      />
-    </Clickable>
-  </div>)
+  const { clicked, rerollable, perk, onClick } = props;
+  return (
+    <div onClick={onClick} className='position-relative'>
+      <Clickable
+        clicked={clicked}
+      >
+        <Icon
+          uri={`data:image/png;base64,${perk.ui_icon}`}
+          alt={`${perk.ui_name}`}
+          title={`${perk.ui_name}`}
+        />
+        {rerollable &&
+          <Icon
+            className='position-absolute top-0 start-100 translate-middle'
+            width='1.5rem'
+            uri={`data:image/png;base64,${lotteryPerk.ui_icon}`}
+          />
+        }
+      </Clickable>
+    </div>
+  );
 }
 
 interface IPerksProps {
@@ -37,7 +48,6 @@ interface IPerksProps {
   perks: ReturnType<PerkInfoProvider['provide']>;
   infoProvider: GameInfoProvider;
 }
-
 
 const Perks = (props: IPerksProps) => {
   const { perks, shop, infoProvider } = props;
@@ -48,6 +58,12 @@ const Perks = (props: IPerksProps) => {
     },
     0
   );
+
+  const lotteries = infoProvider.config.pickedPerks.reduce((c, r) => {
+    const l = r.filter(p => p === 'PERKS_LOTTERY').length;
+    return c + l;
+  }, 0);
+
   const getPrice = (rerolls: number) => 200 * Math.pow(2, rerolls);
   const getTotal = (rerolls = 0) => {
     if (rerolls <= 0) return 0;
@@ -172,13 +188,14 @@ const Perks = (props: IPerksProps) => {
               <Col>
                 <Stack direction="horizontal" className="justify-content-center" gap={2} >
                   {perksToShow.map((perk, i) => {
+                    const rerollable = infoProvider.providers.lottery.provide(level, i, perksToShow.length, offset, lotteries);
                     return <Perk
+                      rerollable={rerollable}
                       key={perk.ui_name}
                       onClick={handleClickPerk(level, perk.id)}
                       clicked={infoProvider.config.pickedPerks[offset]?.[level] === perk.id}
                       perk={perk}
                     />
-
                   })}
                   {selectedGamble && <div className="d-flex ms-2">
                     {/* Hard coded to make it more pretty */}

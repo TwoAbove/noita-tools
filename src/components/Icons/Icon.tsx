@@ -5,14 +5,15 @@ interface IIconProps {
 }
 
 const Icon = (props: IIconProps & React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
-	const { uri, ...rest } = props;
+	const { uri, width, height, ...rest } = props;
+
 	return (
 		<img
 			{...rest}
 			alt={rest.alt}
 			title={rest.title}
 			src={uri}
-			style={{ width: '3rem', imageRendering: 'pixelated' }}
+			style={{ width: width || '3rem', height, imageRendering: 'pixelated' }}
 		/>
 	);
 };

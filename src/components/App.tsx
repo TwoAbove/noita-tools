@@ -84,8 +84,8 @@ const Header = props => {
 		<Stack direction="horizontal">
 			<div className="w-25"></div>
 			<Stack className="w-50">
-				<h1 className="display-3 m-1 mb-3 text-center">Noitool</h1>
-				<h6 className="display-6 m-1 text-center">Noita tools and helpers</h6>
+				<h1 className="display-3 fw-bolder m-1 my-3 text-center">Noitool</h1>
+				<h6 className="display-6 fw-lighter m-1 text-center">Noita tools and helpers</h6>
 				{notNewUrl && (
 					<p className="m-1 text-center">
 						Use the new url!{' '}
@@ -134,7 +134,7 @@ const App: React.FC = () => {
 					<div className="content bg-body rounded">
 						<Header />
 						<NeedInputAlert />
-						<Container fluid='sm' className="mb-5 p-0 rounded shadow-lg">
+						<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
 							<Tabs
 								defaultActiveKey={tab}
 								onSelect={handleTab}
@@ -175,15 +175,15 @@ const App: React.FC = () => {
 								!
 							</div>
 							<div className="footer-copyright text-center py-2">
-								<div className='mb-1'>
-								Like this tool? Buy me a coffee!
-								</div>
+								<div className="mb-1">Like this tool? Buy me a coffee!</div>
 								<Donate />
 							</div>
 							<div className="mx-auto d-flex justify-content-center">
 								<div className="">
 									<SpoilerChange />
 								</div>
+							</div>
+							<div className="mx-auto d-flex justify-content-center">
 								<div className="ms-3">
 									<DarkMode />
 								</div>
