@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Stack } from 'react-bootstrap';
 
 import GameInfoProvider from '../../services/SeedInfo/infoHandler';
 import SeedInfo from './SeedInfo';
@@ -54,12 +54,10 @@ const SeedDataOutput = (props: ISeedDataProps) => {
 	return (
 		<>
 			{data ? (
-				<Row>
-					<Col className="pt-3" xs={12} lg={12}>
-						{data && `Seed: ${seed}`}
-						{data && <SeedInfo infoProvider={gameInfoProvider!} data={data} />}
-					</Col>
-				</Row>
+				<Stack>
+					{data && `Seed: ${seed}`}
+					{data && <SeedInfo infoProvider={gameInfoProvider!} data={data} />}
+				</Stack>
 			) : (
 				<p>Loading</p>
 			)}

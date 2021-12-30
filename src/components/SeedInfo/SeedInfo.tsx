@@ -23,8 +23,8 @@ const SeedInfo = (props: ISeedInfoProps) => {
 	const { data, infoProvider } = props;
 	const [spoil, setSpoiler] = useContext(SpoilerContext);
 	return (
-			<Row>
-				<Col lg={7}>
+			<Row className='m-0'>
+				<Col className='p-0' lg={7}>
 					<Perks
 						infoProvider={infoProvider}
 						shop={data.shop}
@@ -34,7 +34,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 					{/* <Rain infoProvider={infoProvider} rainData={data.rainType} /> */}
 					<Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
 				</Col>
-				<Col lg={5}>
+				<Col className='p-0' lg={5}>
 					{spoil && (
 						<Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
 					)}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Stack } from 'react-bootstrap';
 
 import SeedForm from './SeedForm';
 import SeedDataOutput from './SeedDataOutput';
@@ -11,11 +11,9 @@ const SeedData = () => {
 		<div className="px-sm-3 px-2 pb-3 mb-5">
 			<h4 className='pt-3'>Seed info</h4>
 			<p>Get lots of information about a seed, like perks in holy mountains, fungal shifts, etc.</p>
-			<Row>
-				<Col xs={12} xl={6}>
+			<Stack>
 					<SeedForm onSubmit={seed => setSeed(seed)} />
-				</Col>
-			</Row>
+			</Stack>
 			{seed ? <SeedDataOutput seed={seed} /> : null}
 		</div>
 	);

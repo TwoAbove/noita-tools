@@ -502,6 +502,10 @@ export class PerkInfoProvider extends InfoProvider {
 
   _G = new Global();
 
+  getPerk(id: string) {
+    return this.perks[id];
+  }
+
   _getReroll(perkDeck: any[], amountOfPerks: number) {
     const perks = perkDeck;
     const perk_count = amountOfPerks;
@@ -808,6 +812,23 @@ export class PerkInfoProvider extends InfoProvider {
         }
       }
     }
+    return true;
+  }
+}
+
+export class LotteryInfoProvider extends InfoProvider {
+  temples = templeData;
+
+  provide(level: number, perkNumber: number, perksOnLevel: number, worldOffset = 0, lotteries = 0) {
+    const { x, y } = this.temples[level];
+    const perkY = y;
+    const perkX = x + ((perkNumber - 0.5) * (60 / perksOnLevel)) + (35840 * worldOffset);
+    const probability = 100 * Math.pow(0.5, lotteries);
+    this.randoms.SetRandomSeed(perkX, perkY);
+    return !(this.randoms.Random(1, 100) <= probability);
+  }
+
+  test(rule: IRule): boolean {
     return true;
   }
 }
@@ -1167,6 +1188,7 @@ interface IProviders {
   startingSpell: StartingSpellInfoProvider;
   startingBombSpell: StartingBombSpellInfoProvider;
   perk: PerkInfoProvider;
+  lottery: LotteryInfoProvider;
   fungalShift: FungalInfoProvider;
   biomeModifier: BiomeModifierInfoProvider;
   biome: BiomeInfoProvider;
@@ -1213,6 +1235,7 @@ export class GameInfoProvider extends EventTarget {
       startingBombSpell: new StartingBombSpellInfoProvider(this.randoms),
       shop: new ShopInfoProvider(this.randoms),
       perk: new PerkInfoProvider(this.randoms),
+      lottery: new LotteryInfoProvider(this.randoms),
       fungalShift: new FungalInfoProvider(this.randoms),
       biomeModifier: new BiomeModifierInfoProvider(this.randoms),
       spells: new SpellInfoProvider(this.randoms),
