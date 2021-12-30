@@ -823,7 +823,7 @@ export class LotteryInfoProvider extends InfoProvider {
   provide(level: number, perkNumber: number, perksOnLevel: number, worldOffset = 0, lotteries = 0) {
     const { x, y } = this.temples[level];
     const perkY = y;
-    const perkX = x + ((perkNumber - 0.5) * (60 / perksOnLevel)) + (35840 * worldOffset);
+    const perkX = x + ((perkNumber + 0.5) * (60 / perksOnLevel)) + (35840 * worldOffset);
     const probability = 100 * Math.pow(0.5, lotteries);
     this.randoms.SetRandomSeed(perkX, perkY);
     return !(this.randoms.Random(1, 100) <= probability);
