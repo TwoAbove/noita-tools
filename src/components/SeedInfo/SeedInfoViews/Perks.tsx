@@ -114,7 +114,6 @@ const Perks = (props: IPerksProps) => {
 
   const handleClickPerk = (level: number, id: string) => () => {
     const pickedPerks = [...infoProvider.config.pickedPerks];
-    console.log({ level, id });
     if (!pickedPerks[offset]) pickedPerks[offset] = [];
     if (pickedPerks[offset][level]?.includes(id)) {
       const i = pickedPerks[offset][level].indexOf(id);
@@ -141,6 +140,9 @@ const Perks = (props: IPerksProps) => {
 
     for (let i = 0; i < pickedPerks.length; i++) {
       const picked = pickedPerks[i];
+      if (!picked) {
+        continue;
+      }
       const perkIds = perks[i].map(p => p.id);
       if (!perkIds.includes('GAMBLE')) {
         continue;
