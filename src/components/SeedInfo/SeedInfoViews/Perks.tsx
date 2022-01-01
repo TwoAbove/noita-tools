@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Col, Stack } from 'react-bootstrap';
 
 import { PerkInfoProvider, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler';
@@ -13,13 +13,14 @@ const lotteryPerk = new PerkInfoProvider({} as any).getPerk('PERKS_LOTTERY');
 
 interface IPerkProps {
   rerollable?: boolean;
-  clicked: boolean;
+  clicked?: boolean;
+  width?: string;
   perk: IPerksProps['perks'][number][number];
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Perk = (props: IPerkProps) => {
-  const { clicked, rerollable, perk, onClick } = props;
+  const { clicked, rerollable, perk, width, onClick } = props;
   return (
     <div onClick={onClick} className='position-relative'>
       <Clickable
@@ -29,6 +30,7 @@ const Perk = (props: IPerkProps) => {
           uri={`data:image/png;base64,${perk.ui_icon}`}
           alt={`${perk.ui_name}`}
           title={`${perk.ui_name}`}
+          width={width}
         />
         {rerollable &&
           <Icon
@@ -59,7 +61,7 @@ const Perks = (props: IPerksProps) => {
   );
 
   const lotteries = infoProvider.config.pickedPerks.reduce((c, r) => {
-    const l = r.filter(p => p === 'PERKS_LOTTERY').length;
+    const l = r.filter(p => p.includes('PERKS_LOTTERY')).length;
     return c + l;
   }, 0);
 
@@ -112,21 +114,63 @@ const Perks = (props: IPerksProps) => {
 
   const handleClickPerk = (level: number, id: string) => () => {
     const pickedPerks = [...infoProvider.config.pickedPerks];
-
+    console.log({ level, id });
     if (!pickedPerks[offset]) pickedPerks[offset] = [];
-    if (pickedPerks[offset][level] === id) {
-      delete pickedPerks[offset][level];
+    if (pickedPerks[offset][level]?.includes(id)) {
+      const i = pickedPerks[offset][level].indexOf(id);
+      if (i !== -1) {
+        pickedPerks[offset][level].splice(i, 1);
+      }
     } else {
-      pickedPerks[offset][level] = id;
+      if (!pickedPerks[offset][level]) {
+        pickedPerks[offset][level] = [];
+      }
+      pickedPerks[offset][level].push(id);
     }
     infoProvider.updateConfig({ pickedPerks });
   };
+
+  useEffect(() => {
+    // Handle GAMBLE select where we need to also
+    // automatically add and remove the extra perks
+    // when we select the GAMBLE perk
+    const pickedPerks = infoProvider.config.pickedPerks[offset];
+    if (!pickedPerks) {
+      return;
+    }
+
+    for (let i = 0; i < pickedPerks.length; i++) {
+      const picked = pickedPerks[i];
+      const perkIds = perks[i].map(p => p.id);
+      if (!perkIds.includes('GAMBLE')) {
+        continue;
+      }
+      const gamblePerks = perkIds.slice(-2);
+      if (picked.includes('GAMBLE')) {
+        if (!picked.includes(gamblePerks[0])) {
+          handleClickPerk(i, gamblePerks[0])();
+        }
+        if (!picked.includes(gamblePerks[1])) {
+          handleClickPerk(i, gamblePerks[1])();
+        }
+      } else {
+        if (picked.includes(gamblePerks[0])) {
+          handleClickPerk(i, gamblePerks[0])();
+        }
+        if (picked.includes(gamblePerks[1])) {
+          handleClickPerk(i, gamblePerks[1])();
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [infoProvider.config.pickedPerks, offset, perks]);
 
   const handleReset = () => {
     const pickedPerks = [];
     const perkRerolls = [];
     infoProvider.updateConfig({ pickedPerks, perkRerolls, perkWorldOffset: 0 });
   };
+
   const offsetText = () => {
     let direction = offset === 0 ? 'Main' : offset < 0 ? 'West' : 'East';
     return `${direction} World ${Math.abs(offset) || ''}`;
@@ -174,7 +218,7 @@ const Perks = (props: IPerksProps) => {
       <div className="mb-3" />
       <Stack gap={3}>
         {perks.map((row, level) => {
-          const selectedGamble = infoProvider.config.pickedPerks[offset]?.[level] === 'GAMBLE';
+          const selectedGamble = infoProvider.config.pickedPerks[offset]?.[level]?.includes('GAMBLE');
           const type = shop[level].type;
           const rerollsForLevel = infoProvider.config.perkRerolls[offset] ? infoProvider.config.perkRerolls[offset][level] : 0;
           const perksToShow = selectedGamble ? row.slice(0, -2) : row;
@@ -192,25 +236,31 @@ const Perks = (props: IPerksProps) => {
                       rerollable={rerollable}
                       key={perk.ui_name}
                       onClick={handleClickPerk(level, perk.id)}
-                      clicked={infoProvider.config.pickedPerks[offset]?.[level] === perk.id}
+                      clicked={infoProvider.config.pickedPerks[offset]?.[level]?.includes(perk.id)}
                       perk={perk}
                     />
                   })}
-                  {selectedGamble && <div className="d-flex ms-2">
+                  {selectedGamble && <div className="d-flex ms-4 position-relative" style={{width: '2rem'}}>
                     {/* Hard coded to make it more pretty */}
-                    <div style={{ marginRight: '-1rem', marginTop: '-0.25rem', zIndex: 1 }}>
+                    <div
+                      className='position-absolute top-0 start-0 translate-middle'
+                      style={{ marginRight: '-1rem', marginTop: '-0.25rem', zIndex: 1 }}>
                       <Perk
+                        width='2.5rem'
                         key={lastTwoPerks[0].ui_name}
-                        onClick={handleClickPerk(level, lastTwoPerks[0].id)}
-                        clicked={infoProvider.config.pickedPerks[offset]?.[level] === lastTwoPerks[0].id}
+                        // onClick={handleClickPerk(level, lastTwoPerks[0].id)}
+                        // clicked={infoProvider.config.pickedPerks[offset]?.[level]?.includes(lastTwoPerks[0].id)}
                         perk={lastTwoPerks[0]}
                       />
                     </div>
-                    <div style={{ marginTop: '0.25rem' }}>
+                    <div
+                      className='position-absolute top-50 start-100 translate-middle'
+                      style={{ marginTop: '0.25rem' }}>
                       <Perk
+                        width='2.5rem'
                         key={lastTwoPerks[1].ui_name}
-                        onClick={handleClickPerk(level, lastTwoPerks[1].id)}
-                        clicked={infoProvider.config.pickedPerks[offset]?.[level] === lastTwoPerks[1].id}
+                        // onClick={handleClickPerk(level, lastTwoPerks[1].id)}
+                        // clicked={infoProvider.config.pickedPerks[offset]?.[level]?.includes(lastTwoPerks[1].id)}
                         perk={lastTwoPerks[1]}
                       />
                     </div>
