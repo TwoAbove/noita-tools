@@ -6,7 +6,7 @@ import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
 import Clickable from '../../Icons/Clickable';
-import { localizeNumber } from '../../../services/helpers';
+import { localizeNumber, removeFromArr } from '../../../services/helpers';
 import Icon from '../../Icons/Icon';
 
 const lotteryPerk = new PerkInfoProvider({} as any).getPerk('PERKS_LOTTERY');
@@ -112,14 +112,20 @@ const Perks = (props: IPerksProps) => {
     infoProvider.updateConfig({ perkRerolls });
   };
 
+
+
   const handleClickPerk = (level: number, id: string) => () => {
     const pickedPerks = [...infoProvider.config.pickedPerks];
     if (!pickedPerks[offset]) pickedPerks[offset] = [];
     if (pickedPerks[offset][level]?.includes(id)) {
-      const i = pickedPerks[offset][level].indexOf(id);
-      if (i !== -1) {
-        pickedPerks[offset][level].splice(i, 1);
+      // if gamble, remove the gamble ones
+      if (id === 'GAMBLE') {
+        const perkIds = perks[level].map(p => p.id);
+        const gamblePerks = perkIds.slice(-2);
+        removeFromArr(pickedPerks[offset][level], gamblePerks[0]);
+        removeFromArr(pickedPerks[offset][level], gamblePerks[1]);
       }
+      removeFromArr(pickedPerks[offset][level], id);
     } else {
       if (!pickedPerks[offset][level]) {
         pickedPerks[offset][level] = [];
@@ -131,7 +137,7 @@ const Perks = (props: IPerksProps) => {
 
   useEffect(() => {
     // Handle GAMBLE select where we need to also
-    // automatically add and remove the extra perks
+    // automatically add the extra perks
     // when we select the GAMBLE perk
     const pickedPerks = infoProvider.config.pickedPerks[offset];
     if (!pickedPerks) {
@@ -153,13 +159,6 @@ const Perks = (props: IPerksProps) => {
           handleClickPerk(i, gamblePerks[0])();
         }
         if (!picked.includes(gamblePerks[1])) {
-          handleClickPerk(i, gamblePerks[1])();
-        }
-      } else {
-        if (picked.includes(gamblePerks[0])) {
-          handleClickPerk(i, gamblePerks[0])();
-        }
-        if (picked.includes(gamblePerks[1])) {
           handleClickPerk(i, gamblePerks[1])();
         }
       }
@@ -242,7 +241,7 @@ const Perks = (props: IPerksProps) => {
                       perk={perk}
                     />
                   })}
-                  {selectedGamble && <div className="d-flex ms-4 position-relative" style={{width: '2rem'}}>
+                  {selectedGamble && <div className="d-flex ms-4 position-relative" style={{ width: '2rem' }}>
                     {/* Hard coded to make it more pretty */}
                     <div
                       className='position-absolute top-0 start-0 translate-middle'
