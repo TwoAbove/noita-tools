@@ -199,10 +199,10 @@ export class ShopInfoProvider extends InfoProvider {
 
   }
 
-  spawn_all_shopitems(x: number, y: number, pickedPerks: string[][]) {
+  spawn_all_shopitems(x: number, y: number, pickedPerks: string[][][]) {
     this.randoms.SetRandomSeed(x, y);
 
-    const numberOfExtraItems = pickedPerks.flat().filter(p => p === "EXTRA_SHOP_ITEM").length;
+    const numberOfExtraItems = pickedPerks.flat(2).filter(p => p === "EXTRA_SHOP_ITEM").length;
     const count = 5 + numberOfExtraItems; // GlobalsGetValue( "TEMPLE_SHOP_ITEM_COUNT", "5" );
 
     const width = 132
@@ -227,7 +227,7 @@ export class ShopInfoProvider extends InfoProvider {
     }
   }
 
-  provide(pickedPerks: string[][] = [], worldOffset: number = 0, tx = 0, ty = 0) {
+  provide(pickedPerks: string[][][] = [], worldOffset: number = 0, tx = 0, ty = 0) {
     const res: Array<{
       type: string;
       items: any[];
@@ -481,7 +481,7 @@ export class StartingBombSpellInfoProvider extends InfoProvider {
 export class Global {
 
   _G = {};
-  GetValue(varname: string, defaultvalue?: string | undefined) {
+  GetValue(varname: string, defaultvalue?: string | number | undefined) {
     return this._G[varname] || defaultvalue;
   }
   SetValue(varname: string, varvalue: string | number) {
@@ -506,32 +506,33 @@ export class PerkInfoProvider extends InfoProvider {
     return this.perks[id];
   }
 
+  _getNextReroll(perkDeck: any[]) {
+    let next_perk_index = this._G.GetValue("TEMPLE_REROLL_PERK_INDEX", perkDeck.length - 1);
+    let perk_id = perkDeck[next_perk_index];
+    while (!perk_id) {
+      // if we over flow
+      perkDeck[next_perk_index] = "LEGGY_FEET"
+      next_perk_index--;
+      if (next_perk_index < 0) {
+        next_perk_index = perkDeck.length - 1;
+      }
+      perk_id = perkDeck[next_perk_index];
+    }
+
+    next_perk_index--;
+    if (next_perk_index < 0) {
+      next_perk_index = perkDeck.length - 1;
+    }
+    this._G.SetValue("TEMPLE_REROLL_PERK_INDEX", next_perk_index);
+    this._G.GameAddFlagRun(this.get_perk_flag_name(perk_id));
+    return perk_id;
+  }
+
   _getReroll(perkDeck: any[], add = 0, amountOfPerks: number) {
-    const perks = perkDeck;
     const perk_count = amountOfPerks;
     const result: any[] = [];
     for (let i = 0; i < perk_count + add; i++) {
-      let next_perk_index = Number(this._G.GetValue("TEMPLE_REROLL_PERK_INDEX", String(perks.length - 1)));
-      let perk_id = perks[next_perk_index];
-
-      while (!perk_id) {
-        // if we over flow
-        perks[next_perk_index] = "LEGGY_FEET"
-        next_perk_index--;
-        if (next_perk_index < 0) {
-          next_perk_index = perks.length - 1;
-        }
-        perk_id = perks[next_perk_index];
-      }
-
-      next_perk_index--;
-      if (next_perk_index < 0) {
-        next_perk_index = perks.length - 1;
-      }
-
-      this._G.SetValue("TEMPLE_REROLL_PERK_INDEX", String(next_perk_index))
-
-      this._G.GameAddFlagRun(this.get_perk_flag_name(perk_id))
+      const perk_id = this._getNextReroll(perkDeck);
       result.push(perk_id);
     }
 
@@ -539,13 +540,13 @@ export class PerkInfoProvider extends InfoProvider {
   }
 
   _getNextPerk(perks: any[]) {
-    let next_perk_index = Number(this._G.GetValue("TEMPLE_NEXT_PERK_INDEX", "0"));
+    let next_perk_index = this._G.GetValue("TEMPLE_NEXT_PERK_INDEX", 0);
     const perk_id = perks[next_perk_index];
     next_perk_index++;
     if (next_perk_index >= perks.length) {
       next_perk_index = 0;
     }
-    this._G.SetValue("TEMPLE_NEXT_PERK_INDEX", String(next_perk_index))
+    this._G.SetValue("TEMPLE_NEXT_PERK_INDEX", next_perk_index)
     this._G.GameAddFlagRun(this.get_perk_flag_name(perk_id))
     return perk_id;
   }
@@ -560,7 +561,7 @@ export class PerkInfoProvider extends InfoProvider {
 
   perk_spawn_many(perks: any[], add = 0) {
     const result: any[] = [];
-    const perk_count = Number(this._G.GetValue("TEMPLE_PERK_COUNT", "3")) + add;
+    const perk_count = this._G.GetValue("TEMPLE_PERK_COUNT", 3) + add;
 
     for (let i = 0; i < perk_count; i++) {
       const nextPerk = this._getNextPerk(perks);
@@ -693,7 +694,7 @@ export class PerkInfoProvider extends InfoProvider {
     for (let i = 0; i < perk_deck.length; i++) {
       const perk_name = perk_deck[i];
       const flag_name = this.get_perk_picked_flag_name(perk_name);
-      const pickup_count = Number(this._G.GetValue(flag_name + "_PICKUP_COUNT", "0"));
+      const pickup_count = this._G.GetValue(flag_name + "_PICKUP_COUNT", 0);
 
       // GameHasFlagRun( flag_name ) - this is if its ever been spawned
       // has been picked up
@@ -729,8 +730,8 @@ export class PerkInfoProvider extends InfoProvider {
     return result;
   }
 
-  provide(perkPicks?: any, maxLevels?: number, returnPerkObjects?: boolean, worldOffset?: number, rerolls?: number[][]) {
-    perkPicks = perkPicks || [];
+  provide(perkPicks?: string[][][], maxLevels?: number, returnPerkObjects?: boolean, worldOffset?: number, rerolls?: number[][]) {
+    perkPicks = perkPicks || [[]];
     worldOffset = worldOffset || 0;
     if (!maxLevels || maxLevels === -1) maxLevels = Infinity;
 
@@ -739,7 +740,7 @@ export class PerkInfoProvider extends InfoProvider {
     type IPerk = typeof this.perks[string];
     const result: IPerk[][] = [];
     let world = 0;
-    this._G.SetValue("TEMPLE_PERK_COUNT", "3")
+    this._G.SetValue("TEMPLE_PERK_COUNT", 3)
     const temple_locations = this.temples;
     while (true) {
       let i = 0;
@@ -752,7 +753,7 @@ export class PerkInfoProvider extends InfoProvider {
         }
         let gambleSelected = false;
         if (perkPicks[world] && perkPicks[world][i]) {
-          if (perkPicks[world][i] === 'GAMBLE') {
+          if (perkPicks[world][i].includes('GAMBLE')) {
             gambleSelected = true;
           }
         }
@@ -780,13 +781,15 @@ export class PerkInfoProvider extends InfoProvider {
             result.push(res);
           }
         }
-        let picked_perk = perkPicks[world]?.[i]
-        if (picked_perk) {
-          let flag_name = this.get_perk_picked_flag_name(picked_perk);
-          this._G.GameAddFlagRun(flag_name);
-          this._G.SetValue(flag_name + "_PICKUP_COUNT", Number(this._G.GetValue(flag_name + "_PICKUP_COUNT", "0")) + 1);
-          if (picked_perk === "EXTRA_PERK") {
-            this._G.SetValue("TEMPLE_PERK_COUNT", parseFloat(this._G.GetValue("TEMPLE_PERK_COUNT")) + 1)
+        const picked_perks = perkPicks[world]?.[i]
+        if (picked_perks) {
+          for (const picked_perk of picked_perks) {
+            let flag_name = this.get_perk_picked_flag_name(picked_perk);
+            this._G.GameAddFlagRun(flag_name);
+            this._G.SetValue(flag_name + "_PICKUP_COUNT", this._G.GetValue(flag_name + "_PICKUP_COUNT", 0) + 1);
+            if (picked_perk === "EXTRA_PERK") {
+              this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
+            }
           }
         }
         i++;
@@ -821,11 +824,11 @@ export class LotteryInfoProvider extends InfoProvider {
   temples = templeData;
 
   toInt(x: number) {
-    switch(x){
+    switch (x) {
       // special cases for exactly 4 perks.
       case -9.5: return -10;
       case 20.5: return 20;
-      default: return Math.round(x)
+      default: return Math.round(x);
     }
   }
 
@@ -857,8 +860,8 @@ export class FungalInfoProvider extends InfoProvider {
     //	entity = parent
     //}
 
-    let iter = Number(this._G.GetValue("fungal_shift_iteration", "0"));
-    this._G.SetValue("fungal_shift_iteration", String(iter + 1));
+    let iter = this._G.GetValue("fungal_shift_iteration", 0);
+    this._G.SetValue("fungal_shift_iteration", iter + 1);
     if (iter > 20 && !debug_no_limits) {
       return { flaskTo: false, flaskFrom: false, from: [], to: '' };
     }
@@ -902,7 +905,7 @@ export class FungalInfoProvider extends InfoProvider {
 
   provide(maxShifts?: number) {
     let debug_no_limits = false;
-    this._G.SetValue("fungal_shift_iteration", "0")
+    this._G.SetValue("fungal_shift_iteration", 0)
     const shifts: Array<ReturnType<FungalInfoProvider['fungal_shift']>> = [];
     if (!maxShifts || maxShifts === -1) maxShifts = 20;
     for (let i = 0; i < maxShifts; i++) {
@@ -1279,7 +1282,7 @@ export class GameInfoProvider extends EventTarget {
 interface IProviderConfig {
   seed: number;
   perkRerolls: number[][];
-  pickedPerks: any[];
+  pickedPerks: string[][][];
   perkWorldOffset: number;
 }
 
