@@ -29,7 +29,6 @@ export default function useLocalStorage<T>(
 	});
 
 	const handleStorage = (event: StorageEvent) => {
-		console.log('event', event);
 		if (event.key === key && deserialize(event.newValue) !== value) {
 			let item = deserialize(window.localStorage.getItem(key));
 			if (typeof item === 'undefined' || item === null) {

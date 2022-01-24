@@ -1,12 +1,11 @@
 import React from 'react';
 import { Stack } from 'react-bootstrap';
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
-import {
-	StartingBombSpellInfoProvider,
-	StartingFlaskInfoProvider,
-	StartingSpellInfoProvider,
-	SpellInfoProvider
-} from '../../../services/SeedInfo/infoHandler';
+import { SpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Spell';
+import { StartingBombSpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/StartingBomb';
+import { StartingFlaskInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/StartingFlask';
+import { StartingSpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/StartingSpell';
+
 import Icon from '../../Icons/Icon';
 
 interface IStartProps {

@@ -16,6 +16,9 @@ const Clickable = (props: IClickableProps | any) => {
 	});
 	return (
 		<div
+			style={{
+				cursor: 'pointer'
+			}}
 			className={classNames(
 				...[clicked && 'border border-3 p-1 flex-shrink-1']
 			)}

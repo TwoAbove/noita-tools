@@ -35,8 +35,17 @@ app.post('/stats', (req, res) => {
 app.use((req, res) =>
 	handler(req, res, {
 		public: './build',
-		rewrites: [
-			{ source: '/', destination: '/index.html' }
+		rewrites: [{ source: '/', destination: '/index.html' }],
+		headers: [
+			{
+				source: 'static/**',
+				headers: [
+					{
+						key: 'Cache-Control',
+						value: 'public, immutable, max-age=604800'
+					}
+				]
+			}
 		]
 	})
 );
@@ -58,7 +67,7 @@ const randomText = length => {
 
 const rooms = new Set();
 
-const roomLength = 6;
+const roomLength = 5;
 const getRoomNumber = () => {
 	if (rooms.size > Math.pow(10, roomLength)) {
 		console.error('Rooms full');
@@ -112,7 +121,7 @@ const upload = async () => {
 		bucketId: '93c80a630c6d59a37add0615',
 		fileName: `${new Date().toISOString()}.json`,
 		partSize: r.data.recommendedPartSize,
-		data: Buffer.from(JSON.stringify({data, stats}))
+		data: Buffer.from(JSON.stringify({ data, stats }))
 	});
 	data = [];
 	stats = [];
@@ -132,6 +141,4 @@ const shutdown = signal => err => {
 	});
 };
 
-process
-	.on('SIGTERM', shutdown('SIGTERM'))
-	.on('SIGINT', shutdown('SIGINT'));
+process.on('SIGTERM', shutdown('SIGTERM')).on('SIGINT', shutdown('SIGINT'));

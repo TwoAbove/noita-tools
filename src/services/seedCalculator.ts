@@ -1,4 +1,5 @@
-import GameInfoHandler, { IRule } from '../services/SeedInfo/infoHandler';
+import GameInfoHandler from '../services/SeedInfo/infoHandler';
+import { IRule } from './SeedInfo/infoHandler/IRule';
 
 // const includesAll = (arr: string[], target: string[]) =>
 // 	arr.length ? target.every(v => arr.includes(v)) : true;

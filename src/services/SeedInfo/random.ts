@@ -7,15 +7,66 @@
 import createModule from './noita_random/noita_random.js';
 import noitaRandomModule from './noita_random/noita_random.wasm';
 
-type Awaited<T> = T extends PromiseLike<infer U> ? U : T
+type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 
-interface IRandomf {
-	ProceduralRandomf(arg0: number, arg1: number, arg2: number, arg3: number): number;
+interface IRandomModule {
+	ProceduralRandomf(
+		arg0: number,
+		arg1: number,
+		arg2: number,
+		arg3: number
+	): number;
+
+	RoundHalfOfEven(number): number;
+
+	Randomf(): number;
+
 	Random(arg0: number, arg1: number): number;
-	ProceduralRandomi(arg0: number, arg1: number, arg2: number, arg3: number): number;
+	Random(arg0: number): number;
+	Random(): number;
+
+	ProceduralRandomi(
+		arg0: number,
+		arg1: number,
+		arg2: number,
+		arg3: number
+	): number;
+
+	RandomDistribution(
+		min: number,
+		max: number,
+		mean: number,
+		sharpness?: number,
+		baseline?: number
+	): number;
+
+	RandomDistributionf(
+		min: number,
+		max: number,
+		mean: number,
+		sharpness?: number,
+		baseline?: number
+	): number;
+
 	SetRandomSeed(arg0: number, arg1: number): void;
+
 	SetWorldSeed(arg0: number): void;
+
 	PickForSeed(): string;
+
+	GetRandomAction(x: number, y: number, level: number, i: number): string;
+
+	GetRandomActionWithType(
+		x: number,
+		y: number,
+		level: number,
+		type: number,
+		i: number
+	): string;
+
+	_malloc(number): number;
+
+	HEAPU8: any;
 }
 
 interface IRND {
@@ -24,9 +75,9 @@ interface IRND {
 }
 
 const load = async () => {
-	const Module: IRandomf = await createModule({
+	const Module: IRandomModule = await createModule({
 		locateFile(path) {
-			if(path.endsWith('.wasm')) {
+			if (path.endsWith('.wasm')) {
 				return noitaRandomModule;
 			}
 			return path;
@@ -98,22 +149,37 @@ const load = async () => {
 		return result;
 	};
 
+	const logify = func => (...args) => {
+		console.groupCollapsed(func);
+		console.log(...args);
+		const res = func(...args);
+		console.log(res);
+		console.groupEnd();
+		return res;
+	};
+
 	return {
 		Random: Module.Random,
+		Randomf: Module.Randomf,
+		RandomDistribution: Module.RandomDistribution,
+		RandomDistributionf: Module.RandomDistributionf,
 		ProceduralRandomf: Module.ProceduralRandomf,
 		ProceduralRandomi: Module.ProceduralRandomi,
 		SetRandomSeed: Module.SetRandomSeed,
 		SetWorldSeed: Module.SetWorldSeed,
 		PickForSeed: Module.PickForSeed,
+		RoundHalfOfEven: Module.RoundHalfOfEven,
 
+		GetRandomAction: Module.GetRandomAction,
+		GetRandomActionWithType: Module.GetRandomActionWithType,
 		random_next,
+		random_nexti,
 		randomFromArray,
 		random_create,
 		pick_random_from_table_backwards,
 		pick_random_from_table_weighted,
-		random_nexti
 	};
 };
 
-export type IRandom = Awaited<ReturnType<typeof load>>
+export type IRandom = Awaited<ReturnType<typeof load>>;
 export default load;

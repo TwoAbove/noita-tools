@@ -9338,7 +9338,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.7.0:
+lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -9390,6 +9390,24 @@ lru-queue@^0.1.0:
   integrity sha1-Jzi9nw089PhEkMVzbEhpmsYyzaM=
   dependencies:
     es5-ext "~0.10.2"
+
+lua-json@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/lua-json/-/lua-json-1.0.0.tgz#915b3271426674a4917a6d3e6f97988f6e917739"
+  integrity sha512-TrMvRPvrbOoPbEY79mIdZsMxwcEpzcUQ5iy9Vir6BmCOV9yOSkA3jHTFZklN1OUyx6F9o/dMLLS/Y6Urb063YQ==
+  dependencies:
+    lodash "^4.17.11"
+    luaparse "^0.2.1"
+
+lua2js@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/lua2js/-/lua2js-0.0.11.tgz#51238c10eeff05d820953378852961fbd8776be4"
+  integrity sha1-USOMEO7/BdgglTN4hSlh+9h3a+Q=
+
+luaparse@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/luaparse/-/luaparse-0.2.1.tgz#aa8f56132b0de97d37f3c991a9df42e0e17f656c"
+  integrity sha1-qo9WEysN6X0388mRqd9C4OF/ZWw=
 
 lz-string@^1.4.4:
   version "1.4.4"

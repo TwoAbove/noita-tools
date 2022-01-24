@@ -1,6 +1,6 @@
 {
   "name": "noita-helper",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "private": true,
   "homepage": "https://www.noitool.com/",
   "dependencies": {
@@ -41,6 +41,8 @@
     "image-capture": "^0.4.0",
     "jimp": "^0.16.1",
     "lodash-es": "^4.17.21",
+    "lua-json": "^1.0.0",
+    "lua2js": "^0.0.11",
     "nodemon": "^2.0.15",
     "react": "^17.0.2",
     "react-app-rewired": "^2.1.8",
@@ -70,7 +72,7 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "node ./server",
-    "dev": "concurrently 'nodemon ./server' 'craco start' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write noita_random.cpp; do sh build.sh; done;'",
+    "dev": "concurrently 'nodemon ./server' 'craco start' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write .; do sh build.sh; done;'",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",

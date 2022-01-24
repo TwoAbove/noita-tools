@@ -40,7 +40,7 @@ const configs: IConfig[] = [
     for (const d of data) {
       out[d[config.id]] = d;
     }
-		fs.writeFileSync(config.dest, JSON.stringify(out));
+		fs.writeFileSync(config.dest, JSON.stringify(out, null, 2));
 	}
 })();
 

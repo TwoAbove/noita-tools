@@ -1,11 +1,19 @@
 // Thanks to kaliuresis!
 // Check out his orb atlas repository: https://github.com/kaliuresis/noa
+
 // #include <stdint.h>
-// #include <math.h>
-#include <string>
+#include <algorithm>
+#include <math.h>
 #include <vector>
 // #include <limits.h>
+#include <iostream>
+#include <iterator>
+#include <cfenv>
+#include <cmath>
 
+#include "spells.cpp"
+
+typedef int64_t __int64;
 typedef unsigned int uint;
 
 typedef uint8_t byte;
@@ -24,14 +32,30 @@ double random_seed = 0;
 
 using namespace std;
 
+double Randomf()
+{
+    int b = (int)random_seed * 0x41a7 + ((int)random_seed / 0x1f31d) * -0x7fffffff;
+    if (b < 1)
+    {
+        b += 0x7fffffff;
+    }
+    random_seed = (double)b;
+    return (random_seed * 4.656612875e-10);
+}
+
+int Random(int a, int b)
+{
+    return a - (int)((double)((b + 1 - a)) * -Randomf());
+}
+
 uint64 SetRandomSeedHelper(double r)
 {
     uint64 e = *(uint64 *)&r;
     if (((e >> 0x20 & 0x7fffffff) < 0x7FF00000) && (-9.223372036854776e+18 <= r) && (r < 9.223372036854776e+18))
     {
-        //should be same as e &= ~(1<<63); which should also just clears the sign bit,
-        //or maybe it does nothing,
-        //but want to keep it as close to the assembly as possible for now
+        // should be same as e &= ~(1<<63); which should also just clears the sign bit,
+        // or maybe it does nothing,
+        // but want to keep it as close to the assembly as possible for now
         e <<= 1;
         e >>= 1;
         double s = *(double *)&e;
@@ -53,20 +77,20 @@ uint64 SetRandomSeedHelper(double r)
         return i & 0xFFFFFFFF;
     }
 
-    //error!
+    // error!
     uint64 error_ret_val = 0x8000000000000000;
     return *(double *)&error_ret_val;
 }
 
-uint SetRandomSeedHelper2(int param_1, int param_2, uint param_3)
+uint SetRandomSeedHelper2(uint a, uint b, uint ws)
 {
     uint uVar1;
     uint uVar2;
     uint uVar3;
 
-    uVar2 = (param_1 - param_2) - param_3 ^ param_3 >> 0xd;
-    uVar1 = (param_2 - uVar2) - param_3 ^ uVar2 << 8;
-    uVar3 = (param_3 - uVar2) - uVar1 ^ uVar1 >> 0xd;
+    uVar2 = (a - b) - ws ^ ws >> 0xd;
+    uVar1 = (b - uVar2) - ws ^ uVar2 << 8;
+    uVar3 = (ws - uVar2) - uVar1 ^ uVar1 >> 0xd;
     uVar2 = (uVar2 - uVar1) - uVar3 ^ uVar3 >> 0xc;
     uVar1 = (uVar1 - uVar2) - uVar3 ^ uVar2 << 0x10;
     uVar3 = (uVar3 - uVar2) - uVar1 ^ uVar1 >> 5;
@@ -75,23 +99,61 @@ uint SetRandomSeedHelper2(int param_1, int param_2, uint param_3)
     return (uVar3 - uVar2) - uVar1 ^ uVar1 >> 0xf;
 }
 
-double Random(double a, double b)
+void SetRandomSeed(double x, double y)
 {
-    int iVar1;
+    uint a = world_seed ^ 0x93262e6f;
+    uint b = a & 0xfff;
+    uint c = (a >> 0xc) & 0xfff;
 
-    iVar1 = (int)random_seed * 0x41a7 + ((int)random_seed / 0x1f31d) * -0x7fffffff;
-    if (iVar1 < 1)
+    double x_ = x + b;
+
+    double y_ = y + c;
+
+    double r = x_ * 134217727.0;
+    uint64 e = SetRandomSeedHelper(r);
+
+    uint64 _x = (*(uint64 *)&x_ & 0x7FFFFFFFFFFFFFFF);
+    uint64 _y = (*(uint64 *)&y_ & 0x7FFFFFFFFFFFFFFF);
+    if (102400.0 <= *((double *)&_y) || *((double *)&_x) <= 1.0)
     {
-        iVar1 = iVar1 + 0x7fffffff;
+        r = y_ * 134217727.0;
     }
-    random_seed = (double)iVar1;
-    return a - ((b - a) * (double)iVar1 * -4.656612875e-10);
+    else
+    {
+        double y__ = y_ * 3483.328;
+        double t = e;
+        y__ += t;
+        y_ *= y__;
+        r = y_;
+    }
+
+    uint64 f = SetRandomSeedHelper(r);
+
+    uint g = SetRandomSeedHelper2(e, f, world_seed);
+    double s = g;
+    s /= 4294967295.0;
+    s *= 2147483639.0;
+    s += 1.0;
+
+    if (2147483647.0 <= s)
+    {
+        s = s * 0.5;
+    }
+    random_seed = s;
+
+    Random(0, 0);
+
+    uint h = world_seed & 3;
+    while (h)
+    {
+        Random(0, 0);
+        h--;
+    }
 }
 
 class NollaPrng
 {
 public:
-    static const int SEED_BASE = 23456789 + 1 + 11 * 11;
     double Seed;
 
     NollaPrng(double seed)
@@ -100,17 +162,106 @@ public:
         Next();
     }
 
+    uint H2(unsigned int a, unsigned int b, unsigned int ws)
+    {
+        unsigned int v3;
+        unsigned int v4;
+        unsigned int v5;
+        int v6;
+        unsigned int v7;
+        unsigned int v8;
+        int v9;
+
+        v3 = (ws >> 13) ^ (b - a - ws);
+        v4 = (v3 << 8) ^ (a - v3 - ws);
+        v5 = (v4 >> 13) ^ (ws - v3 - v4);
+        v6 = (v5 >> 12) ^ (v3 - v4 - v5);
+        v7 = (v6 << 16) ^ (v4 - v6 - v5);
+        v8 = (v7 >> 5) ^ (v5 - v6 - v7);
+        v9 = (v8 >> 3) ^ (v6 - v7 - v8);
+        return (((v9 << 10) ^ (v7 - v9 - v8)) >> 15) ^ (v8 - v9 - ((v9 << 10) ^ (v7 - v9 - v8)));
+    }
+
+    void SetRandomSeed(uint ws, double x, double y)
+    {
+        uint a = ws ^ 0x93262e6f;
+        uint b = a & 0xfff;
+        uint c = (a >> 0xc) & 0xfff;
+
+        double x_ = x + b;
+
+        double y_ = y + c;
+
+        double r = x_ * 134217727.0;
+        uint64 e = SetRandomSeedHelper(r);
+
+        uint64 _x = (*(uint64 *)&x_ & 0x7FFFFFFFFFFFFFFF);
+        uint64 _y = (*(uint64 *)&y_ & 0x7FFFFFFFFFFFFFFF);
+        if (102400.0 <= *((double *)&_y) || *((double *)&_x) <= 1.0)
+        {
+            r = y_ * 134217727.0;
+        }
+        else
+        {
+            double y__ = y_ * 3483.328;
+            double t = e;
+            y__ += t;
+            y_ *= y__;
+            r = y_;
+        }
+
+        uint64 f = SetRandomSeedHelper(r);
+
+        uint g = SetRandomSeedHelper2(e, f, ws);
+        double s = g;
+        s /= 4294967295.0;
+        s *= 2147483639.0;
+        s += 1.0;
+
+        if (2147483647.0 <= s)
+        {
+            s = s * 0.5;
+        }
+
+        Seed = s;
+
+        Float();
+
+        uint h = ws & 3;
+        while (h)
+        {
+            Float();
+            h--;
+        }
+    }
+
     NollaPrng() = default;
 
     double Next()
     {
-        Seed = ((int)Seed) * 16807 + ((int)Seed) / 127773 * -INT_MAX;
-        //it's abs+1, because M A G I C, damn it
-        if (Seed < 0)
+        int v4 = (int)Seed * 16807 + (int)Seed / 127773 * -0x7FFFFFFF;
+        if (v4 < 0)
         {
-            Seed += INT_MAX;
+            v4 += 0x7FFFFFFF;
         }
-        return Seed / INT_MAX;
+        Seed = (double)v4;
+        return Seed / 0x7FFFFFFF;
+    }
+
+    double Float()
+    {
+        int b = (int)Seed * 0x41a7 + ((int)Seed / 0x1f31d) * -0x7fffffff;
+        if (b < 1)
+        {
+            b += 0x7fffffff;
+        }
+        Seed = (double)b;
+        return (Seed * 4.656612875e-10);
+    }
+
+    int Random(int a, int b)
+    {
+        return a - (int)((double)((b + 1 - a)) * -Float());
     }
 };
 
@@ -187,9 +338,9 @@ public:
     }
 };
 
-static string _PickForSeed()
+static string PickForSeed()
 {
-    NollaPrng *prng = new NollaPrng(((double)world_seed * 0.17127000) + 1323.59030000);
+    NollaPrng *prng = new NollaPrng((world_seed * 0.17127000) + 1323.59030000);
     // Preheat random!
     for (int i = 0; i < 5; i++)
     {
@@ -213,90 +364,141 @@ void SetWorldSeed(uint worldseed)
     world_seed = worldseed;
 }
 
-void SetRandomSeed(double x, double y)
+// This looks like beta distribution?
+double GetDistribution(float mean, float sharpness, float baseline)
 {
-    uint a = world_seed ^ 0x93262e6f;
-    uint b = a & 0xfff;
-    uint c = (a >> 0xc) & 0xfff;
-
-    double x_ = x + b;
-
-    double y_ = y + c;
-
-    double r = x_ * 134217727.0;
-    uint64 e = SetRandomSeedHelper(r);
-
-    uint64 _x = (*(uint64 *)&x_ & 0x7FFFFFFFFFFFFFFF);
-    uint64 _y = (*(uint64 *)&y_ & 0x7FFFFFFFFFFFFFFF);
-    if (102400.0 <= *((double *)&_y) || *((double *)&_x) <= 1.0)
+    int i = 0;
+    do
     {
-        r = y_ * 134217727.0;
-    }
-    else
+        double r1 = Randomf();
+        double r2 = Randomf();
+        double div = fabs(r1 - mean);
+        if (r2 < ((1.0f - div) * baseline))
+        {
+            return r1;
+        }
+        if (div < 0.5)
+        {
+            double v11 = sin(((0.5f - mean) + r1) * 3.1415f);
+            double v12 = pow(v11, sharpness);
+            if (v12 > r2)
+            {
+                return r1;
+            }
+        }
+        i++;
+    } while (i < 100);
+    return Randomf();
+}
+
+int RandomDistribution(int min, int max, int mean, double sharpness)
+{
+    if (sharpness == 0)
     {
-        double y__ = y_ * 3483.328;
-        double t = e;
-        y__ += t;
-        y_ *= y__;
-        r = y_;
+        return Random(min, max);
     }
 
-    uint64 f = SetRandomSeedHelper(r);
+    double adjMean = (double)(mean - min) / (double)(max - min);
+    double v7 = GetDistribution(adjMean, sharpness, 0.005f); // Baseline is always this
+    int d = (int)round((double)(max - min) * v7);
+    return min + d;
+}
 
-    uint g = SetRandomSeedHelper2(e, f, world_seed);
-    double s = g;
-    s /= 4294967295.0;
-    s *= 2147483639.0;
-    s += 1.0;
-
-    if (2147483647.0 <= s)
+double RandomDistributionf(double min, double max, double mean, double sharpness)
+{
+    if (sharpness == 0.0)
     {
-        s = s * 0.5;
+        float r = Randomf();
+        return (float)(r * (float)(max - min)) + min;
     }
-    random_seed = s;
+    return min + GetDistribution((mean - min) / (max - min), sharpness, 0.005f) * (max - min); // Baseline is always this
+}
 
-    Random(0, 0);
-
-    uint h = world_seed & 3;
-    while (h)
+Spell GetRandomAction(double x, double y, int level, int offset = 0)
+{
+    NollaPrng *prng = new NollaPrng(0);
+    prng->SetRandomSeed(world_seed + (uint)offset, x, y);
+    double sum = 0;
+    // all_spells length is 393
+    for (int i = 0; i < 393; i++)
     {
-        Random(0, 0);
-        h--;
+        sum += all_spells[i].spawn_probabilities[level];
     }
+
+    double multiplyer = prng->Float();
+    double accumulated = sum * multiplyer;
+
+    for (int i = 0; i < 393; i++)
+    {
+        Spell spell = all_spells[i];
+        double probability = spell.spawn_probabilities[level];
+        if (probability == 0.0)
+        {
+            continue;
+        }
+        if (probability >= accumulated)
+        {
+            delete prng;
+            return spell;
+        }
+        accumulated -= probability;
+    }
+
+    return all_spells[0]; // Fallback just in case. Should be mathematically impossible
 }
 
-int Random(int a, int b)
+Spell GetRandomActionWithType(double x, double y, int level, int type, int offset = 0)
 {
-    return (int)Random((double)a, (double)b + 1);
+    NollaPrng *prng = new NollaPrng(0);
+    prng->SetRandomSeed(world_seed + offset, x, y);
+    double sum = 0;
+
+    // all_spells length is 393
+    for (int i = 0; i < 393; i++)
+    {
+        if (all_spells[i].type == type)
+        {
+            sum += all_spells[i].spawn_probabilities[level];
+        }
+    }
+
+    double multiplyer = prng->Float();
+    double accumulated = sum * multiplyer;
+
+    for (int i = 0; i < 393; i++)
+    {
+        Spell spell = all_spells[i];
+        if (all_spells[i].type != type)
+        {
+            continue;
+        }
+        double probability = spell.spawn_probabilities[level];
+        if (probability > 0.0 && probability >= accumulated)
+        {
+            delete prng;
+            return spell;
+        }
+        accumulated -= probability;
+    }
+    int rand = prng->Float() * 393;
+    Spell spell;
+    for (int j = 0; j < 393; j++)
+    {
+        spell = all_spells[(j + rand) % 393];
+        if (spell.type == type && spell.spawn_probabilities[level] > 0.0)
+        {
+            delete prng;
+            return spell;
+        }
+        j++;
+    }
+
+    delete prng;
+    return spell;
 }
 
-double ProceduralRandomf(double x, double y, double a, double b)
+float RoundHalfOfEven(float x)
 {
-    SetRandomSeed(x, y);
-    return Random(a, b);
-}
-
-int ProceduralRandomi(double x, double y, double a, double b)
-{
-    SetRandomSeed(x, y);
-    return (int)Random(a, b);
-}
-
-string PickForSeed()
-{
-    return _PickForSeed();
-}
-
-#include <emscripten/bind.h>
-
-using namespace emscripten;
-
-EMSCRIPTEN_BINDINGS(my_module)
-{
-    emscripten::function<int>("Random", &Random);
-    emscripten::function("ProceduralRandomf", &ProceduralRandomf);
-    emscripten::function("ProceduralRandomi", &ProceduralRandomi);
-    emscripten::function("SetRandomSeed", &SetRandomSeed);
-    emscripten::function("SetWorldSeed", &SetWorldSeed);
-    emscripten::function<string>("PickForSeed", &PickForSeed);
+    std::fesetround(FE_TONEAREST);
+    return std::nearbyint(x);
 }

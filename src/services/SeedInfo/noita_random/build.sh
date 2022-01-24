@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # To watch, use
-# while inotifywait -e close_write noita_random.cpp; do sh build.sh; doneSetting
+# while inotifywait -e close_write wasm_in.cpp; do sh build.sh; doneSetting
 
 emcc --bind -Os -o noita_random.js \
   --std=c++17 \
@@ -15,7 +15,7 @@ emcc --bind -Os -o noita_random.js \
   -s ASSERTIONS=1 \
   -s ENVIRONMENT="web,worker" \
   -s EXPORT_NAME="create_noita_random" \
-  noita_random.cpp
+  wasm_in.cpp
 
 # To see what the size is to sanity-check
 du -sh noita_random.wasm;
