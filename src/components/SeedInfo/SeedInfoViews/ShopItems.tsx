@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Modal, Row, Col, Stack } from 'react-bootstrap';
+import { Modal, Row, Col } from 'react-bootstrap';
 import { localizeNumber, ticksToS } from '../../../services/helpers';
 import {
   IItemShop,
@@ -8,8 +7,6 @@ import {
 } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
 import { SpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Spell';
 import Icon from '../../Icons/Icon';
-
-const spell = new SpellInfoProvider({} as any);
 
 const Item = (props: { item: IItemShop['items'][number] }) => {
   const { item } = props;

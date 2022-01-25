@@ -149,6 +149,7 @@ const load = async () => {
 		return result;
 	};
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const logify = func => (...args) => {
 		console.groupCollapsed(func);
 		console.log(...args);
