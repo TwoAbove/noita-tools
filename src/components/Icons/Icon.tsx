@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 
 // const backgroundUri =
@@ -31,6 +32,9 @@ const Icon = (
 
 	const img = (
 		<img
+			className={classNames([
+				background && 'position-absolute top-50 start-50 translate-middle'
+			])}
 			{...rest}
 			alt={rest.alt}
 			title={rest.title}
@@ -47,11 +51,10 @@ const Icon = (
 	if (background) {
 		return (
 			<div
+				className="position-relative"
 				style={{
-					paddingTop: '2.5px',
-					paddingRight: '2.5px',
-					width: `calc(${w} + 5px)`,
-					height: `calc(${h} + 5px)`,
+					width: `calc(${w} + 10px)`,
+					height: `calc(${h} + 10px)`,
 					backgroundImage: `url(${backgroundUri})`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
