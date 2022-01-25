@@ -1,7 +1,6 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { roundHalfOfEven } from '../../../helpers';
 import templeData from '../../data/temple-locations.json';
 import { IRule } from '../IRule';
 import { InfoProvider } from './Base';
