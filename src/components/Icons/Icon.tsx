@@ -26,7 +26,7 @@ const Icon = (
 	const { uri, width, height, style, size, background, ...rest } = props;
 
 	const w = size || width || '3rem';
-	const h = size || height || '3rem';
+	const h = size || height;
 
 	console.log([w, h]);
 
@@ -54,7 +54,7 @@ const Icon = (
 				className="position-relative"
 				style={{
 					width: `calc(${w} + 10px)`,
-					height: `calc(${h} + 10px)`,
+					height: `calc(${h || '3rem'} + 10px)`,
 					backgroundImage: `url(${backgroundUri})`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
