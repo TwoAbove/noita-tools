@@ -22,8 +22,6 @@ export const removeFromArr = (arr: string[], thing: string) => {
 
 export const ticksToS = (t: number) => Math.round(t * 0.01666666 * 100) / 100;
 
-export const roundHalfOfEven = (x: number) => Math.abs(Math.sign((x % 2) - 0.5)) - Math.ceil(-x - 0.5) - 1;
-
 type CommonKeys<T> = keyof T;
 type AllKeys<T> = T extends any ? keyof T : never;
 type Subtract<A, C> = A extends C ? never : A;

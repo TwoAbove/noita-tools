@@ -3,7 +3,7 @@
 
 import spellData from '../../data/obj/spells.json';
 import templeData from '../../data/temple-locations.json';
-import { Objectify, roundHalfOfEven } from '../../../helpers';
+import { Objectify } from '../../../helpers';
 import { IRule } from '../IRule';
 import { IRandom } from '../../random';
 import { InfoProvider } from './Base';

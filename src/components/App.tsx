@@ -165,7 +165,7 @@ const App: React.FC = () => {
 								<a
 									target="_blank"
 									rel="noreferrer"
-									href="https://github.com/TwoAbove/noita-tools/discussions"
+									href="https://github.com/TwoAbove/noita-tools/issues/"
 								>
 									here
 								</a>
