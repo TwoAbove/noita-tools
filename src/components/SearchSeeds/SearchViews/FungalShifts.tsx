@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 
 import fungalMaterials from '../../../services/SeedInfo/data/fungal-materials.json';
-import { IRule } from '../../../services/SeedInfo/infoHandler';
+import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 import { Square } from '../../helpers';
 import MaterialSelect from '../../MaterialSelect';
 

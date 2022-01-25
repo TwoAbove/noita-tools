@@ -14,11 +14,15 @@ export const includesSome = (set: string[], test: string[]) =>
 export const localizeNumber = (n: number) => new Intl.NumberFormat().format(n);
 
 export const removeFromArr = (arr: string[], thing: string) => {
-  const i = arr.indexOf(thing);
-  if (i !== -1) {
-    arr.splice(i, 1);
-  }
+	const i = arr.indexOf(thing);
+	if (i !== -1) {
+		arr.splice(i, 1);
+	}
 }
+
+export const ticksToS = (t: number) => Math.round(t * 0.01666666 * 100) / 100;
+
+export const roundHalfOfEven = (x: number) => Math.abs(Math.sign((x % 2) - 0.5)) - Math.ceil(-x - 0.5) - 1;
 
 type CommonKeys<T> = keyof T;
 type AllKeys<T> = T extends any ? keyof T : never;

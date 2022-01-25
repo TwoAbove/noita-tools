@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ButtonGroup, Container, Row, Col, Button } from 'react-bootstrap';
 
 import { MaterialPicker } from '../../../services/Calculator2';
-import { IRule } from '../../../services/SeedInfo/infoHandler';
+import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 import ListSelect from '../../ListSelect';
 
 interface IRecipeIngredientsPickerProps {

@@ -5,16 +5,14 @@ import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
 
-import {
-	IRule,
-	PerkInfoProvider
-} from '../../../services/SeedInfo/infoHandler';
+
 import classNames from 'classnames';
 import Clickable from '../../Icons/Clickable';
 import PerkSelect from '../../PerkSelect';
 import Icon from '../../Icons/Icon';
 import perkData from '../../../services/SeedInfo/data/obj/perks.json';
 import { Square } from '../../helpers';
+import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 
 interface IPerksProps {
 	onUpdateConfig: (config: IRule) => void;

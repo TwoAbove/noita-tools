@@ -4,13 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                // "~/.emscripten_cache/sysroot/include/emscripten",
-                // "~/.emscripten_cache/sysroot/include",
-                "/usr/share/emscripten/cache/sysroot/include/SDL",
-                "/usr/share/emscripten/cache/sysroot/include/compat",
-                "/usr/share/emscripten/cache/sysroot/include/c++/v1",
-                "/usr/lib/llvm-13/lib/clang/13.0.0/include",
-                "/usr/share/emscripten/cache/sysroot/include"
+                "~/.emscripten_cache/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

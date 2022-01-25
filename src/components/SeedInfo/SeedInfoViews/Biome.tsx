@@ -1,12 +1,11 @@
 import React from 'react';
-import {
-	BiomeModifierInfoProvider,
-	BiomeInfoProvider
-} from '../../../services/SeedInfo/infoHandler';
+
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 
 import { Stack } from 'react-bootstrap';
 import BiomeModifier from './BiomeMod';
+import { BiomeModifierInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/BiomeModifier';
+import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Boime';
 
 interface IBiomeProps {
 	biomeData: ReturnType<BiomeModifierInfoProvider['provide']>;

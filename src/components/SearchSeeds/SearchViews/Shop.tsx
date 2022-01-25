@@ -3,8 +3,8 @@ import { Row, Col, Container, Stack } from 'react-bootstrap';
 
 import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
+import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 
-import { IRule } from '../../../services/SeedInfo/infoHandler';
 import Clickable from '../../Icons/Clickable';
 import { Square } from '../../helpers';
 

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 
-import {
-	IRule,
-	MaterialInfoProvider
-} from '../../../services/SeedInfo/infoHandler';
 import Clickable from '../../Icons/Clickable';
 import { capitalize } from '../../../services/helpers';
+import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
+import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
 
 interface IStartingFlaskProps {
 	onUpdateConfig: (config: IRule) => void;

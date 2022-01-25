@@ -2,10 +2,11 @@ import React from 'react';
 
 interface IIconProps {
 	uri: string;
+	size?: string;
 }
 
 const Icon = (props: IIconProps & React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
-	const { uri, width, height, ...rest } = props;
+	const { uri, width, height, style, size, ...rest } = props;
 
 	return (
 		<img
@@ -13,7 +14,7 @@ const Icon = (props: IIconProps & React.DetailedHTMLProps<React.ImgHTMLAttribute
 			alt={rest.alt}
 			title={rest.title}
 			src={uri}
-			style={{ width: width || '3rem', height, imageRendering: 'pixelated' }}
+			style={{ width: size || width || '3rem', height: size || height, imageRendering: 'pixelated', ...style }}
 		/>
 	);
 };

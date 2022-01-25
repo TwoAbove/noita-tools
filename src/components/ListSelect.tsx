@@ -1,8 +1,7 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { capitalize } from '../services/helpers';
-
-import { MaterialInfoProvider } from '../services/SeedInfo/infoHandler';
+import { MaterialInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/Material';
 
 const material = new MaterialInfoProvider({} as any);
 

@@ -10,7 +10,7 @@ import Rain from './SeedInfoViews/Rain';
 import Start from './SeedInfoViews/Start';
 import Biome from './SeedInfoViews/Biome';
 import FungalShifts from './SeedInfoViews/FungalShifts';
-import Perks from './SeedInfoViews/Perks';
+import HolyMountain from './SeedInfoViews/HolyMountain';
 
 import { SpoilerContext } from '../SpoilerContext';
 
@@ -25,7 +25,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 	return (
 			<Row className='m-0'>
 				<Col className='p-0' lg={7}>
-					<Perks
+					<HolyMountain
 						infoProvider={infoProvider}
 						shop={data.shop}
 						perks={data.perks}
