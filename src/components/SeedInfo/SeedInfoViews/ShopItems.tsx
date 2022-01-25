@@ -5,7 +5,7 @@ import {
   IWandShop,
   ShopInfoProvider
 } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
-import { SpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Spell';
+
 import Icon from '../../Icons/Icon';
 
 const Item = (props: { item: IItemShop['items'][number] }) => {
