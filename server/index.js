@@ -132,9 +132,9 @@ cron.schedule('0 0 * * *', upload);
 const shutdown = signal => err => {
 	if (err) console.error(err.stack || err);
 	setTimeout(() => {
-		console.error('Waited 5s, exiting non-gracefully');
+		console.error('Waited 10s, exiting non-gracefully');
 		process.exit(1);
-	}, 5000).unref();
+	}, 10000).unref();
 	Promise.all([upload(), new Promise(res => server.close(res))]).then(() => {
 		console.log('Gracefully shut down');
 		process.exit(0);
@@ -142,3 +142,5 @@ const shutdown = signal => err => {
 };
 
 process.on('SIGTERM', shutdown('SIGTERM')).on('SIGINT', shutdown('SIGINT'));
+
+process.on('uncaughtException', shutdown('SIGINT'));
