@@ -11,8 +11,8 @@ import Icon from '../../Icons/Icon';
 const Item = (props: { item: IItemShop['items'][number] }) => {
   const { item } = props;
   return (
-    <div className="m-2 text-center">
-      <Icon uri={item.spell.sprite} title={item.spell.name} />
+    <div className="m-2 text-center d-flex flex-column justify-content-center align-items-center">
+      <Icon uri={item.spell.sprite} title={item.spell.name} background />
       {localizeNumber(item.price)}
     </div>
   );

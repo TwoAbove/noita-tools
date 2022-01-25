@@ -1,5 +1,5 @@
 import { InfoProvider } from './Base';
-import wands from '../../data/wands.json';
+import wandData from '../../data/wands.json';
 import { IRandom } from '../../random';
 
 export enum ACTION_TYPE {
@@ -169,7 +169,16 @@ class Gun implements IGun {
 }
 
 export class WandInfoProvider extends InfoProvider {
-	wands = wands;
+	wands = wandData as unknown as {
+		file: string;
+		name: string;
+		fire_rate_wait: number;
+		actions_per_round: number;
+		shuffle_deck_when_empty: number;
+		deck_capacity: number;
+		spread_degrees: number;
+		reload_time: number;
+	}[];
 
 	get_gun_probs(what: string): IGunProbs[string][number] | undefined {
 		if (gun_probs[what] === undefined) {
