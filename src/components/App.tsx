@@ -85,7 +85,9 @@ const Header = props => {
 			<div className="w-25"></div>
 			<Stack className="w-50">
 				<h1 className="display-3 fw-bolder m-1 my-3 text-center">Noitool</h1>
-				<h6 className="display-6 fw-lighter m-1 text-center">Noita tools and helpers</h6>
+				<h6 className="display-6 fw-lighter m-1 text-center">
+					Noita tools and helpers
+				</h6>
 				{notNewUrl && (
 					<p className="m-1 text-center">
 						Use the new url!{' '}
@@ -152,20 +154,22 @@ const App: React.FC = () => {
 					</div>
 					<footer className="footer font-small p-1 pt-3">
 						<Stack>
+							<div className="footer-copyright text-center py-2">
+								<div className="mb-1">
+									Help keep servers running! Every dollar helps ❤️
+								</div>
+								<Donate />
+							</div>
 							<div className="footer text-center py-2">
 								Ideas? Issues? Bugs? Click{' '}
 								<a
 									target="_blank"
 									rel="noreferrer"
-									href="https://github.com/TwoAbove/noita-tools/discussions"
+									href="https://github.com/TwoAbove/noita-tools/issues/"
 								>
 									here
 								</a>
 								!
-							</div>
-							<div className="footer-copyright text-center py-2">
-								<div className="mb-1">Like this tool? Buy me a coffee!</div>
-								<Donate />
 							</div>
 							<div className="mx-auto d-flex justify-content-center">
 								<div className="">
@@ -178,7 +182,7 @@ const App: React.FC = () => {
 								</div>
 							</div>
 							<div className="footer-copyright text-center py-2">
-								© 2021 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
+								© 2022 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
 							</div>
 						</Stack>
 					</footer>

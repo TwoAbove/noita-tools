@@ -1,10 +1,8 @@
 import { createContext, Suspense, useEffect } from 'react';
 import useLocalStorage from '../services/useLocalStorage';
 
-const lightThemeUrl =
-	'https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/flatly/bootstrap.min.css';
-const darkThemeUrl =
-	'https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/darkly/bootstrap.min.css';
+const lightThemeUrl = '/light-theme.css';
+const darkThemeUrl = '/dark-theme.css';
 
 const ThemeContext = createContext<any[]>([]);
 

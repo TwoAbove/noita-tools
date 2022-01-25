@@ -10,11 +10,9 @@ import App from './components/App';
 
 import * as serviceWorker from './serviceWorker';
 
-// import './services/SeedInfo/infoHandler.check';
-
 import reportWebVitals from './reportWebVitals';
 
-console.log('v 2.8.0');
+console.log('v 2.9.0');
 
 function sendToAnalytics(metric) {
 	const body = JSON.stringify(metric);

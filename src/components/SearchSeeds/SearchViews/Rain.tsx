@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
+import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
+import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 
-import {
-	IRule,
-	MaterialInfoProvider
-} from '../../../services/SeedInfo/infoHandler';
 import Clickable from '../../Icons/Clickable';
 
 interface IRainProps {

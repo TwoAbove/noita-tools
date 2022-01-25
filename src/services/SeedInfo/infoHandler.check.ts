@@ -46,7 +46,7 @@ const check = (shop: typeof shopInfo, x: number, y: number) => {
 	for (const info of shop) {
 		info.infoProvider.randoms.SetWorldSeed(Number(info.seed));
 		const out = info.infoProvider.providers.shop
-			.provide([], 0, x, y)
+			.provide(new Map(), 0, x, y)
 			.map(o => o.type);
 		// console.log(out);
 		if (!arraysEqual(info.types, out)) {

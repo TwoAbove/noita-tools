@@ -15,8 +15,6 @@ import {
 } from 'react-bootstrap';
 import { Trash2, Plus } from 'react-feather';
 
-import { IRule } from '../../services/SeedInfo/infoHandler';
-
 import Alchemy from './SearchViews/Alchemy';
 import Biomes from './SearchViews/Biomes';
 import Shop from './SearchViews/Shop';
@@ -26,6 +24,7 @@ import StartingBombSpell from './SearchViews/StartingBomb';
 import Rain from './SearchViews/Rain';
 import Perks from './SearchViews/Perks';
 import FungalShifts from './SearchViews/FungalShifts';
+import { IRule } from '../../services/SeedInfo/infoHandler/IRule';
 
 const genRules = (config: IConfig): IRule[] => {
   return Object.values(config);

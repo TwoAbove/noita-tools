@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
+import { SpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Spell';
+import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 
-import {
-	IRule,
-	SpellInfoProvider
-} from '../../../services/SeedInfo/infoHandler';
 import Clickable from '../../Icons/Clickable';
 import Icon from '../../Icons/Icon';
 

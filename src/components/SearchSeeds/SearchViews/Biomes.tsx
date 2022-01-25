@@ -5,10 +5,6 @@ import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
 
-import {
-	BiomeModifierInfoProvider,
-	IRule
-} from '../../../services/SeedInfo/infoHandler';
 import classNames from 'classnames';
 import Clickable from '../../Icons/Clickable';
 
@@ -17,6 +13,7 @@ import { capitalize } from '../../../services/helpers';
 import { Square } from '../../helpers';
 import BiomeSelect from '../../BiomeSelect';
 import BiomeModifier from '../../SeedInfo/SeedInfoViews/BiomeMod';
+import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 
 interface IBiomesProps {
 	onUpdateConfig: (config: IRule) => void;

@@ -2,9 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import { Stack } from 'react-bootstrap';
 
-import { FungalInfoProvider } from '../../../services/SeedInfo/infoHandler';
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { capitalize } from '../../../services/helpers';
+import { FungalInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Fungal';
 
 const Flask = () => {
 	return <b className='text-info'>Flask</b>;
