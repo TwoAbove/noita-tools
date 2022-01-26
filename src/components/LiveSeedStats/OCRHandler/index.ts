@@ -81,6 +81,10 @@ class OCRHandler extends EventTarget {
       tessjs_create_box: '0',
     });
 
+    if (this.tesseractWorker) {
+      this.tesseractWorker.terminate();
+    }
+
     this.tesseractWorker = worker;
   }
 
@@ -113,15 +117,20 @@ class OCRHandler extends EventTarget {
       if (!this.lastBitmap) {
         throw new Error('Cannot get bitmap');
       }
-      const seed = await this.getSeedFromImage();
-      if (!seed) {
-        continue;
-      }
-      if (parseInt(seed, 10) > 4294967295) {
-        continue;
-      }
-      if (seed) {
-        this.dispatchEvent(new CustomEvent('seed', { detail: { seed } }));
+      try {
+        const seed = await this.getSeedFromImage();
+        if (!seed) {
+          continue;
+        }
+        if (parseInt(seed, 10) > 4294967295) {
+          continue;
+        }
+        if (seed) {
+          this.dispatchEvent(new CustomEvent('seed', { detail: { seed } }));
+        }
+      } catch (e) {
+        console.error('captureLoop error:', e);
+
       }
     }
   }
