@@ -308,7 +308,7 @@ public:
         int failed = 0;
         while (counter < count && failed < 99999)
         {
-            int rand = (int)(PRNG->Next() * source.size());
+            int rand = (int)(PRNG->Next() * (double)source.size());
             string picked = source[rand];
             if (std::find(Materials.begin(), Materials.end(), picked) == Materials.end())
             {
@@ -329,7 +329,7 @@ public:
 
         for (int i = Materials.size() - 1; i >= 0; i--)
         {
-            int rand = prng->Next() * (i + 1);
+            int rand = prng->Next() * (double)(i + 1);
             string tmp = Materials[i];
             Materials[i] = Materials[rand];
             Materials[rand] = tmp;

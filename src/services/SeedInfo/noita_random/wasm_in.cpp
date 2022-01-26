@@ -13,13 +13,13 @@ int Randomi(double a)
 float ProceduralRandomf(double x, double y, double a, double b)
 {
     SetRandomSeed(x, y);
-    return a - (((b - a) + 1.) * -Randomf());
+    return a - ((b - a) * -Randomf());
 }
 
 int ProceduralRandomi(double x, double y, double a, double b)
 {
     SetRandomSeed(x, y);
-    return Random(a, b);
+    return Random((int)a, (int)b);
 }
 
 string _GetRandomActionWithType(double x, double y, int level, int type, int offset = 0)
