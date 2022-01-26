@@ -28,8 +28,6 @@ const Icon = (
 	const w = size || width || '3rem';
 	const h = size || height;
 
-	console.log([w, h]);
-
 	const img = (
 		<img
 			className={classNames([
