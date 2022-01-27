@@ -1,4 +1,6 @@
-import Tesseract from 'tesseract.js';
+// import Tesseract from 'tesseract.js';
+import Tesseract from '../../../../node_modules/tesseract.js/src/index.js';
+
 
 import genCanvases, { IFontCanvases } from './getFontCanvases';
 import { copyImage, crop, enhance, stretch, diff, invert } from './imageActions';
@@ -63,13 +65,16 @@ class OCRHandler extends EventTarget {
 
   async startTesseract() {
     const worker = Tesseract.createWorker({
+      // langPath: 'https://tessdata.projectnaptha.com/4.0.0_fast',
+      langPath: '/ocr/good',
       errorHandler: (e) => {
         console.error(e);
         this.startTesseract();
       },
-      logger: this.canvasRef ? console.log : () => { },
+      // logger: console.log,
+      cacheMethod: 'none'
+      // logger: this.canvasRef ? console.log : () => { },
     });
-
     await worker.load();
     await worker.loadLanguage('eng');
     await worker.initialize('eng');

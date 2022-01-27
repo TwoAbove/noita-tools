@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Col, Container, Row, Form, Stack } from 'react-bootstrap';
 import 'image-capture';
@@ -8,6 +9,7 @@ import OCRHandler from './OCRHandler/index';
 
 import SeedDataOutput from '../SeedInfo/SeedDataOutput';
 import SeedLinkHandler from './SeedLinkHandler';
+import { useForceUpdate } from '../helpers';
 
 // const ocrHandler = new OCRHandler({});
 
@@ -19,7 +21,7 @@ const Description = () => {
 			</h5>
 			<p>
 				This will allow you to get seed information (like from <i>Seed info</i>) in real time by reading the
-				seed from your display during gameplay. Display data does not leave your machine.<br/><br/>
+				seed from your display during gameplay. Display data does not leave your machine.<br /><br />
 				To start, open this page in your browser and start the game. Click "Start screen capture". Select the Noita window, or the whole screen where Noita will be running
 				if the former is not available.
 			</p>
@@ -113,35 +115,35 @@ const LiveSeedStats = () => {
 	// We need a way for the OCR handler to notify of a state change.
 	// Maybe refactoring this is the way to go, but I'm not sure how to
 	// make it simpler?
-  // const canvasRef = useRef(null);
+	// const canvasRef = useRef(null);
 
-	const [, updateState] = useState<any>();
 	const [lastSeed, setLastSeed] = useState<string>();
-	const forceUpdate = useCallback(() => updateState({}), []);
+	const forceUpdate = useForceUpdate();
 
 	const [ocrHandler, setOcrHandler] = useState<OCRHandler>();
-	const [seedLink, setSeedLink] = useState<SeedLinkHandler>();
+	const [seedLink] = useState<SeedLinkHandler>(() => {
+		const seedLinkHandler = new SeedLinkHandler({
+			onUpdate: forceUpdate
+		});
+		seedLinkHandler.addEventListener('update', () => {
+			forceUpdate()
+		});
+		return seedLinkHandler;
+	});
+
 	useEffect(() => {
 		const ocrHandler = new OCRHandler({
+			onUpdate: forceUpdate
 			// canvasRef
 		});
-		ocrHandler.onUpdate = forceUpdate;
 		ocrHandler.addEventListener('seed', event => {
 			if (event.detail.seed) {
 				setLastSeed(event.detail.seed);
 				seedLink!.sendSeed(event.detail.seed);
 			}
-			// console.log('seed', event.detail.seed);
 		});
 		setOcrHandler(ocrHandler);
-	}, [seedLink, forceUpdate]);
-	useEffect(() => {
-		const seedLinkHandler = new SeedLinkHandler({});
-		seedLinkHandler.addEventListener('update', () => {
-			forceUpdate()
-		});
-		setSeedLink(seedLinkHandler);
-	}, [setSeedLink, forceUpdate]);
+	}, [seedLink]);
 
 	const onClickScannerStart = async () => {
 		await ocrHandler?.startCapture({});
@@ -150,10 +152,8 @@ const LiveSeedStats = () => {
 	const onClickScannerStop = async () => {
 		await ocrHandler?.stopCapture();
 	};
-
 	const ocrReady = Boolean(ocrHandler?.ready);
 	const socketReady = Boolean(seedLink?.ready);
-
 	const everythingReady = ocrReady && socketReady;
 
 	return (
