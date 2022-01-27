@@ -4,15 +4,26 @@ import socketIOClient from 'socket.io-client';
 
 // const io = socketIOClient();
 
-export interface SocketHandlerConfig {}
+export interface SocketHandlerConfig {
+  onUpdate?: () => void;
+}
 
 class SocketHandler extends EventTarget {
 	ready = false;
 	connected = false;
 	io = socketIOClient();
+  onUpdate: () => void;
+
 
 	constructor(config: SocketHandlerConfig) {
 		super();
+		if (
+      config.onUpdate
+    ) {
+      this.onUpdate = config.onUpdate;
+    } else {
+      this.onUpdate = () => { };
+    }
 		this.configIO();
 	}
 
@@ -26,15 +37,13 @@ class SocketHandler extends EventTarget {
 		this.io.on('connect', () => {
 			this.ready = true;
 			this.connected = true;
-		});
-		this.io.on('connect', () => {
-			this.ready = true;
-			this.connected = true;
+			this.onUpdate();
 		});
 
 		this.io.on('disconnect', reason => {
 			console.log('disconnected: ', reason);
 			this.connected = false;
+			this.onUpdate();
 		});
 	}
 
