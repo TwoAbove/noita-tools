@@ -6,6 +6,7 @@ import { IRule } from './SeedInfo/infoHandler/IRule';
 
 export interface ISeedSolverConfig {
 	currentSeed?: number;
+	seedEnd?: number;
 	rules?: IRule[];
 }
 
@@ -16,6 +17,7 @@ export class SeedSolver {
 	running = false;
 	count = 0;
 	currentSeed = 0;
+	seedEnd?: number;
 	offset = 0;
 	step = 1;
 	infoFreq = 25000;
@@ -41,7 +43,7 @@ export class SeedSolver {
 	async work() {
 		this.running = true;
 		this.shouldCancel = false;
-		while (!this.shouldCancel && this.currentSeed < 4_294_967_294) {
+		while (!this.shouldCancel && this.currentSeed < (this.seedEnd || 4_294_967_294)) {
 			while (!this.gameInfoHandler.ready) {
 				// Free the event loop to check for stop
 				await new Promise(res => setTimeout(res, 0));
@@ -79,6 +81,13 @@ export class SeedSolver {
 	async update(config: ISeedSolverConfig = {}) {
 		if (typeof config.currentSeed === 'number') {
 			this.currentSeed = config.currentSeed + this.offset;
+		}
+		if (typeof config.seedEnd === 'number') {
+			if (!config.seedEnd) {
+				delete this.seedEnd;
+			} else if (config.seedEnd > 0) {
+				this.seedEnd = config.seedEnd + this.offset;
+			}
 		}
 		if (config.rules) {
 			this.rules = config.rules;

@@ -1,5 +1,5 @@
 // import { Remote, wrap, releaseProxy, proxy } from 'comlink';
-import { SeedSolver as _SeedSolver, ISeedSolverConfig } from './seedCalculator';
+import { SeedSolver as _SeedSolver, ISeedSolverConfig } from './seedSearcher';
 
 export class WorkerHandler extends EventTarget {
   latestData?: ReturnType<_SeedSolver["getInfo"]>;
@@ -7,7 +7,7 @@ export class WorkerHandler extends EventTarget {
 
   constructor(offset: number, step: number) {
     super();
-    this.worker = new Worker(new URL('../workers/seedCalculator.worker.ts', import.meta.url));
+    this.worker = new Worker(new URL('../workers/seedSearcher.worker.ts', import.meta.url));
     this.worker.postMessage({ type: 'init', offset, step });
     this.worker.addEventListener('message', ({ data }) => {
       switch (data.type) {

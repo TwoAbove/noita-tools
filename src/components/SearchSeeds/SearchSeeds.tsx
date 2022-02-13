@@ -39,8 +39,12 @@ const SearchSeeds = () => {
 		() => new SeedSolver(useCores)
 	);
 	const [seed, setSeed] = React.useState('1');
-	const handleSeedChange = (e: any) => {
+	const [seedEnd, setSeedEnd] = React.useState('');
+	const handleSeedStartChange = (e: any) => {
 		setSeed(e.target.value);
+	};
+	const handleSeedEndChange = (e: any) => {
+		setSeedEnd(e.target.value);
 	};
 
 	const [solverInfo, setSolverInfo] = React.useState<
@@ -75,20 +79,23 @@ const SearchSeeds = () => {
 			await seedSolver.destroy();
 			const newSeedSolver = new SeedSolver(useCores);
 			const newSeed = parseInt(seed);
+			const newSeedEnd = parseInt(seedEnd);
 			newSeedSolver.update({
 				rules: [],
-				currentSeed: newSeed
+				currentSeed: newSeed,
+				seedEnd: newSeedEnd,
 			});
 			if (!isNaN(newSeed)) {
 				newSeedSolver.update({
-					currentSeed: newSeed
+					currentSeed: newSeed,
+					seedEnd: newSeedEnd,
 				});
 			}
 
 			setSeedSolver(newSeedSolver);
 		};
 		work(); // eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [useCores, seed]);
+	}, [useCores, seed, seedEnd]);
 	// ^
 	// seedSolver is both used and set here, so running this
 	// again will create a loop
@@ -138,7 +145,20 @@ const SearchSeeds = () => {
 									type="number"
 									disabled={running}
 									value={seed}
-									onChange={handleSeedChange}
+									onChange={handleSeedStartChange}
+								/>
+							</Col>
+							<Col>
+								<Form.Label htmlFor="SearchSeeds.seedEnd">
+									End search at seed:{' '}
+								</Form.Label>
+								<Form.Control
+									id="SearchSeeds.seedEnd"
+									type="number"
+									placeholder="Optional"
+									disabled={running}
+									value={seedEnd}
+									onChange={handleSeedEndChange}
 								/>
 							</Col>
 						</FormGroup>

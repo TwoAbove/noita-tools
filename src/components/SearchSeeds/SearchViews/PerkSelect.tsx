@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { Modal, Row, Col, FormControl } from 'react-bootstrap';
 import Fuse from 'fuse.js';
 
-import perks from '../services/SeedInfo/data/perks_new.json';
-import Icon from './Icons/Icon';
+import perks from '../../../services/SeedInfo/data/perks_new.json';
+import Icon from '../../Icons/Icon';
+import Clickable from '../../Icons/Clickable';
 
 const options = {
-	shouldSort: false,
+	minMatchCharLength: 2,
+	// shouldSort: false,
 	keys: ['id', 'ui_name']
 };
 
@@ -28,10 +30,11 @@ const PerkSelect = (props: IPerkSelectProps) => {
 		setFilter(e.target.value);
 	};
 
-	const perksToShow = fuse
-		.search(filter || ' ')
-		.map(p => p.item)
-		.filter(p => !selectedPerks.includes(p.id));
+	const perksToShow = (filter
+		? fuse
+				.search(filter || ' ')
+				.map(p => p.item)
+		: perks).filter(p => !selectedPerks.includes(p.id));
 
 	return (
 		<Modal fullscreen="sm-down" scrollable show={show} onHide={handleClose}>
@@ -53,12 +56,14 @@ const PerkSelect = (props: IPerkSelectProps) => {
 					{perksToShow.map(perk => {
 						return (
 							<Col className="p-0 m-1" key={perk.id}>
-								<Icon
-									onClick={() => handleOnClick(perk.id)}
-									uri={'data:image/png;base64,' + perk.ui_icon}
-									alt={perk.ui_name}
-									title={perk.ui_name}
-								/>
+								<Clickable>
+									<Icon
+										onClick={() => handleOnClick(perk.id)}
+										uri={'data:image/png;base64,' + perk.ui_icon}
+										alt={perk.ui_name}
+										title={perk.ui_name}
+									/>
+								</Clickable>
 							</Col>
 						);
 					})}

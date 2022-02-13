@@ -1,6 +1,7 @@
 import { Modal, Row, Col } from 'react-bootstrap';
 import { localizeNumber, ticksToS } from '../../../services/helpers';
 import {
+  IShopType,
   IItemShop,
   IWandShop,
   ShopInfoProvider
@@ -23,6 +24,9 @@ const ItemShop = (props: { shop: IItemShop }) => {
   const { shop } = props;
   return (
     <div>
+      <Row className="p-3">
+        These assume that you have all spells unlocked. Customization coming soon!
+      </Row>
       <Row xs={shop.items.length / 2}>
         {shop.items.map((item, i) => {
           return (
@@ -132,8 +136,7 @@ const ShopItems = (props: {
   const { shop } = props;
   return (
     <>
-      {' '}
-      {shop.type === 'item' ? (
+      {shop.type === IShopType.item ? (
         <ItemShop shop={shop} />
       ) : (
         <WandShop shop={shop} />

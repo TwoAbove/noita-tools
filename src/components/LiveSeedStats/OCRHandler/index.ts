@@ -135,7 +135,7 @@ class OCRHandler extends EventTarget {
         }
       } catch (e) {
         console.error('captureLoop error:', e);
-
+        this.startCapture();
       }
     }
   }
