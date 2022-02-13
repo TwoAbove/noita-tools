@@ -2,7 +2,6 @@ import React, { useReducer, useState, useEffect } from 'react';
 import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 
 import WandIcon from '../../Icons/Wand';
-import Icon from '../../Icons/Icon';
 import Clickable from '../../Icons/Clickable';
 import LightBulletIcon from '../../Icons/LightBullet';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
@@ -10,8 +9,6 @@ import { IShopType } from '../../../services/SeedInfo/infoHandler/InfoProviders/
 
 import { Square } from '../../helpers';
 import ShopSelect from './ShopSelect';
-
-import spellObj from '../../../services/SeedInfo/data/obj/spells.json';
 
 interface IShopLevelProps {
 	handleClicked: (string) => void;
