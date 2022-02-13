@@ -3,18 +3,23 @@
 
 import spellData from '../../data/obj/spells.json';
 import templeData from '../../data/temple-locations.json';
-import { Objectify } from '../../../helpers';
+import { includesAll, includesSome, Objectify } from '../../../helpers';
 import { IRule } from '../IRule';
 import { IRandom } from '../../random';
 import { InfoProvider } from './Base';
 import { WandInfoProvider } from './Wand';
 
+export enum IShopType {
+  'wand' = 1,
+  'item' = 2
+}
+
 export type IItemShop = {
-  type: 'item';
+  type: IShopType.item;
   items: ReturnType<ShopInfoProvider["generate_shop_item"]>[]
 };
 export type IWandShop = {
-  type: 'wand';
+  type: IShopType.wand;
   items: ReturnType<ShopInfoProvider["generate_shop_wand"]>[]
 };
 export type IShopItems = IItemShop | IWandShop;
@@ -128,18 +133,11 @@ export class ShopInfoProvider extends InfoProvider {
     },
   }
 
-
   generate_shop_item(x: number, y: number, cheap_item: boolean, biomeid_?: number, is_stealable?: boolean) {
     // Todo: scripts/items/generate_shop_item.lua
     this.randoms.SetRandomSeed(x, y);
 
-    const biomepixel = Math.floor(y / 512)
-    let biomeid = this.biomes[biomepixel] || 0;
-
-    if (biomepixel > 35) {
-      biomeid = 7;
-    }
-
+    let biomeid = this.getLevel(y);
     if (biomeid_) {
       biomeid = biomeid_;
     }
@@ -168,16 +166,22 @@ export class ShopInfoProvider extends InfoProvider {
     }
   }
 
-  generate_shop_wand(x: number, y: number, cheap_item: boolean, unshufflePerk: boolean, biomeid_?: number) {
-    // Todo: scripts/items/generate_shop_item.lua
-    this.randoms.SetRandomSeed(x, y);
-
+  getLevel(y: number) {
     const biomepixel = Math.floor(y / 512)
     let biomeid = this.biomes[biomepixel] || 0;
 
     if (biomepixel > 35) {
       biomeid = 7;
     }
+    return biomeid;
+  }
+
+
+  generate_shop_wand(x: number, y: number, cheap_item: boolean, unshufflePerk: boolean, biomeid_?: number) {
+    // Todo: scripts/items/generate_shop_item.lua
+    this.randoms.SetRandomSeed(x, y);
+
+    let biomeid = this.getLevel(y)
 
     if (biomeid_) {
       biomeid = biomeid_;
@@ -215,10 +219,10 @@ export class ShopInfoProvider extends InfoProvider {
     const width = 132;
     const item_width = width / count;
     const sale_item_i = this.randoms.Random(0, count - 1);
-    const type: 'item' | 'wand' = this.randoms.Random(0, 100) <= 50 ? 'item' : 'wand';
+    const type: IShopType = this.randoms.Random(0, 100) <= 50 ? IShopType.item : IShopType.wand;
     const items: any[] = [];
     for (let i = 0; i < count; i++) {
-      if (type === 'item') {
+      if (type === IShopType.item) {
         // To simulate the position of items
         items[i] = this.generate_shop_item(x + i * item_width, y - 30, false, undefined, true);
         items[i + count] = this.generate_shop_item(x + i * item_width, y, i === sale_item_i, undefined, true)
@@ -235,24 +239,43 @@ export class ShopInfoProvider extends InfoProvider {
   provide(pickedPerks: Map<number, string[][]> = new Map(), worldOffset: number = 0, tx = 0, ty = 0) {
     const res: ReturnType<ShopInfoProvider["spawn_all_shop_items"]>[] = [];
     for (let i = 0; i < this.temples.length; i++) {
-      const temple = this.temples[i];
-      // Magic numbers taken from src/services/SeedInfo/infoHandler.check.ts
-      let offsetX = 0 - 299, offsetY = 0 - 15;
-      if (worldOffset !== 0) {
-        offsetX += 35840 * worldOffset;
-        if (!this.temples[i]) break;
-      }
-      res.push(this.spawn_all_shop_items(temple.x + offsetX, temple.y + offsetY, pickedPerks))
+      res.push(this.provideLevel(i, pickedPerks, worldOffset, tx, ty));
     }
     return res;
   }
 
+  provideLevel(level: number, pickedPerks: Map<number, string[][]> = new Map(), worldOffset: number = 0, tx = 0, ty = 0) {
+    const temple = this.temples[level];
+    // Magic numbers taken from src/services/SeedInfo/infoHandler.check.ts
+    let offsetX = 0 - 299, offsetY = 0 - 15;
+    return this.spawn_all_shop_items(temple.x + offsetX, temple.y + offsetY, pickedPerks);
+  }
+
+  getShopLevel(shopNumber: number) {
+    const temple = this.temples[shopNumber];
+    return this.getLevel(temple.y - 15);
+  }
+
   test(rule: IRule): boolean {
-    let info = this.provide();
-    for (let i = 0; i <= info.length; i++) {
-      if (rule.val[i]?.type) {
-        if (rule.val[i].type !== info[i].type) {
+    const check = rule.strict ? includesAll : includesSome;
+    for (let j = 0; j <= this.temples.length; j++) {
+      const shop = rule.val[j];
+      if (shop?.type) {
+        const info = this.provideLevel(j);
+        if (shop.type !== info.type) {
           return false;
+        }
+        if (info.type === IShopType.wand) {
+          // TODO
+        } else if (info.type === IShopType.item && shop.items.length) {
+          try {
+            // https://stackoverflow.com/a/3586788
+            if (!check(info.items.map(i => String(i.spell.id)), shop.items.map(i => String(i)))) {
+              return false;
+            }
+          } catch (e) {
+            console.error(e)
+          }
         }
       }
     }

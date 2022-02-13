@@ -8,7 +8,7 @@ import Clickable from '../../Icons/Clickable';
 import { localizeNumber, removeFromArr } from '../../../services/helpers';
 import Icon from '../../Icons/Icon';
 import { PerkInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Perk';
-import { ShopInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
+import { IShopType, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
 import { Square } from '../../helpers';
 import ShopItems from './ShopItems';
 
@@ -69,7 +69,7 @@ const PerkRow = (props: IPerkRowProps) => {
   return (
     <Stack direction="horizontal">
       <Col xs={2}>
-        {type === 'wand' ?
+        {type === IShopType.wand ?
           <Button
           onClick={handleOpenShopInfo}
             variant="outline-primary"

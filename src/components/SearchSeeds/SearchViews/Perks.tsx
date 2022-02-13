@@ -2,13 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 
-import WandIcon from '../../Icons/Wand';
-import LightBulletIcon from '../../Icons/LightBullet';
-
-
 import classNames from 'classnames';
 import Clickable from '../../Icons/Clickable';
-import PerkSelect from '../../PerkSelect';
+import PerkSelect from './PerkSelect';
 import Icon from '../../Icons/Icon';
 import perkData from '../../../services/SeedInfo/data/obj/perks.json';
 import { Square } from '../../helpers';
@@ -49,6 +45,7 @@ const Perks = (props: IPerksProps) => {
 			type: 'perk',
 			path: '',
 			params: [],
+			strict: true,
 			val: perks
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps

@@ -3,7 +3,7 @@
 
 import perksData from '../../data/obj/perks.json';
 import templeData from '../../data/temple-locations.json';
-import { includesAll, Objectify } from '../../../helpers';
+import { includesAll, includesSome, Objectify } from '../../../helpers';
 import { IRule } from '../IRule';
 import { InfoProvider } from './Base';
 import { Global } from './Global';
@@ -322,10 +322,12 @@ export class PerkInfoProvider extends InfoProvider {
   }
 
   test(rule: IRule): boolean {
+    const check = rule.strict ? includesAll : includesSome;
     const info = this.provide();
     for (let i = 0; i < info.length; i++) {
       if (rule.val[i].length) {
-        if (!includesAll(info[i] as any as string[], rule.val[i])) {
+        const r = rule.val[i];
+        if (!check(info[i] as any as string[], r)) {
           return false;
         }
       }

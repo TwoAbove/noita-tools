@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import deepEqual from 'fast-deep-equal/es6';
+import deepEqual from 'fast-deep-equal/es6/react';
 
 import {
   ButtonGroup,
@@ -25,6 +25,7 @@ import Rain from './SearchViews/Rain';
 import Perks from './SearchViews/Perks';
 import FungalShifts from './SearchViews/FungalShifts';
 import { IRule } from '../../services/SeedInfo/infoHandler/IRule';
+import Clickable from '../Icons/Clickable';
 
 const genRules = (config: IConfig): IRule[] => {
   return Object.values(config);
@@ -39,14 +40,15 @@ interface IAction {
   data?: IRule;
 }
 const configReducer = (state: IConfig, action: IAction): IConfig => {
+  const newState = Object.assign({}, state);
   switch (action.action) {
     case 'update':
       if (!deepEqual(state[action.type], action.data)) {
-        return { ...state, [action.type]: action.data! };
+        newState[action.type] = action.data!;
+        return newState;
       }
       return state;
     case 'delete':
-      const newState = { ...state };
       delete newState[action.type];
       return newState;
     case 'add':
@@ -114,7 +116,6 @@ const RuleConstructor = (props: IRuleConstructorProps) => {
     '' as any
   );
   const [configState, dispatch] = React.useReducer(configReducer, {});
-
   React.useEffect(() => {
     onSubmit(genRules(configState));
   }, [configState, onSubmit]);
@@ -127,7 +128,7 @@ const RuleConstructor = (props: IRuleConstructorProps) => {
     dispatch({
       action: 'update',
       type: selected,
-      data
+      data: JSON.parse(JSON.stringify(data))
     })
   };
 
@@ -148,36 +149,38 @@ const RuleConstructor = (props: IRuleConstructorProps) => {
               eventKey={type}
               key={type}
             >
-              <Row className="align-items-center row-cols-auto">
-                <Col className="">{r.Title()}</Col>
-                <Col className="">
-                  {r.active && configState[type] && (
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={(e) => {
-                        e.stopPropagation(); // So that ListGroup.Item is not triggered
-                        setSelected('' as any);
-                        dispatch({ action: 'delete', type });
-                      }}
-                    >
-                      <Trash2 size={18} />
-                    </Button>
-                  )}
-                  {r.active && !configState[type] && (
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={(e) => {
-                        e.stopPropagation(); // So that ListGroup.Item is not triggered
-                        dispatch({ action: 'add', type })
-                      }}
-                    >
-                      <Plus size={18} />
-                    </Button>
-                  )}
-                </Col>
-              </Row>
+              <Clickable>
+                <Row className="align-items-center row-cols-auto">
+                  <Col className="">{r.Title()}</Col>
+                  <Col className="">
+                    {r.active && configState[type] && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={(e) => {
+                          e.stopPropagation(); // So that ListGroup.Item is not triggered
+                          setSelected('' as any);
+                          dispatch({ action: 'delete', type });
+                        }}
+                      >
+                        <Trash2 size={18} />
+                      </Button>
+                    )}
+                    {r.active && !configState[type] && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={(e) => {
+                          e.stopPropagation(); // So that ListGroup.Item is not triggered
+                          dispatch({ action: 'add', type })
+                        }}
+                      >
+                        <Plus size={18} />
+                      </Button>
+                    )}
+                  </Col>
+                </Row>
+              </Clickable>
             </ListGroup.Item>
           );
         })}

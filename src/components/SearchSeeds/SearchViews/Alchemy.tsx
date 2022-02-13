@@ -140,8 +140,8 @@ const Alchemy = (props: IAlchemyProps) => {
       path: '',
       params: [],
       val: {
-        LC: lcIngredientsSelected,
-        AP: apIngredientsSelected
+        LC: [...lcIngredientsSelected],
+        AP: [...apIngredientsSelected]
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
