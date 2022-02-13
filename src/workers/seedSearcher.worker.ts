@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import { SeedSolver } from '../services/seedCalculator';
+import { SeedSolver } from '../services/seedSearcher';
 
 const seedSolver = new SeedSolver();
 
