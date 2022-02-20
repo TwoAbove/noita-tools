@@ -6,10 +6,10 @@ export const capitalize = (s: string) =>
 		.join(' ');
 
 export const includesAll = (set: string[], test: string[]) =>
-	set.length ? test.every(v => set.includes(v)) : true;
+	set.length && test.length ? test.every(v => set.includes(v)) : true;
 
 export const includesSome = (set: string[], test: string[]) =>
-	set.length ? test.some(v => set.includes(v)) : false;
+	set.length && test.length ? test.some(v => set.includes(v)) : true;
 
 export const localizeNumber = (n: number) => new Intl.NumberFormat().format(n);
 
