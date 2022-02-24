@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import classnames from 'classnames';
 import { Stack } from 'react-bootstrap';
 
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { capitalize } from '../../../services/helpers';
 import { FungalInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Fungal';
+import { AlchemyConfigContext } from '../../AlchemyConfigContext';
 
 const Flask = () => {
 	return <b className='text-info'>Flask</b>;
@@ -19,6 +20,7 @@ interface IShiftProps {
 const Shift = (props: IShiftProps) => {
 	const { data, getMaterial } = props;
 
+	const [showId] = useContext(AlchemyConfigContext);
 	return (
 		<tr
 			className={classnames([
@@ -31,14 +33,14 @@ const Shift = (props: IShiftProps) => {
 				<Stack>
 					{data.flaskFrom && <Flask />}
 					{data.from.map(s => (
-						<div key={s}>{capitalize(getMaterial(s).translated_name)}</div>
+						<div key={s}>{capitalize(getMaterial(s).translated_name)} {showId && `(${s})`}</div>
 					))}
 				</Stack>
 			</td>
 			<td className="col-auto">
 				<Stack>
 					{data.flaskTo && <Flask />}
-					<div>{capitalize(getMaterial(data.to).translated_name)}</div>
+					<div>{capitalize(getMaterial(data.to).translated_name)} {showId && `(${data.to})`}</div>
 				</Stack>
 			</td>
 		</tr>

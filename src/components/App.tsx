@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Alert, Container, Tabs, Tab, Stack, Form } from 'react-bootstrap';
+import React, { useState, useContext } from 'react';
+import { Alert, Container, Tabs, Tab, Stack, Form, Modal, Button } from 'react-bootstrap';
 import DarkModeToggle from 'react-dark-mode-toggle';
 
 import SeedInfo from './SeedInfo';
@@ -11,6 +11,7 @@ import useLocalStorage from '../services/useLocalStorage';
 import './App.css';
 import { SpoilerProvider, SpoilerContext } from './SpoilerContext';
 import { ThemeProvider, ThemeContext } from './ThemeContext';
+import { AlchemyConfigProvider, AlchemyConfigContext } from './AlchemyConfigContext';
 
 const SpoilerChange = props => {
 	const [spoil, setSpoiler] = useContext(SpoilerContext);
@@ -26,16 +27,33 @@ const SpoilerChange = props => {
 	);
 };
 
+const AlchemyConfig = props => {
+	const [advancedPerks, setAdvancedPerks] = useContext(AlchemyConfigContext);
+	return (
+		<Form.Switch
+			checked={advancedPerks}
+			onChange={e => {
+				setAdvancedPerks(e.target.checked);
+			}}
+			id="alchemy-config-switch"
+			label="Show material ID next to name"
+		/>
+	);
+};
+
 const DarkMode = props => {
 	const [theme, setTheme] = useContext(ThemeContext);
 	return (
-		<DarkModeToggle
-			onChange={checked => {
-				setTheme(checked ? 'dark' : 'light');
-			}}
-			checked={theme === 'dark'}
-			size={60}
-		/>
+		<div>
+			<DarkModeToggle
+				onChange={checked => {
+					setTheme(checked ? 'dark' : 'light');
+				}}
+				checked={theme === 'dark'}
+				size={60}
+			/>
+			&nbsp; Dark Mode
+		</div>
 	);
 };
 
@@ -63,7 +81,7 @@ const NeedInputAlert = () => {
 					I want to improve it further, and need your feedback. <br />
 					Click{' '}
 					<a
-						href="https://github.com/TwoAbove/noita-tools/discussions/73"
+						href="https://github.com/TwoAbove/noita-tools/issues"
 						target="_blank"
 						rel="noreferrer"
 					>
@@ -76,12 +94,32 @@ const NeedInputAlert = () => {
 	);
 };
 
+const Settings = (props) => {
+	return (
+		<Modal show={props.show} onHide={props.handleClose}>
+			<Modal.Header closeButton>
+				<Modal.Title>Settings</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<div className='pb-3'>
+					These settings modify how Noitool behaves or displays things.
+				</div>
+				<Stack gap={3}>
+					<DarkMode />
+					<SpoilerChange />
+					<AlchemyConfig />
+				</Stack>
+			</Modal.Body>
+		</Modal>)
+}
+
 const Header = props => {
+	const [show, setShow] = useState(false);
 	// noita-tools.herokuapp.com
 	const hostname = window.location.hostname;
 	const notNewUrl = !hostname.includes('noitool.com');
 	return (
-		<Stack direction="horizontal">
+		<Stack direction="horizontal" className="align-items-stretch">
 			<div className="w-25"></div>
 			<Stack className="w-50">
 				<h1 className="display-3 fw-bolder m-1 my-3 text-center">Noitool</h1>
@@ -97,7 +135,12 @@ const Header = props => {
 					</p>
 				)}
 			</Stack>
-			<div className="w-25"></div>
+			<div className="w-25 d-flex p-3 flex-row-reverse">
+				<Button onClick={() => setShow(true)} variant='outline'>
+					<i className="bi bi-gear"></i>
+				</Button>
+			</div>
+			<Settings show={show} handleClose={() => setShow(false)} />
 		</Stack>
 	);
 };
@@ -121,72 +164,65 @@ const App: React.FC = () => {
 	return (
 		<SpoilerProvider>
 			<ThemeProvider>
-				<div className="App bg-gradient">
-					<div className="content bg-body rounded">
-						<Header />
-						<NeedInputAlert />
-						<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
-							<Tabs
-								defaultActiveKey={tab}
-								onSelect={handleTab}
-								id="main-tabs"
-								className=""
-							>
-								<Tab mountOnEnter eventKey="SeedInfo" title="Seed info">
-									<SeedInfo />
-								</Tab>
-								<Tab
-									mountOnEnter
-									eventKey="SearchSeeds"
-									title="Search For Seed"
+				<AlchemyConfigProvider>
+					<div className="App bg-gradient">
+						<div className="content bg-body rounded">
+							<Header />
+							<NeedInputAlert />
+							<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
+								<Tabs
+									defaultActiveKey={tab}
+									onSelect={handleTab}
+									id="main-tabs"
+									className=""
 								>
-									<SearchSeeds />
-								</Tab>
-								<Tab
-									mountOnEnter
-									eventKey="LiveSeedStats"
-									title="Live game helper (beta)"
-								>
-									<LiveSeedStats />
-								</Tab>
-							</Tabs>
-						</Container>
+									<Tab mountOnEnter eventKey="SeedInfo" title="Seed info">
+										<SeedInfo />
+									</Tab>
+									<Tab
+										mountOnEnter
+										eventKey="SearchSeeds"
+										title="Search For Seed"
+									>
+										<SearchSeeds />
+									</Tab>
+									<Tab
+										mountOnEnter
+										eventKey="LiveSeedStats"
+										title="Live game helper (beta)"
+									>
+										<LiveSeedStats />
+									</Tab>
+								</Tabs>
+							</Container>
+						</div>
+						<footer className="footer font-small p-1 pt-3">
+							<Stack>
+								<div className="footer-copyright text-center py-2">
+									<div className="mb-1">
+										Help keep servers running! Every dollar helps ❤️
+									</div>
+									<Donate />
+								</div>
+								<div className="footer text-center py-2">
+									Ideas? Issues? Bugs? Click{' '}
+									<a
+										target="_blank"
+										rel="noreferrer"
+										href="https://github.com/TwoAbove/noita-tools/issues/"
+									>
+										here
+									</a>
+									!
+								</div>
+								<div className="footer text-center py-2">Settings are now on top</div>
+								<div className="footer-copyright text-center py-2">
+									© 2022 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
+								</div>
+							</Stack>
+						</footer>
 					</div>
-					<footer className="footer font-small p-1 pt-3">
-						<Stack>
-							<div className="footer-copyright text-center py-2">
-								<div className="mb-1">
-									Help keep servers running! Every dollar helps ❤️
-								</div>
-								<Donate />
-							</div>
-							<div className="footer text-center py-2">
-								Ideas? Issues? Bugs? Click{' '}
-								<a
-									target="_blank"
-									rel="noreferrer"
-									href="https://github.com/TwoAbove/noita-tools/issues/"
-								>
-									here
-								</a>
-								!
-							</div>
-							<div className="mx-auto d-flex justify-content-center">
-								<div className="">
-									<SpoilerChange />
-								</div>
-							</div>
-							<div className="mx-auto d-flex justify-content-center">
-								<div className="ms-3">
-									<DarkMode />
-								</div>
-							</div>
-							<div className="footer-copyright text-center py-2">
-								© 2022 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
-							</div>
-						</Stack>
-					</footer>
-				</div>
+				</AlchemyConfigProvider>
 			</ThemeProvider>
 		</SpoilerProvider>
 	);

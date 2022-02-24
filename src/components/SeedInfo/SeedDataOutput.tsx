@@ -46,7 +46,7 @@ const SeedDataOutput = (props: ISeedDataProps) => {
 
 	useEffect(() => {
 		if (gameInfoProvider.ready && seed) {
-			gameInfoProvider.updateConfig({ seed: parseInt(seed, 10) });
+			gameInfoProvider.resetConfig({ seed: parseInt(seed, 10) });
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [seed]);

@@ -23,27 +23,39 @@ const SeedInfo = (props: ISeedInfoProps) => {
 	const { data, infoProvider } = props;
 	const [spoil, setSpoiler] = useContext(SpoilerContext);
 	return (
-			<Row className='m-0'>
-				<Col className='p-0' lg={7}>
-					<HolyMountain
-						infoProvider={infoProvider}
-						shop={data.shop}
-						perks={data.perks}
-					/>
-					<Start infoProvider={infoProvider} startingFlask={data.startingFlask} startingSpell={data.startingSpell} startingBombSpell={data.startingBombSpell} />
-					{/* <Rain infoProvider={infoProvider} rainData={data.rainType} /> */}
-					<Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
-				</Col>
-				<Col className='p-0' lg={5}>
+		<Row className='m-0'>
+			<Col className='p-0' lg={7}>
+				<Row xs="auto">
+					<Col className='col-12'>
+						<HolyMountain
+							infoProvider={infoProvider}
+							shop={data.shop}
+							perks={data.perks}
+						/>
+					</Col>
+					<Col>
+						<Start infoProvider={infoProvider} startingFlask={data.startingFlask} startingSpell={data.startingSpell} startingBombSpell={data.startingBombSpell} />
+					</Col>
+					<Col>
+						<Rain infoProvider={infoProvider} rainData={data.rainType} />
+					</Col>
 					{spoil && (
-						<Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
+						<Col>
+							<Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
+						</Col>
 					)}
-					<FungalShifts
-						infoProvider={infoProvider}
-						fungalData={data.fungalShifts}
-					/>
-				</Col>
-			</Row>
+					<Col>
+						<Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
+					</Col>
+				</Row>
+			</Col>
+			<Col className='p-0' lg={5}>
+				<FungalShifts
+					infoProvider={infoProvider}
+					fungalData={data.fungalShifts}
+				/>
+			</Col>
+		</Row>
 	);
 };
 
