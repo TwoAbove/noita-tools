@@ -55,12 +55,13 @@ interface IPerkRowProps {
   perks: any[];
 
   handleReroll: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleRerollUndo: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleClickPerk: (id: string) => void;
   isRerollable: (i: number, perks: number) => boolean;
   handleOpenShopInfo: () => void;
 };
 const PerkRow = (props: IPerkRowProps) => {
-  const { pickedPerks, perkRerolls, shop, perks, handleReroll, handleClickPerk, isRerollable, handleOpenShopInfo } = props;
+  const { pickedPerks, perkRerolls, shop, perks, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, handleOpenShopInfo } = props;
   const selectedGamble = pickedPerks?.includes('GAMBLE');
   const type = shop.type;
   const rerollsForLevel = perkRerolls ? perkRerolls : 0;
@@ -586,6 +587,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
               perkRerolls={perkRerolls[level]}
               perks={row}
               shop={shop[level]}
+              handleRerollUndo={e => handleRerollUndo(e, level)}
               handleReroll={e => handleReroll(e, level)}
               handleClickPerk={(id) => handleClickPerk(level, id)()}
               isRerollable={(i, l) => infoProvider.providers.lottery.provide(level, i, l, offset, lotteries)}
