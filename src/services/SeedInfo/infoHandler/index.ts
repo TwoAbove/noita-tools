@@ -5,7 +5,7 @@ import { BiomeInfoProvider } from './InfoProviders/Boime';
 import { FungalInfoProvider } from './InfoProviders/Fungal';
 import { LotteryInfoProvider } from './InfoProviders/Lottery';
 import { MaterialInfoProvider } from './InfoProviders/Material';
-import { PerkInfoProvider } from './InfoProviders/Perk';
+import { IPerkChangeAction, PerkInfoProvider } from './InfoProviders/Perk';
 import { RainInfoProvider } from './InfoProviders/Rain';
 import { ShopInfoProvider } from './InfoProviders/Shop';
 import { SpellInfoProvider } from './InfoProviders/Spell';
@@ -39,21 +39,27 @@ export class GameInfoProvider extends EventTarget {
 
   providers!: IProviders;
 
-  config: IProviderConfig;
+  config!: IProviderConfig;
 
   constructor(initialConfig: Partial<IProviderConfig>) {
     super()
-    this.config = Object.assign({}, {
-      seed: 1,
-      perkRerolls: new Map(),
-      pickedPerks: new Map(),
-      perkWorldOffset: 0,
-    }, initialConfig);
+    this.resetConfig(initialConfig);
     loadRandom().then((randoms) => {
       this.randoms = randoms;
       this.providers = this.buildInfoProviders();
       this.ready = true;
     });
+  }
+
+  resetConfig(initialConfig: Partial<IProviderConfig>) {
+    this.config = Object.assign({}, {
+      seed: 1,
+      perkRerolls: new Map(),
+      pickedPerks: new Map(),
+      perkWorldOffset: 0,
+      perkStack: []
+    }, initialConfig);
+    this.dispatchEvent(new CustomEvent('update', { detail: {} }));
   }
 
   // This should be a reducer;
@@ -80,7 +86,7 @@ export class GameInfoProvider extends EventTarget {
     }
 
     // shop needs the wand info provider to generate wands
-    providers.shop  = new ShopInfoProvider(this.randoms, providers.wand);
+    providers.shop = new ShopInfoProvider(this.randoms, providers.wand);
 
     return providers as IProviders;
   }
@@ -96,6 +102,7 @@ export class GameInfoProvider extends EventTarget {
       startingBombSpell: this.providers.startingBombSpell.provide(),
       shop: this.providers.shop.provide(this.config.pickedPerks, this.config.perkWorldOffset),
       perks: this.providers.perk.provide(this.config.pickedPerks, undefined, true, this.config.perkWorldOffset, this.config.perkRerolls),
+      statefulPerks: this.providers.perk.provideStateful(this.config.perkStack, true),
       perkDeck: this.providers.perk.getPerkDeck(true),
       fungalShifts: this.providers.fungalShift.provide(undefined),
       biomeModifiers: this.providers.biomeModifier.provide()
@@ -108,6 +115,7 @@ interface IProviderConfig {
   perkRerolls: Map<number, number[]>;
   pickedPerks: Map<number, string[][]>;
   perkWorldOffset: number;
+  perkStack: IPerkChangeAction[];
 }
 
 export default GameInfoProvider;

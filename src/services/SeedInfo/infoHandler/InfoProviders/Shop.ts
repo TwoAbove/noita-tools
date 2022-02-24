@@ -248,7 +248,7 @@ export class ShopInfoProvider extends InfoProvider {
     const temple = this.temples[level];
     // Magic numbers taken from src/services/SeedInfo/infoHandler.check.ts
     let offsetX = 0 - 299, offsetY = 0 - 15;
-    return this.spawn_all_shop_items(temple.x + offsetX, temple.y + offsetY, pickedPerks);
+    return this.spawn_all_shop_items(temple.x + offsetX + worldOffset * 35840, temple.y + offsetY, pickedPerks);
   }
 
   getShopLevel(shopNumber: number) {

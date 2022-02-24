@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, ListGroup, ListGroupItem, Stack } from 'react-bootstrap';
 
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { capitalize } from '../../../services/helpers';
+import { AlchemyConfigContext } from '../../AlchemyConfigContext';
 
 interface IAlchemyProps {
 	alchemy: {
@@ -14,9 +15,12 @@ interface IAlchemyProps {
 
 const Alchemy = (props: IAlchemyProps) => {
 	const { alchemy, infoProvider } = props;
+	const [showId] = useContext(AlchemyConfigContext);
 	return (
 		<Container>
 			<Stack direction="horizontal">
+			<div className="p-2 flex-grow-1" />
+
 				<div>
 					Lively Concoction:
 					<ListGroup>
@@ -24,7 +28,7 @@ const Alchemy = (props: IAlchemyProps) => {
 							<ListGroupItem key={l}>
 								{capitalize(
 									infoProvider.providers.material.provide(l).translated_name
-								)}
+								)} {showId && `(${l})`}
 							</ListGroupItem>
 						))}
 					</ListGroup>
@@ -37,11 +41,12 @@ const Alchemy = (props: IAlchemyProps) => {
 							<ListGroupItem key={l}>
 								{capitalize(
 									infoProvider.providers.material.provide(l).translated_name
-								)}
+								)} {showId && `(${l})`}
 							</ListGroupItem>
 						))}
 					</ListGroup>
 				</div>
+        <div className="p-2 flex-grow-1" />
 			</Stack>
 		</Container>
 	);

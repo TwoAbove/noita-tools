@@ -8,6 +8,37 @@ import { IRule } from '../IRule';
 import { InfoProvider } from './Base';
 import { Global } from './Global';
 
+export enum IPerkChangeStateType {
+  shift,
+  genRow,
+  select,
+  reroll,
+}
+export interface IShiftAction {
+  type: IPerkChangeStateType.shift;
+  data: number; // WorldOffset
+}
+export interface IGenRowAction {
+  type: IPerkChangeStateType.genRow;
+  data: number; // Row number
+}
+export interface ISelectAction {
+  type: IPerkChangeStateType.select;
+  data: {
+    row: number;
+    id: string
+  }
+}
+export interface IRerollAction {
+  type: IPerkChangeStateType.reroll;
+  data: number; // Row
+}
+
+export type IPerkChangeAction = IShiftAction | IGenRowAction | ISelectAction | IRerollAction;
+
+type IPerkType = Objectify<typeof perksData>
+
+export type IPerk = IPerkType[string];
 export class PerkInfoProvider extends InfoProvider {
   perks = perksData as Objectify<typeof perksData>;
   perksArr = Object.values(this.perks);
@@ -19,7 +50,7 @@ export class PerkInfoProvider extends InfoProvider {
     return this.perks[id];
   }
 
-  _getNextReroll(perkDeck: any[]) {
+  _getNextReroll(perkDeck: string[]): string {
     let next_perk_index = this._G.GetValue("TEMPLE_REROLL_PERK_INDEX", perkDeck.length - 1);
     let perk_id = perkDeck[next_perk_index];
     while (!perk_id) {
@@ -41,9 +72,9 @@ export class PerkInfoProvider extends InfoProvider {
     return perk_id;
   }
 
-  _getReroll(perkDeck: any[], add = 0, amountOfPerks: number) {
+  _getReroll(perkDeck: string[], add = 0, amountOfPerks: number) {
     const perk_count = amountOfPerks;
-    const result: any[] = [];
+    const result: string[] = [];
     for (let i = 0; i < perk_count + add; i++) {
       const perk_id = this._getNextReroll(perkDeck);
       result.push(perk_id);
@@ -243,17 +274,16 @@ export class PerkInfoProvider extends InfoProvider {
     return result;
   }
 
-  provide(perkPicks?: Map<number, string[][]>, maxLevels?: number, returnPerkObjects?: boolean, worldOffset?: number, rerolls?: Map<number, number[]>) {
+  provide(perkPicks?: Map<number, string[][]>, maxLevels?: number, returnPerkObjects?: boolean, worldOffset?: number, rerolls?: Map<number, number[]>): IPerk[][] {
     perkPicks = perkPicks || new Map();
     worldOffset = worldOffset || 0;
     if (!maxLevels || maxLevels === -1) maxLevels = Infinity;
 
     this._G = new Global();
     const perkDeck = this.getPerkDeck();
-    type IPerk = typeof this.perks[string];
-    const result: IPerk[][] = [];
+    const result: string[][] = [];
     let world = 0;
-    this._G.SetValue("TEMPLE_PERK_COUNT", 3)
+    this._G.SetValue("TEMPLE_PERK_COUNT", 3);
     const temple_locations = this.temples;
     while (true) {
       let i = 0;
@@ -314,16 +344,110 @@ export class PerkInfoProvider extends InfoProvider {
     }
     //console.log(_G)
     if (returnPerkObjects) {
+      const hydrated: IPerk[][] = [];
       for (let i = 0; i < result.length; i++) {
-        result[i] = result[i].map((e: any) => this.perks[e]) as IPerk[];
+        hydrated[i] = result[i].map((e: any) => this.perks[e]);
       }
+      return hydrated;
     }
-    return result;
+    return result as any;
+  }
+
+  hydrate(perks: string[][]): IPerk[][] {
+    const hydrated: IPerk[][] = [];
+    for (let i = 0; i < perks.length; i++) {
+      hydrated[i] = perks[i].map((e: any) => this.perks[e]);
+    }
+    return hydrated;
+  }
+
+  provideStateful(state: IPerkChangeAction[], preview?: boolean) {
+    const perkState: Map<number, string[][]> = new Map();
+    const pickedState: Map<number, string[][]> = new Map();
+
+    this._G = new Global();
+    this._G.SetValue("TEMPLE_PERK_COUNT", 3);
+
+    const perkDeck = this.getPerkDeck();
+    let worldOffset = 0;
+
+    for (const s of state) {
+      const perks = perkState.get(worldOffset) || [];
+      const selected = pickedState.get(worldOffset) || [];
+      const ws = +worldOffset;
+      switch (s.type) {
+        case IPerkChangeStateType.shift: {
+          worldOffset += s.data;
+          break;
+        }
+        case IPerkChangeStateType.genRow: {
+          let res = this.perk_spawn_many(perkDeck, 0);
+          perks[s.data] = res;
+          break;
+        }
+        case IPerkChangeStateType.select: {
+          const { row, id } = s.data;
+          if (!selected[row]) {
+            selected[row] = [];
+          }
+          const pos = perks[row].indexOf(id);
+          if (pos === -1) {
+            throw new Error(`No such id at row ${row}`);
+          }
+          if (selected[row][pos]) {
+            break;
+          }
+          selected[row][pos] = perks[row][pos];
+          if (perks[row][pos] === 'GAMBLE') {
+            const p1 = this._getNextPerk(perkDeck);
+            const p2 = this._getNextPerk(perkDeck);
+            const l = perks[row].length;
+            perks[row].push(p1, p2);
+            selected[row][l] = p1;
+            selected[row][l + 1] = p2;
+          }
+          if (perks[row][pos] === "EXTRA_PERK") {
+            this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
+          }
+          break;
+        }
+        case IPerkChangeStateType.reroll: {
+          const row = s.data;
+          if (!selected[row]) {
+            selected[row] = [];
+          }
+          for (let i = 0; i < perks[row].length; i++) {
+            if (!selected[row][i]) {
+              perks[row][i] = this._getNextReroll(perkDeck);
+            }
+          }
+          break;
+        }
+      }
+      perkState.set(ws, perks);
+      pickedState.set(ws, selected);
+    }
+
+    if (preview) { // Preview the rest of the rows if simple perk table is used
+      const ps = perkState.get(worldOffset) || [];
+      while (ps.length !== (7 - Number(!!worldOffset))) {
+        let res = this.perk_spawn_many(perkDeck, 0);
+        ps.push(res);
+      }
+      perkState.set(worldOffset, ps);
+    }
+
+    return {
+      worldOffset,
+      pickedPerks: pickedState.get(worldOffset) || [],
+      perks: perkState.get(worldOffset) || []
+    }
   }
 
   test(rule: IRule): boolean {
     const check = rule.strict ? includesAll : includesSome;
     const info = this.provide();
+
     for (let i = 0; i < info.length; i++) {
       if (rule.val[i].length) {
         const r = rule.val[i];

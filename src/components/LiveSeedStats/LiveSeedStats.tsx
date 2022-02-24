@@ -64,10 +64,11 @@ interface IWatchProps {
 	ready: boolean;
 	room?: string;
 	onSetRoom: (room: string) => void;
+	onReset: () => void;
 	seed?: string;
 }
 const Watch = (props: IWatchProps) => {
-	const { onSetRoom, seed, room } = props;
+	const { onSetRoom, onReset, seed, room } = props;
 
 	const formRef = useRef(null);
 
@@ -101,6 +102,7 @@ const Watch = (props: IWatchProps) => {
 						</Form.Group>
 						<Col xs={12} sm={4} md={3} className="pt-2">
 							<Button className="mb-1" variant="primary" type="submit">Connect</Button>
+							<Button className="mb-1" variant="secondary" type="button" onClick={() => onReset()}>Reset Stuck OCR</Button>
 						</Col>
 					</Row>
 				</Form>
@@ -120,13 +122,28 @@ const LiveSeedStats = () => {
 	const [lastSeed, setLastSeed] = useState<string>();
 	const forceUpdate = useForceUpdate();
 
-	const [ocrHandler, setOcrHandler] = useState<OCRHandler>();
+	const [ocrHandler, setOcrHandler] = useState<OCRHandler>(() => {
+		const ocrHandler = new OCRHandler({
+			onUpdate: forceUpdate
+			// canvasRef
+		});
+		ocrHandler.addEventListener('seed', event => {
+			if (event.detail.seed) {
+				setLastSeed(event.detail.seed);
+				seedLink!.sendSeed(event.detail.seed);
+			}
+		});
+		return ocrHandler;
+	});
 	const [seedLink] = useState<SeedLinkHandler>(() => {
 		const seedLinkHandler = new SeedLinkHandler({
 			onUpdate: forceUpdate
 		});
 		seedLinkHandler.addEventListener('update', () => {
-			forceUpdate()
+			forceUpdate();
+		});
+		seedLinkHandler.addEventListener('restart', () => {
+			ocrHandler!.restart();
 		});
 		return seedLinkHandler;
 	});
@@ -163,7 +180,7 @@ const LiveSeedStats = () => {
 			{!everythingReady ? <div>Loading...</div> :
 				<Stack>
 					<Col className="mb-5" xs={12}>
-						<Watch ready={socketReady} room={seedLink?.room} onSetRoom={(room) => seedLink?.joinRoom(room)} seed={lastSeed || seedLink?.seed} />
+						<Watch onReset={() => seedLink.sendRestart()} ready={socketReady} room={seedLink?.room} onSetRoom={(room) => seedLink?.joinRoom(room)} seed={lastSeed || seedLink?.seed} />
 					</Col>
 					<Col className="mb-2" xs={12}>
 						<Host ready={everythingReady} hostRoom={seedLink?.hostRoom} recording={!!ocrHandler?.mediaStream} onClickStartHosting={onClickScannerStart} onClickStopHosting={onClickScannerStop} />
