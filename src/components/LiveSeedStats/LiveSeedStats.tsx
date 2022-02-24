@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from 'react';
-import { Button, Col, Container, Row, Form, Stack, ButtonGroup } from 'react-bootstrap';
+import { Button, Col, Container, Row, Form, Stack } from 'react-bootstrap';
 import 'image-capture';
 
 // import VideoViewer from './VideoViewer';
