@@ -131,14 +131,14 @@ const PerkRow = (props: IPerkRowProps) => {
         </Stack>
       </Col>
       <Col xs={3}>
-        {/* <Button
+        <Button
           variant="outline-primary"
           onClick={handleRerollUndo}
           size="sm"
           disabled={!rerollsForLevel}
         >
           {"<"}
-        </Button> */}
+        </Button>
         <span className="m-2">
           {rerollsForLevel || 0}
         </span>
