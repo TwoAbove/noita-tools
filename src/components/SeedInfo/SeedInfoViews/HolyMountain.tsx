@@ -408,6 +408,7 @@ const NewHolyMountain = (props: IHolyMountainProps) => {
               perkRerolls={perkRerolls?.[level]}
               perks={row}
               shop={shop[level]}
+              handleRerollUndo={e => handleReroll(e, level)}
               handleReroll={e => handleReroll(e, level)}
               handleClickPerk={(id) => handleClickPerk(level, id)()}
               isRerollable={(i, l) => infoProvider.providers.lottery.provide(level, i, l, worldOffset, lotteries)}
