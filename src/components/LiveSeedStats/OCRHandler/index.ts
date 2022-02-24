@@ -103,6 +103,11 @@ class OCRHandler extends EventTarget {
     }
   }
 
+  async restart() {
+    await this.stopCapture();
+    await this.startCapture();
+  }
+
   async stopCapture() {
     this.mediaStream?.getTracks().forEach(track => {
       track.stop();

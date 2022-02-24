@@ -19,10 +19,17 @@ class SeedLinkHandler extends SocketHandler {
 			this.seed = seed;
 			this.dispatchEvent(new Event('update'));
 		});
+		this.io.on('restart', (message: string) => {
+			this.dispatchEvent(new Event('restart'));
+		});
 	}
 
 	sendSeed(seed: string) {
 		this.io.emit('seed', seed);
+	}
+
+	sendRestart() {
+		this.io.emit('restart');
 	}
 
 	async host() {

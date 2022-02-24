@@ -10,6 +10,9 @@ const SeedForm = (props: ISeedFormProps) => {
 	const [seed, setSeed] = React.useState('');
 
 	const handleNameChange = (e: any) => {
+		if (e.target.value < 0) {
+			return;
+		}
 		setSeed(e.target.value);
 	};
 

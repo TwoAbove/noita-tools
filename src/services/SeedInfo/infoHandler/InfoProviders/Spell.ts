@@ -1,13 +1,15 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import spellData from '../../data/obj/spells.json';
+import spellData from '../../data/spells.json';
+import spellObjData from '../../data/obj/spells.json';
 import { Objectify } from '../../../helpers';
 import { IRule } from '../IRule';
 import { InfoProvider } from './Base';
 
 export class SpellInfoProvider extends InfoProvider {
-  spells = spellData as Objectify<typeof spellData>;
+  spells = spellObjData as Objectify<typeof spellObjData>;
+  spellsArr = spellData;
 
   provide(spellName: string) {
     let found = this.spells[spellName];

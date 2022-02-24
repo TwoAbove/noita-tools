@@ -56,8 +56,7 @@ const server = app.listen(PORT, () => {
 
 const io = socketIO(server);
 
-const randomText = length => {
-	let chars = '0123456789';
+const randomText = (chars, length) => {
 	let str = '';
 	for (let i = 0; i < length; i++) {
 		str += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -67,7 +66,8 @@ const randomText = length => {
 
 const rooms = new Set();
 
-const roomLength = 5;
+const roomLength = 4;
+const chars = '1234'
 const getRoomNumber = () => {
 	if (rooms.size > Math.pow(10, roomLength)) {
 		console.error('Rooms full');
@@ -75,7 +75,7 @@ const getRoomNumber = () => {
 	}
 	let finalNumber;
 	while (!finalNumber) {
-		const tryNumber = randomText(roomLength);
+		const tryNumber = randomText(chars, roomLength);
 		if (!rooms[tryNumber]) {
 			finalNumber = tryNumber;
 		}
@@ -108,6 +108,11 @@ io.on('connection', socket => {
 	socket.on('seed', seed => {
 		socket.to(roomNumber).emit('seed', seed);
 	});
+
+	socket.on('restart', () => {
+		socket.to(roomNumber).emit('restart', '');
+	});
+
 });
 
 io.of('/').adapter.on('delete-room', room => {
