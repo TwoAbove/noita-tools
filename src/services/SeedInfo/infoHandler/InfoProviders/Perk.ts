@@ -26,7 +26,7 @@ export interface ISelectAction {
   type: IPerkChangeStateType.select;
   data: {
     row: number;
-    id: string
+    pos: number
   }
 }
 export interface IRerollAction {
@@ -364,6 +364,7 @@ export class PerkInfoProvider extends InfoProvider {
   provideStateful(state: IPerkChangeAction[], preview?: boolean) {
     const perkState: Map<number, string[][]> = new Map();
     const pickedState: Map<number, string[][]> = new Map();
+    const rerollState: Map<number, number[]> = new Map();
 
     this._G = new Global();
     this._G.SetValue("TEMPLE_PERK_COUNT", 3);
@@ -374,6 +375,7 @@ export class PerkInfoProvider extends InfoProvider {
     for (const s of state) {
       const perks = perkState.get(worldOffset) || [];
       const selected = pickedState.get(worldOffset) || [];
+      const rerolls = rerollState.get(worldOffset) || [];
       const ws = +worldOffset;
       switch (s.type) {
         case IPerkChangeStateType.shift: {
@@ -386,13 +388,12 @@ export class PerkInfoProvider extends InfoProvider {
           break;
         }
         case IPerkChangeStateType.select: {
-          const { row, id } = s.data;
+          const { row, pos } = s.data;
           if (!selected[row]) {
             selected[row] = [];
           }
-          const pos = perks[row].indexOf(id);
-          if (pos === -1) {
-            throw new Error(`No such id at row ${row}`);
+          if (!perks[row][pos]) {
+            throw new Error(`No such position at row ${row}`);
           }
           if (selected[row][pos]) {
             break;
@@ -416,6 +417,10 @@ export class PerkInfoProvider extends InfoProvider {
           if (!selected[row]) {
             selected[row] = [];
           }
+          if (!rerolls[row]) {
+            rerolls[row] = 0;
+          }
+          rerolls[row] += 1;
           for (let i = 0; i < perks[row].length; i++) {
             if (!selected[row][i]) {
               perks[row][i] = this._getNextReroll(perkDeck);
@@ -426,6 +431,7 @@ export class PerkInfoProvider extends InfoProvider {
       }
       perkState.set(ws, perks);
       pickedState.set(ws, selected);
+      rerollState.set(ws, rerolls);
     }
 
     if (preview) { // Preview the rest of the rows if simple perk table is used
@@ -440,7 +446,8 @@ export class PerkInfoProvider extends InfoProvider {
     return {
       worldOffset,
       pickedPerks: pickedState.get(worldOffset) || [],
-      perks: perkState.get(worldOffset) || []
+      perks: perkState.get(worldOffset) || [],
+      perkRerolls: rerollState.get(worldOffset) || [],
     }
   }
 
