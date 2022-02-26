@@ -12,7 +12,7 @@ import * as serviceWorker from './serviceWorker';
 
 import reportWebVitals from './reportWebVitals';
 
-console.log('v 2.10.1');
+console.log('v 2.11.0');
 
 function sendToAnalytics(metric) {
 	const body = JSON.stringify(metric);

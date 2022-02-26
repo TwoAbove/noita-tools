@@ -3,7 +3,9 @@
 # To watch, use
 # while inotifywait -e close_write wasm_in.cpp; do sh build.sh; doneSetting
 
-emcc --bind -Os -o noita_random.js \
+em++ --bind -Oz \
+  -o noita_random.js \
+  --closure=1 \
   --std=c++17 \
   --extern-pre-js="pre.js" \
   -s WASM=1 \

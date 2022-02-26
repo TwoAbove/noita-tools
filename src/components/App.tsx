@@ -135,8 +135,8 @@ const Header = props => {
 					</p>
 				)}
 			</Stack>
-			<div className="w-25 d-flex p-3 flex-row-reverse">
-				<Button onClick={() => setShow(true)} variant='outline'>
+			<div className="w-25 d-flex p-3 justify-content-end align-items-start">
+				<Button onClick={() => setShow(true)} size='lg' variant='outline-primary'>
 					<i className="bi bi-gear"></i>
 				</Button>
 			</div>

@@ -24,8 +24,43 @@ Also, I took inspiration from [cr4xy](https://cr4xy.dev/noita/) for extra featur
 Prerequsites:
 
 * [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed
+* `npm i -g google-closure-compiler`
 * Node
 * Yarn
+
+For emscripten, some edits need to be done to enable the closure compiler:
+
+### emscripten installation and required changes
+
+I recommend using the git repo to install emsdk. Install the latest version.
+
+After, there are a small amount of changes that might need to be done:
+
+* /usr/share/emscripten/tools/building.py
+
+Here, go to line ~888
+Verify that this is there:
+
+```py
+def get_closure_compiler():
+  # First check if the user configured a specific CLOSURE_COMPILER in thier settings
+  if config.CLOSURE_COMPILER:
+    return config.CLOSURE_COMPILER
+```
+
+* ~/.emscripten
+
+Add the closure compiler path to the config.
+
+```py
+CLOSURE_COMPILER = ["~/.nvm/versions/node/v16.9.0/bin/google-closure-compiler"]
+```
+
+To get the prefix, run:
+
+```sh
+npm config get prefix
+```
 
 Installation (after emscripten): `yarn`
 
