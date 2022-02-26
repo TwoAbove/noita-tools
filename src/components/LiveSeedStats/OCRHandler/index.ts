@@ -37,6 +37,8 @@ class OCRHandler extends EventTarget {
   canvasRef?: React.RefObject<HTMLCanvasElement>;
   onUpdate: () => void;
 
+  lastCapture = new Date();
+
   constructor(config: OCRConfig) {
     super();
     if (config.canvasRef) {
@@ -109,16 +111,20 @@ class OCRHandler extends EventTarget {
   }
 
   async stopCapture() {
+    this.loop = false;
     this.mediaStream?.getTracks().forEach(track => {
       track.stop();
     });
-    this.loop = false;
     delete this.mediaStream;
     this.onUpdate();
   }
 
   async captureLoop() {
     while (this.loop) {
+      if (((+new Date()) - (+this.lastCapture)) < 1000) {
+        await new Promise(r => setTimeout(r, 100));
+        continue;
+      }
       if (this.canvasRef) { // to debug
         console.log('One-time capture');
         await new Promise(res => setTimeout(res, 5000)).then(() => { this.loop = false });
@@ -130,9 +136,11 @@ class OCRHandler extends EventTarget {
       try {
         const seed = await this.getSeedFromImage();
         if (!seed) {
+          this.lastCapture = new Date();
           continue;
         }
         if (parseInt(seed, 10) > 4294967295) {
+          this.lastCapture = new Date();
           continue;
         }
         if (seed) {
@@ -142,7 +150,9 @@ class OCRHandler extends EventTarget {
         console.error('captureLoop error:', e);
         this.startCapture();
       }
+      this.lastCapture = new Date();
     }
+
   }
 
   async getBitmap() {
