@@ -356,7 +356,7 @@ export class PerkInfoProvider extends InfoProvider {
   hydrate(perks: string[][]): IPerk[][] {
     const hydrated: IPerk[][] = [];
     for (let i = 0; i < perks.length; i++) {
-      hydrated[i] = perks[i].map((e: any) => this.perks[e]);
+      hydrated[i] = perks[i]?.map((e: any) => this.perks[e]);
     }
     return hydrated;
   }
