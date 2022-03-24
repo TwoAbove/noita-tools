@@ -4,7 +4,6 @@ import { Container, ListGroup, ListGroupItem, Stack } from 'react-bootstrap';
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { capitalize } from '../../../services/helpers';
 import { AlchemyConfigContext } from '../../AlchemyConfigContext';
-import useLocalStorage from '../../../services/useLocalStorage';
 
 interface IAlchemyProps {
 	alchemy: {

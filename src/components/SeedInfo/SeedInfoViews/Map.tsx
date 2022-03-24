@@ -2,8 +2,6 @@ import React from 'react';
 
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 
-import { Col, Row } from 'react-bootstrap';
-
 interface IMapProps {
   infoProvider: GameInfoProvider;
 }
