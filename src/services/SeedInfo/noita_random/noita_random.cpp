@@ -1,6 +1,6 @@
+#pragma once
 // Thanks to kaliuresis!
 // Check out his orb atlas repository: https://github.com/kaliuresis/noa
-
 // #include <stdint.h>
 #include <algorithm>
 #include <math.h>
@@ -162,6 +162,16 @@ public:
         Next();
     }
 
+    void SetRandomFromWorldSeed(uint worldSeed)
+    {
+        Seed = worldSeed;
+        if (worldSeed >= 2147483647.0)
+        {
+            Seed = worldSeed * 0.5;
+        }
+        Next();
+    }
+
     uint H2(unsigned int a, unsigned int b, unsigned int ws)
     {
         unsigned int v3;
@@ -236,6 +246,11 @@ public:
     }
 
     NollaPrng() = default;
+
+    uint NextU()
+    {
+        return Float() * 2147483645.0;
+    }
 
     double Next()
     {

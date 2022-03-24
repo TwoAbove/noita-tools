@@ -6,13 +6,7 @@ const AlchemyConfigContext = createContext<any[]>([]);
 const AlchemyConfigProvider = props => {
 	const [spoil, setSpoil] = useLocalStorage(
 		'alchemy-show-id',
-		false,
-		d => {
-			return d === 'true';
-		},
-		s => {
-			return s.toString();
-		}
+		false
 	);
 
 	return (

@@ -14,13 +14,7 @@ const themes = {
 const ThemeProvider = props => {
 	const [theme, setTheme] = useLocalStorage(
 		'theme',
-		'light',
-		d => {
-			return d || 'light';
-		},
-		s => {
-			return s || 'light';
-		}
+		'light'
 	);
 
 	useEffect(() => {

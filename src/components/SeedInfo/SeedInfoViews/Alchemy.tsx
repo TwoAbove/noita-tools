@@ -4,6 +4,7 @@ import { Container, ListGroup, ListGroupItem, Stack } from 'react-bootstrap';
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { capitalize } from '../../../services/helpers';
 import { AlchemyConfigContext } from '../../AlchemyConfigContext';
+import useLocalStorage from '../../../services/useLocalStorage';
 
 interface IAlchemyProps {
 	alchemy: {
@@ -27,7 +28,7 @@ const Alchemy = (props: IAlchemyProps) => {
 						{alchemy.LC.map(l => (
 							<ListGroupItem key={l}>
 								{capitalize(
-									infoProvider.providers.material.provide(l).translated_name
+									infoProvider.providers.material.translate(l)
 								)} {showId && `(${l})`}
 							</ListGroupItem>
 						))}
@@ -40,7 +41,7 @@ const Alchemy = (props: IAlchemyProps) => {
 						{alchemy.AP.map(l => (
 							<ListGroupItem key={l}>
 								{capitalize(
-									infoProvider.providers.material.provide(l).translated_name
+									infoProvider.providers.material.translate(l)
 								)} {showId && `(${l})`}
 							</ListGroupItem>
 						))}

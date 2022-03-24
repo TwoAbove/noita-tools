@@ -34,6 +34,8 @@ string _GetRandomAction(double x, double y, int level, int offset = 0)
     return s.id;
 }
 
+#include "class_hbwag.cpp"
+
 #include <emscripten/bind.h>
 
 using namespace emscripten;
@@ -54,4 +56,5 @@ EMSCRIPTEN_BINDINGS(my_module)
     emscripten::function<string>("GetRandomActionWithType", &_GetRandomActionWithType);
     emscripten::function<string>("GetRandomAction", &_GetRandomAction);
     emscripten::function("RoundHalfOfEven", &RoundHalfOfEven);
+    emscripten::function("GenerateMap", &GenerateMap, allow_raw_pointers());
 }

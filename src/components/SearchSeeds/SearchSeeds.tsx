@@ -34,7 +34,7 @@ const Description = () => {
 const avg = (arr: number[]) => arr.reduce((p, c) => p + c, 0) / arr.length;
 
 const SearchSeeds = () => {
-	const [useCores, setUseCores] = useLocalStorage('useCores', 1, s => parseInt(s || "1", 10), t => `${t}`)
+	const [useCores, setUseCores] = useLocalStorage('useCores', 1);
 	const [seedSolver, setSeedSolver] = React.useState(
 		() => new SeedSolver(useCores)
 	);

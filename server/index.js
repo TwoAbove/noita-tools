@@ -67,7 +67,7 @@ const randomText = (chars, length) => {
 const rooms = new Set();
 
 const roomLength = 4;
-const chars = '1234'
+const chars = '1234';
 const getRoomNumber = () => {
 	if (rooms.size > Math.pow(10, roomLength)) {
 		console.error('Rooms full');
@@ -112,7 +112,6 @@ io.on('connection', socket => {
 	socket.on('restart', () => {
 		socket.to(roomNumber).emit('restart', '');
 	});
-
 });
 
 io.of('/').adapter.on('delete-room', room => {
@@ -121,15 +120,19 @@ io.of('/').adapter.on('delete-room', room => {
 });
 
 const upload = async () => {
-	const r = await b2.authorize(); // must authorize first (authorization lasts 24 hrs)
-	await b2.uploadAny({
-		bucketId: '93c80a630c6d59a37add0615',
-		fileName: `${new Date().toISOString()}.json`,
-		partSize: r.data.recommendedPartSize,
-		data: Buffer.from(JSON.stringify({ data, stats }))
-	});
-	data = [];
-	stats = [];
+	try {
+		const r = await b2.authorize(); // must authorize first (authorization lasts 24 hrs)
+		await b2.uploadAny({
+			bucketId: '93c80a630c6d59a37add0615',
+			fileName: `${new Date().toISOString()}.json`,
+			partSize: r.data.recommendedPartSize,
+			data: Buffer.from(JSON.stringify({ data, stats }))
+		});
+		data = [];
+		stats = [];
+	} catch (e) {
+		console.error(e);
+	}
 };
 
 cron.schedule('0 0 * * *', upload);
