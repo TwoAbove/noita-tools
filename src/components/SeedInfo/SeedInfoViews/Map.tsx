@@ -8,9 +8,7 @@ interface IMapProps {
 
 const Map = (props: IMapProps) => {
 
-  return (
-    <div>Map</div>
-  );
+  return (<div></div>);
 };
 
 export default Map;
