@@ -12,7 +12,6 @@ import { IGenRowAction, IPerk, IPerkChangeAction, IPerkChangeStateType, IRerollA
 import { IShopType, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
 import { Square } from '../../helpers';
 import ShopItems from './ShopItems';
-import useLocalStorage from '../../../services/useLocalStorage';
 
 const lotteryPerk = new PerkInfoProvider({} as any).getPerk('PERKS_LOTTERY');
 

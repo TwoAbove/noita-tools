@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 // import "bootswatch/dist/spacelab/bootstrap.min.css";
 
 import './index.css';
+import './i18n';
 
 import App from './components/App';
 

@@ -14,10 +14,12 @@ Current features include:
 
 The code for finding LC and AP values was transferred from [noita_unicorn](https://github.com/SaphireLattice/noita_unicorn)'s `Program.cs` from c# to c++.
 
+Also, I took inspiration from [cr4xy](https://cr4xy.dev/noita/) for extra features. You rock! <3
+
 The c++ code is then compiled to wasm and is run in web workers (and partly in the main thread).
 The performance improvements are 20-fold by transferring seed functions (like randoms and lc & ap recipes) from a typescript implementation to c++, even with the call overhead from worker -> wasm code.
 
-Also, I took inspiration from [cr4xy](https://cr4xy.dev/noita/) for extra features. You rock! <3
+For map generation, [wang tiles](https://github.com/nothings/stb/blob/master/stb_herringbone_wang_tile.h) are used. In lua/xml code, ARGB color formats are used for color targeting. In browsers, in general, RGB[A] is used. The transformed colors (in data json) use RGB[A] to homogenize color format.
 
 ## Development
 
@@ -27,6 +29,11 @@ Prerequsites:
 * `npm i -g google-closure-compiler`
 * Node
 * Yarn
+* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/----------------------//g' {} +` in the extracted folder to fix comments for the xml parser
+* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/<!------------ MATERIALS -------------------->/<!-- MATERIALS -->/g' {} +` in the extracted folder to fix comments for the xml parser
+* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/<!------------ MATERIALS ------------------ -->/<!-- MATERIALS -->/g' {} +` in the extracted folder to fix comments for the xml parser
+* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/<!-- attack_ranged_min_distance="60" -->//g' {} +` in the extracted folder to fix comments for the xml parser
+* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/<!---------------- shield ---------------- -->//g' {} +` in the extracted folder to fix comments for the xml parser
 
 For emscripten, some edits need to be done to enable the closure compiler:
 
@@ -53,7 +60,7 @@ def get_closure_compiler():
 Add the closure compiler path to the config.
 
 ```py
-CLOSURE_COMPILER = ["~/.nvm/versions/node/v16.9.0/bin/google-closure-compiler"]
+CLOSURE_COMPILER = ["<path to prefix>/bin/google-closure-compiler"]
 ```
 
 To get the prefix, run:

@@ -6,6 +6,7 @@ import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { capitalize } from '../../../services/helpers';
 import { FungalInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Fungal';
 import { AlchemyConfigContext } from '../../AlchemyConfigContext';
+import { useTranslation } from 'react-i18next';
 
 const Flask = () => {
 	return <b className='text-info'>Flask</b>;
@@ -33,14 +34,14 @@ const Shift = (props: IShiftProps) => {
 				<Stack>
 					{data.flaskFrom && <Flask />}
 					{data.from.map(s => (
-						<div key={s}>{capitalize(getMaterial(s).translated_name)} {showId && `(${s})`}</div>
+						<div key={s}>{capitalize(getMaterial(s))} {showId && `(${s})`}</div>
 					))}
 				</Stack>
 			</td>
 			<td className="col-auto">
 				<Stack>
 					{data.flaskTo && <Flask />}
-					<div>{capitalize(getMaterial(data.to).translated_name)} {showId && `(${data.to})`}</div>
+					<div>{capitalize(getMaterial(data.to))} {showId && `(${data.to})`}</div>
 				</Stack>
 			</td>
 		</tr>
@@ -54,16 +55,16 @@ interface IFungalShiftsProps {
 
 const FungalShifts = (props: IFungalShiftsProps) => {
 	const { fungalData, infoProvider } = props;
-
+	const [t] = useTranslation();
 	return (
 		<table className="table table-sm align-middle table-responsive">
 			<tbody>
 				{fungalData.map((data, i) => {
 					return (
 						<Shift
-							key={i}
+							key={i + t('$current_language', { ns: 'materials' })}
 							data={data}
-							getMaterial={s => infoProvider.providers.material.provide(s)}
+							getMaterial={s => infoProvider.providers.material.translate(s)}
 						/>
 					);
 				})}

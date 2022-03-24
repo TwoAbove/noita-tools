@@ -4,6 +4,11 @@
 // 	ProceduralRandomi
 // } from './noita_random/noita_random.cpp';
 // const wasm = await import('./noita_random/noita_random.cpp');
+import {
+	createImage,
+	rgb2rgba,
+	rgba2rgb
+} from '../../components/LiveSeedStats/OCRHandler/imageActions';
 import createModule from './noita_random/noita_random.js';
 import noitaRandomModule from './noita_random/noita_random.wasm';
 
@@ -65,8 +70,18 @@ interface IRandomModule {
 	): string;
 
 	_malloc(number): number;
+	_free(number): number;
 
 	HEAPU8: any;
+
+	GenerateMap(
+		mapData: any,
+		result: any,
+		w: number,
+		h: number,
+		xs: number,
+		ys: number
+	): void;
 }
 
 interface IRND {
@@ -149,6 +164,33 @@ const load = async () => {
 		return result;
 	};
 
+	const GenerateMap = (
+		wang: ImageData,
+		w: number,
+		h: number,
+		xs: number,
+		ys: number
+	): HTMLCanvasElement => {
+		const mapDataP = Module._malloc(3 * w * h);
+		const resultP = Module._malloc(3 * xs * ys);
+		const data = new Uint8Array(Module.HEAPU8.buffer, mapDataP, 3 * w * h);
+		const result = new Uint8Array(Module.HEAPU8.buffer, resultP, 3 * xs * ys);
+
+		rgba2rgb(wang.data, data);
+
+		Module.GenerateMap(mapDataP, resultP, w, h, xs, ys);
+
+		const resImg = createImage(xs, ys);
+		const resImgData = new ImageData(xs, ys);
+		rgb2rgba(resImgData, result);
+		resImg.getContext('2d')!.putImageData(resImgData, 0, 0);
+
+		Module._free(mapDataP);
+		Module._free(resultP);
+
+		return resImg;
+	};
+
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const logify = func => (...args) => {
 		console.groupCollapsed(func);
@@ -170,15 +212,16 @@ const load = async () => {
 		SetWorldSeed: Module.SetWorldSeed,
 		PickForSeed: Module.PickForSeed,
 		RoundHalfOfEven: Module.RoundHalfOfEven,
-
 		GetRandomAction: Module.GetRandomAction,
 		GetRandomActionWithType: Module.GetRandomActionWithType,
+
+		GenerateMap,
 		random_next,
 		random_nexti,
 		randomFromArray,
 		random_create,
 		pick_random_from_table_backwards,
-		pick_random_from_table_weighted,
+		pick_random_from_table_weighted
 	};
 };
 

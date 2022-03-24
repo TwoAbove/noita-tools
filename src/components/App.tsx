@@ -1,5 +1,14 @@
-import React, { useState, useContext } from 'react';
-import { Alert, Container, Tabs, Tab, Stack, Form, Modal, Button } from 'react-bootstrap';
+import React, { useState, useContext, useEffect } from 'react';
+import {
+	Alert,
+	Container,
+	Tabs,
+	Tab,
+	Stack,
+	Form,
+	Modal,
+	Button
+} from 'react-bootstrap';
 import DarkModeToggle from 'react-dark-mode-toggle';
 
 import SeedInfo from './SeedInfo';
@@ -7,11 +16,66 @@ import SearchSeeds from './SearchSeeds';
 import LiveSeedStats from './LiveSeedStats';
 import Donate from './Donate';
 import useLocalStorage from '../services/useLocalStorage';
+// import { db } from "../services/db";
+import i18n from '../i18n';
 
 import './App.css';
 import { SpoilerProvider, SpoilerContext } from './SpoilerContext';
 import { ThemeProvider, ThemeContext } from './ThemeContext';
-import { AlchemyConfigProvider, AlchemyConfigContext } from './AlchemyConfigContext';
+import {
+	AlchemyConfigProvider,
+	AlchemyConfigContext
+} from './AlchemyConfigContext';
+
+const getFlagEmoji = countryCode =>
+	String.fromCodePoint(
+		...[...countryCode.toUpperCase()].map(x => 0x1f1a5 + x.charCodeAt())
+	);
+
+const flags = {
+	de: 'de',
+	en: 'us',
+	es: 'es',
+	fr: 'fr',
+	jp: 'jp',
+	ko: 'kr',
+	pl: 'pl',
+	pt: 'pt',
+	ru: 'ru',
+	'zh-CN': 'cn'
+};
+
+const Locale = props => {
+	const [l, sl] = useState(i18n.language);
+
+	const setLocale = lng => {
+		i18n.changeLanguage(lng);
+		sl(lng)
+	};
+
+	return (
+		<div className="d-flex align-items-center">
+			<Form.Select
+				onChange={e => {
+					setLocale(e.target.value);
+				}}
+				value={l}
+				size="sm"
+				aria-label="Locale"
+				style={{
+					width: '9rem'
+				}}
+			>
+				{Object.keys(flags).map(l => (
+					<option value={l} key={l}>
+						{getFlagEmoji(flags[l])} {flags[l]}
+					</option>
+				))}
+			</Form.Select>
+			<div className="ps-2 ">Locale</div>
+		</div>
+	);
+};
 
 const SpoilerChange = props => {
 	const [spoil, setSpoiler] = useContext(SpoilerContext);
@@ -58,16 +122,7 @@ const DarkMode = props => {
 };
 
 const NeedInputAlert = () => {
-	const [show, setShow] = useLocalStorage(
-		'show-need-feedback-alert',
-		true,
-		d => {
-			return d === 'true';
-		},
-		s => {
-			return s.toString();
-		}
-	);
+	const [show, setShow] = useLocalStorage('show-need-feedback-alert', true);
 
 	const handleClose = () => {
 		setShow(false);
@@ -94,24 +149,26 @@ const NeedInputAlert = () => {
 	);
 };
 
-const Settings = (props) => {
+const Settings = props => {
 	return (
 		<Modal show={props.show} onHide={props.handleClose}>
 			<Modal.Header closeButton>
 				<Modal.Title>Settings</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<div className='pb-3'>
+				<div className="pb-3">
 					These settings modify how Noitool behaves or displays things.
 				</div>
 				<Stack gap={3}>
+					<Locale />
 					<DarkMode />
 					<SpoilerChange />
 					<AlchemyConfig />
 				</Stack>
 			</Modal.Body>
-		</Modal>)
-}
+		</Modal>
+	);
+};
 
 const Header = props => {
 	const [show, setShow] = useState(false);
@@ -136,7 +193,11 @@ const Header = props => {
 				)}
 			</Stack>
 			<div className="w-25 d-flex p-3 justify-content-end align-items-start">
-				<Button onClick={() => setShow(true)} size='lg' variant='outline-primary'>
+				<Button
+					onClick={() => setShow(true)}
+					size="lg"
+					variant="outline-primary"
+				>
 					<i className="bi bi-gear"></i>
 				</Button>
 			</div>
@@ -146,16 +207,7 @@ const Header = props => {
 };
 
 const App: React.FC = () => {
-	const [tab, setTab] = useLocalStorage(
-		'last-tab',
-		'SeedInfo',
-		d => {
-			return d || 'SeedInfo';
-		},
-		s => {
-			return s;
-		}
-	);
+	const [tab, setTab] = useLocalStorage('last-tab', 'SeedInfo');
 
 	const handleTab = key => {
 		setTab(key);
@@ -198,7 +250,7 @@ const App: React.FC = () => {
 						</div>
 						<footer className="footer font-small p-1 pt-3">
 							<Stack>
-								<div className="footer-copyright text-center py-2">
+								<div className="footer-copyright text-center">
 									<div className="mb-1">
 										Help keep servers running! Every dollar helps ❤️
 									</div>
@@ -215,7 +267,6 @@ const App: React.FC = () => {
 									</a>
 									!
 								</div>
-								<div className="footer text-center py-2">Settings are now on top</div>
 								<div className="footer-copyright text-center py-2">
 									© 2022 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
 								</div>
