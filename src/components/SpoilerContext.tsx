@@ -6,13 +6,7 @@ const SpoilerContext = createContext<any[]>([]);
 const SpoilerProvider = props => {
 	const [spoil, setSpoil] = useLocalStorage(
 		'use-spoiler',
-		true,
-		d => {
-			return d === 'true';
-		},
-		s => {
-			return s.toString();
-		}
+		true
 	);
 
 	return (

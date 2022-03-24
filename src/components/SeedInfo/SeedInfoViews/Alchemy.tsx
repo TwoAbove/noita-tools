@@ -27,7 +27,7 @@ const Alchemy = (props: IAlchemyProps) => {
 						{alchemy.LC.map(l => (
 							<ListGroupItem key={l}>
 								{capitalize(
-									infoProvider.providers.material.provide(l).translated_name
+									infoProvider.providers.material.translate(l)
 								)} {showId && `(${l})`}
 							</ListGroupItem>
 						))}
@@ -40,7 +40,7 @@ const Alchemy = (props: IAlchemyProps) => {
 						{alchemy.AP.map(l => (
 							<ListGroupItem key={l}>
 								{capitalize(
-									infoProvider.providers.material.provide(l).translated_name
+									infoProvider.providers.material.translate(l)
 								)} {showId && `(${l})`}
 							</ListGroupItem>
 						))}

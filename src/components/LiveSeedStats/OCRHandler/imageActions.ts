@@ -7,6 +7,20 @@ export const createImage = (w, h) => {
 	return can;
 };
 
+export const imageFromBase64 = async (blob, w, h): Promise<ImageData> => {
+	const can = createImage(w, h);
+	const ctx = can.getContext("2d")!;
+	const image = new Image();
+	image.src = blob;
+	return new Promise((res) => {
+		image.onload = () => {
+			ctx.drawImage(image, 0, 0);
+			const imageData = ctx.getImageData(0, 0, 300, 311);
+			res(imageData);
+		}
+	})
+}
+
 export const copyImage = img => {
 	const image = createImage(img.width, img.height);
 	const ctx = image.getContext('2d')!;
@@ -172,4 +186,27 @@ export const clearBg = (img: HTMLCanvasElement): HTMLCanvasElement => {
 	return copyImage(imageData);
 	// ctx.putImageData(imageData, 0, 0);
 	// return cvs;
+};
+
+// [r, g, b, a, r, g, b, a...] => [r, g, b, r, g, b...]
+export const rgba2rgb = (src: any, dest: any) => {
+	let j = 0;
+	for (let i = 0; i < src.length; i++) {
+		if (i && (i + 1) % 4 === 0) continue;
+		dest[j] = src[i];
+		j++;
+	}
+};
+
+// [r, g, b, r, g, b...] => [r, g, b, a, r, g, b, a...]
+export const rgb2rgba = (src: any, dest: any) => {
+	let j = 0;
+	for (let i = 0; i < src.length; i++) {
+		dest[j] = src[i];
+		j++;
+		if (i && (i + 1) % 3 === 0) {
+			dest[j] = 255;
+			j++;
+		}
+	}
 };

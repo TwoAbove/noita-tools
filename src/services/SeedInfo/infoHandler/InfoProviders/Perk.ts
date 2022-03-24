@@ -311,16 +311,26 @@ export class PerkInfoProvider extends InfoProvider {
           let rerollRes = this._getReroll(perkDeck, 0, res.length);
           if (world === worldOffset) {
             if (gambleSelected) {
-              rerollRes.push(this._getNextPerk(perkDeck));
-              rerollRes.push(this._getNextPerk(perkDeck));
+              const p1 = this._getNextPerk(perkDeck)
+              const p2 = this._getNextPerk(perkDeck)
+              rerollRes.push(p1);
+              rerollRes.push(p2);
+              if ([p1, p2].includes("EXTRA_PERK")) {
+                this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
+              }
             }
             result.push(rerollRes);
           }
         } else {
           if (world === worldOffset) {
             if (gambleSelected) {
-              res.push(this._getNextPerk(perkDeck));
-              res.push(this._getNextPerk(perkDeck));
+              const p1 = this._getNextPerk(perkDeck)
+              const p2 = this._getNextPerk(perkDeck)
+              res.push(p1);
+              res.push(p2);
+              if ([p1, p2].includes("EXTRA_PERK")) {
+                this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
+              }
             }
             result.push(res);
           }
@@ -406,6 +416,9 @@ export class PerkInfoProvider extends InfoProvider {
             perks[row].push(p1, p2);
             selected[row][l] = p1;
             selected[row][l + 1] = p2;
+            if ([p1, p2].includes("EXTRA_PERK")) {
+              this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
+            }
           }
           if (perks[row][pos] === "EXTRA_PERK") {
             this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)

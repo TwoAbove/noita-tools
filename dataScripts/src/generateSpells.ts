@@ -6,11 +6,9 @@ import spells from './toJs2';
 
 const root = path.resolve(__dirname, '../../src/services/SeedInfo/data');
 
-const noitaData = path.resolve(
-	'/home/twoabove/.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/'
+const noitaData = path.resolve( require('os').homedir(), 	'.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/'
 );
-const translationFile = path.resolve(
-	'/home/twoabove/.steam/debian-installation/steamapps/common/Noita/data/translations/common.csv'
+const translationFile = path.resolve(require('os').homedir(), '.steam/debian-installation/steamapps/common/Noita/data/translations/common.csv'
 );
 
 const translationCSV = fs.readFileSync(translationFile).toString();

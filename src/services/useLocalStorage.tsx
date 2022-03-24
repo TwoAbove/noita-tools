@@ -1,47 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Dispatch, useEffect, useState } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { Dispatch } from 'react';
+
+import { db } from './db';
 
 export default function useLocalStorage<T>(
 	key: string,
-	initialValue: T,
-	deserialize: (s: string | null) => T,
-	serialize: (t: T) => string
+	initialValue: T
 ): [T, Dispatch<T>] {
-	const [value, setValue] = useState<T>(() => {
-		const itemInStorage = window.localStorage.getItem(key);
-		if (itemInStorage === null) {
-			return initialValue;
-		}
-		const item = deserialize(itemInStorage);
-		return item;
-	});
-
+	const query = useLiveQuery(() => db.configItems.get({ key }));
+	const value = query ? query.val : initialValue;
 	const setItem = (newValue: T) => {
-		setValue(newValue);
-		window.localStorage.setItem(key, serialize(newValue));
+		db.setConfig(key, newValue);
 	};
-
-	useEffect(() => {
-		const newValue = deserialize(window.localStorage.getItem(key));
-		if (value !== newValue) {
-			setValue(newValue || initialValue);
-		}
-	});
-
-	const handleStorage = (event: StorageEvent) => {
-		if (event.key === key && deserialize(event.newValue) !== value) {
-			let item = deserialize(window.localStorage.getItem(key));
-			if (typeof item === 'undefined' || item === null) {
-				item = initialValue;
-			}
-			setValue(item);
-		}
-	};
-
-	useEffect(() => {
-		window.addEventListener('storage', handleStorage);
-		return () => window.removeEventListener('storage', handleStorage);
-	}, [handleStorage]);
 
 	return [value, setItem];
 }

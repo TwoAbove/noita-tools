@@ -3,12 +3,10 @@ import path from 'path';
 import Jimp from 'jimp';
 import { parseStringPromise } from 'xml2js';
 
-const imageFile =
-	'/home/twoabove/.steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.png';
+const imageFile = path.resolve(require('os').homedir(), '.steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.png');
 
 // id is acii code, rect_[h|w] rect_[x|y] is position
-const fontDataFile =
-	'/home/twoabove/.steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.xml';
+const fontDataFile = path.resolve(require('os').homedir(), '.steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.xml');
 
 const getChar = (n: number) => {
 	return String.fromCharCode(n);

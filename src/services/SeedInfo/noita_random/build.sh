@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # To watch, use
-# while inotifywait -e close_write wasm_in.cpp; do sh build.sh; doneSetting
+# while inotifywait -e close_write **; do sh build.sh; done
 
 em++ --bind -Oz \
   -o noita_random.js \
