@@ -5,7 +5,6 @@
 // } from './noita_random/noita_random.cpp';
 // const wasm = await import('./noita_random/noita_random.cpp');
 import {
-	createImage,
 	rgb2rgba,
 	rgba2rgb
 } from '../../components/LiveSeedStats/OCRHandler/imageActions';
@@ -15,6 +14,11 @@ import noitaRandomModule from './noita_random/noita_random.wasm';
 type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 
 interface IRandomModule {
+	printErr: any;
+	print: any;
+	cwrap: any;
+	_generate_map: any;
+
 	ProceduralRandomf(
 		arg0: number,
 		arg1: number,
@@ -99,6 +103,26 @@ const load = async () => {
 		}
 	});
 
+	Module.GenerateMap = Module._generate_map;
+	// Module.GenerateMap = Module.cwrap('generate_map', null, [
+	// 	'number',
+	// 	'number',
+	// 	'number',
+	// 	'number',
+	// 	'number',
+	// 	'number',
+	// 	'number',
+	// 	'number',
+	// ]);
+
+	Module.print = function(text) {
+		if (arguments.length > 1)
+			text = Array.prototype.slice.call(arguments).join(' ');
+		console.warn(text);
+	};
+
+	Module.printErr = Module.print;
+
 	const randomFromArray = <T>(arr: T[]) => {
 		return arr[Module.Random(1, arr.length) - 1];
 	};
@@ -166,29 +190,35 @@ const load = async () => {
 
 	const GenerateMap = (
 		wang: ImageData,
-		w: number,
-		h: number,
-		xs: number,
-		ys: number
-	): HTMLCanvasElement => {
-		const mapDataP = Module._malloc(3 * w * h);
-		const resultP = Module._malloc(3 * xs * ys);
-		const data = new Uint8Array(Module.HEAPU8.buffer, mapDataP, 3 * w * h);
-		const result = new Uint8Array(Module.HEAPU8.buffer, resultP, 3 * xs * ys);
+		tiles_w: number,
+		tiles_h: number,
+		map_w: number,
+		map_h: number
+	): ImageData => {
+		const tilesDataP = Module._malloc(3 * tiles_w * tiles_h);
+		const resultP = Module._malloc(3 * map_w * map_h);
+		const tileData = new Uint8Array(
+			Module.HEAPU8.buffer,
+			tilesDataP,
+			3 * tiles_w * tiles_h
+		);
+		const result = new Uint8Array(
+			Module.HEAPU8.buffer,
+			resultP,
+			3 * map_w * map_h
+		);
 
-		rgba2rgb(wang.data, data);
+		rgba2rgb(wang.data, tileData);
 
-		Module.GenerateMap(mapDataP, resultP, w, h, xs, ys);
+		Module.GenerateMap(tilesDataP, resultP, tiles_w, tiles_h, map_w, map_h);
 
-		const resImg = createImage(xs, ys);
-		const resImgData = new ImageData(xs, ys);
-		rgb2rgba(resImgData, result);
-		resImg.getContext('2d')!.putImageData(resImgData, 0, 0);
+		const resImgData = new ImageData(map_w, map_h);
+		rgb2rgba(result, resImgData.data);
 
-		Module._free(mapDataP);
+		Module._free(tilesDataP);
 		Module._free(resultP);
 
-		return resImg;
+		return resImgData;
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

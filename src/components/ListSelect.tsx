@@ -3,7 +3,9 @@ import { ListGroup } from 'react-bootstrap';
 import { capitalize } from '../services/helpers';
 import { MaterialInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/Material';
 
-const material = new MaterialInfoProvider({} as any);
+import i18n from '../i18n';
+
+const material = new MaterialInfoProvider(i18n);
 
 interface IOptionProps {
 	name: string;
@@ -14,9 +16,9 @@ interface IOptionProps {
 
 const getTranslatedName = (s: string) => {
 	if (s.includes(',')) {
-		return s.split(',').map(m => capitalize(material.provide(m).translated_name)).join(', ');
+		return s.split(',').map(m => capitalize(material.translate(m))).join(', ');
 	}
-	return capitalize(material.provide(s).translated_name)
+	return capitalize(material.translate(s))
 }
 
 const Option = (props: IOptionProps) => {

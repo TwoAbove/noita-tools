@@ -56,5 +56,5 @@ EMSCRIPTEN_BINDINGS(my_module)
     emscripten::function<string>("GetRandomActionWithType", &_GetRandomActionWithType);
     emscripten::function<string>("GetRandomAction", &_GetRandomAction);
     emscripten::function("RoundHalfOfEven", &RoundHalfOfEven);
-    emscripten::function("GenerateMap", &GenerateMap, allow_raw_pointers());
+    // emscripten::function("GenerateMap", &generate_map, allow_raw_pointers());
 }

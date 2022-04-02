@@ -72,22 +72,32 @@ export class PerkInfoProvider extends InfoProvider {
     return perk_id;
   }
 
-  _getReroll(perkDeck: string[], add = 0, amountOfPerks: number) {
-    const perk_count = amountOfPerks;
+  _getReroll(amountOfPerks: number) {
+    const perks = this.getPerkDeck();
     const result: string[] = [];
-    for (let i = 0; i < perk_count + add; i++) {
-      const perk_id = this._getNextReroll(perkDeck);
+    for (let i = 0; i < amountOfPerks; i++) {
+      const perk_id = this._getNextReroll(perks);
       result.push(perk_id);
     }
 
     return result;
   }
 
-  _getNextPerk(perks: any[]) {
+  _getNextPerk(perkDeck: any[]) {
     let next_perk_index = this._G.GetValue("TEMPLE_NEXT_PERK_INDEX", 0);
-    const perk_id = perks[next_perk_index];
+    let perk_id = perkDeck[next_perk_index];
+    while (!perk_id) {
+      // if we over flow
+      perkDeck[next_perk_index] = "LEGGY_FEET"
+      next_perk_index++;
+      if (next_perk_index >= perkDeck.length) {
+        next_perk_index = 0;
+      }
+      perk_id = perkDeck[next_perk_index];
+    }
+
     next_perk_index++;
-    if (next_perk_index >= perks.length) {
+    if (next_perk_index >= perkDeck.length) {
       next_perk_index = 0;
     }
     this._G.SetValue("TEMPLE_NEXT_PERK_INDEX", next_perk_index)
@@ -103,7 +113,9 @@ export class PerkInfoProvider extends InfoProvider {
     return "PERK_PICKED_" + perk_id
   }
 
-  perk_spawn_many(perks: any[], add = 0) {
+  perk_spawn_many(add = 0) {
+    const perks = this.getPerkDeck();
+
     const result: any[] = [];
     const perk_count = this._G.GetValue("TEMPLE_PERK_COUNT", 3) + add;
 
@@ -274,6 +286,12 @@ export class PerkInfoProvider extends InfoProvider {
     return result;
   }
 
+  flag_pickup(perk) {
+    let flag_name = this.get_perk_picked_flag_name(perk);
+    this._G.GameAddFlagRun(flag_name);
+    this._G.SetValue(flag_name + "_PICKUP_COUNT", this._G.GetValue(flag_name + "_PICKUP_COUNT", 0) + 1);
+  }
+
   provide(perkPicks?: Map<number, string[][]>, maxLevels?: number, returnPerkObjects?: boolean, worldOffset?: number, rerolls?: Map<number, number[]>): IPerk[][] {
     perkPicks = perkPicks || new Map();
     worldOffset = worldOffset || 0;
@@ -302,13 +320,13 @@ export class PerkInfoProvider extends InfoProvider {
           }
         }
 
-        let res = this.perk_spawn_many(perkDeck, 0);
+        let res = this.perk_spawn_many();
         const worldRerolls = rerolls?.get(world) || [];
         if (rerolls && rerolls.has(world) && worldRerolls?.[i] > 0) {
           for (let j = 0; j < worldRerolls[i] - 1; j++) {
-            this._getReroll(perkDeck, 0, res.length);
+            this._getReroll(res.length);
           }
-          let rerollRes = this._getReroll(perkDeck, 0, res.length);
+          let rerollRes = this._getReroll(res.length);
           if (world === worldOffset) {
             if (gambleSelected) {
               const p1 = this._getNextPerk(perkDeck)
@@ -338,9 +356,7 @@ export class PerkInfoProvider extends InfoProvider {
         const picked_perks = perkPicks.get(world)?.[i];
         if (picked_perks) {
           for (const picked_perk of picked_perks) {
-            let flag_name = this.get_perk_picked_flag_name(picked_perk);
-            this._G.GameAddFlagRun(flag_name);
-            this._G.SetValue(flag_name + "_PICKUP_COUNT", this._G.GetValue(flag_name + "_PICKUP_COUNT", 0) + 1);
+            this.flag_pickup(picked_perk);
             if (picked_perk === "EXTRA_PERK") {
               this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
             }
@@ -379,7 +395,6 @@ export class PerkInfoProvider extends InfoProvider {
     this._G = new Global();
     this._G.SetValue("TEMPLE_PERK_COUNT", 3);
 
-    const perkDeck = this.getPerkDeck();
     let worldOffset = 0;
 
     for (const s of state) {
@@ -393,7 +408,7 @@ export class PerkInfoProvider extends InfoProvider {
           break;
         }
         case IPerkChangeStateType.genRow: {
-          let res = this.perk_spawn_many(perkDeck, 0);
+          let res = this.perk_spawn_many();
           perks[s.data] = res;
           break;
         }
@@ -408,8 +423,14 @@ export class PerkInfoProvider extends InfoProvider {
           if (selected[row][pos]) {
             break;
           }
-          selected[row][pos] = perks[row][pos];
-          if (perks[row][pos] === 'GAMBLE') {
+
+          const perk = perks[row][pos];
+          selected[row][pos] = perk;
+
+          this.flag_pickup(perk);
+
+          if (perk === 'GAMBLE') {
+            const perkDeck = this.getPerkDeck();
             const p1 = this._getNextPerk(perkDeck);
             const p2 = this._getNextPerk(perkDeck);
             const l = perks[row].length;
@@ -419,8 +440,11 @@ export class PerkInfoProvider extends InfoProvider {
             if ([p1, p2].includes("EXTRA_PERK")) {
               this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
             }
+            this.flag_pickup(p1);
+            this.flag_pickup(p2);
           }
-          if (perks[row][pos] === "EXTRA_PERK") {
+
+          if (perk === "EXTRA_PERK") {
             this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
           }
           break;
@@ -434,6 +458,7 @@ export class PerkInfoProvider extends InfoProvider {
             rerolls[row] = 0;
           }
           rerolls[row] += 1;
+          const perkDeck = this.getPerkDeck();
           for (let i = 0; i < perks[row].length; i++) {
             if (!selected[row][i]) {
               perks[row][i] = this._getNextReroll(perkDeck);
@@ -450,7 +475,7 @@ export class PerkInfoProvider extends InfoProvider {
     if (preview) { // Preview the rest of the rows if simple perk table is used
       const ps = perkState.get(worldOffset) || [];
       while (ps.length !== (7 - Number(!!worldOffset))) {
-        let res = this.perk_spawn_many(perkDeck, 0);
+        let res = this.perk_spawn_many();
         ps.push(res);
       }
       perkState.set(worldOffset, ps);

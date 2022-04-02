@@ -3,7 +3,7 @@
 # To watch, use
 # while inotifywait -e close_write **; do sh build.sh; done
 
-em++ --bind -Oz \
+emcc --bind -Oz \
   -o noita_random.js \
   --closure=1 \
   --std=c++17 \
@@ -15,8 +15,11 @@ em++ --bind -Oz \
   -s ALLOW_MEMORY_GROWTH=1 \
   -s MODULARIZE=1 \
   -s ASSERTIONS=1 \
+  -s NO_EXIT_RUNTIME=1 \
   -s ENVIRONMENT="web,worker" \
   -s EXPORT_NAME="create_noita_random" \
+  -s "EXPORTED_FUNCTIONS=['_generate_map']" \
+  -s "EXTRA_EXPORTED_RUNTIME_METHODS=['cwrap']" \
   wasm_in.cpp
 
 # To see what the size is to sanity-check

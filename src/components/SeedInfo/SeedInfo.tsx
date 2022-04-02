@@ -17,19 +17,22 @@ import HolyMountain from './SeedInfoViews/HolyMountain';
 import { SpoilerContext } from '../SpoilerContext';
 
 interface ISeedInfoProps {
-	data: ReturnType<GameInfoProvider['provideAll']>;
+	seed: string;
+	data: Awaited<ReturnType<GameInfoProvider['provideAll']>>;
 	infoProvider: GameInfoProvider; // This should be a context in the future
 }
 
 const SeedInfo = (props: ISeedInfoProps) => {
-	const { data, infoProvider } = props;
+	const { data, infoProvider, seed } = props;
 	const [spoil, setSpoiler] = useContext(SpoilerContext);
 	return (
 		<Row className="m-0">
 			<Col className="p-0" lg={7}>
+				{/* <Row xs="auto">
+						<Map seed={seed} infoProvider={infoProvider} />
+				</Row> */}
 				<Row xs="auto">
 					<Col className="col-12">
-						<Map infoProvider={infoProvider} />
 					</Col>
 					<Col className="col-12">
 						<HolyMountain

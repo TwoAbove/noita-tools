@@ -1,25 +1,45 @@
+const canvasStub = {
+	getContext: () => ({
+		drawImage: () => {},
+		putImageData: () => {},
+		getImageData: () => new ImageData(0, 0),
+	}),
+	width: 0,
+	height: 0
+}
+
 export const createImage = (w, h) => {
+	if ("undefined" === typeof document) {
+		return canvasStub as any;
+	}
 	const can = document.createElement('canvas');
 	can.width = w;
 	can.height = h;
-	const ctx = can.getContext('2d')!;
+	const ctx = can.getContext('2d')! as any;
+	ctx.msImageSmoothingEnabled = false;
+	ctx.mozImageSmoothingEnabled = false;
+	ctx.webkitImageSmoothingEnabled = false;
 	ctx.imageSmoothingEnabled = false;
 	return can;
 };
 
 export const imageFromBase64 = async (blob, w, h): Promise<ImageData> => {
+	if ("undefined" === typeof document) {
+		return new ImageData(w, h);
+	}
 	const can = createImage(w, h);
-	const ctx = can.getContext("2d")!;
+	const ctx = can.getContext('2d')!;
 	const image = new Image();
 	image.src = blob;
-	return new Promise((res) => {
+
+	return new Promise(res => {
 		image.onload = () => {
 			ctx.drawImage(image, 0, 0);
-			const imageData = ctx.getImageData(0, 0, 300, 311);
+			const imageData = ctx.getImageData(0, 0, w, h);
 			res(imageData);
-		}
-	})
-}
+		};
+	});
+};
 
 export const copyImage = img => {
 	const image = createImage(img.width, img.height);
@@ -107,8 +127,39 @@ export const diff = (
 	return count;
 };
 
+export const cropImageData = (
+	img: ImageData,
+	cropX: number,
+	cropY: number,
+	cropWidth: number,
+	cropHeight: number
+): ImageData => {
+
+	const c = copyImage(img);
+	const res = crop(c,
+		cropX, cropY, cropWidth, cropHeight
+
+	);
+	return res.getContext('2d')!.getImageData(0, 0, res.width, res.height);
+	// console.log({ img, cropX, cropY, cropWidth, cropHeight });
+	// const res = new ImageData(cropWidth, cropHeight);
+
+	// let i = 0;
+	// for (let x = cropX; x < cropX + cropWidth; x++) {
+	// 	for (let y = cropY; y < cropY + cropHeight; y++) {
+	// 		let offset = (x * cropWidth + y) * 4;
+	// 		res.data[i++] = img.data[offset++];
+	// 		res.data[i++] = img.data[offset++];
+	// 		res.data[i++] = img.data[offset++];
+	// 		res.data[i++] = img.data[offset++];
+	// 	}
+	// }
+	// console.log({ cropWidth, cropHeight, pixels: cropWidth * cropHeight * 4, i });
+	// return res;
+};
+
 export const crop = (
-	img,
+	img: HTMLCanvasElement,
 	cropX: number,
 	cropY: number,
 	cropWidth: number,
@@ -209,4 +260,9 @@ export const rgb2rgba = (src: any, dest: any) => {
 			j++;
 		}
 	}
+};
+
+export const rgbaToHex = (r, g, b, a) => {
+	const hex = r.toString(16) + g.toString(16) + b.toString(16) + a.toString(16);
+	return hex;
 };

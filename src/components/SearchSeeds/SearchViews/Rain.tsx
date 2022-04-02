@@ -5,11 +5,13 @@ import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 
 import Clickable from '../../Icons/Clickable';
 
+import i18n from '../../../i18n';
+
 interface IRainProps {
 	onUpdateConfig: (config: IRule) => void;
 }
 
-const material = new MaterialInfoProvider({} as any);
+const material = new MaterialInfoProvider(i18n);
 
 const rainOptions = ["", "water", "blood", "acid", "slime"]
 

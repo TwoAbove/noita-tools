@@ -1,4 +1,4 @@
-import GameInfoHandler from '../services/SeedInfo/infoHandler';
+import GameInfoProvider from '../services/SeedInfo/infoHandler';
 import { IRule } from './SeedInfo/infoHandler/IRule';
 
 // const includesAll = (arr: string[], target: string[]) =>
@@ -11,7 +11,7 @@ export interface ISeedSolverConfig {
 }
 
 export class SeedSolver {
-	gameInfoHandler = new GameInfoHandler({ seed: 0 }); // we will use the provider itself but later on we will use the whole thing
+	gameInfoHandler = new GameInfoProvider({ seed: 0 }); // we will use the provider itself but later on we will use the whole thing
 	shouldCancel = false;
 	foundSeed?: number;
 	running = false;

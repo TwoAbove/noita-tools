@@ -19,6 +19,11 @@ module.exports = {
 				}
 			});
 
+			config.experiments = {
+				futureDefaults: true,
+				asyncWebAssembly: true,
+			};
+
 			return config;
 		},
 		plugins: [
@@ -27,7 +32,7 @@ module.exports = {
 			})
 		],
 		// stats: 'errors-only',
-		asyncWebAssembly: true
+
 	}
 	// style: {
 	//   postcss: {
