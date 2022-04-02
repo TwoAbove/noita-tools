@@ -9,7 +9,6 @@
 
 #include <functional>
 
-
 /* stbhw - v0.7 -  http://nothings.org/gamedev/herringbone
    Herringbone Wang Tile Generator - Sean Barrett 2014 - public domain
 
@@ -222,7 +221,6 @@ typedef struct
 
 } stbhw_config;
 
-
 // returns description of last error produced by any function (not thread-safe)
 STBHW_EXTERN const char *stbhw_get_last_error(void);
 
@@ -242,7 +240,6 @@ STBHW_EXTERN void stbhw_free_tileset(stbhw_tileset *ts);
 // weighting should be NULL, as non-NULL weighting is currently untested
 int stbhw_generate_image(stbhw_tileset *ts, int **weighting,
                          unsigned char *pixels, int stride_in_bytes, int w, int h, std::function<int(void)> rand);
-
 
 // computes the size needed for the template image
 STBHW_EXTERN void stbhw_get_template_size(stbhw_config *c, int *w, int *h);
@@ -324,6 +321,8 @@ STBHW_EXTERN int stbhw_make_template(stbhw_config *c, unsigned char *data, int w
 #include <assert.h>
 #define STB_HBWANG_ASSERT(x) assert(x)
 #endif
+
+// In Noita code, STB_HBWANG_MAX_X is 100
 
 // map size
 #ifndef STB_HBWANG_MAX_X
@@ -923,7 +922,7 @@ static void stbhw__parse_v_rect(stbhw__process *p, int xpos, int ypos,
    p->ts->v_tiles[p->ts->num_v_tiles++] = h;
 }
 
-STBHW_EXTERN int stbhw_build_tileset_from_image(stbhw_tileset *ts, unsigned char *data, int stride, int w, int h)
+int stbhw_build_tileset_from_image(stbhw_tileset *ts, unsigned char *data, int stride, int w, int h)
 {
    int i, h_count, v_count;
    unsigned char header[9];
@@ -992,7 +991,7 @@ STBHW_EXTERN int stbhw_build_tileset_from_image(stbhw_tileset *ts, unsigned char
    return stbhw__process_template(&p);
 }
 
-STBHW_EXTERN void stbhw_free_tileset(stbhw_tileset *ts)
+void stbhw_free_tileset(stbhw_tileset *ts)
 {
    int i;
    for (i = 0; i < ts->num_h_tiles; ++i)
@@ -1390,21 +1389,31 @@ STBHW_EXTERN int stbhw_make_template(stbhw_config *c, unsigned char *data, int w
    return 1;
 }
 
-// mapData and result are allocated and freed in-js.
-void GenerateMap(
-    unsigned char *mapData,
-    unsigned char *result,
-    int w,
-    int h,
-    int xs,
-    int ys)
+// tiles_data and result are allocated and freed in-js.
+STBHW_EXTERN void generate_map(
+    unsigned char tiles_data[],
+    unsigned char result[],
+    int tiles_w,
+    int tiles_h,
+    int map_w,
+    int map_h)
 {
-   unsigned char *data;
+   unsigned char *res;
    stbhw_tileset ts;
-
    NollaPrng *rng = new NollaPrng(world_seed);
+   // for (int i = 0; i < ; i++)
+   // {
+   // rng->Next();
+   // }
 
-   stbhw_build_tileset_from_image(&ts, mapData, w * 3, w, h);
-   stbhw_generate_image(&ts, NULL, result, xs * 3, xs, ys, std::bind(&NollaPrng::NextU, rng));
+   res = (unsigned char *)malloc(3 * map_w * (map_h + 4));
+
+   stbhw_build_tileset_from_image(&ts, tiles_data, tiles_w * 3, tiles_w, tiles_h);
+   stbhw_generate_image(&ts, NULL, res, map_w * 3, map_w, map_h + 4, std::bind(&NollaPrng::NextU, rng));
+
+   for (int i = 4 * 3 * map_w, j = 0; i < 3 * map_w * (map_h + 4); i++, j++) {
+      result[j] = res[i];
+   }
+
    stbhw_free_tileset(&ts);
 }

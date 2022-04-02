@@ -4,6 +4,8 @@ import { Stack } from 'react-bootstrap';
 import GameInfoProvider from '../../services/SeedInfo/infoHandler';
 import SeedInfo from './SeedInfo';
 
+import i18n from '../../i18n';
+
 interface ISeedDataProps {
 	seed: string;
 }
@@ -22,20 +24,20 @@ const waitToLoad = (gameInfoProvider): Promise<void> =>
 const SeedDataOutput = (props: ISeedDataProps) => {
 	const { seed } = props;
 	const [data, setData] = useState<
-		ReturnType<GameInfoProvider['provideAll']>
+		Awaited<ReturnType<GameInfoProvider['provideAll']>>
 	>();
 	const [gameInfoProvider] = useState(
-		() => new GameInfoProvider({ seed: parseInt(seed, 10) })
+		() => new GameInfoProvider({ seed: parseInt(seed, 10) }, i18n)
 	);
 
-	const updateData = () => {
-		const data = gameInfoProvider.provideAll();
+	const updateData = async () => {
+		const data = await gameInfoProvider.provideAll();
 		setData(data);
 	};
 
 	useEffect(() => {
-		waitToLoad(gameInfoProvider).then(() => {
-			const data = gameInfoProvider.provideAll();
+		waitToLoad(gameInfoProvider).then(async () => {
+			const data = await gameInfoProvider.provideAll();
 			setData(data);
 			gameInfoProvider.addEventListener('update', event => {
 				updateData();
@@ -56,7 +58,7 @@ const SeedDataOutput = (props: ISeedDataProps) => {
 			{data ? (
 				<Stack>
 					{data && `Seed: ${seed}`}
-					{data && <SeedInfo infoProvider={gameInfoProvider!} data={data} />}
+					{data && <SeedInfo seed={seed} infoProvider={gameInfoProvider!} data={data} />}
 				</Stack>
 			) : (
 				<p>Loading</p>

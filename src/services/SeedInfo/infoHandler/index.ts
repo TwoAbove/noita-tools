@@ -1,11 +1,12 @@
 import { AlchemyInfoProvider } from './InfoProviders/Alchemy';
-import { InfoProvider } from './InfoProviders/Base';
-import { BiomeModifierInfoProvider } from './InfoProviders/BiomeModifier';
 import { BiomeInfoProvider } from './InfoProviders/Boime';
+import { BiomeModifierInfoProvider } from './InfoProviders/BiomeModifier';
 import { FungalInfoProvider } from './InfoProviders/Fungal';
-import { LotteryInfoProvider } from './InfoProviders/Lottery';
-import { MaterialInfoProvider } from './InfoProviders/Material';
+import { InfoProvider } from './InfoProviders/Base';
 import { IPerkChangeAction, PerkInfoProvider } from './InfoProviders/Perk';
+import { LotteryInfoProvider } from './InfoProviders/Lottery';
+import { MapInfoProvider } from './InfoProviders/Map';
+import { MaterialInfoProvider } from './InfoProviders/Material';
 import { RainInfoProvider } from './InfoProviders/Rain';
 import { ShopInfoProvider } from './InfoProviders/Shop';
 import { SpellInfoProvider } from './InfoProviders/Spell';
@@ -15,20 +16,22 @@ import { StartingSpellInfoProvider } from './InfoProviders/StartingSpell';
 
 import loadRandom, { IRandom } from '../random';
 import { WandInfoProvider } from './InfoProviders/Wand';
+import { i18n } from 'i18next';
 
 interface IProviders {
-  shop: ShopInfoProvider;
   alchemy: AlchemyInfoProvider;
+  biome: BiomeInfoProvider;
+  biomeModifier: BiomeModifierInfoProvider;
+  fungalShift: FungalInfoProvider;
+  lottery: LotteryInfoProvider;
+  map: MapInfoProvider;
+  material: MaterialInfoProvider;
+  perk: PerkInfoProvider;
   rain: RainInfoProvider;
+  shop: ShopInfoProvider;
+  startingBombSpell: StartingBombSpellInfoProvider;
   startingFlask: StartingFlaskInfoProvider;
   startingSpell: StartingSpellInfoProvider;
-  startingBombSpell: StartingBombSpellInfoProvider;
-  perk: PerkInfoProvider;
-  lottery: LotteryInfoProvider;
-  fungalShift: FungalInfoProvider;
-  biomeModifier: BiomeModifierInfoProvider;
-  biome: BiomeInfoProvider;
-  material: MaterialInfoProvider;
   wand: WandInfoProvider;
   [key: string]: InfoProvider;
 }
@@ -41,7 +44,9 @@ export class GameInfoProvider extends EventTarget {
 
   config!: IProviderConfig;
 
-  constructor(initialConfig: Partial<IProviderConfig>) {
+  i18n?: i18n;
+
+  constructor(initialConfig: Partial<IProviderConfig>, i18n?: i18n) {
     super()
     this.resetConfig(initialConfig);
     loadRandom().then((randoms) => {
@@ -49,6 +54,7 @@ export class GameInfoProvider extends EventTarget {
       this.providers = this.buildInfoProviders();
       this.ready = true;
     });
+    this.i18n = i18n;
   }
 
   resetConfig(initialConfig: Partial<IProviderConfig>) {
@@ -71,17 +77,18 @@ export class GameInfoProvider extends EventTarget {
   buildInfoProviders(): IProviders {
     const providers: any = {
       alchemy: new AlchemyInfoProvider(this.randoms),
+      biome: new BiomeInfoProvider(this.randoms),
+      biomeModifier: new BiomeModifierInfoProvider(this.randoms),
+      fungalShift: new FungalInfoProvider(this.randoms),
+      lottery: new LotteryInfoProvider(this.randoms),
+      map: new MapInfoProvider(this.randoms),
+      material: new MaterialInfoProvider(this.i18n),
+      perk: new PerkInfoProvider(this.randoms),
       rain: new RainInfoProvider(this.randoms),
+      spells: new SpellInfoProvider(this.randoms),
+      startingBombSpell: new StartingBombSpellInfoProvider(this.randoms),
       startingFlask: new StartingFlaskInfoProvider(this.randoms),
       startingSpell: new StartingSpellInfoProvider(this.randoms),
-      startingBombSpell: new StartingBombSpellInfoProvider(this.randoms),
-      perk: new PerkInfoProvider(this.randoms),
-      lottery: new LotteryInfoProvider(this.randoms),
-      fungalShift: new FungalInfoProvider(this.randoms),
-      biomeModifier: new BiomeModifierInfoProvider(this.randoms),
-      spells: new SpellInfoProvider(this.randoms),
-      biome: new BiomeInfoProvider(this.randoms),
-      material: new MaterialInfoProvider(this.randoms),
       wand: new WandInfoProvider(this.randoms)
     }
 
@@ -91,21 +98,21 @@ export class GameInfoProvider extends EventTarget {
     return providers as IProviders;
   }
 
-  provideAll() {
+  async provideAll() {
     // I think the c++ code should be immutable. Idea for next refactor.
     this.randoms!.SetWorldSeed(Number(this.config.seed));
     return {
       alchemy: this.providers.alchemy.provide(),
+      biomeModifiers: this.providers.biomeModifier.provide(),
+      fungalShifts: this.providers.fungalShift.provide(undefined),
+      perkDeck: this.providers.perk.getPerkDeck(true),
+      perks: this.providers.perk.provide(this.config.pickedPerks, undefined, true, this.config.perkWorldOffset, this.config.perkRerolls),
       rainType: this.providers.rain.provide(),
+      shop: this.providers.shop.provide(this.config.pickedPerks, this.config.perkWorldOffset),
+      startingBombSpell: this.providers.startingBombSpell.provide(),
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),
-      startingBombSpell: this.providers.startingBombSpell.provide(),
-      shop: this.providers.shop.provide(this.config.pickedPerks, this.config.perkWorldOffset),
-      perks: this.providers.perk.provide(this.config.pickedPerks, undefined, true, this.config.perkWorldOffset, this.config.perkRerolls),
       statefulPerks: this.providers.perk.provideStateful(this.config.perkStack, true),
-      perkDeck: this.providers.perk.getPerkDeck(true),
-      fungalShifts: this.providers.fungalShift.provide(undefined),
-      biomeModifiers: this.providers.biomeModifier.provide()
     };
   }
 }

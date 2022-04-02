@@ -5,6 +5,7 @@ import Clickable from '../../Icons/Clickable';
 import { capitalize } from '../../../services/helpers';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
+import i18n from '../../../i18n';
 
 interface IStartingFlaskProps {
 	onUpdateConfig: (config: IRule) => void;
@@ -30,7 +31,7 @@ const flaskOptions = [
 	'slime',
 	'gunpowder_unstable'
 ];
-const material = new MaterialInfoProvider({} as any);
+const material = new MaterialInfoProvider(i18n);
 
 const StartingFlask = (props: IStartingFlaskProps) => {
 	const { onUpdateConfig } = props;
@@ -69,7 +70,7 @@ const StartingFlask = (props: IStartingFlaskProps) => {
 							>
 								<div className="m-3">
 									{type
-										? capitalize(material.provide(type).translated_name)
+										? capitalize(material.translate(type))
 										: 'Any'}
 								</div>
 							</Clickable>

@@ -1,6 +1,6 @@
-import React, {useContext} from 'react';
+import React, { useContext, useState } from 'react';
 import classnames from 'classnames';
-import { Stack } from 'react-bootstrap';
+import { Stack, Form, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { capitalize } from '../../../services/helpers';
@@ -9,7 +9,7 @@ import { AlchemyConfigContext } from '../../AlchemyConfigContext';
 import { useTranslation } from 'react-i18next';
 
 const Flask = () => {
-	return <b className='text-info'>Flask</b>;
+	return <b className="text-info">Flask</b>;
 };
 
 interface IShiftProps {
@@ -20,6 +20,8 @@ interface IShiftProps {
 
 const Shift = (props: IShiftProps) => {
 	const { data, getMaterial } = props;
+
+	const [selected, setSelected] = useState(false);
 
 	const [showId] = useContext(AlchemyConfigContext);
 	return (
@@ -34,15 +36,33 @@ const Shift = (props: IShiftProps) => {
 				<Stack>
 					{data.flaskFrom && <Flask />}
 					{data.from.map(s => (
-						<div key={s}>{capitalize(getMaterial(s))} {showId && `(${s})`}</div>
+						<div key={s}>
+							{capitalize(getMaterial(s))} {showId && `(${s})`}
+						</div>
 					))}
 				</Stack>
 			</td>
 			<td className="col-auto">
 				<Stack>
 					{data.flaskTo && <Flask />}
-					<div>{capitalize(getMaterial(data.to))} {showId && `(${data.to})`}</div>
+					<div>
+						{capitalize(getMaterial(data.to))} {showId && `(${data.to})`}
+					</div>
 				</Stack>
+			</td>
+			<td className="col-auto">
+				<OverlayTrigger
+					placement="right"
+					key="right"
+					overlay={<Tooltip id={`tooltip-right`}>Shifted</Tooltip>}
+				>
+					<Form.Check
+						type="checkbox"
+						id={`shifted`}
+						// label={`shifted`}
+						enterKeyHint="done"
+					/>
+				</OverlayTrigger>
 			</td>
 		</tr>
 	);

@@ -43,16 +43,21 @@ const colors = defaultColorArray.reduce((o, c) => {
 const biomeDataXMLPath = path.resolve(noitaData, 'data/biome/_biomes_all.xml');
 
 const getBase64 = (p: string) =>
-	new Promise<string>((res, rej) =>
+	new Promise<{ src: string; width: number; height: number }>((res, rej) =>
 		Jimp.read(p, (err, image) => {
 			if (err) {
 				return rej(err);
 			}
+
 			image.autocrop().getBase64(Jimp.MIME_PNG, (err, src) => {
 				if (err) {
 					return rej(err);
 				}
-				res(src);
+				res({
+					src,
+					width: image.getWidth(),
+					height: image.getHeight()
+				});
 			});
 		})
 	);
@@ -126,7 +131,7 @@ const getTable = (ex: TableConstructorExpression) => {
 		const { biome_filename, height_index, color } = b.$;
 		const biome_path = path.resolve(noitaData, biome_filename);
 		const name = path.basename(biome_path, '.xml');
-	const { Topology: _T, Materials: _M } = (await parseStringPromise(
+		const { Topology: _T, Materials: _M } = (await parseStringPromise(
 			fs.readFileSync(biome_path)
 		)).Biome;
 		const Topology = _T[0].$;
@@ -140,14 +145,17 @@ const getTable = (ex: TableConstructorExpression) => {
 			lua_script: Topology.lua_script
 		};
 		if (res.type === 'BIOME_WANG_TILE' && Topology.wang_template_file) {
+			const data = Topology.wang_template_file
+				? await getBase64(
+					path.resolve(noitaData, Topology.wang_template_file)
+				)
+				: null;
 			res.wang = {
-				template_file: Topology.wang_template_file
-					? await getBase64(
-							path.resolve(noitaData, Topology.wang_template_file)
-					  )
-					: null,
-				map_width: Number(Topology.wang_map_width),
-				map_height: Number(Topology.wang_map_height)
+				template_file: data?.src,
+				map_width: data?.width,
+				wang_map_width: Number(Topology.wang_map_width),
+				map_height: data?.height,
+				wang_map_height: Number(Topology.wang_map_height)
 			};
 		}
 		if (res.lua_script) {
@@ -200,7 +208,10 @@ const getTable = (ex: TableConstructorExpression) => {
 		maps[res.color] = res;
 	}
 
-	fs.writeFileSync(path.resolve(__dirname, './maps.json'), JSON.stringify(maps, null, 2));
+	fs.writeFileSync(
+		path.resolve(__dirname, './maps.json'),
+		JSON.stringify(maps, null, 2)
+	);
 
 	function memo(cache: any) {
 		return async (key: string, fn: (...args: any[]) => Promise<any>) => {
@@ -276,9 +287,9 @@ const getTable = (ex: TableConstructorExpression) => {
 		}
 
 		if (sprite.filename) {
-			sprite.filename = await getBase64(
+			sprite.filename = (await getBase64(
 				path.resolve(noitaData, sprite.filename)
-			);
+			));
 		}
 
 		return sprite;
@@ -290,7 +301,7 @@ const getTable = (ex: TableConstructorExpression) => {
 		let entity: any = {};
 		let baseEntity: any = {};
 		if (entityData.Base && entityData.Base[0].$.file) {
-		const seb = (await entityMemo(entityData.Base[0].$.file, () =>
+			const seb = (await entityMemo(entityData.Base[0].$.file, () =>
 				parseStringPromise(
 					fs.readFileSync(path.resolve(noitaData, entityData.Base[0].$.file))
 				)
@@ -354,7 +365,7 @@ const getTable = (ex: TableConstructorExpression) => {
 		}
 		const entityXMLPath = path.resolve(noitaData, val);
 		if (fs.existsSync(entityXMLPath)) {
-		const entityData = (await entityMemo(val, () =>
+			const entityData = (await entityMemo(val, () =>
 				parseStringPromise(fs.readFileSync(entityXMLPath))
 			)).Entity;
 			const entity = await parseEntity(entityData);
@@ -362,6 +373,9 @@ const getTable = (ex: TableConstructorExpression) => {
 		}
 	});
 	// console.log(util.inspect(entities, false, null, true));
-	fs.writeFileSync(path.resolve(__dirname, './entities.json'), JSON.stringify(entities, null, 2));
+	fs.writeFileSync(
+		path.resolve(__dirname, './entities.json'),
+		JSON.stringify(entities, null, 2)
+	);
 })();
-export {};
+export { };
