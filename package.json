@@ -86,7 +86,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "craco start",
+    "start": "node ./server",
     "dev": "concurrently 'nodemon ./server' 'craco start' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write **; do sh build.sh; done;'",
     "build": "craco build",
     "test": "craco test",
