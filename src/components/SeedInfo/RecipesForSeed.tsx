@@ -5,7 +5,7 @@ import SeedForm from './SeedForm';
 import SeedDataOutput from './SeedDataOutput';
 
 const SeedData = () => {
-	const [seed, setSeed] = React.useState<any>('118670758');
+	const [seed, setSeed] = React.useState<any>('');
 
 	return (
 		<div className="px-sm-3 px-2 pb-3 mb-5">
