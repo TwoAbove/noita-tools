@@ -1,15 +1,15 @@
 import React, { useState, useContext } from 'react';
-import { ListGroup, Form, Modal, Col, Row } from 'react-bootstrap';
+import { ListGroup, Form, Modal, Col, Row, Button } from 'react-bootstrap';
 import DarkModeToggle from 'react-dark-mode-toggle';
 
 // import { db } from "../services/db";
 import i18n from '../i18n';
 
 import './App.css';
-import { SpoilerContext } from './SpoilerContext';
 import { ThemeContext } from './ThemeContext';
 import { AlchemyConfigContext } from './AlchemyConfigContext';
 import useLocalStorage from '../services/useLocalStorage';
+import { resetDatabase } from '../services/db';
 
 const getFlagEmoji = countryCode =>
 	String.fromCodePoint(
@@ -168,6 +168,33 @@ const PanelToggle = (props: IPanelToggleProps) => {
 	);
 };
 
+const ResetDB = () => {
+	const handleDB = () => {
+		resetDatabase();
+	};
+
+	return (
+		<ConfigRow
+			left={
+				<>
+					<strong className="text-danger">Reset DB</strong>
+					<p className="text-muted mb-0">
+						This button resets the local DB that saves all website data between
+						reloads.
+					</p>
+				</>
+			}
+			right={
+				<>
+					<Button variant="danger" onClick={handleDB}>
+						Reset DB
+					</Button>
+				</>
+			}
+		/>
+	);
+};
+
 export const Settings = props => {
 	return (
 		<Modal size="lg" show={props.show} onHide={props.handleClose}>
@@ -217,6 +244,13 @@ export const Settings = props => {
 					</ListGroup.Item>
 					<ListGroup.Item>
 						<PanelToggle key="start" id="start" title="Starting Setup" />
+					</ListGroup.Item>
+				</ListGroup>
+				<hr className="my-4" />
+				<ConfigTitle title="Danger Zone" subtitle="Be careful with these." />
+				<ListGroup variant="flush" className="mb-5 shadow">
+					<ListGroup.Item>
+						<ResetDB />
 					</ListGroup.Item>
 				</ListGroup>
 			</Modal.Body>

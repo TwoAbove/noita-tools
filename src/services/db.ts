@@ -35,13 +35,21 @@ interface ConfigItem {
   val: any
 }
 
+interface SeedInfoItem {
+  id?: number;
+  seed: string;
+  config: any
+}
+
 export class NoitaDB extends Dexie {
   configItems!: Table<ConfigItem, number>;
+  seedInfo!: Table<SeedInfoItem, number>;
 
   constructor() {
     super('NoitaDB');
-    this.version(2).stores({
-      configItems: '++id, &key'
+    this.version(3).stores({
+      configItems: '++id, &key',
+      seedInfo: '++id, &seed',
     });
   }
 
@@ -54,17 +62,23 @@ export class NoitaDB extends Dexie {
     }
     return this.configItems.where("key").equals(key).modify({ val });
   }
+
+  async setSeedInfo(seed: string, config: any) {
+    const exists = await this.seedInfo.get({ seed });
+    if (!exists) {
+      await this.seedInfo.add({
+        seed, config
+      });
+    }
+    return this.seedInfo.where("seed").equals(seed).modify({ config });
+  }
 }
 
 export const db = new NoitaDB();
 
 db.on('populate', populate);
 
-export function resetDatabase() {
-  return db.transaction('rw', db.configItems, async () => {
-    await Promise.all(db.tables.map(table => table.clear()));
-    await populate();
-  });
+export async function resetDatabase() {
+  await Promise.all(db.tables.map(table => table.clear()));
+  await populate();
 }
-
-// resetDatabase()

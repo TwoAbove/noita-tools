@@ -63,7 +63,8 @@ export class GameInfoProvider extends EventTarget {
       perkRerolls: new Map(),
       pickedPerks: new Map(),
       perkWorldOffset: 0,
-      perkStack: []
+      perkStack: [],
+      fungalShifts: []
     }, initialConfig);
     this.dispatchEvent(new CustomEvent('update', { detail: {} }));
   }
@@ -123,6 +124,7 @@ interface IProviderConfig {
   pickedPerks: Map<number, string[][]>;
   perkWorldOffset: number;
   perkStack: IPerkChangeAction[];
+  fungalShifts: boolean[];
 }
 
 export default GameInfoProvider;

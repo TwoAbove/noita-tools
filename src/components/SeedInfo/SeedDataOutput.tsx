@@ -5,6 +5,7 @@ import GameInfoProvider from '../../services/SeedInfo/infoHandler';
 import SeedInfo from './SeedInfo';
 
 import i18n from '../../i18n';
+import { db } from '../../services/db';
 
 interface ISeedDataProps {
 	seed: string;
@@ -40,6 +41,11 @@ const SeedDataOutput = (props: ISeedDataProps) => {
 			const data = await gameInfoProvider.provideAll();
 			setData(data);
 			gameInfoProvider.addEventListener('update', event => {
+				// Save config for resetting
+				const config = gameInfoProvider.config;
+
+				db.setSeedInfo(seed, config);
+
 				updateData();
 			});
 		});
@@ -47,9 +53,12 @@ const SeedDataOutput = (props: ISeedDataProps) => {
 	}, [gameInfoProvider]);
 
 	useEffect(() => {
-		if (gameInfoProvider.ready && seed) {
-			gameInfoProvider.resetConfig({ seed: parseInt(seed, 10) });
-		}
+		waitToLoad(gameInfoProvider).then(async () => {
+			if (seed) {
+				const config = await db.seedInfo.get({ seed });
+				gameInfoProvider.resetConfig({ ...config?.config, seed: parseInt(seed, 10) });
+			}
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [seed]);
 

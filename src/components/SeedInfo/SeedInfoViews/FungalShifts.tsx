@@ -15,11 +15,13 @@ const Flask = () => {
 interface IShiftProps {
 	key: string | number;
 	data: ReturnType<FungalInfoProvider['provide']>[number];
+	shifted: boolean;
+	setShifted: (shifted: boolean) => void;
 	getMaterial: (s: string) => any;
 }
 
 const Shift = (props: IShiftProps) => {
-	const { data, getMaterial } = props;
+	const { data, getMaterial, shifted, setShifted } = props;
 
 	const [showId] = useContext(AlchemyConfigContext);
 	return (
@@ -55,6 +57,10 @@ const Shift = (props: IShiftProps) => {
 					overlay={<Tooltip id={`tooltip-right`}>Shifted</Tooltip>}
 				>
 					<Form.Check
+						checked={shifted}
+						onChange={e => {
+							setShifted(e.target.checked);
+						}}
 						type="checkbox"
 						id={`shifted`}
 						// label={`shifted`}
@@ -74,6 +80,15 @@ interface IFungalShiftsProps {
 const FungalShifts = (props: IFungalShiftsProps) => {
 	const { fungalData, infoProvider } = props;
 	const [t] = useTranslation();
+
+	const handleSetShifted = (i: number) => (shifted: boolean) => {
+		const currentShifted = [...infoProvider.config.fungalShifts];
+		currentShifted[i] = shifted;
+		infoProvider.updateConfig({
+			fungalShifts: currentShifted
+		});
+	};
+
 	return (
 		<table className="table table-sm align-middle table-responsive">
 			<tbody>
@@ -82,6 +97,8 @@ const FungalShifts = (props: IFungalShiftsProps) => {
 						<Shift
 							key={i + t('$current_language', { ns: 'materials' })}
 							data={data}
+							shifted={!!infoProvider.config.fungalShifts[i]}
+							setShifted={handleSetShifted(i)}
 							getMaterial={s => infoProvider.providers.material.translate(s)}
 						/>
 					);
