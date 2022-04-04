@@ -104,7 +104,7 @@ const App: React.FC = () => {
 							<NeedInputAlert />
 							<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
 								<Tabs
-									defaultActiveKey={tab}
+									activeKey={tab}
 									onSelect={handleTab}
 									id="main-tabs"
 									className=""
