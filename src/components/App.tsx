@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-	Alert,
-	Container,
-	Tabs,
-	Tab,
-	Stack,
-	Button
-} from 'react-bootstrap';
+import { Alert, Container, Tabs, Tab, Stack, Button } from 'react-bootstrap';
 
 import SeedInfo from './SeedInfo';
 import SearchSeeds from './SearchSeeds';
@@ -18,8 +11,7 @@ import useLocalStorage from '../services/useLocalStorage';
 import './App.css';
 import { SpoilerProvider } from './SpoilerContext';
 import { ThemeProvider } from './ThemeContext';
-import {
-	AlchemyConfigProvider} from './AlchemyConfigContext';
+import { AlchemyConfigProvider } from './AlchemyConfigContext';
 
 import { Settings } from './Settings';
 

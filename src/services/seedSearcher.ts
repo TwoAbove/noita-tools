@@ -8,6 +8,7 @@ export interface ISeedSolverConfig {
 	currentSeed?: number;
 	seedEnd?: number;
 	rules?: IRule[];
+	findAll?: boolean;
 }
 
 export class SeedSolver {
@@ -17,6 +18,7 @@ export class SeedSolver {
 	running = false;
 	count = 0;
 	currentSeed = 0;
+	findAll = false;
 	seedEnd?: number;
 	offset = 0;
 	step = 1;
@@ -25,11 +27,8 @@ export class SeedSolver {
 	avgExecTime = 0;
 	sumExecTime = 0;
 
-	infocb?: (info: ReturnType<SeedSolver['getInfo']>) => void;
-
-	constructor(offset: number = 0, step: number = 1) {
-		this.init(offset, step);
-	}
+	infocb!: (info: ReturnType<SeedSolver['getInfo']>) => void;
+	foundcb!: (info: ReturnType<SeedSolver['getInfo']>) => void;
 
 	init(offset: number, step: number) {
 		this.offset = offset;
@@ -43,7 +42,10 @@ export class SeedSolver {
 	async work() {
 		this.running = true;
 		this.shouldCancel = false;
-		while (!this.shouldCancel && this.currentSeed < (this.seedEnd || 4_294_967_294)) {
+		while (
+			!this.shouldCancel &&
+			this.currentSeed < (this.seedEnd || 4_294_967_294)
+		) {
 			while (!this.gameInfoHandler.ready) {
 				// Free the event loop to check for stop
 				await new Promise(res => setTimeout(res, 0));
@@ -63,7 +65,11 @@ export class SeedSolver {
 
 			if (found) {
 				this.foundSeed = +this.currentSeed;
-				break;
+				if (this.findAll) {
+					this.foundcb(this.getInfo());
+				} else {
+					break;
+				}
 			}
 			this.currentSeed += this.step;
 			this.count++;
@@ -92,6 +98,9 @@ export class SeedSolver {
 		if (config.rules) {
 			this.rules = config.rules;
 		}
+		if (config.findAll) {
+			this.findAll = config.findAll;
+		}
 	}
 
 	async stop() {
@@ -101,6 +110,11 @@ export class SeedSolver {
 
 	onInfo(cb: (info: ReturnType<SeedSolver['getInfo']>) => void) {
 		this.infocb = cb;
+		// return cb(this.getInfo());
+	}
+
+	onFound(cb: (info: ReturnType<SeedSolver['getInfo']>) => void) {
+		this.foundcb = cb;
 		// return cb(this.getInfo());
 	}
 
