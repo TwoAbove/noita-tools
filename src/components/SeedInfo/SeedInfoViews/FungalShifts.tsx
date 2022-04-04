@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import classnames from 'classnames';
 import { Stack, Form, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
@@ -20,8 +20,6 @@ interface IShiftProps {
 
 const Shift = (props: IShiftProps) => {
 	const { data, getMaterial } = props;
-
-	const [selected, setSelected] = useState(false);
 
 	const [showId] = useContext(AlchemyConfigContext);
 	return (

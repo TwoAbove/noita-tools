@@ -14,7 +14,24 @@ import Biome from './SeedInfoViews/Biome';
 import FungalShifts from './SeedInfoViews/FungalShifts';
 import HolyMountain from './SeedInfoViews/HolyMountain';
 
-import { SpoilerContext } from '../SpoilerContext';
+import { db } from '../../services/db';
+import { useLiveQuery } from 'dexie-react-hooks';
+
+const WithShow = (props: {
+	id: string;
+	children: React.ReactChild;
+}): JSX.Element => {
+	const config = useLiveQuery(() =>
+		db.configItems.get({ key: `panel-${props.id}-config` })
+	);
+	const hasConfig = !!config;
+
+	if (hasConfig && !config.val) {
+		return <div></div>;
+	}
+
+	return props.children as any;
+};
 
 interface ISeedInfoProps {
 	seed: string;
@@ -24,7 +41,7 @@ interface ISeedInfoProps {
 
 const SeedInfo = (props: ISeedInfoProps) => {
 	const { data, infoProvider, seed } = props;
-	const [spoil, setSpoiler] = useContext(SpoilerContext);
+
 	return (
 		<Row className="m-0">
 			<Col className="p-0" lg={7}>
@@ -33,43 +50,51 @@ const SeedInfo = (props: ISeedInfoProps) => {
 				</Row> */}
 				<Row xs="auto">
 					<Col className="col-12">
-					</Col>
-					<Col className="col-12">
-						<HolyMountain
-							infoProvider={infoProvider}
-							shop={data.shop}
-							perks={data.perks}
-						/>
-					</Col>
-					<Col>
-						<Start
-							infoProvider={infoProvider}
-							startingFlask={data.startingFlask}
-							startingSpell={data.startingSpell}
-							startingBombSpell={data.startingBombSpell}
-						/>
+						<WithShow id="holy-mountain">
+							<HolyMountain
+								infoProvider={infoProvider}
+								shop={data.shop}
+								perks={data.perks}
+							/>
+						</WithShow>
 					</Col>
 					<Col>
-						<Rain infoProvider={infoProvider} rainData={data.rainType} />
+						<WithShow id="start">
+							<Start
+								infoProvider={infoProvider}
+								startingFlask={data.startingFlask}
+								startingSpell={data.startingSpell}
+								startingBombSpell={data.startingBombSpell}
+							/>
+						</WithShow>
 					</Col>
-					{spoil && (
-						<Col>
+					<Col>
+						<WithShow id="rain">
+							<Rain infoProvider={infoProvider} rainData={data.rainType} />
+						</WithShow>
+					</Col>
+					<Col>
+						<WithShow id="alchemy">
 							<Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
-						</Col>
-					)}
+						</WithShow>
+					</Col>
 					<Col>
-						<Biome
-							infoProvider={infoProvider}
-							biomeData={data.biomeModifiers}
-						/>
+						<WithShow id="biome">
+							<Biome
+								infoProvider={infoProvider}
+								biomeData={data.biomeModifiers}
+							/>
+						</WithShow>
 					</Col>
 				</Row>
 			</Col>
 			<Col className="p-0" lg={5}>
-				<FungalShifts
-					infoProvider={infoProvider}
-					fungalData={data.fungalShifts}
-				/>
+				<WithShow id="fungal">
+					<FungalShifts
+						infoProvider={infoProvider}
+						fungalData={data.fungalShifts}
+					/>
+				</WithShow>
 			</Col>
 		</Row>
 	);

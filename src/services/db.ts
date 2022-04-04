@@ -46,6 +46,12 @@ export class NoitaDB extends Dexie {
   }
 
   async setConfig(key: string, val: any) {
+    const exists = await this.configItems.get({ key });
+    if (!exists) {
+      await this.configItems.add({
+        key, val
+      });
+    }
     return this.configItems.where("key").equals(key).modify({ val });
   }
 }
