@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ButtonGroup, Container, Row, Col, Button } from 'react-bootstrap';
 
-import { MaterialPicker } from '../../../services/Calculator2';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 import ListSelect from '../../ListSelect';
 
@@ -14,6 +13,60 @@ interface IRecipeIngredientsPickerProps {
   onSelectAll: (part: string) => void;
   onDeselectAll: (part: string) => void;
 }
+
+ const LIQUIDS = [
+  'acid',
+  'alcohol',
+  'blood',
+  'blood_fungi',
+  'blood_worm',
+  'cement',
+  'lava',
+  'magic_liquid_berserk',
+  'magic_liquid_charm',
+  'magic_liquid_faster_levitation',
+  'magic_liquid_faster_levitation_and_movement',
+  'magic_liquid_invisibility',
+  'magic_liquid_mana_regeneration',
+  'magic_liquid_movement_faster',
+  'magic_liquid_protection_all',
+  'magic_liquid_teleportation',
+  'magic_liquid_unstable_polymorph',
+  'magic_liquid_unstable_teleportation',
+  'magic_liquid_worm_attractor',
+  'material_confusion',
+  'mud',
+  'oil',
+  'poison',
+  'radioactive_liquid_yellow',
+  'swamp',
+  'urine',
+  'water',
+  'water_ice',
+  'water_swamp',
+  'magic_liquid_random_polymorph'
+];
+
+ const ALCHEMY = [
+  'bone_box2d',
+  'brass',
+  'coal',
+  'copper',
+  'diamond',
+  'fungus_loose',
+  'gold',
+  'grass',
+  'gunpowder',
+  'gunpowder_explosive',
+  'rotten_meat',
+  'sand_petrify',
+  'silver',
+  'slime',
+  'snow_b2',
+  'soil',
+  'wax',
+  'honey'
+];
 
 const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
   const {
@@ -60,7 +113,7 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
           </Row>
         </Row>
         <ListSelect
-          items={MaterialPicker.ALCHEMY}
+          items={ALCHEMY}
           selected={selected}
           onUpdate={selected => onUpdate(selected)}
         />
@@ -94,7 +147,7 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
           </Row>
         </Row>
         <ListSelect
-          items={MaterialPicker.LIQUIDS}
+          items={LIQUIDS}
           selected={selected}
           onUpdate={selected => onUpdate(selected)}
         />
@@ -104,11 +157,11 @@ const RecipeIngredientsPicker = (props: IRecipeIngredientsPickerProps) => {
 };
 
 const enoughLiquids = (selected: Set<string>) => {
-  const liquids = MaterialPicker.LIQUIDS.filter(value => selected.has(value));
+  const liquids = LIQUIDS.filter(value => selected.has(value));
   return liquids.length === 0 || liquids.length >= 2;
 };
 const enoughAlchemy = (selected: Set<string>) => {
-  const alchemy = MaterialPicker.ALCHEMY.filter(value => selected.has(value));
+  const alchemy = ALCHEMY.filter(value => selected.has(value));
   return alchemy.length === 0 || alchemy.length >= 1;
 };
 
@@ -150,7 +203,7 @@ const Alchemy = (props: IAlchemyProps) => {
   const handleSelectAll = (update: any, set: Set<string>) => (type: string) => {
     let newSet = new Set(...set);
     const materials =
-      type === 'ALCHEMY' ? MaterialPicker.ALCHEMY : MaterialPicker.LIQUIDS;
+      type === 'ALCHEMY' ? ALCHEMY : LIQUIDS;
     newSet = new Set([...set, ...materials]);
     update(newSet);
   };
@@ -160,7 +213,7 @@ const Alchemy = (props: IAlchemyProps) => {
   ) => {
     let newSet = new Set(...set);
     const materials =
-      type === 'ALCHEMY' ? MaterialPicker.ALCHEMY : MaterialPicker.LIQUIDS;
+      type === 'ALCHEMY' ? ALCHEMY : LIQUIDS;
     newSet = new Set([...set].filter(x => !materials.includes(x)));
     update(newSet);
   };

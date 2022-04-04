@@ -10,9 +10,10 @@ import {
 	Row,
 	Col,
 	Button,
-	ProgressBar
+	ProgressBar,
+	ListGroup
 } from 'react-bootstrap';
-
+import copy from 'copy-to-clipboard';
 import humanize from 'humanize-duration';
 
 import SeedDataOutput from '../SeedInfo/SeedDataOutput';
@@ -36,10 +37,11 @@ const avg = (arr: number[]) => arr.reduce((p, c) => p + c, 0) / arr.length;
 const SearchSeeds = () => {
 	const [useCores, setUseCores] = useLocalStorage('useCores', 1);
 	const [seedSolver, setSeedSolver] = React.useState(
-		() => new SeedSolver(useCores)
+		() => new SeedSolver(useCores, true)
 	);
 	const [seed, setSeed] = React.useState('1');
 	const [seedEnd, setSeedEnd] = React.useState('');
+	const [findAll, setFindAll] = React.useState(false);
 	const handleSeedStartChange = (e: any) => {
 		setSeed(e.target.value);
 	};
@@ -47,19 +49,14 @@ const SearchSeeds = () => {
 		setSeedEnd(e.target.value);
 	};
 
-	const [solverInfo, setSolverInfo] = React.useState<
+	const [[solverInfo, ...results], setSolverInfo] = React.useState<
 		ReturnType<SeedSolver['getInfo']>
 	>([]);
-	const running = solverInfo.find(info => info.running) !== undefined;
+	const running = !!solverInfo?.running;
 
 	const handleMultithreading = () => {
 		const concurrency = navigator.hardwareConcurrency || 1;
-		if (concurrency > 1) {
-			setUseCores(concurrency - 1);
-		}
-		if (useCores > 1) {
-			setUseCores(1);
-		}
+		setUseCores(concurrency);
 	};
 
 	React.useEffect(() => {
@@ -77,29 +74,36 @@ const SearchSeeds = () => {
 	React.useEffect(() => {
 		const work = async () => {
 			await seedSolver.destroy();
-			const newSeedSolver = new SeedSolver(useCores);
+			const newSeedSolver = new SeedSolver(useCores, !findAll);
 			const newSeed = parseInt(seed);
 			const newSeedEnd = parseInt(seedEnd);
 			newSeedSolver.update({
 				rules: [],
 				currentSeed: newSeed,
 				seedEnd: newSeedEnd,
+				findAll,
 			});
 			if (!isNaN(newSeed)) {
 				newSeedSolver.update({
 					currentSeed: newSeed,
 					seedEnd: newSeedEnd,
+					findAll
 				});
 			}
-
 			setSeedSolver(newSeedSolver);
 		};
 		work(); // eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [useCores, seed, seedEnd]);
+	}, [useCores, seed, seedEnd, findAll]);
 	// ^
 	// seedSolver is both used and set here, so running this
 	// again will create a loop
 	// useEffect is used here idiomatically, but I'm not sure how to better do this
+
+
+	const handleCopy = () => {
+		const seedList = seedSolver.foundSeeds;
+		copy(seedList.join(','));
+	}
 
 	const updateRules = (rules) => {
 		seedSolver.update({
@@ -122,7 +126,7 @@ const SearchSeeds = () => {
 		await seedSolver.stop();
 	};
 
-	const seedsChecked = avg(solverInfo.map(i => i.currentSeed));
+	const seedsChecked = avg(results.map(i => i.currentSeed));
 	const totalSeeds = 4_294_967_294;
 	const percentChecked = Math.floor((seedsChecked / totalSeeds) * 100);
 
@@ -159,6 +163,19 @@ const SearchSeeds = () => {
 									disabled={running}
 									value={seedEnd}
 									onChange={handleSeedEndChange}
+								/>
+							</Col>
+							<Col>
+								<Form.Label htmlFor="SearchSeeds.findAll">
+									Find all seeds and list them below
+								</Form.Label>
+								<Form.Switch
+									checked={findAll}
+									onChange={e => {
+										setFindAll(e.target.checked);
+									}}
+									id={`find-all-switch`}
+									label=""
 								/>
 							</Col>
 						</FormGroup>
@@ -206,23 +223,40 @@ const SearchSeeds = () => {
 				</Col>
 			</Row>
 			<Container>
-				{solverInfo[0]?.running && <div>
+				{solverInfo?.running && <div>
 					<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
-					Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverInfo[0] as any).msLeft, { round: true, units: ["h", "m"] })})
+					Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverInfo as any).msLeft, { round: true, units: ["h", "m"] })})
 				</div>}
 				<h6>Results:</h6>
-				<Stack gap={5}>
-					{solverInfo.map((info, index) => (
-						<Container
-							className="mb-4"
-							key={info.foundSeed || info.currentSeed}
-						>
-							{info.foundSeed && (
-								<SeedDataOutput seed={`${info.currentSeed}`} />
-							)}
-						</Container>
-					))}
-				</Stack>
+				{findAll && <div>
+					Found {seedSolver.foundSeeds.length} seeds: <br />
+					<Button onClick={handleCopy}>Copy seed list to clipboard</Button>
+					<ListGroup style={
+						{
+							overflowY: 'auto',
+							height: '100px',
+						}
+					}>
+						{seedSolver.foundSeeds.map(s => {
+							return <ListGroup.Item variant="flush" key={s}>{s}</ListGroup.Item>
+						})}
+					</ListGroup>
+				</div>}
+				{
+					!findAll && <Stack gap={5}>
+						{results.map((info, index) => (
+							<Container
+								className="mb-4"
+								key={info.foundSeed || info.currentSeed}
+							>
+								{info.foundSeed && (
+									<SeedDataOutput seed={`${info.currentSeed}`} />
+								)}
+							</Container>
+						))}
+					</Stack>
+				}
+
 			</Container>
 		</Container>
 	);

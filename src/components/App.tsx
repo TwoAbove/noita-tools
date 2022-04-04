@@ -1,15 +1,5 @@
-import React, { useState, useContext } from 'react';
-import {
-	Alert,
-	Container,
-	Tabs,
-	Tab,
-	Stack,
-	Form,
-	Modal,
-	Button
-} from 'react-bootstrap';
-import DarkModeToggle from 'react-dark-mode-toggle';
+import React, { useState } from 'react';
+import { Alert, Container, Tabs, Tab, Stack, Button } from 'react-bootstrap';
 
 import SeedInfo from './SeedInfo';
 import SearchSeeds from './SearchSeeds';
@@ -17,109 +7,13 @@ import LiveSeedStats from './LiveSeedStats';
 import Donate from './Donate';
 import useLocalStorage from '../services/useLocalStorage';
 // import { db } from "../services/db";
-import i18n from '../i18n';
 
 import './App.css';
-import { SpoilerProvider, SpoilerContext } from './SpoilerContext';
-import { ThemeProvider, ThemeContext } from './ThemeContext';
-import {
-	AlchemyConfigProvider,
-	AlchemyConfigContext
-} from './AlchemyConfigContext';
+import { SpoilerProvider } from './SpoilerContext';
+import { ThemeProvider } from './ThemeContext';
+import { AlchemyConfigProvider } from './AlchemyConfigContext';
 
-const getFlagEmoji = countryCode =>
-	String.fromCodePoint(
-		...[...countryCode.toUpperCase()].map(x => 0x1f1a5 + x.charCodeAt())
-	);
-
-const flags = {
-	de: 'de',
-	en: 'us',
-	es: 'es',
-	fr: 'fr',
-	jp: 'jp',
-	ko: 'kr',
-	pl: 'pl',
-	pt: 'pt',
-	ru: 'ru',
-	'zh-CN': 'cn'
-};
-
-const Locale = props => {
-	const [l, sl] = useState(i18n.language);
-
-	const setLocale = lng => {
-		i18n.changeLanguage(lng);
-		sl(lng)
-	};
-
-	return (
-		<div className="d-flex align-items-center">
-			<Form.Select
-				onChange={e => {
-					setLocale(e.target.value);
-				}}
-				value={l}
-				size="sm"
-				aria-label="Locale"
-				style={{
-					width: '9rem'
-				}}
-			>
-				{Object.keys(flags).map(l => (
-					<option value={l} key={l}>
-						{getFlagEmoji(flags[l])} {flags[l]}
-					</option>
-				))}
-			</Form.Select>
-			<div className="ps-2 ">Locale</div>
-		</div>
-	);
-};
-
-const SpoilerChange = props => {
-	const [spoil, setSpoiler] = useContext(SpoilerContext);
-	return (
-		<Form.Switch
-			checked={spoil}
-			onChange={e => {
-				setSpoiler(e.target.checked);
-			}}
-			id="custom-switch"
-			label="Enable alchemy spoilers"
-		/>
-	);
-};
-
-const AlchemyConfig = props => {
-	const [advancedPerks, setAdvancedPerks] = useContext(AlchemyConfigContext);
-	return (
-		<Form.Switch
-			checked={advancedPerks}
-			onChange={e => {
-				setAdvancedPerks(e.target.checked);
-			}}
-			id="alchemy-config-switch"
-			label="Show material ID next to name"
-		/>
-	);
-};
-
-const DarkMode = props => {
-	const [theme, setTheme] = useContext(ThemeContext);
-	return (
-		<div>
-			<DarkModeToggle
-				onChange={checked => {
-					setTheme(checked ? 'dark' : 'light');
-				}}
-				checked={theme === 'dark'}
-				size={60}
-			/>
-			&nbsp; Dark Mode
-		</div>
-	);
-};
+import { Settings } from './Settings';
 
 const NeedInputAlert = () => {
 	const [show, setShow] = useLocalStorage('show-need-feedback-alert', true);
@@ -146,27 +40,6 @@ const NeedInputAlert = () => {
 				</div>
 			</Alert>
 		</Container>
-	);
-};
-
-const Settings = props => {
-	return (
-		<Modal show={props.show} onHide={props.handleClose}>
-			<Modal.Header closeButton>
-				<Modal.Title>Settings</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>
-				<div className="pb-3">
-					These settings modify how Noitool behaves or displays things.
-				</div>
-				<Stack gap={3}>
-					<Locale />
-					<DarkMode />
-					<SpoilerChange />
-					<AlchemyConfig />
-				</Stack>
-			</Modal.Body>
-		</Modal>
 	);
 };
 
@@ -223,7 +96,7 @@ const App: React.FC = () => {
 							<NeedInputAlert />
 							<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
 								<Tabs
-									defaultActiveKey={tab}
+									activeKey={tab}
 									onSelect={handleTab}
 									id="main-tabs"
 									className=""

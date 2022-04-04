@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import "bootswatch/dist/spacelab/bootstrap.min.css";
@@ -13,7 +13,7 @@ import * as serviceWorker from './serviceWorker';
 
 import reportWebVitals from './reportWebVitals';
 
-console.log('v 2.11.0');
+console.log('v2.13.0');
 
 function sendToAnalytics(metric) {
 	const body = JSON.stringify(metric);
@@ -23,8 +23,13 @@ function sendToAnalytics(metric) {
 }
 
 reportWebVitals(sendToAnalytics);
+const root = createRoot(document.getElementById('root')!);
+root.render(
+	<React.StrictMode>
+		<App />
+	</React.StrictMode>
 
-ReactDOM.render(<App />, document.getElementById('root'));
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

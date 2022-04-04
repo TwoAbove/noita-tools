@@ -17,7 +17,6 @@ export const createImage = (w, h) => {
 	can.height = h;
 	const ctx = can.getContext('2d')! as any;
 	ctx.msImageSmoothingEnabled = false;
-	ctx.mozImageSmoothingEnabled = false;
 	ctx.webkitImageSmoothingEnabled = false;
 	ctx.imageSmoothingEnabled = false;
 	return can;
