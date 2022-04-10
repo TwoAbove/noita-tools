@@ -63,7 +63,7 @@ export class GameInfoProvider extends EventTarget {
       perkRerolls: new Map(),
       pickedPerks: new Map(),
       perkWorldOffset: 0,
-      perkStack: [],
+      perkStacks: [[]],
       fungalShifts: []
     }, initialConfig);
     this.dispatchEvent(new CustomEvent('update', { detail: {} }));
@@ -113,7 +113,7 @@ export class GameInfoProvider extends EventTarget {
       startingBombSpell: this.providers.startingBombSpell.provide(),
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),
-      statefulPerks: this.providers.perk.provideStateful(this.config.perkStack, true),
+      statefulPerks: this.providers.perk.provideStateful(this.config.perkStacks[this.config.perkStacks.length - 1], true),
     };
   }
 }
@@ -123,7 +123,7 @@ interface IProviderConfig {
   perkRerolls: Map<number, number[]>;
   pickedPerks: Map<number, string[][]>;
   perkWorldOffset: number;
-  perkStack: IPerkChangeAction[];
+  perkStacks: IPerkChangeAction[][];
   fungalShifts: boolean[];
 }
 

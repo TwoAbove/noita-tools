@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Alert, Container, Tabs, Tab, Stack, Button } from 'react-bootstrap';
+import { Container, Tabs, Tab, Stack, Button } from 'react-bootstrap';
+import * as wasmCheck from 'wasm-check';
 
 import SeedInfo from './SeedInfo';
 import SearchSeeds from './SearchSeeds';
@@ -14,34 +15,6 @@ import { ThemeProvider } from './ThemeContext';
 import { AlchemyConfigProvider } from './AlchemyConfigContext';
 
 import { Settings } from './Settings';
-
-const NeedInputAlert = () => {
-	const [show, setShow] = useLocalStorage('show-need-feedback-alert', true);
-
-	const handleClose = () => {
-		setShow(false);
-	};
-
-	return (
-		<Container>
-			<Alert show={show} variant="info" dismissible onClose={handleClose}>
-				<div className="mt-2">
-					Thank you for using this tool! <br />
-					I want to improve it further, and need your feedback. <br />
-					Click{' '}
-					<a
-						href="https://github.com/TwoAbove/noita-tools/issues"
-						target="_blank"
-						rel="noreferrer"
-					>
-						here
-					</a>{' '}
-					if you have any ideas!
-				</div>
-			</Alert>
-		</Container>
-	);
-};
 
 const Header = props => {
 	const [show, setShow] = useState(false);
@@ -79,12 +52,62 @@ const Header = props => {
 	);
 };
 
-const App: React.FC = () => {
+const WasmError = props => {
+	return (
+		<div className="position-absolute top-50 start-50 translate-middle text-center w-75">
+			<p>
+				Looks like this browser does not support WASM, which is needed to run
+				the generation code.
+			</p>
+			<p>
+				Check{' '}
+				<a
+					href="https://webassembly.org/roadmap/"
+					target="_blank"
+					rel="noreferrer"
+				>
+					this page
+				</a>{' '}
+				to see which browsers support it.
+			</p>
+			<p>If you are sure that this message is an error, click below.</p>
+			<Button onClick={props.onProceed}>Continue</Button>
+		</div>
+		// <Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
+		// </Container>
+	);
+};
+
+const Body = () => {
 	const [tab, setTab] = useLocalStorage('last-tab', 'SeedInfo');
 
 	const handleTab = key => {
 		setTab(key);
 	};
+
+	return (
+		<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
+			<Tabs activeKey={tab} onSelect={handleTab} id="main-tabs" className="">
+				<Tab mountOnEnter eventKey="SeedInfo" title="Seed info">
+					<SeedInfo />
+				</Tab>
+				<Tab mountOnEnter eventKey="SearchSeeds" title="Search For Seed">
+					<SearchSeeds />
+				</Tab>
+				<Tab
+					mountOnEnter
+					eventKey="LiveSeedStats"
+					title="Live game helper (beta)"
+				>
+					<LiveSeedStats />
+				</Tab>
+			</Tabs>
+		</Container>
+	);
+};
+
+const App: React.FC = () => {
+	const [hasWasm, setHasWasm] = useState(() => wasmCheck.support());
 
 	return (
 		<SpoilerProvider>
@@ -93,33 +116,11 @@ const App: React.FC = () => {
 					<div className="App bg-gradient">
 						<div className="content bg-body rounded">
 							<Header />
-							<NeedInputAlert />
-							<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
-								<Tabs
-									activeKey={tab}
-									onSelect={handleTab}
-									id="main-tabs"
-									className=""
-								>
-									<Tab mountOnEnter eventKey="SeedInfo" title="Seed info">
-										<SeedInfo />
-									</Tab>
-									<Tab
-										mountOnEnter
-										eventKey="SearchSeeds"
-										title="Search For Seed"
-									>
-										<SearchSeeds />
-									</Tab>
-									<Tab
-										mountOnEnter
-										eventKey="LiveSeedStats"
-										title="Live game helper (beta)"
-									>
-										<LiveSeedStats />
-									</Tab>
-								</Tabs>
-							</Container>
+							{hasWasm ? (
+								<Body />
+							) : (
+								<WasmError onProceed={() => setHasWasm(true)} />
+							)}
 						</div>
 						<footer className="footer font-small p-1 pt-3">
 							<Stack>
