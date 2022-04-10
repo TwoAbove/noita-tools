@@ -9,7 +9,8 @@ import './App.css';
 import { ThemeContext } from './ThemeContext';
 import { AlchemyConfigContext } from './AlchemyConfigContext';
 import useLocalStorage from '../services/useLocalStorage';
-import { resetDatabase } from '../services/db';
+import { clearSeeds, resetDatabase } from '../services/db';
+import NeedInputAlert from './NeedInput';
 
 const getFlagEmoji = countryCode =>
 	String.fromCodePoint(
@@ -168,8 +169,8 @@ const PanelToggle = (props: IPanelToggleProps) => {
 	);
 };
 
-const ResetDB = () => {
-	const handleDB = () => {
+const ResetApp = () => {
+	const handleClick = () => {
 		resetDatabase();
 	};
 
@@ -177,17 +178,44 @@ const ResetDB = () => {
 		<ConfigRow
 			left={
 				<>
-					<strong className="text-danger">Reset DB</strong>
+					<strong className="text-danger">Reset Noitool</strong>
 					<p className="text-muted mb-0">
-						This button resets the local DB that saves all website data between
-						reloads.
+						Clear all persistent data of Noitool. <br />
+						This includes all seed configs and settings.
 					</p>
 				</>
 			}
 			right={
 				<>
-					<Button variant="danger" onClick={handleDB}>
-						Reset DB
+					<Button variant="danger" onClick={handleClick}>
+						Reset Noitool
+					</Button>
+				</>
+			}
+		/>
+	);
+};
+
+const ResetSeeds = () => {
+	const handleClick = () => {
+		clearSeeds();
+	};
+
+	return (
+		<ConfigRow
+			left={
+				<>
+					<strong className="text-warning">Clear Seed states</strong>
+					<p className="text-muted mb-0">
+						Clear all saved seed states. <br />
+						Use this if there are issues with getting seed info.
+					</p>
+				</>
+			}
+			right={
+				<>
+					<Button variant="warning" onClick={handleClick}>
+						Clear seed states
 					</Button>
 				</>
 			}
@@ -202,6 +230,7 @@ export const Settings = props => {
 				<Modal.Title>Settings</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
+				<NeedInputAlert />
 				<ConfigTitle
 					title="General"
 					subtitle="These settings modify how Noitool behaves or displays things."
@@ -250,7 +279,10 @@ export const Settings = props => {
 				<ConfigTitle title="Danger Zone" subtitle="Be careful with these." />
 				<ListGroup variant="flush" className="mb-5 shadow">
 					<ListGroup.Item>
-						<ResetDB />
+						<ResetSeeds />
+					</ListGroup.Item>
+					<ListGroup.Item>
+						<ResetApp />
 					</ListGroup.Item>
 				</ListGroup>
 			</Modal.Body>

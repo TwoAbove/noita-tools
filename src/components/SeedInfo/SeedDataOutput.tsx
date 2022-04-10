@@ -22,35 +22,29 @@ const waitToLoad = (gameInfoProvider): Promise<void> =>
 		return res();
 	});
 
-const SeedDataOutput = (props: ISeedDataProps) => {
-	const { seed } = props;
+const useGameInfoProvider = (
+	seed: string
+): [GameInfoProvider, Awaited<ReturnType<GameInfoProvider['provideAll']>>?] => {
 	const [data, setData] = useState<
 		Awaited<ReturnType<GameInfoProvider['provideAll']>>
 	>();
-	const [gameInfoProvider] = useState(
-		() => new GameInfoProvider({ seed: parseInt(seed, 10) }, i18n)
-	);
 
-	const updateData = async () => {
-		const data = await gameInfoProvider.provideAll();
-		setData(data);
-	};
+	const [gameInfoProvider] = useState(() => {
+		const gameInfoProvider = new GameInfoProvider(
+			{ seed: parseInt(seed, 10) },
+			i18n
+		);
+		gameInfoProvider.addEventListener('update', event => {
+			// Save config for resetting
+			const config = gameInfoProvider.config;
+			db.setSeedInfo("" + config.seed, config);
+			gameInfoProvider.provideAll().then(data => {
+				setData(data);
 
-	useEffect(() => {
-		waitToLoad(gameInfoProvider).then(async () => {
-			const data = await gameInfoProvider.provideAll();
-			setData(data);
-			gameInfoProvider.addEventListener('update', event => {
-				// Save config for resetting
-				const config = gameInfoProvider.config;
-
-				db.setSeedInfo(seed, config);
-
-				updateData();
 			});
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [gameInfoProvider]);
+		return gameInfoProvider;
+	});
 
 	useEffect(() => {
 		waitToLoad(gameInfoProvider).then(async () => {
@@ -62,12 +56,24 @@ const SeedDataOutput = (props: ISeedDataProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [seed]);
 
+	return [gameInfoProvider, data];
+};
+
+const SeedDataOutput = (props: ISeedDataProps) => {
+	const { seed } = props;
+	const [gameInfoProvider, data] = useGameInfoProvider(seed);
 	return (
 		<>
 			{data ? (
 				<Stack>
 					{data && `Seed: ${seed}`}
-					{data && <SeedInfo seed={seed} infoProvider={gameInfoProvider!} data={data} />}
+					{data && (
+						<SeedInfo
+							seed={seed}
+							infoProvider={gameInfoProvider!}
+							data={data}
+						/>
+					)}
 				</Stack>
 			) : (
 				<p>Loading</p>

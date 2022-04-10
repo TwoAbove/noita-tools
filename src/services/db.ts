@@ -21,7 +21,7 @@ async function populate() {
 		},
 		{
 			key: 'show-need-feedback-alert',
-			val: false
+			val: 0
 		}
 	]);
 }
@@ -95,4 +95,8 @@ db.on('populate', populate);
 export async function resetDatabase() {
 	await Promise.all(db.tables.map(table => table.clear()));
 	await populate();
+}
+
+export async function clearSeeds() {
+	await db.seedInfo.clear();
 }

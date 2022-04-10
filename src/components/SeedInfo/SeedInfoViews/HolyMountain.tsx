@@ -189,6 +189,7 @@ interface IHolyMountainHeaderProps {
   rerolls: number;
   price: number;
   total: number;
+  canUndo: boolean;
   setAdvanced: (boolean) => void;
   handleOffset: (type: '+' | '-') => void;
   offsetText: () => string;
@@ -196,7 +197,7 @@ interface IHolyMountainHeaderProps {
   handleBack: () => void;
 }
 const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
-  const { advanced, rerolls, price, total, setAdvanced, handleOffset, handleReset, handleBack, offsetText } = props;
+  const { canUndo, advanced, rerolls, price, total, setAdvanced, handleOffset, handleReset, handleBack, offsetText } = props;
   return (
     <Stack gap={2} direction="horizontal">
       <Stack gap={3} direction="horizontal">
@@ -226,7 +227,7 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
         label="Advanced"
       />
       <div className="ms-auto" />
-      {advanced ? <Button onClick={handleBack}>Undo</Button> : <div className="ms-auto" />}
+      {advanced ? <Button disabled={!canUndo} onClick={handleBack}>Undo</Button> : <div className="ms-auto" />}
       <div className="ms-auto" />
       <Button onClick={() => handleReset()}>Reset</Button>
       <div className="ms-auto" />
@@ -258,7 +259,7 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
   const { infoProvider, perks: simplePerks } = props;
   const [advanced, setAdvanced] = useState(false);
 
-  const [perkStacks, setPerkStacks] = useState<IPerkChangeAction[][]>(() => [[]]);
+  const [perkStacks, setPerkStacks] = useState<IPerkChangeAction[][]>(() => infoProvider.config.perkStacks);
   const perkStack = perkStacks[perkStacks.length - 1];
 
   const getPerkData = () => {
@@ -290,7 +291,7 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
 
   useEffect(() => {
     const newData = getPerkData();
-    infoProvider.updateConfig({ perkWorldOffset: +newData.worldOffset });
+    infoProvider.updateConfig({ perkWorldOffset: +newData.worldOffset, perkStacks });
     setPerkData(newData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [perkStack]);
@@ -533,6 +534,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
         advanced={advanced}
         setAdvanced={setAdvanced}
         rerolls={totalRerolls}
+        canUndo={true}
         price={getPrice(totalRerolls)}
         total={getTotal(totalRerolls)}
         handleReset={handleReset}

@@ -7776,11 +7776,6 @@ hoopy@^0.1.4:
   resolved "https://registry.npmjs.org/hoopy/-/hoopy-0.1.4.tgz"
   integrity sha512-HRcs+2mr52W0K+x8RzcLzuPPmVIKMSv97RGHy0Ea9y/mpcaK+xTrjICA04KAHi4GRzxliNqNJEFYWHghy3rSfQ==
 
-hover.css@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/hover.css/-/hover.css-2.3.2.tgz#f07193d9c7409d4e395134d3b2215b99eb55e0d3"
-  integrity sha1-8HGT2cdAnU45UTTTsiFbmetV4NM=
-
 hpack.js@^2.1.6:
   version "2.1.6"
   resolved "https://registry.npmjs.org/hpack.js/-/hpack.js-2.1.6.tgz"
@@ -13737,6 +13732,11 @@ warning@^4.0.0, warning@^4.0.3:
   integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
   dependencies:
     loose-envify "^1.0.0"
+
+wasm-check@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/wasm-check/-/wasm-check-2.0.3.tgz#3fcc90353a0512edc9539970f0762089d5757cf0"
+  integrity sha512-UbZqpDMO4TZskoVKDH3B9NqY+yJllDJX8I9lUU4nuQjBGeU57jCjjgCslP3r8xiE+yf5GTIfeGvznvubgCdbhw==
 
 wasm-dce@^1.0.0:
   version "1.0.2"
