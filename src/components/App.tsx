@@ -16,8 +16,9 @@ import { AlchemyConfigProvider } from './AlchemyConfigContext';
 
 import { Settings } from './Settings';
 
-const Header = props => {
+const Header = () => {
 	const [show, setShow] = useState(false);
+
 	// noita-tools.herokuapp.com
 	const hostname = window.location.hostname;
 	const notNewUrl = !hostname.includes('noitool.com');
@@ -25,8 +26,10 @@ const Header = props => {
 		<Stack direction="horizontal" className="align-items-stretch">
 			<div className="w-25"></div>
 			<Stack className="w-50">
-				<h1 className="display-3 fw-bolder m-1 my-3 text-center">Noitool</h1>
-				<h6 className="display-6 fw-lighter m-1 text-center">
+				<h1 className="display-3 fw-bolder m-1 mt-3 mb-1 text-center">
+					Noitool
+				</h1>
+				<h6 className="display-6 fw-lighter m-1 my-2 text-center">
 					Noita tools and helpers
 				</h6>
 				{notNewUrl && (
@@ -106,6 +109,44 @@ const Body = () => {
 	);
 };
 
+const Footer = () => {
+	return (
+		<footer className="footer font-small p-1 pt-3">
+			<Stack>
+				<div className="footer-copyright text-center">
+					<div className="mb-1">
+						Help keep servers running! Every dollar helps ❤️
+					</div>
+					<Donate />
+				</div>
+				<div className="footer text-center py-1">
+					Ideas? Issues? Bugs? Click{' '}
+					<a
+						target="_blank"
+						rel="noreferrer"
+						href="https://github.com/TwoAbove/noita-tools/issues/"
+					>
+						here
+					</a>
+					! {/* <br /> */}
+					Or DM me on Noita's discord:{' '}
+					<a
+						target="_blank"
+						rel="noreferrer"
+						href="https://discord.gg/WtdfUsJD"
+					>
+						TwoAbove#0493
+					</a>
+				</div>
+				{/* https://discord.gg/WtdfUsJD */}
+				<div className="footer-copyright text-center py-1">
+					© 2022 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
+				</div>
+			</Stack>
+		</footer>
+	);
+};
+
 const App: React.FC = () => {
 	const [hasWasm, setHasWasm] = useState(() => wasmCheck.support());
 
@@ -122,30 +163,7 @@ const App: React.FC = () => {
 								<WasmError onProceed={() => setHasWasm(true)} />
 							)}
 						</div>
-						<footer className="footer font-small p-1 pt-3">
-							<Stack>
-								<div className="footer-copyright text-center">
-									<div className="mb-1">
-										Help keep servers running! Every dollar helps ❤️
-									</div>
-									<Donate />
-								</div>
-								<div className="footer text-center py-2">
-									Ideas? Issues? Bugs? Click{' '}
-									<a
-										target="_blank"
-										rel="noreferrer"
-										href="https://github.com/TwoAbove/noita-tools/issues/"
-									>
-										here
-									</a>
-									!
-								</div>
-								<div className="footer-copyright text-center py-2">
-									© 2022 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
-								</div>
-							</Stack>
-						</footer>
+						<Footer />
 					</div>
 				</AlchemyConfigProvider>
 			</ThemeProvider>
