@@ -429,7 +429,7 @@ double RandomDistributionf(double min, double max, double mean, double sharpness
     return min + GetDistribution((mean - min) / (max - min), sharpness, 0.005f) * (max - min); // Baseline is always this
 }
 
-Spell GetRandomAction(double x, double y, int level, int offset = 0)
+Spell GetRandomAction(float x, float y, int level, int offset = 0)
 {
     NollaPrng *prng = new NollaPrng(0);
     prng->SetRandomSeed(world_seed + (uint)offset, x, y);
@@ -462,7 +462,7 @@ Spell GetRandomAction(double x, double y, int level, int offset = 0)
     return all_spells[0]; // Fallback just in case. Should be mathematically impossible
 }
 
-Spell GetRandomActionWithType(double x, double y, int level, int type, int offset = 0)
+Spell GetRandomActionWithType(float x, float y, int level, int type, int offset = 0)
 {
     NollaPrng *prng = new NollaPrng(0);
     prng->SetRandomSeed(world_seed + offset, x, y);

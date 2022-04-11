@@ -36,6 +36,7 @@ interface SeedInfoItem {
 	id?: number;
 	seed: string;
 	config: any;
+	updatedAt: Date;
 }
 
 export class NoitaDB extends Dexie {
@@ -44,10 +45,31 @@ export class NoitaDB extends Dexie {
 
 	constructor() {
 		super('NoitaDB');
+
+		// Maybe extract this into its own files so that any future upgrades don't
+		// increase the size of this file exponentially?
+
+		// https://dexie.org/docs/Tutorial/Design#database-versioning
 		this.version(3).stores({
 			configItems: '++id, &key',
 			seedInfo: '++id, &seed'
 		});
+
+		this.version(4)
+			.stores({
+				configItems: '++id, &key',
+				seedInfo: '++id, &seed, updatedAt'
+			})
+			.upgrade(t => {
+				((t as any).seedInfo as NoitaDB['seedInfo'])
+					.toCollection()
+					.modify(s => {
+						if (s.updatedAt) {
+							return;
+						}
+						s.updatedAt = new Date();
+					});
+			});
 	}
 
 	async setConfig(key: string, val: any) {
@@ -71,7 +93,8 @@ export class NoitaDB extends Dexie {
 			if (!exists) {
 				await this.seedInfo.add({
 					seed,
-					config
+					config,
+					updatedAt: new Date()
 				});
 				return;
 			}
@@ -83,7 +106,7 @@ export class NoitaDB extends Dexie {
 			return this.seedInfo
 				.where('seed')
 				.equals(seed)
-				.modify({ config });
+				.modify({ config, updatedAt: new Date() });
 		});
 	}
 }

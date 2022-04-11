@@ -5,7 +5,6 @@
 
 emcc --bind -Oz \
   -o noita_random.js \
-  --closure=1 \
   --std=c++17 \
   --extern-pre-js="pre.js" \
   -s WASM=1 \
