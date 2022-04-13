@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Modal, Row, Col, FormControl } from 'react-bootstrap';
 import Fuse from 'fuse.js';
 
@@ -8,7 +8,13 @@ import spellObj from '../../../services/SeedInfo/data/obj/spells.json';
 import wands from '../../../services/SeedInfo/data/wands.json';
 import Icon from '../../Icons/Icon';
 import Clickable from '../../Icons/Clickable';
-import { IShopType, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
+import {
+	IShopType,
+	ShopInfoProvider
+} from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
+
+import { ThemeContext } from '../../ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const shopInfoProvider = new ShopInfoProvider({} as any, {} as any);
 
@@ -38,18 +44,30 @@ const SpellSelect = (props: ISpellSelectProps) => {
 		handleSelectedClicked
 	} = props;
 
+	const [t] = useTranslation('materials');
+
 	const spellsToShow = (filter
-		? spellFuse
-			.search(filter)
-			.map(s => s.item)
-		: spells)
-		.filter(s => level >= 0 ? Object.keys(s.spawn_probabilities).includes(String(shopInfoProvider.getShopLevel(level))) : true)
-		.filter(s => !selected.includes(s.id))
+		? spellFuse.search(filter).map(s => s.item)
+		: spells
+	)
+		.filter(s =>
+			level >= 0
+				? Object.keys(s.spawn_probabilities).includes(
+						String(shopInfoProvider.getShopLevel(level))
+				  )
+				: true
+		)
+		.filter(s => !selected.includes(s.id));
+
+	const [theme] = useContext(ThemeContext);
 
 	return (
 		<>
 			{selected.length ? (
-				<Row sm={8} className="p-2 justify-content-center align-items-center row-cols-auto">
+				<Row
+					sm={8}
+					className="p-2 justify-content-center align-items-center row-cols-auto"
+				>
 					{selected.map(s => {
 						const spell = spellObj[s];
 						return (
@@ -60,8 +78,9 @@ const SpellSelect = (props: ISpellSelectProps) => {
 								>
 									<Icon
 										uri={spell.sprite}
-										alt={spell.description}
-										title={spell.name}
+										alt={t(spell.description)}
+										title={t(spell.name)}
+										background
 									/>
 								</Clickable>
 							</Col>
@@ -89,9 +108,10 @@ const SpellSelect = (props: ISpellSelectProps) => {
 							<Clickable useHover onClick={() => handleOnClick(spell.id)}>
 								<Icon
 									uri={spell.sprite}
-									alt={spell.description}
-									title={spell.name}
-								/>
+									alt={t(spell.description)}
+									title={t(spell.name)}
+									background
+									/>
 							</Clickable>
 						</Col>
 					);
@@ -108,7 +128,7 @@ const wandOptions = {
 
 const wandFuse = new Fuse(wands, wandOptions);
 
-interface IWandSelectProps { }
+interface IWandSelectProps {}
 const WandSelect = (props: IWandSelectProps) => {
 	return <>Wand search in development</>;
 };

@@ -2,50 +2,41 @@ import fs from 'fs';
 import path from 'path';
 import Jimp from 'jimp';
 
-import spells from './toJs2';
+import spells from './toJs3';
 
 const root = path.resolve(__dirname, '../../src/services/SeedInfo/data');
 
-const noitaData = path.resolve( require('os').homedir(), 	'.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/'
-);
-const translationFile = path.resolve(require('os').homedir(), '.steam/debian-installation/steamapps/common/Noita/data/translations/common.csv'
+const noitaData = path.resolve(require('os').homedir(), '.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/'
 );
 
-const translationCSV = fs.readFileSync(translationFile).toString();
-
-const translation: { [id: string]: string } = {};
-
-translationCSV.split('\n').forEach((row, i) => {
-	if (!i) {
-		// csv col definitions
-		return;
-	}
-	const items = row.split(',');
-
-	translation[items[0]] = items[1];
-});
+const spellPath = path.resolve(noitaData, "data/scripts/gun/gun_actions.lua");
 
 (async () => {
 	const newSpells: any[] = [];
 
 	for (const spell of spells as any[]) {
 		await new Promise<void>(res => {
-			const img = fs.readFileSync(path.resolve(noitaData, spell.sprite));
+			const p = path.resolve(noitaData, spell.sprite);
+			if (!fs.existsSync(p)) {
+				return res();
+			}
+			const img = fs.readFileSync(p);
 			Jimp.read(img, (err, image) => {
 				image.getBase64(Jimp.MIME_PNG, (err, src) => {
 					const s = {
 						...spell,
-						sprite: src,
-						name: translation[spell.name.replace('$', '')],
-						description: translation[spell.description.replace('$', '')]
+						sprite: src
 					};
 					const spawnLevels = s.spawn_level.split(',');
 					const spawnProbabilities = s.spawn_probability.split(',');
 					s.spawn_probabilities = {};
 					for (let i = 0; i < spawnLevels.length; i++) {
-						s.spawn_probabilities[spawnLevels[i]] = Number(
+						const probability = Number(
 							spawnProbabilities[i]
-						);
+						)
+						if (probability) {
+							s.spawn_probabilities[spawnLevels[i]] = probability;
+						}
 					}
 					newSpells.push(s);
 					res();
@@ -61,13 +52,12 @@ translationCSV.split('\n').forEach((row, i) => {
 	}
 
 	fs.writeFileSync(
-		path.resolve(root, 'spells.new.json'),
+		path.resolve(__dirname, 'spells.new.json'),
 		JSON.stringify(newSpells, null, 2)
 	);
 
 	fs.writeFileSync(
-		path.resolve(root, 'obj/spells.new.json'),
+		path.resolve(__dirname, 'spells.new.obj.json'),
 		JSON.stringify(out, null, 2)
 	);
-
 })();
