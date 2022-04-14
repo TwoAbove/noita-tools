@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Modal, Row, Col, FormControl } from 'react-bootstrap';
 import Fuse from 'fuse.js';
 
@@ -13,7 +13,6 @@ import {
 	ShopInfoProvider
 } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
 
-import { ThemeContext } from '../../ThemeContext';
 import { useTranslation } from 'react-i18next';
 
 const shopInfoProvider = new ShopInfoProvider({} as any, {} as any);
@@ -58,8 +57,6 @@ const SpellSelect = (props: ISpellSelectProps) => {
 				: true
 		)
 		.filter(s => !selected.includes(s.id));
-
-	const [theme] = useContext(ThemeContext);
 
 	return (
 		<>
