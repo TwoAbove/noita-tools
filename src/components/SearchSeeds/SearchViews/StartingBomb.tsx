@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
-import { SpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Spell';
+import { useTranslation } from 'react-i18next';
+
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
+import spellObj from '../../../services/SeedInfo/data/obj/spells.json';
 
 import Clickable from '../../Icons/Clickable';
 import Icon from '../../Icons/Icon';
@@ -11,8 +13,6 @@ interface IStartingBombSpellProps {
 }
 
 const spellOptions = ['BOMB', 'DYNAMITE', 'MINE', 'ROCKET', 'GRENADE'];
-
-const spells = new SpellInfoProvider({} as any);
 
 const StartingBombSpell = (props: IStartingBombSpellProps) => {
 	const { onUpdateConfig } = props;
@@ -39,19 +39,27 @@ const StartingBombSpell = (props: IStartingBombSpellProps) => {
 		setStartingBombSpellType(type);
 	};
 
+	const [t] = useTranslation('materials');
+
 	return (
 		<Container fluid>
 			<Row className="justify-content-evenly align-items-center">
 				{spellOptions.map((type, i) => {
-					const spell = spells.provide(type);
+					const spell = spellObj[type]; // spells.provide(type);
 					return (
-						<Col key={type}>
+						<Col className="p-0 m-1" xs="auto" key={spell.id}>
 							<Clickable
-								className="m-3"
-								onClick={() => handleClicked(type)}
+								// className="m-3"
+								useHover
+								onClick={() => handleClicked(spell.id)}
 								clicked={type === startingBombType}
 							>
-								<Icon uri={spell.sprite} alt={spell.id} title={spell.id} />
+								<Icon
+									background
+									uri={spell.sprite}
+									alt={t(spell.description)}
+									title={t(spell.name)}
+								/>
 							</Clickable>
 						</Col>
 					);
