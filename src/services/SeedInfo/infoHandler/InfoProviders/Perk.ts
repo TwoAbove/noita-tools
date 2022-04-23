@@ -280,7 +280,7 @@ export class PerkInfoProvider extends InfoProvider {
     const result = this.perk_get_spawn_order();
     if (returnPerkObjects) {
       for (let i = 0; i < result.length; i++) {
-        result[i] = this.perks[result[i].id];
+        result[i] = this.perks[result[i]];
       }
     }
     return result;

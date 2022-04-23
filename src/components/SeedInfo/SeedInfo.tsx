@@ -55,6 +55,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 								infoProvider={infoProvider}
 								shop={data.shop}
 								perks={data.perks}
+								perkDeck={data.perkDeck}
 							/>
 						</WithShow>
 					</Col>

@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { Modal, Row, Col, FormControl } from 'react-bootstrap';
 import Fuse from 'fuse.js';
 
-import perks from '../../../services/SeedInfo/data/perks_new.json';
+import perks from '../../../services/SeedInfo/data/perks.json';
 import Icon from '../../Icons/Icon';
 import Clickable from '../../Icons/Clickable';
+import Perk from '../../Icons/Perk';
 
 const options = {
 	minMatchCharLength: 2,
@@ -31,10 +32,9 @@ const PerkSelect = (props: IPerkSelectProps) => {
 	};
 
 	const perksToShow = (filter
-		? fuse
-				.search(filter || ' ')
-				.map(p => p.item)
-		: perks).filter(p => !selectedPerks.includes(p.id));
+		? fuse.search(filter || ' ').map(p => p.item)
+		: perks
+	).filter(p => !selectedPerks.includes(p.id));
 
 	return (
 		<Modal fullscreen="sm-down" scrollable show={show} onHide={handleClose}>
@@ -56,14 +56,7 @@ const PerkSelect = (props: IPerkSelectProps) => {
 					{perksToShow.map(perk => {
 						return (
 							<Col className="p-0 m-1" key={perk.id}>
-								<Clickable>
-									<Icon
-										onClick={() => handleOnClick(perk.id)}
-										uri={'data:image/png;base64,' + perk.ui_icon}
-										alt={perk.ui_name}
-										title={perk.ui_name}
-									/>
-								</Clickable>
+								<Perk onClick={() => handleOnClick(perk.id)} perk={perk} />
 							</Col>
 						);
 					})}
