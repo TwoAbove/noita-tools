@@ -14,8 +14,6 @@ import Fuse from 'fuse.js';
 
 import biomeModifiers from '../services/SeedInfo/data/obj/biome_modifiers.json';
 import biomeNames from '../services/SeedInfo/data/obj/biome_names.json';
-import perks from '../services/SeedInfo/data/perks_new.json';
-import Icon from './Icons/Icon';
 import { capitalize, Objectify } from '../services/helpers';
 import BiomeModifier from './SeedInfo/SeedInfoViews/BiomeMod';
 import { BiomeModifierInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/BiomeModifier';

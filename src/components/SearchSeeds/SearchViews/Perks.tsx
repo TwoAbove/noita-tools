@@ -9,6 +9,7 @@ import Icon from '../../Icons/Icon';
 import perkData from '../../../services/SeedInfo/data/obj/perks.json';
 import { Square } from '../../helpers';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
+import Perk from '../../Icons/Perk';
 
 interface IPerksProps {
 	onUpdateConfig: (config: IRule) => void;
@@ -116,15 +117,10 @@ const Perks = (props: IPerksProps) => {
 										<Stack gap={3} direction="horizontal">
 											{row.map(perkId => {
 												return (
-													<Icon
+													<Perk
 														key={perkId}
 														onClick={() => handleDelete(perkId, i)}
-														uri={
-															'data:image/png;base64,' +
-															perkData[perkId].ui_icon
-														}
-														alt={perkData[perkId].ui_name}
-														title={perkData[perkId].ui_name}
+														perk={perkData[perkId]}
 													/>
 												);
 											})}

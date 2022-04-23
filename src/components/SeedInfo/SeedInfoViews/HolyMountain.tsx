@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Button, Col, Form, Stack } from 'react-bootstrap';
+import {
+  Button, Col, Form, Stack, Modal, Row,
+} from 'react-bootstrap';
 
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
-import Clickable from '../../Icons/Clickable';
 import { localizeNumber, removeFromArr } from '../../../services/helpers';
-import Icon from '../../Icons/Icon';
 import { IGenRowAction, IPerk, IPerkChangeAction, IPerkChangeStateType, IRerollAction, ISelectAction, IShiftAction, PerkInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Perk';
 import { IShopType, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
 import { Square } from '../../helpers';
 import ShopItems from './ShopItems';
+import { useTranslation } from 'react-i18next';
+import Perk from '../../Icons/Perk';
 
-const lotteryPerk = new PerkInfoProvider({} as any).getPerk('PERKS_LOTTERY');
+const perkWidth = '3rem'
 
 interface IPerkProps {
   rerollable?: boolean;
@@ -21,31 +23,6 @@ interface IPerkProps {
   width?: string;
   perk: IHolyMountainProps['perks'][number][number];
   onClick?: () => void;
-}
-
-const Perk = (props: IPerkProps) => {
-  const { clicked, rerollable, perk, width, onClick } = props;
-  return (
-    <div onClick={onClick} className='position-relative'>
-      <Clickable
-        clicked={clicked}
-      >
-        <Icon
-          uri={`data:image/png;base64,${perk.ui_icon}`}
-          alt={`${perk.ui_name}`}
-          title={`${perk.ui_name}`}
-          width={width}
-        />
-        {rerollable &&
-          <Icon
-            className='position-absolute top-0 start-100 translate-middle'
-            width='1.5rem'
-            uri={`data:image/png;base64,${lotteryPerk.ui_icon}`}
-          />
-        }
-      </Clickable>
-    </div>
-  );
 }
 interface IRerollPaneProps {
   handleRerollUndo?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -158,7 +135,7 @@ const PerkRow = (props: IPerkRowProps) => {
                   className='position-absolute top-0 start-0 translate-middle'
                   style={{ marginRight: '-1rem', marginTop: '-0.25rem', zIndex: 1 }}>
                   <Perk
-                    width='2.5rem'
+                    width={perkWidth}
                     key={gamblePerks[i * 2].ui_name}
                     perk={gamblePerks[i * 2]}
                   />
@@ -167,7 +144,7 @@ const PerkRow = (props: IPerkRowProps) => {
                   className='position-absolute top-50 start-100 translate-middle'
                   style={{ marginTop: '0.25rem' }}>
                   <Perk
-                    width='2.5rem'
+                    width={perkWidth}
                     key={gamblePerks[i * 2 + 1].ui_name}
                     perk={gamblePerks[i * 2 + 1]}
                   />
@@ -184,12 +161,45 @@ const PerkRow = (props: IPerkRowProps) => {
   )
 };
 
+const PerkDeckModal = props => {
+  const { perkDeck, show, handleClose } = props;
+	const [t] = useTranslation('materials');
+
+  return (
+    <Modal size="lg" show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Perk Deck</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+      <Row className="p-3 justify-content-center align-items-center row-cols-auto">
+					{perkDeck.map((perk, i) => {
+						return (
+							<Col className="p-0 m-1" key={`${perk.id}-${i}`}>
+                  <Perk
+                    width={perkWidth}
+                    perk={perk}
+                  />
+							</Col>
+						);
+					})}
+				</Row>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
 interface IHolyMountainHeaderProps {
   advanced: boolean;
   rerolls: number;
   price: number;
   total: number;
   canUndo: boolean;
+  perkDeck: string[];
   setAdvanced: (boolean) => void;
   handleOffset: (type: '+' | '-') => void;
   offsetText: () => string;
@@ -197,51 +207,69 @@ interface IHolyMountainHeaderProps {
   handleBack: () => void;
 }
 const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
-  const { canUndo, advanced, rerolls, price, total, setAdvanced, handleOffset, handleReset, handleBack, offsetText } = props;
+  const { canUndo, advanced, rerolls, price, total, perkDeck, setAdvanced, handleOffset, handleReset, handleBack, offsetText } = props;
+
+  const [showDeck, setShowDeck] = useState(false);
+
   return (
-    <Stack gap={2} direction="horizontal">
-      <Stack gap={3} direction="horizontal">
-        <Button
-          variant="outline-primary"
-          size="sm"
-          onClick={() => handleOffset('-')}
-        >
-          &lt;
-        </Button>
-        <span className="block capitalize">{offsetText()}</span>
-        <Button
-          variant="outline-primary"
-          size="sm"
-          onClick={() => handleOffset('+')}
-        >
-          &gt;
-        </Button>
+    <>
+      <Stack gap={2} direction="horizontal">
+        <Stack gap={3} direction="horizontal">
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={() => handleOffset('-')}
+          >
+            &lt;
+          </Button>
+          <span className="block capitalize">{offsetText()}</span>
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={() => handleOffset('+')}
+          >
+            &gt;
+          </Button>
+        </Stack>
+        <div className="ms-auto" />
+        <Form.Switch
+          checked={advanced}
+          onChange={e => {
+            setAdvanced(e.target.checked);
+          }}
+          id="advanced-switch"
+          label="Advanced"
+        />
+        <div className="ms-auto" />
+        {advanced ? <Button disabled={!canUndo} onClick={handleBack}>Undo</Button> : <div className="ms-auto" />}
+        <div className="ms-auto" />
+        <Button onClick={() => handleReset()}>Reset</Button>
+        <div className="ms-auto" />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignSelf: 'stretch',
+        }}>
+          <span> Rerolls: {rerolls}</span>
+          <span> Next: {localizeNumber(price)}</span>
+          <span> Total: {localizeNumber(total)}</span>
+        </div>
+        <div className="ms-auto" />
+        <Button size='sm'
+          variant="outline-secondary"
+          onClick={() => setShowDeck(true)}
+          style={{
+            whiteSpace: 'normal',
+            wordWrap: 'break-word',
+          }}>Show <br /> perk deck</Button>
+        <div className="ms-auto" />
       </Stack>
-      <div className="ms-auto" />
-      <Form.Switch
-        checked={advanced}
-        onChange={e => {
-          setAdvanced(e.target.checked);
-        }}
-        id="advanced-switch"
-        label="Advanced"
+      <PerkDeckModal
+        perkDeck={perkDeck}
+        show={showDeck}
+        handleClose={() => setShowDeck(false)}
       />
-      <div className="ms-auto" />
-      {advanced ? <Button disabled={!canUndo} onClick={handleBack}>Undo</Button> : <div className="ms-auto" />}
-      <div className="ms-auto" />
-      <Button onClick={() => handleReset()}>Reset</Button>
-      <div className="ms-auto" />
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignSelf: 'stretch',
-      }}>
-        <span> Rerolls: {rerolls}</span>
-        <span> Next: {localizeNumber(price)}</span>
-        <span> Total: {localizeNumber(total)}</span>
-      </div>
-      <div className="ms-auto" />
-    </Stack>
+    </>
   )
 };
 
@@ -496,11 +524,12 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
 interface IHolyMountainProps {
   shop: ReturnType<ShopInfoProvider['provide']>;
   perks: ReturnType<PerkInfoProvider['provide']>;
+  perkDeck: ReturnType<PerkInfoProvider['getPerkDeck']>;
   infoProvider: GameInfoProvider;
 }
 
 const HolyMountain = (props: IHolyMountainProps) => {
-  const { shop, infoProvider } = props;
+  const { shop, infoProvider, perkDeck } = props;
 
   const { advanced, setAdvanced, perkMethods, perkData } = useContext(HolyMountainContext);
   const { handleReroll, handleRerollUndo, handleClickPerk, handleReset, handleBack, handleOffset, handleGenRowAdvanced } = perkMethods;
@@ -537,6 +566,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
         canUndo={true}
         price={getPrice(totalRerolls)}
         total={getTotal(totalRerolls)}
+        perkDeck={perkDeck}
         handleReset={handleReset}
         handleOffset={handleOffset}
         handleBack={handleBack}
