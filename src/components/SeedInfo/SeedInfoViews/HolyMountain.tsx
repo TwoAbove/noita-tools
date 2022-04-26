@@ -17,13 +17,6 @@ import Perk from '../../Icons/Perk';
 
 const perkWidth = '3rem'
 
-interface IPerkProps {
-  rerollable?: boolean;
-  clicked?: boolean;
-  width?: string;
-  perk: IHolyMountainProps['perks'][number][number];
-  onClick?: () => void;
-}
 interface IRerollPaneProps {
   handleRerollUndo?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 

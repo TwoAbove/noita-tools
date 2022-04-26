@@ -11,6 +11,70 @@ import SeedDataOutput from '../SeedInfo/SeedDataOutput';
 import SeedLinkHandler from './SeedLinkHandler';
 import { useForceUpdate } from '../helpers';
 
+interface IPasteProps {
+	onImageBlob: (blob: Blob) => void;
+}
+const Paste = ({
+	onImageBlob
+}: IPasteProps) => {
+	const [ripple, setRipple] = useState(false);
+	const handlePaste = (event: React.ClipboardEvent) => {
+		setRipple(true);
+		setTimeout(() => setRipple(false), 500);
+		var items = (event.clipboardData || ((event as any).originalEvent.clipboardData as DataTransfer)).items;
+		for (const index in items) {
+			var item = items[index];
+			if (item.kind === 'file') {
+				var blob = item.getAsFile()!;
+				onImageBlob(blob);
+			}
+		}
+	}
+
+	useEffect(() => {
+		window.addEventListener('paste', handlePaste as any);
+		return () => {
+			window.removeEventListener('paste', handlePaste as any);
+		}
+	});
+
+	return (
+		<div>
+			<h5>
+				Paste
+			</h5>
+			<div style={{
+				transition: '0.2s'
+			}} className={`${ripple && 'border-info border-1' } border p-2`}>
+				<p>
+					If you don't want to do screen capture, you can take a screenshot of Noita to your clipboard and paste it on this page. <br/>
+				</p>
+					<table>
+						<tbody>
+
+						<tr>
+							<td>For Linux</td>
+							<td> <code>Ctrl + PrtSc</code></td>
+						</tr>
+						<tr>
+							<td>For Mac </td>
+							<td><code>Ctrl + Shift + Cmd + 3</code></td>
+						</tr>
+						<tr>
+							<td className='pe-3'>For Windows</td>
+							<td><code>PrtSc</code></td>
+						</tr>
+						</tbody>
+					</table>
+					<br/>
+				<p>
+					Or, choose a screenshot to upload.
+				</p>
+				<input type="file" onChange={() => { }} />
+			</div>
+		</div>
+	)
+}
 // const ocrHandler = new OCRHandler({});
 
 const Description = () => {
@@ -84,7 +148,7 @@ const Watch = (props: IWatchProps) => {
 	};
 
 	return (
-		<Container>
+		<div>
 			<Row>
 				<h5>
 					Watch
@@ -109,7 +173,7 @@ const Watch = (props: IWatchProps) => {
 			</Row>
 			{room ? <p className="mt-2 text-success">Connected to {room}</p> : null}
 			{seed ? <SeedDataOutput seed={seed} /> : null}
-		</Container>
+		</div>
 	)
 }
 
@@ -182,8 +246,11 @@ const LiveSeedStats = () => {
 					<Col className="mb-5" xs={12}>
 						<Watch onReset={() => seedLink.sendRestart()} ready={socketReady} room={seedLink?.room} onSetRoom={(room) => seedLink?.joinRoom(room)} seed={lastSeed || seedLink?.seed} />
 					</Col>
-					<Col className="mb-2" xs={12}>
+					<Col className="mb-5" xs={12}>
 						<Host ready={everythingReady} hostRoom={seedLink?.hostRoom} recording={!!ocrHandler?.mediaStream} onClickStartHosting={onClickScannerStart} onClickStopHosting={onClickScannerStop} />
+					</Col>
+					<Col className="mb-5" xs={12}>
+						<Paste onImageBlob={blob => ocrHandler.doSingleDetect(blob)} />
 					</Col>
 				</Stack>
 			}

@@ -14,6 +14,27 @@ const b2 = new B2({
 	applicationKey: process.env.B2_APP_KEY
 });
 
+
+const rooms = new Set();
+
+const roomLength = 4;
+const chars = '1234';
+const getRoomNumber = () => {
+	if (rooms.size > Math.pow(10, roomLength)) {
+		console.error('Rooms full');
+		return;
+	}
+	let finalNumber;
+	while (!finalNumber) {
+		const tryNumber = randomText(chars, roomLength);
+		if (!rooms[tryNumber]) {
+			finalNumber = tryNumber;
+		}
+	}
+	return finalNumber;
+};
+
+
 const app = express();
 
 app.use(morgan('combined'));
@@ -29,6 +50,22 @@ app.post('/data', (req, res) => {
 
 app.post('/stats', (req, res) => {
 	stats.push(req.body);
+	res.send(200);
+});
+
+const dbs = {};
+app.get('/db_dump/', (req, res) => {
+	const id = getRoomNumber();
+	res.json({ id });
+});
+
+app.get('/db_dump/:id', (req, res) => {
+	res.status(200).send(dbs[req.params.id]);
+	delete dbs[req.params.id];
+});
+
+app.post('/db_dump/:id', (req, res) => {
+	dbs[req.params.id] = req.body;
 	res.send(200);
 });
 
@@ -62,25 +99,6 @@ const randomText = (chars, length) => {
 		str += chars.charAt(Math.floor(Math.random() * chars.length));
 	}
 	return str;
-};
-
-const rooms = new Set();
-
-const roomLength = 4;
-const chars = '1234';
-const getRoomNumber = () => {
-	if (rooms.size > Math.pow(10, roomLength)) {
-		console.error('Rooms full');
-		return;
-	}
-	let finalNumber;
-	while (!finalNumber) {
-		const tryNumber = randomText(chars, roomLength);
-		if (!rooms[tryNumber]) {
-			finalNumber = tryNumber;
-		}
-	}
-	return finalNumber;
 };
 
 io.on('connection', socket => {
