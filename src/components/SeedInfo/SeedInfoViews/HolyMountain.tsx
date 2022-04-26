@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import Perk from '../../Icons/Perk';
 
 const perkWidth = '3rem'
+const gamblePerkDiff = '-0.8rem'
 
 interface IRerollPaneProps {
   handleRerollUndo?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -78,11 +79,11 @@ interface IPerkRowProps {
 };
 const PerkRow = (props: IPerkRowProps) => {
   const { advanced, pickedPerks, perkRerolls, shop, perks, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, handleOpenShopInfo, handleLoad } = props;
-  const gambleAmount = pickedPerks?.filter(p => p === 'GAMBLE').length;
+  const numberOfGambles = pickedPerks?.filter(p => p === 'GAMBLE').length;
   const type = shop.type;
   const rerollsForLevel = perkRerolls ? perkRerolls : 0;
-  const perksToShow = (gambleAmount > 0 ? perks?.slice(0, -2 * gambleAmount) : perks) || [];
-  const gamblePerks = perks?.slice(-2 * gambleAmount) || [];
+  const perksToShow = (numberOfGambles > 0 ? perks?.slice(0, -2 * numberOfGambles) : perks) || [];
+  const gamblePerks = perks?.slice(-2 * numberOfGambles) || [];
   return (
     <Stack direction="horizontal">
       <Col xs={2}>
@@ -120,7 +121,7 @@ const PerkRow = (props: IPerkRowProps) => {
               perk={perk}
             />
           })}
-          {!!gambleAmount && new Array(gambleAmount).fill('').map((_, i) => {
+          {!!numberOfGambles && new Array(numberOfGambles).fill('').map((_, i) => {
             return (
               <div key={i} className="d-flex ms-4 position-relative" style={{ width: '2rem' }}>
                 {/* Hard coded to make it more pretty */}
@@ -128,7 +129,7 @@ const PerkRow = (props: IPerkRowProps) => {
                   className='position-absolute top-0 start-0 translate-middle'
                   style={{ marginRight: '-1rem', marginTop: '-0.25rem', zIndex: 1 }}>
                   <Perk
-                    width={perkWidth}
+                    width={`calc(${perkWidth} + ${gamblePerkDiff})`}
                     key={gamblePerks[i * 2].ui_name}
                     perk={gamblePerks[i * 2]}
                   />
@@ -137,7 +138,7 @@ const PerkRow = (props: IPerkRowProps) => {
                   className='position-absolute top-50 start-100 translate-middle'
                   style={{ marginTop: '0.25rem' }}>
                   <Perk
-                    width={perkWidth}
+                    width={`calc(${perkWidth} + ${gamblePerkDiff})`}
                     key={gamblePerks[i * 2 + 1].ui_name}
                     perk={gamblePerks[i * 2 + 1]}
                   />
@@ -445,17 +446,16 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
     // Handle GAMBLE select where we need to also
     // automatically add the extra perks
     // when we select the GAMBLE perk
-    const pickedPerks = infoProvider.config.pickedPerks[worldOffsetSimple];
+    const pickedPerks = infoProvider.config.pickedPerks.get(worldOffsetSimple);
     if (!pickedPerks) {
       return;
     }
-
     for (let i = 0; i < pickedPerks.length; i++) {
       const picked = pickedPerks[i];
       if (!picked) {
         continue;
       }
-      const perkIds = perks[i].map(p => p.id);
+      const perkIds = (props.perks[i] || []).map(p => p.id);
       if (!perkIds.includes('GAMBLE')) {
         continue;
       }

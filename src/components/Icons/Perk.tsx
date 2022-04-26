@@ -20,28 +20,28 @@ const Perk = (props: IPerkProps) => {
   const { clicked, rerollable, perk, width, onClick } = props;
   const [t] = useTranslation('materials');
 
-  const popover = (props) => (
-    <Popover {...props} id={`popover-perk-${perk.id}`}>
-      <Popover.Header as="h3">{t(perk.ui_name)}</Popover.Header>
-      <Popover.Body>
-        {t(perk.ui_description)}
-      </Popover.Body>
-    </Popover>
-  );
+  // const popover = (props) => (
+  //   <Popover {...props} id={`popover-perk-${perk.id}`}>
+  //     <Popover.Header as="h3">{t(perk.ui_name)}</Popover.Header>
+  //     <Popover.Body>
+  //       {t(perk.ui_description)}
+  //     </Popover.Body>
+  //   </Popover>
+  // );
 
   return (
     <div onClick={onClick} className='position-relative'>
       <Clickable
         clicked={clicked}
       >
-        <OverlayTrigger placement="auto" delay={1000} overlay={popover}>
+        {/* <OverlayTrigger placement="auto" delay={1000} overlay={popover}> */}
           <Icon
             uri={perk.perk_icon}
             alt={t(perk.ui_description)}
             title={t(perk.ui_name)}
             width={width}
           />
-        </OverlayTrigger>
+        {/* </OverlayTrigger> */}
         {rerollable &&
           <Icon
             className='position-absolute top-0 start-100 translate-middle'

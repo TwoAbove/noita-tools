@@ -26,7 +26,7 @@ const Icon = React.forwardRef(
 			>,
 		ref
 	) => {
-		const { uri, width, height, style, size, background, ...rest } = props;
+		const { uri, width, height, style, size, alt, title, background, ...rest } = props;
 		const w = size || width || '3rem';
 		const h = size || height;
 		const img = (
@@ -36,8 +36,8 @@ const Icon = React.forwardRef(
 				])}
 				{...rest}
 				ref={ref as any}
-				alt={rest.alt}
-				title={rest.title}
+				alt={alt}
+				title={title}
 				src={uri}
 				style={{
 					width: w,
