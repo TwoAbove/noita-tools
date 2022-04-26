@@ -23,25 +23,24 @@ const Header = () => {
 	const hostname = window.location.hostname;
 	const notNewUrl = !hostname.includes('noitool.com');
 	return (
-		<Stack direction="horizontal" className="align-items-stretch">
-			<div className="w-25"></div>
-			<Stack className="w-50">
-				<h1 className="display-3 fw-bolder m-1 mt-3 mb-1 text-center">
+		<Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
+			<div className="">
+				<h3 className="fs-1 fw-bolder mt-2 mb-0 text-center">
 					Noitool
-				</h1>
-				<h6 className="display-6 fw-lighter m-1 my-2 text-center">
+				</h3>
+				<p className="fs-4 fw-lighter m-1 mt-0 my-1 text-center">
 					Noita tools and helpers
-				</h6>
-				{notNewUrl && (
-					<p className="m-1 text-center">
+				</p>
+				{false && notNewUrl && (
+					<p className="mb-2 text-center">
 						Use the new url!{' '}
 						<a className="link-primary" href="https://www.noitool.com/">
 							https://www.noitool.com/
 						</a>{' '}
 					</p>
 				)}
-			</Stack>
-			<div className="w-25 d-flex p-3 justify-content-end align-items-start">
+			</div>
+			<div className=" d-flex pt-3 justify-content-end align-items-start">
 				<Button
 					onClick={() => setShow(true)}
 					size="lg"
@@ -51,7 +50,7 @@ const Header = () => {
 				</Button>
 			</div>
 			<Settings show={show} handleClose={() => setShow(false)} />
-		</Stack>
+		</Container>
 	);
 };
 

@@ -1,13 +1,11 @@
 import { Alert, Container } from 'react-bootstrap';
 
-import useLocalStorage from '../services/useLocalStorage';
+import useLocalStorage from '../../services/useLocalStorage';
 // import { db } from "../services/db";
-
-import './App.css';
 
 
 const NeedInputAlert = () => {
-  const [lastShow, setLastShow] = useLocalStorage('show-need-feedback-alert', 0);
+  const [lastShow, setLastShow] = useLocalStorage('show-need-feedback-alert', +new Date());
   const now = +new Date();
   const show = now / 1000 - lastShow / 1000 > 604800; // 7 days;
 

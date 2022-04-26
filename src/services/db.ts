@@ -1,5 +1,6 @@
 import Dexie, { Table } from 'dexie';
 import deepEqual from 'fast-deep-equal/es6/react';
+import { importDB, exportDB, importInto, peakImportFile } from "dexie-export-import";
 
 async function populate() {
 	await db.configItems.bulkAdd([
@@ -108,6 +109,14 @@ export class NoitaDB extends Dexie {
 				.equals(seed)
 				.modify({ config, updatedAt: new Date() });
 		});
+	}
+
+	async exportDB() {
+		return await exportDB(this);
+	}
+
+	async importDB(blob: Blob) {
+		return await importInto(this, blob);
 	}
 }
 

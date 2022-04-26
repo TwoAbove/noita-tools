@@ -68,7 +68,7 @@ class OCRHandler extends EventTarget {
   async startTesseract() {
     const worker = Tesseract.createWorker({
       // langPath: 'https://tessdata.projectnaptha.com/4.0.0_fast',
-      langPath: '/ocr/fast',
+      langPath: '/ocr/good',
       errorHandler: (e) => {
         console.error(e);
         this.startTesseract();
@@ -120,11 +120,37 @@ class OCRHandler extends EventTarget {
     this.onUpdate();
   }
 
+  async doSingleDetect (blob: Blob) {
+    this.lastBitmap = await createImageBitmap(blob);
+    this.doLoop();
+  }
+
+  async doLoop() {
+    try {
+      const seed = await this.getSeedFromImage();
+      if (!seed) {
+        this.lastCapture = new Date();
+        return;
+      }
+      if (parseInt(seed, 10) > 4294967295) {
+        this.lastCapture = new Date();
+        return;
+      }
+      if (seed) {
+        this.dispatchEvent(new CustomEvent('seed', { detail: { seed } }));
+      }
+    } catch (e) {
+      console.error('captureLoop error:', e);
+      this.startCapture();
+    }
+    this.lastCapture = new Date();
+  }
+
   async captureLoop() {
     while (this.loop) {
       if (((+new Date()) - (+this.lastCapture)) < 1000) {
         await new Promise(r => setTimeout(r, 100));
-        continue;
+        return;
       }
       if (this.canvasRef) { // to debug
         console.log('One-time capture');
@@ -134,26 +160,8 @@ class OCRHandler extends EventTarget {
       if (!this.lastBitmap) {
         throw new Error('Cannot get bitmap');
       }
-      try {
-        const seed = await this.getSeedFromImage();
-        if (!seed) {
-          this.lastCapture = new Date();
-          continue;
-        }
-        if (parseInt(seed, 10) > 4294967295) {
-          this.lastCapture = new Date();
-          continue;
-        }
-        if (seed) {
-          this.dispatchEvent(new CustomEvent('seed', { detail: { seed } }));
-        }
-      } catch (e) {
-        console.error('captureLoop error:', e);
-        this.startCapture();
-      }
-      this.lastCapture = new Date();
+      this.doLoop();
     }
-
   }
 
   async getBitmap() {

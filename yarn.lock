@@ -6170,6 +6170,11 @@ detective@^5.2.0:
     defined "^1.0.0"
     minimist "^1.1.1"
 
+dexie-export-import@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/dexie-export-import/-/dexie-export-import-1.0.3.tgz#e93926a0a3939c68f5e2b80b48517ea4c6d88fde"
+  integrity sha512-oun27bUUEaeOfSZ8Cv3Nvj5s0LeANYBYQ7ROpF/3Zg1X/IALUnrX0hk5ZUMlYC3s99kFHimXX57ac5AlOdMzWw==
+
 dexie-react-hooks@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/dexie-react-hooks/-/dexie-react-hooks-1.1.1.tgz#ff405cc89e5d899ddbac5e40d593f83f9a74106a"

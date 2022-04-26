@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { Image } from 'react-bootstrap';
 
 // const backgroundUri =
 // 	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAAABnRSTlMAAAAAAABupgeRAAAAbklEQVR4nO3VsREAIQgEwPO1EGvAFizFsmiJHsykjA+c0eSTh5SLINm5CBIAAK01WCMiAMpWxhhmaFvZrxCRqpazM7NBOSUuVGv9q8w5z/wYWnwmoIACCsiZe9h67x4or7VUlYjMBDOLSNqL/x29xrsggrMs4OkAAAAASUVORK5CYII=';
@@ -16,54 +17,56 @@ interface IIconProps {
 	background?: boolean;
 }
 
-const Icon = (
-	props: IIconProps &
-		React.DetailedHTMLProps<
-			React.ImgHTMLAttributes<HTMLImageElement>,
-			HTMLImageElement
-		>
-) => {
-	const { uri, width, height, style, size, background, ...rest } = props;
-
-	const w = size || width || '3rem';
-	const h = size || height;
-
-	const img = (
-		<img
-			className={classNames([
-				background && 'position-absolute top-50 start-50 translate-middle'
-			])}
-			{...rest}
-			alt={rest.alt}
-			title={rest.title}
-			src={uri}
-			style={{
-				width: w,
-				height: h,
-				imageRendering: 'pixelated',
-				...style
-			}}
-		/>
-	);
-
-	if (background) {
-		return (
-			<div
-				className="position-relative"
+const Icon = React.forwardRef(
+	(
+		props: IIconProps &
+			React.DetailedHTMLProps<
+				React.ImgHTMLAttributes<HTMLImageElement>,
+				HTMLImageElement
+			>,
+		ref
+	) => {
+		const { uri, width, height, style, size, background, ...rest } = props;
+		const w = size || width || '3rem';
+		const h = size || height;
+		const img = (
+			<Image
+				className={classNames([
+					background && 'position-absolute top-50 start-50 translate-middle'
+				])}
+				{...rest}
+				ref={ref as any}
+				alt={rest.alt}
+				title={rest.title}
+				src={uri}
 				style={{
-					width: `calc(${w} + 10px)`,
-					height: `calc(${h || '3rem'} + 10px)`,
-					backgroundImage: `url(${backgroundUri})`,
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-					imageRendering: 'pixelated'
+					width: w,
+					height: h,
+					imageRendering: 'pixelated',
+					...style
 				}}
-			>
-				{img}
-			</div>
+			/>
 		);
+
+		if (background) {
+			return (
+				<div
+					className="position-relative"
+					style={{
+						width: `calc(${w} + 10px)`,
+						height: `calc(${h || '3rem'} + 10px)`,
+						backgroundImage: `url(${backgroundUri})`,
+						backgroundSize: 'cover',
+						backgroundPosition: 'center',
+						imageRendering: 'pixelated'
+					}}
+				>
+					{img}
+				</div>
+			);
+		}
+		return img;
 	}
-	return img;
-};
+);
 
 export default Icon;
