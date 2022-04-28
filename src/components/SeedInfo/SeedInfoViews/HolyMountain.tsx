@@ -167,6 +167,9 @@ const PerkDeckModal = props => {
       <Modal.Body>
       <Row className="p-3 justify-content-center align-items-center row-cols-auto">
 					{perkDeck.map((perk, i) => {
+            if (!perk) {
+              return false;
+            }
 						return (
 							<Col className="p-0 m-1" key={`${perk.id}-${i}`}>
                   <Perk
@@ -175,7 +178,7 @@ const PerkDeckModal = props => {
                   />
 							</Col>
 						);
-					})}
+					}).filter(Boolean)}
 				</Row>
       </Modal.Body>
       <Modal.Footer>

@@ -31,7 +31,7 @@ const Header = () => {
 				<p className="fs-4 fw-lighter m-1 mt-0 my-1 text-center">
 					Noita tools and helpers
 				</p>
-				{false && notNewUrl && (
+				{notNewUrl && (
 					<p className="mb-2 text-center">
 						Use the new url!{' '}
 						<a className="link-primary" href="https://www.noitool.com/">
