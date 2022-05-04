@@ -388,6 +388,7 @@ export class PerkInfoProvider extends InfoProvider {
   }
 
   provideStateful(state: IPerkChangeAction[], preview?: boolean) {
+    let lotteries = 0;
     const perkState: Map<number, string[][]> = new Map();
     const pickedState: Map<number, string[][]> = new Map();
     const rerollState: Map<number, number[]> = new Map();
@@ -447,6 +448,10 @@ export class PerkInfoProvider extends InfoProvider {
           if (perk === "EXTRA_PERK") {
             this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
           }
+
+          if(perk === 'PERKS_LOTTERY') {
+            lotteries += 1;
+          }
           break;
         }
         case IPerkChangeStateType.reroll: {
@@ -483,6 +488,7 @@ export class PerkInfoProvider extends InfoProvider {
 
     return {
       worldOffset,
+      lotteries,
       pickedPerks: pickedState.get(worldOffset) || [],
       perks: perkState.get(worldOffset) || [],
       perkRerolls: rerollState.get(worldOffset) || [],
