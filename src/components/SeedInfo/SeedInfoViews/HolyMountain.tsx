@@ -297,11 +297,13 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
   };
 
   const [pd, setPerkData] = useState<{
+    lotteries: number;
     worldOffset: number;
     pickedPerks: string[][];
     perks: IPerk[][];
     perkRerolls: number[];
   }>({
+    lotteries: 0,
     worldOffset: 0,
     pickedPerks: [],
     perks: [],
@@ -333,10 +335,7 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
     0
   );
 
-  const lotteries = advanced ? pickedPerks.reduce((c, r, i) => {
-    const l = r.filter((p, j) => p && perks[i][j].id === 'PERKS_LOTTERY').length;
-    return c + l;
-  }, 0) : [...infoProvider.config.pickedPerks.values()].reduce((c, r) => {
+  const lotteries = advanced ? pd.lotteries : [...infoProvider.config.pickedPerks.values()].reduce((c, r) => {
     const l = r.filter(p => p.includes('PERKS_LOTTERY')).length;
     return c + l;
   }, 0);

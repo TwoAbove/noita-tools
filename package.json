@@ -1,6 +1,6 @@
 {
   "name": "noita-helper",
-  "version": "2.14.1",
+  "version": "2.14.2",
   "private": true,
   "homepage": "https://www.noitool.com/",
   "dependencies": {
@@ -93,7 +93,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "deploy": "yarn build && git subtree push --prefix build origin gh-pages"
+    "deploy": "git checkout master && git pull && git push heroku master:main && git checkout develop"
   },
   "eslintConfig": {
     "extends": "react-app"
