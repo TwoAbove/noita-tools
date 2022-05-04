@@ -18,8 +18,8 @@ console.log('v2.14.2');
 function sendToAnalytics(metric) {
 	const body = JSON.stringify(metric);
 	// Use `navigator.sendBeacon()` if available, falling back to `fetch()`.
-	(navigator.sendBeacon && navigator.sendBeacon('/stats', body)) ||
-		fetch('/stats', { body, method: 'POST', keepalive: true });
+	(navigator.sendBeacon && navigator.sendBeacon('/api/stats', body)) ||
+		fetch('/api/stats', { body, method: 'POST', keepalive: true });
 }
 
 reportWebVitals(sendToAnalytics);

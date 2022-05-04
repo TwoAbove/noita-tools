@@ -7,22 +7,17 @@ import SyncHandler from './SyncHandler';
 
 const SyncApp = () => {
 	const [val, setVal] = useState('');
-	const [id, setId] = useState('');
+	const [id, setId] = useState<string | number>('');
 	const [sent, setSent] = useState(false);
 	const [handler] = useState(() => new SyncHandler());
-
-	useEffect(() => {
-		handler.getId().then(id => {
-			setId(id)
-		});
-	}, [handler]);
 
 	const handleSync = () => {
 		handler.getSettingsFrom(val);
 	};
 
 	const handleSend = () => {
-		handler.sendToSync(id).then(() => {
+		handler.sendToSync().then((id) => {
+			setId(id);
 			setSent(true);
 		});
 	};
@@ -40,20 +35,21 @@ const SyncApp = () => {
 					<strong className="text-info">Sync with other Noitool</strong>
 					<p className="text-muted mb-0">
 						Copy noitool config from another online noitool.
-						<br />
 						This includes all seed configs and settings.
+						<br />
+						The code will be usable for 15 minutes.
 					</p>
 				</>
 			}
 			right={
-				<>
-					<div className='d-flex'>
-						<p>Your ID: {id}</p>
+				<div className='my-1'>
+					<div className='d-flex justify-content-between mb-2'>
+						<p>{sent ? `Your Code: ${id}` : ``}</p>
 						<Button variant={sent ? "success" : "outline-info"} onClick={handleSend}>
 						 {sent ? 'Sent' : 'Send db to sync'}
 						</Button>
 					</div>
-					<div className='d-flex'>
+					<div className='d-flex justify-content-between'>
 						<Form.Group as={Col} xs={12} sm={12} md={9} controlId="code">
 							<Form.Label>Enter code to sync from</Form.Label>
 							<Form.Control
@@ -69,7 +65,7 @@ const SyncApp = () => {
 							Sync
 						</Button>
 					</div>
-				</>
+				</div>
 			}
 		/>
 	);
@@ -134,9 +130,9 @@ const DangerSettings = () => {
 		<>
 			<ConfigTitle title="Danger Zone" subtitle="Be careful with these." />
 			<ListGroup variant="flush" className="mb-5 shadow">
-				{/* <ListGroup.Item>
+				<ListGroup.Item>
 					<SyncApp />
-				</ListGroup.Item> */}
+				</ListGroup.Item>
 				<ListGroup.Item>
 					<ResetSeeds />
 				</ListGroup.Item>

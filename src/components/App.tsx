@@ -20,8 +20,8 @@ const Header = () => {
 	const [show, setShow] = useState(false);
 
 	// noita-tools.herokuapp.com
-	const hostname = window.location.hostname;
-	const notNewUrl = !hostname.includes('noitool.com');
+	const host = window.location.host;
+	const notNewUrl = !host.includes('noitool.com');
 	return (
 		<Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
 			<div className="">
