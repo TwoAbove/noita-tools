@@ -25,9 +25,7 @@ const Header = () => {
 	return (
 		<Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
 			<div className="">
-				<h3 className="fs-1 fw-bolder mt-2 mb-0 text-center">
-					Noitool
-				</h3>
+				<h3 className="fs-1 fw-bolder mt-2 mb-0 text-center">Noitool</h3>
 				<p className="fs-4 fw-lighter m-1 mt-0 my-1 text-center">
 					Noita tools and helpers
 				</p>
@@ -139,7 +137,8 @@ const Footer = () => {
 				</div>
 				{/* https://discord.gg/WtdfUsJD */}
 				<div className="footer-copyright text-center py-1">
-					© 2022 Copyright: <a href="https://seva.dev/">Seva Maltsev</a>
+					Noitool <code>{process.env.REACT_APP_VERSION} </code>© 2022 {' '}
+					<a href="https://seva.dev/">Seva Maltsev</a>
 				</div>
 			</Stack>
 		</footer>

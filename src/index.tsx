@@ -13,8 +13,6 @@ import * as serviceWorker from './serviceWorker';
 
 import reportWebVitals from './reportWebVitals';
 
-console.log('v2.15.0');
-
 function sendToAnalytics(metric) {
 	const body = JSON.stringify(metric);
 	// Use `navigator.sendBeacon()` if available, falling back to `fetch()`.
