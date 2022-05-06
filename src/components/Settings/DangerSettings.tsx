@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Col, Form, ListGroup } from 'react-bootstrap';
 import { resetDatabase, clearSeeds } from '../../services/db';
 import { ConfigRow, ConfigTitle } from './helpers';

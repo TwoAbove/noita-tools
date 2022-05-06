@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { ListGroup, Form, Modal, Col, Row, Button } from 'react-bootstrap';
+import React from 'react';
+import { Form, Col, Row } from 'react-bootstrap';
 import useLocalStorage from '../../services/useLocalStorage';
 
 interface IConfigRowProps {
