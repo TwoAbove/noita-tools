@@ -16,7 +16,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 const SeedHistoryModal = props => {
 	const { show, handleClose, onSelectSeed } = props;
 
-	const seeds = (useLiveQuery(() => db.seedInfo.toArray()) || []).sort(
+	const seeds = (useLiveQuery(() => db.seedInfo.toArray(), [], [])).sort(
 		(a, b) => +b.updatedAt - +a.updatedAt
 	);
 

@@ -14,7 +14,7 @@ const options = {
 	keys: ['id', 'ui_name']
 };
 
-const fuse = new Fuse(perks, options);
+const fuse = new Fuse(perks, options as any);
 
 interface IPerkSelectProps {
 	selectedPerks: string[];

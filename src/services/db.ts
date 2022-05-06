@@ -1,31 +1,7 @@
 import Dexie, { Table } from 'dexie';
 import deepEqual from 'fast-deep-equal/es6/react';
-import { importDB, exportDB, importInto, peakImportFile } from "dexie-export-import";
+import { exportDB, importInto } from "dexie-export-import";
 
-async function populate() {
-	await db.configItems.bulkAdd([
-		{
-			key: 'theme',
-			val: 'light'
-		},
-		{
-			key: 'useCores',
-			val: 1
-		},
-		{
-			key: 'last-tab',
-			val: 'SeedInfo'
-		},
-		{
-			key: 'alchemy-show-id',
-			val: false
-		},
-		{
-			key: 'show-need-feedback-alert',
-			val: 0
-		}
-	]);
-}
 
 interface ConfigItem {
 	id?: number;
@@ -116,11 +92,37 @@ export class NoitaDB extends Dexie {
 	}
 
 	async importDB(blob: Blob) {
+		await Promise.all(db.tables.map(table => table.clear()));
 		return await importInto(this, blob);
 	}
 }
 
 export const db = new NoitaDB();
+
+async function populate() {
+	await db.configItems.bulkAdd([
+		{
+			key: 'theme',
+			val: 'light'
+		},
+		{
+			key: 'useCores',
+			val: 1
+		},
+		{
+			key: 'last-tab',
+			val: 'SeedInfo'
+		},
+		{
+			key: 'alchemy-show-id',
+			val: false
+		},
+		{
+			key: 'show-need-feedback-alert',
+			val: 0
+		}
+	]);
+}
 
 db.on('populate', populate);
 
