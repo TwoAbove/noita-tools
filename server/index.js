@@ -50,12 +50,12 @@ let stats = [];
 
 app.post('/api/data', (req, res) => {
 	data.push(req.body);
-	res.send(200);
+	res.sendStatus(200);
 });
 
 app.post('/api/stats', (req, res) => {
 	stats.push(req.body);
-	res.send(200);
+	res.sendStatus(200);
 });
 
 const dbs = {};

@@ -22,7 +22,7 @@ const spellOptions = {
 	// shouldSort: false,
 	keys: ['id', 'name', 'description']
 };
-const spellFuse = new Fuse(spells, spellOptions);
+const spellFuse = new Fuse(spells, spellOptions as any);
 
 interface ISpellSelectProps {
 	level?: number;
@@ -123,7 +123,7 @@ const wandOptions = {
 	keys: ['id', 'name', 'description']
 };
 
-const wandFuse = new Fuse(wands, wandOptions);
+const wandFuse = new Fuse(wands, wandOptions as any);
 
 interface IWandSelectProps {}
 const WandSelect = (props: IWandSelectProps) => {
