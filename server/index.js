@@ -62,7 +62,6 @@ const dbs = {};
 
 app.get('/api/db_dump/:id', (req, res) => {
 	const id = Number(req.params.id);
-	console.log(dbs);
 	if (isNaN(id)) {
 		return res.sendStatus(400);
 	}
@@ -74,7 +73,6 @@ const m = multer()
 
 app.post('/api/db_dump/', m.any(), (req, res) => {
 	const id = getRoomNumber();
-	console.log(req.files);
 	dbs[id] = req.files[0].buffer;
 	res.send({ id });
 	setTimeout(() => {
@@ -99,6 +97,11 @@ app.use((req, res) =>
 		]
 	})
 );
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Server error');
+})
 
 const server = app.listen(PORT, () => {
 	console.log(`Running at http://localhost:${PORT}`);
