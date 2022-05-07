@@ -444,35 +444,6 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
     pickedPerks.set(worldOffsetSimple, p);
     infoProvider.updateConfig({ pickedPerks });
   };
-  useEffect(() => {
-    // Handle GAMBLE select where we need to also
-    // automatically add the extra perks
-    // when we select the GAMBLE perk
-    const pickedPerks = infoProvider.config.pickedPerks.get(worldOffsetSimple);
-    if (!pickedPerks) {
-      return;
-    }
-    for (let i = 0; i < pickedPerks.length; i++) {
-      const picked = pickedPerks[i];
-      if (!picked) {
-        continue;
-      }
-      const perkIds = (props.perks[i] || []).map(p => p.id);
-      if (!perkIds.includes('GAMBLE')) {
-        continue;
-      }
-      const gamblePerks = perkIds.slice(-2);
-      if (picked.includes('GAMBLE')) {
-        if (!picked.includes(gamblePerks[0])) {
-          handleClickPerkSimple(i, gamblePerks[0])();
-        }
-        if (!picked.includes(gamblePerks[1])) {
-          handleClickPerkSimple(i, gamblePerks[1])();
-        }
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [infoProvider.config.pickedPerks, worldOffsetSimple, perks]);
 
   const handleResetAdvanced = () => {
     setPerkStacks([[]]);
