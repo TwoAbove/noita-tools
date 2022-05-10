@@ -40,7 +40,6 @@ const useGameInfoProvider = (
 			db.setSeedInfo("" + config.seed, config);
 			gameInfoProvider.provideAll().then(data => {
 				setData(data);
-
 			});
 		});
 		return gameInfoProvider;

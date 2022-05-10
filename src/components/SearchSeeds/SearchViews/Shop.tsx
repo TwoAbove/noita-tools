@@ -8,11 +8,13 @@ import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 import { IShopType } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
 
 import { Square } from '../../helpers';
-import ShopSelect from './ShopSelect';
+// import ShopSelect from './ShopSelect';
+import SpellSelect from '../../SpellSelect';
+import WandSelect from '../../WandSelect';
+import { cloneDeep } from 'lodash';
 
 interface IShopLevelProps {
 	handleClicked: (string) => void;
-	handleItemClicked: (any) => void;
 	handleClickModal: () => void;
 	shop: any;
 	level: number;
@@ -70,29 +72,30 @@ interface IAction {
 
 const shopReducer = (state: IConfig, a: IAction): IConfig => {
 	const { action, data, level } = a;
-	const newState = Array.from(state);
+	const newState = cloneDeep(state);
 	switch (action) {
-		case 'type':
+		case 'type': {
 			if (!newState[level]) {
 				newState[level] = { type: data, items: [] };
 			} else {
 				newState[level].type = data;
 			}
 			return newState;
-
-		case 'spell-add':
+		}
+		case 'spell-add': {
 			if (!newState[level].items) {
 				newState[level].items = [];
 			}
 			newState[level].items.push(data);
 			return newState;
-
-		case 'spell-remove':
+		}
+		case 'spell-remove': {
 			if (!newState[level].items) {
 				newState[level].items = [];
 			}
 			newState[level].items.splice(newState[level].items.indexOf(data), 1);
 			return newState;
+		}
 	}
 	return state;
 };
@@ -125,8 +128,8 @@ const Shop = (props: IShopProps) => {
 	const handleItemClickedAdd = (thing: any) => {
 		dispatch({ action: 'spell-add', level, data: thing });
 	};
-	const handleItemClickedRemove = (l: number, thing: any) => {
-		dispatch({ action: 'spell-remove', level: l, data: thing });
+	const handleItemClickedRemove = (thing: any) => {
+		dispatch({ action: 'spell-remove', level, data: thing });
 	};
 
 	const handleTypeClicked = (l, type) => {
@@ -141,6 +144,8 @@ const Shop = (props: IShopProps) => {
 		setModal([-1, 0]);
 	};
 
+	const ShopSelect = shopType === IShopType.item ? SpellSelect : WandSelect;
+
 	return (
 		<Container fluid>
 			<p>
@@ -152,7 +157,6 @@ const Shop = (props: IShopProps) => {
 						{shops.map((shop, i) => {
 							return (
 								<ShopLevel
-									handleItemClicked={item => handleItemClickedRemove(i, item)}
 									handleClicked={type => handleTypeClicked(i, type)}
 									handleClickModal={() => handleOpenAdvancedModal(i, shop.type)}
 									level={i}
@@ -169,9 +173,10 @@ const Shop = (props: IShopProps) => {
 				type={shopType}
 				selected={shops[level]?.items}
 				show={level !== -1}
+				showSelected
 				handleClose={handleCloseAdvancedModal}
 				handleOnClick={id => handleItemClickedAdd(id)}
-				handleSelectedClicked={item => handleItemClickedRemove(level, item)}
+				handleSelectedClicked={item => handleItemClickedRemove(item)}
 			/>
 		</Container>
 	);

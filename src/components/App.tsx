@@ -149,23 +149,21 @@ const App: React.FC = () => {
 	const [hasWasm, setHasWasm] = useState(() => wasmCheck.support());
 
 	return (
-		<SpoilerProvider>
-			<ThemeProvider>
-				<AlchemyConfigProvider>
-					<div className="App bg-gradient">
-						<div className="content bg-body rounded">
-							<Header />
-							{hasWasm ? (
-								<Body />
-							) : (
-								<WasmError onProceed={() => setHasWasm(true)} />
-							)}
-						</div>
-						<Footer />
+		<ThemeProvider>
+			<AlchemyConfigProvider>
+				<div className="App bg-gradient">
+					<div className="content bg-body rounded">
+						<Header />
+						{hasWasm ? (
+							<Body />
+						) : (
+							<WasmError onProceed={() => setHasWasm(true)} />
+						)}
 					</div>
-				</AlchemyConfigProvider>
-			</ThemeProvider>
-		</SpoilerProvider>
+					<Footer />
+				</div>
+			</AlchemyConfigProvider>
+		</ThemeProvider>
 	);
 };
 

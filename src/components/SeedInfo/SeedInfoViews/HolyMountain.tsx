@@ -9,11 +9,16 @@ import WandIcon from '../../Icons/Wand';
 import LightBulletIcon from '../../Icons/LightBullet';
 import { localizeNumber, removeFromArr } from '../../../services/helpers';
 import { IGenRowAction, IPerk, IPerkChangeAction, IPerkChangeStateType, IRerollAction, ISelectAction, IShiftAction, PerkInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Perk';
-import { IShopType, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
+import { IShopItems, IShopType, ShopInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Shop';
 import { Square } from '../../helpers';
 import ShopItems from './ShopItems';
 import { useTranslation } from 'react-i18next';
 import Perk from '../../Icons/Perk';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db, FavoriteType, FavoriteItem } from '../../../services/db';
+import useLocalStorage from '../../../services/useLocalStorage';
+import { useSpellFavorite, useFavoritePerks } from './helpers';
+import classNames from 'classnames';
 
 const perkWidth = '3rem'
 const gamblePerkDiff = '-0.8rem'
@@ -24,11 +29,15 @@ interface IRerollPaneProps {
   loaded: boolean;
   advanced: boolean;
   rerollsForLevel: number;
+  rerollsToFavorite?: number;
+  favoritesInNextReroll?: number;
+
   handleReroll: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleLoad: () => void;
 }
 const RerollPane = (props: IRerollPaneProps) => {
-  const { handleRerollUndo, loaded, advanced, rerollsForLevel, handleReroll, handleLoad } = props;
+  const { handleRerollUndo, rerollsToFavorite, favoritesInNextReroll, loaded, advanced, rerollsForLevel, handleReroll, handleLoad } = props;
+
   return (
     <div className='d-flex justify-content-center'>
       {!loaded && advanced ? <Button
@@ -55,7 +64,16 @@ const RerollPane = (props: IRerollPaneProps) => {
             onClick={handleReroll}
             size="sm"
           >
-            {">"}
+            <div
+              className='position-relative'
+            >
+              {">"}
+              {rerollsToFavorite &&
+                <div className='position-absolute top-0 start-100 text-info translate-middle'>
+                  {rerollsToFavorite || ''}
+                </div>
+              }
+            </div>
           </Button>
         </>
       }
@@ -66,9 +84,11 @@ const RerollPane = (props: IRerollPaneProps) => {
 interface IPerkRowProps {
   pickedPerks: string[];
   perkRerolls: number;
-  shop: any;
+  shop: IShopItems;
   perks?: IPerk[];
   advanced: boolean;
+  rerollsToFavorite?: number;
+  favoritesInNextReroll?: number;
 
   handleReroll: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleRerollUndo?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -76,44 +96,55 @@ interface IPerkRowProps {
   isRerollable: (i: number, perks: number) => boolean;
   handleOpenShopInfo: () => void;
   handleLoad: () => void;
+  isPerkFavorite: (id: string) => boolean;
+  isSpellFavorite: (id: string) => boolean;
 };
 const PerkRow = (props: IPerkRowProps) => {
-  const { advanced, pickedPerks, perkRerolls, shop, perks, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, handleOpenShopInfo, handleLoad } = props;
+  const { rerollsToFavorite, favoritesInNextReroll, advanced, pickedPerks, perkRerolls, shop, perks, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, handleOpenShopInfo, handleLoad, isPerkFavorite, isSpellFavorite } = props;
   const numberOfGambles = pickedPerks?.filter(p => p === 'GAMBLE').length;
   const type = shop.type;
   const rerollsForLevel = perkRerolls ? perkRerolls : 0;
   const perksToShow = (numberOfGambles > 0 ? perks?.slice(0, -2 * numberOfGambles) : perks) || [];
   const gamblePerks = perks?.slice(-2 * numberOfGambles) || [];
+
+  const spellIds = shop.type === IShopType.wand ?
+    [] :
+    // not yet - spell gen needs debugging. shop.items.flatMap(i => [i.cards.permanentCard, ...i.cards.cards].filter(Boolean)) as string[] :
+    shop.items.map(i => i.spell.id);
+  const favoriteSpells = spellIds.filter(id => isSpellFavorite(id));
+  const Shop = () => {
+    const Icon = type === IShopType.wand ? WandIcon : LightBulletIcon;
+    return (
+      <Button
+        className='position-relative'
+        onClick={handleOpenShopInfo}
+        variant={favoriteSpells.length ? "outline-info" : "outline-primary"}
+        size="sm"
+      >
+        <Square>
+          <Icon />
+          {favoriteSpells.length ?
+            <div className='position-absolute top-0 end-0 pe-1'>{favoriteSpells.length}</div> :
+            ''
+          }
+        </Square>
+      </Button>
+    )
+  };
+
   return (
     <Stack direction="horizontal">
       <Col xs={2}>
-        {type === IShopType.wand ?
-          <Button
-            onClick={handleOpenShopInfo}
-            variant="outline-primary"
-            size="sm"
-          >
-            <Square>
-              <WandIcon />
-            </Square>
-          </Button>
-          :
-          <Button
-            variant="outline-primary"
-            size="sm"
-            onClick={handleOpenShopInfo}
-          >
-            <Square>
-              <LightBulletIcon />
-            </Square>
-          </Button>
-        }
+        <Shop />
       </Col>
       <Col>
         <Stack direction="horizontal" className="justify-content-center" gap={2} >
           {perksToShow && perksToShow.map((perk, i) => {
             const rerollable = isRerollable(i, perksToShow.length);
+            const fav = isPerkFavorite(perk.id);
             return <Perk
+              className={fav && 'mb-2'}
+              highlight={fav}
               rerollable={rerollable}
               key={perk.ui_name + i}
               onClick={() => handleClickPerk(advanced ? i : perk.id)}
@@ -149,15 +180,15 @@ const PerkRow = (props: IPerkRowProps) => {
         </Stack>
       </Col>
       <Col xs={3}>
-        <RerollPane handleReroll={handleReroll} handleRerollUndo={handleRerollUndo} loaded={!!perks?.length} advanced={advanced} rerollsForLevel={rerollsForLevel} handleLoad={handleLoad} />
+        <RerollPane rerollsToFavorite={rerollsToFavorite} favoritesInNextReroll={favoritesInNextReroll} handleReroll={handleReroll} handleRerollUndo={handleRerollUndo} loaded={!!perks?.length} advanced={advanced} rerollsForLevel={rerollsForLevel} handleLoad={handleLoad} />
       </Col>
     </Stack>
   )
 };
 
 const PerkDeckModal = props => {
-  const { perkDeck, show, handleClose } = props;
-	const [t] = useTranslation('materials');
+  const { perkDeck, show, handleClose, isPerkFavorite } = props;
+  const [t] = useTranslation('materials');
 
   return (
     <Modal size="lg" show={show} onHide={handleClose}>
@@ -165,21 +196,24 @@ const PerkDeckModal = props => {
         <Modal.Title>Perk Deck</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <Row className="p-3 justify-content-center align-items-center row-cols-auto">
-					{perkDeck.map((perk, i) => {
+        <Row className="p-3 justify-content-center align-items-center row-cols-auto">
+          {perkDeck.map((perk, i) => {
             if (!perk) {
               return false;
             }
-						return (
-							<Col className="p-0 m-1" key={`${perk.id}-${i}`}>
-                  <Perk
-                    width={perkWidth}
-                    perk={perk}
-                  />
-							</Col>
-						);
-					}).filter(Boolean)}
-				</Row>
+            const fav = isPerkFavorite(perk.id);
+            return (
+              <Col className="p-0 m-1" key={`${perk.id}-${i}`}>
+                <Perk
+                  className={classNames(fav && "border border-info border-3")}
+                  highlight={fav}
+                  width={perkWidth}
+                  perk={perk}
+                />
+              </Col>
+            );
+          }).filter(Boolean)}
+        </Row>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
@@ -196,17 +230,19 @@ interface IHolyMountainHeaderProps {
   price: number;
   total: number;
   canUndo: boolean;
-  perkDeck: string[];
+  perkDeck: IPerk[];
   setAdvanced: (boolean) => void;
   handleOffset: (type: '+' | '-') => void;
   offsetText: () => string;
   handleReset: () => void;
   handleBack: () => void;
+  isPerkFavorite: (string) => boolean;
 }
 const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
-  const { canUndo, advanced, rerolls, price, total, perkDeck, setAdvanced, handleOffset, handleReset, handleBack, offsetText } = props;
+  const { canUndo, advanced, rerolls, price, total, perkDeck, setAdvanced, handleOffset, handleReset, handleBack, offsetText, isPerkFavorite } = props;
 
   const [showDeck, setShowDeck] = useState(false);
+  const favoritePerks = perkDeck.map(p => p.id).filter(isPerkFavorite);
 
   return (
     <>
@@ -252,18 +288,26 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
           <span> Total: {localizeNumber(total)}</span>
         </div>
         <div className="ms-auto" />
-        <Button size='sm'
+        <Button
+          className='position-relative'
+          size='sm'
           variant="outline-secondary"
           onClick={() => setShowDeck(true)}
           style={{
             whiteSpace: 'normal',
             wordWrap: 'break-word',
-          }}>Show <br /> perk deck</Button>
+          }}>Show <br /> perk deck
+          {favoritePerks.length ?
+            <div className='position-absolute text-info top-0 end-0 pe-1'>{favoritePerks.length}</div> :
+            ''
+          }
+        </Button>
         <div className="ms-auto" />
       </Stack>
       <PerkDeckModal
         perkDeck={perkDeck}
         show={showDeck}
+        isPerkFavorite={isPerkFavorite}
         handleClose={() => setShowDeck(false)}
       />
     </>
@@ -275,21 +319,23 @@ const HolyMountainContext = createContext<any>({});
 interface IHolyMountainContextProviderProps {
   infoProvider: GameInfoProvider;
   perks: ReturnType<PerkInfoProvider['provide']>;
+  perkDeck: ReturnType<PerkInfoProvider['getPerkDeck']>;
   children: any;
 }
 // This is messy because there are two ways of generating perks: provide() and provideStateful()
 // For refactoring, it should be best to have the stateful provide everything and create a transition function
 // from action[] => old config.
 const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) => {
-  const { infoProvider, perks: simplePerks } = props;
+  const { infoProvider, perks: simplePerks, perkDeck } = props;
   const [advanced, setAdvanced] = useState(false);
 
   const [perkStacks, setPerkStacks] = useState<IPerkChangeAction[][]>(() => infoProvider.config.perkStacks);
   const perkStack = perkStacks[perkStacks.length - 1];
 
+  const favorites = useFavoritePerks(advanced ? infoProvider.providers.statelessPerk : infoProvider.providers.perk, perkDeck);
   const getPerkData = () => {
-    const perk = infoProvider.providers.perk;
-    const data = perk.provideStateful(perkStack);
+    const perk = infoProvider.providers.statelessPerk;
+    const data = perk.provideStateless(perkStack);
     const hydrated = perk.hydrate(data.perks);
     return {
       ...data, perks: hydrated
@@ -478,6 +524,8 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
     totalRerolls,
     worldOffset: advanced ? worldOffset : infoProvider.config.perkWorldOffset,
     lotteries,
+
+    ...favorites
   };
 
   return (
@@ -499,7 +547,10 @@ const HolyMountain = (props: IHolyMountainProps) => {
 
   const { advanced, setAdvanced, perkMethods, perkData } = useContext(HolyMountainContext);
   const { handleReroll, handleRerollUndo, handleClickPerk, handleReset, handleBack, handleOffset, handleGenRowAdvanced } = perkMethods;
-  const { perks, pickedPerks, perkRerolls, totalRerolls, worldOffset, lotteries } = perkData;
+  const { perks, pickedPerks, perkRerolls, totalRerolls, worldOffset, lotteries, rerollsToFavorite, favoritesInNextReroll, isFavorite } = perkData;
+
+  const { isFavorite: isSpellFavorite } = useSpellFavorite();
+
   // const offset = infoProvider.config.perkWorldOffset;
   const [shopSelected, setShopSelected] = useState(-1);
 
@@ -537,6 +588,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
         handleOffset={handleOffset}
         handleBack={handleBack}
         offsetText={offsetText}
+        isPerkFavorite={isFavorite}
       />
       <div className="mb-3" />
       <Stack gap={3}>
@@ -550,6 +602,10 @@ const HolyMountain = (props: IHolyMountainProps) => {
               perkRerolls={perkRerolls[level]}
               perks={row}
               shop={shop[level]}
+              rerollsToFavorite={rerollsToFavorite}
+              favoritesInNextReroll={favoritesInNextReroll}
+              isPerkFavorite={isFavorite}
+              isSpellFavorite={isSpellFavorite}
               handleRerollUndo={e => handleRerollUndo(e, level)}
               handleReroll={e => handleReroll(e, level)}
               handleClickPerk={(id) => handleClickPerk(level, id)()}
@@ -564,11 +620,12 @@ const HolyMountain = (props: IHolyMountainProps) => {
         shop={shop[shopSelected]}
         show={shopSelected >= 0}
         handleClose={() => handleOpenShopInfo(-1)}
+        isFavorite={isSpellFavorite}
       />
     </div>
   );
 };
 
-const e = (props) => <HolyMountainContextProvider perks={props.perks} infoProvider={props.infoProvider}> <HolyMountain {...props} /></HolyMountainContextProvider >;
+const e = (props) => <HolyMountainContextProvider perkDeck={props.perkDeck} perks={props.perks} infoProvider={props.infoProvider}> <HolyMountain {...props} /></HolyMountainContextProvider >;
 
 export default e;

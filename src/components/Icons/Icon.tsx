@@ -26,13 +26,25 @@ const Icon = React.forwardRef(
 			>,
 		ref
 	) => {
-		const { uri, width, height, style, size, alt, title, background, ...rest } = props;
+		const {
+			uri,
+			width,
+			height,
+			style,
+			size,
+			alt,
+			title,
+			background,
+			className,
+			...rest
+		} = props;
 		const w = size || width || '3rem';
 		const h = size || height;
 		const img = (
 			<Image
 				className={classNames([
-					background && 'position-absolute top-50 start-50 translate-middle'
+					background && 'position-absolute top-50 start-50 translate-middle',
+					!background && className
 				])}
 				{...rest}
 				ref={ref as any}
@@ -51,17 +63,26 @@ const Icon = React.forwardRef(
 		if (background) {
 			return (
 				<div
-					className="position-relative"
+					className={classNames("position-relative", className)}
 					style={{
-						width: `calc(${w} + 10px)`,
-						height: `calc(${h || '3rem'} + 10px)`,
-						backgroundImage: `url(${backgroundUri})`,
-						backgroundSize: 'cover',
-						backgroundPosition: 'center',
+						width: `calc(${w})`,
+						height: `calc(${h || w})`,
 						imageRendering: 'pixelated'
 					}}
 				>
-					{img}
+					<div
+						className="position-absolute top-50 start-50 translate-middle"
+						style={{
+							width: `calc(${w} + 10px)`,
+							height: `calc(${h || w} + 10px)`,
+							backgroundImage: `url(${backgroundUri})`,
+							backgroundSize: 'cover',
+							backgroundPosition: 'center',
+							imageRendering: 'pixelated'
+						}}
+					>
+						{img}
+					</div>
 				</div>
 			);
 		}

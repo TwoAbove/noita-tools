@@ -51,7 +51,7 @@ export class PerkInfoProvider extends InfoProvider {
   }
 
   _getNextReroll(perkDeck: string[]): string {
-    let next_perk_index = this._G.GetValue("TEMPLE_REROLL_PERK_INDEX", perkDeck.length - 1);
+    let next_perk_index: number = this._G.GetValue("TEMPLE_REROLL_PERK_INDEX", perkDeck.length - 1);
     let perk_id = perkDeck[next_perk_index];
     while (!perk_id) {
       // if we over flow
@@ -298,10 +298,10 @@ export class PerkInfoProvider extends InfoProvider {
     if (!maxLevels || maxLevels === -1) maxLevels = Infinity;
 
     this._G = new Global();
+    this._G.SetValue("TEMPLE_PERK_COUNT", 3);
     const perkDeck = this.getPerkDeck();
     const result: string[][] = [];
     let world = 0;
-    this._G.SetValue("TEMPLE_PERK_COUNT", 3);
     const temple_locations = this.temples;
     while (true) {
       let i = 0;
@@ -383,7 +383,7 @@ export class PerkInfoProvider extends InfoProvider {
     return hydrated;
   }
 
-  provideStateful(state: IPerkChangeAction[], preview?: boolean) {
+  provideStateless(state: IPerkChangeAction[], preview?: boolean) {
     let lotteries = 0;
     const perkState: Map<number, string[][]> = new Map();
     const pickedState: Map<number, string[][]> = new Map();

@@ -7,6 +7,8 @@ import { capitalize } from '../../../services/helpers';
 import { FungalInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Fungal';
 import { AlchemyConfigContext } from '../../AlchemyConfigContext';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
+import { useMaterialFavorite } from './helpers';
 
 const Flask = () => {
 	return <b className="text-info">Flask</b>;
@@ -16,14 +18,46 @@ interface IShiftProps {
 	key: string | number;
 	data: ReturnType<FungalInfoProvider['provide']>[number];
 	shifted: boolean;
+	isFavorite: (id: string) => boolean;
 	setShifted: (shifted: boolean) => void;
 	getMaterial: (s: string) => any;
 }
 
 const Shift = (props: IShiftProps) => {
-	const { data, getMaterial, shifted, setShifted } = props;
+	const { data, shifted, setShifted, getMaterial, isFavorite } = props;
 
 	const [showId] = useContext(AlchemyConfigContext);
+
+	const From = (props: { materials: string[]; flaskFrom: boolean }) => {
+		const { materials } = props;
+
+		const mats = new Map();
+
+		for (const m of materials) {
+			const displayName = capitalize(getMaterial(m));
+			const arr = mats.get(displayName) || [];
+			arr.push(m);
+			mats.set(displayName, arr);
+		}
+
+		return (
+			<Stack>
+				{data.flaskFrom && <Flask />}
+				{[...mats.keys()].map(displayName => {
+					const ids = mats.get(displayName);
+					return (
+						<div
+							key={displayName}
+							className={classNames(ids.some(isFavorite) && 'text-info')}
+						>
+							{displayName} {showId && `(${ids.join(', ')})`}
+						</div>
+					);
+				})}
+			</Stack>
+		);
+	};
+
 	return (
 		<tr
 			className={classnames([
@@ -32,20 +66,13 @@ const Shift = (props: IShiftProps) => {
 				// ''
 			])}
 		>
-			<td className="col-auto">
-				<Stack>
-					{data.flaskFrom && <Flask />}
-					{data.from.map(s => (
-						<div key={s}>
-							{capitalize(getMaterial(s))} {showId && `(${s})`}
-						</div>
-					))}
-				</Stack>
+			<td className={classNames('col-auto')}>
+				<From materials={data.from} flaskFrom={data.flaskFrom} />
 			</td>
-			<td className="col-auto">
+			<td className={classNames('col-auto')}>
 				<Stack>
 					{data.flaskTo && <Flask />}
-					<div>
+					<div className={classNames(isFavorite(data.to) && 'text-info')}>
 						{capitalize(getMaterial(data.to))} {showId && `(${data.to})`}
 					</div>
 				</Stack>
@@ -81,6 +108,8 @@ const FungalShifts = (props: IFungalShiftsProps) => {
 	const { fungalData, infoProvider } = props;
 	const [t] = useTranslation();
 
+	const { isFavorite } = useMaterialFavorite();
+
 	const handleSetShifted = (i: number) => (shifted: boolean) => {
 		const currentShifted = [...infoProvider.config.fungalShifts];
 		currentShifted[i] = shifted;
@@ -97,6 +126,7 @@ const FungalShifts = (props: IFungalShiftsProps) => {
 						<Shift
 							key={i + t('$current_language', { ns: 'materials' })}
 							data={data}
+							isFavorite={isFavorite}
 							shifted={!!infoProvider.config.fungalShifts[i]}
 							setShifted={handleSetShifted(i)}
 							getMaterial={s => infoProvider.providers.material.translate(s)}

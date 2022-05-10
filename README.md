@@ -29,11 +29,18 @@ Prerequsites:
 * `npm i -g google-closure-compiler`
 * Node
 * Yarn
-* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/----------------------//g' {} +` in the extracted folder to fix comments for the xml parser
-* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/<!------------ MATERIALS -------------------->/<!-- MATERIALS -->/g' {} +` in the extracted folder to fix comments for the xml parser
-* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/<!------------ MATERIALS ------------------ -->/<!-- MATERIALS -->/g' {} +` in the extracted folder to fix comments for the xml parser
-* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/<!-- attack_ranged_min_distance="60" -->//g' {} +` in the extracted folder to fix comments for the xml parser
-* After extracting noita wak, run `find . -type f -not -path '*/\.*' -exec sed -i 's/<!---------------- shield ---------------- -->//g' {} +` in the extracted folder to fix comments for the xml parser
+
+After extracting noita wak, run
+
+```sh
+find . -type f -not -path '*/\.*' -exec sed -i 's/----------------------//g' {} +;
+find . -type f -not -path '*/\.*' -exec sed -i 's/<!------------ MATERIALS -------------------->/<!-- MATERIALS -->/g' {} +;
+find . -type f -not -path '*/\.*' -exec sed -i 's/<!------------ MATERIALS ------------------ -->/<!-- MATERIALS -->/g' {} +;
+find . -type f -not -path '*/\.*' -exec sed -i 's/<!-- attack_ranged_min_distance="60" -->//g' {} +;
+find . -type f -not -path '*/\.*' -exec sed -i 's/<!---------------- shield ---------------- -->//g' {} +;
+```
+
+to fix comments for the xml parser
 
 For emscripten, some edits need to be done to enable the closure compiler:
 

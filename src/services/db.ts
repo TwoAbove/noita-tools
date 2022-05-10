@@ -2,6 +2,7 @@ import Dexie, { Table } from 'dexie';
 import deepEqual from 'fast-deep-equal/es6/react';
 import { exportDB, importInto } from "dexie-export-import";
 
+(Dexie as any).debug = 'dexie';
 
 interface ConfigItem {
 	id?: number;
@@ -16,9 +17,21 @@ interface SeedInfoItem {
 	updatedAt: Date;
 }
 
+export enum FavoriteType {
+	Perk = 'perk',
+	Material = 'material',
+	Spell = 'spell'
+}
+export interface FavoriteItem {
+	id?: number;
+	type: FavoriteType;
+	key: string
+}
+
 export class NoitaDB extends Dexie {
 	configItems!: Table<ConfigItem, number>;
 	seedInfo!: Table<SeedInfoItem, number>;
+	favorites!: Table<FavoriteItem, number>;
 
 	constructor() {
 		super('NoitaDB');
@@ -47,9 +60,26 @@ export class NoitaDB extends Dexie {
 						s.updatedAt = new Date();
 					});
 			});
+
+		this.version(5).stores({
+			favorites: '++id, type, &key' // Maybe add [type+key] as index?
+		});
+
+		this.open().catch(e => {
+			console.error(e);
+		});
 	}
 
-	async setConfig(key: string, val: any) {
+	async toggleFavorite(type: FavoriteType, key: string) {
+		const exists = await this.favorites.get({type, key});
+		if (!exists) {
+			await this.favorites.add({type, key});
+			return;
+		}
+		this.favorites.delete(exists.id!);
+	}
+
+	async setConfig(key: any, val: any) {
 		const exists = await this.configItems.get({ key });
 		if (!exists) {
 			await this.configItems.add({

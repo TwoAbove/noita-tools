@@ -16,7 +16,7 @@ const SyncApp = () => {
 	};
 
 	const handleSend = () => {
-		handler.sendToSync().then((id) => {
+		handler.sendToSync().then(id => {
 			setId(id);
 			setSent(true);
 		});
@@ -34,22 +34,25 @@ const SyncApp = () => {
 				<>
 					<strong className="text-info">Sync with other Noitool</strong>
 					<p className="text-muted mb-0">
-						Copy noitool config from another online noitool.
-						This includes all seed configs and settings.
+						Copy noitool config from another online noitool. This includes all
+						seed configs and settings.
 						<br />
 						The code will be usable for 15 minutes.
 					</p>
 				</>
 			}
 			right={
-				<div className='my-1'>
-					<div className='d-flex justify-content-between mb-2'>
+				<div className="my-1">
+					<div className="d-flex justify-content-between mb-2">
 						<p>{sent ? `Your Code: ${id}` : ``}</p>
-						<Button variant={sent ? "success" : "outline-info"} onClick={handleSend}>
-						 {sent ? 'Sent' : 'Send db to sync'}
+						<Button
+							variant={sent ? 'success' : 'outline-info'}
+							onClick={handleSend}
+						>
+							{sent ? 'Sent' : 'Send db to sync'}
 						</Button>
 					</div>
-					<div className='d-flex justify-content-between'>
+					<div className="d-flex justify-content-between">
 						<Form.Group as={Col} xs={12} sm={12} md={9} controlId="code">
 							<Form.Label>Enter code to sync from</Form.Label>
 							<Form.Control

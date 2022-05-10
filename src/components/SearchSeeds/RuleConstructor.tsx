@@ -26,6 +26,7 @@ import Perks from './SearchViews/Perks';
 import FungalShifts from './SearchViews/FungalShifts';
 import { IRule } from '../../services/SeedInfo/infoHandler/IRule';
 import Clickable from '../Icons/Clickable';
+import { cloneDeep } from 'lodash';
 
 const genRules = (config: IConfig): IRule[] => {
   return Object.values(config);
@@ -40,7 +41,7 @@ interface IAction {
   data?: IRule;
 }
 const configReducer = (state: IConfig, action: IAction): IConfig => {
-  const newState = Object.assign({}, state);
+  const newState = cloneDeep(state);
   switch (action.action) {
     case 'update':
       if (!deepEqual(state[action.type], action.data)) {
