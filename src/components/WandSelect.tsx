@@ -1,15 +1,14 @@
-import { useState } from 'react';
-import Fuse from 'fuse.js';
-import { Modal, Row, Col, FormControl } from 'react-bootstrap';
+// import Fuse from 'fuse.js';
+import { Modal } from 'react-bootstrap';
 
-import wands from '../services/SeedInfo/data/wands.json';
+// import wands from '../services/SeedInfo/data/wands.json';
 
-const wandOptions = {
-	shouldSort: false,
-	keys: ['id', 'name', 'description']
-};
+// const wandOptions = {
+// 	shouldSort: false,
+// 	keys: ['id', 'name', 'description']
+// };
 
-const wandFuse = new Fuse(wands, wandOptions as any);
+// const wandFuse = new Fuse(wands, wandOptions as any);
 
 interface IWandSelectProps {
 	type: number;
