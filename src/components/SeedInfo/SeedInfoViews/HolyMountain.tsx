@@ -242,7 +242,7 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
   const { canUndo, advanced, rerolls, price, total, perkDeck, setAdvanced, handleOffset, handleReset, handleBack, offsetText, isPerkFavorite } = props;
 
   const [showDeck, setShowDeck] = useState(false);
-  const favoritePerks = perkDeck.map(p => p.id).filter(isPerkFavorite);
+  const favoritePerks = perkDeck.map(p => p?.id).filter(isPerkFavorite);
 
   return (
     <>
