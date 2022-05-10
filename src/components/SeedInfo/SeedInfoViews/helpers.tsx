@@ -24,7 +24,7 @@ export const useFavoritePerks = (perkInfoProvider: PerkInfoProvider, perkDeck: I
   const rerollPos = perkInfoProvider._G.GetValue("TEMPLE_REROLL_PERK_INDEX", perkDeck.length - 1);
   const perksPerReroll = perkInfoProvider._G.GetValue("TEMPLE_PERK_COUNT", 3);
 
-  const perksInRerolls = perkDeck.slice(rerollPos - rerollsToSearch * perksPerReroll + 1, rerollPos + 1).map(p => p.id).reverse() //
+  const perksInRerolls = perkDeck.slice(rerollPos - rerollsToSearch * perksPerReroll + 1, rerollPos + 1).map(p => p?.id).reverse() //
   const b = new Set(perksInRerolls);
   const intersection = new Set(
     favoritePerks.filter(x => b.has(x))
