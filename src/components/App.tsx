@@ -55,8 +55,12 @@ const WasmError = props => {
 	return (
 		<div className="position-absolute top-50 start-50 translate-middle text-center w-75">
 			<p>
-				Looks like this browser does not support WASM, which is needed to run
+				Looks like this browser does not support WebAssembly, which is needed to run
 				the generation code.
+			</p>
+			<p>
+				This might be due to several things. Some browser security configurations turn WebAssembly off. Some browsers do not support it. <br/>
+				One common issue is with Edge with enhanced security configuration turning off WebAssembly.
 			</p>
 			<p>
 				Check{' '}
@@ -145,7 +149,16 @@ const Footer = () => {
 };
 
 const App: React.FC = () => {
-	const [hasWasm, setHasWasm] = useState(() => wasmCheck.support());
+	const [hasWasm, setHasWasm] = useState(() => {
+		try {
+			// https://github.com/MaxGraey/wasm-check/issues/5
+			// return wasmCheck.support()
+			return typeof WebAssembly === 'object';
+		} catch(e) {
+			console.error(e);
+			return false;
+		}
+	});
 
 	return (
 		<ThemeProvider>
