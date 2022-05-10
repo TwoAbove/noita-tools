@@ -27,6 +27,7 @@ interface IProviders {
   map: MapInfoProvider;
   material: MaterialInfoProvider;
   perk: PerkInfoProvider;
+  statelessPerk: PerkInfoProvider;
   rain: RainInfoProvider;
   shop: ShopInfoProvider;
   startingBombSpell: StartingBombSpellInfoProvider;
@@ -85,6 +86,7 @@ export class GameInfoProvider extends EventTarget {
       map: new MapInfoProvider(this.randoms),
       material: new MaterialInfoProvider(this.i18n),
       perk: new PerkInfoProvider(this.randoms),
+      statelessPerk: new PerkInfoProvider(this.randoms),
       rain: new RainInfoProvider(this.randoms),
       spells: new SpellInfoProvider(this.randoms),
       startingBombSpell: new StartingBombSpellInfoProvider(this.randoms),
@@ -108,12 +110,12 @@ export class GameInfoProvider extends EventTarget {
       fungalShifts: this.providers.fungalShift.provide(undefined),
       perkDeck: this.providers.perk.getPerkDeck(true),
       perks: this.providers.perk.provide(this.config.pickedPerks, undefined, true, this.config.perkWorldOffset, this.config.perkRerolls),
+      statelessPerks: this.providers.statelessPerk.provideStateless(this.config.perkStacks[this.config.perkStacks.length - 1], true),
       rainType: this.providers.rain.provide(),
       shop: this.providers.shop.provide(this.config.pickedPerks, this.config.perkWorldOffset),
       startingBombSpell: this.providers.startingBombSpell.provide(),
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),
-      statefulPerks: this.providers.perk.provideStateful(this.config.perkStacks[this.config.perkStacks.length - 1], true),
     };
   }
 }

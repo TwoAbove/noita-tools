@@ -1,4 +1,6 @@
+import classNames from 'classnames';
 import { Modal, Row, Col } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { localizeNumber, ticksToS } from '../../../services/helpers';
 import {
   IShopType,
@@ -9,29 +11,40 @@ import {
 
 import Icon from '../../Icons/Icon';
 
-const Item = (props: { item: IItemShop['items'][number] }) => {
-  const { item } = props;
+const Item = (props: { item: IItemShop['items'][number], className: string, highlight?: boolean }) => {
+  const { item, highlight, className } = props;
+  const { t } = useTranslation('materials');
   return (
-    <div className="m-2 text-center d-flex flex-column justify-content-center align-items-center">
-      <Icon uri={item.spell.sprite} title={item.spell.name} background />
+    <div className={classNames("m-2 text-center d-flex flex-column justify-content-center align-items-center", className)}>
+      <Icon
+          className={classNames(highlight && 'shadow')}
+          uri={item.spell.sprite}
+           title={t(item.spell.name)}
+           background
+            />
       {localizeNumber(item.price)}
     </div>
   );
 };
 
 // 660419835
-const ItemShop = (props: { shop: IItemShop }) => {
-  const { shop } = props;
+const ItemShop = (props: { shop: IItemShop, isFavorite: (id: string) => boolean }) => {
+  const { shop, isFavorite } = props;
   return (
     <div>
       <Row className="p-3">
-        These assume that you have all spells unlocked. Customization coming soon!
+        These assume that you have all spells unlocked. Configuration coming soon!
       </Row>
-      <Row xs={shop.items.length / 2}>
+      <Row className='align-items-end' xs={shop.items.length / 2}>
         {shop.items.map((item, i) => {
+          const highlight = isFavorite(item.spell.id);
           return (
-            <Col key={i}>
-              <Item item={item} />
+            <Col
+
+            key={i}>
+              <Item
+              highlight={highlight}
+              className={classNames(highlight && 'mb-3')} item={item} />
             </Col>
           );
         })}
@@ -41,7 +54,7 @@ const ItemShop = (props: { shop: IItemShop }) => {
 };
 
 // 153761947
-const Wand = (props: { item: IWandShop['items'][number] }) => {
+const Wand = (props: { item: IWandShop['items'][number], isFavorite: (id: string) => boolean }) => {
   const { item } = props;
   return (
     <div className="">
@@ -113,15 +126,15 @@ const Wand = (props: { item: IWandShop['items'][number] }) => {
   );
 };
 
-const WandShop = (props: { shop: IWandShop }) => {
-  const { shop } = props;
+const WandShop = (props: { shop: IWandShop, isFavorite: (id: string) => boolean }) => {
+  const { shop, isFavorite } = props;
   return (
     <div>
       <Row xs={1} md={2}>
         {shop.items.map((item, i) => {
           return (
             <Col key={i}>
-              <Wand item={item} />
+              <Wand item={item} isFavorite={isFavorite} />
             </Col>
           );
         })}
@@ -132,14 +145,15 @@ const WandShop = (props: { shop: IWandShop }) => {
 
 const ShopItems = (props: {
   shop: ReturnType<ShopInfoProvider['spawn_all_shop_items']>;
+  isFavorite: (id: string) => boolean
 }) => {
-  const { shop } = props;
+  const { shop, isFavorite } = props;
   return (
     <>
       {shop.type === IShopType.item ? (
-        <ItemShop shop={shop} />
+        <ItemShop shop={shop} isFavorite={isFavorite} />
       ) : (
-        <WandShop shop={shop} />
+        <WandShop shop={shop} isFavorite={isFavorite} />
       )}
     </>
   );
@@ -149,10 +163,11 @@ interface IShopProps {
   shop: ReturnType<ShopInfoProvider['spawn_all_shop_items']>;
   show: boolean;
   handleClose: () => void;
+  isFavorite: (id: string) => boolean;
 }
 
 const Shop = (props: IShopProps) => {
-  const { show, handleClose, shop } = props;
+  const { show, shop, handleClose, isFavorite  } = props;
   return (
     <Modal
       centered
@@ -164,7 +179,7 @@ const Shop = (props: IShopProps) => {
       <Modal.Header closeButton>
         <Modal.Title>Shop Items</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{shop && <ShopItems shop={shop} />}</Modal.Body>
+      <Modal.Body>{shop && <ShopItems shop={shop} isFavorite={isFavorite} />}</Modal.Body>
     </Modal>
   );
 };

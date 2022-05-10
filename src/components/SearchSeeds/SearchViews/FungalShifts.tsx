@@ -5,7 +5,7 @@ import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 import fungalMaterials from '../../../services/SeedInfo/data/fungal-materials.json';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 import { Square } from '../../helpers';
-import MaterialSelect from '../../MaterialSelect';
+import {FlaskMaterialSelect} from '../../MaterialSelect';
 
 interface IFungalShiftsProps {
 	onUpdateConfig: (config: IRule) => void;
@@ -185,14 +185,14 @@ const FungalShifts = (props: IFungalShiftsProps) => {
 					);
 				})}
 			</Stack>
-			<MaterialSelect
+			<FlaskMaterialSelect
 				show={selectOpen.open}
 				selected={getSelected(selectOpen.row, selectOpen.type)}
 				useFlask={getFlask(selectOpen.row, selectOpen.type)}
 				list={getList(selectOpen.type)}
 				handleClose={() => handleClose()}
 				handleFlask={val => handleFlask(selectOpen.row, selectOpen.type, val)}
-				handleOnSelect={list =>
+				handleOnUpdate={list =>
 					handleSelect(list, selectOpen.row, selectOpen.type)
 				}
 			/>

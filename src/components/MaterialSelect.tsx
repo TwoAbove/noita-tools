@@ -7,29 +7,32 @@ interface IMaterialSelectProps {
 	show: boolean;
 	selected: Set<string>;
 	list: string[];
-	useFlask: boolean;
 
 	handleClose: () => void;
-	handleOnSelect: (list: string[]) => void;
+	handleOnClick?: (list: string) => void;
+}
+interface IFlaskMaterialSelectProps extends IMaterialSelectProps {
+	useFlask: boolean;
 	handleFlask: (val: boolean) => void;
+	handleOnUpdate?: (list: string[]) => void;
 }
 
-const MaterialSelect = (props: IMaterialSelectProps) => {
+const FlaskMaterialSelect = (props: IFlaskMaterialSelectProps) => {
 	const {
 		show,
 		handleClose,
-		handleOnSelect,
+		handleOnUpdate,
 		selected,
 		list,
 		useFlask,
 		handleFlask
 	} = props;
 	const onDeselectAll = () => {
-		handleOnSelect([]);
+		handleOnUpdate && handleOnUpdate([]);
 	};
 
 	const onSelectAll = () => {
-		handleOnSelect([...list]);
+		handleOnUpdate && handleOnUpdate([...list]);
 	};
 
 	return (
@@ -63,11 +66,35 @@ const MaterialSelect = (props: IMaterialSelectProps) => {
 				<ListSelect
 					selected={selected}
 					items={list}
-					onUpdate={set => handleOnSelect([...set])}
+					onUpdate={set => handleOnUpdate && handleOnUpdate([...set])}
 				/>
 			</Modal.Body>
 		</Modal>
 	);
 };
 
-export default MaterialSelect;
+const MaterialSelect = (props: IMaterialSelectProps) => {
+	const {
+		show,
+		handleClose,
+		handleOnClick,
+		selected,
+		list,
+	} = props;
+	return (
+		<Modal fullscreen="sm-down" scrollable show={show} onHide={handleClose}>
+			<Modal.Header closeButton>
+				<Modal.Title>Material Selector</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<ListSelect
+					selected={selected}
+					items={list}
+					onClick={material => handleOnClick && handleOnClick(material)}
+				/>
+			</Modal.Body>
+		</Modal>
+	);
+};
+
+export { FlaskMaterialSelect, MaterialSelect };

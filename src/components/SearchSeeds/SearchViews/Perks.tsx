@@ -4,7 +4,7 @@ import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 
 import classNames from 'classnames';
 import Clickable from '../../Icons/Clickable';
-import PerkSelect from './PerkSelect';
+import PerkSelect from '../../PerkSelect';
 import Icon from '../../Icons/Icon';
 import perkData from '../../../services/SeedInfo/data/obj/perks.json';
 import { Square } from '../../helpers';
@@ -142,7 +142,7 @@ const Perks = (props: IPerksProps) => {
 				</Col>
 			</Row>
 			<PerkSelect
-				selectedPerks={perks[selectOpen]}
+				selected={perks[selectOpen]}
 				handleOnClick={perkId => handleAdd(perkId)}
 				show={selectOpen >= 0}
 				handleClose={() => togglePerkSelect(-1)}

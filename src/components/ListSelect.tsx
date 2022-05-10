@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { capitalize } from '../services/helpers';
 import { MaterialInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/Material';
 
 import i18n from '../i18n';
+import { AlchemyConfigContext } from './AlchemyConfigContext';
 
 const material = new MaterialInfoProvider(i18n);
 
@@ -14,12 +15,18 @@ interface IOptionProps {
 	handleClick: () => void;
 }
 
-const getTranslatedName = (s: string) => {
+const toName = (id: string, showId: boolean) =>
+	capitalize(material.translate(id)) + `${showId ? ` (${id})` : ''}`;
+
+const getTranslatedName = (s: string, showId: boolean) => {
 	if (s.includes(',')) {
-		return s.split(',').map(m => capitalize(material.translate(m))).join(', ');
+		return s
+			.split(',')
+			.map(m => toName(m, showId))
+			.join(', ');
 	}
-	return capitalize(material.translate(s))
-}
+	return toName(s, showId);
+};
 
 const Option = (props: IOptionProps) => {
 	const { name, selected, handleClick } = props;
@@ -38,16 +45,12 @@ interface IListSelectProps {
 	selected: Set<string>;
 	items: string[];
 	onUpdate?: (selected: Set<string>) => void;
+	onClick?: (material: string) => void;
 }
 
 const ListSelect = (props: IListSelectProps) => {
-	const { selected, items } = props;
-
-	const handleSelectedChanged = (selected: Set<string>) => {
-		if (props.onUpdate) {
-			props.onUpdate(selected);
-		}
-	};
+	const { onClick, selected, items } = props;
+	const [showId] = useContext(AlchemyConfigContext);
 	const handleClick = (item: string) => {
 		const newSelected = new Set(selected);
 		if (newSelected.has(item)) {
@@ -55,7 +58,12 @@ const ListSelect = (props: IListSelectProps) => {
 		} else {
 			newSelected.add(item);
 		}
-		handleSelectedChanged(newSelected);
+		if (onClick) {
+			onClick(item);
+		}
+		if (props.onUpdate) {
+			props.onUpdate(newSelected);
+		}
 	};
 
 	return (
@@ -63,7 +71,7 @@ const ListSelect = (props: IListSelectProps) => {
 			{items.map(item => (
 				<Option
 					key={item}
-					name={getTranslatedName(item)}
+					name={getTranslatedName(item, showId)}
 					selected={selected.has(item)}
 					handleClick={() => handleClick(item)}
 				/>

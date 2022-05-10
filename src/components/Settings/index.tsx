@@ -21,8 +21,8 @@ export const Settings = props => {
 				<GeneralSettings />
 				<hr className="my-4" />
 				<PanelsSettings />
-				{/* <hr className="my-4" />
-				<FavoritesSettings /> */}
+				<hr className="my-4" />
+				<FavoritesSettings />
 				<hr className="my-4" />
 				<DangerSettings />
 			</Modal.Body>
