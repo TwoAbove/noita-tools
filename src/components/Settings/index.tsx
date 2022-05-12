@@ -10,7 +10,7 @@ import FavoritesSettings from './FavoritesSettings';
 
 // TODO: All of these can be simplified to [</>,...].map for config values
 // so that we don't repeat the settings blocks.
-export const Settings = props => {
+const Settings = props => {
 	return (
 		<Modal size="lg" show={props.show} onHide={props.handleClose}>
 			<Modal.Header closeButton>
@@ -29,3 +29,5 @@ export const Settings = props => {
 		</Modal>
 	);
 };
+
+export default Settings;

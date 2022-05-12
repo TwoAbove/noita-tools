@@ -3,9 +3,6 @@ import { useEffect, useState } from 'react';
 import { Modal, Row, Col, FormControl } from 'react-bootstrap';
 import Fuse from 'fuse.js';
 
-import spells from '../services/SeedInfo/data/spells.json';
-import spellObj from '../services/SeedInfo/data/obj/spells.json';
-import wands from '../services/SeedInfo/data/wands.json';
 import Icon from './Icons/Icon';
 import Clickable from './Icons/Clickable';
 import {
@@ -44,13 +41,13 @@ const SpellSelect = (props: ISpellSelectProps) => {
 		selected = []
 	} = props;
 	const [filter, setFilter] = useState('');
-	const [fuse, setFuse] = useState(() => new Fuse(spells, options as any));
+	const [fuse, setFuse] = useState(() => new Fuse(shopInfoProvider.spellsArr, options as any));
 	const { t, i18n } = useTranslation('materials');
 
 	useEffect(() => {
 		setFuse(
 			new Fuse(
-				spells.map(s => ({
+				shopInfoProvider.spellsArr.map(s => ({
 					...s,
 					name: t(s.name),
 					description: t(s.description)
@@ -62,7 +59,7 @@ const SpellSelect = (props: ISpellSelectProps) => {
 
 	const spellsToShow = (filter
 		? fuse.search(filter).map(s => s.item)
-		: spells
+		: shopInfoProvider.spellsArr
 	)
 		.filter(s =>
 			level && level >= 0
@@ -89,7 +86,7 @@ const SpellSelect = (props: ISpellSelectProps) => {
 						className="p-3 justify-content-start align-items-center row-cols-auto"
 					>
 						{selected.map(s => {
-							const spell = spellObj[s];
+							const spell = shopInfoProvider.spells[s];
 							return (
 								<Col className="p-0 m-1" key={spell.id}>
 									<Clickable
