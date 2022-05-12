@@ -11,7 +11,7 @@ import App from './components/App';
 
 import * as serviceWorker from './serviceWorker';
 
-import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from './reportWebVitals';
 
 console.log(`v${process.env.REACT_APP_VERSION}`);
 
@@ -22,7 +22,7 @@ function sendToAnalytics(metric) {
 		fetch('/api/stats', { body, method: 'POST', keepalive: true });
 }
 
-reportWebVitals(sendToAnalytics);
+// reportWebVitals(sendToAnalytics);
 const root = createRoot(document.getElementById('root')!);
 root.render(
 	<React.StrictMode>
