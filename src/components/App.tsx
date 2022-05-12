@@ -11,7 +11,7 @@ import { AlchemyConfigProvider } from './AlchemyConfigContext';
 
 import LoadingComponent from './LoadingComponent';
 
-const Settings = lazy(() => import('./Settings'), { ssr: false });
+const Settings = lazy(() => import('./Settings'));
 const LazySettings = props => {
 	const [show, setShow] = useState(false);
 
@@ -24,7 +24,7 @@ const LazySettings = props => {
 			>
 				<i className="bi bi-gear"></i>
 			</Button>
-			<Settings {...props} />
+			<Settings show={show} handleClose={() => setShow(false)} />
 		</Suspense>
 	);
 };
