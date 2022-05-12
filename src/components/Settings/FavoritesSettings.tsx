@@ -7,11 +7,13 @@ import { MaterialSelect } from '../MaterialSelect';
 import SpellSelect from '../SpellSelect';
 import { ConfigRow, ConfigTitle } from './helpers';
 
-import fungalMaterials from '../../services/SeedInfo/data/fungal-materials.json';
 import useLocalStorage from '../../services/useLocalStorage';
+import { FungalInfoProvider } from '../../services/SeedInfo/infoHandler/InfoProviders/Fungal';
 
-const materialsFrom = fungalMaterials.materials_from.flatMap(m => m.materials);
-const materialsTo = fungalMaterials.materials_to.map(m => m.material);
+const fungalInfoProvider = new FungalInfoProvider({} as any);
+
+const materialsFrom = fungalInfoProvider.fungalData.materials_from.flatMap(m => m.materials);
+const materialsTo = fungalInfoProvider.fungalData.materials_to.map(m => m.material);
 
 const materialList = [...new Set([...materialsFrom, ...materialsTo])];
 

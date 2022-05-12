@@ -1,21 +1,26 @@
 import { capitalize, Objectify } from '../../../services/helpers';
 
-import biomeModifiers from '../../../services/SeedInfo/data/obj/biome_modifiers.json';
 import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Boime';
+import { BiomeModifierInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/BiomeModifier';
 
 interface IBiomeModifierProps {
 	biome: string;
-	modifier: Objectify<typeof biomeModifiers>[string] | string;
+	modifier:
+		| Objectify<typeof biomeModfierInfoProvider.modifiers>[string]
+		| string;
 	onClick?: (e) => void;
 }
 
 const biomeInfoProvider = new BiomeInfoProvider({} as any);
+const biomeModfierInfoProvider = new BiomeModifierInfoProvider({} as any);
 
 const BiomeModifier = (props: IBiomeModifierProps) => {
 	const { biome, modifier, onClick } = props;
-	let modifierObject: Objectify<typeof biomeModifiers>[string];
+	let modifierObject: Objectify<
+		typeof biomeModfierInfoProvider.modifiers
+	>[string];
 	if (typeof modifier === 'string') {
-		modifierObject = biomeModifiers[modifier];
+		modifierObject = biomeModfierInfoProvider.modifiers[modifier];
 	} else {
 		modifierObject = modifier;
 	}

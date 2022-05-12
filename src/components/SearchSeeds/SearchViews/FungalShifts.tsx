@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 
-import fungalMaterials from '../../../services/SeedInfo/data/fungal-materials.json';
+import { FungalInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Fungal';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 import { Square } from '../../helpers';
 import {FlaskMaterialSelect} from '../../MaterialSelect';
+
+const fungalInfoProvider = new FungalInfoProvider({} as any);
 
 interface IFungalShiftsProps {
 	onUpdateConfig: (config: IRule) => void;
@@ -17,8 +19,8 @@ interface IOpen {
 	type?: string;
 }
 
-const materialsFrom = fungalMaterials.materials_from.flatMap(m => m.materials);
-const materialsTo = fungalMaterials.materials_to.map(m => m.material);
+const materialsFrom = fungalInfoProvider.fungalData.materials_from.flatMap(m => m.materials);
+const materialsTo = fungalInfoProvider.fungalData.materials_to.map(m => m.material);
 
 const FungalShifts = (props: IFungalShiftsProps) => {
 	const { onUpdateConfig } = props;

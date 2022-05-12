@@ -8,20 +8,22 @@ import { IRule } from '../IRule';
 import { InfoProvider } from './Base';
 
 export class SpellInfoProvider extends InfoProvider {
-  spells = spellObjData as Objectify<typeof spellObjData>;
-  spellsArr = spellData;
+	spells = spellObjData as Objectify<typeof spellObjData>;
+	spellsArr = spellData;
 
-  provide(spellName: string) {
-    let found = this.spells[spellName];
-    if (found) return found;
-    console.warn("Could not find spell: " + spellName);
-    return {
-      id: spellName,
-      sprite: ''
-    };
-  }
+	provide(spellName: string) {
+		let found = this.spells[spellName];
+		if (found) return found;
+		console.warn('Could not find spell: ' + spellName);
+		return {
+			id: spellName,
+			sprite: '',
+			description: '',
+			name: ''
+		};
+	}
 
-  test(rule: IRule): boolean {
-    return true;
-  }
+	test(rule: IRule): boolean {
+		return true;
+	}
 }

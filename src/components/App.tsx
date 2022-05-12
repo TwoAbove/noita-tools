@@ -1,23 +1,35 @@
-import React, { useState } from 'react';
-import { Container, Tabs, Tab, Stack, Button } from 'react-bootstrap';
+import React, { useState, Suspense } from 'react';
+import { Container, Stack, Button } from 'react-bootstrap';
 import * as wasmCheck from 'wasm-check';
+import loadable, { lazy } from '@loadable/component'
 
-import SeedInfo from './SeedInfo';
-import SearchSeeds from './SearchSeeds';
-import LiveSeedStats from './LiveSeedStats';
 import Donate from './Donate';
-import useLocalStorage from '../services/useLocalStorage';
-// import { db } from "../services/db";
 
 import './App.css';
 import { ThemeProvider } from './ThemeContext';
 import { AlchemyConfigProvider } from './AlchemyConfigContext';
 
-import { Settings } from './Settings';
+import LoadingComponent from './LoadingComponent';
 
-const Header = () => {
+const Settings = lazy(() => import('./Settings'), { ssr: false });
+const LazySettings = props => {
 	const [show, setShow] = useState(false);
 
+	return (
+		<Suspense fallback={<LoadingComponent />}>
+			<Button
+				onClick={() => setShow(true)}
+				size="lg"
+				variant="outline-primary"
+			>
+				<i className="bi bi-gear"></i>
+			</Button>
+			<Settings {...props} />
+		</Suspense>
+	);
+};
+
+const Header = () => {
 	// noita-tools.herokuapp.com
 	const host = window.location.host;
 	const notNewUrl = !host.includes('noitool.com');
@@ -38,15 +50,8 @@ const Header = () => {
 				)}
 			</div>
 			<div className=" d-flex pt-3 justify-content-end align-items-start">
-				<Button
-					onClick={() => setShow(true)}
-					size="lg"
-					variant="outline-primary"
-				>
-					<i className="bi bi-gear"></i>
-				</Button>
+				<LazySettings />
 			</div>
-			<Settings show={show} handleClose={() => setShow(false)} />
 		</Container>
 	);
 };
@@ -59,7 +64,7 @@ const WasmError = props => {
 				the generation code.
 			</p>
 			<p>
-				This might be due to several things. Some browser security configurations turn WebAssembly off. Some browsers do not support it. <br/>
+				This might be due to several things. Some browser security configurations turn WebAssembly off. Some browsers do not support it. <br />
 				One common issue is with Edge with enhanced security configuration turning off WebAssembly.
 			</p>
 			<p>
@@ -81,31 +86,12 @@ const WasmError = props => {
 	);
 };
 
-const Body = () => {
-	const [tab, setTab] = useLocalStorage('last-tab', 'SeedInfo');
-
-	const handleTab = key => {
-		setTab(key);
-	};
-
+const Body = lazy(() => import('./Body'));
+const LazyBody = props => {
 	return (
-		<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
-			<Tabs activeKey={tab} onSelect={handleTab} id="main-tabs" className="">
-				<Tab mountOnEnter eventKey="SeedInfo" title="Seed info">
-					<SeedInfo />
-				</Tab>
-				<Tab mountOnEnter eventKey="SearchSeeds" title="Search For Seed">
-					<SearchSeeds />
-				</Tab>
-				<Tab
-					mountOnEnter
-					eventKey="LiveSeedStats"
-					title="Live game helper (beta)"
-				>
-					<LiveSeedStats />
-				</Tab>
-			</Tabs>
-		</Container>
+		<Suspense fallback={<LoadingComponent />}>
+			<Body {...props} />
+		</Suspense>
 	);
 };
 
@@ -154,7 +140,7 @@ const App: React.FC = () => {
 			// https://github.com/MaxGraey/wasm-check/issues/5
 			// return wasmCheck.support()
 			return typeof WebAssembly === 'object';
-		} catch(e) {
+		} catch (e) {
 			console.error(e);
 			return false;
 		}
@@ -167,7 +153,7 @@ const App: React.FC = () => {
 					<div className="content bg-body rounded">
 						<Header />
 						{hasWasm ? (
-							<Body />
+							<LazyBody />
 						) : (
 							<WasmError onProceed={() => setHasWasm(true)} />
 						)}

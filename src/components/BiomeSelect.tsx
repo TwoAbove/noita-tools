@@ -12,44 +12,18 @@ import {
 import Fuse from 'fuse.js';
 
 
-import biomeModifiers from '../services/SeedInfo/data/obj/biome_modifiers.json';
-import biomeNames from '../services/SeedInfo/data/obj/biome_names.json';
 import { capitalize, Objectify } from '../services/helpers';
 import BiomeModifier from './SeedInfo/SeedInfoViews/BiomeMod';
 import { BiomeModifierInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/BiomeModifier';
+import { BiomeInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/Boime';
 
 const options = {
 	shouldSort: false,
 	keys: ['id', 'ui_name']
 };
 
-const biomeInfoProvider = new BiomeModifierInfoProvider({} as any);
-
-const availableBiomeModifiers = Object.values(biomeModifiers as Objectify<
-	typeof biomeModifiers
->).reduce(
-	(c, bm) => {
-		for (const biome in c) {
-			if (
-				bm.does_not_apply_to_biome &&
-				bm.does_not_apply_to_biome.includes(biome)
-			) {
-				continue;
-			}
-			if (bm.apply_only_to_biome && !bm.apply_only_to_biome.includes(biome)) {
-				continue;
-			}
-			c[biome].push(bm.id);
-		}
-		return c;
-	},
-	biomeInfoProvider.biomes
-		.flat(2)
-		.reduce<{ [modifier: string]: string[] }>((c, b) => {
-			c[b] = [];
-			return c;
-		}, {})
-);
+const biomeModifierInfoProvider = new BiomeModifierInfoProvider({} as any);
+const biomeInfoProvider = new BiomeInfoProvider({} as any);
 
 interface IBiomeSelectProps {
 	show: boolean;
@@ -72,11 +46,11 @@ const BiomeSelect = (props: IBiomeSelectProps) => {
 			}
 			return c;
 		},
-		availableBiomeModifiers
+		biomeModifierInfoProvider.availableBiomeModifiers
 	);
 
 	const biomesToShow = Object.keys(availableFilteredBiomeModifiers).filter(
-		b => biomeNames[b].translated_name
+		b => biomeInfoProvider.provide(b).translated_name
 	);
 
 	const handleSubmit = (biome: string, modifier: string) => {
@@ -105,7 +79,7 @@ const BiomeSelect = (props: IBiomeSelectProps) => {
 									onClick={() => setSelectedBiome(biome)}
 								>
 									<div className="m-1">
-										{capitalize(biomeNames[biome].translated_name)}
+										{capitalize(biomeInfoProvider.provide(biome).translated_name)}
 									</div>
 								</ListGroup.Item>
 							);
@@ -126,7 +100,7 @@ const BiomeSelect = (props: IBiomeSelectProps) => {
 										<div className="mx-auto"></div>
 										<BiomeModifier
 											biome={''}
-											modifier={biomeModifiers[modifier]}
+											modifier={biomeModifierInfoProvider.get(modifier)}
 										/>
 										<div className="mx-auto"></div>
 									</ListGroup.Item>

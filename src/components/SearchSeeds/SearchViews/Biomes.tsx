@@ -8,12 +8,14 @@ import LightBulletIcon from '../../Icons/LightBullet';
 import classNames from 'classnames';
 import Clickable from '../../Icons/Clickable';
 
-import biomeNames from '../../../services/SeedInfo/data/obj/biome_names.json';
 import { capitalize } from '../../../services/helpers';
 import { Square } from '../../helpers';
 import BiomeSelect from '../../BiomeSelect';
 import BiomeModifier from '../../SeedInfo/SeedInfoViews/BiomeMod';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
+import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Boime';
+
+const biomeInfoProvider = new BiomeInfoProvider({} as any);
 
 interface IBiomesProps {
 	onUpdateConfig: (config: IRule) => void;
@@ -66,7 +68,7 @@ const Biomes = (props: IBiomesProps) => {
 			<p>To delete a modifier, click on it.</p>
 			<Stack gap={3}>
 				{Object.keys(biomeModifiers).map(biome => {
-					const name = capitalize(biomeNames[biome].translated_name!);
+					const name = capitalize(biomeInfoProvider.provide(biome).translated_name!);
 					return (
 						<div key={biome}>
 							<Stack direction="horizontal">

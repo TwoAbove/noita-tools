@@ -1,8 +1,6 @@
 // import Fuse from 'fuse.js';
 import { Modal } from 'react-bootstrap';
 
-// import wands from '../services/SeedInfo/data/wands.json';
-
 // const wandOptions = {
 // 	shouldSort: false,
 // 	keys: ['id', 'name', 'description']

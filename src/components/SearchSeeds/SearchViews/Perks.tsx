@@ -6,10 +6,12 @@ import classNames from 'classnames';
 import Clickable from '../../Icons/Clickable';
 import PerkSelect from '../../PerkSelect';
 import Icon from '../../Icons/Icon';
-import perkData from '../../../services/SeedInfo/data/obj/perks.json';
 import { Square } from '../../helpers';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 import Perk from '../../Icons/Perk';
+import { PerkInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Perk';
+
+const perkInfoProvider = new PerkInfoProvider({} as any);
 
 interface IPerksProps {
 	onUpdateConfig: (config: IRule) => void;
@@ -120,7 +122,7 @@ const Perks = (props: IPerksProps) => {
 													<Perk
 														key={perkId}
 														onClick={() => handleDelete(perkId, i)}
-														perk={perkData[perkId]}
+														perk={perkInfoProvider.perks[perkId]}
 													/>
 												);
 											})}

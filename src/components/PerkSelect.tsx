@@ -4,11 +4,12 @@ import { Modal, ModalProps, Row, Col, FormControl } from 'react-bootstrap';
 import Fuse from 'fuse.js';
 import { useTranslation } from 'react-i18next';
 
-import perks from '../services/SeedInfo/data/perks.json';
-import perksObj from '../services/SeedInfo/data/obj/perks.json';
 import Icon from './Icons/Icon';
 import Clickable from './Icons/Clickable';
 import Perk from './Icons/Perk';
+import { PerkInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/Perk';
+
+const perkInfoProvider = new PerkInfoProvider({} as any);
 
 const options = {
 	minMatchCharLength: 2,
@@ -38,14 +39,14 @@ const PerkSelect = (props: IPerkSelectProps) => {
 	} = props;
 	const [filter, setFilter] = useState('');
 
-	const [fuse, setFuse] = useState(() => new Fuse(perks, options as any));
+	const [fuse, setFuse] = useState(() => new Fuse(perkInfoProvider.perksArr, options as any));
 
 	const { t, i18n } = useTranslation('materials');
 
 	useEffect(() => {
 		setFuse(
 			new Fuse(
-				perks.map(p => ({
+				perkInfoProvider.perksArr.map(p => ({
 					...p,
 					ui_name: t(p.ui_name),
 					ui_description: t(p.ui_description)
@@ -61,7 +62,7 @@ const PerkSelect = (props: IPerkSelectProps) => {
 
 	const perksToShow = (filter
 		? fuse.search(filter || ' ').map(p => p.item)
-		: perks
+		: perkInfoProvider.perksArr
 	).filter(p => !selected.includes(p.id));
 
 	return (
@@ -79,7 +80,7 @@ const PerkSelect = (props: IPerkSelectProps) => {
 				{showSelected && selected.length > 0 && (
 					<Row className="p-3 justify-content-start align-items-center row-cols-auto">
 						{selected.map(id => {
-							const perk = perksObj[id];
+							const perk = perkInfoProvider.perks[id];
 							return (
 								<Col className="p-0 m-1" key={perk.id}>
 									<Perk onClick={() => handleSelectedClicked && handleSelectedClicked(perk.id)} perk={perk} />

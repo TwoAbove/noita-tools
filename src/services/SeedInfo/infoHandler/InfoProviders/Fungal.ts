@@ -9,7 +9,7 @@ import { Global } from './Global';
 
 
 export class FungalInfoProvider extends InfoProvider {
-  data = fungalMaterialsData;
+  fungalData = fungalMaterialsData;
   _G = new Global();
 
   fungal_shift(entity: null, x: null, y: null, debug_no_limits: boolean): { flaskTo: boolean, flaskFrom: boolean, from: string[], to: string } {
@@ -29,8 +29,8 @@ export class FungalInfoProvider extends InfoProvider {
     let converted_any = false;
 
     let rnd = this.randoms.random_create(9123, 58925 + iter); // TODO: store for next change
-    let from = this.randoms.pick_random_from_table_weighted(rnd, this.data.materials_from);
-    let to = this.randoms.pick_random_from_table_weighted(rnd, this.data.materials_to);
+    let from = this.randoms.pick_random_from_table_weighted(rnd, this.fungalData.materials_from);
+    let to = this.randoms.pick_random_from_table_weighted(rnd, this.fungalData.materials_to);
 
     let flaskFrom = false;
     let flaskTo = false;
