@@ -98,9 +98,10 @@ interface IPerkRowProps {
   handleLoad: () => void;
   isPerkFavorite: (id: string) => boolean;
   isSpellFavorite: (id: string) => boolean;
+  getAlwaysCast: (i: number, perks: number) => string;
 };
 const PerkRow = (props: IPerkRowProps) => {
-  const { rerollsToFavorite, favoritesInNextReroll, advanced, pickedPerks, perkRerolls, shop, perks, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, handleOpenShopInfo, handleLoad, isPerkFavorite, isSpellFavorite } = props;
+  const { rerollsToFavorite, favoritesInNextReroll, advanced, pickedPerks, perkRerolls, shop, perks, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, getAlwaysCast, handleOpenShopInfo, handleLoad, isPerkFavorite, isSpellFavorite } = props;
   const numberOfGambles = pickedPerks?.filter(p => p === 'GAMBLE').length;
   const type = shop.type;
   const rerollsForLevel = perkRerolls ? perkRerolls : 0;
@@ -138,9 +139,10 @@ const PerkRow = (props: IPerkRowProps) => {
         <Shop />
       </Col>
       <Col>
-        <Stack direction="horizontal" className="justify-content-center" gap={2} >
+        <Stack direction="horizontal" className="justify-content-center" gap={3} >
           {perksToShow && perksToShow.map((perk, i) => {
             const rerollable = isRerollable(i, perksToShow.length);
+            const alwaysCast = perk.id === 'ALWAYS_CAST' ? getAlwaysCast(i, perksToShow.length) : undefined;
             const fav = isPerkFavorite(perk.id);
             return <Perk
               className={fav && 'mb-2'}
@@ -150,6 +152,7 @@ const PerkRow = (props: IPerkRowProps) => {
               onClick={() => handleClickPerk(advanced ? i : perk.id)}
               clicked={!advanced ? pickedPerks?.includes(perk.id) : pickedPerks && !!pickedPerks[i]}
               perk={perk}
+              alwaysCast={alwaysCast}
             />
           })}
           {!!numberOfGambles && new Array(numberOfGambles).fill('').map((_, i) => {
@@ -610,6 +613,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
               handleReroll={e => handleReroll(e, level)}
               handleClickPerk={(id) => handleClickPerk(level, id)()}
               isRerollable={(i, l) => infoProvider.providers.lottery.provide(level, i, l, worldOffset, lotteries)}
+              getAlwaysCast={(i, l) => infoProvider.providers.alwaysCast.provide(level, i, l, worldOffset)}
               handleOpenShopInfo={() => handleOpenShopInfo(level)}
               handleLoad={() => handleGenRowAdvanced(level)}
             />

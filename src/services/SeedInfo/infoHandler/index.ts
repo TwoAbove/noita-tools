@@ -13,6 +13,7 @@ import { SpellInfoProvider } from './InfoProviders/Spell';
 import { StartingBombSpellInfoProvider } from './InfoProviders/StartingBomb';
 import { StartingFlaskInfoProvider } from './InfoProviders/StartingFlask';
 import { StartingSpellInfoProvider } from './InfoProviders/StartingSpell';
+import { AlwaysCastInfoProvider } from './InfoProviders/AlwaysCast';
 
 import loadRandom, { IRandom } from '../random';
 import { WandInfoProvider } from './InfoProviders/Wand';
@@ -20,6 +21,7 @@ import { i18n } from 'i18next';
 
 interface IProviders {
   alchemy: AlchemyInfoProvider;
+  alwaysCast: AlwaysCastInfoProvider;
   biome: BiomeInfoProvider;
   biomeModifier: BiomeModifierInfoProvider;
   fungalShift: FungalInfoProvider;
@@ -27,12 +29,12 @@ interface IProviders {
   map: MapInfoProvider;
   material: MaterialInfoProvider;
   perk: PerkInfoProvider;
-  statelessPerk: PerkInfoProvider;
   rain: RainInfoProvider;
   shop: ShopInfoProvider;
   startingBombSpell: StartingBombSpellInfoProvider;
   startingFlask: StartingFlaskInfoProvider;
   startingSpell: StartingSpellInfoProvider;
+  statelessPerk: PerkInfoProvider;
   wand: WandInfoProvider;
   [key: string]: InfoProvider;
 }
@@ -79,6 +81,7 @@ export class GameInfoProvider extends EventTarget {
   buildInfoProviders(): IProviders {
     const providers: any = {
       alchemy: new AlchemyInfoProvider(this.randoms),
+      alwaysCast: new AlwaysCastInfoProvider(this.randoms),
       biome: new BiomeInfoProvider(this.randoms),
       biomeModifier: new BiomeModifierInfoProvider(this.randoms),
       fungalShift: new FungalInfoProvider(this.randoms),
@@ -86,12 +89,12 @@ export class GameInfoProvider extends EventTarget {
       map: new MapInfoProvider(this.randoms),
       material: new MaterialInfoProvider(this.i18n),
       perk: new PerkInfoProvider(this.randoms),
-      statelessPerk: new PerkInfoProvider(this.randoms),
       rain: new RainInfoProvider(this.randoms),
       spells: new SpellInfoProvider(this.randoms),
       startingBombSpell: new StartingBombSpellInfoProvider(this.randoms),
       startingFlask: new StartingFlaskInfoProvider(this.randoms),
       startingSpell: new StartingSpellInfoProvider(this.randoms),
+      statelessPerk: new PerkInfoProvider(this.randoms),
       wand: new WandInfoProvider(this.randoms)
     }
 
