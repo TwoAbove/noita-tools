@@ -18,7 +18,7 @@ emcc --bind -Oz \
   -s ENVIRONMENT="web,worker" \
   -s EXPORT_NAME="create_noita_random" \
   -s "EXPORTED_FUNCTIONS=['_generate_map']" \
-  -s "EXTRA_EXPORTED_RUNTIME_METHODS=['cwrap']" \
+  -s "EXPORTED_RUNTIME_METHODS='cwrap'" \
   wasm_in.cpp
 
 # To see what the size is to sanity-check

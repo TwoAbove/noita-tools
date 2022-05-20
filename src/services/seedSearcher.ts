@@ -8,6 +8,7 @@ export interface ISeedSolverConfig {
 	currentSeed?: number;
 	seedEnd?: number;
 	rules?: IRule[];
+	unlockedSpells?: boolean[];
 	findAll?: boolean;
 }
 
@@ -100,6 +101,11 @@ export class SeedSolver {
 		}
 		if (config.findAll) {
 			this.findAll = config.findAll;
+		}
+		if (config.unlockedSpells) {
+			this.gameInfoHandler.onRandomLoad(() => {
+				this.gameInfoHandler.randoms.SetUnlockedSpells(config.unlockedSpells!);
+			})
 		}
 	}
 

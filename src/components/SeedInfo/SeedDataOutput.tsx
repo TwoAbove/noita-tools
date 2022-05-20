@@ -6,6 +6,7 @@ import SeedInfo from './SeedInfo';
 
 import i18n from '../../i18n';
 import { db } from '../../services/db';
+import useLocalStorage from '../../services/useLocalStorage';
 
 interface ISeedDataProps {
 	seed: string;
@@ -22,18 +23,16 @@ const waitToLoad = (gameInfoProvider): Promise<void> =>
 		return res();
 	});
 
-const useGameInfoProvider = (
-	seed: string
-): [GameInfoProvider, Awaited<ReturnType<GameInfoProvider['provideAll']>>?] => {
-	const [data, setData] = useState<
-		Awaited<ReturnType<GameInfoProvider['provideAll']>>
-	>();
-
-	const [gameInfoProvider] = useState(() => {
-		const gameInfoProvider = new GameInfoProvider(
-			{ seed: parseInt(seed, 10) },
-			i18n
-		);
+export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], setData) => {
+	const gameInfoProvider = new GameInfoProvider(
+		{ seed: parseInt(seed, 10) },
+		i18n
+	);
+	gameInfoProvider.onRandomLoad(() => {
+		gameInfoProvider.randoms.SetUnlockedSpells(unlockedSpells);
+		gameInfoProvider.provideAll().then(data => {
+			setData(data);
+		});
 		gameInfoProvider.addEventListener('update', event => {
 			// Save config for resetting
 			const config = gameInfoProvider.config;
@@ -42,12 +41,32 @@ const useGameInfoProvider = (
 				setData(data);
 			});
 		});
-		return gameInfoProvider;
 	});
+	return gameInfoProvider;
+}
+
+const useGameInfoProvider = (
+	seed: string,
+	unlockedSpells?: boolean[]
+): [GameInfoProvider?, Awaited<ReturnType<GameInfoProvider['provideAll']>>?] => {
+	const [data, setData] = useState<
+		Awaited<ReturnType<GameInfoProvider['provideAll']>>
+	>();
+
+	const [gameInfoProvider, setGameInfoProvider] = useState<GameInfoProvider | undefined>();
+	useEffect(() => {
+		setData(undefined);
+		if (seed && unlockedSpells) {
+			const newGameInfoProvider = createGameInfoProvider(seed, unlockedSpells, setData);
+			waitToLoad(newGameInfoProvider).then(() => {
+				setGameInfoProvider(newGameInfoProvider);
+			})
+		}
+	}, [seed, unlockedSpells]);
 
 	useEffect(() => {
 		waitToLoad(gameInfoProvider).then(async () => {
-			if (seed) {
+			if (gameInfoProvider && seed) {
 				const config = await db.seedInfo.get({ seed });
 				gameInfoProvider.resetConfig({ ...config?.config, seed: parseInt(seed, 10) });
 			}
@@ -60,16 +79,17 @@ const useGameInfoProvider = (
 
 const SeedDataOutput = (props: ISeedDataProps) => {
 	const { seed } = props;
-	const [gameInfoProvider, data] = useGameInfoProvider(seed);
+	const [unlockedSpells] = useLocalStorage<boolean[] | undefined>('unlocked-spells', undefined);
+	const [gameInfoProvider, data] = useGameInfoProvider(seed, unlockedSpells);
 	return (
 		<>
-			{data ? (
+			{gameInfoProvider && data ? (
 				<Stack>
 					{data && `Seed: ${seed}`}
 					{data && (
 						<SeedInfo
 							seed={seed}
-							infoProvider={gameInfoProvider!}
+							infoProvider={gameInfoProvider}
 							data={data}
 						/>
 					)}

@@ -1,5 +1,7 @@
-import React from 'react';
-import { Form, Col, Row } from 'react-bootstrap';
+import React, { ReactNode } from 'react';
+import { Form, Col, Row, Container } from 'react-bootstrap';
+import { useDropzone, DropzoneOptions } from 'react-dropzone';
+
 import useLocalStorage from '../../services/useLocalStorage';
 
 interface IConfigRowProps {
@@ -16,9 +18,12 @@ export const ConfigRow = (props: IConfigRowProps) => {
 	);
 };
 
-export const ConfigTitle = (props: { title: string; subtitle: string }) => {
+export const ConfigTitle = (props: {
+	title: ReactNode;
+	subtitle: ReactNode;
+}) => {
 	return (
-		<div className='ms-2'>
+		<div className="ms-2">
 			<strong>{props.title}</strong>
 			<div className="pb-3">{props.subtitle}</div>
 		</div>
@@ -50,5 +55,20 @@ export const PanelToggle = (props: IPanelToggleProps) => {
 				/>
 			}
 		/>
+	);
+};
+
+export const DropZone = (props: { onDrop: DropzoneOptions['onDrop'] }) => {
+	const { onDrop } = props;
+	const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+	return (
+		<Container
+			className="text-center border rounded-3 border-2"
+			{...getRootProps()}
+		>
+			<input {...getInputProps()} />
+			<p>Drag 'n' drop the folder here, or click to select files</p>
+		</Container>
 	);
 };

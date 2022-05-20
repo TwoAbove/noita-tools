@@ -1,7 +1,6 @@
 import React, { useState, Suspense } from 'react';
 import { Container, Stack, Button } from 'react-bootstrap';
-import * as wasmCheck from 'wasm-check';
-import loadable, { lazy } from '@loadable/component'
+import { lazy } from '@loadable/component'
 
 import Donate from './Donate';
 

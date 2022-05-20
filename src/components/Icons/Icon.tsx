@@ -65,6 +65,7 @@ const Icon = React.forwardRef(
 				<div
 					className={classNames("position-relative", className)}
 					style={{
+						display: 'block',
 						width: `calc(${w})`,
 						height: `calc(${h || w})`,
 						imageRendering: 'pixelated'
@@ -73,15 +74,15 @@ const Icon = React.forwardRef(
 					<div
 						className="position-absolute top-50 start-50 translate-middle"
 						style={{
-							width: `calc(${w} + 10px)`,
-							height: `calc(${h || w} + 10px)`,
+							width: `calc(${w} + 4px)`,
+							height: `calc(${h || w} + 4px)`,
 							backgroundImage: `url(${backgroundUri})`,
 							backgroundSize: 'cover',
 							backgroundPosition: 'center',
 							imageRendering: 'pixelated'
 						}}
 					>
-						{img}
+						{uri ? img : null}
 					</div>
 				</div>
 			);

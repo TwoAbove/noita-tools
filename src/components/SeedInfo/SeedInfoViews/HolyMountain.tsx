@@ -108,9 +108,8 @@ const PerkRow = (props: IPerkRowProps) => {
   const perksToShow = (numberOfGambles > 0 ? perks?.slice(0, -2 * numberOfGambles) : perks) || [];
   const gamblePerks = perks?.slice(-2 * numberOfGambles) || [];
 
-  const spellIds = shop.type === IShopType.wand ?
-    [] :
-    // not yet - spell gen needs debugging. shop.items.flatMap(i => [i.cards.permanentCard, ...i.cards.cards].filter(Boolean)) as string[] :
+  const spellIds: string[] = shop.type === IShopType.wand ?
+    shop.items.flatMap(i => [i.cards.permanentCard, ...i.cards.cards].filter(Boolean) as string[]) :
     shop.items.map(i => i.spell.id);
   const favoriteSpells = spellIds.filter(id => isSpellFavorite(id));
   const Shop = () => {
