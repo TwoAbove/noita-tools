@@ -1,4 +1,3 @@
-import { useState, useContext, useEffect, useCallback } from 'react';
 import { ListGroup, Form, Stack } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
@@ -91,7 +90,7 @@ const FlagToggle = (props: { flag: string }) => {
 };
 
 const UnlockedSpellsSettings = () => {
-	const [unlockedSpells, setUnlockedSpells] = useLocalStorage(
+	const [, setUnlockedSpells] = useLocalStorage(
 		'unlocked-spells',
 		Array(393).fill(true)
 	);
