@@ -7,6 +7,7 @@ import GeneralSettings from './GeneralSettings';
 import PanelsSettings from './PanelsSettings';
 import DangerSettings from './DangerSettings';
 import FavoritesSettings from './FavoritesSettings';
+import UnlockedSpellsSettings from './UnlockedSpellsSettings';
 
 // TODO: All of these can be simplified to [</>,...].map for config values
 // so that we don't repeat the settings blocks.
@@ -23,6 +24,8 @@ const Settings = props => {
 				<PanelsSettings />
 				<hr className="my-4" />
 				<FavoritesSettings />
+				<hr className="my-4" />
+				<UnlockedSpellsSettings />
 				<hr className="my-4" />
 				<DangerSettings />
 			</Modal.Body>

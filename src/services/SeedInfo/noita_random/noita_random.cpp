@@ -32,7 +32,7 @@ double random_seed = 0;
 
 using namespace std;
 
-double Randomf()
+float Randomf()
 {
     int b = (int)random_seed * 0x41a7 + ((int)random_seed / 0x1f31d) * -0x7fffffff;
     if (b < 1)
@@ -380,22 +380,23 @@ void SetWorldSeed(uint worldseed)
 }
 
 // This looks like beta distribution?
-double GetDistribution(float mean, float sharpness, float baseline)
+float GetDistribution(float mean, float sharpness, float baseline)
 {
     int i = 0;
     do
     {
-        double r1 = Randomf();
-        double r2 = Randomf();
-        double div = fabs(r1 - mean);
-        if (r2 < ((1.0f - div) * baseline))
+        float r1 = Randomf();
+        float r2 = Randomf();
+        float div = fabs(r1 - mean);
+        if (r2 < ((1.0 - div) * baseline))
         {
             return r1;
         }
         if (div < 0.5)
         {
-            double v11 = sin(((0.5f - mean) + r1) * 3.1415f);
-            double v12 = pow(v11, sharpness);
+            // double v11 = sin(((0.5f - mean) + r1) * M_PI);
+            float v11 = sin(((0.5f - mean) + r1) * 3.1415f);
+            float v12 = pow(v11, sharpness);
             if (v12 > r2)
             {
                 return r1;
@@ -406,27 +407,35 @@ double GetDistribution(float mean, float sharpness, float baseline)
     return Randomf();
 }
 
-int RandomDistribution(int min, int max, int mean, double sharpness)
+int RandomDistribution(int min, int max, int mean, float sharpness)
 {
     if (sharpness == 0)
     {
         return Random(min, max);
     }
 
-    double adjMean = (double)(mean - min) / (double)(max - min);
-    double v7 = GetDistribution(adjMean, sharpness, 0.005f); // Baseline is always this
-    int d = (int)round((double)(max - min) * v7);
+    float adjMean = (float)(mean - min) / (float)(max - min);
+    float v7 = GetDistribution(adjMean, sharpness, 0.005f); // Baseline is always this
+    int d = (int)round((float)(max - min) * v7);
     return min + d;
 }
 
-double RandomDistributionf(double min, double max, double mean, double sharpness)
+float RandomDistributionf(float min, float max, float mean, float sharpness)
 {
     if (sharpness == 0.0)
     {
         float r = Randomf();
-        return (float)(r * (float)(max - min)) + min;
+        return (r * (max - min)) + min;
     }
-    return min + GetDistribution((mean - min) / (max - min), sharpness, 0.005f) * (max - min); // Baseline is always this
+    float adjMean = (mean - min) / (max - min);
+    return min + (max - min) * GetDistribution(adjMean, sharpness, 0.005f); // Baseline is always this
+}
+
+bool unlockedSpells[393] = {};
+
+void SetUnlockedSpells(int i, int val)
+{
+    unlockedSpells[i] = !!val;
 }
 
 Spell GetRandomAction(float x, float y, int level, int offset = 0)
@@ -437,6 +446,10 @@ Spell GetRandomAction(float x, float y, int level, int offset = 0)
     // all_spells length is 393
     for (int i = 0; i < 393; i++)
     {
+        if (!unlockedSpells[i])
+        {
+            continue;
+        }
         sum += all_spells[i].spawn_probabilities[level];
     }
 
@@ -445,6 +458,10 @@ Spell GetRandomAction(float x, float y, int level, int offset = 0)
 
     for (int i = 0; i < 393; i++)
     {
+        if (!unlockedSpells[i])
+        {
+            continue;
+        }
         Spell spell = all_spells[i];
         double probability = spell.spawn_probabilities[level];
         if (probability == 0.0)
@@ -471,6 +488,10 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
     // all_spells length is 393
     for (int i = 0; i < 393; i++)
     {
+        if (!unlockedSpells[i])
+        {
+            continue;
+        }
         if (all_spells[i].type == type)
         {
             sum += all_spells[i].spawn_probabilities[level];
@@ -482,6 +503,10 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
 
     for (int i = 0; i < 393; i++)
     {
+        if (!unlockedSpells[i])
+        {
+            continue;
+        }
         Spell spell = all_spells[i];
         if (all_spells[i].type != type)
         {
@@ -502,6 +527,10 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
         spell = all_spells[(j + rand) % 393];
         if (spell.type == type && spell.spawn_probabilities[level] > 0.0)
         {
+            if (!unlockedSpells[j])
+            {
+                continue;
+            }
             delete prng;
             return spell;
         }

@@ -9,7 +9,6 @@ import { Modal } from 'react-bootstrap';
 // const wandFuse = new Fuse(wands, wandOptions as any);
 
 interface IWandSelectProps {
-	type: number;
 	level?: number;
 	selected: any[];
 	show: boolean;

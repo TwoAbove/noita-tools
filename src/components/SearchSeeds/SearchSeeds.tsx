@@ -35,6 +35,7 @@ const Description = () => {
 const avg = (arr: number[]) => arr.reduce((p, c) => p + c, 0) / arr.length;
 
 const SearchSeeds = () => {
+	const [unlockedSpells] = useLocalStorage<boolean[] | undefined>('unlocked-spells', undefined);
 	const [useCores, setUseCores] = useLocalStorage('useCores', 1);
 	const [seedSolver, setSeedSolver] = React.useState(
 		() => new SeedSolver(useCores, true)
@@ -56,7 +57,11 @@ const SearchSeeds = () => {
 
 	const handleMultithreading = () => {
 		const concurrency = navigator.hardwareConcurrency || 1;
-		setUseCores(concurrency);
+		if (useCores > 1) {
+			setUseCores(1);
+		} else {
+			setUseCores(concurrency);
+		}
 	};
 
 	React.useEffect(() => {
@@ -81,19 +86,21 @@ const SearchSeeds = () => {
 				rules: [],
 				currentSeed: newSeed,
 				seedEnd: newSeedEnd,
+				unlockedSpells,
 				findAll,
 			});
 			if (!isNaN(newSeed)) {
 				newSeedSolver.update({
 					currentSeed: newSeed,
 					seedEnd: newSeedEnd,
+					unlockedSpells,
 					findAll
 				});
 			}
 			setSeedSolver(newSeedSolver);
 		};
 		work(); // eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [useCores, seed, seedEnd, findAll]);
+	}, [useCores, seed, seedEnd, findAll, unlockedSpells]);
 	// ^
 	// seedSolver is both used and set here, so running this
 	// again will create a loop
