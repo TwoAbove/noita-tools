@@ -65,15 +65,24 @@ export class NoitaDB extends Dexie {
 			favorites: '++id, type, &key' // Maybe add [type+key] as index?
 		});
 
+		this.version(6).stores({
+			configItems: '++id, &key',
+		}).upgrade(t => {
+			((t as any).db.configItems as NoitaDB['configItems']).add({
+				key: 'unlocked-spells',
+				val: Array(393).fill(true)
+			})
+		});
+
 		this.open().catch(e => {
 			console.error(e);
 		});
 	}
 
 	async toggleFavorite(type: FavoriteType, key: string) {
-		const exists = await this.favorites.get({type, key});
+		const exists = await this.favorites.get({ type, key });
 		if (!exists) {
-			await this.favorites.add({type, key});
+			await this.favorites.add({ type, key });
 			return;
 		}
 		this.favorites.delete(exists.id!);
@@ -134,6 +143,10 @@ async function populate() {
 		{
 			key: 'theme',
 			val: 'light'
+		},
+		{
+			key: 'unlocked-spells',
+			val: Array(393).fill(true)
 		},
 		{
 			key: 'useCores',
