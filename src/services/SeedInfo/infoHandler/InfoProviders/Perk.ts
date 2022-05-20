@@ -7,6 +7,7 @@ import { includesAll, includesSome, Objectify } from '../../../helpers';
 import { IRule } from '../IRule';
 import { InfoProvider } from './Base';
 import { Global } from './Global';
+import { cloneDeep } from 'lodash';
 
 export enum IPerkChangeStateType {
   shift,
@@ -293,7 +294,7 @@ export class PerkInfoProvider extends InfoProvider {
   }
 
   provide(_perkPicks?: Map<number, string[][]>, maxLevels?: number, returnPerkObjects?: boolean, worldOffset?: number, rerolls?: Map<number, number[]>): IPerk[][] {
-    const perkPicks = new Map(_perkPicks) || new Map();
+    const perkPicks = cloneDeep(_perkPicks) || new Map();
     worldOffset = worldOffset || 0;
     if (!maxLevels || maxLevels === -1) maxLevels = Infinity;
 

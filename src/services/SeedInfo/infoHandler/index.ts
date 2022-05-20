@@ -50,7 +50,7 @@ export class GameInfoProvider extends EventTarget {
   i18n?: i18n;
 
   constructor(initialConfig: Partial<IProviderConfig>, i18n?: i18n) {
-    super()
+    super();
     this.resetConfig(initialConfig);
     loadRandom().then((randoms) => {
       this.randoms = randoms;
@@ -58,6 +58,16 @@ export class GameInfoProvider extends EventTarget {
       this.ready = true;
     });
     this.i18n = i18n;
+  }
+
+  onRandomLoad(cb) {
+    return new Promise<void>(async res => {
+      while(!this.ready) {
+        await new Promise(r => setTimeout(r, 10));
+      }
+      await cb();
+      res();
+    });
   }
 
   resetConfig(initialConfig: Partial<IProviderConfig>) {

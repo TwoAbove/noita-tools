@@ -20,6 +20,10 @@ export const removeFromArr = (arr: string[], thing: string) => {
 	}
 }
 
+export const between = (x: number, min: number, max: number) => {
+  return min <= x && x <= max;
+}
+
 export const ticksToS = (t: number) => Math.round(t * 0.01666666 * 100) / 100;
 
 type CommonKeys<T> = keyof T;

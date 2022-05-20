@@ -144,8 +144,6 @@ const Shop = (props: IShopProps) => {
 		setModal([-1, 0]);
 	};
 
-	const ShopSelect = shopType === IShopType.item ? SpellSelect : WandSelect;
-
 	return (
 		<Container fluid>
 			<p>
@@ -168,16 +166,25 @@ const Shop = (props: IShopProps) => {
 					</Stack>
 				</Col>
 			</Row>
-			<ShopSelect
-				level={level}
-				type={shopType}
-				selected={shops[level]?.items}
-				show={level !== -1}
-				showSelected
-				handleClose={handleCloseAdvancedModal}
-				handleOnClick={id => handleItemClickedAdd(id)}
-				handleSelectedClicked={item => handleItemClickedRemove(item)}
-			/>
+			{shopType === IShopType.item ?
+				<SpellSelect
+					level={level}
+					selected={shops[level]?.items}
+					show={level !== -1}
+					showSelected
+					handleClose={handleCloseAdvancedModal}
+					handleOnClick={id => handleItemClickedAdd(id)}
+					handleSelectedClicked={item => handleItemClickedRemove(item)}
+				/> :
+				<WandSelect
+					level={level}
+					selected={shops[level]?.items}
+					show={level !== -1}
+					handleClose={handleCloseAdvancedModal}
+					handleOnClick={id => handleItemClickedAdd(id)}
+					handleSelectedClicked={item => handleItemClickedRemove(item)}
+				/>
+			}
 		</Container>
 	);
 };

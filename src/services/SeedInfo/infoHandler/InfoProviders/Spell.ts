@@ -14,7 +14,6 @@ export class SpellInfoProvider extends InfoProvider {
 	provide(spellName: string) {
 		let found = this.spells[spellName];
 		if (found) return found;
-		console.warn('Could not find spell: ' + spellName);
 		return {
 			id: spellName,
 			sprite: '',

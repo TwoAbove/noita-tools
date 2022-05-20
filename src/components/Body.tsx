@@ -3,6 +3,7 @@ import useLocalStorage from "../services/useLocalStorage";
 import LiveSeedStats from "./LiveSeedStats";
 import SearchSeeds from "./SearchSeeds";
 import SeedInfo from "./SeedInfo";
+import TestBench from "./TestBench";
 
 const Body = () => {
 	const [tab, setTab] = useLocalStorage('last-tab', 'SeedInfo');
@@ -27,6 +28,16 @@ const Body = () => {
 				>
 					<LiveSeedStats />
 				</Tab>
+				{
+					process.env.NODE_ENV === 'development' &&
+				<Tab
+					mountOnEnter
+					eventKey="TestBench"
+					title="TestBench"
+				>
+					<TestBench />
+				</Tab>
+				}
 			</Tabs>
 		</Container>
 	);

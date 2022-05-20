@@ -514,8 +514,7 @@ export class WandInfoProvider extends InfoProvider {
 					max
 				)
 			);
-			let temp_cost =
-				action_costs[clamp(t_gun[variable], 1, action_costs.length)];
+			let temp_cost = action_costs[clamp(t_gun[variable], 1, action_costs.length) - 1];
 			t_gun['cost'] = t_gun['cost'] - temp_cost;
 			return;
 		}

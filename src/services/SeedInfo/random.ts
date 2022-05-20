@@ -13,6 +13,16 @@ import noitaRandomModule from './noita_random/noita_random.wasm';
 
 type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const logify = func => (...args) => {
+	console.groupCollapsed(func);
+	console.log(...args);
+	const res = func(...args);
+	console.log(res);
+	console.trace();
+	console.groupEnd();
+	return res;
+};
 interface IRandomModule {
 	printErr: any;
 	print: any;
@@ -86,6 +96,11 @@ interface IRandomModule {
 		xs: number,
 		ys: number
 	): void;
+
+	SetUnlockedSpells(
+		i: number,
+		val: number,
+	): void;
 }
 
 interface IRND {
@@ -115,7 +130,7 @@ const load = async () => {
 	// 	'number',
 	// ]);
 
-	Module.print = function(text) {
+	Module.print = function (text) {
 		if (arguments.length > 1)
 			text = Array.prototype.slice.call(arguments).join(' ');
 		console.warn(text);
@@ -195,40 +210,39 @@ const load = async () => {
 		map_w: number,
 		map_h: number
 	): ImageData => {
-		const tilesDataP = Module._malloc(3 * tiles_w * tiles_h);
-		const resultP = Module._malloc(3 * map_w * map_h);
+		const tilesDataPtr = Module._malloc(3 * tiles_w * tiles_h);
+		const resultPtr = Module._malloc(3 * map_w * map_h);
 		const tileData = new Uint8Array(
 			Module.HEAPU8.buffer,
-			tilesDataP,
+			tilesDataPtr,
 			3 * tiles_w * tiles_h
 		);
 		const result = new Uint8Array(
 			Module.HEAPU8.buffer,
-			resultP,
+			resultPtr,
 			3 * map_w * map_h
 		);
 
 		rgba2rgb(wang.data, tileData);
 
-		Module.GenerateMap(tilesDataP, resultP, tiles_w, tiles_h, map_w, map_h);
+		Module.GenerateMap(tilesDataPtr, resultPtr, tiles_w, tiles_h, map_w, map_h);
 
 		const resImgData = new ImageData(map_w, map_h);
 		rgb2rgba(result, resImgData.data);
 
-		Module._free(tilesDataP);
-		Module._free(resultP);
+		Module._free(tilesDataPtr);
+		Module._free(resultPtr);
 
 		return resImgData;
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const logify = func => (...args) => {
-		console.groupCollapsed(func);
-		console.log(...args);
-		const res = func(...args);
-		console.log(res);
-		console.groupEnd();
-		return res;
+	const SetUnlockedSpells = (spells: boolean[]) => {
+		// For some reason using the pointer method like GenerateMap
+		// doesn't work - we get an error when calling, so we
+		// do this.
+		for (let i = 0; i < spells.length; i++) {
+			Module.SetUnlockedSpells(i, Number(spells[i]));
+		}
 	};
 
 	return {
@@ -245,6 +259,7 @@ const load = async () => {
 		GetRandomAction: Module.GetRandomAction,
 		GetRandomActionWithType: Module.GetRandomActionWithType,
 
+		SetUnlockedSpells,
 		GenerateMap,
 		random_next,
 		random_nexti,
