@@ -79,7 +79,7 @@ const useGameInfoProvider = (
 
 const SeedDataOutput = (props: ISeedDataProps) => {
 	const { seed } = props;
-	const [unlockedSpells] = useLocalStorage<boolean[] | undefined>('unlocked-spells', undefined);
+	const [unlockedSpells] = useLocalStorage<boolean[]>('unlocked-spells', Array(393).fill(true));
 	const [gameInfoProvider, data] = useGameInfoProvider(seed, unlockedSpells);
 	return (
 		<>
