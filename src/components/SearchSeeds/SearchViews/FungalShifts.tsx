@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 
 import { FungalInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Fungal';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
 import { Square } from '../../helpers';
-import {FlaskMaterialSelect} from '../../MaterialSelect';
+import { FlaskMaterialSelect } from '../../MaterialSelect';
 
 const fungalInfoProvider = new FungalInfoProvider({} as any);
 
 interface IFungalShiftsProps {
-	onUpdateConfig: (config: IRule) => void;
+	onUpdateConfig: (config: Partial<IRule>) => void;
+	config: IRule;
 }
 
 interface IOpen {
@@ -19,32 +20,25 @@ interface IOpen {
 	type?: string;
 }
 
-const materialsFrom = fungalInfoProvider.fungalData.materials_from.flatMap(m => m.materials);
-const materialsTo = fungalInfoProvider.fungalData.materials_to.map(m => m.material);
+const materialsFrom = fungalInfoProvider.fungalData.materials_from.flatMap(
+	m => m.materials
+);
+const materialsTo = fungalInfoProvider.fungalData.materials_to.map(
+	m => m.material
+);
 
-const FungalShifts = (props: IFungalShiftsProps) => {
-	const { onUpdateConfig } = props;
-	const [firstRender, setFirstRender] = useState(true);
-	const [fungalShifts, setFungalShifts] = useState<any[]>(
-		new Array(20).fill(undefined)
-	);
+const FungalShifts: FC<IFungalShiftsProps> = ({ onUpdateConfig, config }) => {
+	const { val: fungalShifts } = config;
 	const [selectOpen, setSelectOpen] = useState<IOpen>({ open: false });
 
-	useEffect(() => {
-		if (firstRender) {
-			setFirstRender(false);
-		}
-		if (firstRender) {
-			return;
-		}
+	const setFungalShifts = newConfig => {
 		onUpdateConfig({
 			type: 'fungalShift',
 			path: '',
 			params: [],
-			val: fungalShifts
+			val: newConfig
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [fungalShifts]);
+	};
 
 	const getSelected = (row?: number, type?: string) => {
 		if (typeof row == 'undefined') {

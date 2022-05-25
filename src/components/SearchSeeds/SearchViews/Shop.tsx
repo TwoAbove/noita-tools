@@ -101,17 +101,18 @@ const shopReducer = (state: IConfig, a: IAction): IConfig => {
 };
 
 interface IShopProps {
-	onUpdateConfig: (config: IRule) => void;
+	onUpdateConfig: (config: Partial<IRule>) => void;
+	config: IRule;
 }
 
 const Shop = (props: IShopProps) => {
-	const { onUpdateConfig } = props;
+	const { onUpdateConfig, config } = props;
 	const [d, setModal] = useState<[number, number]>([-1, 0]);
 	const level = d[0];
 	const shopType = d[1];
 	const [shops, dispatch] = useReducer(
 		shopReducer,
-		new Array(7).fill(undefined)
+		config.val,
 	);
 
 	useEffect(() => {
@@ -147,7 +148,7 @@ const Shop = (props: IShopProps) => {
 	return (
 		<Container fluid>
 			<p>
-				Compute-intensive is used. Use sparingly!
+				Compute-intensive if used. Use sparingly!
 			</p>
 			<Row className="justify-content-md-center">
 				<Col xs="auto">

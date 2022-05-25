@@ -19,7 +19,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 
 const WithShow = (props: {
 	id: string;
-	children: React.ReactChild;
+	children: React.ReactNode;
 }): JSX.Element => {
 	const config = useLiveQuery(() =>
 		db.configItems.get({ key: `panel-${props.id}-config` })

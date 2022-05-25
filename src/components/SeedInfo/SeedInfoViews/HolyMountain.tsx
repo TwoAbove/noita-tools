@@ -107,7 +107,6 @@ const PerkRow = (props: IPerkRowProps) => {
   const rerollsForLevel = perkRerolls ? perkRerolls : 0;
   const perksToShow = (numberOfGambles > 0 ? perks?.slice(0, -2 * numberOfGambles) : perks) || [];
   const gamblePerks = perks?.slice(-2 * numberOfGambles) || [];
-
   const spellIds: string[] = shop.type === IShopType.wand ?
     shop.items.flatMap(i => [i.cards.permanentCard, ...i.cards.cards].filter(Boolean) as string[]) :
     shop.items.map(i => i.spell.id);
@@ -248,7 +247,7 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
 
   return (
     <>
-      <Stack gap={2} direction="horizontal">
+      <Stack gap={2} direction="horizontal" className='flex-wrap'>
         <Stack gap={3} direction="horizontal">
           <Button
             variant="outline-primary"

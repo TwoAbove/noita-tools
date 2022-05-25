@@ -1,5 +1,5 @@
 import GameInfoProvider from '../services/SeedInfo/infoHandler';
-import { IRule } from './SeedInfo/infoHandler/IRule';
+import { IRules, ILogicRules, RuleType } from './SeedInfo/infoHandler/IRule';
 
 // const includesAll = (arr: string[], target: string[]) =>
 // 	arr.length ? target.every(v => arr.includes(v)) : true;
@@ -7,7 +7,7 @@ import { IRule } from './SeedInfo/infoHandler/IRule';
 export interface ISeedSolverConfig {
 	currentSeed?: number;
 	seedEnd?: number;
-	rules?: IRule[];
+	rules?: ILogicRules;
 	unlockedSpells?: boolean[];
 	findAll?: boolean;
 }
@@ -24,7 +24,7 @@ export class SeedSolver {
 	offset = 0;
 	step = 1;
 	infoFreq = 25000;
-	rules!: IRule[];
+	rules!: ILogicRules;
 	avgExecTime = 0;
 	sumExecTime = 0;
 
@@ -36,8 +36,25 @@ export class SeedSolver {
 		this.step = step;
 	}
 
-	check(rule: IRule): boolean {
-		return this.gameInfoHandler.providers[rule.type].test(rule);
+	check(rule: IRules): boolean {
+		switch(rule.type) {
+			case RuleType.NOT: {
+				const res = this.check(rule.rules[0]);
+				return !res;
+			}
+			case RuleType.AND: {
+				const res = rule.rules.every(r => this.check(r));
+				return res;
+			}
+			case RuleType.OR: {
+				const res = rule.rules.some(r => this.check(r));
+				return res;
+			}
+			default: {
+				const res = this.gameInfoHandler.providers[rule.type].test(rule);
+				return res;
+			}
+		}
 	}
 
 	async work() {
@@ -60,7 +77,7 @@ export class SeedSolver {
 			}
 			const startTime = performance.now();
 			this.gameInfoHandler.randoms!.SetWorldSeed(this.currentSeed);
-			const found = this.rules.every(r => this.check(r));
+			const found = this.rules.rules.every(r => this.check(r));
 			const endTime = performance.now();
 			this.sumExecTime += endTime - startTime;
 
