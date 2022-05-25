@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState, useTransition } from 'react';
 import { Modal, Row, Col, FormControl } from 'react-bootstrap';
 import Fuse from 'fuse.js';
 
@@ -11,6 +11,7 @@ import {
 } from '../services/SeedInfo/infoHandler/InfoProviders/Shop';
 
 import { useTranslation } from 'react-i18next';
+import LoadingComponent from './LoadingComponent';
 
 const shopInfoProvider = new ShopInfoProvider({} as any, {} as any);
 
@@ -30,31 +31,44 @@ interface ISpellSelectProps {
 	handleSelectedClicked: (id: string) => void;
 }
 
-const SpellSelect = (props: ISpellSelectProps) => {
-	const {
-		level,
-		show,
-		showSelected,
-		handleClose,
-		handleOnClick,
-		handleSelectedClicked,
-		selected = []
-	} = props;
+const SpellSelect: FC<ISpellSelectProps> = ({
+	level,
+	show,
+	showSelected,
+	handleClose,
+	handleOnClick,
+	handleSelectedClicked,
+	selected = []
+}) => {
+	const [isPending, startTransition] = useTransition();
 	const [filter, setFilter] = useState('');
-	const [fuse, setFuse] = useState(() => new Fuse(shopInfoProvider.spellsArr, options as any));
 	const { t, i18n } = useTranslation('materials');
 
-	useEffect(() => {
-		setFuse(
+	const translatedShop = useMemo(() => {
+		return shopInfoProvider.spellsArr.map(s => ({
+			...s,
+			name: t(s.name),
+			description: t(s.description)
+		}));
+	}, [t, i18n, i18n.language]);
+
+	const [fuse, setFuse] = useState(
+		() =>
 			new Fuse(
-				shopInfoProvider.spellsArr.map(s => ({
-					...s,
-					name: t(s.name),
-					description: t(s.description)
-				})),
+				translatedShop,
 				options as any
 			)
-		);
+	);
+
+	useEffect(() => {
+		startTransition(() => {
+			setFuse(
+				new Fuse(
+					translatedShop,
+					options as any
+				)
+			);
+		});
 	}, [t, i18n, i18n.language]);
 
 	const spellsToShow = (filter
@@ -77,33 +91,38 @@ const SpellSelect = (props: ISpellSelectProps) => {
 	return (
 		<Modal fullscreen="sm-down" scrollable show={show} onHide={handleClose}>
 			<Modal.Header closeButton>
-				<Modal.Title>Shop Item Select</Modal.Title>
+				<Modal.Title>Spell Select</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				{showSelected && selected.length > 0 && (
-					<Row
-						sm={8}
-						className="p-3 justify-content-start align-items-center row-cols-auto"
-					>
-						{selected.map(s => {
-							const spell = shopInfoProvider.spells[s];
-							return (
-								<Col className="p-0 m-1" key={spell.id}>
-									<Clickable
-										useHover
-										onClick={() => handleSelectedClicked(spell.id)}
-									>
-										<Icon
-											uri={spell.sprite}
-											alt={t(spell.description)}
-											title={t(spell.name)}
-											background
-										/>
-									</Clickable>
-								</Col>
-							);
-						})}
-					</Row>
+				{isPending ? (
+					<LoadingComponent />
+				) : (
+					showSelected &&
+					selected.length > 0 && (
+						<Row
+							sm={8}
+							className="p-3 justify-content-start align-items-center row-cols-auto"
+						>
+							{selected.map(s => {
+								const spell = shopInfoProvider.spells[s];
+								return (
+									<Col className="p-0 m-1" key={spell.id}>
+										<Clickable
+											useHover
+											onClick={() => handleSelectedClicked(spell.id)}
+										>
+											<Icon
+												uri={spell.sprite}
+												alt={t(spell.description)}
+												title={t(spell.name)}
+												background
+											/>
+										</Clickable>
+									</Col>
+								);
+							})}
+						</Row>
+					)
 				)}
 				<Row className="p-1 ps-4 pe-4 align-items-center">
 					<FormControl

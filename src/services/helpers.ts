@@ -26,6 +26,8 @@ export const between = (x: number, min: number, max: number) => {
 
 export const ticksToS = (t: number) => Math.round(t * 0.01666666 * 100) / 100;
 
+export const avg = (arr: number[]) => arr.reduce((p, c) => p + c, 0) / arr.length;
+
 type CommonKeys<T> = keyof T;
 type AllKeys<T> = T extends any ? keyof T : never;
 type Subtract<A, C> = A extends C ? never : A;

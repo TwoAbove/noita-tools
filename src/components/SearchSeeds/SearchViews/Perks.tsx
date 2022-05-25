@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 
 import classNames from 'classnames';
@@ -14,7 +14,8 @@ import { PerkInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoPro
 const perkInfoProvider = new PerkInfoProvider({} as any);
 
 interface IPerksProps {
-	onUpdateConfig: (config: IRule) => void;
+	onUpdateConfig: (config: Partial<IRule>) => void;
+	config: IRule;
 }
 
 const getMaxPerksPerRow = (perks: string[][]): number[] => {
@@ -28,31 +29,21 @@ const getMaxPerksPerRow = (perks: string[][]): number[] => {
 	return res;
 };
 
-const Perks = (props: IPerksProps) => {
-	const { onUpdateConfig } = props;
-	const [firstRender, setFirstRender] = useState(true);
-	const [perks, setPerks] = useState<string[][]>(new Array(7).fill([]));
+const Perks: FC<IPerksProps> = ({ onUpdateConfig, config }) => {
+	const { val: perks } = config;
 	const [selectOpen, setSelectOpen] = useState(-1);
 
-	// const maxPerksPerRow = getMaxPerksPerRow(perks);
-	// Need to rewrite the test function to handle selection of perks for searches
-	const maxPerksPerRow = perks.map(p => 3);
-	useEffect(() => {
-		if (firstRender) {
-			setFirstRender(false);
-		}
-		if (firstRender) {
-			return;
-		}
+	const setPerks = newConfig => {
 		onUpdateConfig({
 			type: 'perk',
 			path: '',
 			params: [],
 			strict: true,
-			val: perks
+			val: newConfig
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [perks]);
+	};
+
+	const maxPerksPerRow = perks.map(p => 3);
 
 	const handleAdd = perkId => {
 		// The regular [...] keeps refs to the old arrays, so need to copy

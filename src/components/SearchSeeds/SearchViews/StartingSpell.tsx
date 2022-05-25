@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
@@ -11,31 +11,23 @@ import { SpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoPr
 const spellInfoProvider = new SpellInfoProvider({} as any);
 
 interface IStartingSpellProps {
-	onUpdateConfig: (config: IRule) => void;
+	onUpdateConfig: (config: Partial<IRule>) => void;
+	config: IRule;
 }
 
 const spellOptions = ['LIGHT_BULLET', 'SPITTER', 'RUBBER_BALL', 'BOUNCY_ORB'];
 
-const StartingSpell = (props: IStartingSpellProps) => {
-	const { onUpdateConfig } = props;
-	const [firstRender, setFirstRender] = useState(true);
-	const [startingSpellType, setStartingSpellType] = useState('');
+const StartingSpell: FC<IStartingSpellProps> = ({ onUpdateConfig, config }) => {
+	const { val: startingSpellType } = config;
 
-	useEffect(() => {
-		if (firstRender) {
-			setFirstRender(false);
-		}
-		if (firstRender) {
-			return;
-		}
+	const setStartingSpellType = newConfig => {
 		onUpdateConfig({
 			type: 'startingSpell',
 			path: '',
 			params: [],
-			val: startingSpellType
+			val: newConfig
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [startingSpellType]);
+	};
 
 	const handleClicked = type => {
 		setStartingSpellType(type);

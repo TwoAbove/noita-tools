@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
@@ -8,35 +8,27 @@ import Clickable from '../../Icons/Clickable';
 import i18n from '../../../i18n';
 
 interface IRainProps {
-	onUpdateConfig: (config: IRule) => void;
+	onUpdateConfig: (config: Partial<IRule>) => void;
+	config: IRule;
 }
 
 const material = new MaterialInfoProvider(i18n);
 
-const rainOptions = ["", "water", "blood", "acid", "slime"]
+const rainOptions = ['', 'water', 'blood', 'acid', 'slime'];
 
-const Rain = (props: IRainProps) => {
-	const { onUpdateConfig } = props;
-	const [firstRender, setFirstRender] = useState(true);
-	const [rainMaterial, setRainType] = useState('');
+const Rain: FC<IRainProps> = ({ onUpdateConfig, config }) => {
+	const { material: rainMaterial } = config.val;
 
-	useEffect(() => {
-		if (firstRender) {
-			setFirstRender(false);
-		}
-		if (firstRender) {
-			return;
-		}
+	const setRainType = newConfig => {
 		onUpdateConfig({
 			type: 'rain',
 			path: '',
 			params: [],
 			val: {
-				material: rainMaterial
+				material: newConfig
 			}
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [rainMaterial]);
+	};
 
 	const handleClicked = type => {
 		setRainType(type);
@@ -53,9 +45,7 @@ const Rain = (props: IRainProps) => {
 								onClick={() => handleClicked(type)}
 								clicked={type === rainMaterial}
 							>
-								<div>
-									{type ? material.translate(type) : "Any"}
-								</div>
+								<div>{type ? material.translate(type) : 'Any'}</div>
 							</Clickable>
 						</Col>
 					);
