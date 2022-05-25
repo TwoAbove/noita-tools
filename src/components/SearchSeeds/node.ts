@@ -56,7 +56,6 @@ export const getTreeTools = (idKey: string, nodeKey: string) => {
 	const deleteById = (tree, id) => {
 		const node = getParentNode(tree, id);
 		if (!node) {
-			console.groupEnd();
 			return;
 		}
 		if (!node[nodeKey]) {
