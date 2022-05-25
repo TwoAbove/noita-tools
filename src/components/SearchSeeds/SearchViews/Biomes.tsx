@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 
 import WandIcon from '../../Icons/Wand';
@@ -18,32 +18,23 @@ import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoPr
 const biomeInfoProvider = new BiomeInfoProvider({} as any);
 
 interface IBiomesProps {
-	onUpdateConfig: (config: IRule) => void;
+	onUpdateConfig: (config: Partial<IRule>) => void;
+	config: IRule;
 }
 
-const Biomes = (props: IBiomesProps) => {
-	const { onUpdateConfig } = props;
-	const [firstRender, setFirstRender] = useState(true);
-	const [biomeModifiers, setBiomeModifiers] = useState<{
-		[biomeName: string]: string[];
-	}>({});
+const Biomes: FC<IBiomesProps> = ({ onUpdateConfig, config }) => {
 	const [selectOpen, setSelectOpen] = useState(false);
 
-	useEffect(() => {
-		if (firstRender) {
-			setFirstRender(false);
-		}
-		if (firstRender) {
-			return;
-		}
+	const { val: biomeModifiers } = config;
+
+	const setBiomeModifiers = newConfig => {
 		onUpdateConfig({
 			type: 'biomeModifier',
 			path: '',
 			params: [],
-			val: biomeModifiers
+			val: newConfig
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [biomeModifiers]);
+	};
 
 	const addBiome = (biome: string, modifier: string) => {
 		if (!biomeModifiers[biome]) {
@@ -68,7 +59,9 @@ const Biomes = (props: IBiomesProps) => {
 			<p>To delete a modifier, click on it.</p>
 			<Stack gap={3}>
 				{Object.keys(biomeModifiers).map(biome => {
-					const name = capitalize(biomeInfoProvider.provide(biome).translated_name!);
+					const name = capitalize(
+						biomeInfoProvider.provide(biome).translated_name!
+					);
 					return (
 						<div key={biome}>
 							<Stack direction="horizontal">

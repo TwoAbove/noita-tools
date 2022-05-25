@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
@@ -11,31 +11,26 @@ import { SpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoPr
 const spellInfoProvider = new SpellInfoProvider({} as any);
 
 interface IStartingBombSpellProps {
-	onUpdateConfig: (config: IRule) => void;
+	onUpdateConfig: (config: Partial<IRule>) => void;
+	config: IRule;
 }
 
 const spellOptions = ['BOMB', 'DYNAMITE', 'MINE', 'ROCKET', 'GRENADE'];
 
-const StartingBombSpell = (props: IStartingBombSpellProps) => {
-	const { onUpdateConfig } = props;
-	const [firstRender, setFirstRender] = useState(true);
-	const [startingBombType, setStartingBombSpellType] = useState('');
+const StartingBombSpell: FC<IStartingBombSpellProps> = ({
+	onUpdateConfig,
+	config
+}) => {
+	const { val: startingBombType } = config;
 
-	useEffect(() => {
-		if (firstRender) {
-			setFirstRender(false);
-		}
-		if (firstRender) {
-			return;
-		}
+	const setStartingBombSpellType = newConfig => {
 		onUpdateConfig({
 			type: 'startingBombSpell',
 			path: '',
 			params: [],
-			val: startingBombType
+			val: newConfig
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [startingBombType]);
+	};
 
 	const handleClicked = type => {
 		setStartingBombSpellType(type);

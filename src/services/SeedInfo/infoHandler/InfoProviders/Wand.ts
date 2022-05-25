@@ -1,3 +1,5 @@
+import D from 'decimal.js';
+
 import { InfoProvider } from './Base';
 import wandData from '../../data/wands.json';
 import { IRandom } from '../../random';
@@ -184,13 +186,13 @@ export class WandInfoProvider extends InfoProvider {
 		if (gun_probs[what] === undefined) {
 			return undefined;
 		}
-		let r = this.randoms.Random() * total_prob(gun_probs[what]);
+		let r = new D( this.randoms.Random() * total_prob(gun_probs[what]));
 		for (const v of gun_probs[what]) {
 			if (v.prob) {
-				if (r <= v.prob) {
+				if (r.lessThanOrEqualTo(v.prob)) {
 					return v;
 				}
-				r -= v.prob;
+				r = r.minus(v.prob);
 			}
 		}
 		return undefined;
@@ -376,7 +378,6 @@ export class WandInfoProvider extends InfoProvider {
 	apply_random_variable(t_gun: IGun, variable: string): void {
 		let cost = +t_gun['cost'];
 		let probs = this.get_gun_probs(variable)!;
-
 		if (variable === 'reload_time') {
 			let min = clamp(60 - cost * 5, 1, 240);
 			let max = 1024;

@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
     steps:
       - uses: actions/checkout@v2
 
@@ -20,4 +20,4 @@ jobs:
       - name: npm ci, build and test
         run: |
           yarn install --immutable
-          yarn build
+          DISABLE_ESLINT_PLUGIN=true yarn build

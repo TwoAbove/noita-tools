@@ -13,13 +13,13 @@ const flags = spellInfoProvider.spellsArr.reduce((c, r) => {
 	if (!r.spawn_requires_flag) {
 		return c;
 	}
-	if (c[r.spawn_requires_flag]) {
-		c[r.spawn_requires_flag].push(r.id);
-	} else {
-		c[r.spawn_requires_flag] = [r.id];
+	if (!c[r.spawn_requires_flag]) {
+		c[r.spawn_requires_flag] = [];
 	}
+	c[r.spawn_requires_flag].push(r);
 	return c;
 }, {});
+
 const flagNames = Object.keys(flags);
 
 const setFlagArr = (spells: typeof spellInfoProvider['spellsArr'], unlockedSpells: boolean[], val: boolean) => {
@@ -42,9 +42,7 @@ const FlagToggle = (props: { flag: string }) => {
 	);
 	const { t } = useTranslation('materials');
 
-	const spells = spellInfoProvider.spellsArr.filter(
-		s => s.spawn_requires_flag === flag
-	);
+	const spells = flags[flag];
 
 	let unlocked = false;
 	for (const spell of spells) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 
 import Clickable from '../../Icons/Clickable';
@@ -8,7 +8,8 @@ import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/Inf
 import i18n from '../../../i18n';
 
 interface IStartingFlaskProps {
-	onUpdateConfig: (config: IRule) => void;
+	onUpdateConfig: (config: Partial<IRule>) => void;
+	config: IRule;
 }
 
 const flaskOptions = [
@@ -33,26 +34,17 @@ const flaskOptions = [
 ];
 const material = new MaterialInfoProvider(i18n);
 
-const StartingFlask = (props: IStartingFlaskProps) => {
-	const { onUpdateConfig } = props;
-	const [firstRender, setFirstRender] = useState(true);
-	const [startingFlaskType, setStartingFlaskType] = useState('');
+const StartingFlask: FC<IStartingFlaskProps> = ({ onUpdateConfig, config }) => {
+	const { val: startingFlaskType } = config;
 
-	useEffect(() => {
-		if (firstRender) {
-			setFirstRender(false);
-		}
-		if (firstRender) {
-			return;
-		}
+	const setStartingFlaskType = newConfig => {
 		onUpdateConfig({
 			type: 'startingFlask',
 			path: '',
 			params: [],
-			val: startingFlaskType
+			val: newConfig
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [startingFlaskType]);
+	};
 
 	const handleClicked = type => {
 		setStartingFlaskType(type);
@@ -69,9 +61,7 @@ const StartingFlask = (props: IStartingFlaskProps) => {
 								clicked={type === startingFlaskType}
 							>
 								<div className="m-3">
-									{type
-										? capitalize(material.translate(type))
-										: 'Any'}
+									{type ? capitalize(material.translate(type)) : 'Any'}
 								</div>
 							</Clickable>
 						</Col>

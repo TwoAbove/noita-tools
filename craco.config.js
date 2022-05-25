@@ -2,6 +2,7 @@ const path = require('path');
 const util = require('util');
 const fs = require('fs');
 
+const CracoSwcPlugin = require('craco-swc');
 const { addBeforeLoader, loaderByName } = require('@craco/craco');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
@@ -33,7 +34,10 @@ module.exports = {
 		],
 		// stats: 'errors-only',
 
-	}
+	},
+	plugins: [
+		{ plugin: CracoSwcPlugin },
+	]
 	// style: {
 	//   postcss: {
 	//     plugins: [
