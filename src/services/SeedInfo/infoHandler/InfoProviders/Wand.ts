@@ -105,7 +105,7 @@ const WandDiff = (
 };
 
 const total_prob = (gun_prob: IGunProbs[string]): number => {
-	return gun_prob.reduce((c, p) => c + p.prob, 0);
+	return gun_prob.reduce((c, p) => c.add(p.prob), new D(0)).toNumber();
 };
 
 const clamp = (val: number, lower: number, upper: number): number => {
@@ -186,7 +186,7 @@ export class WandInfoProvider extends InfoProvider {
 		if (gun_probs[what] === undefined) {
 			return undefined;
 		}
-		let r = new D( this.randoms.Random() * total_prob(gun_probs[what]));
+		let r = new D(this.randoms.Random() * total_prob(gun_probs[what]));
 		for (const v of gun_probs[what]) {
 			if (v.prob) {
 				if (r.lessThanOrEqualTo(v.prob)) {

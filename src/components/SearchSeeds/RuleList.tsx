@@ -70,7 +70,7 @@ const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable }) => {
 			gap={2}
 			className="align-items-center"
 			ref={dragPreview}
-			{...collected}
+			{...collected as any}
 		>
 			{draggable && <i className="bi bi-grip-vertical" ref={drag}></i>}
 			<ListGroup.Item
