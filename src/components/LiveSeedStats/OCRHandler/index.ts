@@ -120,7 +120,7 @@ class OCRHandler extends EventTarget {
     this.onUpdate();
   }
 
-  async doSingleDetect (blob: Blob) {
+  async doSingleDetect(blob: Blob) {
     this.lastBitmap = await createImageBitmap(blob);
     this.doLoop();
   }
@@ -141,7 +141,8 @@ class OCRHandler extends EventTarget {
       }
     } catch (e) {
       console.error('captureLoop error:', e);
-      this.startCapture();
+      await this.stopCapture();
+      return this.startCapture();
     }
     this.lastCapture = new Date();
   }
@@ -150,7 +151,6 @@ class OCRHandler extends EventTarget {
     while (this.loop) {
       if (((+new Date()) - (+this.lastCapture)) < 1000) {
         await new Promise(r => setTimeout(r, 100));
-        return;
       }
       if (this.canvasRef) { // to debug
         console.log('One-time capture');
@@ -160,7 +160,7 @@ class OCRHandler extends EventTarget {
       if (!this.lastBitmap) {
         throw new Error('Cannot get bitmap');
       }
-      this.doLoop();
+      await this.doLoop();
     }
   }
 

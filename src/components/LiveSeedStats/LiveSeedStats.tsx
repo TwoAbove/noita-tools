@@ -45,12 +45,12 @@ const Paste = ({
 			</h5>
 			<div style={{
 				transition: '0.2s'
-			}} className={`${ripple && 'border-info border-1' } border p-2`}>
+			}} className={`${ripple && 'border-info border-1'} border p-2`}>
 				<p>
-					If you don't want to do screen capture, you can take a screenshot of Noita to your clipboard and paste it on this page. <br/>
+					If you don't want to do screen capture, you can take a screenshot of Noita to your clipboard and paste it on this page. <br />
 				</p>
-					<table>
-						<tbody>
+				<table>
+					<tbody>
 
 						<tr>
 							<td>For Linux</td>
@@ -64,9 +64,9 @@ const Paste = ({
 							<td className='pe-3'>For Windows</td>
 							<td><code>PrtSc</code></td>
 						</tr>
-						</tbody>
-					</table>
-					<br/>
+					</tbody>
+				</table>
+				<br />
 				<p>
 					Or, choose a screenshot to upload.
 				</p>
@@ -188,7 +188,7 @@ const LiveSeedStats = () => {
 
 	const [ocrHandler, setOcrHandler] = useState<OCRHandler>(() => {
 		const ocrHandler = new OCRHandler({
-			onUpdate: forceUpdate
+			onUpdate: forceUpdate,
 			// canvasRef
 		});
 		ocrHandler.addEventListener('seed', event => {
@@ -214,7 +214,7 @@ const LiveSeedStats = () => {
 
 	useEffect(() => {
 		const ocrHandler = new OCRHandler({
-			onUpdate: forceUpdate
+			onUpdate: forceUpdate,
 			// canvasRef
 		});
 		ocrHandler.addEventListener('seed', event => {
