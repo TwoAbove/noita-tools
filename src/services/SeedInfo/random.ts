@@ -11,6 +11,9 @@ import {
 import createModule from './noita_random/noita_random.js';
 import noitaRandomModule from './noita_random/noita_random.wasm';
 
+import D, { Decimal } from 'decimal.js';
+import { cloneDeep } from 'lodash';
+
 type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -171,30 +174,36 @@ const load = async () => {
 		return result;
 	};
 
+	interface ITable {
+		weight_min: Decimal;
+		weight_max: Decimal;
+		probability: Decimal;
+	}
 	const pick_random_from_table_weighted = <T>(rnd: IRND, t: T[]) => {
 		// if (t.length === 0) {
 		// 	return null;
 		// }
+		const table: Array<T & ITable> = cloneDeep(t) as any;
 
-		let weight_sum = 0.0;
-		for (let i = 0; i < t.length; i++) {
-			const it = t[i] as any;
-			it.weight_min = weight_sum;
-			it.weight_max = weight_sum + it.probability;
-			weight_sum = it.weight_max;
+		let weight_sum = new D(0.0);
+		for (let i = 0; i < table.length; i++) {
+			const it = table[i];
+			it.weight_min = new D(weight_sum);
+			it.weight_max = weight_sum.add(it.probability);
+			weight_sum = new D(it.weight_max);
 		}
 
-		const val = random_next(rnd, 0.0, weight_sum);
-		let result = t[0];
-		for (let i = 0; i < t.length; i++) {
-			const it = t[i] as any;
-			if (val >= it.weight_min && val <= it.weight_max) {
+		const val = new D(random_next(rnd, 0.0, weight_sum.toNumber()));
+		let result = table[0];
+		for (let i = 0; i < table.length; i++) {
+			const it = table[i];
+			if (val.greaterThanOrEqualTo(it.weight_min) && val.lessThanOrEqualTo(it.weight_max)) {
 				result = it;
 				break;
 			}
 		}
 
-		return result;
+		return result as T;
 	};
 
 	const random_nexti = (rnd: IRND, min, max) => {
