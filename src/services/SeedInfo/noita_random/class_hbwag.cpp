@@ -1401,10 +1401,6 @@ STBHW_EXTERN void generate_map(
    unsigned char *res;
    stbhw_tileset ts;
    NollaPrng *rng = new NollaPrng(world_seed);
-   // for (int i = 0; i < ; i++)
-   // {
-   // rng->Next();
-   // }
 
    res = (unsigned char *)malloc(3 * map_w * (map_h + 4));
 

@@ -14,6 +14,7 @@ import { StartingBombSpellInfoProvider } from './InfoProviders/StartingBomb';
 import { StartingFlaskInfoProvider } from './InfoProviders/StartingFlask';
 import { StartingSpellInfoProvider } from './InfoProviders/StartingSpell';
 import { AlwaysCastInfoProvider } from './InfoProviders/AlwaysCast';
+import { WaterCaveInfoProvider } from './InfoProviders/WaterCave';
 
 import loadRandom, { IRandom } from '../random';
 import { WandInfoProvider } from './InfoProviders/Wand';
@@ -35,6 +36,7 @@ interface IProviders {
   startingFlask: StartingFlaskInfoProvider;
   startingSpell: StartingSpellInfoProvider;
   statelessPerk: PerkInfoProvider;
+  waterCave: WaterCaveInfoProvider;
   wand: WandInfoProvider;
   [key: string]: InfoProvider;
 }
@@ -62,7 +64,7 @@ export class GameInfoProvider extends EventTarget {
 
   onRandomLoad(cb) {
     return new Promise<void>(async res => {
-      while(!this.ready) {
+      while (!this.ready) {
         await new Promise(r => setTimeout(r, 10));
       }
       await cb();
@@ -105,7 +107,8 @@ export class GameInfoProvider extends EventTarget {
       startingFlask: new StartingFlaskInfoProvider(this.randoms),
       startingSpell: new StartingSpellInfoProvider(this.randoms),
       statelessPerk: new PerkInfoProvider(this.randoms),
-      wand: new WandInfoProvider(this.randoms)
+      wand: new WandInfoProvider(this.randoms),
+      waterCave: new WaterCaveInfoProvider(this.randoms)
     }
 
     // shop needs the wand info provider to generate wands
@@ -129,6 +132,7 @@ export class GameInfoProvider extends EventTarget {
       startingBombSpell: this.providers.startingBombSpell.provide(),
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),
+      waterCave: this.providers.waterCave.provide()
     };
   }
 }

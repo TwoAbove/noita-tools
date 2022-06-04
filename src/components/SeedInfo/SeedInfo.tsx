@@ -7,10 +7,11 @@ import Alchemy from './SeedInfoViews/Alchemy';
 
 import GameInfoProvider from '../../services/SeedInfo/infoHandler';
 
-import Map from './SeedInfoViews/Map';
+// import Map from './SeedInfoViews/Map';
 import Rain from './SeedInfoViews/Rain';
 import Start from './SeedInfoViews/Start';
 import Biome from './SeedInfoViews/Biome';
+import Watercave from './SeedInfoViews/Watercave';
 import FungalShifts from './SeedInfoViews/FungalShifts';
 import HolyMountain from './SeedInfoViews/HolyMountain';
 
@@ -84,6 +85,14 @@ const SeedInfo = (props: ISeedInfoProps) => {
 							<Biome
 								infoProvider={infoProvider}
 								biomeData={data.biomeModifiers}
+							/>
+						</WithShow>
+					</Col>
+					<Col>
+						<WithShow id="watercave">
+							<Watercave
+								infoProvider={infoProvider}
+								waterCave={data.waterCave}
 							/>
 						</WithShow>
 					</Col>

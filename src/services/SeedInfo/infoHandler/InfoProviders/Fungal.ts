@@ -52,10 +52,7 @@ export class FungalInfoProvider extends InfoProvider {
 
       // convert
       if ((flaskFrom || flaskTo) || from_material !== to_material) {
-        //console.log(CellFactory_GetUIName(from_material) + " -> " + CellFactory_GetUIName(to_material));
-
         from_materials.push(from_material);
-        //return [from_material, to_material];
       }
     }
     return { flaskTo, flaskFrom, from: from_materials, to: to_material };

@@ -29,6 +29,7 @@ const defaultColorsPath = path.resolve(
 	noitaData,
 	'data/scripts/wang_scripts.csv'
 );
+const mapPNGPath = path.resolve(noitaData, 'data/biome_impl/biome_map.png');
 
 const defaultColorArray: any[] = parse(fs.readFileSync(defaultColorsPath), {
 	columns: true,
@@ -122,7 +123,108 @@ const getTable = (ex: TableConstructorExpression) => {
 	}
 	return res;
 };
+
+const addArea = (
+	map: Jimp,
+	x: number,
+	y: number,
+	hex: string,
+	visited: { [key: string]: boolean },
+	area: { x: number; y: number }[] = []
+) => {
+	area.push({ x, y });
+	visited[`${x} ${y}`] = true;
+	for (const direction of ['u', 'd', 'l', 'r']) {
+		let ox = +x;
+		let oy = +y;
+		switch (direction) {
+			case 'u': {
+				ox -= 1;
+				break;
+			}
+			case 'd': {
+				ox += 1;
+				break;
+			}
+			case 'l': {
+				oy -= 1;
+				break;
+			}
+			case 'r': {
+				oy += 1;
+				break;
+			}
+		}
+		if (ox < 0 || ox >= map.bitmap.width) {
+			continue;
+		}
+		if (oy < 0 || oy >= map.bitmap.height) {
+			continue;
+		}
+		if (visited[`${ox} ${oy}`]) {
+			continue;
+		}
+		if (hexAt(map, ox, oy) === hex) {
+			addArea(map, ox, oy, hex, visited, area);
+		}
+	}
+	return area;
+};
+
+const hexAt = (map: Jimp, x: number, y: number) => {
+	const idx = map.getPixelIndex(x, y);
+	const r = map.bitmap.data[idx + 0];
+	const g = map.bitmap.data[idx + 1];
+	const b = map.bitmap.data[idx + 2];
+	return (b | (g << 8) | (r << 16) | (1 << 24)).toString(16).slice(1) + 'ff';
+};
+
 (async () => {
+	const mapPNG = await Jimp.read(mapPNGPath);
+	const visited: { [key: string]: boolean } = {};
+	const areas: any[] = [];
+
+	for (let x = 0; x < mapPNG.bitmap.width; x++) {
+		for (let y = 0; y < mapPNG.bitmap.height; y++) {
+			if (visited[`${x} ${y}`]) {
+				continue;
+			}
+			const hex = hexAt(mapPNG, x, y);
+			const area = addArea(mapPNG, x, y, hex, visited);
+			areas.push({
+				hex,
+				area
+			});
+			// console.log(area);
+			// const color =
+		}
+	}
+
+	const areaHexes: {
+		[hex: string]: { x1: number; x2: number; y1: number; y2: number, w: number, h: number }[];
+	} = {};
+	for (const a of areas) {
+		const { area, hex } = a;
+		if (!areaHexes[hex]) {
+			areaHexes[hex] = [];
+		}
+		let x1 = area[0].x;
+		let y1 = area[0].y;
+		let x2 = area[0].x;
+		let y2 = area[0].y;
+		for (const coords of area) {
+			x1 = Math.min(x1, coords.x);
+			x2 = Math.max(x2, coords.x);
+			y1 = Math.min(y1, coords.y);
+			y2 = Math.max(y2, coords.y);
+		}
+		areaHexes[hex].push({
+			x1, x2, y1, y2,
+			w: x2 - x1 + 1,
+			h: y2 - y1 + 1,
+		});
+	}
+
 	const allBiomeData = (await parseStringPromise(
 		fs.readFileSync(biomeDataXMLPath)
 	)).BiomesToLoad;
@@ -204,6 +306,7 @@ const getTable = (ex: TableConstructorExpression) => {
 			}
 			o.spawnFunctions = { ...colors, ...o.spawnFunctions };
 			res.config = o;
+			res.areas = areaHexes[res.color]
 		}
 		maps[res.color] = res;
 	}

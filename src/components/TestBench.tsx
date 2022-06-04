@@ -6,51 +6,12 @@ import { Container } from 'react-bootstrap';
 
 import i18n from '../i18n';
 import GameInfoProvider from '../services/SeedInfo/infoHandler';
-import { IShopType } from '../services/SeedInfo/infoHandler/InfoProviders/Shop';
 import useLocalStorage from '../services/useLocalStorage';
-import Shop from './SeedInfo/SeedInfoViews/ShopItems';
-
-const ans2 = {
-	cards: {
-		cards: ['ORBIT_FIREBALLS', 'BUCKSHOT', 'BUCKSHOT', 'BUCKSHOT', 'BUCKSHOT']
-	},
-	gun: {},
-	ui: {}
-};
+import MapComponent from './SeedInfo/SeedInfoViews/Map';
 
 const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 	const { infoProvider } = props;
-
-	const [show, setShow] = useState(true);
-
-	console.groupCollapsed('get_gun_data(40, 1, false, false)');
-	const gun = infoProvider.providers.wand.provide(
-		-225,
-		2931,
-		250,
-		1,
-		true,
-		false
-	);
-	// const gun = infoProvider.providers.wand.get_gun_data(200, 11, false, false) as any;
-	// console.log(gun);
-	// const res = infoProvider.providers.wand.wand_add_random_cards(55, 55, gun, 11);
-	gun.gun.cost = 9999;
-	console.groupEnd();
-	const shop = {
-		type: IShopType.wand,
-		items: [gun]
-	}
-	return (
-		<div>
-			<Shop
-				show={show}
-				shop={shop as any}
-				handleClose={() => setShow(false)}
-				isFavorite={(id: string) => false}
-			/>
-		</div>
-	);
+	return <MapComponent infoProvider={infoProvider} seed={infoProvider.config.seed.toString()} />
 };
 
 const waitToLoad = (gameInfoProvider): Promise<void> =>
@@ -65,7 +26,7 @@ const waitToLoad = (gameInfoProvider): Promise<void> =>
 	});
 
 const TestBench = () => {
-	const seed = 1871377166;
+	const seed = 1976471607;
 	const [unlockedSpells] = useLocalStorage(
 		'unlocked-spells',
 		Array(393).fill(true)

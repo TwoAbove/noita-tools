@@ -81,7 +81,7 @@ export class PerkInfoProvider extends InfoProvider {
       result.push(perk_id);
     }
 
-    return result.reverse();
+    return result;
   }
 
   _getNextPerk(perkDeck: any[]) {
@@ -137,13 +137,10 @@ export class PerkInfoProvider extends InfoProvider {
     const iterations = t.length - 1;
 
     for (let i = iterations; i >= 1; i--) {
-      //for i = iterations, 2, -1 do
       const j = this.randoms.Random(0, i);
-      //console.log("j", j);
       const tmp = t[i];
       t[i] = t[j];
       t[j] = tmp;
-      //[t[i], t[j]] = [t[j], t[i]];
     }
   }
   // this generates global perk spawn order for current world seed
@@ -215,12 +212,8 @@ export class PerkInfoProvider extends InfoProvider {
       }
     }
 
-    //console.log("STEP 1", perk_deck);
-
     // 2) Shuffle the Deck
     this.shuffle_table(perk_deck);
-
-    //console.log("STEP 2", perk_deck);
 
     // 3) Remove duplicate perks that are too close to each other
     // we need to do this in reverse, since otherwise table.remove might cause the iterator to bug out
@@ -243,8 +236,6 @@ export class PerkInfoProvider extends InfoProvider {
       }
     }
 
-    //console.log("STEP 3", perk_deck);
-
     // NON DETERMINISTIC THINGS ARE ALLOWED TO HAPPEN
     // 4) Go through the perk list and "" the perks we've picked up
     // remove non-stackable perks already collected from the list
@@ -263,8 +254,6 @@ export class PerkInfoProvider extends InfoProvider {
         }
       }
     }
-
-    //console.log("STEP 4", perk_deck);
 
     // DEBUG
     if (false) {
