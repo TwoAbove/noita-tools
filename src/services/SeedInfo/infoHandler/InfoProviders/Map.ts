@@ -1,7 +1,6 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-
 // Not available in web worker
 import {
 	cropImageData,
@@ -43,20 +42,19 @@ export class MapInfoProvider extends InfoProvider {
 		width: number,
 		height: number
 	) {
+		return map;
 		const tiles_w = map.width / width;
 		const tiles_h = map.height / height;
 
-    const x = _x % tiles_w;
-    const y = _y % tiles_h -1;
-    // console.log({_x, _y, x, y, tiles_w, tiles_h})
-    return cropImageData(map, x * width, y * height, width, height);
+		const x = _x % tiles_w;
+		const y = _y % tiles_h;
+		return cropImageData(map, x * width, y * height, width, height);
 	}
 
 	async provide(x: number, y: number, seed: string) {
 		if (this.seed !== seed) {
 			this.mapCache = new Map();
 		}
-
 		const color = getColor(x, y);
 		const mapData = this.maps[color];
 		if (!mapData || !mapData.wang) {
@@ -65,31 +63,63 @@ export class MapInfoProvider extends InfoProvider {
 		}
 
 		const {
-			map_height: wang_h,
-			map_width: wang_w,
+			map_width,
+			map_height,
 			wang_map_width: res_width,
 			wang_map_height: res_height,
 			template_file
 		} = mapData.wang!;
+		const areas = mapData.areas || [];
+		const areaIndex = areas.findIndex(
+			a => a.x1 <= x && a.x2 >= x && a.y1 <= y && a.y2 >= y
+		);
+		const area = areas[areaIndex];
+		const cacheKey = `${color} ${areaIndex}`;
 
-		// if (this.mapCache.has(color)) {
-		// 	const map = this.mapCache.get(color);
-		// 	return map && this.getMapChunk(map, x, y, res_width /5 , res_height / 5);
-		// }
+		if (this.mapCache.has(cacheKey)) {
+			const map = this.mapCache.get(cacheKey);
 
-		const img = await imageFromBase64(template_file, wang_w, wang_h);
+			return (
+				map &&
+				this.getMapChunk(
+					map,
+					x - area.x1,
+					y - area.y1,
+					res_width / 5,
+					res_height / 5
+				)
+			);
+		}
 
-		const map = this.randoms.GenerateMap(img, wang_w, wang_h, res_width, res_height);
+		const img = await imageFromBase64(template_file, map_width, map_height);
 
-		this.mapCache.set(color, map);
-		return map
-		// return this.getMapChunk(map, x, y, 64, 64);
+		const map = this.randoms.GenerateMap(
+			img,
+			map_width,
+			map_height,
+			51.2 * area.w,
+			51.2 * area.h
+		);
+
+		this.mapCache.set(cacheKey, map);
+		// return map
+		return this.getMapChunk(
+			map,
+			x - area.x1,
+			y - area.y1,
+			res_width / 5,
+			res_height / 5
+		);
 		// return this.getMapChunk(map, x, y, res_width/ 5, res_height/ 5);
-		// for (let i = 0; i < map.data.length; i += 4) {
-		//   // colors in mapData are [rgba]
-		//   const color = rgbaToHex(map.data[i + 0], map.data[i + 1], map.data[i + 2], map.data[i + 3])
-		//   console.log('color', color);
-		// }
+		for (let i = 0; i < map.data.length; i += 4) {
+			// colors in mapData are [rgba]
+			const color = rgbaToHex(
+				map.data[i + 0],
+				map.data[i + 1],
+				map.data[i + 2],
+				map.data[i + 3]
+			);
+		}
 	}
 
 	test(rule: IRule): boolean {

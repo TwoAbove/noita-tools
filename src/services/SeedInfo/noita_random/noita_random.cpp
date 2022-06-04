@@ -32,6 +32,14 @@ double random_seed = 0;
 
 using namespace std;
 
+
+float RoundHalfOfEven(float x)
+{
+    std::fesetround(FE_TONEAREST);
+    return std::nearbyint(x);
+}
+
+
 float Randomf()
 {
     int b = (int)random_seed * 0x41a7 + ((int)random_seed / 0x1f31d) * -0x7fffffff;
@@ -249,7 +257,7 @@ public:
 
     uint NextU()
     {
-        return Float() * 2147483645.0;
+        return (Float() * 2147483645.0);
     }
 
     double Next()
@@ -539,10 +547,4 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
 
     delete prng;
     return spell;
-}
-
-float RoundHalfOfEven(float x)
-{
-    std::fesetround(FE_TONEAREST);
-    return std::nearbyint(x);
 }
