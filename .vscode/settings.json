@@ -78,6 +78,6 @@
     "cinttypes": "cpp"
   },
   "terminal.integrated.env.windows": {
-    "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin"
+    "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${env:LOCALAPPDATA}\\Programs\\emsdk\\upstream\\emscripten"
   },
 }

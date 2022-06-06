@@ -101,6 +101,7 @@
     "start": "node ./server",
     "dev": "concurrently 'nodemon ./server' 'craco start' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write **; do sh build.sh; done;'",
     "dev-win": "concurrently \"nodemon ./server\" \"craco start\"",
+    "build-noita_random": "pwsh -nol -noni -nop -f src/services/SeedInfo/noita_random/build.ps1",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
