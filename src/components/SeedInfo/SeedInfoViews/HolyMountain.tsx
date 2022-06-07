@@ -383,7 +383,7 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
   );
 
   const lotteries = advanced ? pd.lotteries : [...infoProvider.config.pickedPerks.values()].reduce((c, r) => {
-    const l = r.filter(p => p.includes('PERKS_LOTTERY')).length;
+    const l = r.filter(p => (p || []).includes('PERKS_LOTTERY')).length;
     return c + l;
   }, 0);
 
@@ -549,6 +549,9 @@ const HolyMountain = (props: IHolyMountainProps) => {
   const { advanced, setAdvanced, perkMethods, perkData } = useContext(HolyMountainContext);
   const { handleReroll, handleRerollUndo, handleClickPerk, handleReset, handleBack, handleOffset, handleGenRowAdvanced } = perkMethods;
   const { perks, pickedPerks, perkRerolls, totalRerolls, worldOffset, lotteries, rerollsToFavorite, favoritesInNextReroll, isFavorite } = perkData;
+  const [showInitialLottery] = useLocalStorage('show-initial-lottery', true);
+
+  const adjustedLotteries = lotteries === 0 ? Number(showInitialLottery) : lotteries;
 
   const { isFavorite: isSpellFavorite } = useSpellFavorite();
 
@@ -610,7 +613,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
               handleRerollUndo={e => handleRerollUndo(e, level)}
               handleReroll={e => handleReroll(e, level)}
               handleClickPerk={(id) => handleClickPerk(level, id)()}
-              isRerollable={(i, l) => infoProvider.providers.lottery.provide(level, i, l, worldOffset, lotteries)}
+              isRerollable={(i, l) => infoProvider.providers.lottery.provide(level, i, l, worldOffset, adjustedLotteries)}
               getAlwaysCast={(i, l) => infoProvider.providers.alwaysCast.provide(level, i, l, worldOffset)}
               handleOpenShopInfo={() => handleOpenShopInfo(level)}
               handleLoad={() => handleGenRowAdvanced(level)}

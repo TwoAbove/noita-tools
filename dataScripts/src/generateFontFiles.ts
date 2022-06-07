@@ -52,7 +52,7 @@ interface IQuadChar {
 		try {
 			// For debug
 			fs.writeFileSync(
-				path.resolve(__dirname, 'text', `"${getChar(+c.$.id)}".png`),
+				path.resolve(__dirname, 'text', `${getChar(+c.$.id)}.png`),
 				await i.getBufferAsync(Jimp.MIME_PNG),
 				{ flag: 'w+' }
 			);
@@ -63,10 +63,10 @@ interface IQuadChar {
 
 	// console.log(data);
 
-	fs.writeFileSync(
-		'../src/components/LiveSeedStats/font.json',
-		JSON.stringify(data, null, 4)
-	);
+	// fs.writeFileSync(
+	// 	'../src/components/LiveSeedStats/font.json',
+	// 	JSON.stringify(data, null, 4)
+	// );
 })();
 
 export {};

@@ -1,3 +1,4 @@
+require('dotenv-flow').config();
 const handler = require('serve-handler');
 const express = require('express');
 const morgan = require('morgan');
@@ -7,6 +8,7 @@ const cron = require('node-cron');
 const multer = require('multer');
 
 const B2 = require('backblaze-b2');
+const { randomUUID } = require('crypto');
 B2.prototype.uploadAny = require('@gideo-llc/backblaze-b2-upload-any');
 
 const PORT = process.env.PORT || 3001;
@@ -80,6 +82,28 @@ app.post('/api/db_dump/', m.any(), (req, res) => {
 	}, 900000); // 15 minutes
 });
 
+let r;
+const authorize = async () => {
+	r = await b2.authorize();
+}
+authorize();
+setInterval(authorize, 1000 * 60 * 60 * 23) // 23h
+
+app.post('/api/db_debug/', m.any(), async (req, res) => {
+	const id = randomUUID();
+	res.send({ id });
+	try {
+		await b2.uploadAny({
+			bucketId: 'e3081aa3bc7d39b38a1d0615',
+			fileName: `${id}.db`,
+			partSize: r.data.recommendedPartSize,
+			data: req.files[0].buffer
+		});
+	} catch (e) {
+		console.error(e);
+	}
+});
+
 app.use((req, res) =>
 	handler(req, res, {
 		public: './build',
@@ -99,8 +123,8 @@ app.use((req, res) =>
 );
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Server error');
+	console.error(err.stack);
+	res.status(500).send('Server error');
 })
 
 const server = app.listen(PORT, () => {
@@ -155,7 +179,6 @@ io.of('/').adapter.on('delete-room', room => {
 
 const upload = async () => {
 	try {
-		const r = await b2.authorize(); // must authorize first (authorization lasts 24 hrs)
 		await b2.uploadAny({
 			bucketId: '93c80a630c6d59a37add0615',
 			fileName: `${new Date().toISOString()}.json`,

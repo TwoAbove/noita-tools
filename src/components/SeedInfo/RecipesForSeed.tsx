@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-import {
-	Table,
-	Button,
-	Col,
-	Modal,
-	Row,
-	Stack
-} from 'react-bootstrap';
+import { Table, Button, Col, Modal, Row, Stack } from 'react-bootstrap';
+import { useSearchParams } from 'react-router-dom';
 
 import SeedForm from './SeedForm';
 import SeedDataOutput from './SeedDataOutput';
 import { db } from '../../services/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 
+const MemoSeedDataOutput = React.memo(SeedDataOutput);
+
 const SeedHistoryModal = props => {
 	const { show, handleClose, onSelectSeed } = props;
 
-	const seeds = (useLiveQuery(() => db.seedInfo.toArray(), [], [])).sort(
+	const seeds = useLiveQuery(() => db.seedInfo.toArray(), [], []).sort(
 		(a, b) => +b.updatedAt - +a.updatedAt
 	);
 
@@ -98,7 +94,14 @@ const SeedHistoryModal = props => {
 };
 
 const SeedData = () => {
-	const [seed, setSeed] = React.useState<any>('');
+	const [searchParams, setSearchParams] = useSearchParams();
+	const seedInSeachParams = searchParams.get('seed');
+	const [seed, setSeed] = React.useState<any>(() => seedInSeachParams || '');
+
+	const handleSetSeed = (newSeed: string) => {
+		setSeed(newSeed);
+		setSearchParams({ seed: newSeed })
+	}
 
 	const [showHistory, setShowHistory] = React.useState(false);
 
@@ -107,7 +110,7 @@ const SeedData = () => {
 			<SeedHistoryModal
 				show={showHistory}
 				handleClose={() => setShowHistory(false)}
-				onSelectSeed={seed => setSeed(seed)}
+				onSelectSeed={seed => handleSetSeed(seed)}
 			/>
 			<Row className="align-items-center">
 				<Col>
@@ -129,8 +132,8 @@ const SeedData = () => {
 				</Col>
 			</Row>
 			<Stack>
-				<SeedForm onSubmit={seed => setSeed(seed)} />
-				{seed ? <SeedDataOutput seed={seed} /> : null}
+				<SeedForm onSubmit={seed => handleSetSeed(seed)} />
+				{seed ? <MemoSeedDataOutput seed={seed} /> : null}
 			</Stack>
 		</div>
 	);

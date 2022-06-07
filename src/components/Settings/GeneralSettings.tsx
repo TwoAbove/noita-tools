@@ -8,6 +8,7 @@ import i18n from '../../i18n';
 import { ThemeContext } from '../ThemeContext';
 import { AlchemyConfigContext } from '../AlchemyConfigContext';
 import { ConfigRow, ConfigTitle } from './helpers';
+import useLocalStorage from '../../services/useLocalStorage';
 
 const getFlagEmoji = countryCode =>
 	String.fromCodePoint(
@@ -93,6 +94,31 @@ const AlchemyConfig = () => {
 	);
 };
 
+const LotteryPreview = () => {
+  const [showInitialLottery, setShowInitialLottery] = useLocalStorage('show-initial-lottery', true);
+
+	return (
+		<ConfigRow
+			left={
+				<>
+					<strong className="">Lottery Preview</strong>
+					<p className="text-muted mb-0">If no lottery perks are selected, still show perk lottery chances for 1 lottery perk.</p>
+				</>
+			}
+			right={
+				<Form.Switch
+					checked={showInitialLottery}
+					onChange={e => {
+						setShowInitialLottery(e.target.checked);
+					}}
+					id="alchemy-config-switch"
+					label=""
+				/>
+			}
+		/>
+	);
+};
+
 const DarkMode = () => {
 	const [theme, setTheme] = useContext(ThemeContext);
 	return (
@@ -133,6 +159,9 @@ const GeneralSettings = () => {
 				</ListGroup.Item>
 				<ListGroup.Item>
 					<AlchemyConfig />
+				</ListGroup.Item>
+				<ListGroup.Item>
+					<LotteryPreview />
 				</ListGroup.Item>
 			</ListGroup>
 		</>

@@ -81,7 +81,7 @@ export class GameInfoProvider extends EventTarget {
       perkStacks: [[]],
       fungalShifts: []
     }, initialConfig);
-    this.dispatchEvent(new CustomEvent('update', { detail: {} }));
+    this.dispatchEvent(new CustomEvent('reset', { detail: {} }));
   }
 
   // This should be a reducer;

@@ -41,38 +41,37 @@ export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], 
 				setData(data);
 			});
 		});
+		gameInfoProvider.addEventListener('reset', event => {
+			gameInfoProvider.provideAll().then(data => {
+				setData(data);
+			});
+		});
 	});
 	return gameInfoProvider;
 }
 
 const useGameInfoProvider = (
 	seed: string,
-	unlockedSpells?: boolean[]
+	unlockedSpells: boolean[]
 ): [GameInfoProvider?, Awaited<ReturnType<GameInfoProvider['provideAll']>>?] => {
 	const [data, setData] = useState<
 		Awaited<ReturnType<GameInfoProvider['provideAll']>>
 	>();
 
 	const [gameInfoProvider, setGameInfoProvider] = useState<GameInfoProvider | undefined>();
-	useEffect(() => {
-		setData(undefined);
-		if (seed && unlockedSpells) {
-			const newGameInfoProvider = createGameInfoProvider(seed, unlockedSpells, setData);
-			waitToLoad(newGameInfoProvider).then(() => {
-				setGameInfoProvider(newGameInfoProvider);
-			})
-		}
-	}, [seed, unlockedSpells]);
 
 	useEffect(() => {
-		waitToLoad(gameInfoProvider).then(async () => {
-			if (gameInfoProvider && seed) {
-				const config = await db.seedInfo.get({ seed });
-				gameInfoProvider.resetConfig({ ...config?.config, seed: parseInt(seed, 10) });
-			}
-		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [seed]);
+		(async () => {
+			setData(undefined);
+			setGameInfoProvider(undefined);
+			const config = await db.getSeedInfo(seed);
+			const newGameInfoProvider = createGameInfoProvider(seed, unlockedSpells, setData);
+			waitToLoad(newGameInfoProvider).then(() => {
+				newGameInfoProvider.resetConfig({ ...config?.config, seed: parseInt(seed, 10) });
+				setGameInfoProvider(newGameInfoProvider);
+			});
+		})()
+	}, [seed, unlockedSpells])
 
 	return [gameInfoProvider, data];
 };

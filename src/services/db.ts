@@ -1,8 +1,29 @@
-import Dexie, { Table } from 'dexie';
+import Dexie, { PromiseExtended, Table } from 'dexie';
 import deepEqual from 'fast-deep-equal/es6/react';
-import { exportDB, importInto } from "dexie-export-import";
+import { exportDB, importInto } from 'dexie-export-import';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 (Dexie as any).debug = 'dexie';
+
+// https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
+function replacer(key, value) {
+	if (value instanceof Map) {
+		return {
+			dataType: 'Map',
+			value: Array.from(value.entries()), // or with spread: value: [...value]
+		};
+	} else {
+		return value;
+	}
+}
+function reviver(key, value) {
+	if (typeof value === 'object' && value !== null) {
+		if (value.dataType === 'Map') {
+			return new Map(value.value);
+		}
+	}
+	return value;
+}
 
 interface ConfigItem {
 	id?: number;
@@ -25,13 +46,14 @@ export enum FavoriteType {
 export interface FavoriteItem {
 	id?: number;
 	type: FavoriteType;
-	key: string
+	key: string;
 }
 
 export class NoitaDB extends Dexie {
 	configItems!: Table<ConfigItem, number>;
 	seedInfo!: Table<SeedInfoItem, number>;
 	favorites!: Table<FavoriteItem, number>;
+	errorOnOpen: PromiseExtended<Error>;
 
 	constructor() {
 		super('NoitaDB');
@@ -65,17 +87,34 @@ export class NoitaDB extends Dexie {
 			favorites: '++id, type, &key' // Maybe add [type+key] as index?
 		});
 
-		this.version(6).stores({
-			configItems: '++id, &key',
-		}).upgrade(t => {
-			((t as any).db.configItems as NoitaDB['configItems']).add({
-				key: 'unlocked-spells',
-				val: Array(393).fill(true)
+		this.version(6)
+			.stores({
+				configItems: '++id, &key'
 			})
-		});
+			.upgrade(t => {
+				((t as any).db.configItems as NoitaDB['configItems']).add({
+					key: 'unlocked-spells',
+					val: Array(393).fill(true)
+				});
+			});
 
-		this.open().catch(e => {
+		this.version(7)
+			.stores({
+				seedInfo: '++id, &seed, updatedAt, config'
+			})
+			.upgrade(t => {
+				((t as any).db.seedInfo as NoitaDB['seedInfo']).toCollection()
+					.modify(s => {
+						if (typeof s.config === 'string' || s.config instanceof String) {
+							return s;
+						}
+						s.config = JSON.stringify(s.config, replacer)
+					});
+			});
+
+			this.errorOnOpen = this.open().then(() => null).catch(e => {
 			console.error(e);
+			return e;
 		});
 	}
 
@@ -103,13 +142,23 @@ export class NoitaDB extends Dexie {
 			.modify({ val });
 	}
 
+	async getSeedInfo(seed: string) {
+		return this.transaction('r', this.seedInfo, async t => {
+			const config = await db.seedInfo.get({ seed });
+			if (!config) {
+				return undefined;
+			}
+			return Object.assign(config, { config: JSON.parse(config.config, reviver) });
+		});
+	}
+
 	async setSeedInfo(seed: string, config: any) {
 		return this.transaction('rw', this.seedInfo, async t => {
 			const exists = await this.seedInfo.get({ seed });
 			if (!exists) {
 				await this.seedInfo.add({
 					seed,
-					config,
+					config: JSON.stringify(config, replacer),
 					updatedAt: new Date()
 				});
 				return;
@@ -122,7 +171,7 @@ export class NoitaDB extends Dexie {
 			return this.seedInfo
 				.where('seed')
 				.equals(seed)
-				.modify({ config, updatedAt: new Date() });
+				.modify({ config: JSON.stringify(config, replacer), updatedAt: new Date() });
 		});
 	}
 
@@ -137,6 +186,14 @@ export class NoitaDB extends Dexie {
 }
 
 export const db = new NoitaDB();
+
+export const useWithConfig = (seed: string) => {
+	const config = useLiveQuery(() => db.getSeedInfo(seed), [seed], {});
+	if (!config) {
+		return undefined;
+	}
+	return (config as SeedInfoItem).config;
+}
 
 async function populate() {
 	await db.configItems.bulkAdd([
@@ -163,7 +220,11 @@ async function populate() {
 		{
 			key: 'show-need-feedback-alert',
 			val: 0
-		}
+		},
+		{
+			key: 'show-initial-lottery',
+			val: true
+		},
 	]);
 }
 
