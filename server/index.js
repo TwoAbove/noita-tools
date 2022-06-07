@@ -1,3 +1,4 @@
+require('dotenv-flow').config();
 const handler = require('serve-handler');
 const express = require('express');
 const morgan = require('morgan');
@@ -81,11 +82,17 @@ app.post('/api/db_dump/', m.any(), (req, res) => {
 	}, 900000); // 15 minutes
 });
 
+let r;
+const authorize = async () => {
+	r = await b2.authorize();
+}
+authorize();
+setInterval(authorize, 1000 * 60 * 60 * 23) // 23h
+
 app.post('/api/db_debug/', m.any(), async (req, res) => {
 	const id = randomUUID();
 	res.send({ id });
 	try {
-		const r = await b2.authorize(); // must authorize first (authorization lasts 24 hrs)
 		await b2.uploadAny({
 			bucketId: 'e3081aa3bc7d39b38a1d0615',
 			fileName: `${id}.db`,
@@ -116,8 +123,8 @@ app.use((req, res) =>
 );
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Server error');
+	console.error(err.stack);
+	res.status(500).send('Server error');
 })
 
 const server = app.listen(PORT, () => {
@@ -172,7 +179,6 @@ io.of('/').adapter.on('delete-room', room => {
 
 const upload = async () => {
 	try {
-		const r = await b2.authorize(); // must authorize first (authorization lasts 24 hrs)
 		await b2.uploadAny({
 			bucketId: '93c80a630c6d59a37add0615',
 			fileName: `${new Date().toISOString()}.json`,
