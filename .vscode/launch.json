@@ -29,6 +29,26 @@
       ],
       "preLaunchTask": "C/C++: g++-11 build active file",
       "miDebuggerPath": "/usr/bin/gdb"
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Debug with Edge",
+      "env": {
+        "BROWSER": "none"
+      },
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": [
+        "dev-win"
+      ],
+      "serverReadyAction": {
+        "pattern": "Starting the development server",
+        "uriFormat": "http://localhost:3000",
+        "action": "debugWithEdge"
+      }
     }
   ]
 }
