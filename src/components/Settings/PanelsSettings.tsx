@@ -35,6 +35,9 @@ const PanelsSettings = () => {
 				<ListGroup.Item>
 					<PanelToggle key="start" id="start" title="Starting Setup" />
 				</ListGroup.Item>
+				<ListGroup.Item>
+					<PanelToggle key="watercave" id="watercave" title="Water Cave" />
+				</ListGroup.Item>
 			</ListGroup>
 		</>
 	)

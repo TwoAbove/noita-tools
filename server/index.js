@@ -7,6 +7,7 @@ const cron = require('node-cron');
 const multer = require('multer');
 
 const B2 = require('backblaze-b2');
+const { randomUUID } = require('crypto');
 B2.prototype.uploadAny = require('@gideo-llc/backblaze-b2-upload-any');
 
 const PORT = process.env.PORT || 3001;
@@ -78,6 +79,22 @@ app.post('/api/db_dump/', m.any(), (req, res) => {
 	setTimeout(() => {
 		delete dbs[id];
 	}, 900000); // 15 minutes
+});
+
+app.post('/api/db_debug/', m.any(), async (req, res) => {
+	const id = randomUUID();
+	res.send({ id });
+	try {
+		const r = await b2.authorize(); // must authorize first (authorization lasts 24 hrs)
+		await b2.uploadAny({
+			bucketId: 'e3081aa3bc7d39b38a1d0615',
+			fileName: `${id}.db`,
+			partSize: r.data.recommendedPartSize,
+			data: req.files[0].buffer
+		});
+	} catch (e) {
+		console.error(e);
+	}
 });
 
 app.use((req, res) =>

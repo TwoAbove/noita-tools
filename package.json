@@ -1,6 +1,6 @@
 {
   "name": "noita-helper",
-  "version": "2.20.0",
+  "version": "2.21.0",
   "private": true,
   "homepage": "https://www.noitool.com/",
   "dependencies": {
@@ -63,7 +63,6 @@
     "nodemon": "^2.0.16",
     "rdndmb-html5-to-touch": "^7.0.0-alpha.1",
     "react": "^18.1.0",
-    "react-app-rewired": "^2.2.1",
     "react-beautiful-dnd": "^13.1.0",
     "react-bootstrap": "2.4.0",
     "react-dark-mode-toggle": "^0.2.0",
@@ -76,6 +75,7 @@
     "react-feather": "^2.0.9",
     "react-i18next": "^11.16.9",
     "react-merge-refs": "^1.1.0",
+    "react-router-dom": "6",
     "react-scripts": "^5.0.1",
     "rescript-worker-loader": "^1.0.4",
     "socket.io-client": "^4.5.1",
