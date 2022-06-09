@@ -1,16 +1,15 @@
 // This should be storybook,
 // but I can't get it to work with all of the WASM stuff that we need.
-
 import { useState, useEffect } from 'react';
 import { Container, Stack } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-import i18n from '../i18n';
-import GameInfoProvider from '../services/SeedInfo/infoHandler';
-import { SpellInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/Spell';
-import useLocalStorage from '../services/useLocalStorage';
-import Icon from './Icons/Icon';
-import MapComponent from './SeedInfo/SeedInfoViews/Map';
+import i18n from '../../i18n';
+import GameInfoProvider from '../../services/SeedInfo/infoHandler';
+import { SpellInfoProvider } from '../../services/SeedInfo/infoHandler/InfoProviders/Spell';
+import useLocalStorage from '../../services/useLocalStorage';
+import Icon from '../Icons/Icon';
+import MapComponent from '../SeedInfo/SeedInfoViews/Map';
 
 const spells = new SpellInfoProvider({} as any);
 
