@@ -44,7 +44,6 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 
 		if (r <= 50) {
 			const p = this.randoms.Random(1, 100);
-			console.log(p);
 			// Due to an error in data/scripts/perks/perk_list.lua
 			// ACTION_TYPE_* is never imported, so it's 0 everywhere
 			if (p <= 86) {
