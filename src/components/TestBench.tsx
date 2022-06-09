@@ -2,16 +2,46 @@
 // but I can't get it to work with all of the WASM stuff that we need.
 
 import { useState, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Stack } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import i18n from '../i18n';
 import GameInfoProvider from '../services/SeedInfo/infoHandler';
+import { SpellInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/Spell';
 import useLocalStorage from '../services/useLocalStorage';
+import Icon from './Icons/Icon';
 import MapComponent from './SeedInfo/SeedInfoViews/Map';
+
+const spells = new SpellInfoProvider({} as any);
 
 const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 	const { infoProvider } = props;
-	return <MapComponent infoProvider={infoProvider} seed={infoProvider.config.seed.toString()} />
+	const [t] = useTranslation();
+
+	const getAlwaysCast = (i, l, level, worldOffset) => infoProvider.providers.alwaysCast.provide(level, i, l, worldOffset)
+	return (
+		<Stack gap={3}>
+			{Array(7).fill('').map((_, level) => {
+				return (
+					<Stack key={level} direction='horizontal'>{
+						Array(3).fill('').map((_, i) => {
+							const itemId = getAlwaysCast(i, 3, level, 0);
+							const item = spells.provide(itemId);
+							return (
+								<Icon
+								key={`${itemId}-${i}`}
+									uri={item.sprite}
+									title={t(item.name)}
+									background
+								/>
+							)
+						})
+					}</Stack>
+				)
+			})}
+		</Stack>
+	)
+	// return <MapComponent infoProvider={infoProvider} seed={infoProvider.config.seed.toString()} />
 };
 
 const waitToLoad = (gameInfoProvider): Promise<void> =>
@@ -26,7 +56,8 @@ const waitToLoad = (gameInfoProvider): Promise<void> =>
 	});
 
 const TestBench = () => {
-	const seed = 1976471607;
+	const seed = 266197553;
+	// const seed = 1976471607;
 	const [unlockedSpells] = useLocalStorage(
 		'unlocked-spells',
 		Array(393).fill(true)
