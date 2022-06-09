@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import classnames from 'classnames';
 import { Stack, Form, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
@@ -60,7 +59,7 @@ const Shift = (props: IShiftProps) => {
 
 	return (
 		<tr
-			className={classnames([
+			className={classNames([
 				// (data.flaskTo || data.flaskFrom) && 'text-body',
 				// !(data.flaskTo || data.flaskFrom) && 'text-muted',
 				// ''
