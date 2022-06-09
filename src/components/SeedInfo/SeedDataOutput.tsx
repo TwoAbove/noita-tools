@@ -50,7 +50,7 @@ export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], 
 	return gameInfoProvider;
 }
 
-const useGameInfoProvider = (
+export const useGameInfoProvider = (
 	seed: string,
 	unlockedSpells: boolean[]
 ): [GameInfoProvider?, Awaited<ReturnType<GameInfoProvider['provideAll']>>?] => {
