@@ -294,3 +294,56 @@ print(dump(gun))
 wand_add_random_cards(gun, nil, 1)
 print(dump(cards))
 print(dump(cards_permanent))
+
+--
+
+SetWorldSeed(266197553)
+
+
+function rand_card (x, y)
+	local good_cards = { "DAMAGE", "CRITICAL_HIT", "HOMING", "SPEED", "ACID_TRAIL", "SINEWAVE" }
+
+-- "FREEZE", "MATTER_EATER", "ELECTRIC_CHARGE"
+	SetRandomSeed( x, y )
+
+	local card = good_cards[ Random( 1, #good_cards ) ]
+
+	local r = Random( 1, 100 )
+	local level = 6
+
+	if( r <= 50 ) then
+		local p = Random(1,100)
+
+		--[[
+		Arvi (9.12.2020): DRAW_MANY cards were causing odd behaviour as always casts, so testing a different set of always_cast cards
+		if( p <= 80 ) then
+			card = GetRandomActionWithType( x, y, level, ACTION_TYPE_MODIFIER, 666 )
+		elseif( p <= 95 ) then
+			card = GetRandomActionWithType( x, y, level, ACTION_TYPE_DRAW_MANY, 666 )
+		else
+			card = GetRandomActionWithType( x, y, level, ACTION_TYPE_PROJECTILE, 666 )
+		end
+		]]--
+
+		if( p <= 86 ) then
+			card = GetRandomActionWithType( x, y, level, ACTION_TYPE_MODIFIER, 666 )
+		elseif( p <= 93 ) then
+			card = GetRandomActionWithType( x, y, level, ACTION_TYPE_STATIC_PROJECTILE, 666 )
+		elseif ( p < 100 ) then
+			card = GetRandomActionWithType( x, y, level, ACTION_TYPE_PROJECTILE, 666 )
+		else
+			card = GetRandomActionWithType( x, y, level, ACTION_TYPE_UTILITY, 666 )
+		end
+	end
+
+	print("---")
+	print(card)
+	print("---")
+end
+
+for level = 0,6 do
+	for i = 0,2 do
+		rand_card(i, level)
+	end
+	print()
+end
