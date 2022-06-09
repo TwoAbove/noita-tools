@@ -18,6 +18,7 @@ interface IFungalMaterialProps {
 	direction: boolean
 	isFlask: boolean
 	isFavorite // TODO: add type 
+	getColor // TODO: add type 
 	showId // TODO: add type 
 }
 
@@ -52,6 +53,8 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 				return(
 					<div key={`${matName}-a`}>
 						<div key={`${matName}-b`} className={matIds.some(props.isFavorite) ? 'text-info' : ''}>
+							<i key={`${matName}-c`} className={"bi bi-square-fill"} style={{ color: '#' + props.getColor(matIds[0]) }}></i>
+							{' '}
 							{capitalize(matName)}
 							{' '}
 							{props.showId && `(${matIds.join(', ')})`}
@@ -70,19 +73,18 @@ interface IShiftProps {
 	isFavorite: (id: string) => boolean;
 	setShifted: (shifted: boolean) => void;
 	materialProvider: MaterialInfoProvider;
-	getMaterial: (s: string) => any;
 }
 
 const Shift = (props: IShiftProps) => {
-	const { data, shifted, setShifted, getMaterial, isFavorite, materialProvider } = props;
+	const { data, shifted, setShifted, isFavorite, materialProvider } = props;
 	const [showId] = useContext(AlchemyConfigContext);
 
 	// TODO: More uniform if data.from and data.to is always an array?
 	const from: Array<string> = [data.from].flat()
 	const to: Array<string> = [data.to].flat()
-	// TODO: Maybe have getMaterial return already capitalized?
+	// TODO: Maybe have translate return already capitalized?
 	const fromMaterials = new Map(from.map(matId => { return [ matId, materialProvider.translate(matId) ]}));
-	const toMaterials = new Map(to.map(matId => { return [ matId, materialProvider.translate(matId) ]}));
+	const toMaterials = new Map(to.map(matId => { return [ matId, materialProvider.translate(matId) ]}));	
 
 	return (
 		<tr>
@@ -92,15 +94,17 @@ const Shift = (props: IShiftProps) => {
 					direction={false}
 					isFlask={data.flaskFrom}
 					isFavorite={isFavorite}
+					getColor = {matId => materialProvider.provide(matId).color}
 					showId={showId}
 				/>
 			</td>
 			<td className="align-middle">
-			<FungalMaterial
+				<FungalMaterial
 					materials={toMaterials}
 					direction={true}
 					isFlask={data.flaskTo}
 					isFavorite={isFavorite}
+					getColor = {matId => materialProvider.provide(matId).color}
 					showId={showId}
 				/>
 			</td>
@@ -157,7 +161,6 @@ const FungalShifts = (props: IFungalShiftsProps) => {
 							shifted={!!infoProvider.config.fungalShifts[i]}
 							setShifted={handleSetShifted(i)}
 							materialProvider={infoProvider.providers.material}
-							getMaterial={s => infoProvider.providers.material.translate(s)}
 						/>
 					);
 				})}
