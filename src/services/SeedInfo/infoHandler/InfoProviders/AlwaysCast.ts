@@ -15,18 +15,18 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 		perksOnLevel: number,
 		worldOffset = 0
 	) {
-		const { x, y } = this.temples[templeLevel];
-		const perkY = y;
+		const { x: _x, y: _y } = this.temples[templeLevel];
+		const y = _y;
 		// In Noita's code x is `x + (i-0.5)*item_width`
 		// Since we use 0..n-1 instead of 1..n, we use `+ 0.5` since we can
 		// think of this as `i + 1 - 0.5`, which can be simplified to
 		// `i + 0.5`
-		const perkX =
+		const x =
 			this.randoms.RoundHalfOfEven(
-				x + (perkNumber + 0.5) * (60 / perksOnLevel)
+				_x + (perkNumber + 0.5) * (60 / perksOnLevel)
 			) +
 			35840 * worldOffset;
-		this.randoms.SetRandomSeed(perkX, perkY);
+		this.randoms.SetRandomSeed(x, y);
 
 		const good_cards = [
 			'DAMAGE',
