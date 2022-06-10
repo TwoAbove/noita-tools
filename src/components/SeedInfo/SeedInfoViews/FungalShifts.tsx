@@ -9,21 +9,24 @@ import { useTranslation } from 'react-i18next';
 import { useMaterialFavorite } from './helpers';
 import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
 
+enum Direction {
+	From,
+	To
+}
+
 const Flask = () => {
 	return <b className="text-info">Flask</b>;
 };
 
 interface IFungalMaterialProps {
 	materials: Map<string, string>
-	direction: boolean
+	direction: Direction
 	isFlask: boolean
 	isFavorite // TODO: add type 
 	showId // TODO: add type 
 }
 
 const FungalMaterial = (props: IFungalMaterialProps) => {
-	const key = props.direction ? "to" : "from"
-
 	/*
 	Var 'props.materials' may contain multiple materials with the same display name.
 	This is because some materials like 'Flammable Gas' have static variants that are
@@ -89,7 +92,7 @@ const Shift = (props: IShiftProps) => {
 			<td className="align-middle">
 				<FungalMaterial
 					materials={fromMaterials}
-					direction={false}
+					direction={Direction.From}
 					isFlask={data.flaskFrom}
 					isFavorite={isFavorite}
 					showId={showId}
@@ -98,7 +101,7 @@ const Shift = (props: IShiftProps) => {
 			<td className="align-middle">
 			<FungalMaterial
 					materials={toMaterials}
-					direction={true}
+					direction={Direction.To}
 					isFlask={data.flaskTo}
 					isFavorite={isFavorite}
 					showId={showId}
