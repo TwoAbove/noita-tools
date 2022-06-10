@@ -1,13 +1,18 @@
 import { useContext } from 'react';
 import { Stack, Form, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
-import { capitalize } from '../../../services/helpers';
+import { GameInfoProvider } from '../../../services/SeedInfo/infoHandler';
 import { FungalInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Fungal';
+import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
 import { AlchemyConfigContext } from '../../AlchemyConfigContext';
+import { capitalize } from '../../../services/helpers';
 import { useTranslation } from 'react-i18next';
 import { useMaterialFavorite } from './helpers';
-import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
+
+enum Direction {
+	From,
+	To
+}
 
 const Flask = () => {
 	return <b className="text-info">Flask</b>;
@@ -15,7 +20,7 @@ const Flask = () => {
 
 interface IFungalMaterialProps {
 	materials: Map<string, string>
-	direction: boolean
+	direction: Direction
 	isFlask: boolean
 	isFavorite // TODO: add type 
 	getColor // TODO: add type 
@@ -23,8 +28,6 @@ interface IFungalMaterialProps {
 }
 
 const FungalMaterial = (props: IFungalMaterialProps) => {
-	const key = props.direction ? "to" : "from"
-
 	/*
 	Var 'props.materials' may contain multiple materials with the same display name.
 	This is because some materials like 'Flammable Gas' have static variants that are
@@ -37,10 +40,10 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 	*/
 
 	const materialsByName = new Map()
-	props.materials.forEach((matName, matId) => {
-		const ids = materialsByName.get(matName) ?? []
-		ids.push(matId)
-		materialsByName.set(matName, ids)
+	props.materials.forEach((name, id) => {
+		const ids = materialsByName.get(name) ?? []
+		ids.push(id)
+		materialsByName.set(name, ids)
 	});
 
 	// The logic that returns a JSX component requires an `Array`
@@ -49,15 +52,15 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 	return(
 		<Stack>
 			{props.isFlask && <Flask />}
-			{materialsByNameArray.map(([matName, matIds]) => {
+			{materialsByNameArray.map(([name, ids]) => {
 				return(
-					<div key={`${matName}-a`}>
-						<div key={`${matName}-b`} className={matIds.some(props.isFavorite) ? 'text-info' : ''}>
-							<i key={`${matName}-c`} className={"bi bi-square-fill"} style={{ color: '#' + props.getColor(matIds[0]) }}></i>
+					<div key={`${name}-a`}>
+						<div key={`${name}-b`} className={ids.some(props.isFavorite) ? 'text-info' : ''}>
+							<i key={`${name}-c`} className={"bi bi-square-fill"} style={{ color: '#' + props.getColor(ids[0]) }}></i>
 							{' '}
-							{capitalize(matName)}
+							{capitalize(name)}
 							{' '}
-							{props.showId && `(${matIds.join(', ')})`}
+							{props.showId && `(${ids.join(', ')})`}
 						</div>
 					</div>
 				)
@@ -91,20 +94,20 @@ const Shift = (props: IShiftProps) => {
 			<td className="align-middle">
 				<FungalMaterial
 					materials={fromMaterials}
-					direction={false}
+					direction={Direction.From}
 					isFlask={data.flaskFrom}
 					isFavorite={isFavorite}
-					getColor = {matId => materialProvider.provide(matId).color}
+					getColor = {(id: string) => materialProvider.provide(id).color}
 					showId={showId}
 				/>
 			</td>
 			<td className="align-middle">
 				<FungalMaterial
 					materials={toMaterials}
-					direction={true}
+					direction={Direction.To}
 					isFlask={data.flaskTo}
 					isFavorite={isFavorite}
-					getColor = {matId => materialProvider.provide(matId).color}
+					getColor = {(id: string) => materialProvider.provide(id).color}
 					showId={showId}
 				/>
 			</td>
