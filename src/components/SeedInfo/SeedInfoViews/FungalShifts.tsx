@@ -39,10 +39,10 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 	*/
 
 	const materialsByName = new Map()
-	props.materials.forEach((matName, matId) => {
-		const ids = materialsByName.get(matName) ?? []
-		ids.push(matId)
-		materialsByName.set(matName, ids)
+	props.materials.forEach((name, id) => {
+		const ids = materialsByName.get(name) ?? []
+		ids.push(id)
+		materialsByName.set(name, ids)
 	});
 
 	// The logic that returns a JSX component requires an `Array`
@@ -51,13 +51,13 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 	return(
 		<Stack>
 			{props.isFlask && <Flask />}
-			{materialsByNameArray.map(([matName, matIds]) => {
+			{materialsByNameArray.map(([name, ids]) => {
 				return(
-					<div key={`${matName}-a`}>
-						<div key={`${matName}-b`} className={matIds.some(props.isFavorite) ? 'text-info' : ''}>
-							{capitalize(matName)}
+					<div key={`${name}-a`}>
+						<div key={`${name}-b`} className={ids.some(props.isFavorite) ? 'text-info' : ''}>
+							{capitalize(name)}
 							{' '}
-							{props.showId && `(${matIds.join(', ')})`}
+							{props.showId && `(${ids.join(', ')})`}
 						</div>
 					</div>
 				)
@@ -84,8 +84,8 @@ const Shift = (props: IShiftProps) => {
 	const from: Array<string> = [data.from].flat()
 	const to: Array<string> = [data.to].flat()
 	// TODO: Maybe have getMaterial return already capitalized?
-	const fromMaterials = new Map(from.map(matId => { return [ matId, materialProvider.translate(matId) ]}));
-	const toMaterials = new Map(to.map(matId => { return [ matId, materialProvider.translate(matId) ]}));
+	const fromMaterials = new Map(from.map(id => { return [ id, materialProvider.translate(id) ]}));
+	const toMaterials = new Map(to.map(id => { return [ id, materialProvider.translate(id) ]}));
 
 	return (
 		<tr>
