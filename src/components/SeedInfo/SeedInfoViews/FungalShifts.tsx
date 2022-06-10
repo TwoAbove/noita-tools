@@ -73,17 +73,16 @@ interface IShiftProps {
 	isFavorite: (id: string) => boolean;
 	setShifted: (shifted: boolean) => void;
 	materialProvider: MaterialInfoProvider;
-	getMaterial: (s: string) => any;
 }
 
 const Shift = (props: IShiftProps) => {
-	const { data, shifted, setShifted, getMaterial, isFavorite, materialProvider } = props;
+	const { data, shifted, setShifted, isFavorite, materialProvider } = props;
 	const [showId] = useContext(AlchemyConfigContext);
 
 	// TODO: More uniform if data.from and data.to is always an array?
 	const from: Array<string> = [data.from].flat()
 	const to: Array<string> = [data.to].flat()
-	// TODO: Maybe have getMaterial return already capitalized?
+	// TODO: Maybe have translate return already capitalized?
 	const fromMaterials = new Map(from.map(id => { return [ id, materialProvider.translate(id) ]}));
 	const toMaterials = new Map(to.map(id => { return [ id, materialProvider.translate(id) ]}));
 
@@ -160,7 +159,6 @@ const FungalShifts = (props: IFungalShiftsProps) => {
 							shifted={!!infoProvider.config.fungalShifts[i]}
 							setShifted={handleSetShifted(i)}
 							materialProvider={infoProvider.providers.material}
-							getMaterial={s => infoProvider.providers.material.translate(s)}
 						/>
 					);
 				})}
