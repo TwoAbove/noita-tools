@@ -83,8 +83,8 @@ const Shift = (props: IShiftProps) => {
 	const from: Array<string> = [data.from].flat()
 	const to: Array<string> = [data.to].flat()
 	// TODO: Maybe have translate return already capitalized?
-	const fromMaterials = new Map(from.map(matId => { return [ matId, materialProvider.translate(matId) ]}));
-	const toMaterials = new Map(to.map(matId => { return [ matId, materialProvider.translate(matId) ]}));	
+	const fromMaterials = new Map(from.map(id => { return [ id, materialProvider.translate(id) ]}));
+	const toMaterials = new Map(to.map(id => { return [ id, materialProvider.translate(id) ]}));
 
 	return (
 		<tr>
