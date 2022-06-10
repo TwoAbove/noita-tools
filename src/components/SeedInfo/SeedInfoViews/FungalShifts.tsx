@@ -9,18 +9,13 @@ import { useTranslation } from 'react-i18next';
 import { useMaterialFavorite } from './helpers';
 import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
 
-enum Direction {
-	From,
-	To
-}
-
 const Flask = () => {
 	return <b className="text-info">Flask</b>;
 };
 
 interface IFungalMaterialProps {
 	materials: Map<string, string>
-	direction: Direction
+	direction: boolean
 	isFlask: boolean
 	isFavorite // TODO: add type 
 	getColor // TODO: add type 
@@ -28,6 +23,8 @@ interface IFungalMaterialProps {
 }
 
 const FungalMaterial = (props: IFungalMaterialProps) => {
+	const key = props.direction ? "to" : "from"
+
 	/*
 	Var 'props.materials' may contain multiple materials with the same display name.
 	This is because some materials like 'Flammable Gas' have static variants that are
@@ -40,10 +37,10 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 	*/
 
 	const materialsByName = new Map()
-	props.materials.forEach((name, id) => {
-		const ids = materialsByName.get(name) ?? []
-		ids.push(id)
-		materialsByName.set(name, ids)
+	props.materials.forEach((matName, matId) => {
+		const ids = materialsByName.get(matName) ?? []
+		ids.push(matId)
+		materialsByName.set(matName, ids)
 	});
 
 	// The logic that returns a JSX component requires an `Array`
@@ -52,13 +49,15 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 	return(
 		<Stack>
 			{props.isFlask && <Flask />}
-			{materialsByNameArray.map(([name, ids]) => {
+			{materialsByNameArray.map(([matName, matIds]) => {
 				return(
-					<div key={`${name}-a`}>
-						<div key={`${name}-b`} className={ids.some(props.isFavorite) ? 'text-info' : ''}>
-							{capitalize(name)}
+					<div key={`${matName}-a`}>
+						<div key={`${matName}-b`} className={matIds.some(props.isFavorite) ? 'text-info' : ''}>
+							<i key={`${matName}-c`} className={"bi bi-square-fill"} style={{ color: '#' + props.getColor(matIds[0]) }}></i>
 							{' '}
-							{props.showId && `(${ids.join(', ')})`}
+							{capitalize(matName)}
+							{' '}
+							{props.showId && `(${matIds.join(', ')})`}
 						</div>
 					</div>
 				)
@@ -83,16 +82,16 @@ const Shift = (props: IShiftProps) => {
 	// TODO: More uniform if data.from and data.to is always an array?
 	const from: Array<string> = [data.from].flat()
 	const to: Array<string> = [data.to].flat()
-	// TODO: Maybe have getMaterial return already capitalized?
-	const fromMaterials = new Map(from.map(id => { return [ id, materialProvider.translate(id) ]}));
-	const toMaterials = new Map(to.map(id => { return [ id, materialProvider.translate(id) ]}));
+	// TODO: Maybe have translate return already capitalized?
+	const fromMaterials = new Map(from.map(matId => { return [ matId, materialProvider.translate(matId) ]}));
+	const toMaterials = new Map(to.map(matId => { return [ matId, materialProvider.translate(matId) ]}));	
 
 	return (
 		<tr>
 			<td className="align-middle">
 				<FungalMaterial
 					materials={fromMaterials}
-					direction={Direction.From}
+					direction={false}
 					isFlask={data.flaskFrom}
 					isFavorite={isFavorite}
 					getColor = {matId => materialProvider.provide(matId).color}
@@ -102,7 +101,7 @@ const Shift = (props: IShiftProps) => {
 			<td className="align-middle">
 				<FungalMaterial
 					materials={toMaterials}
-					direction={Direction.To}
+					direction={true}
 					isFlask={data.flaskTo}
 					isFavorite={isFavorite}
 					getColor = {matId => materialProvider.provide(matId).color}
