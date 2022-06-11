@@ -26,9 +26,12 @@ interface IFungalMaterialProps {
 	showId // TODO: add type 
 }
 
+
 const FungalMaterial = (props: IFungalMaterialProps) => {
+	const { materials, direction, isFlask, isFavorite, showId } = props;
+
 	/*
-	Var 'props.materials' may contain multiple materials with the same display name.
+	Var 'materials' may contain multiple materials with the same display name.
 	This is because some materials like 'Flammable Gas' have static variants that are
 	pre-rendered in a scene. Static materials have their own material ID.
 
@@ -39,7 +42,7 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 	*/
 
 	const materialsByName = new Map()
-	props.materials.forEach((name, id) => {
+	materials.forEach((name, id) => {
 		const ids = materialsByName.get(name) ?? []
 		ids.push(id)
 		materialsByName.set(name, ids)
@@ -50,14 +53,14 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 
 	return(
 		<Stack>
-			{props.isFlask && <Flask />}
+			{isFlask && <Flask />}
 			{materialsByNameArray.map(([name, ids]) => {
 				return(
 					<div key={`${name}-a`}>
-						<div key={`${name}-b`} className={ids.some(props.isFavorite) ? 'text-info' : ''}>
+						<div key={`${name}-b`} className={ids.some(isFavorite) ? 'text-info' : ''}>
 							{capitalize(name)}
 							{' '}
-							{props.showId && `(${ids.join(', ')})`}
+							{showId && `(${ids.join(', ')})`}
 						</div>
 					</div>
 				)
