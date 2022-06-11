@@ -55,8 +55,8 @@ const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, 
 			{materialsByNameArray.map(([name, ids]) => {
 				return(
 					<div key={`${name}`}>
-						<div className={ids.some(props.isFavorite) ? 'text-info' : ''}>
-							<i className={"bi bi-square-fill"} style={{ color: '#' + props.getColor(ids[0]) }}></i>
+						<div className={ids.some(isFavorite) ? 'text-info' : ''}>
+							<i className={"bi bi-square-fill"} style={{ color: '#' + getColor(ids[0]) }}></i>
 							{' '}
 							{capitalize(name)}
 							{' '}
