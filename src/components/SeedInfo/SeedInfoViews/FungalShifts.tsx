@@ -56,8 +56,8 @@ const FungalMaterial = (props: IFungalMaterialProps) => {
 			{isFlask && <Flask />}
 			{materialsByNameArray.map(([name, ids]) => {
 				return(
-					<div key={`${name}-a`}>
-						<div key={`${name}-b`} className={ids.some(isFavorite) ? 'text-info' : ''}>
+					<div key={`${name}`}>
+						<div className={ids.some(isFavorite) ? 'text-info' : ''}>
 							{capitalize(name)}
 							{' '}
 							{showId && `(${ids.join(', ')})`}
