@@ -56,7 +56,7 @@ const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, 
 				return(
 					<div key={`${name}`}>
 						<div className={ids.some(isFavorite) ? 'text-info' : ''}>
-							<i className={"bi bi-square-fill"} style={{ color: '#' + getColor(ids[0]) }}></i>
+							<div className={'d-inline-block align-text-bottom rounded-1'} style={{ width: '1rem', height: '1rem', backgroundColor: '#' + getColor(ids[0]) }}></div>
 							{' '}
 							{capitalize(name)}
 							{' '}
