@@ -33,9 +33,10 @@ const Clickable = (props: IClickableProps | any) => {
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 			style={{
-				cursor: 'pointer'
+				cursor: 'pointer',
+				transition: '0.1s'
 			}}
-			className={classNames('p-1', clickedOrHoveredStyle)}
+			className={classNames(clickedOrHoveredStyle, 'rounded-1')}
 		>
 			{childrenWithProps}
 		</div>
