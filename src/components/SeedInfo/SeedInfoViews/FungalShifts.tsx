@@ -27,7 +27,7 @@ interface IFungalMaterialProps {
 	showId // TODO: add type 
 }
 
-const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, isFlask, isFavorite, showId }) => {
+const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, isFlask, isFavorite, getColor, showId }) => {
 	/*
 	Var 'materials' may contain multiple materials with the same display name.
 	This is because some materials like 'Flammable Gas' have static variants that are
