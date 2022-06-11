@@ -26,8 +26,6 @@ interface IFungalMaterialProps {
 	showId // TODO: add type 
 }
 
-
-//const FungalMaterial: React.FC<IFungalMaterialProps> = (props: IFungalMaterialProps) => {
 const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, isFlask, isFavorite, showId }) => {
 	/*
 	Var 'materials' may contain multiple materials with the same display name.
