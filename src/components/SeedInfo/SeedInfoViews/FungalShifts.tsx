@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 import { Stack, Form, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
-import { capitalize } from '../../../services/helpers';
+import { GameInfoProvider } from '../../../services/SeedInfo/infoHandler';
 import { FungalInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Fungal';
+import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
 import { AlchemyConfigContext } from '../../AlchemyConfigContext';
+import { capitalize } from '../../../services/helpers';
 import { useTranslation } from 'react-i18next';
 import { useMaterialFavorite } from './helpers';
-import { MaterialInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Material';
 
 enum Direction {
 	From,
