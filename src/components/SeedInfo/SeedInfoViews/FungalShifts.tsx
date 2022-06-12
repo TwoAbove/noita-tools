@@ -22,9 +22,9 @@ interface IFungalMaterialProps {
 	materials: Map<string, string>
 	direction: Direction
 	isFlask: boolean
-	isFavorite // TODO: add type 
-	getColor // TODO: add type 
-	showId // TODO: add type 
+	isFavorite: (id: string) => boolean;
+	getColor: (id: string) => string;
+	showId: boolean;
 }
 
 const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, isFlask, isFavorite, getColor, showId }) => {
@@ -56,7 +56,7 @@ const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, 
 				return(
 					<div key={`${name}`}>
 						<div className={ids.some(isFavorite) ? 'text-info' : ''}>
-							<div className={'d-inline-block align-text-bottom rounded-1'} style={{ width: '1rem', height: '1rem', backgroundColor: '#' + getColor(ids[0]) }}></div>
+							<div className={'d-inline-block align-sub rounded-3 me-1'} style={{ marginBottom:'-2px', width: '1rem', height: '1rem', backgroundColor: '#' + getColor(ids[0]) }}></div>
 							{' '}
 							{capitalize(name)}
 							{' '}
