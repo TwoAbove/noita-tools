@@ -23,10 +23,11 @@ interface IFungalMaterialProps {
 	direction: Direction
 	isFlask: boolean
 	isFavorite // TODO: add type 
+	getColor // TODO: add type 
 	showId // TODO: add type 
 }
 
-const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, isFlask, isFavorite, showId }) => {
+const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, isFlask, isFavorite, getColor, showId }) => {
 	/*
 	Var 'materials' may contain multiple materials with the same display name.
 	This is because some materials like 'Flammable Gas' have static variants that are
@@ -55,6 +56,8 @@ const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, 
 				return(
 					<div key={`${name}`}>
 						<div className={ids.some(isFavorite) ? 'text-info' : ''}>
+							<div className={'d-inline-block align-text-bottom rounded-1'} style={{ width: '1rem', height: '1rem', backgroundColor: '#' + getColor(ids[0]) }}></div>
+							{' '}
 							{capitalize(name)}
 							{' '}
 							{showId && `(${ids.join(', ')})`}
@@ -94,15 +97,17 @@ const Shift = (props: IShiftProps) => {
 					direction={Direction.From}
 					isFlask={data.flaskFrom}
 					isFavorite={isFavorite}
+					getColor = {(id: string) => materialProvider.provide(id).color}
 					showId={showId}
 				/>
 			</td>
 			<td className="align-middle">
-			<FungalMaterial
+				<FungalMaterial
 					materials={toMaterials}
 					direction={Direction.To}
 					isFlask={data.flaskTo}
 					isFavorite={isFavorite}
+					getColor = {(id: string) => materialProvider.provide(id).color}
 					showId={showId}
 				/>
 			</td>
