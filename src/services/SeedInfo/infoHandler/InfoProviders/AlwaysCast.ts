@@ -36,19 +36,22 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 			'ACID_TRAIL',
 			'SINEWAVE'
 		];
-		let card = good_cards[this.randoms.Random(0, good_cards.length - 1)];
+
+		let card = good_cards[this.randoms.Random(1, good_cards.length) - 1];
 
 		const r = this.randoms.Random(1, 100);
 		const level = 6;
 
 		if (r <= 50) {
 			const p = this.randoms.Random(1, 100);
+			// Due to an error in data/scripts/perks/perk_list.lua
+			// ACTION_TYPE_* is never imported, so it's 0 everywhere
 			if (p <= 86) {
 				card = this.randoms.GetRandomActionWithType(
 					x,
 					y,
 					level,
-					ACTION_TYPE.MODIFIER,
+					0, //ACTION_TYPE.MODIFIER,
 					666
 				);
 			} else if (p <= 93) {
@@ -56,7 +59,7 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 					x,
 					y,
 					level,
-					ACTION_TYPE.STATIC_PROJECTILE,
+					0, //ACTION_TYPE.STATIC_PROJECTILE,
 					666
 				);
 			} else if (p < 100) {
@@ -64,7 +67,7 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 					x,
 					y,
 					level,
-					ACTION_TYPE.PROJECTILE,
+					0, //ACTION_TYPE.PROJECTILE,
 					666
 				);
 			} else {
@@ -72,7 +75,7 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 					x,
 					y,
 					level,
-					ACTION_TYPE.UTILITY,
+					0, //ACTION_TYPE.UTILITY,
 					666
 				);
 			}

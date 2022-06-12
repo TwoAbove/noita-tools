@@ -34,6 +34,7 @@ const SeedForm = (props: ISeedFormProps) => {
 					type="number"
 					value={seed}
 					onChange={handleNameChange}
+					autoFocus
 				/>
 				<Button className="me-3" type="submit" color="primary">
 					Submit
