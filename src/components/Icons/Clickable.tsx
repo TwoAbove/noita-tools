@@ -36,7 +36,7 @@ const Clickable = (props: IClickableProps | any) => {
 				cursor: 'pointer',
 				transition: '0.1s'
 			}}
-			className={classNames(clickedOrHoveredStyle, 'rounded-1')}
+			className={classNames(clickedOrHoveredStyle, 'p-1 rounded-1')}
 		>
 			{childrenWithProps}
 		</div>
