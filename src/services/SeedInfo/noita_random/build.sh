@@ -15,7 +15,7 @@ emcc --bind -Oz \
   -s MODULARIZE=1 \
   -s ASSERTIONS=1 \
   -s NO_EXIT_RUNTIME=1 \
-  -s ENVIRONMENT="web,worker" \
+  -s ENVIRONMENT="web,worker,node" \
   -s EXPORT_NAME="create_noita_random" \
   -s "EXPORTED_FUNCTIONS=['_generate_map']" \
   -s "EXPORTED_RUNTIME_METHODS='cwrap'" \

@@ -307,12 +307,13 @@ function rand_card (x, y)
 	SetRandomSeed( x, y )
 
 	local card = good_cards[ Random( 1, #good_cards ) ]
-
 	local r = Random( 1, 100 )
+	print(r)
 	local level = 6
 
 	if( r <= 50 ) then
 		local p = Random(1,100)
+		print(p)
 
 		--[[
 		Arvi (9.12.2020): DRAW_MANY cards were causing odd behaviour as always casts, so testing a different set of always_cast cards
@@ -341,9 +342,4 @@ function rand_card (x, y)
 	print("---")
 end
 
-for level = 0,6 do
-	for i = 0,2 do
-		rand_card(i, level)
-	end
-	print()
-end
+rand_card(18, 1410)

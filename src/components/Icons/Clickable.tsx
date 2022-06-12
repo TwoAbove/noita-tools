@@ -25,17 +25,18 @@ const Clickable = (props: IClickableProps | any) => {
 		setHovered(false);
 	};
 
-	const clickedStyles = clicked && 'border border-3 p-1 flex-shrink-1';
-	// TODO need to get centering correct so that there is not jittering
-	const hoverStyles = false && hovered && 'border';
+	// Clicked-style is prioritised, then hovered-style, otherwise fallback to default style.
+	const clickedOrHoveredStyle = clicked ? 'bg-info' : hovered ? 'bg-light' : 'bg-body'
+
 	return (
 		<div
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 			style={{
-				cursor: 'pointer'
+				cursor: 'pointer',
+				transition: '0.1s'
 			}}
-			className={classNames('', clickedStyles, hoverStyles)}
+			className={classNames(clickedOrHoveredStyle, 'p-1 rounded-1')}
 		>
 			{childrenWithProps}
 		</div>
