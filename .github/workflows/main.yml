@@ -1,23 +1,216 @@
+# GitHub does not support YAML anchors, so we can't just dedupe common
+# steps https://github.community/t/support-for-yaml-anchors/16128
+
 name: CI
 
 on: [pull_request]
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x]
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
+      - name: Cache Cypress
+        uses: actions/cache@v2
+        with:
+          path: '/home/runner/.cache/Cypress'
+          key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+          node-version: ${{ matrix.node }}
+
+      - name: Cache build
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-build
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('build') }} }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: npm ci, build and test
+      - name: Yarn install
+        run: yarn install --immutable
+
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
+      - name: Cache Cypress
+        uses: actions/cache@v2
+        with:
+          path: '/home/runner/.cache/Cypress'
+          key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+          node-version: ${{ matrix.node }}
+
+      - name: Cache build
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-build
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('build') }} }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Check build
+        env:
+          CI: false # This is needed because node throws console.warn messages that
+                    # get treated as errors in CI
         run: |
-          yarn install --immutable
           DISABLE_ESLINT_PLUGIN=true yarn build
+          if [ -d "./build" ]; then
+            echo "Build dir exists"
+            exit 0
+          else
+            exit 1
+          fi
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
+      - name: Cache Cypress
+        uses: actions/cache@v2
+        with:
+          path: '/home/runner/.cache/Cypress'
+          key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+          node-version: ${{ matrix.node }}
+
+      - name: Cache build
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-build
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('build') }} }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Test
+        run: yarn test
+        env:
+          CI: true
+
+  e2e:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
+      - name: Cache Cypress
+        uses: actions/cache@v2
+        with:
+          path: '/home/runner/.cache/Cypress'
+          key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+          node-version: ${{ matrix.node }}
+
+      - name: Cache build
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-build
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('build') }} }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: e2e
+        run: yarn e2e
+        env:
+          CI: false # This is needed because node throws console.warn messages that
+                    # get treated as errors in CI

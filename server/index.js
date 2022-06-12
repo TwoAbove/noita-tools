@@ -13,11 +13,12 @@ B2.prototype.uploadAny = require('@gideo-llc/backblaze-b2-upload-any');
 
 const PORT = process.env.PORT || 3001;
 
+const hasB2 = process.env.B2_APP_KEY_ID && process.env.B2_APP_KEY;
+
 const b2 = new B2({
 	applicationKeyId: process.env.B2_APP_KEY_ID,
 	applicationKey: process.env.B2_APP_KEY
 });
-
 
 const rooms = new Set();
 
@@ -38,14 +39,15 @@ const getRoomNumber = () => {
 	return finalNumber;
 };
 
-
 const app = express();
 
 app.use(morgan('combined'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-	extended: true
-}));
+app.use(
+	bodyParser.urlencoded({
+		extended: true
+	})
+);
 
 let data = [];
 let stats = [];
@@ -71,7 +73,7 @@ app.get('/api/db_dump/:id', (req, res) => {
 	delete dbs[id];
 });
 
-const m = multer()
+const m = multer();
 
 app.post('/api/db_dump/', m.any(), (req, res) => {
 	const id = getRoomNumber();
@@ -85,9 +87,12 @@ app.post('/api/db_dump/', m.any(), (req, res) => {
 let r;
 const authorize = async () => {
 	r = await b2.authorize();
+};
+
+if (hasB2) {
+	authorize();
+	setInterval(authorize, 1000 * 60 * 60 * 23); // 23h
 }
-authorize();
-setInterval(authorize, 1000 * 60 * 60 * 23) // 23h
 
 app.post('/api/db_debug/', m.any(), async (req, res) => {
 	const id = randomUUID();
@@ -125,7 +130,7 @@ app.use((req, res) =>
 app.use((err, req, res, next) => {
 	console.error(err.stack);
 	res.status(500).send('Server error');
-})
+});
 
 const server = app.listen(PORT, () => {
 	console.log(`Running at http://localhost:${PORT}`);
@@ -178,6 +183,9 @@ io.of('/').adapter.on('delete-room', room => {
 });
 
 const upload = async () => {
+	if (!hasB2) {
+		return;
+	}
 	try {
 		await b2.uploadAny({
 			bucketId: '93c80a630c6d59a37add0615',

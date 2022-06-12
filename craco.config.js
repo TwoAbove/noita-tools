@@ -22,8 +22,10 @@ module.exports = {
 
 			config.experiments = {
 				futureDefaults: true,
-				asyncWebAssembly: true,
+				asyncWebAssembly: true
 			};
+
+			config.resolve.fallback = { path: false, fs: false };
 
 			return config;
 		},
@@ -31,13 +33,10 @@ module.exports = {
 			new BundleAnalyzerPlugin({
 				analyzerMode: process.env.STATS || 'disabled'
 			})
-		],
+		]
 		// stats: 'errors-only',
-
 	},
-	plugins: [
-		{ plugin: CracoSwcPlugin },
-	]
+	plugins: [{ plugin: CracoSwcPlugin }]
 	// style: {
 	//   postcss: {
 	//     plugins: [

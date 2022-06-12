@@ -147,7 +147,7 @@ interface IGun {
 class Gun implements IGun {
 	randoms: IRandom;
 
-	cost: number;
+	cost: number ;
 	deck_capacity = 0;
 	actions_per_round = 0;
 	reload_time = 0;
@@ -161,6 +161,12 @@ class Gun implements IGun {
 	mana_max: number;
 	force_unshuffle = 0;
 	is_rare = 0;
+
+	toObject(): Omit<Gun, 'randoms'> {
+		const res = Object.assign({}, this) as any;
+		delete res.randoms;
+		return res;
+	}
 
 	constructor(randoms, level, cost) {
 		this.randoms = randoms;
@@ -742,7 +748,7 @@ export class WandInfoProvider extends InfoProvider {
 		unshufflePerk: boolean
 	) {
 		this.randoms.SetRandomSeed(x, y);
-		const gun = this.get_gun_data(cost, level, force_unshuffle, unshufflePerk);
+		const gun = this.get_gun_data(cost, level, force_unshuffle, unshufflePerk).toObject();
 		const ui = this.GetWandUI(gun);
 		const cards = this.wand_add_random_cards(x, y, gun, level);
 		return {

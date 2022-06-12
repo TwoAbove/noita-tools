@@ -111,7 +111,7 @@ interface IRND {
 	y: number;
 }
 
-const load = async () => {
+const loadWasm = async () => {
 	const Module: IRandomModule = await createModule({
 		locateFile(path) {
 			if (path.endsWith('.wasm')) {
@@ -120,7 +120,10 @@ const load = async () => {
 			return path;
 		}
 	});
+	return Module
+}
 
+export const genRandom = async (Module) => {
 	Module.GenerateMap = Module._generate_map;
 	// Module.GenerateMap = Module.cwrap('generate_map', null, [
 	// 	'number',
@@ -277,6 +280,11 @@ const load = async () => {
 		pick_random_from_table_backwards,
 		pick_random_from_table_weighted
 	};
+}
+
+const load = async () => {
+	const Module = await loadWasm();
+	return genRandom(Module);
 };
 
 export type IRandom = Awaited<ReturnType<typeof load>>;
