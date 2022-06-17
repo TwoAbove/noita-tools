@@ -50,10 +50,11 @@ export class FungalInfoProvider extends InfoProvider {
       let it = from.materials[i];
       let from_material = it;
 
-      // convert
-      if ((flaskFrom || flaskTo) || from_material !== to_material) {
-        from_materials.push(from_material);
-      }
+      from_materials.push(from_material);
+    }
+    if (from_materials.length > 1) {
+      // Filter out the duplicates
+      from_materials = from_materials.filter(m => m !== to_material);
     }
     return { flaskTo, flaskFrom, from: from_materials, to: to_material };
   }
