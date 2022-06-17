@@ -35,7 +35,7 @@ const Perk = (props: IPerkProps) => {
 	} = props;
 	const [t] = useTranslation('materials');
 
-  const item = alwaysCast ? spells.provide(alwaysCast) : null;
+	const item = alwaysCast ? spells.provide(alwaysCast) : null;
 
 	return (
 		<div
@@ -43,6 +43,22 @@ const Perk = (props: IPerkProps) => {
 			className={classNames(className, 'position-relative')}
 		>
 			<Clickable clicked={clicked}>
+				{alwaysCast && item && (
+					<Icon
+						backgroundStyle={{
+							marginLeft: '5px',
+							marginTop: '2px'
+						}}
+						className={classNames(
+							'position-absolute top-0 translate-middle',
+							highlight && 'shadow'
+						)}
+						width="1.4rem"
+						uri={item.sprite}
+						title={t(item.name)}
+						background
+					/>
+				)}
 				<Icon
 					className={classNames(highlight && 'shadow')}
 					uri={perk.perk_icon}
@@ -52,18 +68,13 @@ const Perk = (props: IPerkProps) => {
 				/>
 				{rerollable && (
 					<Icon
-						className="position-absolute top-0 start-100 translate-middle"
+						style={{
+							marginRight: '5px',
+							marginTop: '2px'
+						}}
+						className="position-absolute top-0 translate-middle"
 						width="1.5rem"
 						uri={`${lotteryPerk.perk_icon}`}
-					/>
-				)}
-				{alwaysCast && item && (
-					<Icon
-						className={classNames('position-absolute top-0 start-0 translate-middle', highlight && 'shadow')}
-						width="1.2rem"
-						uri={item.sprite}
-						title={t(item.name)}
-						background
 					/>
 				)}
 			</Clickable>

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { Stack, Form, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { GameInfoProvider } from '../../../services/SeedInfo/infoHandler';
@@ -70,17 +70,16 @@ const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, 
 }
 
 interface IShiftProps {
-	key: string | number;
 	data: ReturnType<FungalInfoProvider['provide']>[number];
 	shifted: boolean;
-	isFavorite: (id: string) => boolean;
 	setShifted: (shifted: boolean) => void;
 	materialProvider: MaterialInfoProvider;
 }
 
-const Shift = (props: IShiftProps) => {
-	const { data, shifted, setShifted, isFavorite, materialProvider } = props;
+export const Shift: FC<IShiftProps> = (props) => {
+	const { data, shifted, setShifted, materialProvider } = props;
 	const [showId] = useContext(AlchemyConfigContext);
+	const { isFavorite } = useMaterialFavorite();
 
 	// TODO: More uniform if data.from and data.to is always an array?
 	const from: Array<string> = [data.from].flat()
@@ -140,9 +139,8 @@ interface IFungalShiftsProps {
 
 const FungalShifts = (props: IFungalShiftsProps) => {
 	const { fungalData, infoProvider } = props;
-	const [t] = useTranslation();
+	const [t] = useTranslation('materials');
 
-	const { isFavorite } = useMaterialFavorite();
 
 	const handleSetShifted = (i: number) => (shifted: boolean) => {
 		const currentShifted = [...infoProvider.config.fungalShifts];
@@ -158,9 +156,8 @@ const FungalShifts = (props: IFungalShiftsProps) => {
 				{fungalData.map((data, i) => {
 					return (
 						<Shift
-							key={i + t('$current_language', { ns: 'materials' })}
+							key={i + t('$current_language')}
 							data={data}
-							isFavorite={isFavorite}
 							shifted={!!infoProvider.config.fungalShifts[i]}
 							setShifted={handleSetShifted(i)}
 							materialProvider={infoProvider.providers.material}

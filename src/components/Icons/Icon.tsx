@@ -15,6 +15,7 @@ interface IIconProps {
 	uri: string;
 	size?: string;
 	background?: boolean;
+	backgroundStyle?: React.CSSProperties;
 }
 
 const Icon = React.forwardRef(
@@ -31,6 +32,7 @@ const Icon = React.forwardRef(
 			width,
 			height,
 			style,
+			backgroundStyle,
 			size,
 			alt,
 			title,
@@ -68,7 +70,8 @@ const Icon = React.forwardRef(
 						display: 'block',
 						width: `calc(${w})`,
 						height: `calc(${h || w})`,
-						imageRendering: 'pixelated'
+						imageRendering: 'pixelated',
+						...backgroundStyle
 					}}
 				>
 					<div

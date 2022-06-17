@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, FC, useContext, useEffect, useState } from 'react';
 import {
   Button, Col, Form, Stack, Modal, Row,
 } from 'react-bootstrap';
@@ -85,10 +85,11 @@ interface IPerkRowProps {
   pickedPerks: string[];
   perkRerolls: number;
   shop: IShopItems;
-  perks?: IPerk[];
+  perks: IPerk[];
   advanced: boolean;
   rerollsToFavorite?: number;
   favoritesInNextReroll?: number;
+  showAllAlwaysCast?: boolean;
 
   handleReroll: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleRerollUndo?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -100,8 +101,8 @@ interface IPerkRowProps {
   isSpellFavorite: (id: string) => boolean;
   getAlwaysCast: (i: number, perks: number) => string;
 };
-const PerkRow = (props: IPerkRowProps) => {
-  const { rerollsToFavorite, favoritesInNextReroll, advanced, pickedPerks, perkRerolls, shop, perks, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, getAlwaysCast, handleOpenShopInfo, handleLoad, isPerkFavorite, isSpellFavorite } = props;
+const PerkRow: FC<IPerkRowProps> = (props) => {
+  const { rerollsToFavorite, favoritesInNextReroll, advanced, pickedPerks, perkRerolls, shop, perks, showAllAlwaysCast, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, getAlwaysCast, handleOpenShopInfo, handleLoad, isPerkFavorite, isSpellFavorite } = props;
   const numberOfGambles = pickedPerks?.filter(p => p === 'GAMBLE').length;
   const type = shop.type;
   const rerollsForLevel = perkRerolls ? perkRerolls : 0;
@@ -131,6 +132,8 @@ const PerkRow = (props: IPerkRowProps) => {
     )
   };
 
+  const rowHasAlwaysCast = perks.find(p => p.id === 'ALWAYS_CAST');
+
   return (
     <Stack direction="horizontal">
       <Col xs={2}>
@@ -140,7 +143,7 @@ const PerkRow = (props: IPerkRowProps) => {
         <Stack direction="horizontal" className="justify-content-center" gap={3} >
           {perksToShow && perksToShow.map((perk, i) => {
             const rerollable = isRerollable(i, perksToShow.length);
-            const alwaysCast = perk.id === 'ALWAYS_CAST' ? getAlwaysCast(i, perksToShow.length) : undefined;
+            const alwaysCast = (perk.id === 'ALWAYS_CAST' || (rowHasAlwaysCast && showAllAlwaysCast)) ? getAlwaysCast(i, perksToShow.length) : undefined;
             const fav = isPerkFavorite(perk.id);
             return <Perk
               className={fav && 'mb-2'}
@@ -550,6 +553,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
   const { handleReroll, handleRerollUndo, handleClickPerk, handleReset, handleBack, handleOffset, handleGenRowAdvanced } = perkMethods;
   const { perks, pickedPerks, perkRerolls, totalRerolls, worldOffset, lotteries, rerollsToFavorite, favoritesInNextReroll, isFavorite } = perkData;
   const [showInitialLottery] = useLocalStorage('show-initial-lottery', true);
+  const [showAlwaysCastRow] = useLocalStorage('show-always-cast-row', false);
 
   const adjustedLotteries = lotteries === 0 ? Number(showInitialLottery) : lotteries;
 
@@ -609,6 +613,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
               rerollsToFavorite={rerollsToFavorite}
               favoritesInNextReroll={favoritesInNextReroll}
               isPerkFavorite={isFavorite}
+              showAllAlwaysCast={showAlwaysCastRow}
               isSpellFavorite={isSpellFavorite}
               handleRerollUndo={e => handleRerollUndo(e, level)}
               handleReroll={e => handleReroll(e, level)}

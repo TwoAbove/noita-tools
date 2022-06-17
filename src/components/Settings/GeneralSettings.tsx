@@ -119,6 +119,31 @@ const LotteryPreview = () => {
 	);
 };
 
+export const ShowAlwaysCastRow = () => {
+  const [showAlwaysCastRow, setShowAlwaysCastRow] = useLocalStorage('show-always-cast-row', false);
+
+	return (
+		<ConfigRow
+			left={
+				<>
+					<strong className="">Show Always Cast for whole row</strong>
+					<p className="text-muted mb-0">If there is an always cast perk in the row, show the potential always-cast for all perks in the row (as a solution to the reroll problem described in quirks).</p>
+				</>
+			}
+			right={
+				<Form.Switch
+					checked={showAlwaysCastRow}
+					onChange={e => {
+						setShowAlwaysCastRow(e.target.checked);
+					}}
+					id="show-always-cast-row-config-switch"
+					label=""
+				/>
+			}
+		/>
+	);
+};
+
 const DarkMode = () => {
 	const [theme, setTheme] = useContext(ThemeContext);
 	return (
@@ -162,6 +187,9 @@ const GeneralSettings = () => {
 				</ListGroup.Item>
 				<ListGroup.Item>
 					<LotteryPreview />
+				</ListGroup.Item>
+				<ListGroup.Item>
+					<ShowAlwaysCastRow />
 				</ListGroup.Item>
 			</ListGroup>
 		</>
