@@ -256,6 +256,7 @@ const Logic: FC<ILogicProps> = ({ onLogic }) => {
 	);
 };
 
+// I think DND should be replaced with https://github.com/atlassian/react-beautiful-dnd
 interface IRuleListProps {}
 const RuleList: FC<IRuleListProps> = () => {
 	const { ruleTree, ruleDispatch } = useContext(SearchContext);

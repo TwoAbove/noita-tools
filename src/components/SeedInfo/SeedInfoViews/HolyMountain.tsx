@@ -601,7 +601,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
       <div className="mb-3" />
       <Stack gap={3}>
         {Array(7 - Number(!!worldOffset)).fill('').map((_, level) => {
-          const row = perks[level];
+          const row = perks[level] || [];
           return (
             <PerkRow
               key={`${worldOffset}-${level}`}
