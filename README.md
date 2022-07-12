@@ -23,7 +23,7 @@ For map generation, [wang tiles](https://github.com/nothings/stb/blob/master/stb
 
 ## Development
 
-Prerequsites:
+Prerequisites:
 
 * [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed
 * `npm i -g google-closure-compiler`

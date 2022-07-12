@@ -122,7 +122,7 @@ export class SeedSolver {
 		if (config.unlockedSpells) {
 			this.gameInfoHandler.onRandomLoad(() => {
 				this.gameInfoHandler.randoms.SetUnlockedSpells(config.unlockedSpells!);
-			})
+			}).finally(() => {});
 		}
 	}
 

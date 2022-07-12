@@ -57,6 +57,7 @@ export class GameInfoProvider extends EventTarget {
     loadRandom().then((randoms) => {
       this.randoms = randoms;
       this.providers = this.buildInfoProviders();
+    }).finally(() => {
       this.ready = true;
     });
     this.i18n = i18n;

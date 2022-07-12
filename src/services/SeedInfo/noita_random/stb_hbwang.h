@@ -1388,28 +1388,3 @@ STBHW_EXTERN int stbhw_make_template(stbhw_config *c, unsigned char *data, int w
 
    return 1;
 }
-
-// tiles_data and result are allocated and freed in-js.
-STBHW_EXTERN void generate_map(
-    unsigned char tiles_data[],
-    unsigned char result[],
-    int tiles_w,
-    int tiles_h,
-    int map_w,
-    int map_h)
-{
-   unsigned char *res;
-   stbhw_tileset ts;
-   NollaPrng *rng = new NollaPrng(world_seed);
-
-   res = (unsigned char *)malloc(3 * map_w * (map_h + 4));
-
-   stbhw_build_tileset_from_image(&ts, tiles_data, tiles_w * 3, tiles_w, tiles_h);
-   stbhw_generate_image(&ts, NULL, res, map_w * 3, map_w, map_h + 4, std::bind(&NollaPrng::NextU, rng));
-
-   for (int i = 4 * 3 * map_w, j = 0; i < 3 * map_w * (map_h + 4); i++, j++) {
-      result[j] = res[i];
-   }
-
-   stbhw_free_tileset(&ts);
-}

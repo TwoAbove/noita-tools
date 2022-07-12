@@ -200,9 +200,11 @@ const DBErrorHandler: FC<IDBErrorHandlerProps> = props => {
 	const [hasDBError, setHasDBError] = useState<Error | boolean>(false);
 
 	useEffect(() => {
-		db.errorOnOpen.then(e => {
-			setHasDBError(e);
-		});
+		db.errorOnOpen
+			.then(e => {
+				setHasDBError(e);
+			})
+			.finally(() => {});
 	}, []);
 
 	let toShow = <>{props.children}</>;

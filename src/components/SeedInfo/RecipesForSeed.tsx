@@ -81,10 +81,13 @@ const SeedHistoryModal = props => {
 													e.stopPropagation();
 													e.preventDefault();
 													setClicked(null);
-													db.seedInfo.get({ seed: seed.seed }).then(q => {
-														if (!q) return;
-														db.seedInfo.delete(q.id!);
-													});
+													db.seedInfo
+														.get({ seed: seed.seed })
+														.then(q => {
+															if (!q) return;
+															db.seedInfo.delete(q.id!).finally(() => {});
+														})
+														.catch(e => console.error(e));
 												}}
 												size="sm"
 											>

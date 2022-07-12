@@ -1,4 +1,3 @@
-import { mean } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { Col } from 'react-bootstrap';
 
@@ -8,32 +7,86 @@ import { copyImage } from '../../LiveSeedStats/OCRHandler/imageActions';
 interface IMapProps {
 	infoProvider: GameInfoProvider;
 	seed: string;
+	worldOffset?: number;
+	xOffset?: number;
+	yOffset?: number;
+	iter?: number;
 }
 
-// const xr = new Array(70).fill('').map((_, i) => i);
-// const yr = new Array(40).fill('').map((_, i) => i);
+const mapParts = {
+	FullMap: {
+		xr: new Array(70).fill('').map((_, i) => i),
+		yr: new Array(48).fill('').map((_, i) => i),
+	},
+	MainPath: {
+		xr: [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
+		yr: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+	},
+	excavationSite: {
+		xr: [32, 33, 34, 35, 36, 37, 38],
+		yr: [17, 18],
+	},
+	other: {
+		xr: [26],
+		yr: [14],
+	},
+	other2: {
+		xr: [35],
+		yr: [15],
+	},
+	vaultFrozen: {
+		xr: [12, 13, 14, 15, 16, 17, 18],
+		yr: [15, 16, 17, 18, 19]
+	},
+	coalmine_alt: {
+		xr: [32, 33],
+		yr: [15]
+	},
+	coalmines: {
+		xr: [32, 33, 34, 35, 36, 37, 38],
+		yr: [14, 15]
+	},
+	coalmine: {
+		xr: [34, 35, 36, 37, 38],
+		yr: [14, 15]
+	},
+	liquidcave: {
+		xr: [26, 27, 28, 29, 30],
+		yr: [14, 15]
+	},
+	coalmine_min: {
+		xr: [36],
+		yr: [14]
+	}
+};
 
-// const xr = [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39];
-// const yr = [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
-const xr = [30];
-const yr = [17];
+const { xr, yr } = mapParts.excavationSite;
+// const xr = new Array(70).fill(1).map((_, i) => i);
+// const yr = new Array(48).fill(1).map((_, i) => i);
 
+// const xr = [29, 30,31, 32,33,34,35,36,37,38, 39];
+// const yr = [31, 32, 33];
 interface ITileProps {
 	cvs: HTMLCanvasElement;
 	x: number;
 	y: number;
+	worldseedOffset?: number;
 }
-const Tile = (props: ITileProps) => {
-	const { cvs, x, y } = props;
+export const Tile = (props: ITileProps) => {
+	const { cvs, x, y, worldseedOffset = 0 } = props;
 	// return cvs
 	return (
 		<img
 			style={{
-				width: `300%`,
+				width: "512px",
+				height: "512px",
+				// width: "10rem",
+				// height: "10rem",
+				// width: `300%`,
 				imageRendering: 'pixelated',
 			}}
-			// alt={}
-			title={`${x},${y}`}
+			alt=''
+			title={`${x},${y} - ${worldseedOffset}`}
 			src={cvs?.toDataURL()}
 		/>
 	);
@@ -41,32 +94,30 @@ const Tile = (props: ITileProps) => {
 
 // Name collision with js Map
 const MapComponent = (props: IMapProps) => {
-	const { infoProvider, seed } = props;
+	const { infoProvider, seed, worldOffset = 0, iter = 0 } = props;
 
 	const [images, setImages] = useState<Map<string, HTMLCanvasElement>>();
-	const [imageWidth, setImageWidth] = useState(64);
-	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
 		(async () => {
 			const res = new Map<string, HTMLCanvasElement>();
-			const widths: number[] = [];
 			for (const x of xr) {
 				for (const y of yr) {
-					const mapData = await infoProvider.providers.map.provide(x, y, seed);
+					const mapData = await infoProvider.providers.map.provide(x, y, seed, worldOffset, iter);
 					if (!mapData) {
 						continue;
 					}
-					widths.push(mapData?.width);
-					const cvs = copyImage(mapData);
+					// console.log(mapData);
+					const cvs = copyImage(mapData.map);
 
 					res.set(`${x}-${y}`, cvs);
 				}
 			}
-			setImageWidth(mean(widths))
 			setImages(res);
-		})();
-	}, [infoProvider, seed, canvasRef]);
+		})().catch(e => {
+			console.error(e);
+		});
+	}, [infoProvider, seed, worldOffset, iter]);
 
 	if (!images) {
 		return <div>loading</div>;

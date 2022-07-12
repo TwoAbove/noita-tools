@@ -11,12 +11,12 @@ const SyncApp = () => {
 	const [sent, setSent] = useState(false);
 	const [handler] = useState(() => new SyncHandler());
 
-	const handleSync = () => {
-		handler.getSettingsFrom(val);
+	const handleSync = async () => {
+		await handler.getSettingsFrom(val);
 	};
 
-	const handleSend = () => {
-		handler.sendToSync().then(id => {
+	const handleSend = async () => {
+		await handler.sendToSync().then(id => {
 			setId(id);
 			setSent(true);
 		});
@@ -75,8 +75,8 @@ const SyncApp = () => {
 };
 
 const ResetApp = () => {
-	const handleClick = () => {
-		resetDatabase();
+	const handleClick = async () => {
+		await resetDatabase();
 	};
 
 	return (
@@ -102,8 +102,8 @@ const ResetApp = () => {
 };
 
 const ResetSeeds = () => {
-	const handleClick = () => {
-		clearSeeds();
+	const handleClick = async () => {
+		await clearSeeds();
 	};
 
 	return (

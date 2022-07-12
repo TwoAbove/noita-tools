@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2018",
     "lib": [
-      "webworker", "dom", "dom.iterable", "esnext"
+     "es2018", "webworker", "dom", "dom.iterable", "esnext"
     ],
     "allowJs": true,
     "skipLibCheck": true,

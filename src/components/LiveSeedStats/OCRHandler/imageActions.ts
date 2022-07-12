@@ -2,14 +2,14 @@ const canvasStub = {
 	getContext: () => ({
 		drawImage: () => {},
 		putImageData: () => {},
-		getImageData: () => new ImageData(0, 0),
+		getImageData: () => new ImageData(0, 0)
 	}),
 	width: 0,
 	height: 0
-}
+};
 
 export const createImage = (w, h) => {
-	if ("undefined" === typeof document) {
+	if ('undefined' === typeof document) {
 		return canvasStub as any;
 	}
 	const can = document.createElement('canvas');
@@ -23,7 +23,7 @@ export const createImage = (w, h) => {
 };
 
 export const imageFromBase64 = async (blob, w, h): Promise<ImageData> => {
-	if ("undefined" === typeof document) {
+	if ('undefined' === typeof document) {
 		return new ImageData(w, h);
 	}
 	const can = createImage(w, h);
@@ -91,12 +91,22 @@ export const toDark = (pixels, dark = [0, 0, 0]) => {
 	return pixels;
 };
 
-export const scale = (img, scale): HTMLCanvasElement => {
+export const scale = (img, scale: number): HTMLCanvasElement => {
 	const canvas = createImage(img.width * scale, img.height * scale);
 	const ctx = canvas.getContext('2d')!;
 
 	ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 	return canvas;
+};
+
+export const scaleImageData = async (
+	img: ImageData,
+	s: number
+): Promise<ImageData> => {
+	const btmp = await createImageBitmap(img);
+	return scale(btmp, s)
+		.getContext('2d')!
+		.getImageData(0, 0, img.width * s, img.height * s);
 };
 
 export const stretch = (img, width, height): HTMLCanvasElement => {
@@ -133,12 +143,8 @@ export const cropImageData = (
 	cropWidth: number,
 	cropHeight: number
 ): ImageData => {
-
 	const c = copyImage(img);
-	const res = crop(c,
-		cropX, cropY, cropWidth, cropHeight
-
-	);
+	const res = crop(c, cropX, cropY, cropWidth, cropHeight);
 	return res.getContext('2d')!.getImageData(0, 0, res.width, res.height);
 	// console.log({ img, cropX, cropY, cropWidth, cropHeight });
 	// const res = new ImageData(cropWidth, cropHeight);
@@ -261,7 +267,51 @@ export const rgb2rgba = (src: any, dest: any) => {
 	}
 };
 
+const pad = (s: string) => {
+	if (s.length === 1) {
+		s = '0' + s;
+	}
+	return s;
+};
+
+export const hexRGBAtoIntRGB = (hex: string) => {
+	const rgb = hex.substring(0, 6);
+	return parseInt(rgb, 16);
+};
+
 export const rgbaToHex = (r, g, b, a) => {
-	const hex = r.toString(16) + g.toString(16) + b.toString(16) + a.toString(16);
+	let rs = pad(r.toString(16));
+	let gs = pad(g.toString(16));
+	let bs = pad(b.toString(16));
+	let as = pad(a.toString(16));
+	const hex = rs + gs + bs + as;
 	return hex;
+};
+
+const getPos = (w, x, y) => w * y * 4 + 4 * x;
+const isBlack = (data, p) => {
+	return data[p] === 0 && data[p + 1] === 0 && data[p + 2] === 0;
+}
+export const drawImageData = (
+	src: ImageData,
+	dest: ImageData,
+	startX: number,
+	startY: number
+) => {
+	for (let y = 0; y < src.height; y++) {
+		for (let x = 0; x < src.width; x++) {
+			const srcP = getPos(src.width, x, y);
+			if (isBlack(src.data, srcP)) {
+				continue;
+			}
+			if (startX + x >= dest.width || startY + y >=dest.height) {
+				continue;
+			}
+			const destP = getPos(dest.width, startX + x, startY + y);
+			dest.data[destP + 0] = src.data[srcP + 0];
+			dest.data[destP + 1] = src.data[srcP + 1];
+			dest.data[destP + 2] = src.data[srcP + 2];
+			dest.data[destP + 3] = src.data[srcP + 3];
+		}
+	}
 };
