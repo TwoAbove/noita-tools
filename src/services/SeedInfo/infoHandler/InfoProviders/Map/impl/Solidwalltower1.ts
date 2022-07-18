@@ -293,7 +293,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "oil",
           "alcohol",
           "gunpowder_explosive",
@@ -311,7 +311,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "magic_liquid_teleportation",
           "magic_liquid_polymorph",
           "magic_liquid_random_polymorph",
@@ -326,7 +326,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: ["water", "oil", "alcohol", "radioactive_liquid"],
+        f0bbeeff: ["water", "oil", "alcohol", "radioactive_liquid"],
       },
     },
   ];
@@ -338,7 +338,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "water",
           "oil",
           "water",
@@ -357,7 +357,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "magic_liquid_teleportation",
           "magic_liquid_polymorph",
           "magic_liquid_random_polymorph",
@@ -379,7 +379,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "blood_fungi",
           "blood_cold",
           "lava",
@@ -400,7 +400,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "water",
           "oil",
           "water",
@@ -419,7 +419,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "water",
           "oil",
           "water",
@@ -439,7 +439,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "water",
           "oil",
           "water",
@@ -459,7 +459,7 @@ class Solidwalltower1 extends Base {
       background_file: "",
       is_unique: 0,
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "water",
           "oil",
           "water",
@@ -479,7 +479,7 @@ class Solidwalltower1 extends Base {
       visual_file: "data/biome_impl/coalmine/oiltank_alt_visual.png",
       background_file: "",
       color_material: {
-        fff0bbee: [
+        f0bbeeff: [
           "water",
           "oil",
           "water",

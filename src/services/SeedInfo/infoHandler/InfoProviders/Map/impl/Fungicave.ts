@@ -312,175 +312,92 @@ class Fungicave extends Base {
   ];
   g_potions = [{ prob: 0.5, min_count: 1, max_count: 1, entity: "" }];
 
-  async spawn_small_enemies(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
+  get_portal_position() {
+    const biome_x_min = -2450;
+    const biome_x_max = 1900;
+    const biome_y_min = 6700;
+    const biome_y_max = 8000;
+    const rim = 200;
+    const portal_x = this.randoms.ProceduralRandomi(
+      209,
+      13,
+      biome_x_min + rim,
+      biome_x_max - rim
     );
+    const portal_y = this.randoms.ProceduralRandomi(
+      211,
+      1.9,
+      biome_y_min + rim,
+      biome_y_max - rim
+    );
+    // --print("portal position: " .. portal_x .. ", " .. portal_y)
+    return [portal_x, portal_y];
+  }
+
+  async init(x: number, y: number, w: number, h: number) {
+    const is_inside_tile = (pos_x, pos_y) =>
+      pos_x >= x && pos_x <= x + w && pos_y >= y && pos_y <= y + h;
+
+    const [portal_x, portal_y] = this.get_portal_position();
+    await this.HandleInterest('jungle_portal', portal_x, portal_y);
+
+    if (is_inside_tile(portal_x, portal_y)) {
+      await this.EntityLoad(
+        'data/entities/misc/summon_portal_target.xml',
+        portal_x,
+        portal_y
+      );
+      await this.LoadPixelScene(
+        'data/biome_impl/hole.png',
+        '',
+        portal_x - 22,
+        portal_y - 22,
+        '',
+        true
+      );
+    }
+
+  };
+
+
+  async spawn_small_enemies(x: number, y: number) {
+    await this.spawn(this.g_small_enemies, x, y);
   }
   async spawn_big_enemies(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    await this.spawn(this.g_big_enemies, x, y);
   }
   async spawn_items(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_props(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_props2(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_props3(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_lamp(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async load_pixel_scene(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async load_pixel_scene2(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_unique_enemy(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_unique_enemy2(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_unique_enemy3(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_ghostlamp(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_candles(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_potion_altar(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_potions(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_apparition(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_heart(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_wands(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_portal(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_end_portal(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_orb(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_perk(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_all_perks(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_wand_trap(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_wand_trap_ignite(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_wand_trap_electricity_source(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_wand_trap_electricity(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_moon(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_collapse(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async init(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  async spawn_robots(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    const r = this.randoms.ProceduralRandomf(x - 11.631, y + 10.2257, 0, 1);
+    if (r > 0.06) {
+      await this.LoadPixelScene("data/biome_impl/wand_altar.png", "data/biome_impl/wand_altar_visual.png", x - 10, y - 17, "", true);
+    }
   }
   async spawn_nest(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    await this.spawn(this.g_nest, x, y);
+
+  }
+  async spawn_robots(x: number, y: number) {
+    await this.spawn(this.g_robots, x, y);
+  }
+  async spawn_props(x: number, y: number) {
+    await this.spawn(this.g_props, x, y);
+  }
+  async spawn_potion_altar(x: number, y: number) {
+    await this.LoadPixelScene("data/biome_impl/potion_altar.png", "data/biome_impl/potion_altar_visual.png", x - 10, y - 17, "", true)
   }
   async spawn_physics_fungus(x: number, y: number) {
-    console.error(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    await this.spawn(this.g_physics_fungi, x, y);
   }
+
+  async spawn_lamp(x, y) { }
+  async load_pixel_scene(x, y) { }
+  async load_pixel_scene2(x, y) { }
+  async spawn_props2(x, y) { }
+  async spawn_props3(x, y) { }
+  async spawn_unique_enemy(x, y) { }
+  async spawn_unique_enemy2(x, y) { }
+  async spawn_unique_enemy3(x, y) { }
+  async spawn_ghostlamp(x, y) { }
+  async spawn_candles(x, y) { }
 }
 export default Fungicave;

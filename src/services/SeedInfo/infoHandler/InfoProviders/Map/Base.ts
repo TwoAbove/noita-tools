@@ -2,6 +2,8 @@ import D from 'decimal.js';
 import { IRandom } from '../../../random';
 import { GameGetDateAndTimeLocal } from '../helpers';
 
+import materials from '../../../data/materials.json';
+
 type TLoadPixelScene = (
 	materials_filename: string,
 	colors_filename: string,
@@ -21,8 +23,11 @@ type THandleInterest = (
 	extra?: any
 ) => Promise<void>;
 
+type TBiomeMapGetVerticalPositionInsideBiome = (x: number, y: number) => number;
+type TRaytracePlatforms = (x1: number, y1: number, x2: number, y2: number) => [boolean, number, number];
+
 interface IProb {
-	prob: number;
+	prob?: number;
 	min_count: number;
 	max_count: number;
 
@@ -37,7 +42,7 @@ interface IProb {
 }
 
 interface IProbScene {
-	prob: number;
+	prob?: number;
 
 	spawn_check?: () => boolean;
 	ngpluslevel?: number;
@@ -273,6 +278,53 @@ export default class Base {
 		}
 	}
 
+	async spawn_with_limited_random(what: IProb[], x, y, rand_x, rand_y, entities_to_randomize: string[]) {
+		let x_offset = 5;
+		let y_offset = 5;
+
+		let v = this.random_from_table(what, x, y);
+		if (!v) {
+			return;
+		}
+		let entity_files: string[] = [];
+		let do_randomization = false;
+
+		if (entities_to_randomize) {
+			if (v.entity) {
+				entity_files.push(v.entity);
+			} else if (v.entities) {
+				for (const entity_data of v.entities) {
+					if (typeof entity_data === 'string') {
+						entity_files.push(entity_data);
+					} else {
+						if (entity_data.entity) {
+							entity_files.push(entity_data.entity);
+						}
+					}
+				}
+			}
+			for (const entity_file of entity_files) {
+				if (!entity_file) {
+					continue;
+				}
+				let entity_name_xml = entity_file.split('/');
+				let entity_name = entity_name_xml[entity_name_xml.length - 1].split('.')[0];
+				if (entities_to_randomize.includes(entity_name)) {
+					do_randomization = true;
+				}
+			}
+		}
+
+		let random_x = rand_x || 0;
+		let random_y = rand_y || 0;
+
+		if (do_randomization) {
+			random_x += 4;
+		}
+
+		await this.entity_load_camera_bound(v, x + x_offset, y + y_offset, random_x, random_y)
+	};
+
 	total_prob = (prob: IProbScene[], x: number): number => {
 		return prob.reduce((c, p) => {
 			if (p.prob) {
@@ -336,7 +388,8 @@ export default class Base {
 					} else {
 						res = material;
 					}
-					color_material_table[color] = res;
+					console.log(res);
+					color_material_table[color] = materials[res].color;
 				}
 			}
 			let z_index = 50;
@@ -589,7 +642,9 @@ export default class Base {
 	constructor(
 		public randoms: IRandom,
 		public LoadPixelScene: TLoadPixelScene,
-		public HandleInterest: THandleInterest
+		public HandleInterest: THandleInterest,
+		public BiomeMapGetVerticalPositionInsideBiome: TBiomeMapGetVerticalPositionInsideBiome,
+		public RaytracePlatforms: TRaytracePlatforms,
 	) { }
 
 	async spawn_from_list(list: any, x: number, y: number) {
@@ -682,9 +737,20 @@ export default class Base {
 			);
 		}
 	}
-
+	async spawn_collapse(x, y) {
+		await this.EntityLoad('data/entities/misc/loose_chunks.xml', x, y);
+	}
+	async spawn_moon(x, y) {
+		await this.EntityLoad('data/entities/buildings/moon_altar.xml', x, y);
+	}
+	async spawn_wand_trap(x, y) {
+		await this.EntityLoad('data/entities/props/physics_trap_circle_acid.xml', x, y);
+	}
 	async spawn_wand_trap_ignite(x, y) {
 		await this.EntityLoad('data/entities/props/physics_trap_ignite.xml', x, y);
+	}
+	async spawn_wand_trap_electricity(x, y) {
+		await this.EntityLoad('data/entities/props/physics_trap_electricity.xml', x, y);
 	}
 	async spawn_wand_trap_electricity_source(x, y) {
 		await this.EntityLoad(
@@ -735,17 +801,17 @@ export default class Base {
 		// print( tostring(x) .. ", " .. tostring(y) ) -- DEBUG:
 	}
 
-	async handle(f: string, x: number, y: number) {
+	async handle(f: string, x: number, y: number, w, h, is_open_path) {
 		if (!this[f]) {
 			this.err(`${f} not implemented for ${this.constructor.name}`);
 			return;
 		}
 		// console.group(`${f} ${x} ${y}`);
-		console.groupCollapsed(`${f} ${x} ${y}`);
+		console.group(`${f} ${x} ${y} ${w} ${h} ${is_open_path}`);
 		if (f === 'spawn_potion_altar') {
 		} else {
 		}
-		await this[f](x, y);
+		await this[f](x, y, w, h, is_open_path);
 		console.groupEnd();
 	}
 

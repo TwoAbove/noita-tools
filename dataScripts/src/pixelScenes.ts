@@ -25,7 +25,7 @@ const scenes = [
 ];
 
 (async () => {
-	const impls = {};
+	const impls: any = {};
 	for (const scene of scenes) {
 		const png = await Jimp.read(path.resolve(noitaData, scene));
 		impls[scene] = {

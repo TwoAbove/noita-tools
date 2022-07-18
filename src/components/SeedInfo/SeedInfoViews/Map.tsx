@@ -22,10 +22,6 @@ const mapParts = {
 		xr: [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
 		yr: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
 	},
-	excavationSite: {
-		xr: [32, 33, 34, 35, 36, 37, 38],
-		yr: [17, 18],
-	},
 	other: {
 		xr: [26],
 		yr: [14],
@@ -37,6 +33,14 @@ const mapParts = {
 	vaultFrozen: {
 		xr: [12, 13, 14, 15, 16, 17, 18],
 		yr: [15, 16, 17, 18, 19]
+	},
+	liquidcave: {
+		xr: [26, 27, 28, 29, 30],
+		yr: [14, 15]
+	},
+	coalmine_min: {
+		xr: [36],
+		yr: [14]
 	},
 	coalmine_alt: {
 		xr: [32, 33],
@@ -50,17 +54,25 @@ const mapParts = {
 		xr: [34, 35, 36, 37, 38],
 		yr: [14, 15]
 	},
-	liquidcave: {
-		xr: [26, 27, 28, 29, 30],
-		yr: [14, 15]
+	excavationSite: {
+		xr: [31, 32, 33, 34, 35, 36, 37, 38],
+		yr: [17, 18],
 	},
-	coalmine_min: {
-		xr: [36],
-		yr: [14]
+	snowCave: {
+		xr: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+		yr: [20, 21, 22]
+	},
+	Snowcastle: {
+		xr: [31, 32, 33, 34, 35, 36, 37],
+		yr: [24, 25]
+	},
+	Jungle: {
+		xr: [30, 31, 32, 33, 34, 35, 36, 37, 38],
+		yr: [27,28,29]
 	}
 };
 
-const { xr, yr } = mapParts.excavationSite;
+const { xr, yr } = mapParts.Jungle;
 // const xr = new Array(70).fill(1).map((_, i) => i);
 // const yr = new Array(48).fill(1).map((_, i) => i);
 

@@ -152,6 +152,25 @@ void fillC0ffee(
    }
 }
 
+NollaPrng GetRNG(int map_w)
+{
+   NollaPrng rng = NollaPrng();
+   rng.SetRandomFromWorldSeed(world_seed);
+   rng.Next();
+   int length = (int)((unsigned long long)((long long)map_w * -0x2e8ba2e9) >> 0x20);
+   int iters = ((length >> 1) - (length >> 0x1f)) * 0xb + ((uint)world_seed / 0xc) * -0xc +
+               world_seed + map_w;
+   if (0 < iters)
+   {
+      do
+      {
+         rng.Next();
+         iters -= 1;
+      } while (iters != 0);
+   }
+   return rng;
+}
+
 class ToFrom
 {
 public:
@@ -160,15 +179,12 @@ public:
    NollaPrng rng = NollaPrng(0);
 
    ToFrom(unsigned int _from,
-          vector<unsigned int> _to, int limit)
+          vector<unsigned int> _to, int width)
    {
       from = _from;
       to = _to;
-      rng.SetRandomFromWorldSeed(world_seed);
-      for (int i = 0; i < 11; i++)
-      {
-         rng.Next();
-      }
+      rng = GetRNG(width);
+      rng.Next();
    }
    ~ToFrom()
    {
@@ -178,8 +194,7 @@ void fillRandomMaterials(
     unsigned char *map,
     uint width,
     uint height,
-    unsigned int *randomMaterials,
-    int limit)
+    unsigned int *randomMaterials)
 {
    int numberOfRandoms = randomMaterials[0];
    if (numberOfRandoms == 0)
@@ -198,7 +213,7 @@ void fillRandomMaterials(
       {
          toMaterials.push_back(randomMaterials[p]);
       }
-      r.push_back(make_shared<ToFrom>(ToFrom(fromInt, toMaterials, limit)));
+      r.push_back(make_shared<ToFrom>(ToFrom(fromInt, toMaterials, width)));
       pos = p;
    }
    // NollaPrng rng = NollaPrng(0);
@@ -626,25 +641,6 @@ bool isValid(
    return hasPath;
 }
 
-NollaPrng GetRNG(int map_w)
-{
-   NollaPrng rng = NollaPrng();
-   rng.SetRandomFromWorldSeed(world_seed);
-   rng.Next();
-   int length = (int)((unsigned long long)((long long)map_w * -0x2e8ba2e9) >> 0x20);
-   int iters = ((length >> 1) - (length >> 0x1f)) * 0xb + ((uint)world_seed / 0xc) * -0xc +
-               world_seed + map_w;
-   if (0 < iters)
-   {
-      do
-      {
-         rng.Next();
-         iters -= 1;
-      } while (iters != 0);
-   }
-   return rng;
-}
-
 // tiles_data and result are allocated and freed in js.
 STBHW_EXTERN void generate_map(
     unsigned char tiles_data[],
@@ -656,8 +652,7 @@ STBHW_EXTERN void generate_map(
     bool isCoalMine,
     unsigned int randomMaterials[], // Maybe it's worth to pass a struct from JS?
     int worldX,
-    int worldY,
-    int limit)
+    int worldY)
 {
    stbhw_tileset ts;
 
@@ -700,12 +695,31 @@ STBHW_EXTERN void generate_map(
          blockOutRooms(DEBUG ? result : map, map_w, map_h);
       }
       hasPath = isValid(DEBUG ? result : map, map_w, map_h, worldX, isCoalMine);
-      fillRandomMaterials(result, map_w, map_h, randomMaterials, limit);
+      fillRandomMaterials(result, map_w, map_h, randomMaterials);
       tries++;
    } while (hasPath == false);
    free(map);
    free(res);
    stbhw_free_tileset(&ts);
+}
+
+// map and result are allocated and freed in js.
+STBHW_EXTERN void generate_path_map(
+    unsigned char map[],
+    uint map_w,
+    uint map_h,
+    unsigned char result[],
+    int worldX,
+    int worldY)
+{
+   bool mainPath = isMainPath(map_w, worldX);
+   long malloc_amount = 3 * map_w * map_h;
+   for (int i = 0; i < malloc_amount; i++)
+   {
+      result[i] = map[i];
+   }
+   uint path_start_x = 0x8e;
+   floodFill(result, map_w, map_h, path_start_x, 1, COLOR_BLACK, COLOR_PURPLE);
 }
 
 int GetWidthFromPix(int a, int b)
@@ -715,5 +729,5 @@ int GetWidthFromPix(int a, int b)
 
 int GetGlobalPos(int a, int b, int c)
 {
-   return ((b * 512) / 10 - (a * 512) / 10);
+   return ((b * 512) / 10 - (a * 512) / 10) * 10 + c;
 }

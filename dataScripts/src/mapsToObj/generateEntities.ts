@@ -107,7 +107,7 @@ const getTable = (ex: TableConstructorExpression) => {
 	return res;
 };
 
-const generateEntities = async (maps) => {
+const generateEntities = async (maps: any) => {
 
 	function memo(cache: any) {
 		return async (key: string, fn: (...args: any[]) => Promise<any>) => {
@@ -268,7 +268,7 @@ const generateEntities = async (maps) => {
 			entities[val] = entity;
 		}
 	});
-  return entities;
+	return entities;
 };
 
 export default generateEntities;

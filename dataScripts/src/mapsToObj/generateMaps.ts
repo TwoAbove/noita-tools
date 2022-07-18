@@ -71,7 +71,7 @@ const parseLua = (script: string) => {
   return ast;
 };
 
-const getValue = (ex: Expression) => {
+const getValue = (ex: Expression): any => {
   switch (ex.type) {
     case 'NumericLiteral': {
       return ex.value;
@@ -98,8 +98,8 @@ const getValue = (ex: Expression) => {
       return "TODO: FunctionDeclaration";
     }
     case 'TableConstructorExpression': {
-      let r;
-      let ra;
+      let r: any;
+      let ra: any;
       const hasTableKey = ex.fields.findIndex(e => e.type === 'TableKey') !== -1;
       const hasTableValue = ex.fields.findIndex(e => e.type === 'TableValue') !== -1;
       const hasTableKeyString = ex.fields.findIndex(e => e.type === 'TableKeyString') !== -1;
@@ -254,7 +254,7 @@ const generateMaps = async () => {
     fs.readFileSync(biomeDataXMLPath)
   )).BiomesToLoad;
 
-  const maps = {};
+  const maps: any = {};
 
   for (const b of allBiomeData.Biome as any) {
     const { biome_filename, height_index, color } = b.$;
@@ -279,7 +279,7 @@ const generateMaps = async () => {
       lua_script: Topology.lua_script
     };
     if (RandomMaterials) {
-      const randomMaterials = {};
+      const randomMaterials: any = {};
       for (const randomColor of RandomMaterials.RandomColor) {
         const { input_color, output_colors } = randomColor.$;
         const outputColors = output_colors.split(',').map(argbTorgba);

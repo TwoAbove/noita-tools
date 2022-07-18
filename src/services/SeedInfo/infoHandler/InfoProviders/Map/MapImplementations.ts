@@ -1,8 +1,5 @@
 /* This file is auto-generated from dataScripts/mapsToObj. Do not modify it! */
 import Hills from "./impl/Hills";
-import Hillsflat from "./impl/Hillsflat";
-import Hills2 from "./impl/Hills2";
-import Empty from "./impl/Empty";
 import Bridge from "./impl/Bridge";
 import Snowcavetunnel from "./impl/Snowcavetunnel";
 import Vaultentrance from "./impl/Vaultentrance";
@@ -10,7 +7,6 @@ import Coalmine from "./impl/Coalmine";
 import Coalminealt from "./impl/Coalminealt";
 import Excavationsite from "./impl/Excavationsite";
 import Excavationsitecubechamber from "./impl/Excavationsitecubechamber";
-import Snowcave from "./impl/Snowcave";
 import Snowcavesecretchamber from "./impl/Snowcavesecretchamber";
 import Fungicave from "./impl/Fungicave";
 import Fungiforest from "./impl/Fungiforest";
@@ -26,26 +22,12 @@ import Wandcave from "./impl/Wandcave";
 import Snowcastle from "./impl/Snowcastle";
 import Snowcastlecavern from "./impl/Snowcastlecavern";
 import Snowcastlehourglasschamber from "./impl/Snowcastlehourglasschamber";
-import Lava90percent from "./impl/Lava90percent";
 import Rainforest from "./impl/Rainforest";
-import Rainforestopen from "./impl/Rainforestopen";
-import Solidwall from "./impl/Solidwall";
 import Solidwalldamage from "./impl/Solidwalldamage";
-import Solidwalltemple from "./impl/Solidwalltemple";
-import Solidwalltower from "./impl/Solidwalltower";
 import Solidwalltower1 from "./impl/Solidwalltower1";
-import Solidwalltower2 from "./impl/Solidwalltower2";
-import Solidwalltower3 from "./impl/Solidwalltower3";
-import Solidwalltower4 from "./impl/Solidwalltower4";
-import Solidwalltower5 from "./impl/Solidwalltower5";
-import Solidwalltower6 from "./impl/Solidwalltower6";
-import Solidwalltower7 from "./impl/Solidwalltower7";
-import Solidwalltower8 from "./impl/Solidwalltower8";
-import Solidwalltower9 from "./impl/Solidwalltower9";
 import Solidwalltower10 from "./impl/Solidwalltower10";
 import Solidwallhiddencavern from "./impl/Solidwallhiddencavern";
 import Theend from "./impl/Theend";
-import Thesky from "./impl/Thesky";
 import Magicgate from "./impl/Magicgate";
 import Secretaltar from "./impl/Secretaltar";
 import Sandcave from "./impl/Sandcave";
@@ -72,7 +54,6 @@ import Lavalakeracing from "./impl/Lavalakeracing";
 import Shoproom from "./impl/Shoproom";
 import Templealtarsecret from "./impl/Templealtarsecret";
 import Sandroom from "./impl/Sandroom";
-import Lava from "./impl/Lava";
 import Endwall from "./impl/Endwall";
 import Templewall from "./impl/Templewall";
 import Templealtar from "./impl/Templealtar";
@@ -100,13 +81,10 @@ import Pyramidtop from "./impl/Pyramidtop";
 import Pyramidentrance from "./impl/Pyramidentrance";
 import Pyramidhallway from "./impl/Pyramidhallway";
 import Pyramid from "./impl/Pyramid";
-import Winter from "./impl/Winter";
 import Wintercaves from "./impl/Wintercaves";
 import Lake from "./impl/Lake";
 import Lakedeep from "./impl/Lakedeep";
-import Lakeblood from "./impl/Lakeblood";
 import Lakestatue from "./impl/Lakestatue";
-import Forest from "./impl/Forest";
 import Watercave from "./impl/Watercave";
 import Townunder from "./impl/Townunder";
 import Liquidcave from "./impl/Liquidcave";
@@ -167,9 +145,9 @@ import Base from "./Base";
 const MapImplementations: { [color: string]: typeof Base } = {
   "36d517ff": Hills,
   "3d3e40ff": Hills,
-  "2dc010ff": Hillsflat,
-  "33e311ff": Hills2,
-  "48e311ff": Empty,
+  "2dc010ff": Hills,
+  "33e311ff": Hills,
+  "48e311ff": Hills,
   ad8111ff: Bridge,
   "7be311ff": Snowcavetunnel,
   "008040ff": Vaultentrance,
@@ -177,7 +155,7 @@ const MapImplementations: { [color: string]: typeof Base } = {
   d56517ff: Coalminealt,
   "124445ff": Excavationsite,
   "24888aff": Excavationsitecubechamber,
-  "1775d5ff": Snowcave,
+  "1775d5ff": Snowcavetunnel,
   "18a0d6ff": Snowcavesecretchamber,
   e861f0ff: Fungicave,
   a861ffff: Fungiforest,
@@ -193,28 +171,26 @@ const MapImplementations: { [color: string]: typeof Base } = {
   "0046ffff": Snowcastle,
   "775ddbff": Snowcastlecavern,
   "18d6d6ff": Snowcastlehourglasschamber,
-  ffa717ff: Lava90percent,
-  // "0000ffff": Water,
-  // ffff00ff: Gold,
+  ffa717ff: Hills,
   "808000ff": Rainforest,
-  a08400ff: Rainforestopen,
-  "3d3d3dff": Solidwall,
+  a08400ff: Rainforest,
+  "3d3d3dff": Hills,
   "684c4cff": Solidwalldamage,
-  b8a928ff: Solidwalltemple,
-  "3f3d3eff": Solidwalltower,
+  b8a928ff: Hills,
+  "3f3d3eff": Solidwalldamage,
   "3d3e37ff": Solidwalltower1,
-  "3d3e38ff": Solidwalltower2,
-  "3d3e39ff": Solidwalltower3,
-  "3d3e3aff": Solidwalltower4,
-  "3d3e3bff": Solidwalltower5,
-  "3d3e3cff": Solidwalltower6,
-  "3d3e3dff": Solidwalltower7,
-  "3d3e3eff": Solidwalltower8,
-  "3d3e3fff": Solidwalltower9,
+  "3d3e38ff": Solidwalltower1,
+  "3d3e39ff": Solidwalltower1,
+  "3d3e3aff": Solidwalltower1,
+  "3d3e3bff": Solidwalltower1,
+  "3d3e3cff": Solidwalltower1,
+  "3d3e3dff": Solidwalltower1,
+  "3d3e3eff": Solidwalltower1,
+  "3d3e3fff": Solidwalltower1,
   "3d3e41ff": Solidwalltower10,
   "42244dff": Solidwallhiddencavern,
   "3c0f0aff": Theend,
-  d3e6f0ff: Thesky,
+  d3e6f0ff: Theend,
   "9c6c42ff": Magicgate,
   c02020ff: Secretaltar,
   e1cd32ff: Sandcave,
@@ -235,14 +211,13 @@ const MapImplementations: { [color: string]: typeof Base } = {
   c08080ff: Mountaintop,
   c08082ff: Mountainfloatingisland,
   ff8080ff: Mountaincenter,
-  // ff00ffff: Null,
   "3d5a3dff": Lavalake,
   "3d5a4fff": Lavalakepit,
   "4118d6ff": Lavalakeracing,
   "3d5ab2ff": Shoproom,
   "93cb5cff": Templealtarsecret,
   "3d5a5bff": Sandroom,
-  ff6a02ff: Lava,
+  ff6a02ff: Hills,
   "6dcba2ff": Endwall,
   "6dcb28ff": Templewall,
   "93cb4cff": Templealtar,
@@ -270,13 +245,13 @@ const MapImplementations: { [color: string]: typeof Base } = {
   "967f5fff": Pyramidentrance,
   "167f5fff": Pyramidhallway,
   "967f11ff": Pyramid,
-  d6d8e3ff: Winter,
+  d6d8e3ff: Hills,
   "77a5bdff": Wintercaves,
   "1133f1ff": Lake,
   "1158f1ff": Lakedeep,
-  "1133f3ff": Lakeblood,
+  "1133f3ff": Lake,
   "11a3fcff": Lakestatue,
-  "006b1eff": Forest,
+  "006b1eff": Hills,
   "3046c1ff": Watercave,
   "6ba04bff": Townunder,
   "89a04bff": Liquidcave,

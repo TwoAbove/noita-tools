@@ -129,16 +129,7 @@ const loadWasm = async () => {
 
 export const genRandom = async Module => {
 	Module.GenerateMap = Module._generate_map;
-	// Module.GenerateMap = Module.cwrap('generate_map', null, [
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// ]);
+	Module.GeneratePathMap = Module._generate_path_map;
 
 	Module.print = function (text) {
 		if (arguments.length > 1)
@@ -232,7 +223,6 @@ export const genRandom = async Module => {
 		randomMaterials: number[],
 		xOffset: number,
 		yOffset: number,
-		iter: number
 	): ImageData => {
 		const tilesDataPtr = Module._malloc(3 * tiles_w * tiles_h);
 		// 8-bit (char)
@@ -270,7 +260,6 @@ export const genRandom = async Module => {
 			randomMaterialsPtr,
 			xOffset,
 			yOffset,
-			iter
 		);
 
 		const resImgData = new ImageData(map_w, map_h);
@@ -278,6 +267,47 @@ export const genRandom = async Module => {
 
 		Module._free(randomMaterialsPtr);
 		Module._free(tilesDataPtr);
+		Module._free(resultPtr);
+
+		return resImgData;
+	};
+
+	const GetPathMap = (
+		map: ImageData,
+		map_w: number,
+		map_h: number,
+		xOffset: number,
+		yOffset: number
+	): ImageData => {
+		const mapDataPtr = Module._malloc(3 * map_w * map_h);
+		// 8-bit (char)
+		const mapData = new Uint8Array(
+			Module.HEAPU8.buffer,
+			mapDataPtr,
+			3 * map_w * map_h
+		);
+		rgba2rgb(map.data, mapData);
+
+		const resultPtr = Module._malloc(3 * map_w * map_h);
+		const result = new Uint8Array(
+			Module.HEAPU8.buffer,
+			resultPtr,
+			3 * map_w * map_h
+		);
+
+		Module.GeneratePathMap(
+			mapDataPtr,
+			map_w,
+			map_h,
+			resultPtr,
+			xOffset,
+			yOffset,
+		);
+
+		const resImgData = new ImageData(map_w, map_h);
+		rgb2rgba(result, resImgData.data);
+
+		Module._free(mapDataPtr);
 		Module._free(resultPtr);
 
 		return resImgData;
@@ -306,9 +336,11 @@ export const genRandom = async Module => {
 		GetRandomAction: Module.GetRandomAction,
 		GetRandomActionWithType: Module.GetRandomActionWithType,
 		GetWidthFromPix: Module.GetWidthFromPix,
+		GetGlobalPos: Module.GetGlobalPos,
 
 		SetUnlockedSpells,
 		GenerateMap,
+		GetPathMap,
 		random_next,
 		random_nexti,
 		randomFromArray,

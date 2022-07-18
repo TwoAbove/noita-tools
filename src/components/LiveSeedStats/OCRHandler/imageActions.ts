@@ -1,7 +1,9 @@
+import { hexTorgba, rgbaToInt } from "../../../services/SeedInfo/infoHandler/InfoProviders/Map/helpers";
+
 const canvasStub = {
 	getContext: () => ({
-		drawImage: () => {},
-		putImageData: () => {},
+		drawImage: () => { },
+		putImageData: () => { },
 		getImageData: () => new ImageData(0, 0)
 	}),
 	width: 0,
@@ -38,6 +40,15 @@ export const imageFromBase64 = async (blob, w, h): Promise<ImageData> => {
 			res(imageData);
 		};
 	});
+};
+
+export const imageToBase64 = async (img: ImageData): Promise<string> => {
+	const can = createImage(img.width, img.height);
+	const ctx = can.getContext('2d')!;
+	// Draw the image
+	const i = await createImageBitmap(img);
+	ctx.drawImage(i, 0, 0);
+	return can.toDataURL('image/jpeg');
 };
 
 export const copyImage = img => {
@@ -291,23 +302,41 @@ export const rgbaToHex = (r, g, b, a) => {
 const getPos = (w, x, y) => w * y * 4 + 4 * x;
 const isBlack = (data, p) => {
 	return data[p] === 0 && data[p + 1] === 0 && data[p + 2] === 0;
-}
+};
 export const drawImageData = (
 	src: ImageData,
 	dest: ImageData,
 	startX: number,
-	startY: number
+	startY: number,
+	color_to_material_table?: { [color: string]: string }
 ) => {
+	let f = {};
+	if (color_to_material_table) {
+		for (const color in color_to_material_table) {
+			f[rgbaToInt(...hexTorgba(color))] = hexTorgba(color_to_material_table[color]);
+		}
+	}
 	for (let y = 0; y < src.height; y++) {
 		for (let x = 0; x < src.width; x++) {
 			const srcP = getPos(src.width, x, y);
 			if (isBlack(src.data, srcP)) {
 				continue;
 			}
-			if (startX + x >= dest.width || startY + y >=dest.height) {
+			if (startX + x >= dest.width || startY + y >= dest.height) {
 				continue;
 			}
 			const destP = getPos(dest.width, startX + x, startY + y);
+			if (color_to_material_table) {
+				const c = rgbaToInt(src.data[srcP + 0], src.data[srcP + 1], src.data[srcP + 2], src.data[srcP + 3]);
+				if (f[c]) {
+					console.log(c, f[c]);
+					dest.data[destP + 0] = f[c][0];
+					dest.data[destP + 1] = f[c][1];
+					dest.data[destP + 2] = f[c][2];
+					dest.data[destP + 3] = f[c][3];
+					continue;
+				}
+			}
 			dest.data[destP + 0] = src.data[srcP + 0];
 			dest.data[destP + 1] = src.data[srcP + 1];
 			dest.data[destP + 2] = src.data[srcP + 2];

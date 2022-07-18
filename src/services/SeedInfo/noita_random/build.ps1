@@ -20,6 +20,6 @@ emcc --bind -Oz `
   -s NO_EXIT_RUNTIME=1 `
   -s ENVIRONMENT="web,worker" `
   -s EXPORT_NAME="create_noita_random" `
-  -s "EXPORTED_FUNCTIONS=['_generate_map']" `
+  -s "EXPORTED_FUNCTIONS=['_generate_map','_generate_path_map']" `
   -s "EXPORTED_RUNTIME_METHODS='cwrap'" `
   $PSScriptRoot\wasm_in.cpp

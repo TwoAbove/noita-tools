@@ -1,6 +1,8 @@
 import { hexRGBAtoIntRGB } from '../../../../../components/LiveSeedStats/OCRHandler/imageActions';
 import {
 	iteratePixels,
+	hexTorgba,
+	rgbaToInt,
 	getColor,
 	imageFromHexArray,
 	getGlobalPos,
@@ -38,7 +40,22 @@ const withWhite = {
 	h: 2
 };
 
-describe('Map.index', () => {
+describe('helpers', () => {
+	describe('hexTorgba', () => {
+		it("Should correctly convert hex", () => {
+			const c = '7f007fff';
+			const res = hexTorgba(c);
+			expect(res).toEqual([127, 0, 127, 255]);
+			expect(rgbaToInt(res[0], res[1], res[2], res[3])).toEqual(2130739199);
+		});
+		it("Should correctly convert hex", () => {
+			const c = 'ff020480';
+			const res = hexTorgba(c);
+			expect(res).toEqual([255, 2, 4, 128]);
+			expect(rgbaToInt(res[0], res[1], res[2], res[3])).toEqual(4278322304);
+		})
+	})
+
 	describe('iteratePixels', () => {
 		it('Should iterate with step', async () => {
 			const image = imageFromHexArray(
@@ -74,29 +91,56 @@ describe('Map.index', () => {
 	});
 
 	describe('getGlobalPos getLocalPos', () => {
-		it('Should correctly convert from global to local and back', () => {
-			const x = 35;
-			const y = 14;
-			const res = getGlobalPos(x, y, 1, 1);
-			expect(res).toEqual({ gx: -12, gy: -12 });
-			const res2 = getLocalPos(x, y, res.gx, res.gy);
-			expect(res2).toEqual({ px: 1, py: 1 });
-		});
-		it('Should correctly convert from global to local and back with negatives', () => {
-			const x = 32;
-			const y = 16;
-			const res = getGlobalPos(x, y, 1, 1);
-			expect(res).toEqual({ gx: -1548, gy: 1012 });
-			const res2 = getLocalPos(x, y, res.gx, res.gy);
-			expect(res2).toEqual({ px: 1, py: 1 });
-		});
-		it('Should correctly convert from global to local and back with negatives', () => {
-			const x = 36;
-			const y = 12;
-			const res = getGlobalPos(x, y, 1, 1);
-			expect(res).toEqual({ gx: 500, gy: -1036 });
-			const res2 = getLocalPos(x, y, res.gx, res.gy);
-			expect(res2).toEqual({ px: 1, py: 1 });
-		});
+		const tests = [
+			{
+				x: 34,
+				y: 14,
+
+				px: 1170,
+				py: 90,
+
+				gx: 645,
+				gy: 77,
+			},
+			{
+				x: 31,
+				y: 17,
+
+				px: 2510,
+				py: 820,
+
+				gx: 455,
+				gy: 2347,
+			},
+			{
+				x: 31,
+				y: 17,
+
+				px: 2080,
+				py: 80,
+
+				gx: 25,
+				gy: 1607,
+			},
+			{
+				x: 31,
+				y: 17,
+
+				px: 1470,
+				py: 150,
+
+				gx: -585,
+				gy: 1677,
+			},
+		]
+
+		for (const t of tests) {
+			it('Should correctly convert from global to local and back', () => {
+				const res = getGlobalPos(t.x, t.y, t.px, t.py);
+				expect(res).toEqual({ gx: t.gx, gy: t.gy });
+				const res2 = getLocalPos(t.x, t.y, res.gx, res.gy);
+				expect(res2).toEqual({ px: t.px, py: t.py });
+			});
+		}
 	});
 });

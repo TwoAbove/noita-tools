@@ -71,6 +71,7 @@ EMSCRIPTEN_BINDINGS(my_module)
     emscripten::function<string>("GetRandomAction", &_GetRandomAction);
     emscripten::function("RoundHalfOfEven", &RoundHalfOfEven);
     emscripten::function("GetWidthFromPix", &GetWidthFromPix);
+    emscripten::function("GetGlobalPos", &GetGlobalPos);
     emscripten::function("SetUnlockedSpells", &SetUnlockedSpells, allow_raw_pointers());
     // emscripten::function("GenerateMap", &generate_map, allow_raw_pointers());
 }
