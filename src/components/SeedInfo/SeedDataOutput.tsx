@@ -32,21 +32,25 @@ export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], 
 		gameInfoProvider.randoms.SetUnlockedSpells(unlockedSpells);
 		gameInfoProvider.provideAll().then(data => {
 			setData(data);
+		}).catch(() => {
+			// handle this?
 		});
-		gameInfoProvider.addEventListener('update', event => {
+		gameInfoProvider.addEventListener('update', async event => {
 			// Save config for resetting
 			const config = gameInfoProvider.config;
-			db.setSeedInfo("" + config.seed, config);
-			gameInfoProvider.provideAll().then(data => {
+			await db.setSeedInfo("" + config.seed, config);
+			await gameInfoProvider.provideAll().then(data => {
 				setData(data);
 			});
 		});
 		gameInfoProvider.addEventListener('reset', event => {
 			gameInfoProvider.provideAll().then(data => {
 				setData(data);
-			});
+			}).catch(() => {
+				// handle this?
+			});;
 		});
-	});
+	}).finally(() => {});
 	return gameInfoProvider;
 }
 
@@ -61,6 +65,7 @@ export const useGameInfoProvider = (
 	const [gameInfoProvider, setGameInfoProvider] = useState<GameInfoProvider | undefined>();
 
 	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		(async () => {
 			setData(undefined);
 			setGameInfoProvider(undefined);
@@ -69,6 +74,8 @@ export const useGameInfoProvider = (
 			waitToLoad(newGameInfoProvider).then(() => {
 				newGameInfoProvider.resetConfig({ ...config?.config, seed: parseInt(seed, 10) });
 				setGameInfoProvider(newGameInfoProvider);
+			}).catch(() => {
+				// handle this?
 			});
 		})()
 	}, [seed, unlockedSpells])

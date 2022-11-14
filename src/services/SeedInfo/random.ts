@@ -18,10 +18,9 @@ type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const logify = func => (...args) => {
-	console.groupCollapsed(func);
-	console.log(...args);
+	// console.groupCollapsed(func);
 	const res = func(...args);
-	console.log(res);
+	console.log(...args, res);
 	console.trace();
 	console.groupEnd();
 	return res;
@@ -31,6 +30,8 @@ interface IRandomModule {
 	print: any;
 	cwrap: any;
 	_generate_map: any;
+
+	doLeakCheck: () => void;
 
 	ProceduralRandomf(
 		arg0: number,
@@ -93,17 +94,20 @@ interface IRandomModule {
 
 	GenerateMap(
 		mapData: any,
-		result: any,
 		w: number,
 		h: number,
+		result: any,
 		xs: number,
-		ys: number
+		ys: number,
+		isCoalMine: boolean,
+		randomMaterials: number[],
+		xOffset: number,
+		yOffset: number,
+		limit: number
 	): void;
 
-	SetUnlockedSpells(
-		i: number,
-		val: number,
-	): void;
+	SetUnlockedSpells(i: number, val: number): void;
+	GetWidthFromPix(x1: number, x2: number): number;
 }
 
 interface IRND {
@@ -120,21 +124,12 @@ const loadWasm = async () => {
 			return path;
 		}
 	});
-	return Module
-}
+	return Module;
+};
 
-export const genRandom = async (Module) => {
+export const genRandom = async Module => {
 	Module.GenerateMap = Module._generate_map;
-	// Module.GenerateMap = Module.cwrap('generate_map', null, [
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// 	'number',
-	// ]);
+	Module.GeneratePathMap = Module._generate_path_map;
 
 	Module.print = function (text) {
 		if (arguments.length > 1)
@@ -145,7 +140,7 @@ export const genRandom = async (Module) => {
 	Module.printErr = Module.print;
 
 	const randomFromArray = <T>(arr: T[]) => {
-		return arr[Module.Random(1, arr.length) - 1];
+		return arr[Module.Random(0, arr.length - 1)];
 	};
 
 	const random_create = (x: number, y: number) => ({
@@ -200,7 +195,10 @@ export const genRandom = async (Module) => {
 		let result = table[0];
 		for (let i = 0; i < table.length; i++) {
 			const it = table[i];
-			if (val.greaterThanOrEqualTo(it.weight_min) && val.lessThanOrEqualTo(it.weight_max)) {
+			if (
+				val.greaterThanOrEqualTo(it.weight_min) &&
+				val.lessThanOrEqualTo(it.weight_max)
+			) {
 				result = it;
 				break;
 			}
@@ -220,29 +218,96 @@ export const genRandom = async (Module) => {
 		tiles_w: number,
 		tiles_h: number,
 		map_w: number,
-		map_h: number
+		map_h: number,
+		isCoalMine: boolean,
+		randomMaterials: number[],
+		xOffset: number,
+		yOffset: number,
 	): ImageData => {
 		const tilesDataPtr = Module._malloc(3 * tiles_w * tiles_h);
-		const resultPtr = Module._malloc(3 * map_w * map_h);
+		// 8-bit (char)
 		const tileData = new Uint8Array(
 			Module.HEAPU8.buffer,
 			tilesDataPtr,
 			3 * tiles_w * tiles_h
 		);
+		rgba2rgb(wang.data, tileData);
+
+		const randomMaterialsPtr = Module._malloc(randomMaterials.length * 4);
+		// 32-bit (uint)
+		const randomMatData = new Uint32Array(
+			Module.HEAPU32.buffer,
+			randomMaterialsPtr,
+			randomMaterials.length * 4
+		);
+		randomMatData.set(randomMaterials);
+
+		const resultPtr = Module._malloc(3 * map_w * map_h);
 		const result = new Uint8Array(
 			Module.HEAPU8.buffer,
 			resultPtr,
 			3 * map_w * map_h
 		);
 
-		rgba2rgb(wang.data, tileData);
-
-		Module.GenerateMap(tilesDataPtr, resultPtr, tiles_w, tiles_h, map_w, map_h);
+		Module.GenerateMap(
+			tilesDataPtr,
+			tiles_w,
+			tiles_h,
+			resultPtr,
+			map_w,
+			map_h,
+			isCoalMine,
+			randomMaterialsPtr,
+			xOffset,
+			yOffset,
+		);
 
 		const resImgData = new ImageData(map_w, map_h);
 		rgb2rgba(result, resImgData.data);
 
+		Module._free(randomMaterialsPtr);
 		Module._free(tilesDataPtr);
+		Module._free(resultPtr);
+
+		return resImgData;
+	};
+
+	const GetPathMap = (
+		map: ImageData,
+		map_w: number,
+		map_h: number,
+		xOffset: number,
+		yOffset: number
+	): ImageData => {
+		const mapDataPtr = Module._malloc(3 * map_w * map_h);
+		// 8-bit (char)
+		const mapData = new Uint8Array(
+			Module.HEAPU8.buffer,
+			mapDataPtr,
+			3 * map_w * map_h
+		);
+		rgba2rgb(map.data, mapData);
+
+		const resultPtr = Module._malloc(3 * map_w * map_h);
+		const result = new Uint8Array(
+			Module.HEAPU8.buffer,
+			resultPtr,
+			3 * map_w * map_h
+		);
+
+		Module.GeneratePathMap(
+			mapDataPtr,
+			map_w,
+			map_h,
+			resultPtr,
+			xOffset,
+			yOffset,
+		);
+
+		const resImgData = new ImageData(map_w, map_h);
+		rgb2rgba(result, resImgData.data);
+
+		Module._free(mapDataPtr);
 		Module._free(resultPtr);
 
 		return resImgData;
@@ -270,9 +335,12 @@ export const genRandom = async (Module) => {
 		RoundHalfOfEven: Module.RoundHalfOfEven,
 		GetRandomAction: Module.GetRandomAction,
 		GetRandomActionWithType: Module.GetRandomActionWithType,
+		GetWidthFromPix: Module.GetWidthFromPix,
+		GetGlobalPos: Module.GetGlobalPos,
 
 		SetUnlockedSpells,
 		GenerateMap,
+		GetPathMap,
 		random_next,
 		random_nexti,
 		randomFromArray,
@@ -280,7 +348,7 @@ export const genRandom = async (Module) => {
 		pick_random_from_table_backwards,
 		pick_random_from_table_weighted
 	};
-}
+};
 
 const load = async () => {
 	const Module = await loadWasm();

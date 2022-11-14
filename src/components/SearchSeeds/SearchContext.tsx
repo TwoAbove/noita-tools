@@ -198,6 +198,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 			}
 			setSeedSolver(newSeedSolver);
 		};
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		work(); // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [useCores, seed, seedEnd, findAll, ruleTree, unlockedSpells]);
 	// ^
@@ -223,7 +224,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({})
 		};
-		fetch('/api/data', requestOptions);
+		fetch('/api/data', requestOptions).catch(e=>{});
 
 		await seedSolver.start();
 	};

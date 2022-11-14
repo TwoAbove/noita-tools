@@ -7,7 +7,6 @@ import templeData from '../../data/temple-locations.json';
 import {
 	includesAll,
 	includesSome,
-	Objectify,
 	between
 } from '../../../helpers';
 import { IRule } from '../IRule';
@@ -37,7 +36,7 @@ export class ShopInfoProvider extends InfoProvider {
 	}
 	wandInfoProvider: WandInfoProvider;
 	temples = templeData;
-	spells = spellData as Objectify<typeof spellData>;
+	spells = spellData;
 	spellsArr = spellArr;
 
 	biomes = [

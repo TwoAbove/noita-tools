@@ -3,17 +3,17 @@ import { SeedSolver } from '../services/seedSearcher';
 
 const seedSolver = new SeedSolver();
 
-self.onmessage = message => {
+self.onmessage = async message => {
   const data = message.data;
   switch (data.type) {
     case "start":
-      seedSolver.start();
+      await seedSolver.start();
       break;
     case "stop":
-      seedSolver.stop();
+      await seedSolver.stop();
       break;
     case "update":
-      seedSolver.update(data.config);
+      await seedSolver.update(data.config);
       break;
     case "getInfo":
       self.postMessage({ type: "info", data: seedSolver.getInfo() });

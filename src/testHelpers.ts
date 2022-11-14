@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import load, { IRandom, genRandom } from './services/SeedInfo/random';
+import { IRandom, genRandom } from './services/SeedInfo/random';
 import createModule from './services/SeedInfo/noita_random/noita_random.js';
 
 export const loadRandom = async (flags?: string[]): Promise<IRandom> => {
@@ -17,7 +17,7 @@ export const loadRandom = async (flags?: string[]): Promise<IRandom> => {
 		}
 	});
 	const randoms = await genRandom(Module);
-	await randoms.SetUnlockedSpells(getUnlockedSpells(flags))
+	await randoms.SetUnlockedSpells(getUnlockedSpells(flags));
 	return randoms;
 };
 

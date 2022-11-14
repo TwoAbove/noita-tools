@@ -9,23 +9,7 @@ import { ACTION_TYPE } from './Wand';
 export class AlwaysCastInfoProvider extends InfoProvider {
 	temples = templeData;
 
-	provide(
-		templeLevel: number,
-		perkNumber: number,
-		perksOnLevel: number,
-		worldOffset = 0
-	) {
-		const { x: _x, y: _y } = this.temples[templeLevel];
-		const y = _y;
-		// In Noita's code x is `x + (i-0.5)*item_width`
-		// Since we use 0..n-1 instead of 1..n, we use `+ 0.5` since we can
-		// think of this as `i + 1 - 0.5`, which can be simplified to
-		// `i + 0.5`
-		const x =
-			this.randoms.RoundHalfOfEven(
-				_x + (perkNumber + 0.5) * (60 / perksOnLevel)
-			) +
-			35840 * worldOffset;
+	providePos(x: number, y: number) {
 		this.randoms.SetRandomSeed(x, y);
 
 		const good_cards = [
@@ -82,6 +66,26 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 		}
 
 		return card;
+	}
+
+	provide(
+		templeLevel: number,
+		perkNumber: number,
+		perksOnLevel: number,
+		worldOffset = 0
+	) {
+		const { x: _x, y: _y } = this.temples[templeLevel];
+		const y = _y;
+		// In Noita's code x is `x + (i-0.5)*item_width`
+		// Since we use 0..n-1 instead of 1..n, we use `+ 0.5` since we can
+		// think of this as `i + 1 - 0.5`, which can be simplified to
+		// `i + 0.5`
+		const x =
+			this.randoms.RoundHalfOfEven(
+				_x + (perkNumber + 0.5) * (60 / perksOnLevel)
+			) +
+			35840 * worldOffset;
+		return this.providePos(x, y);
 	}
 
 	test(rule: IRule): boolean {

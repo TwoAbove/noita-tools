@@ -19,7 +19,7 @@ import {
 	MouseTransition,
 	TouchTransition
 } from 'react-dnd-multi-backend';
-import mergeRefs from 'react-merge-refs';
+import { mergeRefs } from 'react-merge-refs';
 
 import {
 	IRule,

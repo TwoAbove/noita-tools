@@ -37,12 +37,12 @@ export interface IRerollAction {
 
 export type IPerkChangeAction = IShiftAction | IGenRowAction | ISelectAction | IRerollAction;
 
-type IPerkType = Objectify<typeof perksData>
+type IPerkType = Objectify<typeof perksData>;
 
 export type IPerk = IPerkType[string];
 export class PerkInfoProvider extends InfoProvider {
-  perks = perksData as Objectify<typeof perksData>;
-  perksArr = Object.values(this.perks);
+  perks = perksData;
+  perksArr = Object.values(this.perks) as any[];
   temples = templeData;
 
   _G = new Global();

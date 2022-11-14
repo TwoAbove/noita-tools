@@ -207,7 +207,7 @@ const LiveSeedStats = () => {
 			forceUpdate();
 		});
 		seedLinkHandler.addEventListener('restart', () => {
-			ocrHandler!.restart();
+			ocrHandler!.restart().finally(() => {});
 		});
 		return seedLinkHandler;
 	});

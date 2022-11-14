@@ -19,8 +19,8 @@ const materialList = [...new Set([...materialsFrom, ...materialsTo])];
 
 const PerkFavorites = () => {
 	const [open, setOpen] = useState(false);
-	const handleSelect = (perk: string) => {
-		db.toggleFavorite(FavoriteType.Perk, perk);
+	const handleSelect = async (perk: string) => {
+		await db.toggleFavorite(FavoriteType.Perk, perk);
 	};
 	const query = useLiveQuery(
 		() => db.favorites.where({ type: FavoriteType.Perk }).toArray(),
@@ -71,8 +71,8 @@ const PerkFavorites = () => {
 
 const SpellFavorites = () => {
 	const [open, setOpen] = useState(false);
-	const handleSelect = (spell: string) => {
-		db.toggleFavorite(FavoriteType.Spell, spell);
+	const handleSelect = async (spell: string) => {
+		await db.toggleFavorite(FavoriteType.Spell, spell);
 	};
 	const query = useLiveQuery(
 		() => db.favorites.where({ type: FavoriteType.Spell }).toArray(),
@@ -108,8 +108,8 @@ const SpellFavorites = () => {
 };
 const MaterialFavorites = () => {
 	const [open, setOpen] = useState(false);
-	const handleSelect = (spell: string) => {
-		db.toggleFavorite(FavoriteType.Material, spell);
+	const handleSelect = async (spell: string) => {
+		await db.toggleFavorite(FavoriteType.Material, spell);
 	};
 	const query = useLiveQuery(
 		() => db.favorites.where({ type: FavoriteType.Material }).toArray(),

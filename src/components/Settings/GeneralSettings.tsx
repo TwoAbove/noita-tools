@@ -31,8 +31,8 @@ const flags = {
 const Locale = () => {
 	const [l, sl] = useState(i18n.language);
 
-	const setLocale = lng => {
-		i18n.changeLanguage(lng);
+	const setLocale = async lng => {
+		await i18n.changeLanguage(lng);
 		sl(lng);
 	};
 
@@ -49,8 +49,8 @@ const Locale = () => {
 			}
 			right={
 				<Form.Select
-					onChange={e => {
-						setLocale(e.target.value);
+					onChange={async e => {
+						await setLocale(e.target.value);
 					}}
 					value={l}
 					size="sm"

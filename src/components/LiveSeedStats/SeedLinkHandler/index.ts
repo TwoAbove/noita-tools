@@ -12,8 +12,9 @@ class SeedLinkHandler extends SocketHandler {
 
 		this.io.on('set_room', (hostRoom: string) => {
 			this.hostRoom = hostRoom;
-			this.joinRoom(this.hostRoom);
-			this.dispatchEvent(new Event('update'));
+			this.joinRoom(this.hostRoom).finally(() => {
+				this.dispatchEvent(new Event('update'));
+			});
 		});
 		this.io.on('seed', (seed: string) => {
 			this.seed = seed;
