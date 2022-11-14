@@ -73,7 +73,7 @@ class OCRHandler extends EventTarget {
         console.error(e);
         this.startTesseract().catch(e => console.error(e));
       },
-      corePath: '/ocr/tesseract-core.wasm.js',
+      // corePath: '/ocr/tesseract-core.wasm.js',
       // logger: console.log,
       cacheMethod: 'none'
       // logger: this.canvasRef ? console.log : () => { },
