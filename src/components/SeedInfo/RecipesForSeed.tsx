@@ -160,7 +160,7 @@ const QuirkModal = props => {
 				<p>
 					The probabilities in the{' '}
 					<a
-						href="https://noita.fandom.com/wiki/Perks"
+						href="https://noita.wiki.gg/wiki/Perks"
 						rel="noreferrer"
 						target="_blank"
 					>
