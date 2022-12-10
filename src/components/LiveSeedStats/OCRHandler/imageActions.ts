@@ -1,15 +1,20 @@
+import {
+	hexTorgba,
+	rgbaToInt
+} from '../../../services/SeedInfo/infoHandler/InfoProviders/Map/helpers';
+
 const canvasStub = {
 	getContext: () => ({
 		drawImage: () => {},
 		putImageData: () => {},
-		getImageData: () => new ImageData(0, 0),
+		getImageData: () => new ImageData(0, 0)
 	}),
 	width: 0,
 	height: 0
-}
+};
 
-export const createImage = (w, h) => {
-	if ("undefined" === typeof document) {
+export const createImage = (w, h): HTMLCanvasElement => {
+	if ('undefined' === typeof document) {
 		return canvasStub as any;
 	}
 	const can = document.createElement('canvas');
@@ -22,22 +27,31 @@ export const createImage = (w, h) => {
 	return can;
 };
 
-export const imageFromBase64 = async (blob, w, h): Promise<ImageData> => {
-	if ("undefined" === typeof document) {
-		return new ImageData(w, h);
+export const imageFromBase64 = async (blob): Promise<ImageData> => {
+	if ('undefined' === typeof document) {
+		return new ImageData(0, 0);
 	}
-	const can = createImage(w, h);
-	const ctx = can.getContext('2d')!;
 	const image = new Image();
 	image.src = blob;
 
 	return new Promise(res => {
 		image.onload = () => {
+			const can = createImage(image.width, image.height);
+			const ctx = can.getContext('2d')!;
 			ctx.drawImage(image, 0, 0);
-			const imageData = ctx.getImageData(0, 0, w, h);
+			const imageData = ctx.getImageData(0, 0, image.width, image.height);
 			res(imageData);
 		};
 	});
+};
+
+export const imageToBase64 = async (img: ImageData): Promise<string> => {
+	const can = createImage(img.width, img.height);
+	const ctx = can.getContext('2d')!;
+	// Draw the image
+	const i = await createImageBitmap(img);
+	ctx.drawImage(i, 0, 0);
+	return can.toDataURL('image/png');
 };
 
 export const copyImage = img => {
@@ -91,12 +105,22 @@ export const toDark = (pixels, dark = [0, 0, 0]) => {
 	return pixels;
 };
 
-export const scale = (img, scale): HTMLCanvasElement => {
+export const scale = (img, scale: number): HTMLCanvasElement => {
 	const canvas = createImage(img.width * scale, img.height * scale);
 	const ctx = canvas.getContext('2d')!;
 
 	ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 	return canvas;
+};
+
+export const scaleImageData = async (
+	img: ImageData,
+	s: number
+): Promise<ImageData> => {
+	const btmp = await createImageBitmap(img);
+	return scale(btmp, s)
+		.getContext('2d')!
+		.getImageData(0, 0, img.width * s, img.height * s);
 };
 
 export const stretch = (img, width, height): HTMLCanvasElement => {
@@ -133,12 +157,8 @@ export const cropImageData = (
 	cropWidth: number,
 	cropHeight: number
 ): ImageData => {
-
 	const c = copyImage(img);
-	const res = crop(c,
-		cropX, cropY, cropWidth, cropHeight
-
-	);
+	const res = crop(c, cropX, cropY, cropWidth, cropHeight);
 	return res.getContext('2d')!.getImageData(0, 0, res.width, res.height);
 	// console.log({ img, cropX, cropY, cropWidth, cropHeight });
 	// const res = new ImageData(cropWidth, cropHeight);
@@ -261,7 +281,75 @@ export const rgb2rgba = (src: any, dest: any) => {
 	}
 };
 
+const pad = (s: string) => {
+	if (s.length === 1) {
+		s = '0' + s;
+	}
+	return s;
+};
+
+export const hexRGBAtoIntRGB = (hex: string) => {
+	const rgb = hex.substring(0, 6);
+	return parseInt(rgb, 16);
+};
+
 export const rgbaToHex = (r, g, b, a) => {
-	const hex = r.toString(16) + g.toString(16) + b.toString(16) + a.toString(16);
+	let rs = pad(r.toString(16));
+	let gs = pad(g.toString(16));
+	let bs = pad(b.toString(16));
+	let as = pad(a.toString(16));
+	const hex = rs + gs + bs + as;
 	return hex;
+};
+
+const getPos = (w, x, y) => w * y * 4 + 4 * x;
+const isBlack = (data, p) => {
+	return data[p] === 0 && data[p + 1] === 0 && data[p + 2] === 0;
+};
+export const drawImageData = (
+	src: ImageData,
+	dest: ImageData,
+	startX: number,
+	startY: number,
+	color_to_material_table?: { [color: string]: string }
+) => {
+	let f = {};
+	if (color_to_material_table) {
+		for (const color in color_to_material_table) {
+			f[rgbaToInt(...hexTorgba(color))] = hexTorgba(
+				color_to_material_table[color]
+			);
+		}
+	}
+	for (let y = 0; y < src.height; y++) {
+		for (let x = 0; x < src.width; x++) {
+			const srcP = getPos(src.width, x, y);
+			if (isBlack(src.data, srcP)) {
+				continue;
+			}
+			if (startX + x >= dest.width || startY + y >= dest.height) {
+				continue;
+			}
+			const destP = getPos(dest.width, startX + x, startY + y);
+			if (color_to_material_table) {
+				const c = rgbaToInt(
+					src.data[srcP + 0],
+					src.data[srcP + 1],
+					src.data[srcP + 2],
+					src.data[srcP + 3]
+				);
+				if (f[c]) {
+					dest.data[destP + 0] = f[c][0];
+					dest.data[destP + 1] = f[c][1];
+					dest.data[destP + 2] = f[c][2];
+					dest.data[destP + 3] = f[c][3];
+					continue;
+				}
+			}
+			dest.data[destP + 0] = src.data[srcP + 0];
+			dest.data[destP + 1] = src.data[srcP + 1];
+			dest.data[destP + 2] = src.data[srcP + 2];
+			dest.data[destP + 3] = src.data[srcP + 3];
+		}
+	}
 };

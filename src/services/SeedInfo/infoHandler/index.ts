@@ -5,7 +5,7 @@ import { FungalInfoProvider } from './InfoProviders/Fungal';
 import { InfoProvider } from './InfoProviders/Base';
 import { IPerkChangeAction, PerkInfoProvider } from './InfoProviders/Perk';
 import { LotteryInfoProvider } from './InfoProviders/Lottery';
-import { MapInfoProvider } from './InfoProviders/Map';
+// import { MapInfoProvider } from './InfoProviders/Map';
 import { MaterialInfoProvider } from './InfoProviders/Material';
 import { RainInfoProvider } from './InfoProviders/Rain';
 import { ShopInfoProvider } from './InfoProviders/Shop';
@@ -16,9 +16,17 @@ import { StartingSpellInfoProvider } from './InfoProviders/StartingSpell';
 import { AlwaysCastInfoProvider } from './InfoProviders/AlwaysCast';
 import { WaterCaveInfoProvider } from './InfoProviders/WaterCave';
 
+// Chests
+import { ChestRandomProvider } from './InfoProviders/ChestRandom';
+import { PacifistChestProvider } from './InfoProviders/PacifistChest';
+
 import loadRandom, { IRandom } from '../random';
 import { WandInfoProvider } from './InfoProviders/Wand';
 import { i18n } from 'i18next';
+import { PotionInfoProvider } from './InfoProviders/Potion';
+import { PotionSecretInfoProvider } from './InfoProviders/PotionSecret';
+import { PotionRandomMaterialInfoProvider } from './InfoProviders/PotionRandomMaterial';
+import { PowderStashInfoProvider } from './InfoProviders/PowderStash';
 
 interface IProviders {
   alchemy: AlchemyInfoProvider;
@@ -27,7 +35,7 @@ interface IProviders {
   biomeModifier: BiomeModifierInfoProvider;
   fungalShift: FungalInfoProvider;
   lottery: LotteryInfoProvider;
-  map: MapInfoProvider;
+  // map: MapInfoProvider;
   material: MaterialInfoProvider;
   perk: PerkInfoProvider;
   rain: RainInfoProvider;
@@ -38,6 +46,15 @@ interface IProviders {
   statelessPerk: PerkInfoProvider;
   waterCave: WaterCaveInfoProvider;
   wand: WandInfoProvider;
+
+  potion: PotionInfoProvider;
+  potionSecret: PotionSecretInfoProvider;
+  potionRandomMaterial: PotionRandomMaterialInfoProvider;
+  powderStash: PowderStashInfoProvider;
+
+  chestRandom: ChestRandomProvider;
+  pacifistChest: PacifistChestProvider;
+
   [key: string]: InfoProvider;
 }
 
@@ -51,12 +68,16 @@ export class GameInfoProvider extends EventTarget {
 
   i18n?: i18n;
 
-  constructor(initialConfig: Partial<IProviderConfig>, i18n?: i18n) {
+  unlockedSpells: boolean[];
+
+  constructor(initialConfig: Partial<IProviderConfig>, unlockedSpells: boolean[], i18n?: i18n) {
     super();
     this.resetConfig(initialConfig);
+    this.unlockedSpells = unlockedSpells;
     loadRandom().then((randoms) => {
       this.randoms = randoms;
       this.providers = this.buildInfoProviders();
+    }).finally(() => {
       this.ready = true;
     });
     this.i18n = i18n;
@@ -98,7 +119,7 @@ export class GameInfoProvider extends EventTarget {
       biomeModifier: new BiomeModifierInfoProvider(this.randoms),
       fungalShift: new FungalInfoProvider(this.randoms),
       lottery: new LotteryInfoProvider(this.randoms),
-      map: new MapInfoProvider(this.randoms),
+      // map: new MapInfoProvider(this.randoms),
       material: new MaterialInfoProvider(this.i18n),
       perk: new PerkInfoProvider(this.randoms),
       rain: new RainInfoProvider(this.randoms),
@@ -108,7 +129,15 @@ export class GameInfoProvider extends EventTarget {
       startingSpell: new StartingSpellInfoProvider(this.randoms),
       statelessPerk: new PerkInfoProvider(this.randoms),
       wand: new WandInfoProvider(this.randoms),
-      waterCave: new WaterCaveInfoProvider(this.randoms)
+      waterCave: new WaterCaveInfoProvider(this.randoms),
+
+      potion: new PotionInfoProvider(this.randoms),
+      potionSecret: new PotionSecretInfoProvider(this.randoms),
+      potionRandomMaterial: new PotionRandomMaterialInfoProvider(this.randoms),
+      powderStash: new PowderStashInfoProvider(this.randoms),
+
+      chestRandom: new ChestRandomProvider(this.randoms, this.unlockedSpells),
+      pacifistChest: new PacifistChestProvider(this.randoms, this.unlockedSpells),
     }
 
     // shop needs the wand info provider to generate wands

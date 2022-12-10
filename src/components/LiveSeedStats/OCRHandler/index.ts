@@ -58,7 +58,7 @@ class OCRHandler extends EventTarget {
       this.ready = true;
       this.onUpdate();
     };
-    init();
+    init().catch(e => console.error(e));
   }
 
   async genCanvases() {
@@ -71,9 +71,9 @@ class OCRHandler extends EventTarget {
       langPath: '/ocr/good',
       errorHandler: (e) => {
         console.error(e);
-        this.startTesseract();
+        this.startTesseract().catch(e => console.error(e));
       },
-      corePath: '/ocr/tesseract-core.wasm.js',
+      // corePath: '/ocr/tesseract-core.wasm.js',
       // logger: console.log,
       cacheMethod: 'none'
       // logger: this.canvasRef ? console.log : () => { },
@@ -90,7 +90,7 @@ class OCRHandler extends EventTarget {
     });
 
     if (this.tesseractWorker) {
-      this.tesseractWorker.terminate();
+      await this.tesseractWorker.terminate();
     }
 
     this.tesseractWorker = worker;
@@ -101,7 +101,7 @@ class OCRHandler extends EventTarget {
     if (ms) {
       this.mediaStream = ms;
       this.loop = true;
-      this.captureLoop();
+      this.captureLoop().catch(e => console.log(e));
       this.onUpdate();
     }
   }
@@ -122,7 +122,7 @@ class OCRHandler extends EventTarget {
 
   async doSingleDetect(blob: Blob) {
     this.lastBitmap = await createImageBitmap(blob);
-    this.doLoop();
+    await this.doLoop();
   }
 
   async doLoop() {

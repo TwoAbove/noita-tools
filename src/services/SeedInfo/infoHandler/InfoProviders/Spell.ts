@@ -3,12 +3,11 @@
 
 import spellData from '../../data/spells.json';
 import spellObjData from '../../data/obj/spells.json';
-import { Objectify } from '../../../helpers';
 import { IRule } from '../IRule';
 import { InfoProvider } from './Base';
 
 export class SpellInfoProvider extends InfoProvider {
-	spells = spellObjData as Objectify<typeof spellObjData>;
+	spells = spellObjData;
 	spellsArr = spellData;
 
 	provide(spellName: string) {

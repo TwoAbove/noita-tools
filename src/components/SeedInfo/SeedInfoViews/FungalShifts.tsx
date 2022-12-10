@@ -8,6 +8,8 @@ import { AlchemyConfigContext } from '../../AlchemyConfigContext';
 import { capitalize } from '../../../services/helpers';
 import { useTranslation } from 'react-i18next';
 import { useMaterialFavorite } from './helpers';
+import { GameInfoContext } from '../SeedDataOutput';
+import classNames from 'classnames';
 
 enum Direction {
 	From,
@@ -19,15 +21,48 @@ const Flask = () => {
 };
 
 interface IFungalMaterialProps {
+	id: string;
+	showColor?: boolean
+}
+
+export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor = true }) => {
+	const { gameInfoProvider } = useContext(GameInfoContext);
+	const [showId] = useContext(AlchemyConfigContext);
+	const { isFavorite } = useMaterialFavorite();
+	const name = gameInfoProvider!.providers.material.translate(id);
+	return (
+		<div className={classNames(isFavorite(id) && 'text-info', 'text-center lh-1')}>
+			{showColor &&
+				<div
+					className={'d-inline-block align-sub rounded-3 me-1 border border-light'}
+					style={{
+						marginBottom: '-2px',
+						width: '1rem',
+						height: '1rem',
+						backgroundColor: '#' + gameInfoProvider!.providers.material.provide(id).color
+					}}>
+					{' '}
+				</div>
+			}
+			{' '}
+			{capitalize(name)}
+			{' '}
+			{showId && id}
+		</div>
+	)
+}
+
+interface IFungalMaterialListProps {
 	materials: Map<string, string>
-	direction: Direction
-	isFlask: boolean
+	direction?: Direction
+	isFlask?: boolean
 	isFavorite: (id: string) => boolean;
 	getColor: (id: string) => string;
 	showId: boolean;
 }
 
-const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, isFlask, isFavorite, getColor, showId }) => {
+
+export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({ materials, direction, isFlask, isFavorite, getColor, showId }) => {
 	/*
 	Var 'materials' may contain multiple materials with the same display name.
 	This is because some materials like 'Flammable Gas' have static variants that are
@@ -49,14 +84,14 @@ const FungalMaterial: React.FC<IFungalMaterialProps> = ({ materials, direction, 
 	// The logic that returns a JSX component requires an `Array`
 	const materialsByNameArray = Array.from(materialsByName)
 
-	return(
+	return (
 		<Stack>
 			{isFlask && <Flask />}
 			{materialsByNameArray.map(([name, ids]) => {
-				return(
+				return (
 					<div key={`${name}`}>
 						<div className={ids.some(isFavorite) ? 'text-info' : ''}>
-							<div className={'d-inline-block align-sub rounded-3 me-1'} style={{ marginBottom:'-2px', width: '1rem', height: '1rem', backgroundColor: '#' + getColor(ids[0]) }}></div>
+							<div className={'d-inline-block align-sub rounded-3 me-1 border border-light'} style={{ marginBottom: '-2px', width: '1rem', height: '1rem', backgroundColor: '#' + getColor(ids[0]) }}></div>
 							{' '}
 							{capitalize(name)}
 							{' '}
@@ -85,32 +120,35 @@ export const Shift: FC<IShiftProps> = (props) => {
 	const from: Array<string> = [data.from].flat()
 	const to: Array<string> = [data.to].flat()
 	// TODO: Maybe have translate return already capitalized?
-	const fromMaterials = new Map(from.map(id => { return [ id, materialProvider.translate(id) ]}));
-	const toMaterials = new Map(to.map(id => { return [ id, materialProvider.translate(id) ]}));
+	const fromMaterials = new Map(from.map(id => { return [id, materialProvider.translate(id)] }));
+	const toMaterials = new Map(to.map(id => { return [id, materialProvider.translate(id)] }));
 
 	return (
-		<tr>
-			<td className="align-middle">
-				<FungalMaterial
+		<tr className="align-middle">
+			<td >
+				<FungalMaterialList
 					materials={fromMaterials}
 					direction={Direction.From}
 					isFlask={data.flaskFrom}
 					isFavorite={isFavorite}
-					getColor = {(id: string) => materialProvider.provide(id).color}
+					getColor={(id: string) => materialProvider.provide(id).color}
 					showId={showId}
 				/>
 			</td>
-			<td className="align-middle">
-				<FungalMaterial
+			<td >
+				&rarr;
+			</td>
+			<td >
+				<FungalMaterialList
 					materials={toMaterials}
 					direction={Direction.To}
 					isFlask={data.flaskTo}
 					isFavorite={isFavorite}
-					getColor = {(id: string) => materialProvider.provide(id).color}
+					getColor={(id: string) => materialProvider.provide(id).color}
 					showId={showId}
 				/>
 			</td>
-			<td>
+			<td >
 				<OverlayTrigger
 					placement="right"
 					key="right"
@@ -151,7 +189,7 @@ const FungalShifts = (props: IFungalShiftsProps) => {
 	};
 
 	return (
-		<table className="table table-sm table-responsive">
+		<table className="table table-sm">
 			<tbody>
 				{fungalData.map((data, i) => {
 					return (

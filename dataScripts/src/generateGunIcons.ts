@@ -12,10 +12,10 @@ const noitaData = path.resolve(require('os').homedir(), '.steam/debian-installat
 );
 
 (async () => {
-	const out = [];
+	const out: any = [];
 	for (const item of data) {
 		await new Promise<void>((res, rej) => {
-			Jimp.read(path.resolve(noitaData, item.file), (err, image) => {
+			return Jimp.read(path.resolve(noitaData, item.file), (err, image) => {
 				if (err) {
 					return rej(err);
 				}
@@ -31,6 +31,6 @@ const noitaData = path.resolve(require('os').homedir(), '.steam/debian-installat
 		out.push(item);
 	}
 	fs.writeFileSync(dest, JSON.stringify(out, null, 2));
-})();
+})().finally(() => {});
 
 export {};

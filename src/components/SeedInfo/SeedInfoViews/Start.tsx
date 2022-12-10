@@ -7,13 +7,12 @@ import { StartingFlaskInfoProvider } from '../../../services/SeedInfo/infoHandle
 import { StartingSpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/StartingSpell';
 
 import Icon from '../../Icons/Icon';
+import { StaticPotion } from './Potion';
 
 interface IStartProps {
 	startingFlask: ReturnType<StartingFlaskInfoProvider['provide']>;
 	startingSpell: ReturnType<StartingSpellInfoProvider['provide']>;
 	startingBombSpell: ReturnType<StartingBombSpellInfoProvider['provide']>;
-
-	infoProvider: GameInfoProvider;
 }
 
 const spells = new SpellInfoProvider({} as any);
@@ -23,7 +22,6 @@ const Start = (props: IStartProps) => {
 		startingFlask,
 		startingSpell,
 		startingBombSpell,
-		infoProvider
 	} = props;
 	const startingSpellSpell = spells.provide(startingSpell.toUpperCase());
 	const startingBombSpellSpell = spells.provide(
@@ -35,7 +33,7 @@ const Start = (props: IStartProps) => {
 			<Stack className="justify-content-center" direction="horizontal" gap={3}>
 				<Icon uri={startingSpellSpell.sprite} />
 				<Icon uri={startingBombSpellSpell.sprite} />
-				<div>{infoProvider.providers.material.translate(startingFlask)}</div>
+				<StaticPotion material={startingFlask} />
 			</Stack>
 			<div className="flex-grow-1"></div>
 		</div>

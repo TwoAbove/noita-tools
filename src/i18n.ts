@@ -24,6 +24,8 @@ i18n
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
+  }).catch(e => {
+    console.error(e);
   });
 
 export default i18n;

@@ -44,14 +44,20 @@ const getCellData = (cell: any) => {
 		fs.readFileSync(materialsXMLPath)
 	)).Materials;
 	const materials: any = {};
-	for (const { $: cell } of materialsData.CellData) {
+	for (const { $: cell, Graphics } of materialsData.CellData) {
 		const c = getCellData(cell);
 		materials[c.name] = c;
+		if (Graphics) {
+			materials[c.name].graphics = Graphics[0].$
+		}
 	}
-	for (const { $: cell } of materialsData.CellDataChild) {
+	for (const { $: cell, Graphics } of materialsData.CellDataChild) {
 		const parent = materials[cell._parent];
 		const c = getCellData(cell);
 		materials[c.name] = { ...parent, ...c };
+		if (Graphics) {
+			materials[c.name].graphics = Graphics[0].$
+		}
 	}
 	fs.writeFileSync('./materials.json', JSON.stringify(materials, null, 2));
 })();

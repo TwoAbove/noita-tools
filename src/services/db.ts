@@ -80,6 +80,8 @@ export class NoitaDB extends Dexie {
 							return;
 						}
 						s.updatedAt = new Date();
+					}).catch(e => {
+						console.error(e);
 					});
 			});
 
@@ -95,7 +97,9 @@ export class NoitaDB extends Dexie {
 				((t as any).db.configItems as NoitaDB['configItems']).add({
 					key: 'unlocked-spells',
 					val: Array(393).fill(true)
-				});
+				}).catch(e => {
+					console.error(e);
+				});;
 			});
 
 		this.version(7)
@@ -109,10 +113,12 @@ export class NoitaDB extends Dexie {
 							return s;
 						}
 						s.config = JSON.stringify(s.config, replacer)
-					});
+					}).catch(e => {
+						console.error(e);
+					});;
 			});
 
-			this.errorOnOpen = this.open().then(() => null).catch(e => {
+		this.errorOnOpen = this.open().then(() => null).catch(e => {
 			console.error(e);
 			return e;
 		});
@@ -124,7 +130,9 @@ export class NoitaDB extends Dexie {
 			await this.favorites.add({ type, key });
 			return;
 		}
-		this.favorites.delete(exists.id!);
+		this.favorites.delete(exists.id!).catch(e => {
+			console.error(e);
+		});
 	}
 
 	async setConfig(key: any, val: any) {

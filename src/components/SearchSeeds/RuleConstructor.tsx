@@ -14,6 +14,7 @@ import { FC, useContext } from 'react';
 import { Container } from 'react-bootstrap';
 import { SearchContext } from './SearchContext';
 import { getTreeTools } from './node';
+import PacifistChest from './SearchViews/PacifistChest';
 
 const treeTools = getTreeTools('id', 'rules');
 
@@ -84,6 +85,15 @@ export const RuleConstructors = {
 	perk: {
 		Title: () => 'Perks',
 		Component: Perks,
+		defaultConfig: {
+			path: '',
+			params: [],
+			val: new Array(7).fill([])
+		}
+	},
+	pacifistChest: {
+		Title: () => 'Pacifist Chest',
+		Component: PacifistChest,
 		defaultConfig: {
 			path: '',
 			params: [],

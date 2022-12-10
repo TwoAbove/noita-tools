@@ -14,8 +14,13 @@ interface ISpellProps {
 
 const spells = new SpellInfoProvider({} as any);
 
-const Spell: FC<ISpellProps> = props => {
-	const { id, className, width, highlight } = props;
+const Spell: FC<ISpellProps> = ({
+	id,
+	className,
+	width,
+	highlight,
+	...rest
+}) => {
 	const [t] = useTranslation('materials');
 
 	const item = spells.provide(id);
@@ -27,6 +32,7 @@ const Spell: FC<ISpellProps> = props => {
 			uri={item.sprite}
 			title={t(item.name)}
 			background
+			{...rest}
 		/>
 	);
 };
