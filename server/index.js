@@ -109,6 +109,13 @@ app.post('/api/db_debug/', m.any(), async (req, res) => {
 	}
 });
 
+app.get('/m/*', async (req, res) => {
+	const m = req.params[0];
+	console.log(m);
+	res.append('Cache-Control', 'public, immutable, max-age=604800');
+	res.send({});
+});
+
 app.use((req, res) =>
 	handler(req, res, {
 		public: './build',

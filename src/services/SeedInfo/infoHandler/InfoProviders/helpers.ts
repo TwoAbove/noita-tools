@@ -27,7 +27,7 @@ export const GameGetDateAndTimeLocal = () => {
 export const isChristmas = () => {
   const [year, month, day] = GameGetDateAndTimeLocal();
 
-  if (month == 12 && day >= 24 && day <= 26) {
+  if (month === 12 && day >= 24 && day <= 26) {
     return true;
   } else {
     return false;

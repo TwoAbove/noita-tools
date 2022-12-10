@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
 	Table,
 	Button,
@@ -124,6 +124,10 @@ spellInfoProvider.spellsArr
 	item => spellsToShow.add(item)
 );
 
+const Part: FC<{ children?: React.ReactNode }> = ({ children }) => {
+	return <div className='mt-3'>{children}</div>;
+};
+
 const QuirkModal = props => {
 	const { show, handleClose } = props;
 
@@ -139,88 +143,112 @@ const QuirkModal = props => {
 				<Modal.Title>Quirks and Limitations</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<h4>Perk Rerolls</h4>
-				<p>
-					Due to how perks are re-rolled in-game, the only guarantee is the
-					perks that you will get, <b>not their position</b>. <br />
-					<br />
-					When looking at <i>always cast</i> and <i>perk lottery</i> info,
-					please note that they are <b>position</b>-dependent, not
-					perk-dependent. That means that if the position of <i>always cast</i>{' '}
-					in-tool is different from that in-game, then the value will be
-					different. As a non-perfect solution, please enable "show always-cast
-					for whole row" in the settings (shortcut below).
-				</p>
-				<ListGroup variant="flush" className="mt-0 mb-3 shadow">
-					<ListGroup.Item>
-						<ShowAlwaysCastRow />
-					</ListGroup.Item>
-				</ListGroup>
-				<h4>Always Cast</h4>
-				<p>
-					The probabilities in the{' '}
-					<a
-						href="https://noita.wiki.gg/wiki/Perks"
-						rel="noreferrer"
-						target="_blank"
-					>
-						Noita wiki
-					</a>{' '}
-					are incorrect, as there is a bug in the Noita code that does not
-					enable any random tier 6 modifier, static projectile, and utility
-					spells to be added to the wands. <br />
-					<br /> The only ones available are:
-				</p>
-				<div className="d-flex align-content-start flex-wrap pb-3">
-					{[...spellsToShow].map(s => (
-						<div className="m-1 p-0 " key={s}>
-							<Spell id={s} />
-						</div>
-					))}
-				</div>
-				<h4>Fungal Shifts</h4>
-				<p>
-					Not all Fungal Shifts are created equal. Sometimes, you can get shifts
-					that look like this:
-				</p>
-				<FungalShifts
-					fungalData={[
-						{
-							flaskTo: false,
-							flaskFrom: false,
-							from: ['sand'],
-							to: 'sand'
-						},
-						{
-							flaskTo: true,
-							flaskFrom: false,
-							from: ['water'],
-							to: 'water'
-						},
-						{
-							flaskTo: false,
-							flaskFrom: true,
-							from: ['lava'],
-							to: 'lava'
-						}
-					]}
-					infoProvider={
-						{
-							// stub for this example
-							updateConfig: () => {},
-							config: { fungalShifts: [false, true, true] },
-							providers: {
-								material: materialProvider
+				<Part>
+					<h4>Perk Rerolls</h4>
+					<p>
+						Due to how perks are re-rolled in-game, the only guarantee is the
+						perks that you will get, <b>not their position</b>. <br />
+						<br />
+						When looking at <i>always cast</i> and <i>perk lottery</i> info,
+						please note that they are <b>position</b>-dependent, not
+						perk-dependent. That means that if the position of{' '}
+						<i>always cast</i> in-tool is different from that in-game, then the
+						value will be different. As a non-perfect solution, please enable
+						"show always-cast for whole row" in the settings (shortcut below).
+					</p>
+					<ListGroup variant="flush" className="mt-0 mb-3 shadow">
+						<ListGroup.Item>
+							<ShowAlwaysCastRow />
+						</ListGroup.Item>
+					</ListGroup>
+				</Part>
+				<Part>
+					<h4>Pacifist Chest</h4>
+					<h5>
+						Greed
+					</h5>
+					<p>
+						Greed is currently not supported, coming later.
+					</p>
+					<h5>Random Material Potion</h5>
+					<p className="ps-2">
+						The contents of the Random Material Potion is very mod dependent.{' '}
+						<br />
+						If the amount of materials in game changes, then the material in
+						this potion will differ. Even changing the material positions in{' '}
+						<code className="mx-1">data/materials.xml</code> will change the
+						generated materials.
+					</p>
+				</Part>
+				<Part>
+					<h4>Always Cast</h4>
+					<p>
+						The probabilities in the{' '}
+						<a
+							href="https://noita.wiki.gg/wiki/Perks"
+							rel="noreferrer"
+							target="_blank"
+						>
+							Noita wiki
+						</a>{' '}
+						are incorrect, as there is a bug in the Noita code that does not
+						enable any random tier 6 modifier, static projectile, and utility
+						spells to be added to the wands. <br />
+						<br /> The only ones available are:
+					</p>
+					<div className="d-flex align-content-start flex-wrap pb-3">
+						{[...spellsToShow].map(s => (
+							<div className="m-1 p-0 " key={s}>
+								<Spell id={s} />
+							</div>
+						))}
+					</div>
+				</Part>
+				<Part>
+					<h4>Fungal Shifts</h4>
+					<p>
+						Not all Fungal Shifts are created equal. Sometimes, you can get
+						shifts that look like this:
+					</p>
+					<FungalShifts
+						fungalData={[
+							{
+								flaskTo: false,
+								flaskFrom: false,
+								from: ['sand'],
+								to: 'sand'
+							},
+							{
+								flaskTo: true,
+								flaskFrom: false,
+								from: ['water'],
+								to: 'water'
+							},
+							{
+								flaskTo: false,
+								flaskFrom: true,
+								from: ['lava'],
+								to: 'lava'
 							}
-						} as any
-					}
-				/>
-				<p>
-					These shifts will not shift anything unless you are holding a flask
-					and there is the flask indicator. In the examples above, only the
-					second and third row will be a successful shift, if you have a flask
-					equipped.
-				</p>
+						]}
+						infoProvider={
+							{
+								// stub for this example
+								updateConfig: () => {},
+								config: { fungalShifts: [false, true, true] },
+								providers: {
+									material: materialProvider
+								}
+							} as any
+						}
+					/>
+					<p>
+						These shifts will not shift anything unless you are holding a flask
+						and there is the flask indicator. In the examples above, only the
+						second and third row will be a successful shift, if you have a flask
+						equipped.
+					</p>
+				</Part>
 			</Modal.Body>
 		</Modal>
 	);
