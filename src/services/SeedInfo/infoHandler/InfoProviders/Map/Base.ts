@@ -263,6 +263,10 @@ export default class Base {
 	g_candles?: any;
 	g_ghostlamp?: any;
 
+	async init(x?: number, y?: number, w?: number, h?: number) {
+
+	}
+
 	async spawn(what: IProb[], x, y, rand_x?, rand_y?) {
 		const x_offset = 5;
 		const y_offset = 5;
@@ -388,7 +392,6 @@ export default class Base {
 					} else {
 						res = material;
 					}
-					console.log(res);
 					color_material_table[color] = materials[res].color;
 				}
 			}
@@ -688,7 +691,7 @@ export default class Base {
 	async spawn_wands(x: number, y: number) {
 		if (!this.g_items) {
 			this.err(
-				`g_items needs to exist on clss ${this.constructor.name}`
+				`g_items needs to exist on class ${this.constructor.name}`
 			);
 			return;
 		}
@@ -702,7 +705,7 @@ export default class Base {
 	async spawn_candles(x: number, y: number) {
 		if (!this.g_candles) {
 			this.err(
-				`g_candles needs to exist on clss ${this.constructor.name}`
+				`g_candles needs to exist on class ${this.constructor.name}`
 			);
 			return;
 		}
@@ -712,7 +715,7 @@ export default class Base {
 	async spawn_ghostlamp(x: number, y: number) {
 		if (!this.g_ghostlamp) {
 			this.err(
-				`g_ghostlamp needs to exist on clss ${this.constructor.name}`
+				`g_ghostlamp needs to exist on class ${this.constructor.name}`
 			);
 			return;
 		}

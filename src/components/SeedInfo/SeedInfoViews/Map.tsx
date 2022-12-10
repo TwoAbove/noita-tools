@@ -30,6 +30,10 @@ const mapParts = {
 		xr: [35],
 		yr: [15],
 	},
+	top2: {
+		xr: [31, 32, 33, 34, 35, 36, 37, 38],
+		yr: [14, 15, 16, 17, 18]
+	},
 	vaultFrozen: {
 		xr: [12, 13, 14, 15, 16, 17, 18],
 		yr: [15, 16, 17, 18, 19]
@@ -72,7 +76,7 @@ const mapParts = {
 	}
 };
 
-const { xr, yr } = mapParts.Jungle;
+const { xr, yr } = mapParts.top2;
 // const xr = new Array(70).fill(1).map((_, i) => i);
 // const yr = new Array(48).fill(1).map((_, i) => i);
 

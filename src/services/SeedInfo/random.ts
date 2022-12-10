@@ -140,7 +140,8 @@ export const genRandom = async Module => {
 	Module.printErr = Module.print;
 
 	const randomFromArray = <T>(arr: T[]) => {
-		return arr[Module.Random(0, arr.length - 1)];
+		const i = Module.Random(0, arr.length - 1);
+		return arr[i];
 	};
 
 	const random_create = (x: number, y: number) => ({

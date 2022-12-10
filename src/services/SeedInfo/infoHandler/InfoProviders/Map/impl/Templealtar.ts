@@ -1,6 +1,6 @@
 // data/scripts/biomes/temple_altar.lua
 import Base from "../Base";
-class Templealtar extends Base {
+class TempleAltar extends Base {
   chestLevel = 3;
   g_lamp = [
     { prob: 1, min_count: 1, max_count: 1, entity: "" },
@@ -291,4 +291,4 @@ class Templealtar extends Base {
     );
   }
 }
-export default Templealtar;
+export default TempleAltar;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { Stack } from 'react-bootstrap';
 
 import GameInfoProvider from '../../services/SeedInfo/infoHandler';
@@ -26,6 +26,7 @@ const waitToLoad = (gameInfoProvider): Promise<void> =>
 export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], setData) => {
 	const gameInfoProvider = new GameInfoProvider(
 		{ seed: parseInt(seed, 10) },
+		unlockedSpells,
 		i18n
 	);
 	gameInfoProvider.onRandomLoad(() => {
@@ -50,9 +51,12 @@ export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], 
 				// handle this?
 			});;
 		});
-	}).finally(() => {});
+	}).finally(() => { });
 	return gameInfoProvider;
 }
+
+export const GameInfoContext = createContext<{gameInfoProvider?: GameInfoProvider, data?: Awaited<ReturnType<GameInfoProvider['provideAll']>>}>({});
+
 
 export const useGameInfoProvider = (
 	seed: string,
@@ -87,19 +91,22 @@ const SeedDataOutput = (props: ISeedDataProps) => {
 	const { seed } = props;
 	const [unlockedSpells] = useLocalStorage<boolean[]>('unlocked-spells', Array(393).fill(true));
 	const [gameInfoProvider, data] = useGameInfoProvider(seed, unlockedSpells);
+
 	return (
 		<>
 			{gameInfoProvider && data ? (
-				<Stack>
-					{data && `Seed: ${seed}`}
-					{data && (
-						<SeedInfo
-							seed={seed}
-							infoProvider={gameInfoProvider}
-							data={data}
-						/>
-					)}
-				</Stack>
+				<GameInfoContext.Provider value={{ gameInfoProvider, data }}>
+					<Stack>
+						{data && `Seed: ${seed}`}
+						{data && (
+							<SeedInfo
+								seed={seed}
+								infoProvider={gameInfoProvider}
+								data={data}
+							/>
+						)}
+					</Stack>
+				</GameInfoContext.Provider>
 			) : (
 				<p>Loading</p>
 			)}

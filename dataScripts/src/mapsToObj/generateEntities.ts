@@ -4,14 +4,9 @@ import path from 'path';
 import Jimp from 'jimp';
 import _ from 'lodash';
 import { parseStringPromise } from 'xml2js';
-import parser, {
-	AssignmentStatement,
-	Expression,
-	NumericLiteral,
-	StringLiteral,
-	TableConstructorExpression
-} from 'luaparse';
-import { parse } from 'csv-parse/sync';
+
+const recursiveReaddir = require('recursive-readdir');
+const DOMParser = require('xmldom').DOMParser;
 
 // https://github.com/Dadido3/noita-mapcap
 
@@ -46,69 +41,18 @@ const getBase64 = (p: string) =>
 		})
 	);
 
-const parseLua = (script: string) => {
-	const ast = parser.parse(script, { wait: false });
-	return ast;
-};
-
-const getTable = (ex: TableConstructorExpression) => {
-	const res: any[] = [];
-	for (const e of ex.fields) {
-		if (
-			e.type === 'TableValue' &&
-			e.value.type === 'TableConstructorExpression'
-		) {
-			const o: any = {};
-			for (const field of e.value.fields) {
-				if (field.type === 'TableKeyString') {
-					let key = field.key.name;
-					let val;
-					switch (field.value.type) {
-						case 'NumericLiteral': {
-							val = field.value.value;
-							break;
-						}
-						case 'StringLiteral': {
-							val = field.value.raw.replaceAll('"', '');
-							break;
-						}
-						case 'UnaryExpression': {
-							if (field.value.operator === '-') {
-								if (field.value.argument.type !== 'NumericLiteral') {
-									console.log('Unhandled type: ', field);
-									break;
-								}
-								val = -field.value.argument.value;
-							}
-							break;
-						}
-						case 'Identifier': {
-							// Assignment, don't think I need to handle this
-							break;
-						}
-						case 'FunctionDeclaration': {
-							// Function, don't think I need to handle this
-							break;
-						}
-						case 'TableConstructorExpression': {
-							val = getTable(field.value);
-							break;
-						}
-						default: {
-							console.log('Unhandled type: ', field);
-						}
-					}
-					o[key] = val;
-				}
-			}
-			res.push(o);
+const tryRead = (path: string, fallback?: string) => {
+	try {
+		return fs.readFileSync(path);
+	} catch (e) {
+		if (fallback || fallback === '') {
+			return fallback;
 		}
+		throw e;
 	}
-	return res;
-};
+}
 
-const generateEntities = async (maps: any) => {
-
+const generateEntities = async () => {
 	function memo(cache: any) {
 		return async (key: string, fn: (...args: any[]) => Promise<any>) => {
 			if (cache[key]) {
@@ -165,30 +109,33 @@ const generateEntities = async (maps: any) => {
 		if (!p.endsWith('xml')) {
 			return;
 		}
-		const spriteData = (await spriteMemo(p, () =>
-			parseStringPromise(fs.readFileSync(path.resolve(noitaData, p)))
-		)).Sprite;
+		try {
+			const spriteData = (await spriteMemo(p, () =>
+				parseStringPromise(tryRead(path.resolve(noitaData, p), ''))
+			)).Sprite;
 
-		const sprite = parseObj(spriteData.$);
-		if (spriteData.RectAnimation) {
-			sprite.animations = spriteData.RectAnimation.map((R: any) => {
-				// Save only the "default" animation;
-				const animation = R.$;
-				if (animation.name === sprite.default_animation) {
-					const a = parseObj(animation);
-					return a;
-				}
-				return false;
-			}).filter(Boolean);
+			const sprite = parseObj(spriteData.$);
+			if (spriteData.RectAnimation) {
+				sprite.animations = spriteData.RectAnimation.map((R: any) => {
+					// Save only the "default" animation;
+					const animation = R.$;
+					if (animation.name === sprite.default_animation) {
+						const a = parseObj(animation);
+						return a;
+					}
+					return false;
+				}).filter(Boolean);
+			}
+
+			if (sprite.filename) {
+				sprite.filename = await getBase64(
+					path.resolve(noitaData, sprite.filename)
+				);
+			}
+			return sprite;
+		} catch (e) {
+			return '';
 		}
-
-		if (sprite.filename) {
-			sprite.filename = (await getBase64(
-				path.resolve(noitaData, sprite.filename)
-			));
-		}
-
-		return sprite;
 	};
 
 	const entityMemo = memo({});
@@ -196,16 +143,21 @@ const generateEntities = async (maps: any) => {
 	const parseEntity = async (entityData: any): Promise<any> => {
 		let entity: any = {};
 		let baseEntity: any = {};
-		if (entityData.Base && entityData.Base[0].$.file) {
-			const seb = (await entityMemo(entityData.Base[0].$.file, () =>
-				parseStringPromise(
-					fs.readFileSync(path.resolve(noitaData, entityData.Base[0].$.file))
-				)
-			)).Entity;
-			const subEntityBase = await parseEntity(seb);
-			const subEntityChildren = await parseEntity(entityData.Base[0]);
-			baseEntity = _.assign({}, subEntityBase, subEntityChildren);
+
+		if (entityData.Base) {
+			for (const B of entityData.Base) {
+				console.log(`	${B.$.file}`)
+				const seb = (await entityMemo(B.$.file, () =>
+					parseStringPromise(
+						tryRead(path.resolve(noitaData, B.$.file), '')
+					)
+				)).Entity;
+				const subEntityBase = await parseEntity(seb);
+				const subEntityChildren = await parseEntity(B);
+				baseEntity = _.assign(baseEntity, subEntityBase, subEntityChildren);
+			}
 		}
+
 		entity = parseObj(entityData.$);
 		if (entity.tags) {
 			parseTag(entity, 'tags');
@@ -223,10 +175,39 @@ const generateEntities = async (maps: any) => {
 			parseTag(entity.damageModelComponent, 'materials_how_much_damage');
 		}
 
+		if (entityData.PhysicsImageShapeComponent) {
+			const physicsImage = parseObj(entityData.PhysicsImageShapeComponent[0].$);
+			if (physicsImage.image_file) {
+				const s = await getBase64(path.resolve(noitaData, physicsImage.image_file));
+				physicsImage.image = s;
+			}
+			if (physicsImage._tags) {
+				parseTag(physicsImage, '_tags');
+			}
+			entity.physicsImage = physicsImage;
+		}
+
+		if (entityData.ItemComponent) {
+			const itemImage = parseObj(entityData.ItemComponent[0].$);
+			if (itemImage.ui_sprite) {
+				const s = await getBase64(path.resolve(noitaData, itemImage.ui_sprite));
+				itemImage.image = s;
+			}
+			if (itemImage._tags) {
+				parseTag(itemImage, '_tags');
+			}
+			entity.itemImage = itemImage;
+		}
+
 		if (entityData.SpriteComponent) {
 			const sprite = parseObj(entityData.SpriteComponent[0].$);
 			if (sprite.image_file) {
-				const s = await parseSprite(sprite.image_file);
+				let s = await parseSprite(sprite.image_file);
+				try {
+					if (!s) {
+						s = await getBase64(path.resolve(noitaData, sprite.image_file));
+					}
+				} catch (e) { }
 				sprite.image = s;
 			}
 			if (sprite._tags) {
@@ -248,26 +229,28 @@ const generateEntities = async (maps: any) => {
 
 	const entities: any = {};
 
-	await iterate(maps, async (obj, key, val) => {
-		if (key !== 'entity') {
-			return;
-		}
-		if (val === '') {
-			return;
-		}
+	const files = await recursiveReaddir(
+		path.resolve(noitaData, 'data/entities'),
+		['*.png', '*.lua', '*.txt']
+	);
+
+	for (let val of files) {
+		val = val.substring(noitaData.length + 1);
+
 		if (entities[val]) {
 			// Already parsed this entity
 			return;
 		}
+		console.log(val);
 		const entityXMLPath = path.resolve(noitaData, val);
 		if (fs.existsSync(entityXMLPath)) {
 			const entityData = (await entityMemo(val, () =>
-				parseStringPromise(fs.readFileSync(entityXMLPath))
-			)).Entity;
-			const entity = await parseEntity(entityData);
+				parseStringPromise(tryRead(entityXMLPath, ''))
+			));
+			const entity = await parseEntity(entityData.Entity || entityData.Sprite);
 			entities[val] = entity;
 		}
-	});
+	}
 	return entities;
 };
 

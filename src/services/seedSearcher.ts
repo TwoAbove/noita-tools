@@ -13,7 +13,7 @@ export interface ISeedSolverConfig {
 }
 
 export class SeedSolver {
-	gameInfoHandler = new GameInfoProvider({ seed: 0 }); // we will use the provider itself but later on we will use the whole thing
+	gameInfoHandler = new GameInfoProvider({ seed: 0 }, []); // we will use the provider itself but later on we will use the whole thing
 	shouldCancel = false;
 	foundSeed?: number;
 	running = false;
@@ -120,6 +120,7 @@ export class SeedSolver {
 			this.findAll = config.findAll;
 		}
 		if (config.unlockedSpells) {
+			this.gameInfoHandler.unlockedSpells = config.unlockedSpells;
 			this.gameInfoHandler.onRandomLoad(() => {
 				this.gameInfoHandler.randoms.SetUnlockedSpells(config.unlockedSpells!);
 			}).finally(() => {});

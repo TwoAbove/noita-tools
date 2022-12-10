@@ -45,7 +45,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 
 	return (
 		<Row className="m-0">
-			<Col className="p-0" lg={7}>
+			<Col className="p-0" lg={8}>
 				{/* <Row xs="auto">
 						<Map seed={seed} infoProvider={infoProvider} />
 				</Row> */}
@@ -63,7 +63,6 @@ const SeedInfo = (props: ISeedInfoProps) => {
 					<Col>
 						<WithShow id="start">
 							<Start
-								infoProvider={infoProvider}
 								startingFlask={data.startingFlask}
 								startingSpell={data.startingSpell}
 								startingBombSpell={data.startingBombSpell}
@@ -98,7 +97,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 					</Col>
 				</Row>
 			</Col>
-			<Col className="p-0" lg={5}>
+			<Col className="p-0" lg={4}>
 				<WithShow id="fungal">
 					<FungalShifts
 						infoProvider={infoProvider}

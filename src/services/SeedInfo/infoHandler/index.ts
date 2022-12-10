@@ -16,9 +16,17 @@ import { StartingSpellInfoProvider } from './InfoProviders/StartingSpell';
 import { AlwaysCastInfoProvider } from './InfoProviders/AlwaysCast';
 import { WaterCaveInfoProvider } from './InfoProviders/WaterCave';
 
+// Chests
+import { ChestRandomProvider } from './InfoProviders/ChestRandom';
+import { PacifistChestProvider } from './InfoProviders/PacifistChest';
+
 import loadRandom, { IRandom } from '../random';
 import { WandInfoProvider } from './InfoProviders/Wand';
 import { i18n } from 'i18next';
+import { PotionInfoProvider } from './InfoProviders/Potion';
+import { PotionSecretInfoProvider } from './InfoProviders/PotionSecret';
+import { PotionRandomMaterialInfoProvider } from './InfoProviders/PotionRandomMaterial';
+import { PowderStashInfoProvider } from './InfoProviders/PowderStash';
 
 interface IProviders {
   alchemy: AlchemyInfoProvider;
@@ -38,6 +46,15 @@ interface IProviders {
   statelessPerk: PerkInfoProvider;
   waterCave: WaterCaveInfoProvider;
   wand: WandInfoProvider;
+
+  potion: PotionInfoProvider;
+  potionSecret: PotionSecretInfoProvider;
+  potionRandomMaterial: PotionRandomMaterialInfoProvider;
+  powderStash: PowderStashInfoProvider;
+
+  chestRandom: ChestRandomProvider;
+  pacifistChest: PacifistChestProvider;
+
   [key: string]: InfoProvider;
 }
 
@@ -51,9 +68,12 @@ export class GameInfoProvider extends EventTarget {
 
   i18n?: i18n;
 
-  constructor(initialConfig: Partial<IProviderConfig>, i18n?: i18n) {
+  unlockedSpells: boolean[];
+
+  constructor(initialConfig: Partial<IProviderConfig>, unlockedSpells: boolean[], i18n?: i18n) {
     super();
     this.resetConfig(initialConfig);
+    this.unlockedSpells = unlockedSpells;
     loadRandom().then((randoms) => {
       this.randoms = randoms;
       this.providers = this.buildInfoProviders();
@@ -109,7 +129,15 @@ export class GameInfoProvider extends EventTarget {
       startingSpell: new StartingSpellInfoProvider(this.randoms),
       statelessPerk: new PerkInfoProvider(this.randoms),
       wand: new WandInfoProvider(this.randoms),
-      waterCave: new WaterCaveInfoProvider(this.randoms)
+      waterCave: new WaterCaveInfoProvider(this.randoms),
+
+      potion: new PotionInfoProvider(this.randoms),
+      potionSecret: new PotionSecretInfoProvider(this.randoms),
+      potionRandomMaterial: new PotionRandomMaterialInfoProvider(this.randoms),
+      powderStash: new PowderStashInfoProvider(this.randoms),
+
+      chestRandom: new ChestRandomProvider(this.randoms, this.unlockedSpells),
+      pacifistChest: new PacifistChestProvider(this.randoms, this.unlockedSpells),
     }
 
     // shop needs the wand info provider to generate wands

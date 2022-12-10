@@ -15,7 +15,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_fire"
+    "ui_name": "$mat_fire",
+    "graphics": {
+      "color": "7fff6000"
+    }
   },
   "spark": {
     "wang_color": "7fff6024",
@@ -67,7 +70,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_sand_static"
+    "ui_name": "$mat_sand_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/earth.png",
+      "color": "ff524f2d"
+    }
   },
   "nest_static": {
     "wang_color": "ffA83E29",
@@ -84,7 +91,11 @@
     ],
     "burnable": "1",
     "density": "10",
-    "ui_name": "$mat_nest_static"
+    "ui_name": "$mat_nest_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/nest.png",
+      "color": "ffA83E29"
+    }
   },
   "bluefungi_static": {
     "wang_color": "ff435495",
@@ -102,7 +113,11 @@
     ],
     "burnable": "1",
     "density": "10",
-    "ui_name": "$mat_bluefungi_static"
+    "ui_name": "$mat_bluefungi_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/bluefungi.png",
+      "color": "ff435495"
+    }
   },
   "rock_static": {
     "wang_color": "ff353923",
@@ -119,7 +134,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static"
+    "ui_name": "$mat_rock_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff313b36",
+      "pixel_all_around": "ff313b36"
+    }
   },
   "water_static": {
     "wang_color": "A02F554D",
@@ -130,7 +150,10 @@
     ],
     "burnable": "0",
     "density": "4",
-    "ui_name": "$mat_water_static"
+    "ui_name": "$mat_water_static",
+    "graphics": {
+      "color": "A0376259"
+    }
   },
   "endslime_static": {
     "wang_color": "888BFF80",
@@ -144,7 +167,11 @@
     ],
     "burnable": "0",
     "density": "4",
-    "ui_name": "$mat_endslime_static"
+    "ui_name": "$mat_endslime_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/endslime.png",
+      "color": "888BFF80"
+    }
   },
   "slime_static": {
     "wang_color": "88E8BD5C",
@@ -159,7 +186,11 @@
     ],
     "burnable": "0",
     "density": "4",
-    "ui_name": "$mat_slime_static"
+    "ui_name": "$mat_slime_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/slime.png",
+      "color": "88E8BD5C"
+    }
   },
   "spore_pod_stalk": {
     "wang_color": "ffE8BDCB",
@@ -175,7 +206,11 @@
     ],
     "burnable": "1",
     "density": "4",
-    "ui_name": "$mat_bluefungi_static"
+    "ui_name": "$mat_bluefungi_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/bluefungi.png",
+      "color": "88E8BD5C"
+    }
   },
   "lavarock_static": {
     "wang_color": "ff5F2621",
@@ -191,7 +226,21 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_lavarock_static"
+    "ui_name": "$mat_lavarock_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/lavarock.png",
+      "color": "ff5F2621",
+      "pixel_all_around": "ff5F2621",
+      "pixel_lonely": "ff5F2621",
+      "pixel_top_right": "ff5F2621",
+      "pixel_bottom_left": "ff5F2621",
+      "pixel_left": "ff8D3620",
+      "pixel_top_left": "ff8D3620",
+      "pixel_top": "ff8D3620",
+      "pixel_right": "ff321616",
+      "pixel_bottom_right": "ff321616",
+      "pixel_bottom": "ff321616"
+    }
   },
   "meteorite_static": {
     "wang_color": "ff1D1010",
@@ -207,7 +256,21 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_meteorite_static"
+    "ui_name": "$mat_meteorite_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meteor.png",
+      "color": "ff1D1010",
+      "pixel_all_around": "ff1D1010",
+      "pixel_lonely": "ff1D1010",
+      "pixel_top_right": "ff461F1F",
+      "pixel_bottom_left": "ff0A0606",
+      "pixel_left": "ff0A0606",
+      "pixel_top_left": "ff1D1010",
+      "pixel_top": "ff461F1F",
+      "pixel_right": "ff461F1F",
+      "pixel_bottom": "ff0A0606",
+      "pixel_bottom_right": "ff1D1010"
+    }
   },
   "templerock_static": {
     "wang_color": "ff6F5439",
@@ -223,7 +286,21 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templerock_static"
+    "ui_name": "$mat_templerock_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templerock.png",
+      "color": "ff6F5439",
+      "pixel_all_around": "ff6F5439",
+      "pixel_lonely": "ff6F5439",
+      "pixel_top_right": "ff6F5439",
+      "pixel_bottom_left": "ff6F5439",
+      "pixel_left": "ff9A7142",
+      "pixel_top_left": "ff9A7142",
+      "pixel_top": "ff9A7142",
+      "pixel_right": "ff543F2B",
+      "pixel_bottom": "ff543F2B",
+      "pixel_bottom_right": "ff543F2B"
+    }
   },
   "steel_static": {
     "wang_color": "ff404041",
@@ -241,7 +318,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steel_static"
+    "ui_name": "$mat_steel_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanel.png",
+      "color": "ff404040",
+      "pixel_all_around": "ff404040"
+    }
   },
   "rock_static_glow": {
     "wang_color": "ff145014",
@@ -258,7 +340,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_glow"
+    "ui_name": "$mat_rock_static_glow",
+    "graphics": {
+      "texture_file": "data/materials_gfx/glowrock.png",
+      "color": "ff145014"
+    }
   },
   "snow_static": {
     "wang_color": "ffEBEBEC",
@@ -275,7 +361,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_snow_static"
+    "ui_name": "$mat_snow_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/snow.png",
+      "color": "ffEBEBEB"
+    }
   },
   "ice_static": {
     "wang_color": "ffCFF7C8",
@@ -292,7 +382,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_ice_static"
+    "ui_name": "$mat_ice_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "ice_acid_static": {
     "wang_color": "ffCFFFC8",
@@ -309,7 +403,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_ice_acid_static"
+    "ui_name": "$mat_ice_acid_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice_acid.png",
+      "color": "ffCFFFC8"
+    }
   },
   "ice_cold_static": {
     "wang_color": "ffAFFFC8",
@@ -326,7 +424,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_ice_cold_static"
+    "ui_name": "$mat_ice_cold_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice_cold.png",
+      "color": "ffAFFFC8"
+    }
   },
   "ice_radioactive_static": {
     "wang_color": "ffBFFFC8",
@@ -343,7 +445,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_ice_radioactive_static"
+    "ui_name": "$mat_ice_radioactive_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice_radioactive.png",
+      "color": "ffBFFFC8"
+    }
   },
   "ice_poison_static": {
     "wang_color": "ffba2de0",
@@ -360,7 +466,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_ice_poison_static"
+    "ui_name": "$mat_ice_poison_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice_poison.png",
+      "color": "ffba2de0"
+    }
   },
   "ice_meteor_static": {
     "wang_color": "ffCF1FC8",
@@ -378,7 +488,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_ice_meteor_static"
+    "ui_name": "$mat_ice_meteor_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice_acid.png",
+      "color": "ffCF1FC8"
+    }
   },
   "tubematerial": {
     "wang_color": "ffCFF7C5",
@@ -394,7 +508,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_tubematerial"
+    "ui_name": "$mat_tubematerial",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C5"
+    }
   },
   "glass_static": {
     "wang_color": "ffa16065",
@@ -409,7 +527,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_glass_static"
+    "ui_name": "$mat_glass_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/glass.png",
+      "color": "ffa16065"
+    }
   },
   "waterrock": {
     "wang_color": "ff1a43f4",
@@ -424,7 +546,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_waterrock"
+    "ui_name": "$mat_waterrock",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff1a43f4"
+    }
   },
   "ice_glass": {
     "wang_color": "ffaedde3",
@@ -441,7 +567,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_glass"
+    "ui_name": "$mat_ice_glass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "ice_glass_b2": {
     "wang_color": "ffaedde5",
@@ -457,7 +587,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_glass_b2"
+    "ui_name": "$mat_ice_glass_b2",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "glass_brittle": {
     "wang_color": "ffaeddd3",
@@ -472,7 +606,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_glass_brittle"
+    "ui_name": "$mat_glass_brittle",
+    "graphics": {
+      "texture_file": "data/materials_gfx/glass.png",
+      "color": "ffaeddd3"
+    }
   },
   "snowrock_static": {
     "wang_color": "ffDBDBDC",
@@ -488,7 +626,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_snowrock_static"
+    "ui_name": "$mat_snowrock_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/snowrock.png",
+      "color": "ffDBDBDB",
+      "pixel_all_around": "ff313b36"
+    }
   },
   "concrete_static": {
     "wang_color": "ff767677",
@@ -505,7 +648,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_concrete_static"
+    "ui_name": "$mat_concrete_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/concrete.png",
+      "color": "ff767676"
+    }
   },
   "wood_static": {
     "wang_color": "ff413F24",
@@ -521,7 +668,12 @@
     ],
     "burnable": "1",
     "density": "11",
-    "ui_name": "$mat_wood_static"
+    "ui_name": "$mat_wood_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff413F24",
+      "pixel_all_around": "ff5d5a33"
+    }
   },
   "cheese_static": {
     "wang_color": "ffF3CD67",
@@ -605,7 +757,10 @@
     ],
     "burnable": "1",
     "density": "2",
-    "ui_name": "$mat_acid_gas"
+    "ui_name": "$mat_acid_gas",
+    "graphics": {
+      "color": "af4eb835"
+    }
   },
   "acid_gas_static": {
     "wang_color": "af4eb817",
@@ -617,7 +772,10 @@
     ],
     "burnable": "1",
     "density": "2",
-    "ui_name": "$mat_acid_gas_static"
+    "ui_name": "$mat_acid_gas_static",
+    "graphics": {
+      "color": "af4eb835"
+    }
   },
   "smoke_static": {
     "wang_color": "7f848487",
@@ -664,7 +822,10 @@
     ],
     "burnable": "0",
     "density": "2",
-    "ui_name": "$mat_radioactive_gas"
+    "ui_name": "$mat_radioactive_gas",
+    "graphics": {
+      "color": "7fC4FF10"
+    }
   },
   "radioactive_gas_static": {
     "wang_color": "af43b818",
@@ -675,7 +836,10 @@
     ],
     "burnable": "0",
     "density": "2",
-    "ui_name": "$mat_radioactive_gas_static"
+    "ui_name": "$mat_radioactive_gas_static",
+    "graphics": {
+      "color": "7fC4FF10"
+    }
   },
   "magic_gas_hp_regeneration": {
     "wang_color": "7fA1F18C",
@@ -699,7 +863,12 @@
     ],
     "burnable": "0",
     "density": "2",
-    "ui_name": "$mat_rainbow_gas"
+    "ui_name": "$mat_rainbow_gas",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rainbow_gas.png",
+      "color": "80FFA2CD",
+      "fire_colors_index": "2"
+    }
   },
   "water": {
     "wang_color": "902F554C",
@@ -714,7 +883,10 @@
     ],
     "burnable": "0",
     "density": "4",
-    "ui_name": "$mat_water"
+    "ui_name": "$mat_water",
+    "graphics": {
+      "color": "A0376259"
+    }
   },
   "water_temp": {
     "wang_color": "902F554F",
@@ -745,7 +917,10 @@
     ],
     "burnable": "0",
     "density": "3.5",
-    "ui_name": "$mat_water_ice"
+    "ui_name": "$mat_water_ice",
+    "graphics": {
+      "color": "A0376269"
+    }
   },
   "water_swamp": {
     "wang_color": "802F552C",
@@ -775,7 +950,10 @@
     ],
     "burnable": "1",
     "density": "1",
-    "ui_name": "$mat_oil"
+    "ui_name": "$mat_oil",
+    "graphics": {
+      "color": "e63D3728"
+    }
   },
   "alcohol": {
     "wang_color": "90d0ffe8",
@@ -788,7 +966,10 @@
       "liquid_common"
     ],
     "density": "3.5",
-    "ui_name": "$mat_alcohol"
+    "ui_name": "$mat_alcohol",
+    "graphics": {
+      "color": "4FEA7207"
+    }
   },
   "sima": {
     "wang_color": "90d0ffe9",
@@ -801,7 +982,10 @@
       "liquid_common"
     ],
     "density": "3.5",
-    "ui_name": "$mat_sima"
+    "ui_name": "$mat_sima",
+    "graphics": {
+      "color": "4FEA7207"
+    }
   },
   "juhannussima": {
     "wang_color": "90d0ffe7",
@@ -814,7 +998,10 @@
       "liquid_common"
     ],
     "density": "3.5",
-    "ui_name": "$mat_juhannussima"
+    "ui_name": "$mat_juhannussima",
+    "graphics": {
+      "color": "4FEA7207"
+    }
   },
   "alcohol_gas": {
     "wang_color": "1101FD13",
@@ -827,7 +1014,10 @@
     ],
     "burnable": "1",
     "density": "1",
-    "ui_name": "$mat_alcohol_gas"
+    "ui_name": "$mat_alcohol_gas",
+    "graphics": {
+      "color": "72f87d12"
+    }
   },
   "magic_liquid": {
     "wang_color": "80fffea2",
@@ -854,7 +1044,12 @@
       "impure"
     ],
     "density": "1.2",
-    "ui_name": "$mat_confusion"
+    "ui_name": "$mat_confusion",
+    "graphics": {
+      "texture_file": "data/materials_gfx/confusion.png",
+      "color": "88E8BD5C",
+      "fire_colors_index": "2"
+    }
   },
   "material_darkness": {
     "wang_color": "80563e66",
@@ -867,7 +1062,12 @@
       "impure"
     ],
     "density": "1.2434",
-    "ui_name": "$mat_darkness"
+    "ui_name": "$mat_darkness",
+    "graphics": {
+      "texture_file": "data/materials_gfx/darkness.png",
+      "color": "80563e66",
+      "fire_colors_index": "2"
+    }
   },
   "material_rainbow": {
     "wang_color": "80FFA2CD",
@@ -880,7 +1080,12 @@
       "impure"
     ],
     "density": "1.874",
-    "ui_name": "$mat_rainbow"
+    "ui_name": "$mat_rainbow",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rainbow.png",
+      "color": "80FFA2CD",
+      "fire_colors_index": "2"
+    }
   },
   "magic_liquid_movement_faster": {
     "wang_color": "80c1dba4",
@@ -981,7 +1186,11 @@
     ],
     "burnable": "1",
     "density": "4.43",
-    "ui_name": "$mat_magic_liquid_unstable_teleportation"
+    "ui_name": "$mat_magic_liquid_unstable_teleportation",
+    "graphics": {
+      "texture_file": "data/materials_gfx/magic_liquid_unstable_telep.png",
+      "color": "8000BEE4"
+    }
   },
   "magic_liquid_teleportation": {
     "wang_color": "807fceea",
@@ -1068,7 +1277,11 @@
     ],
     "burnable": "0",
     "density": "4.16",
-    "ui_name": "$mat_magic_liquid_unstable_polymorph"
+    "ui_name": "$mat_magic_liquid_unstable_polymorph",
+    "graphics": {
+      "texture_file": "data/materials_gfx/polymorph_unstable.png",
+      "color": "80a3569f"
+    }
   },
   "magic_liquid_berserk": {
     "wang_color": "80f86868",
@@ -1096,7 +1309,10 @@
     ],
     "burnable": "0",
     "density": "3.513",
-    "ui_name": "$mat_magic_liquid_charm"
+    "ui_name": "$mat_magic_liquid_charm",
+    "graphics": {
+      "color": "80c23055"
+    }
   },
   "magic_liquid_invisibility": {
     "wang_color": "80306cc0",
@@ -1124,7 +1340,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_cloud_radioactive"
+    "ui_name": "$mat_cloud_radioactive",
+    "graphics": {
+      "color": "11B4FF10"
+    }
   },
   "cloud_blood": {
     "wang_color": "2201FD34",
@@ -1138,7 +1357,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_cloud_blood"
+    "ui_name": "$mat_cloud_blood",
+    "graphics": {
+      "color": "33b80000"
+    }
   },
   "cloud_slime": {
     "wang_color": "2201FC34",
@@ -1152,7 +1374,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_cloud_slime"
+    "ui_name": "$mat_cloud_slime",
+    "graphics": {
+      "color": "37c5447c"
+    }
   },
   "swamp": {
     "wang_color": "802f2f0a",
@@ -1170,7 +1395,11 @@
     ],
     "burnable": "0",
     "density": "3.5",
-    "ui_name": "$mat_swamp"
+    "ui_name": "$mat_swamp",
+    "graphics": {
+      "texture_file": "data/materials_gfx/swamp.png",
+      "color": "802f2f0a"
+    }
   },
   "mud": {
     "wang_color": "A0363e21",
@@ -1185,7 +1414,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_mud"
+    "ui_name": "$mat_mud",
+    "graphics": {
+      "texture_file": "data/materials_gfx/mud.png",
+      "color": "A0363e21"
+    }
   },
   "blood": {
     "wang_color": "aa830000",
@@ -1239,7 +1472,11 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_blood_fungi"
+    "ui_name": "$mat_blood_fungi",
+    "graphics": {
+      "texture_file": "data/materials_gfx/fungi.png",
+      "color": "ffF064AA"
+    }
   },
   "blood_worm": {
     "wang_color": "88C8BC00",
@@ -1256,7 +1493,11 @@
     ],
     "burnable": "0",
     "density": "2.123",
-    "ui_name": "$mat_blood_worm"
+    "ui_name": "$mat_blood_worm",
+    "graphics": {
+      "texture_file": "data/materials_gfx/yellowblood.png",
+      "color": "88C8BC00"
+    }
   },
   "porridge": {
     "wang_color": "EEd7cfae",
@@ -1274,7 +1515,11 @@
     ],
     "burnable": "1",
     "density": "2.123",
-    "ui_name": "$mat_porridge"
+    "ui_name": "$mat_porridge",
+    "graphics": {
+      "texture_file": "data/materials_gfx/porridge.png",
+      "color": "EEd7cfae"
+    }
   },
   "blood_cold": {
     "wang_color": "aa830023",
@@ -1292,7 +1537,11 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_blood_cold"
+    "ui_name": "$mat_blood_cold",
+    "graphics": {
+      "texture_file": "data/materials_gfx/blueblood.png",
+      "color": "ff3d4d87"
+    }
   },
   "radioactive_liquid": {
     "wang_color": "4400FF33",
@@ -1308,7 +1557,10 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_radioactive_liquid"
+    "ui_name": "$mat_radioactive_liquid",
+    "graphics": {
+      "color": "44B4FF10"
+    }
   },
   "radioactive_liquid_fading": {
     "wang_color": "4400FF34",
@@ -1325,7 +1577,10 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_radioactive_liquid_fading"
+    "ui_name": "$mat_radioactive_liquid_fading",
+    "graphics": {
+      "color": "44B4FF10"
+    }
   },
   "plasma_fading": {
     "wang_color": "7734bfff",
@@ -1359,7 +1614,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_gold_molten"
+    "ui_name": "$mat_gold_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gold.png",
+      "color": "ffb89e58"
+    }
   },
   "wax_molten": {
     "wang_color": "ffEAACAB",
@@ -1377,7 +1636,11 @@
     ],
     "burnable": "1",
     "density": "2",
-    "ui_name": "$mat_wax_molten"
+    "ui_name": "$mat_wax_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wax.png",
+      "color": "ffEAACAB"
+    }
   },
   "silver_molten": {
     "wang_color": "ff4e5263",
@@ -1394,7 +1657,11 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_silver_molten"
+    "ui_name": "$mat_silver_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/silver.png",
+      "color": "ffb89e58"
+    }
   },
   "copper_molten": {
     "wang_color": "ff4e5264",
@@ -1411,7 +1678,11 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_copper_molten"
+    "ui_name": "$mat_copper_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/copper.png",
+      "color": "ffb89e58"
+    }
   },
   "brass_molten": {
     "wang_color": "ff4e5285",
@@ -1428,7 +1699,11 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_brass_molten"
+    "ui_name": "$mat_brass_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/brass.png",
+      "color": "ffb89e58"
+    }
   },
   "glass_molten": {
     "wang_color": "ff4e5266",
@@ -1445,7 +1720,11 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_glass_molten"
+    "ui_name": "$mat_glass_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/glass.png",
+      "color": "ffb89e58"
+    }
   },
   "glass_broken_molten": {
     "wang_color": "ff4e5237",
@@ -1462,7 +1741,11 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_glass_broken_molten"
+    "ui_name": "$mat_glass_broken_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/glass.png",
+      "color": "ffb89e58"
+    }
   },
   "steel_molten": {
     "wang_color": "ffebcd08",
@@ -1478,7 +1761,11 @@
     ],
     "burnable": "1",
     "density": "2",
-    "ui_name": "$mat_steel_molten"
+    "ui_name": "$mat_steel_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ffb89e58"
+    }
   },
   "creepy_liquid": {
     "wang_color": "7f381774",
@@ -1507,7 +1794,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_cement"
+    "ui_name": "$mat_cement",
+    "graphics": {
+      "texture_file": "data/materials_gfx/concrete_wet.png",
+      "color": "ff808080"
+    }
   },
   "concrete_sand": {
     "wang_color": "ff808082",
@@ -1521,7 +1812,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_concrete_sand"
+    "ui_name": "$mat_concrete_sand",
+    "graphics": {
+      "texture_file": "data/materials_gfx/concrete.png",
+      "color": "ff767676"
+    }
   },
   "sand": {
     "wang_color": "ffebcd00",
@@ -1536,7 +1831,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_sand"
+    "ui_name": "$mat_sand",
+    "graphics": {
+      "texture_file": "data/materials_gfx/sand.png",
+      "color": "ffb89e57"
+    }
   },
   "bone": {
     "wang_color": "ffE6E6FF",
@@ -1551,7 +1850,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_bone"
+    "ui_name": "$mat_bone",
+    "graphics": {
+      "texture_file": "data/materials_gfx/bone.png",
+      "color": "ffE6E6FF"
+    }
   },
   "soil": {
     "wang_color": "ff36311e",
@@ -1568,7 +1871,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_soil"
+    "ui_name": "$mat_soil",
+    "graphics": {
+      "texture_file": "data/materials_gfx/soil.png",
+      "color": "ff36311e"
+    }
   },
   "sandstone": {
     "wang_color": "ff90fe40",
@@ -1585,7 +1892,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_sandstone"
+    "ui_name": "$mat_sandstone",
+    "graphics": {
+      "texture_file": "data/materials_gfx/desert.png",
+      "color": "ff90fe40"
+    }
   },
   "fungisoil": {
     "wang_color": "ff36312e",
@@ -1603,7 +1914,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_fungisoil"
+    "ui_name": "$mat_fungisoil",
+    "graphics": {
+      "texture_file": "data/materials_gfx/soil.png",
+      "color": "ff36311e"
+    }
   },
   "honey": {
     "wang_color": "55E8BD5A",
@@ -1617,7 +1932,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_honey"
+    "ui_name": "$mat_honey",
+    "graphics": {
+      "texture_file": "data/materials_gfx/honey.png",
+      "color": "ffE8BD5A"
+    }
   },
   "glue": {
     "wang_color": "fff6fce3",
@@ -1632,7 +1951,10 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_glue"
+    "ui_name": "$mat_glue",
+    "graphics": {
+      "color": "fff6fce3"
+    }
   },
   "slime": {
     "wang_color": "88E8BD5A",
@@ -1648,7 +1970,11 @@
     ],
     "burnable": "0",
     "density": "5",
-    "ui_name": "$mat_slime_pink"
+    "ui_name": "$mat_slime_pink",
+    "graphics": {
+      "texture_file": "data/materials_gfx/slime.png",
+      "color": "88b8376d"
+    }
   },
   "slush": {
     "wang_color": "90b5ceff",
@@ -1662,7 +1988,11 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_slush"
+    "ui_name": "$mat_slush",
+    "graphics": {
+      "texture_file": "data/materials_gfx/slush.png",
+      "color": "90b5ceff"
+    }
   },
   "vomit": {
     "wang_color": "88E8BD5B",
@@ -1671,7 +2001,11 @@
     "tags": [
       "food"
     ],
-    "ui_name": "$mat_vomit"
+    "ui_name": "$mat_vomit",
+    "graphics": {
+      "texture_file": "data/materials_gfx/vomit.png",
+      "color": "ffcc4c4c"
+    }
   },
   "explosion_dirt": {
     "wang_color": "ff36311f",
@@ -1700,7 +2034,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_vine"
+    "ui_name": "$mat_vine",
+    "graphics": {
+      "texture_file": "data/materials_gfx/test_vine.png",
+      "color": "ff526F36"
+    }
   },
   "root": {
     "wang_color": "ff2A724A",
@@ -1718,7 +2056,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_root"
+    "ui_name": "$mat_root",
+    "graphics": {
+      "texture_file": "data/materials_gfx/test_vine.png",
+      "color": "ff2A724A"
+    }
   },
   "snow": {
     "wang_color": "ffF4F4F3",
@@ -1735,7 +2077,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_snow"
+    "ui_name": "$mat_snow",
+    "graphics": {
+      "texture_file": "data/materials_gfx/snow.png",
+      "color": "ffF4F4F3"
+    }
   },
   "snow_sticky": {
     "wang_color": "ffeeeeed",
@@ -1751,7 +2097,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_snow"
+    "ui_name": "$mat_snow",
+    "graphics": {
+      "texture_file": "data/materials_gfx/snow.png",
+      "color": "ffeeeeee"
+    }
   },
   "rotten_meat": {
     "wang_color": "ffebcdd0",
@@ -1768,7 +2118,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_rotten_meat"
+    "ui_name": "$mat_rotten_meat",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_rotten.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_slime_sand": {
     "wang_color": "ffed4c4c",
@@ -1786,7 +2150,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_slime_sand"
+    "ui_name": "$mat_meat_slime_sand",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_rotten.png",
+      "color": "ffed4c4c"
+    }
   },
   "rotten_meat_radioactive": {
     "wang_color": "4400FF53",
@@ -1805,7 +2173,21 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_rotten_meat_radioactive"
+    "ui_name": "$mat_rotten_meat_radioactive",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_rotten.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "ice": {
     "wang_color": "ffCFCFF0",
@@ -1822,7 +2204,12 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice"
+    "ui_name": "$mat_ice",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFCFF0",
+      "pixel_all_around": "ff3b93bb"
+    }
   },
   "sand_herb": {
     "wang_color": "aa8300a0",
@@ -1836,7 +2223,11 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_sand_herb"
+    "ui_name": "$mat_sand_herb",
+    "graphics": {
+      "texture_file": "data/materials_gfx/moss.png",
+      "color": "ff33b828"
+    }
   },
   "wax": {
     "wang_color": "ffEAAAAB",
@@ -1853,7 +2244,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_wax"
+    "ui_name": "$mat_wax",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wax.png",
+      "color": "ffEAAAAB"
+    }
   },
   "gold": {
     "wang_color": "ffebcd01",
@@ -1871,7 +2266,11 @@
     ],
     "burnable": "0",
     "density": "9",
-    "ui_name": "$mat_gold"
+    "ui_name": "$mat_gold",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gold.png",
+      "color": "ffb89e58"
+    }
   },
   "silver": {
     "wang_color": "ff4e5262",
@@ -1888,7 +2287,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_silver"
+    "ui_name": "$mat_silver",
+    "graphics": {
+      "texture_file": "data/materials_gfx/silver.png",
+      "color": "ffb89e58"
+    }
   },
   "copper": {
     "wang_color": "ff4e5265",
@@ -1905,7 +2308,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_copper"
+    "ui_name": "$mat_copper",
+    "graphics": {
+      "texture_file": "data/materials_gfx/copper.png",
+      "color": "ffb89e58"
+    }
   },
   "brass": {
     "wang_color": "ff4e5267",
@@ -1922,7 +2329,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_brass"
+    "ui_name": "$mat_brass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/brass.png",
+      "color": "ffb89e58"
+    }
   },
   "diamond": {
     "wang_color": "ff82DBE2",
@@ -1937,7 +2348,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_diamond"
+    "ui_name": "$mat_diamond",
+    "graphics": {
+      "texture_file": "data/materials_gfx/diamond.png",
+      "color": "ff82DBE2"
+    }
   },
   "coal": {
     "wang_color": "ff505052",
@@ -1952,7 +2367,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_coal"
+    "ui_name": "$mat_coal",
+    "graphics": {
+      "texture_file": "data/materials_gfx/coal.png",
+      "color": "ff505050"
+    }
   },
   "sulphur": {
     "wang_color": "ff141415",
@@ -1966,7 +2385,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_sulphur"
+    "ui_name": "$mat_sulphur",
+    "graphics": {
+      "texture_file": "data/materials_gfx/sulphur.png",
+      "color": "ffb89e57"
+    }
   },
   "salt": {
     "wang_color": "ffe1e1e2",
@@ -1980,7 +2403,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_salt"
+    "ui_name": "$mat_salt",
+    "graphics": {
+      "texture_file": "data/materials_gfx/salt.png",
+      "color": "ffb89e57"
+    }
   },
   "sodium_unstable": {
     "wang_color": "ff411F24",
@@ -1994,7 +2421,11 @@
     ],
     "burnable": "1",
     "density": "2",
-    "ui_name": "$mat_sodium_unstable"
+    "ui_name": "$mat_sodium_unstable",
+    "graphics": {
+      "texture_file": "data/materials_gfx/salt.png",
+      "color": "ff411F24"
+    }
   },
   "gunpowder": {
     "wang_color": "ff232324",
@@ -2008,7 +2439,11 @@
     ],
     "burnable": "1",
     "density": "7",
-    "ui_name": "$mat_gunpowder"
+    "ui_name": "$mat_gunpowder",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gunpowder.png",
+      "color": "ffb89e57"
+    }
   },
   "gunpowder_explosive": {
     "wang_color": "ffF7BB43",
@@ -2022,7 +2457,11 @@
     ],
     "burnable": "1",
     "density": "7",
-    "ui_name": "$mat_gunpowder_explosive"
+    "ui_name": "$mat_gunpowder_explosive",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gunpowder_tnt.png",
+      "color": "ffF7BB43"
+    }
   },
   "gunpowder_tnt": {
     "wang_color": "ffF7BF43",
@@ -2036,7 +2475,11 @@
     ],
     "burnable": "1",
     "density": "7",
-    "ui_name": "$mat_gunpowder_tnt"
+    "ui_name": "$mat_gunpowder_tnt",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gunpowder_tnt.png",
+      "color": "ffF7BF43"
+    }
   },
   "gunpowder_unstable": {
     "wang_color": "ff232373",
@@ -2051,7 +2494,11 @@
     ],
     "burnable": "1",
     "density": "7",
-    "ui_name": "$mat_gunpowder_unstable"
+    "ui_name": "$mat_gunpowder_unstable",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gunpowder.png",
+      "color": "ffb89e57"
+    }
   },
   "gunpowder_unstable_big": {
     "wang_color": "ff230f73",
@@ -2066,7 +2513,11 @@
     ],
     "burnable": "1",
     "density": "7",
-    "ui_name": "$mat_gunpowder_unstable"
+    "ui_name": "$mat_gunpowder_unstable",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gunpowder.png",
+      "color": "ffb89e57"
+    }
   },
   "monster_powder_test": {
     "wang_color": "ff200073",
@@ -2081,7 +2532,11 @@
     ],
     "burnable": "1",
     "density": "7",
-    "ui_name": "$mat_monster_powder_test"
+    "ui_name": "$mat_monster_powder_test",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gunpowder.png",
+      "color": "ffb89e57"
+    }
   },
   "rat_powder": {
     "wang_color": "ffbe4dff",
@@ -2093,7 +2548,11 @@
     ],
     "burnable": "0",
     "density": "7",
-    "ui_name": "$mat_rat_powder"
+    "ui_name": "$mat_rat_powder",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_rotten.png",
+      "color": "ffb89e57"
+    }
   },
   "fungus_powder": {
     "wang_color": "ffbecafe",
@@ -2106,7 +2565,11 @@
     ],
     "burnable": "0",
     "density": "7",
-    "ui_name": "$mat_fungisoil"
+    "ui_name": "$mat_fungisoil",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_rotten.png",
+      "color": "ffb89e57"
+    }
   },
   "orb_powder": {
     "wang_color": "fff7f3ee",
@@ -2115,7 +2578,11 @@
     "hp": "1000",
     "burnable": "1",
     "density": "7",
-    "ui_name": "$mat_orb_powder"
+    "ui_name": "$mat_orb_powder",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "fff7f3ee"
+    }
   },
   "gunpowder_unstable_boss_limbs": {
     "wang_color": "ff80C850",
@@ -2130,7 +2597,11 @@
     ],
     "burnable": "1",
     "density": "7",
-    "ui_name": "$mat_gunpowder_unstable_boss_limbs"
+    "ui_name": "$mat_gunpowder_unstable_boss_limbs",
+    "graphics": {
+      "texture_file": "data/materials_gfx/moss.png",
+      "color": "ff80C850"
+    }
   },
   "plastic_red": {
     "wang_color": "ff900000",
@@ -2178,7 +2649,12 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_grass"
+    "ui_name": "$mat_grass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/grass.png",
+      "is_grass": "1",
+      "color": "ff33b828"
+    }
   },
   "grass_ice": {
     "wang_color": "ff3abb31",
@@ -2193,7 +2669,12 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_ice"
+    "ui_name": "$mat_ice",
+    "graphics": {
+      "texture_file": "data/materials_gfx/grass_frozen.png",
+      "is_grass": "1",
+      "color": "ff33b828"
+    }
   },
   "grass_dry": {
     "wang_color": "ff3abb35",
@@ -2210,7 +2691,12 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_grass"
+    "ui_name": "$mat_grass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/grass_dry.png",
+      "is_grass": "1",
+      "color": "ff33b828"
+    }
   },
   "fungi": {
     "wang_color": "ff3abb32",
@@ -2226,7 +2712,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fungi_trippy"
+    "ui_name": "$mat_fungi_trippy",
+    "graphics": {
+      "texture_file": "data/materials_gfx/fungi.png",
+      "color": "ffF064AA"
+    }
   },
   "spore": {
     "wang_color": "ff3abb33",
@@ -2241,7 +2731,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_spore"
+    "ui_name": "$mat_spore",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gunpowder.png",
+      "color": "ff33b828"
+    }
   },
   "moss": {
     "wang_color": "ff33b828",
@@ -2257,7 +2751,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_moss"
+    "ui_name": "$mat_moss",
+    "graphics": {
+      "texture_file": "data/materials_gfx/moss.png",
+      "color": "ff33b828"
+    }
   },
   "plant_material": {
     "wang_color": "ff33b838",
@@ -2272,7 +2770,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_plant_material"
+    "ui_name": "$mat_plant_material",
+    "graphics": {
+      "texture_file": "data/materials_gfx/grass.png",
+      "color": "ff33b828"
+    }
   },
   "plant_material_red": {
     "wang_color": "ffaa2818",
@@ -2287,7 +2789,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_plant_material_red"
+    "ui_name": "$mat_plant_material_red",
+    "graphics": {
+      "texture_file": "data/materials_gfx/lavarock.png",
+      "color": "ffaa2818"
+    }
   },
   "ceiling_plant_material": {
     "wang_color": "ff33b848",
@@ -2301,7 +2807,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_ceiling_plant_material"
+    "ui_name": "$mat_ceiling_plant_material",
+    "graphics": {
+      "texture_file": "data/materials_gfx/grass.png",
+      "color": "ff33b828"
+    }
   },
   "mushroom_seed": {
     "wang_color": "ffb89f6c",
@@ -2417,7 +2927,10 @@
     ],
     "burnable": "0",
     "density": "2.9",
-    "ui_name": "$mat_acid"
+    "ui_name": "$mat_acid",
+    "graphics": {
+      "color": "4B00ed32"
+    }
   },
   "lava": {
     "wang_color": "ffff6000",
@@ -2447,7 +2960,12 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_player"
+    "ui_name": "$mat_wood_player",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff413F24",
+      "pixel_all_around": "ff5d5a33"
+    }
   },
   "wood_player_b2": {
     "wang_color": "ff613e02",
@@ -2464,7 +2982,12 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_player_b2"
+    "ui_name": "$mat_wood_player_b2",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff413F24",
+      "pixel_all_around": "ff5d5a33"
+    }
   },
   "wood": {
     "wang_color": "ff613e00",
@@ -2481,7 +3004,12 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood"
+    "ui_name": "$mat_wood",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff413F24",
+      "pixel_all_around": "ff5d5a33"
+    }
   },
   "wax_b2": {
     "wang_color": "ffEAAAAC",
@@ -2496,7 +3024,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wax_b2"
+    "ui_name": "$mat_wax_b2",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wax.png",
+      "color": "ffEAAAAC"
+    }
   },
   "fuse": {
     "wang_color": "ffEAAAAD",
@@ -2508,7 +3040,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fuse"
+    "ui_name": "$mat_fuse",
+    "graphics": {
+      "normal_mapped": "1",
+      "color": "ff586679"
+    }
   },
   "wood_loose": {
     "wang_color": "ff613e01",
@@ -2524,7 +3060,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_loose"
+    "ui_name": "$mat_wood_loose",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff5d5a33"
+    }
   },
   "rock_loose": {
     "wang_color": "ff937d58",
@@ -2540,7 +3080,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_rock_loose"
+    "ui_name": "$mat_rock_loose",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff937d58"
+    }
   },
   "ice_ceiling": {
     "wang_color": "ff3b93ba",
@@ -2555,7 +3099,21 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_ceiling"
+    "ui_name": "$mat_ice_ceiling",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ff3b93bb",
+      "pixel_all_around": "ff3b93bb",
+      "pixel_lonely": "ff3b93bb",
+      "pixel_top_right": "ff3b93bb",
+      "pixel_bottom_left": "ff3b93bb",
+      "pixel_left": "ff78e0f0",
+      "pixel_top_left": "ff78e0f0",
+      "pixel_top": "ff78e0f0",
+      "pixel_right": "ff365b77",
+      "pixel_bottom_right": "ff365b77",
+      "pixel_bottom": "ff365b77"
+    }
   },
   "brick": {
     "wang_color": "ffb80900",
@@ -2571,7 +3129,21 @@
     ],
     "burnable": "1",
     "density": "50",
-    "ui_name": "$mat_brick"
+    "ui_name": "$mat_brick",
+    "graphics": {
+      "texture_file": "data/materials_gfx/brick.png",
+      "color": "ff73737f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff73737f",
+      "pixel_top_right": "ff73737f",
+      "pixel_bottom_left": "ff73737f",
+      "pixel_left": "ffc7c7cc",
+      "pixel_top_left": "ffc7c7cc",
+      "pixel_top": "ffc7c7cc",
+      "pixel_right": "ff706d60",
+      "pixel_bottom_right": "ff706d60",
+      "pixel_bottom": "ff706d60"
+    }
   },
   "concrete_collapsed": {
     "wang_color": "ffb80901",
@@ -2587,7 +3159,21 @@
     ],
     "burnable": "1",
     "density": "10",
-    "ui_name": "$mat_concrete_collapsed"
+    "ui_name": "$mat_concrete_collapsed",
+    "graphics": {
+      "texture_file": "data/materials_gfx/brick.png",
+      "color": "ff73737f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff73737f",
+      "pixel_top_right": "ff73737f",
+      "pixel_bottom_left": "ff73737f",
+      "pixel_left": "ffc7c7cc",
+      "pixel_top_left": "ffc7c7cc",
+      "pixel_top": "ffc7c7cc",
+      "pixel_right": "ff706d60",
+      "pixel_bottom_right": "ff706d60",
+      "pixel_bottom": "ff706d60"
+    }
   },
   "tnt": {
     "wang_color": "ffab5e4f",
@@ -2604,7 +3190,21 @@
     ],
     "burnable": "1",
     "density": "8",
-    "ui_name": "$mat_tnt"
+    "ui_name": "$mat_tnt",
+    "graphics": {
+      "texture_file": "data/materials_gfx/tnt.png",
+      "color": "ff73737f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff73737f",
+      "pixel_top_right": "ff73737f",
+      "pixel_bottom_left": "ff73737f",
+      "pixel_left": "ffc7c7cc",
+      "pixel_top_left": "ffc7c7cc",
+      "pixel_top": "ffc7c7cc",
+      "pixel_right": "ff242428",
+      "pixel_bottom_right": "ff242428",
+      "pixel_bottom": "ff242428"
+    }
   },
   "tnt_static": {
     "wang_color": "ffc1ffee",
@@ -2621,7 +3221,21 @@
     ],
     "burnable": "1",
     "density": "8",
-    "ui_name": "$mat_tnt"
+    "ui_name": "$mat_tnt",
+    "graphics": {
+      "texture_file": "data/materials_gfx/tnt.png",
+      "color": "ff73737f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff73737f",
+      "pixel_top_right": "ff73737f",
+      "pixel_bottom_left": "ff73737f",
+      "pixel_left": "ffc7c7cc",
+      "pixel_top_left": "ffc7c7cc",
+      "pixel_top": "ffc7c7cc",
+      "pixel_right": "ff242428",
+      "pixel_bottom_right": "ff242428",
+      "pixel_bottom": "ff242428"
+    }
   },
   "trailer_text": {
     "wang_color": "ffc0ffe1",
@@ -2630,7 +3244,10 @@
     "hp": "500",
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_trailer_text"
+    "ui_name": "$mat_trailer_text",
+    "graphics": {
+      "color": "ffFFffFF"
+    }
   },
   "meteorite": {
     "wang_color": "ff1D1012",
@@ -2645,7 +3262,21 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_meteorite"
+    "ui_name": "$mat_meteorite",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meteor.png",
+      "color": "ff1D1010",
+      "pixel_all_around": "ff1D1010",
+      "pixel_lonely": "ff1D1010",
+      "pixel_top_right": "ff461F1F",
+      "pixel_bottom_left": "ff0A0606",
+      "pixel_left": "ff0A0606",
+      "pixel_top_left": "ff1D1010",
+      "pixel_top": "ff461F1F",
+      "pixel_right": "ff461F1F",
+      "pixel_bottom": "ff0A0606",
+      "pixel_bottom_right": "ff1D1010"
+    }
   },
   "sulphur_box2d": {
     "wang_color": "ffC9C169",
@@ -2659,7 +3290,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_sulphur"
+    "ui_name": "$mat_sulphur",
+    "graphics": {
+      "texture_file": "data/materials_gfx/sulphur.png",
+      "color": "ffC9C169"
+    }
   },
   "meteorite_test": {
     "wang_color": "ff1D1013",
@@ -2674,7 +3309,21 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_meteorite"
+    "ui_name": "$mat_meteorite",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meteor.png",
+      "color": "ff1D1010",
+      "pixel_all_around": "ff1D1010",
+      "pixel_lonely": "ff1D1010",
+      "pixel_top_right": "ff461F1F",
+      "pixel_bottom_left": "ff0A0606",
+      "pixel_left": "ff0A0606",
+      "pixel_top_left": "ff1D1010",
+      "pixel_top": "ff461F1F",
+      "pixel_right": "ff461F1F",
+      "pixel_bottom": "ff0A0606",
+      "pixel_bottom_right": "ff1D1010"
+    }
   },
   "meteorite_green": {
     "wang_color": "ff4e5244",
@@ -2689,7 +3338,21 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_meteorite_green"
+    "ui_name": "$mat_meteorite_green",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_glow.png",
+      "color": "ff313b36",
+      "pixel_all_around": "ff313b36",
+      "pixel_lonely": "ff313b36",
+      "pixel_top_right": "ff313b36",
+      "pixel_bottom_left": "ff313b36",
+      "pixel_left": "ff495750",
+      "pixel_top_left": "ff495750",
+      "pixel_top": "ff495750",
+      "pixel_right": "ff1a201d",
+      "pixel_bottom_right": "ff1a201d",
+      "pixel_bottom": "ff1a201d"
+    }
   },
   "steel": {
     "wang_color": "ff3b5d4b",
@@ -2706,7 +3369,21 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_steel"
+    "ui_name": "$mat_steel",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff73737f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff4f5eab",
+      "pixel_top_right": "ff4f5eab",
+      "pixel_bottom_left": "ff4f5eab",
+      "pixel_left": "ffc1c8be",
+      "pixel_top_left": "ffc1c8be",
+      "pixel_top": "ffc1c8be",
+      "pixel_right": "ff25333b",
+      "pixel_bottom_right": "ff25333b",
+      "pixel_bottom": "ff25333b"
+    }
   },
   "steel_rust": {
     "wang_color": "ff73727e",
@@ -2722,7 +3399,21 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_steel_rust"
+    "ui_name": "$mat_steel_rust",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rust.png",
+      "color": "ff73737f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff4f5eab",
+      "pixel_top_right": "ff4f5eab",
+      "pixel_bottom_left": "ff4f5eab",
+      "pixel_left": "ffc1c8be",
+      "pixel_top_left": "ffc1c8be",
+      "pixel_top": "ffc1c8be",
+      "pixel_right": "ff25333b",
+      "pixel_bottom_right": "ff25333b",
+      "pixel_bottom": "ff25333b"
+    }
   },
   "metal_rust_rust": {
     "wang_color": "ff73a27e",
@@ -2739,7 +3430,21 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_rust_rust"
+    "ui_name": "$mat_metal_rust_rust",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rust.png",
+      "color": "ff73a37f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff4f5eab",
+      "pixel_top_right": "ff4f5eab",
+      "pixel_bottom_left": "ff4f5eab",
+      "pixel_left": "ffc1c8be",
+      "pixel_top_left": "ffc1c8be",
+      "pixel_top": "ffc1c8be",
+      "pixel_right": "ff25333b",
+      "pixel_bottom_right": "ff25333b",
+      "pixel_bottom": "ff25333b"
+    }
   },
   "metal_rust_barrel_rust": {
     "wang_color": "ff73a27f",
@@ -2756,7 +3461,21 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_rust_barrel_rust"
+    "ui_name": "$mat_metal_rust_barrel_rust",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rust.png",
+      "color": "ff73a37f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff4f5eab",
+      "pixel_top_right": "ff4f5eab",
+      "pixel_bottom_left": "ff4f5eab",
+      "pixel_left": "ffc1c8be",
+      "pixel_top_left": "ffc1c8be",
+      "pixel_top": "ffc1c8be",
+      "pixel_right": "ff25333b",
+      "pixel_bottom_right": "ff25333b",
+      "pixel_bottom": "ff25333b"
+    }
   },
   "plastic": {
     "wang_color": "ff3b5d3b",
@@ -2773,7 +3492,21 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_plastic"
+    "ui_name": "$mat_plastic",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff73737f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff4f5eab",
+      "pixel_top_right": "ff4f5eab",
+      "pixel_bottom_left": "ff4f5eab",
+      "pixel_left": "ffc1c8be",
+      "pixel_top_left": "ffc1c8be",
+      "pixel_top": "ffc1c8be",
+      "pixel_right": "ff25333b",
+      "pixel_bottom_right": "ff25333b",
+      "pixel_bottom": "ff25333b"
+    }
   },
   "aluminium": {
     "wang_color": "ff3b5d3c",
@@ -2791,7 +3524,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_aluminium"
+    "ui_name": "$mat_aluminium",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff73737f"
+    }
   },
   "rock_static_box2d": {
     "wang_color": "ff2d2dff",
@@ -2807,7 +3544,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_rock_static_box2d"
+    "ui_name": "$mat_rock_static_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "rock_box2d": {
     "wang_color": "ff2d2dac",
@@ -2821,7 +3562,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_rock_box2d"
+    "ui_name": "$mat_rock_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff2d2dac"
+    }
   },
   "crystal": {
     "wang_color": "ff3b5d2e",
@@ -2834,7 +3579,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_crystal"
+    "ui_name": "$mat_crystal",
+    "graphics": {
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "ff74737f"
+    }
   },
   "magic_crystal": {
     "wang_color": "ff3b5d43",
@@ -2847,7 +3596,12 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_magic_crystal"
+    "ui_name": "$mat_magic_crystal",
+    "graphics": {
+      "normal_mapped": "1",
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "ff5FCDE4"
+    }
   },
   "crystal_magic": {
     "wang_color": "ff3b5d2f",
@@ -2860,7 +3614,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_crystal_magic"
+    "ui_name": "$mat_crystal_magic",
+    "graphics": {
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "ff74737e"
+    }
   },
   "aluminium_oxide": {
     "wang_color": "ff3b5d4d",
@@ -2877,7 +3635,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_aluminium_oxide"
+    "ui_name": "$mat_aluminium_oxide",
+    "graphics": {
+      "texture_file": "data/materials_gfx/aluminium_oxide.png",
+      "color": "ff73747f"
+    }
   },
   "meat": {
     "wang_color": "fff2ddb2",
@@ -2895,7 +3657,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat"
+    "ui_name": "$mat_meat",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_slime": {
     "wang_color": "fff2ddb3",
@@ -2914,7 +3690,11 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_meat_slime"
+    "ui_name": "$mat_meat_slime",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c"
+    }
   },
   "urine": {
     "wang_color": "33FFEE00",
@@ -2942,7 +3722,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_poo"
+    "ui_name": "$mat_poo",
+    "graphics": {
+      "texture_file": "data/materials_gfx/soil.png",
+      "color": "ff36311e"
+    }
   },
   "physics_throw_material_part2": {
     "wang_color": "ffdee1fe",
@@ -2954,7 +3738,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_physics_throw_material_part2"
+    "ui_name": "$mat_physics_throw_material_part2",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffdee1fe"
+    }
   },
   "rocket_particles": {
     "wang_color": "66FFFFFE",
@@ -2979,7 +3767,21 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_melting_perf_killer"
+    "ui_name": "$mat_ice_melting_perf_killer",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ff3b93bb",
+      "pixel_all_around": "ff3b93bb",
+      "pixel_lonely": "ff3b93bb",
+      "pixel_top_right": "ff3b93bb",
+      "pixel_bottom_left": "ff3b93bb",
+      "pixel_left": "ff78e0f0",
+      "pixel_top_left": "ff78e0f0",
+      "pixel_top": "ff78e0f0",
+      "pixel_right": "ff365b77",
+      "pixel_bottom_right": "ff365b77",
+      "pixel_bottom": "ff365b77"
+    }
   },
   "ice_b2": {
     "wang_color": "ffdee1ec",
@@ -2992,7 +3794,21 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_b2"
+    "ui_name": "$mat_ice_b2",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ff3b93bb",
+      "pixel_all_around": "ff3b93bb",
+      "pixel_lonely": "ff3b93bb",
+      "pixel_top_right": "ff3b93bb",
+      "pixel_bottom_left": "ff3b93bb",
+      "pixel_left": "ff78e0f0",
+      "pixel_top_left": "ff78e0f0",
+      "pixel_top": "ff78e0f0",
+      "pixel_right": "ff365b77",
+      "pixel_bottom_right": "ff365b77",
+      "pixel_bottom": "ff365b77"
+    }
   },
   "glass_liquidcave": {
     "wang_color": "ffdee1fa",
@@ -3006,7 +3822,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_glass_liquidcave"
+    "ui_name": "$mat_glass_liquidcave",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "glass": {
     "wang_color": "ffaeddee",
@@ -3022,7 +3842,21 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_glass"
+    "ui_name": "$mat_glass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/glass.png",
+      "color": "ffaeddee",
+      "pixel_all_around": "ffaeddee",
+      "pixel_lonely": "ffaeddee",
+      "pixel_top_right": "ffaeddee",
+      "pixel_bottom_left": "ffaeddee",
+      "pixel_left": "ffaeddee",
+      "pixel_top_left": "ffaeddee",
+      "pixel_top": "ffaeddee",
+      "pixel_right": "ffaeddee",
+      "pixel_bottom_right": "ffaeddee",
+      "pixel_bottom": "ffaeddee"
+    }
   },
   "glass_broken": {
     "wang_color": "ffaeddef",
@@ -3038,7 +3872,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_glass"
+    "ui_name": "$mat_glass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/glass.png",
+      "color": "ffaeddee"
+    }
   },
   "neon_tube_purple": {
     "wang_color": "ffaedde6",
@@ -3055,7 +3893,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_neon_tube_purple"
+    "ui_name": "$mat_neon_tube_purple",
+    "graphics": {
+      "texture_file": "data/materials_gfx/neon_tube_purple.png",
+      "color": "ffCFF7C8"
+    }
   },
   "blood_thick": {
     "wang_color": "ffff7674",
@@ -3086,12 +3928,20 @@
     ],
     "burnable": "0",
     "density": "50",
-    "ui_name": "$mat_snow_b2"
+    "ui_name": "$mat_snow_b2",
+    "graphics": {
+      "texture_file": "data/materials_gfx/snow.png",
+      "color": "ffF4F4F3"
+    }
   },
   "fungal_shift_particle_fx": {
     "wang_color": "80c1dba5",
     "color": "c1dba580",
-    "name": "fungal_shift_particle_fx"
+    "name": "fungal_shift_particle_fx",
+    "graphics": {
+      "texture_file": "data/materials_gfx/confusion.png",
+      "color": "80c1dba5"
+    }
   },
   "fire_blue": {
     "wang_color": "7fFF6061",
@@ -3103,7 +3953,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_fire_blue"
+    "ui_name": "$mat_fire_blue",
+    "graphics": {
+      "color": "7f82DCFF",
+      "fire_colors_index": "1"
+    }
   },
   "spark_green": {
     "wang_color": "7f96FF46",
@@ -3115,7 +3969,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_green"
+    "ui_name": "$mat_spark_green",
+    "graphics": {
+      "color": "7f96FF46",
+      "fire_colors_index": "2"
+    }
   },
   "spark_green_bright": {
     "wang_color": "7f96FF47",
@@ -3127,7 +3985,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_green"
+    "ui_name": "$mat_spark_green",
+    "graphics": {
+      "color": "7f96FF46",
+      "fire_colors_index": "2"
+    }
   },
   "spark_blue": {
     "wang_color": "7f82DCFF",
@@ -3139,7 +4001,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_blue"
+    "ui_name": "$mat_spark_blue",
+    "graphics": {
+      "color": "7f82DCFF",
+      "fire_colors_index": "1"
+    }
   },
   "spark_blue_dark": {
     "wang_color": "7f205bfe",
@@ -3151,7 +4017,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_blue"
+    "ui_name": "$mat_spark_blue",
+    "graphics": {
+      "color": "7f205bfe",
+      "fire_colors_index": "1"
+    }
   },
   "spark_red": {
     "wang_color": "7fFF2813",
@@ -3163,7 +4033,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_red"
+    "ui_name": "$mat_spark_red",
+    "graphics": {
+      "color": "7fFF2813",
+      "fire_colors_index": "3"
+    }
   },
   "spark_red_bright": {
     "wang_color": "7fFF2814",
@@ -3175,7 +4049,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_red"
+    "ui_name": "$mat_spark_red",
+    "graphics": {
+      "color": "7fFF2813",
+      "fire_colors_index": "3"
+    }
   },
   "spark_white": {
     "wang_color": "ffFEFEFF",
@@ -3187,7 +4065,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_white"
+    "ui_name": "$mat_spark_white",
+    "graphics": {
+      "color": "7fFEFEFF",
+      "fire_colors_index": "4"
+    }
   },
   "spark_white_bright": {
     "wang_color": "ffFEFEFD",
@@ -3199,7 +4081,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_white"
+    "ui_name": "$mat_spark_white",
+    "graphics": {
+      "color": "7fFEFEFF",
+      "fire_colors_index": "4"
+    }
   },
   "spark_yellow": {
     "wang_color": "ffFFF028",
@@ -3211,7 +4097,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_yellow"
+    "ui_name": "$mat_spark_yellow",
+    "graphics": {
+      "color": "7fffac0f",
+      "fire_colors_index": "5"
+    }
   },
   "spark_purple": {
     "wang_color": "44B43C1F",
@@ -3223,7 +4113,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_purple"
+    "ui_name": "$mat_spark_purple",
+    "graphics": {
+      "color": "44B43CFF"
+    }
   },
   "spark_purple_bright": {
     "wang_color": "44B4323F",
@@ -3235,7 +4128,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_purple"
+    "ui_name": "$mat_spark_purple",
+    "graphics": {
+      "color": "7f7c41ff"
+    }
   },
   "spark_player": {
     "wang_color": "ffFFF029",
@@ -3247,7 +4143,11 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_player"
+    "ui_name": "$mat_spark_player",
+    "graphics": {
+      "color": "7f7f5476",
+      "fire_colors_index": "5"
+    }
   },
   "spark_teal": {
     "wang_color": "44A41C1F",
@@ -3259,7 +4159,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_spark_teal"
+    "ui_name": "$mat_spark_teal",
+    "graphics": {
+      "color": "6A44f393"
+    }
   },
   "sand_static_rainforest": {
     "wang_color": "ff524F00",
@@ -3275,7 +4178,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_sand_static_rainforest"
+    "ui_name": "$mat_sand_static_rainforest",
+    "graphics": {
+      "texture_file": "data/materials_gfx/earth_rainforest.png",
+      "color": "ff524F00"
+    }
   },
   "sand_static_rainforest_dark": {
     "wang_color": "ff261f26",
@@ -3291,7 +4198,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_sand_static_rainforest"
+    "ui_name": "$mat_sand_static_rainforest",
+    "graphics": {
+      "texture_file": "data/materials_gfx/earth_rainforest_dark.png",
+      "color": "ff261f26"
+    }
   },
   "bone_static": {
     "wang_color": "ff523F03",
@@ -3307,7 +4218,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_bone_static"
+    "ui_name": "$mat_bone_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/bone.png",
+      "color": "ff524F00"
+    }
   },
   "rust_static": {
     "wang_color": "ffee8F49",
@@ -3323,7 +4238,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rust_static"
+    "ui_name": "$mat_rust_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rust.png",
+      "color": "ffee8F49"
+    }
   },
   "sand_static_bright": {
     "wang_color": "ffef8F49",
@@ -3339,7 +4258,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_sand_static_bright"
+    "ui_name": "$mat_sand_static_bright",
+    "graphics": {
+      "texture_file": "data/materials_gfx/earth_bright.png",
+      "color": "ffef8F49"
+    }
   },
   "sand_static_red": {
     "wang_color": "ffff8F47",
@@ -3355,7 +4278,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_sand_static_red"
+    "ui_name": "$mat_sand_static_red",
+    "graphics": {
+      "texture_file": "data/materials_gfx/earth_bright_red.png",
+      "color": "ffff8F47"
+    }
   },
   "rock_static_intro": {
     "wang_color": "ff0a3344",
@@ -3370,7 +4297,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_intro"
+    "ui_name": "$mat_rock_static_intro",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff313b36",
+      "pixel_all_around": "ff313b36"
+    }
   },
   "rock_static_trip_secret": {
     "wang_color": "ff0abba4",
@@ -3385,7 +4317,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static"
+    "ui_name": "$mat_rock_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff313b36",
+      "pixel_all_around": "ff313b36"
+    }
   },
   "rock_static_trip_secret2": {
     "wang_color": "ff0baab4",
@@ -3400,7 +4337,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static"
+    "ui_name": "$mat_rock_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff313b36",
+      "pixel_all_around": "ff313b36"
+    }
   },
   "rock_static_cursed": {
     "wang_color": "ff3f4d3e",
@@ -3416,7 +4358,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_cursed"
+    "ui_name": "$mat_rock_static_cursed",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_cursed.png",
+      "color": "ff313b36",
+      "pixel_all_around": "ff313b36"
+    }
   },
   "rock_static_purple": {
     "wang_color": "ff272224",
@@ -3431,7 +4378,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_intro"
+    "ui_name": "$mat_rock_static_intro",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_static_purple.png",
+      "color": "ff272224",
+      "pixel_all_around": "ff272224"
+    }
   },
   "rock_hard": {
     "wang_color": "ff003344",
@@ -3446,7 +4398,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_hard"
+    "ui_name": "$mat_rock_hard",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_hard.png",
+      "color": "ff003344"
+    }
   },
   "rock_static_fungal": {
     "wang_color": "ff00a244",
@@ -3462,7 +4418,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_fungisoil"
+    "ui_name": "$mat_fungisoil",
+    "graphics": {
+      "texture_file": "data/materials_gfx/fun.png",
+      "color": "ff495978"
+    }
   },
   "wood_tree": {
     "wang_color": "ff005345",
@@ -3477,7 +4437,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_wood"
+    "ui_name": "$mat_wood",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood_vertical.png",
+      "color": "ff003344"
+    }
   },
   "rock_static_noedge": {
     "wang_color": "ff003345",
@@ -3492,7 +4456,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_noedge"
+    "ui_name": "$mat_rock_static_noedge",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff003345"
+    }
   },
   "rock_hard_border": {
     "wang_color": "ff104344",
@@ -3507,7 +4475,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_hard_border"
+    "ui_name": "$mat_rock_hard_border",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_hard_border.png",
+      "color": "ff104344"
+    }
   },
   "rock_magic_gate": {
     "wang_color": "ffab3347",
@@ -3524,7 +4496,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_magic_gate"
+    "ui_name": "$mat_rock_magic_gate",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_hard.png",
+      "color": "ffab3344"
+    }
   },
   "rock_magic_bottom": {
     "wang_color": "ffabb346",
@@ -3541,7 +4517,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_magic_bottom"
+    "ui_name": "$mat_rock_magic_bottom",
+    "graphics": {
+      "texture_file": "data/materials_gfx/magic_gate.png",
+      "color": "ffabb344"
+    }
   },
   "rock_eroding": {
     "wang_color": "ffafb146",
@@ -3558,7 +4538,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_eroding"
+    "ui_name": "$mat_rock_eroding",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_hard.png",
+      "color": "ffabb344"
+    }
   },
   "rock_vault": {
     "wang_color": "ff003349",
@@ -3575,7 +4559,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_vault"
+    "ui_name": "$mat_rock_vault",
+    "graphics": {
+      "texture_file": "data/materials_gfx/vaultrock.png",
+      "color": "ff003344"
+    }
   },
   "coal_static": {
     "wang_color": "ff124444",
@@ -3592,7 +4580,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_coal_static"
+    "ui_name": "$mat_coal_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/coal_static.png",
+      "color": "ff124444"
+    }
   },
   "rock_static_grey": {
     "wang_color": "ff1244a4",
@@ -3609,7 +4601,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_grey"
+    "ui_name": "$mat_rock_static_grey",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_grey.png",
+      "color": "ff1244a4"
+    }
   },
   "rock_static_radioactive": {
     "wang_color": "ff00f344",
@@ -3626,7 +4622,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_radioactive"
+    "ui_name": "$mat_rock_static_radioactive",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_radioactive.png",
+      "color": "ff003344"
+    }
   },
   "rock_static_cursed_green": {
     "wang_color": "ff659244",
@@ -3643,7 +4643,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_cursed_green"
+    "ui_name": "$mat_rock_static_cursed_green",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_cursed_green.png",
+      "color": "ff003344"
+    }
   },
   "rock_static_poison": {
     "wang_color": "ff00fa44",
@@ -3660,7 +4664,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_poison"
+    "ui_name": "$mat_rock_static_poison",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock_poison.png",
+      "color": "ffB43CFF"
+    }
   },
   "skullrock": {
     "wang_color": "ff00a344",
@@ -3674,7 +4682,11 @@
       "solid",
       "earth"
     ],
-    "ui_name": "$mat_skullrock"
+    "ui_name": "$mat_skullrock",
+    "graphics": {
+      "texture_file": "data/materials_gfx/skullrock.png",
+      "color": "ff00a344"
+    }
   },
   "rock_static_wet": {
     "wang_color": "ff103344",
@@ -3691,7 +4703,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_wet"
+    "ui_name": "$mat_rock_static_wet",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff103344"
+    }
   },
   "templebrick_static": {
     "wang_color": "ff786C42",
@@ -3707,7 +4723,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_static"
+    "ui_name": "$mat_templebrick_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick.png",
+      "color": "ff786C42"
+    }
   },
   "templebrick_static_broken": {
     "wang_color": "ff9e8438",
@@ -3723,7 +4743,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_static"
+    "ui_name": "$mat_templebrick_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick_broken.png",
+      "color": "ff786C42"
+    }
   },
   "templebrick_static_soft": {
     "wang_color": "ffaf9f6a",
@@ -3739,7 +4763,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_static"
+    "ui_name": "$mat_templebrick_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick.png",
+      "color": "ff786C42"
+    }
   },
   "templebrick_noedge_static": {
     "wang_color": "ff786C44",
@@ -3755,7 +4783,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_noedge_static"
+    "ui_name": "$mat_templebrick_noedge_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick.png",
+      "color": "ff786C44"
+    }
   },
   "templerock_soft": {
     "wang_color": "ff6A54A9",
@@ -3771,7 +4803,21 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templerock_static"
+    "ui_name": "$mat_templerock_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templerock.png",
+      "color": "ff6F5439",
+      "pixel_all_around": "ff6F5439",
+      "pixel_lonely": "ff6F5439",
+      "pixel_top_right": "ff6F5439",
+      "pixel_bottom_left": "ff6F5439",
+      "pixel_left": "ff9A7142",
+      "pixel_top_left": "ff9A7142",
+      "pixel_top": "ff9A7142",
+      "pixel_right": "ff543F2B",
+      "pixel_bottom": "ff543F2B",
+      "pixel_bottom_right": "ff543F2B"
+    }
   },
   "templebrick_thick_static": {
     "wang_color": "ff646C58",
@@ -3787,7 +4833,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_thick_static"
+    "ui_name": "$mat_templebrick_thick_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick.png",
+      "color": "ff646C58"
+    }
   },
   "templebrick_thick_static_noedge": {
     "wang_color": "ff606C5A",
@@ -3803,7 +4853,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_thick_static"
+    "ui_name": "$mat_templebrick_thick_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick.png",
+      "color": "ff646C58"
+    }
   },
   "templeslab_static": {
     "wang_color": "ff947059",
@@ -3819,7 +4873,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templeslab_static"
+    "ui_name": "$mat_templeslab_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templeslab.png",
+      "color": "ff4e4343"
+    }
   },
   "templeslab_crumbling_static": {
     "wang_color": "ff846049",
@@ -3835,7 +4893,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templeslab_crumbling_static"
+    "ui_name": "$mat_templeslab_crumbling_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templeslab.png",
+      "color": "ff4e4343",
+      "pixel_all_around": "ff3e3735"
+    }
   },
   "templebrickdark_static": {
     "wang_color": "ff5B5047",
@@ -3851,7 +4914,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrickdark_static"
+    "ui_name": "$mat_templebrickdark_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick_alt.png",
+      "color": "ff5B5047"
+    }
   },
   "wizardstone": {
     "wang_color": "ff4c4356",
@@ -3867,7 +4934,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_wizardstone"
+    "ui_name": "$mat_wizardstone",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wizardstone.png",
+      "color": "ff786C42"
+    }
   },
   "templebrick_golden_static": {
     "wang_color": "ffb07e13",
@@ -3883,7 +4954,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_golden_static"
+    "ui_name": "$mat_templebrick_golden_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick_golden.png",
+      "color": "ffb07e13"
+    }
   },
   "templebrick_diamond_static": {
     "wang_color": "ff5e9ab5",
@@ -3899,7 +4974,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_diamond_static"
+    "ui_name": "$mat_templebrick_diamond_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick_diamond.png",
+      "color": "ff5e9ab5"
+    }
   },
   "templebrick_static_ruined": {
     "wang_color": "ff78cace",
@@ -3915,7 +4994,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_static_ruined"
+    "ui_name": "$mat_templebrick_static_ruined",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick_ruined.png",
+      "color": "ff786C42"
+    }
   },
   "glowstone": {
     "wang_color": "ffAAF06E",
@@ -3931,7 +5014,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_glowstone"
+    "ui_name": "$mat_glowstone",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick_alt.png",
+      "color": "ffAAF06E"
+    }
   },
   "glowstone_altar": {
     "wang_color": "ffffc931",
@@ -3947,7 +5034,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_glowstone_altar"
+    "ui_name": "$mat_glowstone_altar",
+    "graphics": {
+      "texture_file": "",
+      "color": "ff2feb48"
+    }
   },
   "glowstone_altar_hdr": {
     "wang_color": "ffffc932",
@@ -3963,7 +5054,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_glowstone_altar"
+    "ui_name": "$mat_glowstone_altar",
+    "graphics": {
+      "texture_file": "",
+      "color": "ff2feb48"
+    }
   },
   "glowstone_potion": {
     "wang_color": "ffA3F06E",
@@ -3979,7 +5074,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_glowstone_potion"
+    "ui_name": "$mat_glowstone_potion",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick_alt.png",
+      "color": "ffAAF06E"
+    }
   },
   "templebrick_red": {
     "wang_color": "ff78AC42",
@@ -3995,7 +5094,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_red"
+    "ui_name": "$mat_templebrick_red",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick_red.png",
+      "color": "ff78AC42"
+    }
   },
   "templebrick_moss_static": {
     "wang_color": "ff786C45",
@@ -4011,7 +5114,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_templebrick_moss_static"
+    "ui_name": "$mat_templebrick_moss_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templerock.png",
+      "color": "ff786C42"
+    }
   },
   "the_end": {
     "wang_color": "ff026C05",
@@ -4027,7 +5134,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_the_end"
+    "ui_name": "$mat_the_end",
+    "graphics": {
+      "texture_file": "data/materials_gfx/the_end.png",
+      "color": "ff026C05"
+    }
   },
   "steelmoss_static": {
     "wang_color": "ff787A55",
@@ -4045,7 +5156,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steelrusted"
+    "ui_name": "$mat_steelrusted",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel_rusted.png",
+      "color": "ff787A55"
+    }
   },
   "steel_rusted_no_holes": {
     "wang_color": "ff904F3A",
@@ -4063,7 +5178,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steelrusted"
+    "ui_name": "$mat_steelrusted",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanelmoss.png",
+      "color": "ff904F3A"
+    }
   },
   "steel_grey_static": {
     "wang_color": "ff9B4A3F",
@@ -4081,7 +5200,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steel_static_strong"
+    "ui_name": "$mat_steel_static_strong",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanel_grey.png",
+      "color": "ff904F3A"
+    }
   },
   "steelfrost_static": {
     "wang_color": "ff787B34",
@@ -4099,7 +5222,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steelfrost_static"
+    "ui_name": "$mat_steelfrost_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanelfrost.png",
+      "color": "ff596f6e"
+    }
   },
   "steelmoss_slanted": {
     "wang_color": "ff787A85",
@@ -4117,7 +5244,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steelmoss_slanted"
+    "ui_name": "$mat_steelmoss_slanted",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanelmoss.png",
+      "color": "ff787A85"
+    }
   },
   "steelsmoke_static": {
     "wang_color": "ff646455",
@@ -4135,7 +5266,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steelsmoke_static"
+    "ui_name": "$mat_steelsmoke_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanel.png",
+      "color": "ff646455"
+    }
   },
   "steelpipe_static": {
     "wang_color": "ff64c455",
@@ -4153,7 +5288,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steelpipe_static"
+    "ui_name": "$mat_steelpipe_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanel.png",
+      "color": "ff646455"
+    }
   },
   "steel_static_strong": {
     "wang_color": "ff404a41",
@@ -4168,7 +5307,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steel_static_strong"
+    "ui_name": "$mat_steel_static_strong",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanel.png",
+      "color": "ff404041"
+    }
   },
   "steel_static_unmeltable": {
     "wang_color": "ff404F50",
@@ -4184,7 +5327,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_steel_static_unmeltable"
+    "ui_name": "$mat_steel_static_unmeltable",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanel.png",
+      "color": "ff404041"
+    }
   },
   "rock_static_intro_breakable": {
     "wang_color": "ff0a3355",
@@ -4199,7 +5346,12 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_rock_static_intro_breakable"
+    "ui_name": "$mat_rock_static_intro_breakable",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff313b36",
+      "pixel_all_around": "ff313b36"
+    }
   },
   "ice_blood_static": {
     "wang_color": "ffcb7070",
@@ -4214,7 +5366,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_ice_blood_static"
+    "ui_name": "$mat_ice_blood_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice_blood.png",
+      "color": "ffcb7070"
+    }
   },
   "ice_slime_static": {
     "wang_color": "ffcba270",
@@ -4229,7 +5385,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_ice_slime_static"
+    "ui_name": "$mat_ice_slime_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice_slime.png",
+      "color": "ffb870d2"
+    }
   },
   "tube_physics": {
     "wang_color": "ff413F42",
@@ -4246,7 +5406,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_tube_physics"
+    "ui_name": "$mat_tube_physics",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "ice_acid_glass": {
     "wang_color": "ff41FF42",
@@ -4262,7 +5426,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_acid_glass"
+    "ui_name": "$mat_ice_acid_glass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "ice_cold_glass": {
     "wang_color": "ffA1FF42",
@@ -4278,7 +5446,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_cold_glass"
+    "ui_name": "$mat_ice_cold_glass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "ice_radioactive_glass": {
     "wang_color": "ffB1FF42",
@@ -4294,7 +5466,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_radioactive_glass"
+    "ui_name": "$mat_ice_radioactive_glass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "ice_poison_glass": {
     "wang_color": "ffbc3ae0",
@@ -4310,7 +5486,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_poison_glass"
+    "ui_name": "$mat_ice_poison_glass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "ice_blood_glass": {
     "wang_color": "ffbc40e2",
@@ -4326,7 +5506,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_blood_glass"
+    "ui_name": "$mat_ice_blood_glass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "ice_slime_glass": {
     "wang_color": "ffbc10e2",
@@ -4342,7 +5526,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_ice_slime_glass"
+    "ui_name": "$mat_ice_slime_glass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/ice.png",
+      "color": "ffCFF7C8"
+    }
   },
   "wood_static_wet": {
     "wang_color": "ff413F41",
@@ -4358,7 +5546,12 @@
     ],
     "burnable": "1",
     "density": "11",
-    "ui_name": "$mat_wood_static_wet"
+    "ui_name": "$mat_wood_static_wet",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff413F24",
+      "pixel_all_around": "ff5d5a33"
+    }
   },
   "root_growth": {
     "wang_color": "ff412D41",
@@ -4374,7 +5567,11 @@
     ],
     "burnable": "1",
     "density": "11",
-    "ui_name": "$mat_root"
+    "ui_name": "$mat_root",
+    "graphics": {
+      "texture_file": "data/materials_gfx/root_growth.png",
+      "color": "ff007540"
+    }
   },
   "wood_burns_forever": {
     "wang_color": "ff413F43",
@@ -4390,7 +5587,12 @@
     ],
     "burnable": "1",
     "density": "11",
-    "ui_name": "$mat_wood_static"
+    "ui_name": "$mat_wood_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff413F24",
+      "pixel_all_around": "ff5d5a33"
+    }
   },
   "creepy_liquid_emitter": {
     "wang_color": "ff41AF41",
@@ -4406,7 +5608,10 @@
     ],
     "burnable": "0",
     "density": "11",
-    "ui_name": "$mat_creepy_liquid_emitter"
+    "ui_name": "$mat_creepy_liquid_emitter",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick_alt.png"
+    }
   },
   "gold_static": {
     "wang_color": "ff4AAF41",
@@ -4422,7 +5627,10 @@
     ],
     "burnable": "0",
     "density": "11",
-    "ui_name": "$mat_gold_static"
+    "ui_name": "$mat_gold_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gold.png"
+    }
   },
   "gold_static_radioactive": {
     "wang_color": "ff4AAF45",
@@ -4438,7 +5646,10 @@
     ],
     "burnable": "0",
     "density": "11",
-    "ui_name": "$mat_gold_radioactive"
+    "ui_name": "$mat_gold_radioactive",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gold.png"
+    }
   },
   "gold_static_dark": {
     "wang_color": "ff4ACF41",
@@ -4454,7 +5665,10 @@
     ],
     "burnable": "0",
     "density": "11",
-    "ui_name": "$mat_gold_static_dark"
+    "ui_name": "$mat_gold_static_dark",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gold_dark.png"
+    }
   },
   "wood_static_vertical": {
     "wang_color": "ff413F3A",
@@ -4470,7 +5684,10 @@
     ],
     "burnable": "1",
     "density": "11",
-    "ui_name": "$mat_wood_static_vertical"
+    "ui_name": "$mat_wood_static_vertical",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood_vertical.png"
+    }
   },
   "wood_static_gas": {
     "wang_color": "ff414F41",
@@ -4486,7 +5703,12 @@
     ],
     "burnable": "1",
     "density": "11",
-    "ui_name": "$mat_wood_static_gas"
+    "ui_name": "$mat_wood_static_gas",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff413F24",
+      "pixel_all_around": "ff5d5a33"
+    }
   },
   "corruption_static": {
     "wang_color": "ff7D0067",
@@ -4499,7 +5721,11 @@
     ],
     "burnable": "0",
     "density": "10",
-    "ui_name": "$mat_corruption_static"
+    "ui_name": "$mat_corruption_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/corruption.png",
+      "color": "ff7D0067"
+    }
   },
   "smoke_magic": {
     "wang_color": "01c1e5ff",
@@ -4510,7 +5736,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_smoke_magic"
+    "ui_name": "$mat_smoke_magic",
+    "graphics": {
+      "color": "01a53d77"
+    }
   },
   "steam_trailer": {
     "wang_color": "ffc6c5ff",
@@ -4521,7 +5750,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_steam"
+    "ui_name": "$mat_steam",
+    "graphics": {
+      "color": "bf84A7BE"
+    }
   },
   "poison_gas": {
     "wang_color": "7fB42CFF",
@@ -4533,7 +5765,10 @@
     ],
     "burnable": "1",
     "density": "2",
-    "ui_name": "$mat_poison_gas"
+    "ui_name": "$mat_poison_gas",
+    "graphics": {
+      "color": "7fB42CFF"
+    }
   },
   "fungal_gas": {
     "wang_color": "7fEA1CAF",
@@ -4546,7 +5781,10 @@
     ],
     "burnable": "1",
     "density": "2",
-    "ui_name": "$mat_fungal_gas"
+    "ui_name": "$mat_fungal_gas",
+    "graphics": {
+      "color": "7fEA1CAF"
+    }
   },
   "poo_gas": {
     "wang_color": "7f724f43",
@@ -4557,7 +5795,10 @@
     ],
     "burnable": "0",
     "density": "1",
-    "ui_name": "$mat_poo_gas"
+    "ui_name": "$mat_poo_gas",
+    "graphics": {
+      "color": "7f724f43"
+    }
   },
   "water_fading": {
     "wang_color": "902F354C",
@@ -4572,7 +5813,10 @@
     ],
     "burnable": "0",
     "density": "4",
-    "ui_name": "$mat_water_fading"
+    "ui_name": "$mat_water_fading",
+    "graphics": {
+      "color": "A0376259"
+    }
   },
   "water_salt": {
     "wang_color": "a02F754C",
@@ -4587,7 +5831,10 @@
     ],
     "burnable": "0",
     "density": "4.01",
-    "ui_name": "$mat_water_salt"
+    "ui_name": "$mat_water_salt",
+    "graphics": {
+      "color": "a02F754C"
+    }
   },
   "void_liquid": {
     "wang_color": "ffa2332a",
@@ -4598,7 +5845,10 @@
     ],
     "burnable": "0",
     "density": "14.5",
-    "ui_name": "$mat_void_liquid"
+    "ui_name": "$mat_void_liquid",
+    "graphics": {
+      "color": "ff000000"
+    }
   },
   "liquid_fire": {
     "wang_color": "af3B3B3D",
@@ -4614,7 +5864,10 @@
     ],
     "burnable": "1",
     "density": "1",
-    "ui_name": "$mat_liquid_fire"
+    "ui_name": "$mat_liquid_fire",
+    "graphics": {
+      "color": "aff08400"
+    }
   },
   "liquid_fire_weak": {
     "wang_color": "ff3B3B4D",
@@ -4630,7 +5883,10 @@
     ],
     "burnable": "1",
     "density": "1",
-    "ui_name": "$mat_liquid_fire_weak"
+    "ui_name": "$mat_liquid_fire_weak",
+    "graphics": {
+      "color": "ffebcd00"
+    }
   },
   "midas_precursor": {
     "wang_color": "e1243CFF",
@@ -4642,7 +5898,11 @@
       "water"
     ],
     "density": "3.5",
-    "ui_name": "$mat_midas_precursor"
+    "ui_name": "$mat_midas_precursor",
+    "graphics": {
+      "texture_file": "data/materials_gfx/midas_precursor.png",
+      "color": "e1243CFF"
+    }
   },
   "midas": {
     "wang_color": "efefa101",
@@ -4654,7 +5914,11 @@
       "water"
     ],
     "density": "4",
-    "ui_name": "$mat_midas"
+    "ui_name": "$mat_midas",
+    "graphics": {
+      "texture_file": "data/materials_gfx/honey.png",
+      "color": "efefa101"
+    }
   },
   "blood_fading_slow": {
     "wang_color": "44F13C23",
@@ -4671,7 +5935,10 @@
     ],
     "burnable": "0",
     "density": "4.1",
-    "ui_name": "$mat_blood"
+    "ui_name": "$mat_blood",
+    "graphics": {
+      "color": "aa830000"
+    }
   },
   "poison": {
     "wang_color": "44B43CFF",
@@ -4686,7 +5953,10 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_poison"
+    "ui_name": "$mat_poison",
+    "graphics": {
+      "color": "44B43CFF"
+    }
   },
   "cursed_liquid": {
     "wang_color": "44369244",
@@ -4699,7 +5969,10 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_cursed_liquid"
+    "ui_name": "$mat_cursed_liquid",
+    "graphics": {
+      "color": "44369244"
+    }
   },
   "radioactive_liquid_yellow": {
     "wang_color": "44B4FF10",
@@ -4715,7 +5988,10 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_radioactive_liquid_yellow"
+    "ui_name": "$mat_radioactive_liquid_yellow",
+    "graphics": {
+      "color": "44B4FF10"
+    }
   },
   "plasma_fading_bright": {
     "wang_color": "ff36cdff",
@@ -4731,7 +6007,10 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_plasma_fading"
+    "ui_name": "$mat_plasma_fading",
+    "graphics": {
+      "color": "ff36cdff"
+    }
   },
   "plasma_fading_green": {
     "wang_color": "ff78F050",
@@ -4747,7 +6026,10 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_plasma_fading_green"
+    "ui_name": "$mat_plasma_fading_green",
+    "graphics": {
+      "color": "ff78F050"
+    }
   },
   "plasma_fading_pink": {
     "wang_color": "ffFF50F0",
@@ -4763,7 +6045,10 @@
     ],
     "burnable": "0",
     "density": "3",
-    "ui_name": "$mat_plasma_fading_pink"
+    "ui_name": "$mat_plasma_fading_pink",
+    "graphics": {
+      "color": "ffFF50F0"
+    }
   },
   "steel_static_molten": {
     "wang_color": "ff404042",
@@ -4781,7 +6066,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_steel_static_molten"
+    "ui_name": "$mat_steel_static_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanel.png",
+      "color": "ff404040"
+    }
   },
   "steelmoss_slanted_molten": {
     "wang_color": "ff404043",
@@ -4799,7 +6088,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_steelmoss_slanted_molten"
+    "ui_name": "$mat_steelmoss_slanted_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanelmoss.png",
+      "color": "ff404040"
+    }
   },
   "steelmoss_static_molten": {
     "wang_color": "ff404044",
@@ -4817,7 +6110,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_steelmoss_static_molten"
+    "ui_name": "$mat_steelmoss_static_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanelmoss.png",
+      "color": "ff404040"
+    }
   },
   "steelsmoke_static_molten": {
     "wang_color": "ff404045",
@@ -4835,7 +6132,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_steelsmoke_static_molten"
+    "ui_name": "$mat_steelsmoke_static_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steelpanel.png",
+      "color": "ff404040"
+    }
   },
   "metal_sand_molten": {
     "wang_color": "ff4b4045",
@@ -4853,7 +6154,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_metal_sand_molten"
+    "ui_name": "$mat_metal_sand_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff404040"
+    }
   },
   "metal_molten": {
     "wang_color": "ff404046",
@@ -4871,7 +6176,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_metal_molten"
+    "ui_name": "$mat_metal_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff404040"
+    }
   },
   "metal_rust_molten": {
     "wang_color": "ff404047",
@@ -4889,7 +6198,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_metal_rust_molten"
+    "ui_name": "$mat_metal_rust_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff404040"
+    }
   },
   "metal_nohit_molten": {
     "wang_color": "ff404048",
@@ -4907,7 +6220,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_metal_nohit_molten"
+    "ui_name": "$mat_metal_nohit_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff404040"
+    }
   },
   "aluminium_molten": {
     "wang_color": "ff404049",
@@ -4925,7 +6242,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_aluminium_molten"
+    "ui_name": "$mat_aluminium_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff404040"
+    }
   },
   "aluminium_robot_molten": {
     "wang_color": "ff404050",
@@ -4943,7 +6264,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_aluminium_robot_molten"
+    "ui_name": "$mat_aluminium_robot_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff404040"
+    }
   },
   "metal_prop_molten": {
     "wang_color": "ff404051",
@@ -4961,7 +6286,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_metal_prop_molten"
+    "ui_name": "$mat_metal_prop_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff404040"
+    }
   },
   "steel_rust_molten": {
     "wang_color": "ff404052",
@@ -4979,7 +6308,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_steel_rust_molten"
+    "ui_name": "$mat_steel_rust_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff404040"
+    }
   },
   "aluminium_oxide_molten": {
     "wang_color": "ff404053",
@@ -4997,7 +6330,11 @@
     ],
     "burnable": "1",
     "density": "5",
-    "ui_name": "$mat_aluminium_oxide_molten"
+    "ui_name": "$mat_aluminium_oxide_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff404040"
+    }
   },
   "sand_blue": {
     "wang_color": "ff008240",
@@ -5012,7 +6349,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_sand_blue"
+    "ui_name": "$mat_sand_blue",
+    "graphics": {
+      "texture_file": "data/materials_gfx/sand_blue.png",
+      "color": "ff008240"
+    }
   },
   "sand_surface": {
     "wang_color": "ff009242",
@@ -5027,7 +6368,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_sand"
+    "ui_name": "$mat_sand",
+    "graphics": {
+      "texture_file": "data/materials_gfx/sand_surface.png",
+      "color": "ffb89e57"
+    }
   },
   "lavasand": {
     "wang_color": "ff0A8240",
@@ -5042,7 +6387,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_lavasand"
+    "ui_name": "$mat_lavasand",
+    "graphics": {
+      "texture_file": "data/materials_gfx/lavarock.png",
+      "color": "ff0A8240"
+    }
   },
   "sand_petrify": {
     "wang_color": "ff433454",
@@ -5057,7 +6406,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_sand"
+    "ui_name": "$mat_sand",
+    "graphics": {
+      "texture_file": "data/materials_gfx/sand_petrify.png",
+      "color": "ffaaaaaa"
+    }
   },
   "soil_lush": {
     "wang_color": "ff008040",
@@ -5074,7 +6427,11 @@
     ],
     "burnable": "1",
     "density": "10",
-    "ui_name": "$mat_soil_lush"
+    "ui_name": "$mat_soil_lush",
+    "graphics": {
+      "texture_file": "data/materials_gfx/soil_lush.png",
+      "color": "ff008040"
+    }
   },
   "soil_lush_dark": {
     "wang_color": "ff40323d",
@@ -5091,7 +6448,11 @@
     ],
     "burnable": "1",
     "density": "10",
-    "ui_name": "$mat_soil_lush"
+    "ui_name": "$mat_soil_lush",
+    "graphics": {
+      "texture_file": "data/materials_gfx/soil_lush_dark.png",
+      "color": "ff40323d"
+    }
   },
   "soil_dead": {
     "wang_color": "ff708040",
@@ -5108,7 +6469,11 @@
     ],
     "burnable": "1",
     "density": "10",
-    "ui_name": "$mat_soil_dead"
+    "ui_name": "$mat_soil_dead",
+    "graphics": {
+      "texture_file": "data/materials_gfx/soil_dead.png",
+      "color": "ff708040"
+    }
   },
   "soil_dark": {
     "wang_color": "ffaf8040",
@@ -5125,7 +6490,11 @@
     ],
     "burnable": "1",
     "density": "10",
-    "ui_name": "$mat_soil_dead"
+    "ui_name": "$mat_soil_dead",
+    "graphics": {
+      "texture_file": "data/materials_gfx/soil_lush_dark.png",
+      "color": "ff708040"
+    }
   },
   "sandstone_surface": {
     "wang_color": "ff90fe4a",
@@ -5142,7 +6511,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_sandstone"
+    "ui_name": "$mat_sandstone",
+    "graphics": {
+      "texture_file": "data/materials_gfx/desert_surface.png",
+      "color": "ff90fe40"
+    }
   },
   "slime_green": {
     "wang_color": "8880FF80",
@@ -5158,7 +6531,11 @@
     ],
     "burnable": "0",
     "density": "5",
-    "ui_name": "$mat_slime_green"
+    "ui_name": "$mat_slime_green",
+    "graphics": {
+      "texture_file": "data/materials_gfx/slime_green.png",
+      "color": "884fab2e"
+    }
   },
   "slime_yellow": {
     "wang_color": "889cb32b",
@@ -5174,7 +6551,11 @@
     ],
     "burnable": "0",
     "density": "5",
-    "ui_name": "$mat_slime_static"
+    "ui_name": "$mat_slime_static",
+    "graphics": {
+      "texture_file": "data/materials_gfx/yellowblood.png",
+      "color": "889cb32b"
+    }
   },
   "pea_soup": {
     "wang_color": "8880FF82",
@@ -5190,7 +6571,11 @@
     ],
     "burnable": "0",
     "density": "5",
-    "ui_name": "$mat_pea_soup"
+    "ui_name": "$mat_pea_soup",
+    "graphics": {
+      "texture_file": "data/materials_gfx/slime_green.png",
+      "color": "884fab2e"
+    }
   },
   "endslime": {
     "wang_color": "888AFF80",
@@ -5204,7 +6589,11 @@
     ],
     "burnable": "0",
     "density": "5",
-    "ui_name": "$mat_endslime"
+    "ui_name": "$mat_endslime",
+    "graphics": {
+      "texture_file": "data/materials_gfx/endslime.png",
+      "color": "88ab372c"
+    }
   },
   "endslime_blood": {
     "wang_color": "888CFF80",
@@ -5217,7 +6606,11 @@
     ],
     "burnable": "0",
     "density": "5",
-    "ui_name": "$mat_endslime_blood"
+    "ui_name": "$mat_endslime_blood",
+    "graphics": {
+      "texture_file": "data/materials_gfx/endslime.png",
+      "color": "88ab372c"
+    }
   },
   "meat_slime_green": {
     "wang_color": "ffed4d4c",
@@ -5236,7 +6629,11 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_meat_slime_green"
+    "ui_name": "$mat_meat_slime_green",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c"
+    }
   },
   "meat_slime_orange": {
     "wang_color": "fffeaf2c",
@@ -5255,7 +6652,10 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_meat_slime_orange"
+    "ui_name": "$mat_meat_slime_orange",
+    "graphics": {
+      "color": "fffeaf2c"
+    }
   },
   "meat_worm": {
     "wang_color": "ffebcda1",
@@ -5273,7 +6673,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_worm"
+    "ui_name": "$mat_meat_worm",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wormmeat.png",
+      "color": "ffebcd00"
+    }
   },
   "meat_helpless": {
     "wang_color": "ffe3c3a2",
@@ -5291,7 +6695,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_helpless"
+    "ui_name": "$mat_meat_helpless",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_trippy": {
     "wang_color": "ffe2c2a4",
@@ -5309,7 +6727,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_trippy"
+    "ui_name": "$mat_meat_trippy",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_frog": {
     "wang_color": "ffe2c2a5",
@@ -5327,7 +6759,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_frog"
+    "ui_name": "$mat_meat_frog",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_cursed": {
     "wang_color": "ffe3c1a1",
@@ -5345,7 +6791,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_cursed"
+    "ui_name": "$mat_meat_cursed",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_cursed_dry": {
     "wang_color": "ffe3c1a4",
@@ -5363,7 +6823,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_cursed"
+    "ui_name": "$mat_meat_cursed",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_slime_cursed": {
     "wang_color": "ffe2cbb0",
@@ -5382,7 +6856,11 @@
     ],
     "burnable": "1",
     "density": "3",
-    "ui_name": "$mat_meat_slime_cursed"
+    "ui_name": "$mat_meat_slime_cursed",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c"
+    }
   },
   "meat_teleport": {
     "wang_color": "ffbbc1a1",
@@ -5400,7 +6878,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_teleport"
+    "ui_name": "$mat_meat_teleport",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_fast": {
     "wang_color": "ffbbf111",
@@ -5418,7 +6910,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_fast"
+    "ui_name": "$mat_meat_fast",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_polymorph": {
     "wang_color": "ffb3a181",
@@ -5436,7 +6942,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_polymorph"
+    "ui_name": "$mat_meat_polymorph",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_polymorph_protection": {
     "wang_color": "ffb4a282",
@@ -5454,7 +6974,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_polymorph_protection"
+    "ui_name": "$mat_meat_polymorph_protection",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "meat_confusion": {
     "wang_color": "ffb3a070",
@@ -5472,7 +7006,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_confusion"
+    "ui_name": "$mat_meat_confusion",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c",
+      "pixel_all_around": "ffcc4c4c",
+      "pixel_lonely": "ffcc4c4c",
+      "pixel_top_right": "ffcc4c4c",
+      "pixel_bottom_left": "ffcc4c4c",
+      "pixel_left": "ffc996e6",
+      "pixel_top_left": "ffc996e6",
+      "pixel_top": "ffc996e6",
+      "pixel_right": "ff8f4d53",
+      "pixel_bottom_right": "ff8f4d53",
+      "pixel_bottom": "ff8f4d53"
+    }
   },
   "gold_radioactive": {
     "wang_color": "fffbf451",
@@ -5490,7 +7038,11 @@
     ],
     "burnable": "0",
     "density": "9",
-    "ui_name": "$mat_gold_radioactive"
+    "ui_name": "$mat_gold_radioactive",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gold.png",
+      "color": "ffb8ae58"
+    }
   },
   "steel_sand": {
     "wang_color": "ffebf4a1",
@@ -5504,7 +7056,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_steel_sand"
+    "ui_name": "$mat_steel_sand",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ffebf4a1"
+    }
   },
   "metal_sand": {
     "wang_color": "ffe4f4b0",
@@ -5519,7 +7075,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_sand"
+    "ui_name": "$mat_metal_sand",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ffebf4a1"
+    }
   },
   "sodium": {
     "wang_color": "ff410F24",
@@ -5533,7 +7093,10 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_sodium"
+    "ui_name": "$mat_sodium",
+    "graphics": {
+      "color": "ff410F24"
+    }
   },
   "purifying_powder": {
     "wang_color": "ffb6d5d8",
@@ -5547,7 +7110,10 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_purifying_powder"
+    "ui_name": "$mat_purifying_powder",
+    "graphics": {
+      "color": "ffb6d5d8"
+    }
   },
   "burning_powder": {
     "wang_color": "ffa10F24",
@@ -5561,7 +7127,10 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_burning_powder"
+    "ui_name": "$mat_burning_powder",
+    "graphics": {
+      "color": "ffa10F24"
+    }
   },
   "fungus_powder_bad": {
     "wang_color": "ffcacafe",
@@ -5574,7 +7143,10 @@
     ],
     "burnable": "0",
     "density": "7",
-    "ui_name": "$mat_fungisoil"
+    "ui_name": "$mat_fungisoil",
+    "graphics": {
+      "color": "ffa10F24"
+    }
   },
   "shock_powder": {
     "wang_color": "ffacacfe",
@@ -5587,7 +7159,10 @@
     ],
     "burnable": "0",
     "density": "7",
-    "ui_name": "$mat_fungisoil"
+    "ui_name": "$mat_fungisoil",
+    "graphics": {
+      "color": "ffa10F24"
+    }
   },
   "plastic_molten": {
     "wang_color": "ffff00ab",
@@ -5604,7 +7179,21 @@
     ],
     "burnable": "0",
     "density": "5.1",
-    "ui_name": "$mat_plastic_molten"
+    "ui_name": "$mat_plastic_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff73737f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff4f5eab",
+      "pixel_top_right": "ff4f5eab",
+      "pixel_bottom_left": "ff4f5eab",
+      "pixel_left": "ffc1c8be",
+      "pixel_top_left": "ffc1c8be",
+      "pixel_top": "ffc1c8be",
+      "pixel_right": "ff25333b",
+      "pixel_bottom_right": "ff25333b",
+      "pixel_bottom": "ff25333b"
+    }
   },
   "plastic_prop_molten": {
     "wang_color": "ffbb00ab",
@@ -5621,7 +7210,21 @@
     ],
     "burnable": "0",
     "density": "5.1",
-    "ui_name": "$mat_plastic_prop_molten"
+    "ui_name": "$mat_plastic_prop_molten",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff73737f",
+      "pixel_all_around": "ff73737f",
+      "pixel_lonely": "ff4f5eab",
+      "pixel_top_right": "ff4f5eab",
+      "pixel_bottom_left": "ff4f5eab",
+      "pixel_left": "ffc1c8be",
+      "pixel_top_left": "ffc1c8be",
+      "pixel_top": "ffc1c8be",
+      "pixel_right": "ff25333b",
+      "pixel_bottom_right": "ff25333b",
+      "pixel_bottom": "ff25333b"
+    }
   },
   "fungi_green": {
     "wang_color": "ff45FF45",
@@ -5637,7 +7240,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fungi_green"
+    "ui_name": "$mat_fungi_green",
+    "graphics": {
+      "texture_file": "data/materials_gfx/moss.png",
+      "color": "ff45FF45"
+    }
   },
   "grass_dark": {
     "wang_color": "ff7f506d",
@@ -5654,7 +7261,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_grass"
+    "ui_name": "$mat_grass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/moss.png",
+      "color": "ff7f506d"
+    }
   },
   "fungi_creeping": {
     "wang_color": "ff46FF65",
@@ -5667,7 +7278,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fungi_creeping"
+    "ui_name": "$mat_fungi_creeping",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_rotten.png",
+      "color": "ff45FF45"
+    }
   },
   "fungi_creeping_secret": {
     "wang_color": "ff461FF5",
@@ -5680,7 +7295,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fungi_green"
+    "ui_name": "$mat_fungi_green",
+    "graphics": {
+      "texture_file": "data/materials_gfx/slime.png",
+      "color": "ff45FF45"
+    }
   },
   "peat": {
     "wang_color": "A045AA45",
@@ -5696,7 +7315,11 @@
     ],
     "burnable": "1",
     "density": "3.4",
-    "ui_name": "$mat_peat"
+    "ui_name": "$mat_peat",
+    "graphics": {
+      "texture_file": "data/materials_gfx/moss.png",
+      "color": "A045AA45"
+    }
   },
   "moss_rust": {
     "wang_color": "ff45F145",
@@ -5712,7 +7335,12 @@
     ],
     "burnable": "1",
     "density": "3.4",
-    "ui_name": "$mat_moss_rust"
+    "ui_name": "$mat_moss_rust",
+    "graphics": {
+      "texture_file": "data/materials_gfx/moss_rust.png",
+      "is_grass": "1",
+      "color": "ff9a5e4c"
+    }
   },
   "wood_player_b2_vertical": {
     "wang_color": "ffa13f02",
@@ -5729,7 +7357,10 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_player_b2_vertical"
+    "ui_name": "$mat_wood_player_b2_vertical",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood_vertical.png"
+    }
   },
   "fuse_bright": {
     "wang_color": "ffEA151E",
@@ -5741,7 +7372,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fuse"
+    "ui_name": "$mat_fuse",
+    "graphics": {
+      "normal_mapped": "1",
+      "color": "ffab57a0"
+    }
   },
   "fuse_tnt": {
     "wang_color": "ffEAAAAE",
@@ -5753,7 +7388,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fuse_tnt"
+    "ui_name": "$mat_fuse_tnt",
+    "graphics": {
+      "normal_mapped": "0",
+      "color": "ff304055"
+    }
   },
   "fuse_holy": {
     "wang_color": "ffEAABAE",
@@ -5765,7 +7404,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fuse_holy"
+    "ui_name": "$mat_fuse_holy",
+    "graphics": {
+      "normal_mapped": "0",
+      "color": "fff0d447"
+    }
   },
   "templebrick_box2d": {
     "wang_color": "ff644620",
@@ -5782,7 +7425,12 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_templebrick_box2d"
+    "ui_name": "$mat_templebrick_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick.png",
+      "color": "ff644620",
+      "show_in_creative_mode": "1"
+    }
   },
   "wood_trailer": {
     "wang_color": "ffa44620",
@@ -5798,7 +7446,10 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_trailer"
+    "ui_name": "$mat_wood_trailer",
+    "graphics": {
+      "color": "ffa44620"
+    }
   },
   "wood_wall": {
     "wang_color": "ff644600",
@@ -5815,7 +7466,13 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_wall"
+    "ui_name": "$mat_wood_wall",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff644600",
+      "audio_physics_material_wall": "woodwall",
+      "audio_physics_material_solid": "wood"
+    }
   },
   "cactus": {
     "wang_color": "ff64f640",
@@ -5831,7 +7488,14 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_loose"
+    "ui_name": "$mat_wood_loose",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff64f640",
+      "audio_physics_material_wall": "woodwall",
+      "audio_physics_material_solid": "wood",
+      "show_in_creative_mode": "1"
+    }
   },
   "grass_loose": {
     "wang_color": "ff64e64a",
@@ -5847,7 +7511,13 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_grass_loose"
+    "ui_name": "$mat_grass_loose",
+    "graphics": {
+      "texture_file": "data/materials_gfx/moss.png",
+      "color": "ff64f640",
+      "audio_physics_material_wall": "gravel",
+      "audio_physics_material_solid": "wood"
+    }
   },
   "fungus_loose": {
     "wang_color": "ff64ab40",
@@ -5863,7 +7533,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fungus_loose"
+    "ui_name": "$mat_fungus_loose",
+    "graphics": {
+      "texture_file": "data/materials_gfx/fungi.png",
+      "color": "ff64ab40"
+    }
   },
   "fungus_loose_green": {
     "wang_color": "ff64ab2c",
@@ -5879,7 +7553,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fungus_loose"
+    "ui_name": "$mat_fungus_loose",
+    "graphics": {
+      "texture_file": "data/materials_gfx/moss.png",
+      "color": "ff64ab2c"
+    }
   },
   "fungus_loose_trippy": {
     "wang_color": "ff64ab41",
@@ -5895,7 +7573,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_fungi_trippy"
+    "ui_name": "$mat_fungi_trippy",
+    "graphics": {
+      "texture_file": "data/materials_gfx/fungi.png",
+      "color": "ff64ab40"
+    }
   },
   "wood_prop": {
     "wang_color": "ff966400",
@@ -5912,7 +7594,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_prop"
+    "ui_name": "$mat_wood_prop",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff966400"
+    }
   },
   "wood_prop_noplayerhit": {
     "wang_color": "ff966401",
@@ -5929,7 +7615,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_prop"
+    "ui_name": "$mat_wood_prop",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff966400"
+    }
   },
   "cloth_box2d": {
     "wang_color": "ff937f52",
@@ -5943,7 +7633,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_cloth"
+    "ui_name": "$mat_cloth",
+    "graphics": {
+      "texture_file": "data/materials_gfx/cloth.png",
+      "color": "ff937f52"
+    }
   },
   "wood_prop_durable": {
     "wang_color": "ff966410",
@@ -5960,7 +7654,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_wood_prop_durable"
+    "ui_name": "$mat_wood_prop_durable",
+    "graphics": {
+      "texture_file": "data/materials_gfx/wood.png",
+      "color": "ff966410"
+    }
   },
   "nest_box2d": {
     "wang_color": "ff3b8d4b",
@@ -5977,7 +7675,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_nest_box2d"
+    "ui_name": "$mat_nest_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/nest.png",
+      "color": "ff3b8d4b"
+    }
   },
   "nest_firebug_box2d": {
     "wang_color": "ff3b3e3b",
@@ -5994,7 +7696,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_nest_box2d"
+    "ui_name": "$mat_nest_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/nest.png",
+      "color": "ff3b8d4b"
+    }
   },
   "cocoon_box2d": {
     "wang_color": "ff3f8d4b",
@@ -6011,7 +7717,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_cocoon_box2d"
+    "ui_name": "$mat_cocoon_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/nest.png",
+      "color": "ff3f8d4b"
+    }
   },
   "meteorite_crackable": {
     "wang_color": "ffa86C42",
@@ -6026,7 +7736,11 @@
     ],
     "burnable": "0",
     "density": "4",
-    "ui_name": "$mat_meteorite_crackable"
+    "ui_name": "$mat_meteorite_crackable",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick.png",
+      "color": "ffa86C42"
+    }
   },
   "plastic_prop": {
     "wang_color": "ff3b6d4b",
@@ -6043,7 +7757,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_plastic"
+    "ui_name": "$mat_plastic",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff3b5d4b"
+    }
   },
   "aluminium_robot": {
     "wang_color": "ff3c2d3c",
@@ -6060,7 +7778,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_aluminium"
+    "ui_name": "$mat_aluminium",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff3c2d3c"
+    }
   },
   "metal_prop": {
     "wang_color": "ff968800",
@@ -6077,7 +7799,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_prop"
+    "ui_name": "$mat_metal_prop",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff968800"
+    }
   },
   "metal_prop_low_restitution": {
     "wang_color": "ff9a8f00",
@@ -6094,7 +7820,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_prop"
+    "ui_name": "$mat_metal_prop",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff968800"
+    }
   },
   "metal_prop_loose": {
     "wang_color": "ff9677a0",
@@ -6111,7 +7841,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_prop"
+    "ui_name": "$mat_metal_prop",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff968800"
+    }
   },
   "metal": {
     "wang_color": "ff3d2d3c",
@@ -6128,7 +7862,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal"
+    "ui_name": "$mat_metal",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff3d2d3c"
+    }
   },
   "metal_hard": {
     "wang_color": "ff3df03c",
@@ -6144,7 +7882,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal"
+    "ui_name": "$mat_metal",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff3d2d3c"
+    }
   },
   "templebrick_box2d_edgetiles": {
     "wang_color": "ff2ffda4",
@@ -6158,7 +7900,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_templebrick_box2d"
+    "ui_name": "$mat_templebrick_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/templebrick.png",
+      "color": "ff786C42"
+    }
   },
   "rock_box2d_hard": {
     "wang_color": "ff2d6dbc",
@@ -6172,7 +7918,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_rock_box2d_hard"
+    "ui_name": "$mat_rock_box2d_hard",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff2d2dac"
+    }
   },
   "poop_box2d_hard": {
     "wang_color": "ffa38431",
@@ -6186,7 +7936,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_rock_box2d_hard"
+    "ui_name": "$mat_rock_box2d_hard",
+    "graphics": {
+      "texture_file": "data/materials_gfx/earth_alt.png",
+      "color": "ffa38431"
+    }
   },
   "rock_box2d_nohit": {
     "wang_color": "ff2d2dbc",
@@ -6200,7 +7954,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_rock_box2d_nohit"
+    "ui_name": "$mat_rock_box2d_nohit",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff2d2dac"
+    }
   },
   "rock_box2d_nohit_hard": {
     "wang_color": "ff2d4dbc",
@@ -6213,7 +7971,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_rock_box2d_nohit_hard"
+    "ui_name": "$mat_rock_box2d_nohit_hard",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff2d2dac"
+    }
   },
   "item_box2d": {
     "wang_color": "fffe2dac",
@@ -6225,7 +7987,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_item_box2d"
+    "ui_name": "$mat_item_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "fffe2dac"
+    }
   },
   "item_box2d_glass": {
     "wang_color": "fffe2dab",
@@ -6237,7 +8003,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_item_box2d"
+    "ui_name": "$mat_item_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "fffe2dac"
+    }
   },
   "item_box2d_meat": {
     "wang_color": "fffe11a1",
@@ -6249,7 +8019,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_meat"
+    "ui_name": "$mat_meat",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "fffe2dac"
+    }
   },
   "gem_box2d": {
     "wang_color": "fffd2dac",
@@ -6262,7 +8036,12 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d"
+    "ui_name": "$mat_gem_box2d",
+    "graphics": {
+      "normal_mapped": "1",
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "ff5787E7"
+    }
   },
   "potion_glass_box2d": {
     "wang_color": "fffd2dab",
@@ -6274,7 +8053,12 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_potion_glass_box2d"
+    "ui_name": "$mat_potion_glass_box2d",
+    "graphics": {
+      "normal_mapped": "1",
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "ff5787E7"
+    }
   },
   "glass_box2d": {
     "wang_color": "fffd4dab",
@@ -6286,7 +8070,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_glass_box2d"
+    "ui_name": "$mat_glass_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "ff5787E7"
+    }
   },
   "gem_box2d_yellow_sun": {
     "wang_color": "ffff9919",
@@ -6301,7 +8089,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_red"
+    "ui_name": "$mat_gem_box2d_red",
+    "graphics": {
+      "color": "ffffc74e"
+    }
   },
   "gem_box2d_red_float": {
     "wang_color": "fffd2d7d",
@@ -6314,7 +8105,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_red"
+    "ui_name": "$mat_gem_box2d_red",
+    "graphics": {
+      "color": "ffE72850"
+    }
   },
   "gem_box2d_yellow_sun_gravity": {
     "wang_color": "ffaf9019",
@@ -6329,7 +8123,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_red"
+    "ui_name": "$mat_gem_box2d_red",
+    "graphics": {
+      "color": "ffffc74e"
+    }
   },
   "gem_box2d_darksun": {
     "wang_color": "ff1e4866",
@@ -6344,7 +8141,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_red"
+    "ui_name": "$mat_gem_box2d_red",
+    "graphics": {
+      "color": "ff1e4866"
+    }
   },
   "gem_box2d_pink": {
     "wang_color": "fffd2dad",
@@ -6357,7 +8157,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_pink"
+    "ui_name": "$mat_gem_box2d_pink",
+    "graphics": {
+      "color": "ffE334B4"
+    }
   },
   "gem_box2d_red": {
     "wang_color": "fffd2d9d",
@@ -6370,7 +8173,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_red"
+    "ui_name": "$mat_gem_box2d_red",
+    "graphics": {
+      "color": "ffE72850"
+    }
   },
   "gem_box2d_turquoise": {
     "wang_color": "ff14ffd7",
@@ -6383,7 +8189,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_turquoise"
+    "ui_name": "$mat_gem_box2d_turquoise",
+    "graphics": {
+      "color": "ff42ffbd"
+    }
   },
   "gem_box2d_opal": {
     "wang_color": "ff52dd60",
@@ -6396,7 +8205,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_turquoise"
+    "ui_name": "$mat_gem_box2d_turquoise",
+    "graphics": {
+      "color": "ff52dd60"
+    }
   },
   "gem_box2d_white": {
     "wang_color": "ffebeaef",
@@ -6409,7 +8221,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_white"
+    "ui_name": "$mat_gem_box2d_white",
+    "graphics": {
+      "color": "ffebeaef"
+    }
   },
   "gem_box2d_green": {
     "wang_color": "fffd2dae",
@@ -6422,7 +8237,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_green"
+    "ui_name": "$mat_gem_box2d_green",
+    "graphics": {
+      "color": "ffA6D33C"
+    }
   },
   "gem_box2d_orange": {
     "wang_color": "ffF98227",
@@ -6435,7 +8253,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gem_box2d_orange"
+    "ui_name": "$mat_gem_box2d_orange",
+    "graphics": {
+      "color": "ff89DA79"
+    }
   },
   "gold_box2d": {
     "wang_color": "ffF98228",
@@ -6449,7 +8270,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gold_box2d"
+    "ui_name": "$mat_gold_box2d",
+    "graphics": {
+      "color": "ffffc74e"
+    }
   },
   "bloodgold_box2d": {
     "wang_color": "ffF92828",
@@ -6463,7 +8287,10 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_bloodgold_box2d"
+    "ui_name": "$mat_bloodgold_box2d",
+    "graphics": {
+      "color": "ffFF4E4E"
+    }
   },
   "metal_nohit": {
     "wang_color": "ffad2dac",
@@ -6480,7 +8307,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_nohit"
+    "ui_name": "$mat_metal_nohit",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ffad2dac"
+    }
   },
   "metal_chain_nohit": {
     "wang_color": "ffad2dad",
@@ -6497,7 +8328,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_nohit"
+    "ui_name": "$mat_metal_nohit",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ffad2dac"
+    }
   },
   "metal_wire_nohit": {
     "wang_color": "ffad2dae",
@@ -6514,7 +8349,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_nohit"
+    "ui_name": "$mat_metal_nohit",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ffad2dac"
+    }
   },
   "metal_rust": {
     "wang_color": "ff4d2d3c",
@@ -6532,7 +8371,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_rust"
+    "ui_name": "$mat_metal_rust",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff4d2d3c"
+    }
   },
   "metal_rust_barrel": {
     "wang_color": "ff4d2d3d",
@@ -6550,7 +8393,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_metal_rust_barrel"
+    "ui_name": "$mat_metal_rust_barrel",
+    "graphics": {
+      "texture_file": "data/materials_gfx/steel.png",
+      "color": "ff4d2d3c"
+    }
   },
   "bone_box2d": {
     "wang_color": "ff1c2d2c",
@@ -6567,7 +8414,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_bone_box2d"
+    "ui_name": "$mat_bone_box2d",
+    "graphics": {
+      "texture_file": "data/materials_gfx/bone.png",
+      "color": "ff1c2d2c"
+    }
   },
   "magic_crystal_green": {
     "wang_color": "ffb2d740",
@@ -6580,7 +8431,12 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_magic_crystal"
+    "ui_name": "$mat_magic_crystal",
+    "graphics": {
+      "normal_mapped": "1",
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "ffb2d740"
+    }
   },
   "gold_b2": {
     "wang_color": "fffefae4",
@@ -6596,7 +8452,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_gold_b2"
+    "ui_name": "$mat_gold_b2",
+    "graphics": {
+      "texture_file": "data/materials_gfx/gold.png",
+      "color": "fffefae4"
+    }
   },
   "crystal_purple": {
     "wang_color": "ffa53d77",
@@ -6609,7 +8469,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_crystal_purple"
+    "ui_name": "$mat_crystal_purple",
+    "graphics": {
+      "texture_file": "data/materials_gfx/crystal_purple.png",
+      "color": "ffa53d77"
+    }
   },
   "crystal_solid": {
     "wang_color": "ffa5ad11",
@@ -6622,7 +8486,11 @@
     ],
     "burnable": "0",
     "density": "8",
-    "ui_name": "$mat_crystal"
+    "ui_name": "$mat_crystal",
+    "graphics": {
+      "texture_file": "data/materials_gfx/crystal.png",
+      "color": "ff74737f"
+    }
   },
   "meat_fruit": {
     "wang_color": "ffa50e77",
@@ -6640,7 +8508,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_fruit"
+    "ui_name": "$mat_meat_fruit",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffcc4c4c"
+    }
   },
   "meat_pumpkin": {
     "wang_color": "ffff531b",
@@ -6658,7 +8530,11 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_fruit"
+    "ui_name": "$mat_meat_fruit",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat.png",
+      "color": "ffff531b"
+    }
   },
   "meat_warm": {
     "wang_color": "ff5b5246",
@@ -6676,7 +8552,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_warm"
+    "ui_name": "$mat_meat_warm",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_warm.png",
+      "color": "ff5b5246",
+      "pixel_all_around": "ff7d5a4d",
+      "pixel_lonely": "ff7d5a4d",
+      "pixel_top_right": "ff7d5a4d",
+      "pixel_bottom_left": "ff7d5a4d",
+      "pixel_left": "ff7d5a4d",
+      "pixel_top_left": "ff7d5a4d",
+      "pixel_top": "ff7d5a4d",
+      "pixel_right": "ff7d5a4d",
+      "pixel_bottom_right": "ff7d5a4d",
+      "pixel_bottom": "ff7d5a4d"
+    }
   },
   "meat_hot": {
     "wang_color": "ff5c5246",
@@ -6694,7 +8584,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_hot"
+    "ui_name": "$mat_meat_hot",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_hot.png",
+      "color": "ff5c5246",
+      "pixel_all_around": "ff7d5a4d",
+      "pixel_lonely": "ff7d5a4d",
+      "pixel_top_right": "ff7d5a4d",
+      "pixel_bottom_left": "ff7d5a4d",
+      "pixel_left": "ff7d5a4d",
+      "pixel_top_left": "ff7d5a4d",
+      "pixel_top": "ff7d5a4d",
+      "pixel_right": "ff7d5a4d",
+      "pixel_bottom_right": "ff7d5a4d",
+      "pixel_bottom": "ff7d5a4d"
+    }
   },
   "meat_done": {
     "wang_color": "ff5d5246",
@@ -6712,7 +8616,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_done"
+    "ui_name": "$mat_meat_done",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_done.png",
+      "color": "ff5d5246",
+      "pixel_all_around": "ff7d5a4d",
+      "pixel_lonely": "ff7d5a4d",
+      "pixel_top_right": "ff7d5a4d",
+      "pixel_bottom_left": "ff7d5a4d",
+      "pixel_left": "ff7d5a4d",
+      "pixel_top_left": "ff7d5a4d",
+      "pixel_top": "ff7d5a4d",
+      "pixel_right": "ff7d5a4d",
+      "pixel_bottom_right": "ff7d5a4d",
+      "pixel_bottom": "ff7d5a4d"
+    }
   },
   "meat_burned": {
     "wang_color": "ff5e5246",
@@ -6730,7 +8648,21 @@
     ],
     "burnable": "1",
     "density": "6",
-    "ui_name": "$mat_meat_burned"
+    "ui_name": "$mat_meat_burned",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_burned.png",
+      "color": "ff5e5246",
+      "pixel_all_around": "ff7d5a4d",
+      "pixel_lonely": "ff7d5a4d",
+      "pixel_top_right": "ff7d5a4d",
+      "pixel_bottom_left": "ff7d5a4d",
+      "pixel_left": "ff7d5a4d",
+      "pixel_top_left": "ff7d5a4d",
+      "pixel_top": "ff7d5a4d",
+      "pixel_right": "ff7d5a4d",
+      "pixel_bottom_right": "ff7d5a4d",
+      "pixel_bottom": "ff7d5a4d"
+    }
   },
   "neon_tube_cyan": {
     "wang_color": "ffaedde7",
@@ -6747,7 +8679,11 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_neon_tube_cyan"
+    "ui_name": "$mat_neon_tube_cyan",
+    "graphics": {
+      "texture_file": "data/materials_gfx/neon_tube_cyan.png",
+      "color": "ffCFF7C8"
+    }
   },
   "neon_tube_blood_red": {
     "wang_color": "ffaedde8",
@@ -6764,6 +8700,10 @@
     ],
     "burnable": "0",
     "density": "6",
-    "ui_name": "$mat_neon_tube_blood_red"
+    "ui_name": "$mat_neon_tube_blood_red",
+    "graphics": {
+      "texture_file": "data/materials_gfx/neon_tube_blood_red.png",
+      "color": "ffCFF7C8"
+    }
   }
 }

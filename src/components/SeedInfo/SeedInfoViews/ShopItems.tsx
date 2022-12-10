@@ -81,7 +81,7 @@ function splitIntoChunk<T>(arr: T[], size: number, pad?: boolean, padWith?) {
 	return res;
 }
 
-const Wand = (props: {
+export const Wand = (props: {
 	item: IWandShop['items'][number];
 	isFavorite: (id: string) => boolean;
 }) => {
