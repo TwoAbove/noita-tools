@@ -31,6 +31,14 @@ const Paste = ({
 		}
 	}
 
+	const onChange = (file?: Blob) => {
+		if (!file) {
+			return;
+		}
+		onImageBlob(file);
+	};
+
+
 	useEffect(() => {
 		window.addEventListener('paste', handlePaste as any);
 		return () => {
@@ -70,7 +78,7 @@ const Paste = ({
 				<p>
 					Or, choose a screenshot to upload.
 				</p>
-				<input type="file" onChange={() => { }} />
+				<input type="file" onChange={(event) => onChange(event?.target?.files?.[0] || undefined)} />
 			</div>
 		</div>
 	)
@@ -207,7 +215,7 @@ const LiveSeedStats = () => {
 			forceUpdate();
 		});
 		seedLinkHandler.addEventListener('restart', () => {
-			ocrHandler!.restart().finally(() => {});
+			ocrHandler!.restart().finally(() => { });
 		});
 		return seedLinkHandler;
 	});

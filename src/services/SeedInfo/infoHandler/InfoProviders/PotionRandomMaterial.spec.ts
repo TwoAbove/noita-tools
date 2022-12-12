@@ -12,7 +12,7 @@ describe('PotionRandomMaterialInfoProvider', () => {
 			seed: 17172,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'burning_powder'
 		},
@@ -20,7 +20,7 @@ describe('PotionRandomMaterialInfoProvider', () => {
 			seed: 25784,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'radioactive_liquid_yellow'
 		},
@@ -28,7 +28,7 @@ describe('PotionRandomMaterialInfoProvider', () => {
 			seed: 29664,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'urine'
 		},
@@ -36,7 +36,7 @@ describe('PotionRandomMaterialInfoProvider', () => {
 			seed: 67686,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'plasma_fading_green'
 		},
@@ -44,7 +44,7 @@ describe('PotionRandomMaterialInfoProvider', () => {
 			seed: 81151,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'bush_seed'
 		},
@@ -52,7 +52,7 @@ describe('PotionRandomMaterialInfoProvider', () => {
 			seed: 102316,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'steel_sand'
 		},
@@ -60,7 +60,7 @@ describe('PotionRandomMaterialInfoProvider', () => {
 			seed: 114713,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'material_darkness'
 		},
@@ -68,7 +68,7 @@ describe('PotionRandomMaterialInfoProvider', () => {
 			seed: 124650,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'spore'
 		},
@@ -76,7 +76,7 @@ describe('PotionRandomMaterialInfoProvider', () => {
 			seed: 127104,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'slush'
 		}

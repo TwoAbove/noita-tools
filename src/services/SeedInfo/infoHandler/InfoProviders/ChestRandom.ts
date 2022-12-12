@@ -138,7 +138,9 @@ export class ChestRandomProvider extends InfoProvider {
 				rnd = this.randoms.Random(0, 100);
 				if (rnd <= 94) {
 					entities.push({
-						entity: 'data/entities/items/pickup/potion.xml'
+						entity: 'data/entities/items/pickup/potion.xml',
+						x,
+						y: y + 2
 					});
 				} else if (rnd <= 98) {
 					entities.push({
@@ -148,11 +150,15 @@ export class ChestRandomProvider extends InfoProvider {
 					rnd = this.randoms.Random(0, 100);
 					if (rnd <= 98) {
 						entities.push({
-							entity: 'data/entities/items/pickup/potion_secret.xml'
+							entity: 'data/entities/items/pickup/potion_secret.xml',
+							x,
+							y: y + 2
 						});
 					} else if (rnd <= 100) {
 						entities.push({
-							entity: 'data/entities/items/pickup/potion_random_material.xml'
+							entity: 'data/entities/items/pickup/potion_random_material.xml',
+							x,
+							y: y + 2
 						});
 					}
 				}
@@ -208,7 +214,11 @@ export class ChestRandomProvider extends InfoProvider {
 						opt = 'data/entities/items/pickup/physics_gold_orb.xml';
 					}
 				}
-				entities.push({ entity: opt, x, y: y - 10 });
+				const entity = { entity: opt, x, y: y - 10 };
+				if (entity.entity === 'data/entities/items/pickup/potion.xml') {
+					entity.y += 2;
+				}
+				entities.push(entity);
 			} else if (rnd <= 65) {
 				// Random card
 				let amount = 1;
@@ -225,7 +235,7 @@ export class ChestRandomProvider extends InfoProvider {
 					amount = amount + 4;
 				}
 				// For some reason, this extra Random is needed to generate the correct cards
-				let dud = this.randoms.Random(-5, 5);
+				// let dud = this.randoms.Random(-5, 5);
 				for (let i = 1; i <= amount; i++) {
 					let card = this.make_random_card(
 						x + (i - amount / 2) * 8,

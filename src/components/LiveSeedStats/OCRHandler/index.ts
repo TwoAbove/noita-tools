@@ -66,9 +66,9 @@ class OCRHandler extends EventTarget {
   }
 
   async startTesseract() {
-    const worker = Tesseract.createWorker({
+    const worker = await Tesseract.createWorker({
       // langPath: 'https://tessdata.projectnaptha.com/4.0.0_fast',
-      langPath: '/ocr/good',
+      // langPath: '/ocr/good',
       errorHandler: (e) => {
         console.error(e);
         this.startTesseract().catch(e => console.error(e));

@@ -12,7 +12,7 @@ describe('PotionInfoProvider', () => {
 			seed: 1674055821,
 			params: {
 				x: 1390,
-				y: 181
+				y: 183
 			},
 			ans: 'magic_liquid_mana_regeneration'
 		},
@@ -20,7 +20,7 @@ describe('PotionInfoProvider', () => {
 			seed: 1674055821,
 			params: {
 				x: 1200,
-				y: 631
+				y: 633
 			},
 			ans: 'lava'
 		},
@@ -28,7 +28,7 @@ describe('PotionInfoProvider', () => {
 			seed: 1674055821,
 			params: {
 				x: 1480,
-				y: 831
+				y: 833
 			},
 			ans: 'magic_liquid_random_polymorph'
 		},
@@ -36,7 +36,7 @@ describe('PotionInfoProvider', () => {
 			seed: 1674055821,
 			params: {
 				x: 190,
-				y: 111
+				y: 113
 			},
 			ans: 'magic_liquid_faster_levitation'
 		},
@@ -44,7 +44,7 @@ describe('PotionInfoProvider', () => {
 			seed: 5,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'magic_liquid_unstable_teleportation'
 		},
@@ -52,7 +52,7 @@ describe('PotionInfoProvider', () => {
 			seed: 10,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'magic_liquid_mana_regeneration'
 		},

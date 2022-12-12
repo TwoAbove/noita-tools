@@ -61,7 +61,7 @@ const potions =
 
 export class PotionSecretInfoProvider extends InfoProvider {
   provide(x: number, y: number): string {
-    this.randoms.SetRandomSeed(x - 4.5, y - 4);
+    this.randoms.SetRandomSeed(x - 4.5, y - 6);
     const potion_material = this.randoms.randomFromArray(potions).material;
     return potion_material;
   }

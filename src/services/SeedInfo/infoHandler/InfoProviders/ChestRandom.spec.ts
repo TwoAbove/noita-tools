@@ -14,30 +14,24 @@ describe('ChestRandomProvider', () => {
 			},
 			ans: [{ entity: 'data/entities/items/pickup/heart.xml', x: -78, y: 1371 }]
 		},
-		// {
-		// 	seed: 5151515,
-		// 	params: {
-		// 		x: 1,
-		// 		y: 0,
-		// 	},
-		// 	ans: ''
-		// },
-		// {
-		// 	seed: 123435616,
-		// 	params: {
-		// 		x: 1,
-		// 		y: 1,
-		// 	},
-		// 	ans: ''
-		// },
-		// {
-		// 	seed: 123435616,
-		// 	params: {
-		// 		x: 1,
-		// 		y: 1,
-		// 	},
-		// 	ans: ''
-		// }
+		{
+			seed: 551,
+			params: {
+				x: -78, y: 1371, greed: false
+			},
+			ans: [{ entity: 'data/entities/items/pickup/potion.xml', x: -78, y: 1373 }]
+		},
+		{
+			seed: 551,
+			params: {
+				x: -78, y: 2907, greed: false
+			},
+			ans: [
+				{ entity: 'Spell', extra: 'GRAVITY', x: -78, y: 2907 },
+				{ entity: 'Spell', extra: 'BURST_3', x: -78, y: 2907 },
+				{ entity: 'Spell', extra: 'TENTACLE_RAY_ENEMY', x: -78, y: 2907 },
+			]
+		}
 	];
 
 	describe('#provide', () => {

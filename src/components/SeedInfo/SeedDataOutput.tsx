@@ -96,7 +96,7 @@ const SeedDataOutput = (props: ISeedDataProps) => {
 		<>
 			{gameInfoProvider && data ? (
 				<GameInfoContext.Provider value={{ gameInfoProvider, data }}>
-					<Stack>
+					<Stack className='seed-info'>
 						{data && `Seed: ${seed}`}
 						{data && (
 							<SeedInfo

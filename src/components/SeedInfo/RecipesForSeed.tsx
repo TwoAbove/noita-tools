@@ -279,7 +279,7 @@ const SeedData = () => {
 				<Col xs="8">
 					<h4 className="pt-3">Seed info</h4>
 					<Row>
-						<Col xs={6} md="auto">
+						<Col xs={6}>
 							<p>
 								Get lots of information about a seed, like perks in holy
 								mountains, fungal shifts, etc.

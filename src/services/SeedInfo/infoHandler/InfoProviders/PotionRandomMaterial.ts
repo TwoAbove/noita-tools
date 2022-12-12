@@ -35,7 +35,7 @@ export class PotionRandomMaterialInfoProvider extends InfoProvider {
 	sands = ['mud', 'concrete_sand', 'sand', 'bone', 'soil', 'sandstone', 'fungisoil', 'honey', 'glue', 'explosion_dirt', 'snow', 'snow_sticky', 'rotten_meat', 'meat_slime_sand', 'rotten_meat_radioactive', 'ice', 'sand_herb', 'wax', 'gold', 'silver', 'copper', 'brass', 'diamond', 'coal', 'sulphur', 'salt', 'sodium_unstable', 'gunpowder', 'gunpowder_explosive', 'gunpowder_tnt', 'gunpowder_unstable', 'gunpowder_unstable_big', 'monster_powder_test', 'rat_powder', 'fungus_powder', 'orb_powder', 'gunpowder_unstable_boss_limbs', 'plastic_red', 'grass', 'grass_ice', 'grass_dry', 'fungi', 'spore', 'moss', 'plant_material', 'plant_material_red', 'ceiling_plant_material', 'mushroom_seed', 'plant_seed', 'mushroom', 'mushroom_giant_red', 'mushroom_giant_blue', 'glowshroom', 'bush_seed', 'poo', 'glass_broken', 'moss_rust', 'fungi_creeping_secret', 'fungi_creeping', 'grass_dark', 'fungi_green', 'shock_powder', 'fungus_powder_bad', 'burning_powder', 'purifying_powder', 'sodium', 'metal_sand', 'steel_sand', 'gold_radioactive', 'endslime_blood', 'sandstone_surface', 'soil_dark', 'soil_dead', 'soil_lush_dark', 'soil_lush', 'sand_petrify', 'lavasand', 'sand_surface', 'sand_blue', 'plasma_fading_pink', 'plasma_fading_green',]
 
 	provide(x: number, y: number): string {
-		this.randoms.SetRandomSeed(x - 4.5, y - 4);
+		this.randoms.SetRandomSeed(x - 4.5, y - 6);
 		let m;
 		if (this.randoms.Random(0, 100) <= 50) {
 			m = this.CellFactory_GetAllLiquids(false);
