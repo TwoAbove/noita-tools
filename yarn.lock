@@ -14350,15 +14350,15 @@ terser@^5.0.0, terser@^5.7.2:
     commander "^2.20.0"
     source-map-support "~0.5.20"
 
-tesseract.js-core@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/tesseract.js-core/-/tesseract.js-core-3.0.2.tgz#6aef904182f0d65935d042d6077b9099a3aaa3af"
-  integrity sha512-2fD76ka9nO/C616R0fq+M9Zu91DA3vEfyozp0jlxaJOBmpfeprtgRP3cqVweZh2darE1kK/DazoxZ65g7WU99Q==
+tesseract.js-core@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/tesseract.js-core/-/tesseract.js-core-4.0.1.tgz#5dca1f40e6b2b36ce1589f3b93b3c3ddc26804a9"
+  integrity sha512-FqBBc3lWE5FhoyIBau7hFJYWPE2AOPa4Im+lIMQxj/hNYaM8QxCyTXuRJ6Nw9OjjKSHK7WSxJXDe3GP2dzwl+w==
 
-tesseract.js@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/tesseract.js/-/tesseract.js-3.0.3.tgz#18d754c5502677361a25e771199f118aac5ef1ff"
-  integrity sha512-eZ1+OGWvF5IMExAzIwnDf3S3kf2FeC+i4qrMTRvBSlZeHc3ONy0vCmaKmBQz6scjB6C1W2w2x0r4lCEh95qBnw==
+tesseract.js@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/tesseract.js/-/tesseract.js-4.0.1.tgz#6e7ef89bc20e79fe42600adade97f159fe4f8c9e"
+  integrity sha512-zrdcRp10w6mXUq++Isqf8c91aYB3UzWZwwTR+w4EBmixgAbVSo0qhOjvczyc9bgFLjc8kX+c2J6l7JP7QgydfQ==
   dependencies:
     babel-eslint "^10.1.0"
     bmp-js "^0.1.0"
@@ -14370,7 +14370,7 @@ tesseract.js@^3.0.3:
     opencollective-postinstall "^2.0.2"
     regenerator-runtime "^0.13.3"
     resolve-url "^0.2.1"
-    tesseract.js-core "^3.0.2"
+    tesseract.js-core "^4.0.1"
     wasm-feature-detect "^1.2.11"
     zlibjs "^0.3.1"
 

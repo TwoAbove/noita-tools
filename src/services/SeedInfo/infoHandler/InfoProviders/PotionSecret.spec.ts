@@ -11,7 +11,7 @@ describe('PotionSecretInfoProvider', () => {
 			seed: 31,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'salt'
 		},
@@ -19,7 +19,7 @@ describe('PotionSecretInfoProvider', () => {
 			seed: 560,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'bush_seed'
 		},
@@ -27,7 +27,7 @@ describe('PotionSecretInfoProvider', () => {
 			seed: 574,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'magic_liquid_hp_regeneration_unstable'
 		},
@@ -35,7 +35,7 @@ describe('PotionSecretInfoProvider', () => {
 			seed: 915,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'purifying_powder'
 		},
@@ -43,7 +43,7 @@ describe('PotionSecretInfoProvider', () => {
 			seed: 1700,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'snow'
 		},
@@ -51,7 +51,7 @@ describe('PotionSecretInfoProvider', () => {
 			seed: 2825,
 			params: {
 				x: -78,
-				y: 1371
+				y: 1373
 			},
 			ans: 'blood_worm'
 		},
