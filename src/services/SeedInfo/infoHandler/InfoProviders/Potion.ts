@@ -104,7 +104,7 @@ const materials_magic = [
 export class PotionInfoProvider extends InfoProvider {
   provide(x: number, y: number): string {
     // width / 2 and height - 2? or height / 2 + 2?
-    this.randoms.SetRandomSeed(x - 4.5, y - 4);
+    this.randoms.SetRandomSeed(x - 4.5, y - 6);
 
     let potion_material = 'water';
 

@@ -25,7 +25,9 @@ describe('PacifistChestProvider', () => {
 				fallback: 0,
 				greed: false
 			},
-			ans: [{ entity: 'data/entities/misc/custom_cards/bomb.xml', x: -78, y: 2907 }]
+			ans: [
+				{ entity: 'data/entities/misc/custom_cards/bomb.xml', x: -78, y: 2907 }
+			]
 		},
 		{
 			seed: 1674055821,
@@ -35,15 +37,58 @@ describe('PacifistChestProvider', () => {
 				fallback: 0,
 				greed: false
 			},
-			ans: [{
-				entity: 'data/entities/items/wand_level_01.xml', x: -78, y: 4955,
-				"extra": {
-					"cost": 30,
-					"force_unshuffle": false,
-					"level": 1,
-				},
-
-			}]
+			ans: [
+				{
+					entity: 'data/entities/items/wand_level_01.xml',
+					x: -78,
+					y: 4955,
+					extra: {
+						cost: 30,
+						force_unshuffle: false,
+						level: 1
+					}
+				}
+			]
+		},
+		{
+			seed: 475,
+			params: {
+				level: 0,
+				worldOffset: 0,
+				fallback: 0,
+				greed: false
+			},
+			ans: [
+				{ entity: 'data/entities/items/pickup/potion.xml', x: -78, y: 1373 },
+				{ entity: 'Spell', extra: 'GRENADE_LARGE', x: -78, y: 1371 },
+				{ entity: 'Spell', extra: 'PHASING_ARC', x: -78, y: 1371 }
+			]
+		},
+		{
+			seed: 551,
+			params: {
+				level: 0,
+				worldOffset: 0,
+				fallback: 0,
+				greed: false
+			},
+			ans: [
+				{ entity: 'data/entities/items/pickup/potion.xml', x: -78, y: 1373 },
+			]
+		},
+		{
+			seed: 551,
+			params: {
+				level: 1,
+				worldOffset: 0,
+				fallback: 0,
+				greed: false
+			},
+			ans: [
+				{ entity: 'Spell', extra: 'GRAVITY', x: -78, y: 2907 },
+				{ entity: 'Spell', extra: 'BURST_3', x: -78, y: 2907 },
+				{ entity: 'Spell', extra: 'TENTACLE_RAY_ENEMY', x: -78, y: 2907 },
+			]
 		}
 		// {
 		// 	seed: 123435616,

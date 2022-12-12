@@ -1,6 +1,6 @@
 {
   "name": "noita-helper",
-  "version": "2.23.0",
+  "version": "2.23.1",
   "private": true,
   "homepage": "https://www.noitool.com/",
   "dependencies": {
@@ -96,7 +96,7 @@
     "sharp": "^0.31.2",
     "socket.io-client": "^4.5.3",
     "source-map-explorer": "^2.5.3",
-    "tesseract.js": "^3.0.3",
+    "tesseract.js": "^4.0.1",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",
