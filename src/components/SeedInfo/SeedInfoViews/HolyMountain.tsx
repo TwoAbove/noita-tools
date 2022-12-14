@@ -89,7 +89,7 @@ interface IPacifistChestProps {
 // TODO: Extract this into it's own file to decouple
 const PacifistChest: FC<IPacifistChestProps> = ({ infoProvider, level }) => {
   const [fallback, setFallback] = useState(0);
-  const result = useMemo(() => infoProvider.providers.pacifistChest.provide(level, infoProvider.config.perkWorldOffset, fallback), [fallback]);
+  const result = useMemo(() => infoProvider.providers.pacifistChest.provide(level, infoProvider.config.perkWorldOffset, fallback), [infoProvider.providers.pacifistChest, infoProvider.config.perkWorldOffset, level, fallback]);
   const goldReward = result.filter(r => r.entity.includes('goldnugget'));
   const nonGoldReward = result.filter(r => !r.entity.includes('goldnugget'));
   let goldSumm = goldReward.reduce<number>((c, r) => {
