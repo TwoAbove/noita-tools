@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { createContext, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, FC, memo, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import {
   Button, Col, Form, Stack, Modal, Row, Table
 } from 'react-bootstrap';
@@ -20,6 +20,7 @@ import useLocalStorage from '../../../services/useLocalStorage';
 import { useSpellFavorite, useFavoritePerks } from './helpers';
 import classNames from 'classnames';
 import Entity from '../../Icons/Entity';
+import { IItem } from '../../../services/SeedInfo/infoHandler/InfoProviders/ChestRandom';
 
 const perkWidth = '3rem'
 const gamblePerkDiff = '-0.8rem'
@@ -83,15 +84,12 @@ const RerollPane = (props: IRerollPaneProps) => {
 };
 
 interface IPacifistChestProps {
-  infoProvider: GameInfoProvider;
-  level: number;
+    items: IItem[];
 }
 // TODO: Extract this into it's own file to decouple
-const PacifistChest: FC<IPacifistChestProps> = ({ infoProvider, level }) => {
-  const [fallback, setFallback] = useState(0);
-  const result = useMemo(() => infoProvider.providers.pacifistChest.provide(level, infoProvider.config.perkWorldOffset, fallback), [infoProvider.providers.pacifistChest, infoProvider.config.perkWorldOffset, level, fallback]);
-  const goldReward = result.filter(r => r.entity.includes('goldnugget'));
-  const nonGoldReward = result.filter(r => !r.entity.includes('goldnugget'));
+const PacifistChest: FC<IPacifistChestProps> = ({ items }) => {
+  const goldReward = items.filter(r => r.entity.includes('goldnugget'));
+  const nonGoldReward = items.filter(r => !r.entity.includes('goldnugget'));
   let goldSumm = goldReward.reduce<number>((c, r) => {
     // either goldnugget or goldnugget_x
     const gn = r.entity.split('/')[4].split('.')[0];
@@ -140,7 +138,7 @@ interface IPerkRowProps {
   favoritesInNextReroll?: number;
   showAllAlwaysCast?: boolean;
   infoProvider: GameInfoProvider;
-  level: number;
+  pacifistChestItems: IItem[];
 
   handleReroll: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleRerollUndo?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -153,7 +151,7 @@ interface IPerkRowProps {
   getAlwaysCast: (i: number, perks: number) => string;
 };
 const PerkRow: FC<IPerkRowProps> = (props) => {
-  const { level, rerollsToFavorite, favoritesInNextReroll, advanced, pickedPerks, perkRerolls, shop, perks, showAllAlwaysCast, infoProvider, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, getAlwaysCast, handleOpenShopInfo, handleLoad, isPerkFavorite, isSpellFavorite } = props;
+  const { pacifistChestItems, rerollsToFavorite, favoritesInNextReroll, advanced, pickedPerks, perkRerolls, shop, perks, showAllAlwaysCast, infoProvider, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, getAlwaysCast, handleOpenShopInfo, handleLoad, isPerkFavorite, isSpellFavorite } = props;
   const numberOfGambles = pickedPerks?.filter(p => p === 'GAMBLE').length;
   const type = shop.type;
   const rerollsForLevel = perkRerolls ? perkRerolls : 0;
@@ -172,7 +170,7 @@ const PerkRow: FC<IPerkRowProps> = (props) => {
         <Shop type={type} handleOpenShopInfo={handleOpenShopInfo} favoriteSpells={favoriteSpells} />
       </td>
       <td style={{ height: '4rem' }} className='d-flex align-content-center justify-content-around align-items-center'>
-        <PacifistChest infoProvider={infoProvider} level={level} />
+        <PacifistChest items={pacifistChestItems} />
       </td>
       <td className='w-100'>
         <Stack direction="horizontal" className="justify-content-center" gap={3} >
@@ -612,6 +610,8 @@ const HolyMountain = (props: IHolyMountainProps) => {
     setShopSelected(level);
   };
 
+  const pacifistChestItems = useCallback((l, w) => infoProvider.providers.pacifistChest.provide(l, w), [infoProvider.providers.pacifistChest])
+
   const offsetText = () => {
     let direction = worldOffset === 0 ? 'Main' : worldOffset < 0 ? 'West' : 'East';
     return `${direction} World ${Math.abs(worldOffset) || ''}`;
@@ -663,11 +663,11 @@ const HolyMountain = (props: IHolyMountainProps) => {
                 isPerkFavorite={isFavorite}
                 showAllAlwaysCast={showAlwaysCastRow}
                 infoProvider={infoProvider}
-                level={level}
                 isSpellFavorite={isSpellFavorite}
                 handleRerollUndo={e => handleRerollUndo(e, level)}
                 handleReroll={e => handleReroll(e, level)}
                 handleClickPerk={(id) => handleClickPerk(level, id)()}
+                pacifistChestItems={pacifistChestItems(level, worldOffset)}
                 isRerollable={(i, l) => infoProvider.providers.lottery.provide(level, i, l, worldOffset, adjustedLotteries)}
                 getAlwaysCast={(i, l) => infoProvider.providers.alwaysCast.provide(level, i, l, worldOffset)}
                 handleOpenShopInfo={() => handleOpenShopInfo(level)}
