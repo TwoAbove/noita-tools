@@ -356,6 +356,9 @@ export class ShopInfoProvider extends InfoProvider {
 					if (shop.type !== info.type) {
 						return false;
 					}
+					if (!shop.items.length) {
+						return true;
+					}
 					if (info.type === IShopType.wand) {
 						for (const wand of info.items) {
 							for (const prop of this.wandProps) {

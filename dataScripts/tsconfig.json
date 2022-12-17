@@ -10,6 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,

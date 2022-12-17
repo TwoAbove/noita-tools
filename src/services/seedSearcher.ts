@@ -1,5 +1,7 @@
+import { cloneDeep, cloneDeepWith } from 'lodash';
 import GameInfoProvider from '../services/SeedInfo/infoHandler';
-import { IRules, ILogicRules, RuleType } from './SeedInfo/infoHandler/IRule';
+import { IRules, ILogicRules, RuleType, IRuleRules } from './SeedInfo/infoHandler/IRule';
+import { IRandom } from './SeedInfo/random';
 
 // const includesAll = (arr: string[], target: string[]) =>
 // 	arr.length ? target.every(v => arr.includes(v)) : true;
@@ -12,8 +14,47 @@ export interface ISeedSolverConfig {
 	findAll?: boolean;
 }
 
+const searchWeights = {
+	alchemy: 0.22039,
+	fungalShift: 0.15964,
+	wand: 0.07342,
+	biomeModifier: 0.06789,
+	alwaysCast: 0.06586,
+	perk: 0.06346,
+	biome: 0.05945,
+	lottery: 0.05217,
+	shop: 0.05129,
+	potion: 0.04446,
+	material: 0.04354,
+	potionRandomMaterial: 0.04336,
+	potionSecret: 0.04193,
+	powderStash: 0.04125,
+	startingBombSpell: 0.04096,
+	chestRandom: 0.04094,
+	startingSpell: 0.04089,
+	pacifistChest: 0.04087,
+	startingFlask: 0.0407,
+	waterCave: 0.04069,
+	rain: 0.04068,
+	spells: 0.04035,
+	default: 0.06155 // average
+};
+
+const sortRules = (rules: ILogicRules | IRuleRules): void => {
+	if (!rules.rules) {
+		return;
+	}
+	rules.rules.sort((a, b) => {
+		if (a.type in RuleType || b.type in RuleType) {
+			return 0;
+		}
+		return searchWeights[a.type] - searchWeights[b.type];
+	});
+	rules.rules.forEach(r => sortRules(r));
+}
+
 export class SeedSolver {
-	gameInfoHandler = new GameInfoProvider({ seed: 0 }, []); // we will use the provider itself but later on we will use the whole thing
+	gameInfoHandler: GameInfoProvider;
 	shouldCancel = false;
 	foundSeed?: number;
 	running = false;
@@ -28,6 +69,14 @@ export class SeedSolver {
 	avgExecTime = 0;
 	sumExecTime = 0;
 
+	constructor(gameInfoHandler?: GameInfoProvider) {
+		if (gameInfoHandler) {
+			this.gameInfoHandler = gameInfoHandler;
+		} else {
+			this.gameInfoHandler = new GameInfoProvider({ seed: 0 }, [], undefined, undefined, false);
+		}
+	}
+
 	infocb!: (info: ReturnType<SeedSolver['getInfo']>) => void;
 	foundcb!: (info: ReturnType<SeedSolver['getInfo']>) => void;
 
@@ -37,7 +86,7 @@ export class SeedSolver {
 	}
 
 	check(rule: IRules): boolean {
-		switch(rule.type) {
+		switch (rule.type) {
 			case RuleType.NOT: {
 				const res = this.check(rule.rules[0]);
 				return !res;
@@ -115,15 +164,20 @@ export class SeedSolver {
 		}
 		if (config.rules) {
 			this.rules = config.rules;
+			sortRules(this.rules);
 		}
 		if (config.findAll) {
 			this.findAll = config.findAll;
 		}
 		if (config.unlockedSpells) {
 			this.gameInfoHandler.unlockedSpells = config.unlockedSpells;
-			this.gameInfoHandler.onRandomLoad(() => {
-				this.gameInfoHandler.randoms.SetUnlockedSpells(config.unlockedSpells!);
-			}).finally(() => {});
+			this.gameInfoHandler
+				.onRandomLoad(() => {
+					this.gameInfoHandler.randoms.SetUnlockedSpells(
+						config.unlockedSpells!
+					);
+				})
+				.finally(() => { });
 		}
 	}
 
