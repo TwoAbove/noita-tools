@@ -3,7 +3,6 @@ import path from 'path';
 import Jimp from 'jimp';
 
 import spells from '../../src/services/SeedInfo/data/spells.json';
-console.log(spells.findIndex(s => s.spawn_requires_flag === 'card_unlocked_duplicate'));
 
 // const noitaData = path.resolve(require('os').homedir(), '.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita');
 // const altarPng = path.resolve(noitaData, 'data/biome_impl/temple/altar.png');

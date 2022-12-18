@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect, useRef, useState } from 'react';
 import {
 	Container,
 	Stack,
@@ -9,7 +9,9 @@ import {
 	Button,
 	ButtonGroup,
 	Dropdown,
-	DropdownButton
+	DropdownButton,
+	Form,
+	InputGroup
 } from 'react-bootstrap';
 import { useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -33,8 +35,6 @@ import SearchContextProvider, { SearchContext } from './SearchContext';
 import RuleConstructor, { RuleConstructors } from './RuleConstructor';
 
 const treeTools = getTreeTools('id', 'rules');
-
-
 
 type IIDRule = IRule & { id: string };
 
@@ -70,7 +70,7 @@ const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable }) => {
 			gap={2}
 			className="align-items-center"
 			ref={dragPreview}
-			{...collected as any}
+			{...(collected as any)}
 		>
 			{draggable && <i className="bi bi-grip-vertical" ref={drag}></i>}
 			<ListGroup.Item
@@ -216,6 +216,115 @@ const Add: FC<IAddProps> = ({ onAdd }) => {
 	);
 };
 
+interface IExportProps {}
+const Export: FC<IExportProps> = () => {
+	const { ruleTree, ruleDispatch } = useContext(SearchContext);
+
+	const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		navigator.clipboard
+			.writeText(btoa(JSON.stringify(ruleTree)))
+			.catch(e => console.error(e));
+	};
+
+	return (
+		<Button
+			onClick={e => handleClick(e)}
+			className="w-100"
+			variant="outline-secondary"
+		>
+			Export to string
+		</Button>
+	);
+};
+
+const validJSON = (s: string) => {
+	try {
+		JSON.parse(atob(s));
+	} catch (e) {
+		return false;
+	}
+	return true;
+};
+
+interface IImportProps {
+	onClick: (data: string) => any;
+}
+const Import: FC<IImportProps> = ({ onClick }) => {
+	const [ripple, setRipple] = useState(false);
+	const [rippleError, setRippleError] = useState(false);
+
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	const clear = () => {
+		if (!inputRef || !inputRef.current) {
+			return;
+		}
+		inputRef.current.value = '';
+	};
+
+	const handlePaste = (event: React.ClipboardEvent) => {
+		var items = (
+			event.clipboardData ||
+			((event as any).originalEvent.clipboardData as DataTransfer)
+			).items;
+			for (const index in items) {
+				var item = items[index];
+				if (item.kind === 'string') {
+					item.getAsString(s => {
+						if(validJSON(s)) {
+						setRipple(true);
+						setTimeout(() => setRipple(false), 500);
+						onClick(s);
+					} else {
+						setRippleError(true);
+						setTimeout(() => setRippleError(false), 500);
+					}
+				});
+			}
+		}
+		setTimeout(() => clear(), 500);
+	};
+
+	const handleClick = () => {
+		if (!inputRef || !inputRef.current) {
+			return;
+		}
+		const s = inputRef.current.value;
+		onClick(s);
+		clear();
+	};
+
+	useEffect(() => {
+		window.addEventListener('paste', handlePaste as any);
+		return () => {
+			window.removeEventListener('paste', handlePaste as any);
+		};
+	});
+
+	return (
+		<InputGroup>
+			<Form.Control
+				className={classNames([
+					rippleError && 'border-danger text-danger border-1',
+					ripple && 'border-success text-success border-1'])}
+			ref={inputRef} />
+			<Button
+				onClick={() => handleClick()}
+				style={{
+					transition: '0.2s'
+				}}
+				className={classNames([
+					rippleError && 'border-danger text-danger border-1',
+					ripple && 'border-success text-success border-1',
+					'border'])}
+				variant="outline-info"
+			>
+				Import
+			</Button>
+		</InputGroup>
+	);
+};
+
 const LogicConstructors = {
 	[RuleType.AND]: {
 		Title: () => 'And',
@@ -282,6 +391,16 @@ const RuleList: FC<IRuleListProps> = () => {
 			}}
 		>
 			<ListGroup className="py-2">
+				<Row lg={1} className="mb-1 d-flex justify-content-between">
+					<Col className="my-2" xl={12}>
+						<Import
+							onClick={data => ruleDispatch({ action: 'import', data })}
+						/>
+					</Col>
+					<Col className="my-2" xs={12}>
+						<Export />
+					</Col>
+				</Row>
 				<Rule
 					onClick={() => ruleDispatch({ action: 'select', data: 'search' })}
 					id="search"

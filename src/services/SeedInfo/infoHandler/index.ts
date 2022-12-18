@@ -61,6 +61,7 @@ interface IProviders {
 export class GameInfoProvider extends EventTarget {
   randoms!: IRandom;
   ready = false;
+  dispatch = true;
 
   providers!: IProviders;
 
@@ -70,17 +71,31 @@ export class GameInfoProvider extends EventTarget {
 
   unlockedSpells: boolean[];
 
-  constructor(initialConfig: Partial<IProviderConfig>, unlockedSpells: boolean[], i18n?: i18n) {
+  constructor(
+    initialConfig: Partial<IProviderConfig>,
+    unlockedSpells: boolean[],
+    i18n?: i18n,
+    randoms?: IRandom,
+    dispatch = true
+  ) {
     super();
+    this.dispatch = dispatch;
     this.resetConfig(initialConfig);
     this.unlockedSpells = unlockedSpells;
-    loadRandom().then((randoms) => {
-      this.randoms = randoms;
-      this.providers = this.buildInfoProviders();
-    }).finally(() => {
-      this.ready = true;
-    });
+    if (randoms) {
+      this.setRandoms(randoms);
+    } else {
+      loadRandom()
+        .then(r => this.setRandoms(r))
+        .catch(e => console.error(e));
+    }
     this.i18n = i18n;
+  }
+
+  setRandoms(randoms: IRandom) {
+    this.randoms = randoms;
+    this.providers = this.buildInfoProviders();
+    this.ready = true;
   }
 
   onRandomLoad(cb) {
@@ -94,21 +109,29 @@ export class GameInfoProvider extends EventTarget {
   }
 
   resetConfig(initialConfig: Partial<IProviderConfig>) {
-    this.config = Object.assign({}, {
-      seed: 1,
-      perkRerolls: new Map(),
-      pickedPerks: new Map(),
-      perkWorldOffset: 0,
-      perkStacks: [[]],
-      fungalShifts: []
-    }, initialConfig);
-    this.dispatchEvent(new CustomEvent('reset', { detail: {} }));
+    this.config = Object.assign(
+      {},
+      {
+        seed: 1,
+        perkRerolls: new Map(),
+        pickedPerks: new Map(),
+        perkWorldOffset: 0,
+        perkStacks: [[]],
+        fungalShifts: []
+      },
+      initialConfig
+    );
+    if (this.dispatch) {
+      this.dispatchEvent(new CustomEvent('reset', { detail: {} }));
+    }
   }
 
   // This should be a reducer;
   updateConfig(config: Partial<IProviderConfig>) {
     Object.assign(this.config, config);
-    this.dispatchEvent(new CustomEvent('update', { detail: {} }));
+    if (this.dispatch) {
+      this.dispatchEvent(new CustomEvent('update', { detail: {} }));
+    }
   }
 
   buildInfoProviders(): IProviders {
@@ -137,8 +160,11 @@ export class GameInfoProvider extends EventTarget {
       powderStash: new PowderStashInfoProvider(this.randoms),
 
       chestRandom: new ChestRandomProvider(this.randoms, this.unlockedSpells),
-      pacifistChest: new PacifistChestProvider(this.randoms, this.unlockedSpells),
-    }
+      pacifistChest: new PacifistChestProvider(
+        this.randoms,
+        this.unlockedSpells
+      )
+    };
 
     // shop needs the wand info provider to generate wands
     providers.shop = new ShopInfoProvider(this.randoms, providers.wand);
@@ -154,10 +180,22 @@ export class GameInfoProvider extends EventTarget {
       biomeModifiers: this.providers.biomeModifier.provide(),
       fungalShifts: this.providers.fungalShift.provide(undefined),
       perkDeck: this.providers.perk.getPerkDeck(true),
-      perks: this.providers.perk.provide(this.config.pickedPerks, undefined, true, this.config.perkWorldOffset, this.config.perkRerolls),
-      statelessPerks: this.providers.statelessPerk.provideStateless(this.config.perkStacks[this.config.perkStacks.length - 1], true),
+      perks: this.providers.perk.provide(
+        this.config.pickedPerks,
+        undefined,
+        true,
+        this.config.perkWorldOffset,
+        this.config.perkRerolls
+      ),
+      statelessPerks: this.providers.statelessPerk.provideStateless(
+        this.config.perkStacks[this.config.perkStacks.length - 1],
+        true
+      ),
       rainType: this.providers.rain.provide(),
-      shop: this.providers.shop.provide(this.config.pickedPerks, this.config.perkWorldOffset),
+      shop: this.providers.shop.provide(
+        this.config.pickedPerks,
+        this.config.perkWorldOffset
+      ),
       startingBombSpell: this.providers.startingBombSpell.provide(),
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),

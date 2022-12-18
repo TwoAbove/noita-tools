@@ -44,7 +44,12 @@ interface IMoveAction {
 		dest: string
 	};
 }
-type IActions = IAddAction | ISelectAction | IUpdateAction | IDeleteAction | IMoveAction;
+interface IImportAction {
+	action: 'import';
+	data: string;
+}
+
+type IActions = IAddAction | ISelectAction | IUpdateAction | IDeleteAction | IMoveAction | IImportAction;
 const ruleReducer = (state: IState, action: IActions) => {
 	const newState = cloneDeep(state);
 	switch (action.action) {
@@ -78,6 +83,14 @@ const ruleReducer = (state: IState, action: IActions) => {
 			const { source, dest } = action.data;
 			treeTools.move(newState, source, dest)
 			return newState;
+		}
+		case 'import': {
+			try {
+				const str = action.data;
+				return JSON.parse(atob(str));
+			}	catch(e) {
+				console.error(e);
+			}
 		}
 	}
 	return state;
