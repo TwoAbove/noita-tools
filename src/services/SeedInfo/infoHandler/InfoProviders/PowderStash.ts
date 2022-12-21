@@ -67,7 +67,7 @@ const materials_magic = [
 
 export class PowderStashInfoProvider extends InfoProvider {
 	provide(x: number, y: number): string {
-		this.randoms.SetRandomSeed(x - 4.5, y - 4);
+		this.randoms.SetRandomSeed(x - 4.5, y - 5.5);
 
 		let potion_material = 'sand';
 
