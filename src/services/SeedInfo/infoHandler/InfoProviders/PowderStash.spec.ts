@@ -8,12 +8,28 @@ import { loadRandom } from '../../../../testHelpers';
 describe('PowderStashInfoProvider', () => {
 	const tests = [
 		{
-			seed: 9,
+			seed: 317,
 			params: {
 				x: -78,
 				y: 1371
 			},
 			ans: 'bone'
+		},
+		{
+			seed: 925,
+			params: {
+				x: -78,
+				y: 1371
+			},
+			ans: 'fungi'
+		},
+		{
+			seed: 1090081225,
+			params: {
+				x: -78,
+				y: 1371
+			},
+			ans: 'purifying_powder'
 		},
 	];
 
