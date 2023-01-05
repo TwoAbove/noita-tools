@@ -79,7 +79,10 @@
     "stack": "cpp",
     "__functional_03": "cpp",
     "ranges": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "fstream": "cpp",
+    "span": "cpp",
+    "sstream": "cpp"
   },
   "terminal.integrated.env.windows": {
     "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${env:LOCALAPPDATA}\\Programs\\emsdk\\upstream\\emscripten"

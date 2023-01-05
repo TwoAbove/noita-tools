@@ -1,7 +1,6 @@
 import Texture from './texture';
 
 import {
-	createImage,
 	imageFromBase64,
 	imageToBase64
 } from '../../LiveSeedStats/OCRHandler/imageActions';
@@ -33,7 +32,7 @@ const NoitaTexture = async (color: string, texture: string) => {
 	const tx = new Texture(image, { normal: texture, ambient: 1, shininess: 0.5 });
 	await tx.loaded;
 
-	return tx.moveLight({ x : textureImage.width, y : textureImage.height, z: 0.25})!.toDataURL();
+	return tx.moveLight({ x: textureImage.width, y: textureImage.height, z: 0.25 })!.toDataURL();
 };
 
 export default NoitaTexture;

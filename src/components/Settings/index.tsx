@@ -5,6 +5,7 @@ import { Modal } from 'react-bootstrap';
 import NeedInputAlert from './NeedInput';
 import GeneralSettings from './GeneralSettings';
 import PanelsSettings from './PanelsSettings';
+import SearchSettings from './SearchSettings';
 import DangerSettings from './DangerSettings';
 import FavoritesSettings from './FavoritesSettings';
 import UnlockedSpellsSettings from './UnlockedSpellsSettings';
@@ -22,6 +23,8 @@ const Settings = props => {
 				<GeneralSettings />
 				<hr className="my-4" />
 				<PanelsSettings />
+				<hr className="my-4" />
+				<SearchSettings />
 				<hr className="my-4" />
 				<FavoritesSettings />
 				<hr className="my-4" />

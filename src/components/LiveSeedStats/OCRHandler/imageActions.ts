@@ -3,60 +3,84 @@ import {
 	rgbaToInt
 } from '../../../services/SeedInfo/infoHandler/InfoProviders/Map/helpers';
 
-const canvasStub = {
-	getContext: () => ({
-		drawImage: () => {},
-		putImageData: () => {},
-		getImageData: () => new ImageData(0, 0)
-	}),
-	width: 0,
-	height: 0
+// import getPixelsFromString from 'get-pixels/dom-pixels';
+// import { savePixels } from 'ndarray-pixels';
+
+const ImageData = global.ImageData || require('@canvas/image-data');
+
+export const getContext = (
+	canvas: OffscreenCanvas,
+	config?: CanvasRenderingContext2DSettings
+): OffscreenCanvasRenderingContext2D => {
+	return canvas.getContext('2d', {
+		...config,
+		willReadFrequently: true,
+		desynchronized: true
+	})! as OffscreenCanvasRenderingContext2D;
 };
 
-export const createImage = (w, h): HTMLCanvasElement => {
-	if ('undefined' === typeof document) {
-		return canvasStub as any;
-	}
-	const can = document.createElement('canvas');
-	can.width = w;
-	can.height = h;
-	const ctx = can.getContext('2d')! as any;
+export const getBitmapContext = (
+	canvas: OffscreenCanvas,
+	config?: ImageBitmapRenderingContextSettings
+): ImageBitmapRenderingContext => {
+	return canvas.getContext('bitmaprenderer', {
+		...config
+	})! as ImageBitmapRenderingContext;
+};
+
+export const createCanvas = (w, h): OffscreenCanvas => {
+	const can = new OffscreenCanvas(w, h); // document.createElement('canvas');
+	// can.width = w;
+	// can.height = h;
+	const ctx = getContext(can) as any;
 	ctx.msImageSmoothingEnabled = false;
 	ctx.webkitImageSmoothingEnabled = false;
 	ctx.imageSmoothingEnabled = false;
 	return can;
 };
 
-export const imageFromBase64 = async (blob): Promise<ImageData> => {
-	if ('undefined' === typeof document) {
-		return new ImageData(0, 0);
-	}
-	const image = new Image();
-	image.src = blob;
+export const imageFromBase64 = async (dataUri: string): Promise<ImageData> => {
+	// const { data, width, height } = decode(blob);
+	// return new ImageData(new Uint8ClampedArray(data), width, height);
 
-	return new Promise(res => {
-		image.onload = () => {
-			const can = createImage(image.width, image.height);
-			const ctx = can.getContext('2d')!;
-			ctx.drawImage(image, 0, 0);
-			const imageData = ctx.getImageData(0, 0, image.width, image.height);
-			res(imageData);
-		};
-	});
+	// return new Promise(res => {
+	// 	getPixelsFromString(blob, (err, pixels) => {
+	// 		savePixels(pixels, 'image/png').then(arr => {
+	// 			res(new ImageData(new Uint8ClampedArray(arr), pixels.shape[0], pixels.shape[1]));
+	// 		}).catch(e => console.error(e));
+	// 	});
+	// });
+	const btmp = await createImageBitmap(await (await fetch(dataUri)).blob());
+
+	const can = createCanvas(btmp.width, btmp.height);
+	const ctx = getContext(can);
+	ctx.drawImage(btmp, 0, 0);
+	const imageData = getContext(can).getImageData(0, 0, btmp.width, btmp.height);
+
+	return imageData;
 };
 
-export const imageToBase64 = async (img: ImageData): Promise<string> => {
-	const can = createImage(img.width, img.height);
-	const ctx = can.getContext('2d')!;
+export const imageToBase64 = async (
+	img: ImageData | ImageBitmap
+): Promise<string> => {
+	// for some reason the typing is funky
+	const can: any = createCanvas(img.width, img.height);
+	const ctx = getContext(can);
 	// Draw the image
 	const i = await createImageBitmap(img);
 	ctx.drawImage(i, 0, 0);
-	return can.toDataURL('image/png');
+	return can.convertToBlob().then(blob => {
+		return new Promise((resolve, _) => {
+			const reader = new FileReader();
+			reader.onloadend = () => resolve(reader.result);
+			reader.readAsDataURL(blob);
+		});
+	});
 };
 
 export const copyImage = img => {
-	const image = createImage(img.width, img.height);
-	const ctx = image.getContext('2d')!;
+	const image = createCanvas(img.width, img.height);
+	const ctx = getContext(image);
 	if (img instanceof ImageData) {
 		ctx.putImageData(img, 0, 0);
 	} else {
@@ -65,11 +89,11 @@ export const copyImage = img => {
 	return image;
 };
 
-export const getPixels = img => {
-	if (!(img instanceof HTMLCanvasElement)) {
-		img = copyImage(img);
+export const getPixels = (img): ImageData => {
+	if (!(img instanceof OffscreenCanvas)) {
+		return getPixels(copyImage(img));
 	}
-	const ctx = img.getContext('2d');
+	const ctx = img.getContext('2d')!;
 	return ctx.getImageData(0, 0, img.width, img.height);
 };
 
@@ -91,7 +115,7 @@ export const threshold = (
 	return pixels;
 };
 
-export const toDark = (pixels, dark = [0, 0, 0]) => {
+export const toDark = (pixels: ImageData, dark = [0, 0, 0]) => {
 	// light, dark arrays of RGB
 	var d = pixels.data,
 		i = 0,
@@ -105,40 +129,40 @@ export const toDark = (pixels, dark = [0, 0, 0]) => {
 	return pixels;
 };
 
-export const scale = (img, scale: number): HTMLCanvasElement => {
-	const canvas = createImage(img.width * scale, img.height * scale);
-	const ctx = canvas.getContext('2d')!;
+const scale = (cv: OffscreenCanvas, scale: number): OffscreenCanvas => {
+	const canvas = createCanvas(cv.width * scale, cv.height * scale);
+	const ctx = getContext(canvas);
 
-	ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+	ctx.drawImage(cv, 0, 0, canvas.width, canvas.height);
 	return canvas;
 };
 
-export const scaleImageData = async (
-	img: ImageData,
-	s: number
-): Promise<ImageData> => {
-	const btmp = await createImageBitmap(img);
-	return scale(btmp, s)
-		.getContext('2d')!
-		.getImageData(0, 0, img.width * s, img.height * s);
+export const scaleImageData = (img: ImageData, s: number): ImageData => {
+	const cv = createCanvas(img.width, img.height);
+	const cx = getContext(cv);
+	cx.putImageData(img, 0, 0);
+
+	return getContext(scale(cv, s)).getImageData(
+		0,
+		0,
+		img.width * s,
+		img.height * s
+	);
 };
 
-export const stretch = (img, width, height): HTMLCanvasElement => {
-	const canvas = createImage(width, height);
-	const ctx = canvas.getContext('2d')!;
-	ctx.drawImage(copyImage(img), 0, 0, width, height);
+export const stretch = (img, width, height): OffscreenCanvas => {
+	const canvas = createCanvas(width, height);
+	const ctx = getContext(canvas);
+	ctx.drawImage(img, 0, 0, width, height);
 	// canvas.style.transform =`scale(${img.width / width},${img.height / height})`;
 
 	return canvas;
 };
 
-const g = (c: HTMLCanvasElement): Uint8ClampedArray =>
-	c.getContext('2d')!.getImageData(0, 0, c.width, c.height)!.data;
+const g = (c: OffscreenCanvas): Uint8ClampedArray =>
+	getContext(c).getImageData(0, 0, c.width, c.height)!.data;
 
-export const diff = (
-	img1: HTMLCanvasElement,
-	img2: HTMLCanvasElement
-): number => {
+export const diff = (img1: OffscreenCanvas, img2: OffscreenCanvas): number => {
 	const d1 = g(img1);
 	const d2 = g(img2);
 	let count = 0;
@@ -159,7 +183,7 @@ export const cropImageData = (
 ): ImageData => {
 	const c = copyImage(img);
 	const res = crop(c, cropX, cropY, cropWidth, cropHeight);
-	return res.getContext('2d')!.getImageData(0, 0, res.width, res.height);
+	return getContext(res).getImageData(0, 0, res.width, res.height);
 	// console.log({ img, cropX, cropY, cropWidth, cropHeight });
 	// const res = new ImageData(cropWidth, cropHeight);
 
@@ -178,16 +202,16 @@ export const cropImageData = (
 };
 
 export const crop = (
-	img: HTMLCanvasElement,
+	cv: OffscreenCanvas | CanvasImageSource,
 	cropX: number,
 	cropY: number,
 	cropWidth: number,
 	cropHeight: number
-): HTMLCanvasElement => {
-	const canvas = createImage(cropWidth, cropHeight);
-	const ctx = canvas.getContext('2d')!;
+): OffscreenCanvas => {
+	const canvas = createCanvas(cropWidth, cropHeight);
+	const ctx = getContext(canvas);
 	ctx.drawImage(
-		img,
+		cv,
 		cropX,
 		cropY,
 		cropWidth,
@@ -200,9 +224,9 @@ export const crop = (
 	return canvas;
 };
 
-export const invert = (img: HTMLCanvasElement): HTMLCanvasElement => {
-	const ctx = img.getContext('2d')!;
-	const imageData = ctx.getImageData(0, 0, img.width, img.height);
+export const invert = (cv: OffscreenCanvas): OffscreenCanvas => {
+	const ctx = getContext(cv);
+	const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
 	const data = imageData.data;
 	for (var i = 0; i < data.length; i += 4) {
 		// red
@@ -212,35 +236,35 @@ export const invert = (img: HTMLCanvasElement): HTMLCanvasElement => {
 		// blue
 		data[i + 2] = 255 - data[i + 2];
 	}
-	return copyImage(imageData);
+	return cv;
 };
 
-export const unAlpha = (img: HTMLCanvasElement): HTMLCanvasElement => {
-	const ctx = img.getContext('2d')!;
-	const imageData = ctx.getImageData(0, 0, img.width, img.height);
+export const unAlpha = (cv: OffscreenCanvas): OffscreenCanvas => {
+	const ctx = getContext(cv);
+	const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
 	const data = imageData.data;
 	for (var i = 0; i < data.length; i += 4) {
 		data[i + 3] = 255;
 	}
-	return copyImage(imageData);
+	return cv;
 };
 
-export const enhance = (img: HTMLCanvasElement): HTMLCanvasElement => {
-	const canvas = createImage(img.width, img.height);
-	const ctx = canvas.getContext('2d')!;
+export const enhance = (cv: OffscreenCanvas): OffscreenCanvas => {
+	const canvas = createCanvas(cv.width, cv.height);
+	const ctx = getContext(canvas);
 	ctx.filter = 'brightness(600%) contrast(400%)';
 	ctx.imageSmoothingEnabled = false;
 	ctx.imageSmoothingQuality = 'high';
-	ctx.drawImage(img, 0, 0);
+	ctx.drawImage(cv, 0, 0);
 	const pixels = getPixels(canvas);
 	toDark(pixels);
 	const thresholdImage = copyImage(pixels);
 	return thresholdImage;
 };
 
-export const clearBg = (img: HTMLCanvasElement): HTMLCanvasElement => {
-	const ctx = img.getContext('2d')!;
-	const imageData = ctx.getImageData(0, 0, img.width, img.height);
+export const clearBg = (cv: OffscreenCanvas): OffscreenCanvas => {
+	const ctx = getContext(cv);
+	const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
 	const data = imageData.data;
 	for (var i = 0; i < data.length; i += 4) {
 		const r = data[i];
@@ -293,13 +317,21 @@ export const hexRGBAtoIntRGB = (hex: string) => {
 	return parseInt(rgb, 16);
 };
 
+// export const rgbaToHex = (r, g, b, a) => {
+// 	let rs = pad(r.toString(16));
+// 	let gs = pad(g.toString(16));
+// 	let bs = pad(b.toString(16));
+// 	let as = pad(a.toString(16));
+// 	const hex = rs + gs + bs + as;
+// 	return hex;
+// };
+
 export const rgbaToHex = (r, g, b, a) => {
-	let rs = pad(r.toString(16));
-	let gs = pad(g.toString(16));
-	let bs = pad(b.toString(16));
-	let as = pad(a.toString(16));
-	const hex = rs + gs + bs + as;
-	return hex;
+	const hex = rgbaToInt(r, g, b, a).toString(16);
+	if (hex.length === 8) {
+		return hex;
+	}
+	return '0' + hex;
 };
 
 const getPos = (w, x, y) => w * y * 4 + 4 * x;
@@ -352,4 +384,32 @@ export const drawImageData = (
 			dest.data[destP + 3] = src.data[srcP + 3];
 		}
 	}
+};
+
+export const printImage = (image: ImageData) => {
+	const cv = createCanvas(image.width, image.height);
+	const cx = getContext(cv);
+	cx.putImageData(image, 0, 0);
+	cv[
+		cv['convertToBlob']
+			? 'convertToBlob' // specs
+			: 'toBlob' // current Firefox
+	]().then(blob => {
+		const fr = new FileReader();
+		fr.readAsDataURL(blob);
+
+		fr.addEventListener(
+			'load',
+			() => {
+				// convert image file to base64 string
+				const dataURL = fr.result;
+				console.log(dataURL);
+				// console.log(
+				// 	'%c ',
+				// 	`font-size:400px; width:1000px; background:url(${dataURL}) no-repeat;`
+				// );
+			},
+			false
+		);
+	});
 };

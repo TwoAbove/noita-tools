@@ -27,6 +27,11 @@ const Body = () => {
 		setSearchParams({});
 	};
 
+	const host = window.location.host;
+	const isDev = host.includes('dev.noitool.com');
+
+	const showTestBench = process.env.NODE_ENV === 'development' || isDev;
+
 	return (
 		<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
 			<Tabs activeKey={tab} onSelect={handleTab} id="main-tabs" className="">
@@ -43,7 +48,7 @@ const Body = () => {
 				>
 					<LiveSeedStats />
 				</Tab>
-				{process.env.NODE_ENV === 'development' && (
+				{showTestBench && (
 					<Tab mountOnEnter eventKey="TestBench" title="TestBench">
 						<TestBench />
 					</Tab>

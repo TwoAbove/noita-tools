@@ -9,6 +9,7 @@ import StartingBombSpell from './SearchViews/StartingBomb';
 import Rain from './SearchViews/Rain';
 import Perks from './SearchViews/Perks';
 import FungalShifts from './SearchViews/FungalShifts';
+import MapSearch from './SearchViews/Map';
 import Search from './SearchViews/Search';
 import { FC, useContext } from 'react';
 import { Container } from 'react-bootstrap';
@@ -112,6 +113,15 @@ export const RuleConstructors = {
 	biomeModifier: {
 		Title: () => 'Biome Modifiers',
 		Component: Biomes,
+		defaultConfig: {
+			path: '',
+			params: [],
+			val: {}
+		}
+	},
+	map: {
+		Title: () => 'Map',
+		Component: MapSearch,
 		defaultConfig: {
 			path: '',
 			params: [],

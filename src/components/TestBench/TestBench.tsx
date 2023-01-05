@@ -1,5 +1,3 @@
-// This should be storybook,
-// but I can't get it to work with all of the WASM stuff that we need.
 import { useState, useEffect } from 'react';
 import { Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';

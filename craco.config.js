@@ -25,7 +25,10 @@ module.exports = {
 				asyncWebAssembly: true
 			};
 
-			config.resolve.fallback = { path: false, fs: false };
+			config.resolve.fallback = {
+				path: false,
+				fs: false,
+			};
 
 			return config;
 		},
@@ -35,6 +38,14 @@ module.exports = {
 			})
 		]
 		// stats: 'errors-only',
+	},
+	jest: {
+		configure: {
+			transform: {},
+			preset: 'ts-jest/presets/default-esm',
+			modulePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
+			extensionsToTreatAsEsm: ['.ts']
+		}
 	},
 	plugins: [{ plugin: CracoSwcPlugin }]
 	// style: {

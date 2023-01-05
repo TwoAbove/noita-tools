@@ -3,8 +3,8 @@ import { Suspense } from 'react';
 import LoadingComponent from '../LoadingComponent';
 
 // To tree shake any test features in TestBench
-// const L = lazy(() => import('./TestBench'));
-const L = () => <></>;
+const L = lazy(() => import('./TestBench'));
+// const L = () => <></>;
 
 const LazyLiveStats = props => {
 	return (

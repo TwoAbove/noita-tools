@@ -88,7 +88,7 @@ const ruleReducer = (state: IState, action: IActions) => {
 			try {
 				const str = action.data;
 				return JSON.parse(atob(str));
-			}	catch(e) {
+			} catch (e) {
 				console.error(e);
 			}
 		}
@@ -105,12 +105,14 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 }) => {
 	const [unlockedSpells] = useLocalStorage<boolean[] | undefined>('unlocked-spells', undefined);
 	const [useCores, setUseCores] = useLocalStorage('useCores', 1);
+	const [concurrency] = useLocalStorage('search-max-concurrency', navigator.hardwareConcurrency);
+
+	const [findAll, setFindAll] = useLocalStorage('findAll', false);
 	const [seedSolver, setSeedSolver] = React.useState(
 		() => new SeedSolver(useCores, true)
 	);
 	const [seed, setSeed] = React.useState('1');
 	const [seedEnd, setSeedEnd] = React.useState('');
-	const [findAll, setFindAll] = React.useState(false);
 	const handleSeedStartChange = (e: any) => {
 		setSeed(e.target.value);
 	};
@@ -124,6 +126,18 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		rules: [],
 		selectedRule: 'search',
 	});
+	// const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
+	// 	id: uniqueId(),
+	// 	type: RuleType.AND,
+	// 	rules: [
+	// 	{
+	// 		id: uniqueId(),
+	// 		type: 'map',
+	// 		...RuleConstructors['map'].defaultConfig
+	// 	},
+	// ],
+	// 	selectedRule: 'search',
+	// });
 	// const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
 	// 	id: uniqueId(),
 	// 	type: RuleType.AND,
@@ -165,7 +179,6 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	const running = !!solverInfo?.running;
 
 	const handleMultithreading = () => {
-		const concurrency = navigator.hardwareConcurrency || 1;
 		if (useCores > 1) {
 			setUseCores(1);
 		} else {
@@ -180,6 +193,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 				return;
 			}
 			if (!isEqual(infoArray, info)) {
+				console.log(info[0]);
 				setSolverInfo(info);
 			}
 		};
@@ -237,7 +251,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({})
 		};
-		fetch('/api/data', requestOptions).catch(e=>{});
+		fetch('/api/data', requestOptions).catch(e => { });
 
 		await seedSolver.start();
 	};
@@ -246,9 +260,10 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		await seedSolver.stop();
 	};
 
-	const seedsChecked = avg(results.map(i => i.currentSeed));
+	const seedsChecked = Math.floor(Math.min(...results.map(i => i.currentSeed)));
 	const totalSeeds = 4_294_967_294;
 	const percentChecked = Math.floor((seedsChecked / totalSeeds) * 100);
+	const seedsPerSecond = Math.floor(seedsChecked / ((new Date().getTime() - seedSolver.startTime) / 1000));
 
 	return <SearchContext.Provider value={{
 		seedSolver,
@@ -271,7 +286,8 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		seedEnd,
 		seedsChecked,
 		totalSeeds,
-		percentChecked
+		percentChecked,
+		seedsPerSecond
 	}}>{children}</SearchContext.Provider>;
 };
 

@@ -44,7 +44,8 @@ const Search = () => {
 		seedEnd,
 		seedsChecked,
 		totalSeeds,
-		percentChecked
+		percentChecked,
+		seedsPerSecond
 	} = useContext(SearchContext);
 
 	return (<Container fluid className="col pt-3 shadow-lg">
@@ -109,7 +110,7 @@ const Search = () => {
 								onClick={handleMultithreading}
 								variant={useCores > 1 ? 'outline-success' : 'outline-secondary'}
 							>
-								Multithreading {useCores > 1 ? 'on' : 'off'}
+								Multithreading {useCores > 1 ? `on (x${useCores})` : 'off'}
 							</Button>
 						</Row>
 						<Row className="m-3">
@@ -142,7 +143,7 @@ const Search = () => {
 		<div>
 			{solverInfo?.running && <div>
 				<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
-				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverInfo as any).msLeft, { round: true, units: ["h", "m"] })})
+				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverInfo as any).msLeft, { round: true, units: ["h", "m"] })}, {seedsPerSecond} avg seeds/s)
 			</div>}
 			<h6>Results:</h6>
 			{findAll && <div>

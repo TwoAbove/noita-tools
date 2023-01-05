@@ -535,207 +535,207 @@ class Vaultfrozen extends Base {
     },
   ];
 
-  async spawn_small_enemies(x: number, y: number) {
+  spawn_small_enemies(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_big_enemies(x: number, y: number) {
+  spawn_big_enemies(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_items(x: number, y: number) {
+  spawn_items(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_props(x: number, y: number) {
+  spawn_props(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_props2(x: number, y: number) {
+  spawn_props2(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_props3(x: number, y: number) {
+  spawn_props3(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_lamp(x: number, y: number) {
+  spawn_lamp(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async load_pixel_scene(x: number, y: number) {
+  load_pixel_scene(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async load_pixel_scene2(x: number, y: number) {
+  load_pixel_scene2(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_unique_enemy(x: number, y: number) {
+  spawn_unique_enemy(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_unique_enemy2(x: number, y: number) {
+  spawn_unique_enemy2(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_unique_enemy3(x: number, y: number) {
+  spawn_unique_enemy3(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_ghostlamp(x: number, y: number) {
+  spawn_ghostlamp(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_candles(x: number, y: number) {
+  spawn_candles(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_potion_altar(x: number, y: number) {
+  spawn_potion_altar(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_potions(x: number, y: number) {
+  spawn_potions(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_apparition(x: number, y: number) {
+  spawn_apparition(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_heart(x: number, y: number) {
+  spawn_heart(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_wands(x: number, y: number) {
+  spawn_wands(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_portal(x: number, y: number) {
+  spawn_portal(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_end_portal(x: number, y: number) {
+  spawn_end_portal(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_orb(x: number, y: number) {
+  spawn_orb(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_perk(x: number, y: number) {
+  spawn_perk(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_all_perks(x: number, y: number) {
+  spawn_all_perks(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_wand_trap(x: number, y: number) {
+  spawn_wand_trap(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_wand_trap_ignite(x: number, y: number) {
+  spawn_wand_trap_ignite(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_wand_trap_electricity_source(x: number, y: number) {
+  spawn_wand_trap_electricity_source(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_wand_trap_electricity(x: number, y: number) {
+  spawn_wand_trap_electricity(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_moon(x: number, y: number) {
+  spawn_moon(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_collapse(x: number, y: number) {
+  spawn_collapse(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_robots(x: number, y: number) {
+  spawn_robots(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async load_pixel_scene4(x: number, y: number) {
+  load_pixel_scene4(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_turret(x: number, y: number) {
+  spawn_turret(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_vines(x: number, y: number) {
+  spawn_vines(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_machines(x: number, y: number) {
+  spawn_machines(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_pipes_hor(x: number, y: number) {
+  spawn_pipes_hor(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_pipes_turn_right(x: number, y: number) {
+  spawn_pipes_turn_right(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_pipes_turn_left(x: number, y: number) {
+  spawn_pipes_turn_left(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_pipes_ver(x: number, y: number) {
+  spawn_pipes_ver(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_pipes_cross(x: number, y: number) {
+  spawn_pipes_cross(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );
   }
-  async spawn_barricade(x: number, y: number) {
+  spawn_barricade(x: number, y: number) {
     console.error(
       `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
     );

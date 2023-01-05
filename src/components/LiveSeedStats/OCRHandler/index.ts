@@ -6,7 +6,7 @@ import genCanvases, { IFontCanvases } from './getFontCanvases';
 import { copyImage, crop, enhance, stretch, diff, invert } from './imageActions';
 
 const startCapture = async (
-  displayMediaOptions: DisplayMediaStreamConstraints
+  displayMediaOptions: MediaStreamConstraints
 ): Promise<MediaStream | null> => {
   let captureStream: MediaStream;
   try {
@@ -96,7 +96,7 @@ class OCRHandler extends EventTarget {
     this.tesseractWorker = worker;
   }
 
-  async startCapture(displayMediaOptions: DisplayMediaStreamConstraints = {}) {
+  async startCapture(displayMediaOptions: MediaStreamConstraints = {}) {
     const ms = await startCapture(displayMediaOptions);
     if (ms) {
       this.mediaStream = ms;
@@ -205,7 +205,7 @@ class OCRHandler extends EventTarget {
       ctx.drawImage(img, 40, 0);
     }
 
-    const res = await this.tesseractWorker.recognize(img);
+    const res = await this.tesseractWorker.recognize(img as any);
     const secondLine = res.data.lines[1]; // seed is on the second line always
     if (!secondLine) {
       return;
@@ -225,7 +225,7 @@ class OCRHandler extends EventTarget {
     return text;
   }
 
-  getBestFitChar = (char: HTMLCanvasElement, debugOffset = 0): string => {
+  getBestFitChar = (char: OffscreenCanvas, debugOffset = 0): string => {
     let maxFit = Number.MAX_SAFE_INTEGER;
     let bestChar = '';
     let i = 0;

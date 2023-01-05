@@ -851,7 +851,7 @@ class Coalmine extends Base {
 		}
 	];
 
-	async spawn_items(x: number, y: number) {
+	spawn_items(x: number, y: number) {
 		const x_offset = 5;
 		const y_offset = 5;
 
@@ -864,7 +864,7 @@ class Coalmine extends Base {
 
 		if (r < 0.755) {
 		} else {
-			await this.LoadPixelScene(
+			this.LoadPixelScene(
 				'data/biome_impl/wand_altar.png',
 				'data/biome_impl/wand_altar_visual.png',
 				x - 10 + x_offset,
@@ -875,7 +875,7 @@ class Coalmine extends Base {
 		}
 	}
 
-	async spawn_small_enemies(x: number, y: number, w?, h?, is_open_path?) {
+	spawn_small_enemies(x: number, y: number, w?, h?, is_open_path?) {
 		if (is_open_path) {
 			const r = this.randoms.ProceduralRandomf(x, y, 0, 1);
 			let spawn_percent = this.BiomeMapGetVerticalPositionInsideBiome(x, y);
@@ -883,19 +883,19 @@ class Coalmine extends Base {
 			if (r > spawn_percent) {
 				return;
 			}
-			await this.spawn_with_limited_random(this.g_small_enemies, x, y, 0, 0, [
+			this.spawn_with_limited_random(this.g_small_enemies, x, y, 0, 0, [
 				'longleg',
 				'fungus'
 			]);
 		} else {
-			await this.spawn_with_limited_random(this.g_small_enemies, x, y, 0, 0, [
+			this.spawn_with_limited_random(this.g_small_enemies, x, y, 0, 0, [
 				'longleg',
 				'fungus'
 			]);
 		}
 	}
 
-	async spawn_big_enemies(x: number, y: number, w?, h?, is_open_path?) {
+	spawn_big_enemies(x: number, y: number, w?, h?, is_open_path?) {
 		if (is_open_path) {
 			const r = this.randoms.ProceduralRandomf(x, y, 0, 1);
 			let spawn_percent = this.BiomeMapGetVerticalPositionInsideBiome(x, y);
@@ -903,82 +903,82 @@ class Coalmine extends Base {
 			if (r > spawn_percent) {
 				return;
 			}
-			await this.spawn_with_limited_random(this.g_big_enemies, x, y, 0, 0, [
+			this.spawn_with_limited_random(this.g_big_enemies, x, y, 0, 0, [
 				'longleg',
 				'fungus'
 			]);
 		} else {
-			await this.spawn_with_limited_random(this.g_big_enemies, x, y, 0, 0, [
+			this.spawn_with_limited_random(this.g_big_enemies, x, y, 0, 0, [
 				'longleg',
 				'fungus'
 			]);
 		}
 	}
 
-	async spawn_lamp(x: number, y: number) {
-		await this.spawn(this.g_lamp, x, y, 0, 0);
+	spawn_lamp(x: number, y: number) {
+		this.spawn(this.g_lamp, x, y, 0, 0);
 	}
 
-	async spawn_ghostlamp(x: number, y: number) {
-		await this.spawn(this.g_ghostlamp, x, y, 0, 0);
+	spawn_ghostlamp(x: number, y: number) {
+		this.spawn(this.g_ghostlamp, x, y, 0, 0);
 	}
 
-	async spawn_props(x: number, y: number) {
-		await this.spawn(this.g_props, x, y - 3, 0, 0);
+	spawn_props(x: number, y: number) {
+		this.spawn(this.g_props, x, y - 3, 0, 0);
 	}
 
-	async spawn_props2(x: number, y: number) {
-		await this.spawn(this.g_props2, x, y - 3, 0, 0);
+	spawn_props2(x: number, y: number) {
+		this.spawn(this.g_props2, x, y - 3, 0, 0);
 	}
 
-	async spawn_props3(x: number, y: number) {
-		await this.spawn(this.g_props3, x, y, 0, 0);
+	spawn_props3(x: number, y: number) {
+		this.spawn(this.g_props3, x, y, 0, 0);
 	}
 
-	async spawn_unique_enemy(x: number, y: number) {
-		await this.spawn(this.g_unique_enemy, x, y);
+	spawn_unique_enemy(x: number, y: number) {
+		this.spawn(this.g_unique_enemy, x, y);
 	}
 
-	async spawn_unique_enemy2(x: number, y: number) {
-		await this.spawn(this.g_unique_enemy2, x, y);
+	spawn_unique_enemy2(x: number, y: number) {
+		this.spawn(this.g_unique_enemy2, x, y);
 	}
 
-	async spawn_unique_enemy3(x: number, y: number) {
-		await this.spawn(this.g_unique_enemy3, x, y);
+	spawn_unique_enemy3(x: number, y: number) {
+		this.spawn(this.g_unique_enemy3, x, y);
 	}
 
-	async spawn_fungi(x: number, y: number) {
-		await this.spawn(this.g_fungi, x, y);
+	spawn_fungi(x: number, y: number) {
+		this.spawn(this.g_fungi, x, y);
 	}
 
-	async load_pixel_scene(x: number, y: number) {
+	load_pixel_scene(x: number, y: number) {
 		this.randoms.SetRandomSeed(x, y);
 		if (this.randoms.Random(1, 100) > 50) {
-			await this.load_random_pixel_scene(this.g_oiltank, x, y);
+			this.load_random_pixel_scene(this.g_oiltank, x, y);
 		} else {
-			await this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
+			this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
 		}
 	}
 
-	async load_pixel_scene2(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
+	load_pixel_scene2(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
 	}
 
-	async load_oiltank(x: number, y: number) {
+	load_oiltank(x: number, y: number) {
 		this.randoms.SetRandomSeed(x, y);
 		if (this.randoms.Random(1, 100) <= 50) {
-			await this.load_random_pixel_scene(this.g_oiltank, x, y);
+			this.load_random_pixel_scene(this.g_oiltank, x, y);
 		} else {
-			await this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
+			this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
 		}
 	}
 
-	async load_oiltank_alt(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_oiltank_alt, x, y);
+	load_oiltank_alt(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_oiltank_alt, x, y);
 	}
 
-	async load_altar(x: number, y: number) {
-		await this.LoadPixelScene(
+	load_altar(x: number, y: number) {
+		this.LoadPixelScene(
 			'data/biome_impl/altar.png',
 			'data/biome_impl/altar_visual.png',
 			x - 92,
@@ -986,36 +986,36 @@ class Coalmine extends Base {
 			'',
 			true
 		);
-		await this.EntityLoad('data/entities/buildings/altar.xml', x, y - 32);
+		this.EntityLoad('data/entities/buildings/altar.xml', x, y - 32);
 	}
 
-	async load_structures(x: number, y: number) {
-		await this.spawn(this.g_structures, x, y - 30, 0, 0);
+	load_structures(x: number, y: number) {
+		this.spawn(this.g_structures, x, y - 30, 0, 0);
 	}
 
-	async load_large_structures(x: number, y: number) {
-		await this.spawn(this.g_large_structures, x, y - 30, 0, 0);
+	load_large_structures(x: number, y: number) {
+		this.spawn(this.g_large_structures, x, y - 30, 0, 0);
 	}
 
-	async load_i_structures(x: number, y: number) {
-		await this.spawn(this.g_i_structures, x, y - 30, 0, 0);
+	load_i_structures(x: number, y: number) {
+		this.spawn(this.g_i_structures, x, y - 30, 0, 0);
 	}
 
-	async spawn_stash(x: number, y: number) {}
+	spawn_stash(x: number, y: number) {}
 
-	async spawn_nest(x: number, y: number) {
-		await this.spawn(this.g_nest, x + 4, y);
+	spawn_nest(x: number, y: number) {
+		this.spawn(this.g_nest, x + 4, y);
 	}
 
-	async spawn_vines(x: number, y: number) {
-		await this.spawn(this.g_vines, x + 5, y + 5);
+	spawn_vines(x: number, y: number) {
+		this.spawn(this.g_vines, x + 5, y + 5);
 	}
 
-	async spawn_altar_torch(x: number, y: number) {
-		await this.EntityLoad('data/entities/props/altar_torch.xml', x - 7, y - 38);
+	spawn_altar_torch(x: number, y: number) {
+		this.EntityLoad('data/entities/props/altar_torch.xml', x - 7, y - 38);
 	}
 
-	async spawn_chest(x: number, y: number) {
+	spawn_chest(x: number, y: number) {
 		this.randoms.SetRandomSeed(x, y);
 		let super_chest_spawn_rate = 2000;
 		if (
@@ -1026,13 +1026,13 @@ class Coalmine extends Base {
 		}
 		let rnd = this.randoms.Random(1, super_chest_spawn_rate);
 		if (rnd >= super_chest_spawn_rate - 1) {
-			await this.EntityLoad(
+			this.EntityLoad(
 				'data/entities/items/pickup/chest_random_super.xml',
 				x,
 				y
 			);
 		} else {
-			await this.EntityLoad(
+			this.EntityLoad(
 				'data/entities/items/pickup/chest_random.xml',
 				x,
 				y
@@ -1040,13 +1040,13 @@ class Coalmine extends Base {
 		}
 	}
 
-	async spawn_skulls(x: number, y: number) {}
+	spawn_skulls(x: number, y: number) {}
 
-	async spawn_shopitem(x: number, y: number) {
-		await this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 1]);
+	spawn_shopitem(x: number, y: number) {
+		this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 1]);
 	}
 
-	async spawn_trapwand(x: number, y: number) {
+	spawn_trapwand(x: number, y: number) {
 		const options = [
 			'wands/level_01/wand_001',
 			'wands/level_01/wand_002',
@@ -1063,24 +1063,24 @@ class Coalmine extends Base {
 
 		const rnd = this.randoms.Random(0, options.length - 1);
 		const wand_to_spawn = 'data/entities/items/' + options[rnd] + '.xml';
-		await this.HandleInterest(wand_to_spawn, x, y);
+		this.HandleInterest(wand_to_spawn, x, y);
 	}
 
-	async spawn_bbqbox(x: number, y: number) {
+	spawn_bbqbox(x: number, y: number) {
 		this.randoms.SetRandomSeed(x, y);
 		const rnd = this.randoms.Random(1, 100);
 		if (rnd <= 99) {
-			await this.spawn_big_enemies(x, y);
-			await this.spawn_big_enemies(x + 20, y);
-			await this.spawn_big_enemies(x + 20, y + 10);
-			await this.spawn_heart(x + 10, y + 10);
+			this.spawn_big_enemies(x, y);
+			this.spawn_big_enemies(x + 20, y);
+			this.spawn_big_enemies(x + 20, y + 10);
+			this.spawn_heart(x + 10, y + 10);
 		} else {
-			await this.EntityLoad(
+			this.EntityLoad(
 				'data/entities/items/pickup/jar_of_urine.xml',
 				x,
 				y
 			);
-			await this.EntityLoad(
+			this.EntityLoad(
 				'data/entities/animals/shotgunner_weak.xml',
 				x + 10,
 				y
@@ -1088,29 +1088,29 @@ class Coalmine extends Base {
 		}
 	}
 
-	async spawn_swing_puzzle_box(x: number, y: number) {
-		await this.EntityLoad(
+	spawn_swing_puzzle_box(x: number, y: number) {
+		this.EntityLoad(
 			'data/entities/props/physics/trap_electricity_suspended.xml',
 			x,
 			y
 		);
 	}
 
-	async spawn_swing_puzzle_target(x: number, y: number) {
-		await this.EntityLoad(
+	spawn_swing_puzzle_target(x: number, y: number) {
+		this.EntityLoad(
 			'data/entities/buildings/swing_puzzle_target.xml',
 			x,
 			y
 		);
 	}
 
-	async spawn_oiltank_puzzle(x: number, y: number) {
-		await this.EntityLoad('data/entities/buildings/oiltank_puzzle.xml', x, y);
+	spawn_oiltank_puzzle(x: number, y: number) {
+		this.EntityLoad('data/entities/buildings/oiltank_puzzle.xml', x, y);
 	}
 
-	async spawn_receptacle_oil(x: number, y: number) {
-		await this.EntityLoad('data/entities/buildings/receptacle_oil.xml', x, y);
-		await this.EntityLoad(
+	spawn_receptacle_oil(x: number, y: number) {
+		this.EntityLoad('data/entities/buildings/receptacle_oil.xml', x, y);
+		this.EntityLoad(
 			'data/entities/items/pickup/potion_empty.xml',
 			x + 72,
 			y - 17

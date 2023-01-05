@@ -3,10 +3,12 @@
 #include <stack>
 #include <memory>
 #include <vector>
+#include <map>
 
 #include "stb_hbwang.h"
 #include "coalmine_hax.cpp"
 #include "jps.hh"
+#include <emscripten/val.h>
 
 const unsigned long COLOR_PURPLE = 0x7f007f;
 const unsigned long COLOR_BLACK = 0x000000;
@@ -27,24 +29,32 @@ unsigned long getPos(const uint w, unsigned char f, const uint x, const uint y)
    return w * y * f + f * x;
 }
 
-unsigned long getPixelColor(const unsigned char *map, const uint w, const uint x, const uint y)
+unsigned long getPixelColor(const unsigned char *map, unsigned long long pos)
 {
-   unsigned long long pos = getPos(w, 3, x, y);
    unsigned char r = map[pos];
    unsigned char g = map[pos + 1];
    unsigned char b = map[pos + 2];
    return createRGB(r, g, b);
 }
-
-void setPixelColor(unsigned char *map, uint w, uint x, uint y, unsigned long color)
+unsigned long getPixelColor(const unsigned char *map, const uint w, const uint x, const uint y)
 {
    unsigned long long pos = getPos(w, 3, x, y);
+   return getPixelColor(map, pos);
+}
+
+void setPixelColor(unsigned char *map, unsigned long long pos, unsigned long color)
+{
    unsigned char r = ((color >> 16) & 0xff);
    unsigned char g = ((color >> 8) & 0xff);
    unsigned char b = ((color)&0xff);
    map[pos] = r;
    map[pos + 1] = g;
    map[pos + 2] = b;
+}
+void setPixelColor(unsigned char *map, uint w, uint x, uint y, unsigned long color)
+{
+   unsigned long long pos = getPos(w, 3, x, y);
+   setPixelColor(map, pos, color);
 }
 
 void fill(unsigned char *map,
@@ -80,10 +90,33 @@ void floodFill(unsigned char *map,
       return;
    }
 
-   s.push({initialX, initialY});
+   s.push(std::make_pair(initialX, initialY));
    visited[getPos(width, 1, initialX, initialY)] = true;
 
    int filled = 0;
+
+   auto tryNext = [&map, &width, &height, &s, &visited, &fromColor, &toColor](uint nx, uint ny)
+   {
+      if (nx < 0 || nx >= width || ny < 0 || ny >= height)
+      {
+         return;
+      }
+
+      unsigned long long p = getPos(width, 1, nx, ny);
+      if (visited[p] == true)
+      {
+         return;
+      }
+
+      unsigned long nc = getPixelColor(map, p);
+      if (nc != fromColor || nc == toColor)
+      {
+         return;
+      }
+
+      visited[p] = true;
+      s.push(std::make_pair(nx, ny));
+   };
 
    while (!s.empty())
    {
@@ -95,28 +128,6 @@ void floodFill(unsigned char *map,
       setPixelColor(map, width, x, y, toColor);
       filled++;
 
-      auto tryNext = [&map, &width, &height, &s, &visited, &fromColor, &toColor](uint nx, uint ny)
-      {
-         if (nx < 0 || nx >= width || ny < 0 || ny >= height)
-         {
-            return;
-         }
-
-         unsigned long long p = getPos(width, 1, nx, ny);
-         if (visited[p] == true)
-         {
-            return;
-         }
-
-         unsigned long nc = getPixelColor(map, width, nx, ny);
-         if (nc != fromColor || nc == toColor)
-         {
-            return;
-         }
-
-         visited[p] = true;
-         s.push({nx, ny});
-      };
       tryNext(x - 1, y);
       tryNext(x + 1, y);
       tryNext(x, y - 1);
@@ -132,23 +143,24 @@ void fillC0ffee(
 {
    NollaPrng rng = NollaPrng(0);
    rng.SetRandomFromWorldSeed(world_seed);
-   for (int y = 0; y < height; y++)
+   unsigned long long pos = 0;
+   unsigned long long posMax = width * height;
+   for (pos = 0; pos < posMax; pos++)
    {
-      for (int x = 0; x < width; x++)
+      long c = getPixelColor(map, pos * 3);
+      if (c != COLOR_COFFEE)
       {
-         long c = getPixelColor(map, width, x, y);
-         if (c != COLOR_COFFEE)
-         {
-            continue;
-         }
-         long to = COLOR_BLACK;
-         double f = rng.Next();
-         if (f < 0.5) // BIOME_RANDOM_BLOCK_CHANCE
-         {
-            to = COLOR_WHITE;
-         }
-         floodFill(map, width, height, x, y, COLOR_COFFEE, to);
+         continue;
       }
+      long to = COLOR_BLACK;
+      double f = rng.Next();
+      if (f < 0.5) // BIOME_RANDOM_BLOCK_CHANCE
+      {
+         to = COLOR_WHITE;
+      }
+      int x = pos % width;
+      int y = pos / width;
+      floodFill(map, width, height, x, y, COLOR_COFFEE, to);
    }
 }
 
@@ -202,6 +214,7 @@ void fillRandomMaterials(
       return;
    }
    vector<shared_ptr<ToFrom>> r;
+   r.reserve(32);
    int pos = 1;
    for (int i = 0; i < numberOfRandoms; i++)
    {
@@ -252,6 +265,10 @@ void doCoalMineHax(
          map[i] = 0x00;
          map[i + 1] = 0x00;
          map[i + 2] = 0x00;
+         // pudy248 note: is not actually air, this is the main rock portion of the overlay
+         //  map[i] = 0xFF;
+         //  map[i + 1] = 0xFF;
+         //  map[i + 2] = 0xFF;
       }
       if (pix == 0x0040)
       { // blue. Looks like air?
@@ -268,6 +285,9 @@ void doCoalMineHax(
          map[i] = 0x00;
          map[i + 1] = 0x00;
          map[i + 2] = 0x00;
+         // map[i] = 0xFF;
+         // map[i + 1] = 0xFF;
+         // map[i + 2] = 0xFF;
       }
    }
 }
@@ -641,12 +661,44 @@ bool isValid(
    return hasPath;
 }
 
+void rgbaToRgb(unsigned char src[], unsigned char dest[], uint w, uint h)
+{
+   long long j = 0;
+   long long src_size = 4 * w * h;
+   for (long long i = 0; i < src_size; i++)
+   {
+      if (i && (i + 1) % 4 == 0)
+         continue;
+      dest[j] = src[i];
+      j++;
+   }
+}
+
+void rgbToRgba(unsigned char *src, unsigned char *dest, uint w, uint h)
+{
+   long long j = 0;
+   long long src_size = 3 * w * h;
+   for (long long i = 0; i < src_size; i++)
+   {
+      dest[j] = src[i];
+      j++;
+      if (i && (i + 1) % 3 == 0)
+      {
+         dest[j] = 255;
+         j++;
+      }
+   }
+}
+
+std::map<unsigned long, stbhw_tileset *> ts_map = {};
+
 // tiles_data and result are allocated and freed in js.
 STBHW_EXTERN void generate_map(
-    unsigned char tiles_data[],
+    unsigned char rgba_tiles_data[],
+    unsigned long color,
     uint tiles_w,
     uint tiles_h,
-    unsigned char result[],
+    unsigned char rgba_result[],
     uint map_w,
     uint map_h,
     bool isCoalMine,
@@ -655,6 +707,23 @@ STBHW_EXTERN void generate_map(
     int worldY)
 {
    stbhw_tileset ts;
+   if (ts_map.contains(color))
+   {
+      ts = *ts_map[color];
+   }
+   else
+   {
+      unsigned char *rgb_tiles_data = (unsigned char *)malloc(3 * tiles_w * tiles_h);
+      rgbaToRgb(rgba_tiles_data, rgb_tiles_data, tiles_w, tiles_h);
+      int success = stbhw_build_tileset_from_image(&ts, rgb_tiles_data, tiles_w * 3, tiles_w, tiles_h);
+      if (!success)
+      {
+         printf("stbhw error: %s\n", stbhw_get_last_error());
+         return;
+      }
+      free(rgb_tiles_data);
+      ts_map[color] = &ts;
+   }
 
    NollaPrng rng = GetRNG(map_w);
    NollaPrng rng2 = NollaPrng(0);
@@ -664,7 +733,9 @@ STBHW_EXTERN void generate_map(
    long malloc_amount = 3 * map_w * map_h;
    unsigned char *map = (unsigned char *)malloc(malloc_amount);
    bool hasPath = false;
-   stbhw_build_tileset_from_image(&ts, tiles_data, tiles_w * 3, tiles_w, tiles_h);
+
+   unsigned char *rgb_result = (unsigned char *)malloc(malloc_amount);
+
    do
    {
       if (tries > 99)
@@ -678,29 +749,31 @@ STBHW_EXTERN void generate_map(
       stbhw_generate_image(&ts, NULL, res, map_w * 3, map_w, map_h + 4, std::bind(&NollaPrng::NextU, &rng2));
       for (int i = 4 * 3 * map_w, j = 0; i < 3 * map_w * (map_h + 4); i++, j++)
       {
-         result[j] = res[i];
+         rgb_result[j] = res[i];
       }
-      fillC0ffee(result, map_w, map_h);
+      fillC0ffee(rgb_result, map_w, map_h);
       if (isCoalMine)
       {
-         doCoalMineHax(result, map_w, map_h);
+         doCoalMineHax(rgb_result, map_w, map_h);
       }
       // Do all the checks on a copy of the map
       for (int i = 0; i < malloc_amount; i++)
       {
-         map[i] = result[i];
+         map[i] = rgb_result[i];
       }
       if (worldY < 20 && worldX > 32 && worldX < 39)
       {
-         blockOutRooms(DEBUG ? result : map, map_w, map_h);
+         blockOutRooms(DEBUG ? rgb_result : map, map_w, map_h);
       }
-      hasPath = isValid(DEBUG ? result : map, map_w, map_h, worldX, isCoalMine);
-      fillRandomMaterials(result, map_w, map_h, randomMaterials);
+      hasPath = isValid(DEBUG ? rgb_result : map, map_w, map_h, worldX, isCoalMine);
+      fillRandomMaterials(rgb_result, map_w, map_h, randomMaterials);
       tries++;
    } while (hasPath == false);
    free(map);
    free(res);
-   stbhw_free_tileset(&ts);
+
+   rgbToRgba(rgb_result, rgba_result, map_w, map_h);
+   free(rgb_result);
 }
 
 // map and result are allocated and freed in js.

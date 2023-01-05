@@ -39,6 +39,8 @@ export default class SeedSolver {
 
   foundSeeds: string[] = [];
 
+
+
   constructor(workerCount: number = 1, stopOnFind) {
     for (let i = 0; i < workerCount; i++) {
       const worker = new WorkerHandler(i, workerCount);
@@ -97,7 +99,7 @@ export default class SeedSolver {
     const res = allInfo.reduce(
       (acc, cur) => {
         acc.count += cur.count;
-        acc.currentSeed = Math.max(
+        acc.currentSeed = Math.min(
           acc.currentSeed || cur.currentSeed,
           cur.currentSeed
         );

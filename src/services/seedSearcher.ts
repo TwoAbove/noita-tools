@@ -64,7 +64,8 @@ export class SeedSolver {
 	seedEnd?: number;
 	offset = 0;
 	step = 1;
-	infoFreq = 25000;
+	gcEvery = 1000;
+	infoFreq = 20000;
 	rules!: ILogicRules;
 	avgExecTime = 0;
 	sumExecTime = 0;
@@ -109,6 +110,8 @@ export class SeedSolver {
 	async work() {
 		this.running = true;
 		this.shouldCancel = false;
+		// console.profile();
+
 		while (
 			!this.shouldCancel &&
 			this.currentSeed < (this.seedEnd || 4_294_967_294)
@@ -116,6 +119,10 @@ export class SeedSolver {
 			while (!this.gameInfoHandler.ready) {
 				// Free the event loop to check for stop
 				await new Promise(res => setTimeout(res, 0));
+			}
+			if (this.count && this.count % this.gcEvery === 0) {
+				// Free the event loop to GC
+				await new Promise(res => setTimeout(res, 0.01));
 			}
 			if (this.count && this.count % this.infoFreq === 0) {
 				this.avgExecTime = this.sumExecTime / this.infoFreq;
@@ -126,7 +133,12 @@ export class SeedSolver {
 			}
 			const startTime = performance.now();
 			this.gameInfoHandler.randoms!.SetWorldSeed(this.currentSeed);
-			const found = this.rules.rules.every(r => this.check(r));
+			let found = false;
+			try {
+				found = this.rules.rules.every(r => this.check(r));
+			} catch (e) {
+				console.error(`Seed ${this.currentSeed} error: `, e);
+			}
 			const endTime = performance.now();
 			this.sumExecTime += endTime - startTime;
 
@@ -142,12 +154,16 @@ export class SeedSolver {
 			this.count++;
 		}
 		this.running = false;
+		// setTimeout(() => console.profileEnd(), 10);
 		this.sendInfo();
 		this.currentSeed += this.step;
 	}
 
 	async start() {
 		this.foundSeed = undefined;
+		console.log('Getting ready');
+		await this.gameInfoHandler.providers.map.ready();
+		console.log('Starting');
 		return this.work();
 	}
 

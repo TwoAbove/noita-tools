@@ -6,7 +6,8 @@
 // const wasm = await import('./noita_random/noita_random.cpp');
 import {
 	rgb2rgba,
-	rgba2rgb
+	rgba2rgb,
+	printImage
 } from '../../components/LiveSeedStats/OCRHandler/imageActions';
 import createModule from './noita_random/noita_random.js';
 import noitaRandomModule from './noita_random/noita_random.wasm';
@@ -94,6 +95,7 @@ interface IRandomModule {
 
 	GenerateMap(
 		mapData: any,
+		color: number,
 		w: number,
 		h: number,
 		result: any,
@@ -216,6 +218,7 @@ export const genRandom = async Module => {
 
 	const GenerateMap = (
 		wang: ImageData,
+		color: number,
 		tiles_w: number,
 		tiles_h: number,
 		map_w: number,
@@ -225,14 +228,16 @@ export const genRandom = async Module => {
 		xOffset: number,
 		yOffset: number,
 	): ImageData => {
-		const tilesDataPtr = Module._malloc(3 * tiles_w * tiles_h);
+		const tilesDataPtr = Module._malloc(4 * tiles_w * tiles_h);
 		// 8-bit (char)
-		const tileData = new Uint8Array(
+		const tileData = new Uint8ClampedArray(
 			Module.HEAPU8.buffer,
 			tilesDataPtr,
-			3 * tiles_w * tiles_h
+			4 * tiles_w * tiles_h
 		);
-		rgba2rgb(wang.data, tileData);
+		tileData.set(wang.data);
+
+		// rgba2rgb(wang.data, tileData);
 
 		const randomMaterialsPtr = Module._malloc(randomMaterials.length * 4);
 		// 32-bit (uint)
@@ -243,15 +248,16 @@ export const genRandom = async Module => {
 		);
 		randomMatData.set(randomMaterials);
 
-		const resultPtr = Module._malloc(3 * map_w * map_h);
-		const result = new Uint8Array(
+		const resultPtr = Module._malloc(4 * map_w * map_h);
+		const result = new Uint8ClampedArray(
 			Module.HEAPU8.buffer,
 			resultPtr,
-			3 * map_w * map_h
+			4 * map_w * map_h
 		);
 
 		Module.GenerateMap(
 			tilesDataPtr,
+			color,
 			tiles_w,
 			tiles_h,
 			resultPtr,
@@ -263,8 +269,8 @@ export const genRandom = async Module => {
 			yOffset,
 		);
 
-		const resImgData = new ImageData(map_w, map_h);
-		rgb2rgba(result, resImgData.data);
+		const resImgData = new ImageData(result, map_w, map_h);
+		// rgb2rgba(result, resImgData.data);
 
 		Module._free(randomMaterialsPtr);
 		Module._free(tilesDataPtr);
@@ -280,20 +286,21 @@ export const genRandom = async Module => {
 		xOffset: number,
 		yOffset: number
 	): ImageData => {
-		const mapDataPtr = Module._malloc(3 * map_w * map_h);
+		const mapDataPtr = Module._malloc(4 * map_w * map_h);
 		// 8-bit (char)
-		const mapData = new Uint8Array(
+		const mapData = new Uint8ClampedArray(
 			Module.HEAPU8.buffer,
 			mapDataPtr,
-			3 * map_w * map_h
+			4 * map_w * map_h
 		);
-		rgba2rgb(map.data, mapData);
+		mapData.set(map.data);
+		// rgba2rgb(map.data, mapData);
 
-		const resultPtr = Module._malloc(3 * map_w * map_h);
-		const result = new Uint8Array(
+		const resultPtr = Module._malloc(4 * map_w * map_h);
+		const result = new Uint8ClampedArray(
 			Module.HEAPU8.buffer,
 			resultPtr,
-			3 * map_w * map_h
+			4 * map_w * map_h
 		);
 
 		Module.GeneratePathMap(
@@ -305,8 +312,9 @@ export const genRandom = async Module => {
 			yOffset,
 		);
 
-		const resImgData = new ImageData(map_w, map_h);
-		rgb2rgba(result, resImgData.data);
+		const resImgData = new ImageData(result, map_w, map_h);
+		// resImgData.data.set(result);
+		// rgb2rgba(result, resImgData.data);
 
 		Module._free(mapDataPtr);
 		Module._free(resultPtr);

@@ -9,9 +9,10 @@
   # -fsanitize=address \
 
 # emcc --bind -O3 \
-emcc --bind \
+emcc --bind -O3 \
   -o noita_random.js \
-  --std=c++17 \
+  --profiling \
+  --std=c++20 \
   --extern-pre-js="pre.js" \
   -s WASM=1 \
   -s STRICT_JS=1 \

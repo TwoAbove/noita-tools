@@ -1,11 +1,11 @@
 import { rgbaToHex } from '../../../../../components/LiveSeedStats/OCRHandler/imageActions';
 
-export const getColor = (map: ImageData, x, y) => {
+export const getColor = (map: ImageData, x: number, y: number) => {
   if (x < 0 || y < 0 || x >= map.width || y >= map.height) {
-    return '';
+    return 0;
   }
   const pixelPos = 4 * (x + y * map.width);
-  const color = rgbaToHex(
+  const color = rgbaToInt(
     map.data[pixelPos + 0],
     map.data[pixelPos + 1],
     map.data[pixelPos + 2],
@@ -14,10 +14,10 @@ export const getColor = (map: ImageData, x, y) => {
   return color;
 };
 
-export const iteratePixels = async (
+export const somePixelsSync = (
   image: ImageData,
   step: number,
-  cb: (x: number, y: number, color: string) => Promise<void>
+  cb: (x: number, y: number, color: number) => boolean
 ) => {
   for (let y = 0; y < image.height; y += step) {
     for (let x = 0; x < image.width; x += step) {
@@ -26,13 +26,55 @@ export const iteratePixels = async (
       const g = image.data[pos + 1];
       const b = image.data[pos + 2];
       const a = image.data[pos + 3];
-      const color = rgbaToHex(r, g, b, a);
-      await cb(x, y, color);
+      const color = rgbaToInt(r, g, b, a);
+      if (cb(x, y, color)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+export const somePixels = async (
+  image: ImageData,
+  step: number,
+  cb: (x: number, y: number, color: number) => Promise<boolean>
+) => {
+  for (let y = 0; y < image.height; y += step) {
+    for (let x = 0; x < image.width; x += step) {
+      const pos = image.width * y * 4 + x * 4;
+      const r = image.data[pos + 0];
+      const g = image.data[pos + 1];
+      const b = image.data[pos + 2];
+      const a = image.data[pos + 3];
+      const color = rgbaToInt(r, g, b, a);
+      if (await cb(x, y, color)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+export const iteratePixels = (
+  image: ImageData,
+  step: number,
+  cb: (x: number, y: number, color: number) => void
+) => {
+  for (let y = 0; y < image.height; y += step) {
+    for (let x = 0; x < image.width; x += step) {
+      const pos = image.width * y * 4 + x * 4;
+      const r = image.data[pos + 0];
+      const g = image.data[pos + 1];
+      const b = image.data[pos + 2];
+      const a = image.data[pos + 3];
+      const color = rgbaToInt(r, g, b, a);
+      cb(x, y, color);
     }
   }
 };
 
-export const rgbaToInt = (r, g, b, a) =>
+export const rgbaToInt = (r: number, g: number, b: number, a: number) =>
   ((r << 24) >>> 0) + (g << 16) + (b << 8) + a;
 
 export const hexTorgba = (h: string): [r: number, g: number, b: number, a: number] => {
@@ -94,5 +136,5 @@ export const rgbToHsl = (_r, _g, _b) => {
     h /= 6;
   }
 
-  return [ h, s, l ];
+  return [h, s, l];
 }
