@@ -122,7 +122,7 @@ export class SeedSolver {
 			}
 			if (this.count && this.count % this.gcEvery === 0) {
 				// Free the event loop to GC
-				await new Promise(res => setTimeout(res, 0.01));
+				await new Promise(res => setTimeout(res, 0.1));
 			}
 			if (this.count && this.count % this.infoFreq === 0) {
 				this.avgExecTime = this.sumExecTime / this.infoFreq;

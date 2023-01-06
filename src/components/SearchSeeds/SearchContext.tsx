@@ -111,8 +111,8 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	const [seedSolver, setSeedSolver] = React.useState(
 		() => new SeedSolver(useCores, true)
 	);
-	const [seed, setSeed] = React.useState('1');
-	const [seedEnd, setSeedEnd] = React.useState('');
+	const [seed, setSeed] = useLocalStorage('search-min-seed', '1');
+	const [seedEnd, setSeedEnd] = useLocalStorage('search-max-seed', '');
 	const handleSeedStartChange = (e: any) => {
 		setSeed(e.target.value);
 	};
@@ -120,24 +120,24 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		setSeedEnd(e.target.value);
 	};
 
-	const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
-		id: uniqueId(),
-		type: RuleType.AND,
-		rules: [],
-		selectedRule: 'search',
-	});
 	// const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
 	// 	id: uniqueId(),
 	// 	type: RuleType.AND,
-	// 	rules: [
-	// 	{
-	// 		id: uniqueId(),
-	// 		type: 'map',
-	// 		...RuleConstructors['map'].defaultConfig
-	// 	},
-	// ],
+	// 	rules: [],
 	// 	selectedRule: 'search',
 	// });
+	const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
+		id: uniqueId(),
+		type: RuleType.AND,
+		rules: [
+			{
+				id: uniqueId(),
+				type: 'map',
+				...RuleConstructors['map'].defaultConfig
+			},
+		],
+		selectedRule: 'search',
+	});
 	// const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
 	// 	id: uniqueId(),
 	// 	type: RuleType.AND,

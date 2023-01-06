@@ -458,6 +458,9 @@ export class MapInfoProvider extends InfoProvider {
 
 	test(rule: IRule): boolean {
 		this.clearCache();
+		// Do two passes - First for all functions, then for all searches
+		const maps: { [key: string]: ImageData } = {}
+
 		for (const key in configs) {
 			const config = configs[key];
 			const { x, y } = config.pos;
@@ -483,6 +486,14 @@ export class MapInfoProvider extends InfoProvider {
 			if (!found) {
 				return false;
 			}
+			maps[key] = areaMap;
+		}
+
+		for (const key in configs) {
+			const areaMap = maps[key];
+			const config = configs[key];
+			const { x, y } = config.pos;
+			const color = getColor(this.worldMap, x, y);
 
 			const areaMapToScale = scaleImageData(areaMap, 10);
 			const interestPoints = this.getInterestPoints(
@@ -501,10 +512,20 @@ export class MapInfoProvider extends InfoProvider {
 				return false;
 			}
 		}
+
 		return true;
 	}
 }
 
+/*
+from - 1
+to - 100000
+coalmine: 13
+excavationSite: 991
+snowCave: 3843
+snowCastle: 7120
+vault: 14700
+*/
 const configs = {
 	coalmine: {
 		pos: {
@@ -517,14 +538,6 @@ const configs = {
 			'data/biome_impl/coalmine/oiltank_puzzle.png'
 		],
 		funcs: ['load_pixel_scene2', 'load_pixel_scene', 'load_oiltank']
-	},
-	snowCastle: {
-		pos: {
-			x: 34,
-			y: 25
-		},
-		search: ['data/biome_impl/snowcastle/kitchen.png'],
-		funcs: ['load_pixel_scene2']
 	},
 	excavationSite: {
 		pos: {
@@ -547,6 +560,14 @@ const configs = {
 			'data/biome_impl/snowcave/buried_eye.png'
 		],
 		funcs: ['load_pixel_scene', 'load_pixel_scene3']
+	},
+	snowCastle: {
+		pos: {
+			x: 34,
+			y: 25
+		},
+		search: ['data/biome_impl/snowcastle/kitchen.png'],
+		funcs: ['load_pixel_scene2']
 	},
 	vault: {
 		pos: {
