@@ -1,40 +1,24 @@
-import {
-	hexTorgba,
-	rgbaToInt
-} from '../../../services/SeedInfo/infoHandler/InfoProviders/Map/helpers';
-
 // import getPixelsFromString from 'get-pixels/dom-pixels';
 // import { savePixels } from 'ndarray-pixels';
 
-const ImageData = global.ImageData || require('@canvas/image-data');
+import {
+	Canvas,
+	ImageData,
+	loadImage
+} from 'skia-canvas';
+import { IRandom } from '../SeedInfo/random';
 
 export const getContext = (
-	canvas: OffscreenCanvas,
-	config?: CanvasRenderingContext2DSettings
-): OffscreenCanvasRenderingContext2D => {
-	return canvas.getContext('2d', {
-		...config,
-		willReadFrequently: true,
-		desynchronized: true
-	})! as OffscreenCanvasRenderingContext2D;
+	canvas: Canvas
+) => {
+	return canvas.getContext('2d');
 };
 
-export const getBitmapContext = (
-	canvas: OffscreenCanvas,
-	config?: ImageBitmapRenderingContextSettings
-): ImageBitmapRenderingContext => {
-	return canvas.getContext('bitmaprenderer', {
-		...config
-	})! as ImageBitmapRenderingContext;
-};
-
-export const createCanvas = (w, h): OffscreenCanvas => {
-	const can = new OffscreenCanvas(w, h); // document.createElement('canvas');
-	// can.width = w;
+export const createCanvas = (w, h): Canvas => {
+	const can = new Canvas(w, h);
+	// can.width = w;u
 	// can.height = h;
-	const ctx = getContext(can) as any;
-	ctx.msImageSmoothingEnabled = false;
-	ctx.webkitImageSmoothingEnabled = false;
+	const ctx = getContext(can);
 	ctx.imageSmoothingEnabled = false;
 	return can;
 };
@@ -50,7 +34,7 @@ export const imageFromBase64 = async (dataUri: string): Promise<ImageData> => {
 	// 		}).catch(e => console.error(e));
 	// 	});
 	// });
-	const btmp = await createImageBitmap(await (await fetch(dataUri)).blob());
+	const btmp = await loadImage(dataUri); // await createImageBitmap(await (await fetch(dataUri)).blob());
 
 	const can = createCanvas(btmp.width, btmp.height);
 	const ctx = getContext(can);
@@ -61,14 +45,13 @@ export const imageFromBase64 = async (dataUri: string): Promise<ImageData> => {
 };
 
 export const imageToBase64 = async (
-	img: ImageData | ImageBitmap
+	img: ImageData
 ): Promise<string> => {
 	// for some reason the typing is funky
 	const can: any = createCanvas(img.width, img.height);
 	const ctx = getContext(can);
 	// Draw the image
-	const i = await createImageBitmap(img);
-	ctx.drawImage(i, 0, 0);
+	ctx.putImageData(img, 0, 0);
 	return can.convertToBlob().then(blob => {
 		return new Promise((resolve, _) => {
 			const reader = new FileReader();
@@ -90,7 +73,7 @@ export const copyImage = img => {
 };
 
 export const getPixels = (img): ImageData => {
-	if (!(img instanceof OffscreenCanvas)) {
+	if (!(img instanceof Canvas)) {
 		return getPixels(copyImage(img));
 	}
 	const ctx = img.getContext('2d')!;
@@ -129,7 +112,7 @@ export const toDark = (pixels: ImageData, dark = [0, 0, 0]) => {
 	return pixels;
 };
 
-const scale = (cv: OffscreenCanvas, scale: number): OffscreenCanvas => {
+const scale = (cv: Canvas, scale: number): Canvas => {
 	const canvas = createCanvas(cv.width * scale, cv.height * scale);
 	const ctx = getContext(canvas);
 
@@ -150,7 +133,7 @@ export const scaleImageData = (img: ImageData, s: number): ImageData => {
 	);
 };
 
-export const stretch = (img, width, height): OffscreenCanvas => {
+export const stretch = (img, width, height): Canvas => {
 	const canvas = createCanvas(width, height);
 	const ctx = getContext(canvas);
 	ctx.drawImage(img, 0, 0, width, height);
@@ -159,10 +142,10 @@ export const stretch = (img, width, height): OffscreenCanvas => {
 	return canvas;
 };
 
-const g = (c: OffscreenCanvas): Uint8ClampedArray =>
+const g = (c: Canvas): Uint8ClampedArray =>
 	getContext(c).getImageData(0, 0, c.width, c.height)!.data;
 
-export const diff = (img1: OffscreenCanvas, img2: OffscreenCanvas): number => {
+export const diff = (img1: Canvas, img2: Canvas): number => {
 	const d1 = g(img1);
 	const d2 = g(img2);
 	let count = 0;
@@ -202,12 +185,12 @@ export const cropImageData = (
 };
 
 export const crop = (
-	cv: OffscreenCanvas | CanvasImageSource,
+	cv: Canvas,
 	cropX: number,
 	cropY: number,
 	cropWidth: number,
 	cropHeight: number
-): OffscreenCanvas => {
+): Canvas => {
 	const canvas = createCanvas(cropWidth, cropHeight);
 	const ctx = getContext(canvas);
 	ctx.drawImage(
@@ -224,7 +207,7 @@ export const crop = (
 	return canvas;
 };
 
-export const invert = (cv: OffscreenCanvas): OffscreenCanvas => {
+export const invert = (cv: Canvas): Canvas => {
 	const ctx = getContext(cv);
 	const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
 	const data = imageData.data;
@@ -239,7 +222,7 @@ export const invert = (cv: OffscreenCanvas): OffscreenCanvas => {
 	return cv;
 };
 
-export const unAlpha = (cv: OffscreenCanvas): OffscreenCanvas => {
+export const unAlpha = (cv: Canvas): Canvas => {
 	const ctx = getContext(cv);
 	const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
 	const data = imageData.data;
@@ -249,12 +232,11 @@ export const unAlpha = (cv: OffscreenCanvas): OffscreenCanvas => {
 	return cv;
 };
 
-export const enhance = (cv: OffscreenCanvas): OffscreenCanvas => {
+export const enhance = (cv: Canvas): Canvas => {
 	const canvas = createCanvas(cv.width, cv.height);
 	const ctx = getContext(canvas);
 	ctx.filter = 'brightness(600%) contrast(400%)';
 	ctx.imageSmoothingEnabled = false;
-	ctx.imageSmoothingQuality = 'high';
 	ctx.drawImage(cv, 0, 0);
 	const pixels = getPixels(canvas);
 	toDark(pixels);
@@ -262,7 +244,7 @@ export const enhance = (cv: OffscreenCanvas): OffscreenCanvas => {
 	return thresholdImage;
 };
 
-export const clearBg = (cv: OffscreenCanvas): OffscreenCanvas => {
+export const clearBg = (cv: Canvas): Canvas => {
 	const ctx = getContext(cv);
 	const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
 	const data = imageData.data;
@@ -413,3 +395,249 @@ export const printImage = (image: ImageData) => {
 		);
 	});
 };
+
+export const getColor = (map: ImageData, x: number, y: number) => {
+	if (x < 0 || y < 0 || x >= map.width || y >= map.height) {
+		return 0;
+	}
+	const pixelPos = 4 * (x + y * map.width);
+	const color = rgbaToInt(
+		map.data[pixelPos + 0],
+		map.data[pixelPos + 1],
+		map.data[pixelPos + 2],
+		map.data[pixelPos + 3]
+	);
+	return color;
+};
+
+export const somePixelsSync = (
+	image: ImageData,
+	step: number,
+	cb: (x: number, y: number, color: number) => boolean
+) => {
+	for (let y = 0; y < image.height; y += step) {
+		for (let x = 0; x < image.width; x += step) {
+			const pos = image.width * y * 4 + x * 4;
+			const r = image.data[pos + 0];
+			const g = image.data[pos + 1];
+			const b = image.data[pos + 2];
+			const a = image.data[pos + 3];
+			const color = rgbaToInt(r, g, b, a);
+			if (cb(x, y, color)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+export const somePixels = async (
+	image: ImageData,
+	step: number,
+	cb: (x: number, y: number, color: number) => Promise<boolean>
+) => {
+	for (let y = 0; y < image.height; y += step) {
+		for (let x = 0; x < image.width; x += step) {
+			const pos = image.width * y * 4 + x * 4;
+			const r = image.data[pos + 0];
+			const g = image.data[pos + 1];
+			const b = image.data[pos + 2];
+			const a = image.data[pos + 3];
+			const color = rgbaToInt(r, g, b, a);
+			if (await cb(x, y, color)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+export const iteratePixels = (
+	image: ImageData,
+	step: number,
+	cb: (x: number, y: number, color: number) => void
+) => {
+	for (let y = 0; y < image.height; y += step) {
+		for (let x = 0; x < image.width; x += step) {
+			const pos = image.width * y * 4 + x * 4;
+			const r = image.data[pos + 0];
+			const g = image.data[pos + 1];
+			const b = image.data[pos + 2];
+			const a = image.data[pos + 3];
+			const color = rgbaToInt(r, g, b, a);
+			cb(x, y, color);
+		}
+	}
+};
+
+export const rgbaToInt = (r: number, g: number, b: number, a: number) =>
+	((r << 24) >>> 0) + (g << 16) + (b << 8) + a;
+
+export const hexTorgba = (h: string): [r: number, g: number, b: number, a: number] => {
+	const hh = parseInt(h, 16);
+	const r = (hh >> 24) & 0xff;
+	const g = (hh >> 16) & 0xff;
+	const b = (hh >> 8) & 0xff;
+	const a = hh & 0xff;
+	return [r, g, b, a];
+};
+
+export const imageFromHexArray = (
+	hexArray: string[],
+	w: number,
+	h: number
+): ImageData => {
+	const arr = hexArray.flatMap(hexTorgba);
+	return new ImageData(new Uint8ClampedArray(arr), w, h);
+};
+
+export const getGlobalPos = (x: number, y: number, px: number, py: number) => {
+	if (y === 14) {
+		py -= 10;
+	}
+	const gx = Math.floor(((x - 35) * 512) / 10) * 10 + px - 5;
+	const gy = Math.floor(((y - 14) * 512) / 10) * 10 + py - 3;
+	return { gx, gy };
+};
+
+export const getLocalPos = (x: number, y: number, gx: number, gy: number) => {
+	const px = gx - Math.floor(((x - 35) * 512) / 10) * 10 + 5;
+	let py = gy - Math.floor(((y - 14) * 512) / 10) * 10 + 3;
+	if (y === 14) {
+		py += 10;
+	}
+	return { px, py };
+};
+
+export const rgbToHsl = (_r, _g, _b): [h: number, s: number, l: number] => {
+	let r = _r / 255
+	let g = _g / 255
+	let b = _b / 255;
+
+	let max = Math.max(r, g, b), min = Math.min(r, g, b);
+	let h, s, l = (max + min) / 2;
+
+	if (max === min) {
+		h = s = 0; // achromatic
+	} else {
+		let d = max - min;
+		s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+		switch (max) {
+			case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+			case g: h = (b - r) / d + 2; break;
+			case b: h = (r - g) / d + 4; break;
+		}
+
+		h /= 6;
+	}
+
+	return [h, s, l];
+}
+
+export const GenerateMap = (
+	randoms: IRandom,
+	wang: ImageData,
+	color: number,
+	tiles_w: number,
+	tiles_h: number,
+	map_w: number,
+	map_h: number,
+	isCoalMine: boolean,
+	randomMaterials: number[],
+	xOffset: number,
+	yOffset: number
+): ImageData => {
+	const tilesDataPtr = randoms.Module._malloc(4 * tiles_w * tiles_h);
+	// 8-bit (char)
+	const tileData = new Uint8ClampedArray(
+		randoms.Module.HEAPU8.buffer,
+		tilesDataPtr,
+		4 * tiles_w * tiles_h
+	);
+	tileData.set(wang.data);
+
+	// rgba2rgb(wang.data, tileData);
+
+	const randomMaterialsPtr = randoms.Module._malloc(
+		randomMaterials.length * 4
+	);
+	// 32-bit (uint)
+	const randomMatData = new Uint32Array(
+		randoms.Module.HEAPU32.buffer,
+		randomMaterialsPtr,
+		randomMaterials.length * 4
+	);
+	randomMatData.set(randomMaterials);
+
+	const resultPtr = randoms.Module._malloc(4 * map_w * map_h);
+	const result = new Uint8ClampedArray(
+		randoms.Module.HEAPU8.buffer,
+		resultPtr,
+		4 * map_w * map_h
+	);
+
+	randoms.Module.GenerateMap(
+		tilesDataPtr,
+		color,
+		tiles_w,
+		tiles_h,
+		resultPtr,
+		map_w,
+		map_h,
+		isCoalMine,
+		randomMaterialsPtr,
+		xOffset,
+		yOffset
+	);
+	const resImgData = new ImageData(map_w, map_h);
+	resImgData.data.set(result);
+
+	randoms.Module._free(randomMaterialsPtr);
+	randoms.Module._free(tilesDataPtr);
+	randoms.Module._free(resultPtr);
+
+	return resImgData;
+}
+
+export const GetPathMap = (
+	randoms: IRandom,
+	map: ImageData,
+	map_w: number,
+	map_h: number,
+	xOffset: number,
+	yOffset: number
+): ImageData => {
+	const mapDataPtr = randoms.Module._malloc(4 * map_w * map_h);
+	// 8-bit (char)
+	const mapData = new Uint8ClampedArray(
+		randoms.Module.HEAPU8.buffer,
+		mapDataPtr,
+		4 * map_w * map_h
+	);
+	mapData.set(map.data);
+	// rgba2rgb(map.data, mapData);
+
+	const resultPtr = randoms.Module._malloc(4 * map_w * map_h);
+	const result = new Uint8ClampedArray(
+		randoms.Module.HEAPU8.buffer,
+		resultPtr,
+		4 * map_w * map_h
+	);
+
+	randoms.Module.GeneratePathMap(
+		mapDataPtr,
+		map_w,
+		map_h,
+		resultPtr,
+		xOffset,
+		yOffset
+	);
+
+	const resImgData = new ImageData(result, map_w, map_h);
+
+	randoms.Module._free(mapDataPtr);
+	randoms.Module._free(resultPtr);
+
+	return resImgData;
+}

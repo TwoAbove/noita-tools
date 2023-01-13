@@ -17,6 +17,8 @@ const unsigned long COLOR_YELLOW = 0xffff00;
 const unsigned long COLOR_COFFEE = 0xc0ffee;
 const unsigned long COLOR_01CFEE = 0x01cfee;
 
+// TODO: Look into optimizing with <https://github.com/google/highway>
+
 const bool DEBUG = false;
 
 unsigned long createRGB(const unsigned char r, const unsigned char g, const unsigned char b)
@@ -108,7 +110,7 @@ void floodFill(unsigned char *map,
          return;
       }
 
-      unsigned long nc = getPixelColor(map, p);
+      unsigned long nc = getPixelColor(map, p * 3);
       if (nc != fromColor || nc == toColor)
       {
          return;
@@ -235,19 +237,19 @@ void fillRandomMaterials(
    for (int i = 0; i < r.size(); i++)
    {
       ToFrom *rr = r.at(i).get();
-      for (int y = 0; y < height; y++)
+      unsigned long long posMax = width * height;
+      for (unsigned long long pos = 0; pos < posMax; pos++)
       {
-         for (int x = 0; x < width; x++)
+         long c = getPixelColor(map, pos * 3);
+         if (c != rr->from)
          {
-            long c = getPixelColor(map, width, x, y);
-            if (c != rr->from)
-            {
-               continue;
-            }
-            int rand = rr->rng.Random(0, rr->to.size() - 1);
-            floodFill(map, width, height, x, y, rr->from, rr->to.at(rand));
-            j++;
+            continue;
          }
+         int rand = rr->rng.Random(0, rr->to.size() - 1);
+         int x = pos % width;
+         int y = pos / width;
+         floodFill(map, width, height, x, y, rr->from, rr->to.at(rand));
+         j++;
       }
    }
 }
@@ -684,7 +686,7 @@ void rgbToRgba(unsigned char *src, unsigned char *dest, uint w, uint h)
       j++;
       if (i && (i + 1) % 3 == 0)
       {
-         dest[j] = 255;
+         dest[j] = dest[j-1] != 0 ? 255 : 254;
          j++;
       }
    }

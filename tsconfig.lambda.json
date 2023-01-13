@@ -1,0 +1,34 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "files": ["src/lambdaSearch.ts"],
+  "buildOptions": {
+    "verbose": true
+  },
+  "compilerOptions": {
+    // "target": "es5",
+    // "module": "commonjs",
+    // "lib": ["es6"],
+
+    "lib": ["ES2022"],
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "Node",
+    "types": ["node"],
+    // "moduleResolution": "es2022",
+
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": false,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "lambda-build"
+  },
+  "exclude": ["node_modules", "**/*.spec.*"]
+}

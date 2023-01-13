@@ -1,8 +1,8 @@
 // import { Remote, wrap, releaseProxy, proxy } from 'comlink';
-import { SeedSolver as _SeedSolver, ISeedSolverConfig } from './seedSearcher';
+import { SeedSearcher,  ISeedSearcherConfig } from './seedSearcher';
 
 export class WorkerHandler extends EventTarget {
-  latestData?: ReturnType<_SeedSolver['getInfo']>;
+  latestData?: ReturnType<SeedSearcher['getInfo']>;
   worker: Worker;
 
   constructor(offset: number, step: number) {
@@ -49,7 +49,7 @@ export default class SeedSolver {
           this.stop();
         }
       });
-      worker.addEventListener('foundSeedAll', e => {
+      worker.addEventListener('foundSeedAll', (e: any) => {
         const seed = e.detail.foundSeed;
         this.foundSeeds.push(seed);
       });
@@ -63,7 +63,7 @@ export default class SeedSolver {
     }
   }
 
-  public update(config: ISeedSolverConfig) {
+  public update(config: ISeedSearcherConfig) {
     for (const worker of this.workerList) {
       worker.worker.postMessage({ type: 'update', config });
     }
@@ -88,7 +88,7 @@ export default class SeedSolver {
     }
   }
 
-  public getInfo(): ReturnType<_SeedSolver['getInfo']>[] {
+  public getInfo(): ReturnType<SeedSearcher['getInfo']>[] {
     const allInfo = this.workerList
       .map(worker => worker.latestData!)
       .filter(Boolean);
@@ -107,7 +107,7 @@ export default class SeedSolver {
         acc.avgExecTime = cur.avgExecTime;
         return acc;
       },
-      { count: 0 } as ReturnType<_SeedSolver['getInfo']>
+      { count: 0 } as ReturnType<SeedSearcher['getInfo']>
     );
     const duration = new Date().getTime() - this.startTime;
     const rate = res.currentSeed / duration;

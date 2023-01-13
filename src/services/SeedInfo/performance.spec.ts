@@ -21,6 +21,15 @@ type IPerf = {
 	}[];
 };
 
+const mapPos = [
+	[28, 14], // liquidcave
+	[36, 14], // coalmine
+	[34, 17], // excavationSite
+	[34, 21], // snowCave
+	[34, 24], // snowcastle
+	[34, 31], // vault
+]
+
 const params = {
 	alchemy: (x, y) => [],
 	alwaysCast: (x, y) => [1, 2, 3],
@@ -38,6 +47,7 @@ const params = {
 	powderStash: (x, y) => [x, y],
 	rain: (x, y) => [],
 	shop: (x, y) => [1],
+	map: (x, y, seed) => [...mapPos[(x + y) % mapPos.length], seed],
 	spells: (x, y) => ['BOMB'],
 	startingBombSpell: (x, y) => [],
 	startingFlask: (x, y) => [],
@@ -46,8 +56,8 @@ const params = {
 	waterCave: (x, y) => []
 };
 
-const getParams = (provider: string, x: any, y: any): any[] => {
-	return params[provider](x, y);
+const getParams = (provider: string, x: any, y: any, seed): any[] => {
+	return params[provider](x, y, seed);
 };
 
 const getStats = (timings: IPerf['allTimings']): IPerf['stats'] => {
@@ -86,8 +96,8 @@ const printStats = (info: { [provider: string]: IPerf }) => {
 	console.table(data);
 };
 
-describe.skip('Performance', () => {
-// describe.only('Performance', () => {
+// describe.skip('Performance', () => {
+describe.only('Performance', () => {
 	const box = 20;
 	const seedBox = 20;
 
@@ -102,6 +112,8 @@ describe.skip('Performance', () => {
 			randoms,
 			false
 		);
+
+		await infoProvider.ready();
 
 		const providers = Object.keys(infoProvider.providers);
 
@@ -121,10 +133,10 @@ describe.skip('Performance', () => {
 				for (let x = 0; x < box; x++) {
 					for (let y = 0; y < box; y++) {
 						const startTime = performance.now();
-						const endTime = performance.now();
 						const res = infoProvider.providers[provider][action](
-							...getParams(provider, x, y)
+							...getParams(provider, x, y, seed)
 						);
+						const endTime = performance.now();
 						timings.push({
 							seed,
 							time: endTime - startTime,

@@ -87,4 +87,5 @@
   "terminal.integrated.env.windows": {
     "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${env:LOCALAPPDATA}\\Programs\\emsdk\\upstream\\emscripten"
   },
+  "typescript.tsdk": "./node_modules/typescript/lib"
 }

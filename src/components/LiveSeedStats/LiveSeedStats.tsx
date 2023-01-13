@@ -199,7 +199,7 @@ const LiveSeedStats = () => {
 			onUpdate: forceUpdate,
 			// canvasRef
 		});
-		ocrHandler.addEventListener('seed', event => {
+		ocrHandler.addEventListener('seed', (event: any) => {
 			if (event.detail.seed) {
 				setLastSeed(event.detail.seed);
 				seedLink!.sendSeed(event.detail.seed);
@@ -225,7 +225,7 @@ const LiveSeedStats = () => {
 			onUpdate: forceUpdate,
 			// canvasRef
 		});
-		ocrHandler.addEventListener('seed', event => {
+		ocrHandler.addEventListener('seed', (event: any) => {
 			if (event.detail.seed) {
 				setLastSeed(event.detail.seed);
 				seedLink!.sendSeed(event.detail.seed);

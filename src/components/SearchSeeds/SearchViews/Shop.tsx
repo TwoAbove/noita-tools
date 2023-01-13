@@ -11,7 +11,7 @@ import { Square } from '../../helpers';
 // import ShopSelect from './ShopSelect';
 import SpellSelect from '../../SpellSelect';
 import WandSelect from '../../WandSelect';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep.js';
 
 interface IShopLevelProps {
 	handleClicked: (string) => void;

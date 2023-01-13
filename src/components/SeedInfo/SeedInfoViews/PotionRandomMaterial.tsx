@@ -1,7 +1,7 @@
 import { FC, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { capitalize } from '../../../services/helpers';
-import { hexTorgba, rgbToHsl } from '../../../services/SeedInfo/infoHandler/InfoProviders/Map/helpers';
+import { hexTorgba, rgbToHsl } from '../../../services/imageActions/webImageActions';
 import { AlchemyConfigContext } from '../../AlchemyConfigContext';
 import Icon from '../../Icons/Icon';
 import { GameInfoContext } from '../SeedDataOutput';

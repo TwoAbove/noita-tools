@@ -61,7 +61,7 @@ interface IProbScene {
 }
 
 export default class Base {
-	debug = false;
+	debug = false; // Enable to see logging. Very verbose!
 
 	spawnlists = {
 		potion_spawnlist: {

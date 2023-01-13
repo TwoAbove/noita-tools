@@ -60,7 +60,6 @@ interface IProviders {
 
 export class GameInfoProvider extends EventTarget {
   randoms!: IRandom;
-  ready = false;
   dispatch = true;
 
   providers!: IProviders;
@@ -70,6 +69,8 @@ export class GameInfoProvider extends EventTarget {
   i18n?: i18n;
 
   unlockedSpells: boolean[];
+
+  loadRandomPromise: Promise<any>;
 
   constructor(
     initialConfig: Partial<IProviderConfig>,
@@ -83,27 +84,31 @@ export class GameInfoProvider extends EventTarget {
     this.resetConfig(initialConfig);
     this.unlockedSpells = unlockedSpells;
     if (randoms) {
-      this.setRandoms(randoms);
+      this.loadRandomPromise = this.setRandoms(randoms);
     } else {
-      loadRandom()
+      this.loadRandomPromise = loadRandom()
         .then(r => this.setRandoms(r))
         .catch(e => console.error(e));
     }
     this.i18n = i18n;
   }
 
-  setRandoms(randoms: IRandom) {
+  async setRandoms(randoms: IRandom) {
     this.randoms = randoms;
     this.providers = this.buildInfoProviders();
-    this.ready = true;
   }
 
-  onRandomLoad(cb) {
+  async ready() {
+    await this.loadRandomPromise;
+    return Promise.allSettled(Object.values(this.providers).map(p => p.ready()));
+  }
+
+  onRandomLoad(cb?) {
     return new Promise<void>(async res => {
-      while (!this.ready) {
-        await new Promise(r => setTimeout(r, 10));
+      await this.ready();
+      if (cb) {
+        await cb();
       }
-      await cb();
       res();
     });
   }

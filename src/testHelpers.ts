@@ -1,15 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { IRandom, genRandom } from './services/SeedInfo/random';
-import createModule from './services/SeedInfo/noita_random/noita_random.js';
+import { genRandom } from './services/SeedInfo/random/random';
+import createModule from './services/SeedInfo/noita_random/noita_random';
 
-export const loadRandom = async (flags?: string[]): Promise<IRandom> => {
-	const wasmPath = path.resolve(
-		__dirname,
-		'services/SeedInfo/noita_random/noita_random.wasm'
-	);
+export const loadRandom = async (flags?: string[]): Promise<Awaited<ReturnType<typeof genRandom>>> => {
+	const wasmPath = fs.readFileSync(path.resolve(__dirname, './services/SeedInfo/noita_random/noita_random.wasm'));
 	const Module = await createModule({
-		wasmBinary: fs.readFileSync(wasmPath),
+		wasmBinary: wasmPath,
 	});
 	const randoms = await genRandom(Module);
 	await randoms.SetUnlockedSpells(getUnlockedSpells(flags));

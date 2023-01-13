@@ -1,10 +1,10 @@
 import Texture from './texture';
 
 import {
+	hexTorgba,
 	imageFromBase64,
 	imageToBase64
-} from '../../LiveSeedStats/OCRHandler/imageActions';
-import { hexTorgba } from '../../../services/SeedInfo/infoHandler/InfoProviders/Map/helpers';
+} from '../../../services/imageActions/webImageActions';
 
 const NoitaTexture = async (color: string, texture: string) => {
 	const textureImage = await imageFromBase64(texture);

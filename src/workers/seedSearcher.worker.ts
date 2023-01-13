@@ -1,36 +1,36 @@
 /* eslint-disable no-restricted-globals */
-import { SeedSolver } from '../services/seedSearcher';
+import { SeedSearcher } from '../services/seedSearcher';
 
-const seedSolver = new SeedSolver();
+const seedSearcher = new SeedSearcher();
 
 self.onmessage = async message => {
   const data = message.data;
   switch (data.type) {
     case "start":
-      await seedSolver.start();
+      await seedSearcher.start();
       break;
     case "stop":
-      await seedSolver.stop();
+      await seedSearcher.stop();
       break;
     case "update":
-      await seedSolver.update(data.config);
+      await seedSearcher.update(data.config);
       break;
     case "getInfo":
-      self.postMessage({ type: "info", data: seedSolver.getInfo() });
+      self.postMessage({ type: "info", data: seedSearcher.getInfo() });
       break;
     case "init":
-      seedSolver.init(data.offset, data.step);
+      seedSearcher.init(data.offset, data.step);
   };
 };
 
-seedSolver.onInfo((data) => {
+seedSearcher.onInfo((data) => {
   self.postMessage({ type: "info", data });
 });
 
-seedSolver.onFound((data) => {
+seedSearcher.onFound((data) => {
   self.postMessage({ type: "found", data });
 });
 
-export { seedSolver };
+export { seedSearcher };
 
 export default null as any;

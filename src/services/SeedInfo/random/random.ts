@@ -4,18 +4,9 @@
 // 	ProceduralRandomi
 // } from './noita_random/noita_random.cpp';
 // const wasm = await import('./noita_random/noita_random.cpp');
-import {
-	rgb2rgba,
-	rgba2rgb,
-	printImage
-} from '../../components/LiveSeedStats/OCRHandler/imageActions';
-import createModule from './noita_random/noita_random.js';
-import noitaRandomModule from './noita_random/noita_random.wasm';
 
 import D, { Decimal } from 'decimal.js';
-import { cloneDeep } from 'lodash';
-
-type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
+import cloneDeep from 'lodash/cloneDeep.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const logify = func => (...args) => {
@@ -26,7 +17,8 @@ export const logify = func => (...args) => {
 	console.groupEnd();
 	return res;
 };
-interface IRandomModule {
+
+export interface IRandomModule {
 	printErr: any;
 	print: any;
 	cwrap: any;
@@ -117,17 +109,6 @@ interface IRND {
 	y: number;
 }
 
-const loadWasm = async () => {
-	const Module: IRandomModule = await createModule({
-		locateFile(path) {
-			if (path.endsWith('.wasm')) {
-				return noitaRandomModule;
-			}
-			return path;
-		}
-	});
-	return Module;
-};
 
 export const genRandom = async Module => {
 	Module.GenerateMap = Module._generate_map;
@@ -216,112 +197,6 @@ export const genRandom = async Module => {
 		return result;
 	};
 
-	const GenerateMap = (
-		wang: ImageData,
-		color: number,
-		tiles_w: number,
-		tiles_h: number,
-		map_w: number,
-		map_h: number,
-		isCoalMine: boolean,
-		randomMaterials: number[],
-		xOffset: number,
-		yOffset: number,
-	): ImageData => {
-		const tilesDataPtr = Module._malloc(4 * tiles_w * tiles_h);
-		// 8-bit (char)
-		const tileData = new Uint8ClampedArray(
-			Module.HEAPU8.buffer,
-			tilesDataPtr,
-			4 * tiles_w * tiles_h
-		);
-		tileData.set(wang.data);
-
-		// rgba2rgb(wang.data, tileData);
-
-		const randomMaterialsPtr = Module._malloc(randomMaterials.length * 4);
-		// 32-bit (uint)
-		const randomMatData = new Uint32Array(
-			Module.HEAPU32.buffer,
-			randomMaterialsPtr,
-			randomMaterials.length * 4
-		);
-		randomMatData.set(randomMaterials);
-
-		const resultPtr = Module._malloc(4 * map_w * map_h);
-		const result = new Uint8ClampedArray(
-			Module.HEAPU8.buffer,
-			resultPtr,
-			4 * map_w * map_h
-		);
-
-		Module.GenerateMap(
-			tilesDataPtr,
-			color,
-			tiles_w,
-			tiles_h,
-			resultPtr,
-			map_w,
-			map_h,
-			isCoalMine,
-			randomMaterialsPtr,
-			xOffset,
-			yOffset,
-		);
-
-		const resImgData = new ImageData(result, map_w, map_h);
-		// rgb2rgba(result, resImgData.data);
-
-		Module._free(randomMaterialsPtr);
-		Module._free(tilesDataPtr);
-		Module._free(resultPtr);
-
-		return resImgData;
-	};
-
-	const GetPathMap = (
-		map: ImageData,
-		map_w: number,
-		map_h: number,
-		xOffset: number,
-		yOffset: number
-	): ImageData => {
-		const mapDataPtr = Module._malloc(4 * map_w * map_h);
-		// 8-bit (char)
-		const mapData = new Uint8ClampedArray(
-			Module.HEAPU8.buffer,
-			mapDataPtr,
-			4 * map_w * map_h
-		);
-		mapData.set(map.data);
-		// rgba2rgb(map.data, mapData);
-
-		const resultPtr = Module._malloc(4 * map_w * map_h);
-		const result = new Uint8ClampedArray(
-			Module.HEAPU8.buffer,
-			resultPtr,
-			4 * map_w * map_h
-		);
-
-		Module.GeneratePathMap(
-			mapDataPtr,
-			map_w,
-			map_h,
-			resultPtr,
-			xOffset,
-			yOffset,
-		);
-
-		const resImgData = new ImageData(result, map_w, map_h);
-		// resImgData.data.set(result);
-		// rgb2rgba(result, resImgData.data);
-
-		Module._free(mapDataPtr);
-		Module._free(resultPtr);
-
-		return resImgData;
-	};
-
 	const SetUnlockedSpells = (spells: boolean[]) => {
 		// For some reason using the pointer method like GenerateMap
 		// doesn't work - we get an error when calling, so we
@@ -332,6 +207,8 @@ export const genRandom = async Module => {
 	};
 
 	return {
+		Module,
+
 		Random: Module.Random,
 		Randomf: Module.Randomf,
 		RandomDistribution: Module.RandomDistribution,
@@ -348,8 +225,6 @@ export const genRandom = async Module => {
 		GetGlobalPos: Module.GetGlobalPos,
 
 		SetUnlockedSpells,
-		GenerateMap,
-		GetPathMap,
 		random_next,
 		random_nexti,
 		randomFromArray,
@@ -358,11 +233,3 @@ export const genRandom = async Module => {
 		pick_random_from_table_weighted
 	};
 };
-
-const load = async () => {
-	const Module = await loadWasm();
-	return genRandom(Module);
-};
-
-export type IRandom = Awaited<ReturnType<typeof load>>;
-export default load;

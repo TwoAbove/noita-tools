@@ -5,7 +5,7 @@ import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import {
 	copyImage,
 	imageToBase64
-} from '../../LiveSeedStats/OCRHandler/imageActions';
+} from '../../../services/imageActions/webImageActions';
 
 interface IMapProps {
 	infoProvider: GameInfoProvider;
@@ -107,7 +107,7 @@ const mapParts = {
 	}
 };
 
-const { xr, yr } = mapParts.MainPath;
+const { xr, yr } = mapParts.liquidcave;
 // const xr = new Array(70).fill(1).map((_, i) => i);
 // const yr = new Array(48).fill(1).map((_, i) => i);
 

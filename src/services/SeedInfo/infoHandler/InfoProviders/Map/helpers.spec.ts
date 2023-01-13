@@ -1,5 +1,9 @@
-import { hexRGBAtoIntRGB } from '../../../../../components/LiveSeedStats/OCRHandler/imageActions';
+/**
+ * @jest-environment node
+ */
+
 import {
+	hexRGBAtoIntRGB,
 	iteratePixels,
 	hexTorgba,
 	rgbaToInt,
@@ -7,9 +11,7 @@ import {
 	imageFromHexArray,
 	getGlobalPos,
 	getLocalPos
-} from './helpers';
-
-global.ImageData = require('@canvas/image-data');
+} from '../../../../imageActions/nodeImageActions';
 
 const blackSquare = {
 	arr: [
@@ -72,21 +74,21 @@ describe('helpers', () => {
 
 		it('Should iterate with color', async () => {
 			const image = imageFromHexArray(withWhite.arr, withWhite.w, withWhite.h);
-			const steps: string[] = [];
+			const steps: number[] = [];
 			await iteratePixels(image, 1, async (x, y, color) => {
 				steps.push(color);
 			});
-			expect(steps).toEqual(['00000000', 'ffffffff', '00000000', '00000000']);
+			expect(steps).toEqual([0, 4294967295, 0, 0]);
 		});
 	});
 
 	describe('getColor', () => {
 		it('Should get color of pixel', () => {
 			const image = imageFromHexArray(withWhite.arr, withWhite.w, withWhite.h);
-			expect(getColor(image, 0, 0)).toEqual('00000000');
-			expect(getColor(image, 0, 1)).toEqual('00000000');
-			expect(getColor(image, 1, 0)).toEqual('ffffffff');
-			expect(getColor(image, 1, 1)).toEqual('00000000');
+			expect(getColor(image, 0, 0)).toEqual(0);
+			expect(getColor(image, 0, 1)).toEqual(0);
+			expect(getColor(image, 1, 0)).toEqual(4294967295);
+			expect(getColor(image, 1, 1)).toEqual(0);
 		});
 	});
 

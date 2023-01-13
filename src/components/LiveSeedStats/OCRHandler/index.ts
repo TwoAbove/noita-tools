@@ -3,7 +3,7 @@ import Tesseract from '../../../../node_modules/tesseract.js/src/index.js';
 
 
 import genCanvases, { IFontCanvases } from './getFontCanvases';
-import { copyImage, crop, enhance, stretch, diff, invert } from './imageActions';
+import { copyImage, crop, enhance, stretch, diff, invert } from '../../../services/imageActions/webImageActions';
 
 const startCapture = async (
   displayMediaOptions: MediaStreamConstraints

@@ -4,7 +4,7 @@ import { capitalize } from '../../../services/helpers';
 import {
 	hexTorgba,
 	rgbToHsl
-} from '../../../services/SeedInfo/infoHandler/InfoProviders/Map/helpers';
+} from '../../../services/imageActions/webImageActions';
 import { AlchemyConfigContext } from '../../AlchemyConfigContext';
 import Icon from '../../Icons/Icon';
 import { GameInfoContext } from '../SeedDataOutput';
@@ -45,7 +45,9 @@ const colorMatrix = hex => {
 interface StaticPotionProps {
 	material: string;
 }
-export const StaticPotion: FC<StaticPotionProps> = ({ material: materialId }) => {
+export const StaticPotion: FC<StaticPotionProps> = ({
+	material: materialId
+}) => {
 	const { gameInfoProvider } = useContext(GameInfoContext);
 	const [t] = useTranslation('materials');
 

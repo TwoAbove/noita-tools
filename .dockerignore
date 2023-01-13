@@ -1,0 +1,9 @@
+.github
+cypress
+node_modules
+build
+dataScripts
+lambda-build
+public
+server
+*.Dockerfile

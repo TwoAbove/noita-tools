@@ -8,7 +8,7 @@
   # -Wover-aligned \
   # -fsanitize=address \
 
-# emcc --bind -O3 \
+# emcc --bind \
 emcc --bind -O3 \
   -o noita_random.js \
   --profiling \
@@ -16,7 +16,6 @@ emcc --bind -O3 \
   --extern-pre-js="pre.js" \
   -s WASM=1 \
   -s STRICT_JS=1 \
-  -s EXPORT_ES6=1 \
   -s FILESYSTEM=0 \
   -s ALLOW_MEMORY_GROWTH=1 \
   -s MODULARIZE=1 \

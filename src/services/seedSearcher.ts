@@ -1,12 +1,15 @@
-import { cloneDeep, cloneDeepWith } from 'lodash';
 import GameInfoProvider from '../services/SeedInfo/infoHandler';
-import { IRules, ILogicRules, RuleType, IRuleRules } from './SeedInfo/infoHandler/IRule';
-import { IRandom } from './SeedInfo/random';
+import {
+	IRules,
+	ILogicRules,
+	RuleType,
+	IRuleRules
+} from './SeedInfo/infoHandler/IRule';
 
 // const includesAll = (arr: string[], target: string[]) =>
 // 	arr.length ? target.every(v => arr.includes(v)) : true;
 
-export interface ISeedSolverConfig {
+export interface ISeedSearcherConfig {
 	currentSeed?: number;
 	seedEnd?: number;
 	rules?: ILogicRules;
@@ -51,10 +54,10 @@ const sortRules = (rules: ILogicRules | IRuleRules): void => {
 		return searchWeights[a.type] - searchWeights[b.type];
 	});
 	rules.rules.forEach(r => sortRules(r));
-}
+};
 
-export class SeedSolver {
-	gameInfoHandler: GameInfoProvider;
+export class SeedSearcher {
+	gameInfoProvider: GameInfoProvider;
 	shouldCancel = false;
 	foundSeed?: number;
 	running = false;
@@ -70,16 +73,22 @@ export class SeedSolver {
 	avgExecTime = 0;
 	sumExecTime = 0;
 
-	constructor(gameInfoHandler?: GameInfoProvider) {
-		if (gameInfoHandler) {
-			this.gameInfoHandler = gameInfoHandler;
+	constructor(gameInfoProvider?: GameInfoProvider) {
+		if (gameInfoProvider) {
+			this.gameInfoProvider = gameInfoProvider;
 		} else {
-			this.gameInfoHandler = new GameInfoProvider({ seed: 0 }, [], undefined, undefined, false);
+			this.gameInfoProvider = new GameInfoProvider(
+				{ seed: 0 },
+				[],
+				undefined,
+				undefined,
+				false
+			);
 		}
 	}
 
-	infocb!: (info: ReturnType<SeedSolver['getInfo']>) => void;
-	foundcb!: (info: ReturnType<SeedSolver['getInfo']>) => void;
+	infocb!: (info: ReturnType<SeedSearcher['getInfo']>) => void;
+	foundcb!: (info: ReturnType<SeedSearcher['getInfo']>) => void;
 
 	init(offset: number, step: number) {
 		this.offset = offset;
@@ -101,7 +110,7 @@ export class SeedSolver {
 				return res;
 			}
 			default: {
-				const res = this.gameInfoHandler.providers[rule.type].test(rule);
+				const res = this.gameInfoProvider.providers[rule.type].test(rule);
 				return res;
 			}
 		}
@@ -111,20 +120,15 @@ export class SeedSolver {
 		this.running = true;
 		this.shouldCancel = false;
 		// console.profile();
-
 		while (
 			!this.shouldCancel &&
 			this.currentSeed < (this.seedEnd || 4_294_967_294)
 		) {
-			while (!this.gameInfoHandler.ready) {
-				// Free the event loop to check for stop
-				await new Promise(res => setTimeout(res, 0));
-			}
 			if (this.count && this.count % this.gcEvery === 0) {
 				// Free the event loop to GC
 				await new Promise(res => setTimeout(res, 0.1));
 			}
-			if (this.count && this.count % this.infoFreq === 0) {
+			if (this.count && this.infoFreq && this.count % this.infoFreq === 0) {
 				this.avgExecTime = this.sumExecTime / this.infoFreq;
 				this.sumExecTime = 0;
 				this.sendInfo();
@@ -132,7 +136,7 @@ export class SeedSolver {
 				await new Promise(res => setTimeout(res, 0));
 			}
 			const startTime = performance.now();
-			this.gameInfoHandler.randoms!.SetWorldSeed(this.currentSeed);
+			this.gameInfoProvider.randoms!.SetWorldSeed(this.currentSeed);
 			let found = false;
 			try {
 				found = this.rules.rules.every(r => this.check(r));
@@ -162,12 +166,12 @@ export class SeedSolver {
 	async start() {
 		this.foundSeed = undefined;
 		console.log('Getting ready');
-		await this.gameInfoHandler.providers.map.ready();
+		await this.gameInfoProvider.ready();
 		console.log('Starting');
 		return this.work();
 	}
 
-	async update(config: ISeedSolverConfig = {}) {
+	async update(config: ISeedSearcherConfig = {}) {
 		if (typeof config.currentSeed === 'number') {
 			this.currentSeed = config.currentSeed + this.offset;
 		}
@@ -186,14 +190,14 @@ export class SeedSolver {
 			this.findAll = config.findAll;
 		}
 		if (config.unlockedSpells) {
-			this.gameInfoHandler.unlockedSpells = config.unlockedSpells;
-			this.gameInfoHandler
+			this.gameInfoProvider.unlockedSpells = config.unlockedSpells;
+			await this.gameInfoProvider
 				.onRandomLoad(() => {
-					this.gameInfoHandler.randoms.SetUnlockedSpells(
+					this.gameInfoProvider.randoms.SetUnlockedSpells(
 						config.unlockedSpells!
 					);
 				})
-				.finally(() => { });
+				.finally(() => {});
 		}
 	}
 
@@ -202,12 +206,12 @@ export class SeedSolver {
 		this.running = false;
 	}
 
-	onInfo(cb: (info: ReturnType<SeedSolver['getInfo']>) => void) {
+	onInfo(cb: (info: ReturnType<SeedSearcher['getInfo']>) => void) {
 		this.infocb = cb;
 		// return cb(this.getInfo());
 	}
 
-	onFound(cb: (info: ReturnType<SeedSolver['getInfo']>) => void) {
+	onFound(cb: (info: ReturnType<SeedSearcher['getInfo']>) => void) {
 		this.foundcb = cb;
 		// return cb(this.getInfo());
 	}

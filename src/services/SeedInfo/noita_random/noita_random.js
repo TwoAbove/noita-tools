@@ -2,8 +2,8 @@
 /* tslint:disable */
 
 var create_noita_random = (() => {
-  var _scriptDir = import.meta.url;
-  
+  var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
+  if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
   return (
 function(create_noita_random) {
   create_noita_random = create_noita_random || {};
@@ -1043,13 +1043,10 @@ function createExportWrapper(name, fixedasm) {
 
 var wasmBinaryFile;
 
-if (Module["locateFile"]) {
- wasmBinaryFile = "noita_random.wasm";
- if (!isDataURI(wasmBinaryFile)) {
-  wasmBinaryFile = locateFile(wasmBinaryFile);
- }
-} else {
- wasmBinaryFile = new URL("noita_random.wasm", import.meta.url).toString();
+wasmBinaryFile = "noita_random.wasm";
+
+if (!isDataURI(wasmBinaryFile)) {
+ wasmBinaryFile = locateFile(wasmBinaryFile);
 }
 
 function getBinary(file) {
@@ -3020,4 +3017,9 @@ run();
 }
 );
 })();
-export default create_noita_random;
+if (typeof exports === 'object' && typeof module === 'object')
+  module.exports = create_noita_random;
+else if (typeof define === 'function' && define['amd'])
+  define([], function() { return create_noita_random; });
+else if (typeof exports === 'object')
+  exports["create_noita_random"] = create_noita_random;

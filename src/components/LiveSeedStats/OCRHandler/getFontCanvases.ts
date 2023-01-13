@@ -1,5 +1,5 @@
 import font from '../font.json';
-import { createCanvas, getContext, invert, unAlpha } from './imageActions';
+import { createCanvas, getContext, invert, unAlpha } from '../../../services/imageActions/webImageActions';
 
 export interface IFontCanvases {
 	[char: string]: OffscreenCanvas;
