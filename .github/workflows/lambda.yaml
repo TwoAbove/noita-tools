@@ -16,26 +16,29 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '18'
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+
       - name: install
         env:
           CI: true
         run: |
           yarn install --frozen-lockfile
+
       - name: build
         env:
           CI: true
         run: |
           yarn lambda-build
+
       - name: deploy
+        env:
+          CI: true
         run: |
-          rm -rf node_modules && yarn install --frozen-lockfile --production=true && mv node_modules lambda-build
-          ls
-          ls lambda-build
-          zip -j deploy.zip ./lambda-build/**/*
+          zip -j deploy.zip lambda-build/*
           aws lambda update-function-code --function-name=noitool-search --zip-file=fileb://deploy.zip

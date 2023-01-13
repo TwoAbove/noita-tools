@@ -4,7 +4,7 @@ import { genRandom } from './services/SeedInfo/random/random';
 import createModule from './services/SeedInfo/noita_random/noita_random';
 
 export const loadRandom = async (flags?: string[]): Promise<Awaited<ReturnType<typeof genRandom>>> => {
-	const wasmPath = fs.readFileSync(path.resolve(__dirname, './services/SeedInfo/noita_random/noita_random.wasm'));
+	const wasmPath = await import('./services/SeedInfo/noita_random/noita_random.wasm');
 	const Module = await createModule({
 		wasmBinary: wasmPath,
 	});
