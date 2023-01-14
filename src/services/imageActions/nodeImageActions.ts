@@ -1,11 +1,9 @@
-// import getPixelsFromString from 'get-pixels/dom-pixels';
-// import { savePixels } from 'ndarray-pixels';
-
 import {
 	Canvas,
 	ImageData,
 	loadImage
-} from 'skia-canvas';
+} from '@napi-rs/canvas';
+
 import { IRandom } from '../SeedInfo/random';
 
 export const getContext = (
@@ -35,7 +33,6 @@ export const imageFromBase64 = async (dataUri: string): Promise<ImageData> => {
 	// 	});
 	// });
 	const btmp = await loadImage(dataUri); // await createImageBitmap(await (await fetch(dataUri)).blob());
-
 	const can = createCanvas(btmp.width, btmp.height);
 	const ctx = getContext(can);
 	ctx.drawImage(btmp, 0, 0);
@@ -51,7 +48,7 @@ export const imageToBase64 = async (
 	const can: any = createCanvas(img.width, img.height);
 	const ctx = getContext(can);
 	// Draw the image
-	ctx.putImageData(img, 0, 0);
+	ctx.putImageData(img as any, 0, 0);
 	return can.convertToBlob().then(blob => {
 		return new Promise((resolve, _) => {
 			const reader = new FileReader();
@@ -65,7 +62,7 @@ export const copyImage = img => {
 	const image = createCanvas(img.width, img.height);
 	const ctx = getContext(image);
 	if (img instanceof ImageData) {
-		ctx.putImageData(img, 0, 0);
+		ctx.putImageData(img as any, 0, 0);
 	} else {
 		ctx.drawImage(img, 0, 0, img.width, img.height);
 	}
@@ -123,7 +120,7 @@ const scale = (cv: Canvas, scale: number): Canvas => {
 export const scaleImageData = (img: ImageData, s: number): ImageData => {
 	const cv = createCanvas(img.width, img.height);
 	const cx = getContext(cv);
-	cx.putImageData(img, 0, 0);
+	cx.putImageData(img as any, 0, 0);
 
 	return getContext(scale(cv, s)).getImageData(
 		0,
@@ -368,10 +365,10 @@ export const drawImageData = (
 	}
 };
 
-export const printImage = (image: ImageData) => {
-	const cv = createCanvas(image.width, image.height);
+export const printImage = (img: ImageData) => {
+	const cv = createCanvas(img.width, img.height);
 	const cx = getContext(cv);
-	cx.putImageData(image, 0, 0);
+	cx.putImageData(img as any, 0, 0);
 	cv[
 		cv['convertToBlob']
 			? 'convertToBlob' // specs

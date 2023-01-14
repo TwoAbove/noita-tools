@@ -19,10 +19,6 @@ import { loadRandom } from '../../../../../testHelpers';
 
 import { createCanvas, getContext } from '../../../../imageActions/nodeImageActions';
 
-const compareImage = (ans: ImageData, test: ImageData) => {
-
-};
-
 const loadImage = async (p: string) => {
   const buf = fs.readFileSync(path.resolve(__dirname, p));
   const img = await skiaLoadImage(buf)
@@ -37,7 +33,8 @@ const save = (data: ImageData, name: string) => {
   const resCV = createCanvas(data.width, data.height);
   const resCX = getContext(resCV);
   resCX.putImageData(data, 0, 0);
-  resCV.saveAsSync(path.resolve(__dirname, 'test', name));
+  const b = resCV.toBuffer('image/png');
+  fs.writeFileSync(path.resolve(__dirname, 'test', name), b);
 }
 
 describe('#getMap', () => {

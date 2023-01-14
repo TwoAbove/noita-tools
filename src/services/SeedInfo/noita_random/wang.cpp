@@ -9,6 +9,7 @@
 #include "coalmine_hax.cpp"
 #include "jps.hh"
 #include <emscripten/val.h>
+#include <wasm_simd128.h>
 
 const unsigned long COLOR_PURPLE = 0x7f007f;
 const unsigned long COLOR_BLACK = 0x000000;
@@ -663,32 +664,28 @@ bool isValid(
    return hasPath;
 }
 
-void rgbaToRgb(unsigned char src[], unsigned char dest[], uint w, uint h)
+void rgbaToRgb(unsigned char *src, unsigned char *dest, uint w, uint h)
 {
-   long long j = 0;
-   long long src_size = 4 * w * h;
-   for (long long i = 0; i < src_size; i++)
+   unsigned long j = 0;
+   unsigned long src_size = w * h;
+   for (unsigned long i = 0; i < src_size; i++)
    {
-      if (i && (i + 1) % 4 == 0)
-         continue;
-      dest[j] = src[i];
-      j++;
+      dest[j++] = src[i * 4];
+      dest[j++] = src[i * 4 + 1];
+      dest[j++] = src[i * 4 + 2];
    }
 }
 
 void rgbToRgba(unsigned char *src, unsigned char *dest, uint w, uint h)
 {
-   long long j = 0;
-   long long src_size = 3 * w * h;
-   for (long long i = 0; i < src_size; i++)
+   unsigned long j = 0;
+   unsigned long src_size = w * h;
+      for (unsigned long i = 0; i < src_size; i++)
    {
-      dest[j] = src[i];
-      j++;
-      if (i && (i + 1) % 3 == 0)
-      {
-         dest[j] = dest[j-1] != 0 ? 255 : 254;
-         j++;
-      }
+      dest[j++] = src[i * 3];
+      dest[j++] = src[i * 3 + 1];
+      dest[j++] = src[i * 3 + 2];
+      dest[j++] = 255;
    }
 }
 
@@ -731,7 +728,8 @@ STBHW_EXTERN void generate_map(
    NollaPrng rng2 = NollaPrng(0);
 
    int tries = 0;
-   unsigned char *res = (unsigned char *)malloc(3 * map_w * (map_h + 4));
+   long mod_malloc_amount = 3 * map_w * (map_h + 4);
+   unsigned char *res = (unsigned char *)malloc(mod_malloc_amount);
    long malloc_amount = 3 * map_w * map_h;
    unsigned char *map = (unsigned char *)malloc(malloc_amount);
    bool hasPath = false;
@@ -749,7 +747,7 @@ STBHW_EXTERN void generate_map(
       rng2.Next();
 
       stbhw_generate_image(&ts, NULL, res, map_w * 3, map_w, map_h + 4, std::bind(&NollaPrng::NextU, &rng2));
-      for (int i = 4 * 3 * map_w, j = 0; i < 3 * map_w * (map_h + 4); i++, j++)
+      for (int i = 4 * 3 * map_w, j = 0; i < mod_malloc_amount; i++, j++)
       {
          rgb_result[j] = res[i];
       }

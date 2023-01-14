@@ -7,11 +7,11 @@
   # -s WARN_UNALIGNED=1 \
   # -Wover-aligned \
   # -fsanitize=address \
+  # --profiling \
 
 # emcc --bind \
-emcc --bind -O3 \
+emcc --bind -O3 -msimd128 \
   -o noita_random.js \
-  --profiling \
   --std=c++20 \
   --extern-pre-js="pre.js" \
   -s WASM=1 \

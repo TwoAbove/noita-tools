@@ -68,8 +68,8 @@ export class MapInfoProvider extends InfoProvider {
 
 		this.loadImageActionsPromise = this.loadImageActions();
 
-		this.loadAllImagesPromise = this.loadAllImages();
 		this.worldMapPromise = this.loadWorldMap();
+		this.loadAllImagesPromise = this.loadAllImages();
 
 		this.wangPromise = this.loadAllImagesPromise;
 		this.implPromise = this.loadAllImagesPromise;
@@ -108,21 +108,25 @@ export class MapInfoProvider extends InfoProvider {
 
 	async loadAllImages() {
 		await this.loadImageActionsPromise;
-		for (const [k, v] of this.maps.entries()) {
-			const mapData = v as any;
-			if (!mapData || !mapData.wang || !mapData.wang.template_file) {
-				continue;
-			}
-			this.wang_maps[k] = await this.imageActions.imageFromBase64(
-				mapData.wang.template_file
-			);
-		}
-		for (const k of Object.keys(impls)) {
-			if (!impls[k].src) {
-				continue;
-			}
-			this.impls.set(k, await this.imageActions.imageFromBase64(impls[k].src));
-		}
+		await Promise.allSettled([
+			...Array.from(this.maps, async ([k, v]) => {
+				const mapData = v;
+				if (!mapData || !mapData.wang || !mapData.wang.template_file) {
+					return;
+				}
+				this.wang_maps[k] = await this.imageActions.imageFromBase64(
+					mapData.wang.template_file,
+					mapData.wang.map_width,
+					mapData.wang.map_height,
+				);
+			}),
+			...Object.keys(impls).map(async (k) => {
+				if (!impls[k].src) {
+					return;
+				}
+				this.impls.set(k, await this.imageActions.imageFromBase64(impls[k].src, impls[k].w, impls[k].h));
+			})
+		]);
 	}
 
 	getMapChunk = (

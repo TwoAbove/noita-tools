@@ -116,21 +116,52 @@ export class SeedSearcher {
 		}
 	}
 
+	findSync(from: number, to: number) {
+		if (to < from) {
+			return this.findSync(to, from);
+		}
+
+		for (let seed = from; seed < to; seed++) {
+			const startTime = performance.now();
+			this.gameInfoProvider.randoms!.SetWorldSeed(seed);
+			let found = false;
+			try {
+				found = this.rules.rules.every(r => this.check(r));
+			} catch (e) {
+				console.error(`Seed ${seed} error: `, e);
+			}
+			const endTime = performance.now();
+			this.sumExecTime += endTime - startTime;
+			if (found) {
+				this.foundSeed = +seed;
+				if (this.findAll) {
+					this.foundcb(this.getInfo());
+				} else {
+					break;
+				}
+			}
+			this.count++;
+		}
+		this.running = false;
+		// setTimeout(() => console.profileEnd(), 10);
+		this.calculateStats();
+		this.sendInfo();
+	}
+
 	async work() {
 		this.running = true;
 		this.shouldCancel = false;
 		// console.profile();
 		while (
 			!this.shouldCancel &&
-			this.currentSeed < (this.seedEnd || 4_294_967_294)
+			this.currentSeed <= (this.seedEnd || 4_294_967_294)
 		) {
 			if (this.count && this.count % this.gcEvery === 0) {
 				// Free the event loop to GC
 				await new Promise(res => setTimeout(res, 0.1));
 			}
 			if (this.count && this.infoFreq && this.count % this.infoFreq === 0) {
-				this.avgExecTime = this.sumExecTime / this.infoFreq;
-				this.sumExecTime = 0;
+				this.calculateStats();
 				this.sendInfo();
 				// Free the event loop to check for stop
 				await new Promise(res => setTimeout(res, 0));
@@ -159,8 +190,14 @@ export class SeedSearcher {
 		}
 		this.running = false;
 		// setTimeout(() => console.profileEnd(), 10);
+		this.calculateStats();
 		this.sendInfo();
 		this.currentSeed += this.step;
+	}
+
+	calculateStats() {
+		this.avgExecTime = this.sumExecTime / this.infoFreq;
+		this.sumExecTime = 0;
 	}
 
 	async start() {
@@ -197,7 +234,7 @@ export class SeedSearcher {
 						config.unlockedSpells!
 					);
 				})
-				.finally(() => {});
+				.finally(() => { });
 		}
 	}
 

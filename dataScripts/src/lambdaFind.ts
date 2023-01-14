@@ -62,20 +62,22 @@ const rules = {
   selectedRule: 'search',
 }
 
+const { handler } = require('../../lambda-build/lambdaSearch');
+
 const start = performance.now();
 
-fetch(`https://usywpdm5ejpyljndd7l3pt6pky0kydal.lambda-url.us-east-1.on.aws/`, {
-  method: "post", body: JSON.stringify({ rules, from: 1, to: 1000 })
-}).then(async res => {
-  const end = performance.now();
-  console.log((await res.text()));
-  const ans = await res.json();
-  console.log(ans);
-  console.log(end - start, 'ms');
-});
-
-// handler({ body: { rules, from: 1, to: 1000 } }).then(res => {
+// fetch(`https://usywpdm5ejpyljndd7l3pt6pky0kydal.lambda-url.us-east-1.on.aws/`, {
+//   method: "post", body: JSON.stringify({ rules, from: 1, to: 1000 })
+// }).then(async res => {
 //   const end = performance.now();
-//   console.log(res);
+//   console.log((await res.text()));
+//   const ans = await res.json();
+//   console.log(ans);
 //   console.log(end - start, 'ms');
-// }).catch(e => console.error(e));
+// });
+
+handler({ body: { rules, from: 1, to: 1000 } }).then(res => {
+  const end = performance.now();
+  console.log(res);
+  console.log(end - start, 'ms');
+}).catch(e => console.error(e));

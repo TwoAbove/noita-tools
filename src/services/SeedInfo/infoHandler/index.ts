@@ -84,7 +84,8 @@ export class GameInfoProvider extends EventTarget {
     this.resetConfig(initialConfig);
     this.unlockedSpells = unlockedSpells;
     if (randoms) {
-      this.loadRandomPromise = this.setRandoms(randoms);
+      this.loadRandomPromise = Promise.resolve();
+      this.setRandoms(randoms);
     } else {
       this.loadRandomPromise = loadRandom()
         .then(r => this.setRandoms(r))
@@ -93,7 +94,7 @@ export class GameInfoProvider extends EventTarget {
     this.i18n = i18n;
   }
 
-  async setRandoms(randoms: IRandom) {
+  setRandoms(randoms: IRandom) {
     this.randoms = randoms;
     this.providers = this.buildInfoProviders();
   }

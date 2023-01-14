@@ -36,9 +36,11 @@ if (!fs.existsSync('lambda-build')) {
 require('esbuild').buildSync({
 	entryPoints: ['src/lambdaSearch.ts'],
 	bundle: true,
-	loader: { '.wasm': 'copy', '.json': 'copy' },
+	loader: { '.wasm': 'binary', '.node': 'copy', '.json': 'copy' },
 	platform: 'node',
+	metafile: true,
+	minify: true,
 	target: ['node18'],
-	outfile: 'lambda-build/lambdaSearch.js',
+	outfile: 'lambda-build/lambdaSearch.js'
 	// packages: 'external'
 });

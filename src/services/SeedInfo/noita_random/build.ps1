@@ -6,7 +6,7 @@ if(!(Test-Path $PSScriptRoot\wasm_in.cpp) -or !(Test-Path $PSScriptRoot\pre.js))
   Write-Error -Message "This script must be placed in the same directory as files 'wasm_in.cpp' and 'pre.js'!" -Exception ([System.IO.FileNotFoundException]::new()) -ErrorAction Stop
 }
 
-emcc --bind -Oz `
+emcc --bind -Oz -msimd128 `
   -o $PSScriptRoot\noita_random.js `
   --std=c++17 `
   --extern-pre-js="$PSScriptRoot\pre.js" `

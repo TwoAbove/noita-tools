@@ -3,23 +3,31 @@ import GameInfoProvider from './services/SeedInfo/infoHandler';
 
 import { SeedSearcher } from './services/seedSearcher'
 import { ILogicRules } from './services/SeedInfo/infoHandler/IRule';
+import { IRandom } from './services/SeedInfo/random';
 
-const searchRange = async (from: number, to: number, rules: ILogicRules): Promise<number[]> => {
-  if (to < from) {
-    return searchRange(to, from, rules);
-  }
-
-  const randoms = await loadRandom();
-
-  const gameInfoProvider = new GameInfoProvider(
+let randoms: IRandom;
+let gameInfoProvider: GameInfoProvider;
+const readyPromise = loadRandom().then(r => {
+  randoms = r;
+}).then(() => {
+  gameInfoProvider = new GameInfoProvider(
     { seed: 1 },
     getUnlockedSpells(),
     undefined,
     randoms,
     false
   );
+  return gameInfoProvider.ready();
+});
 
-  await gameInfoProvider.ready();
+const searchRange = async (from: number, to: number, rules: ILogicRules): Promise<{ res: number[], info: any }> => {
+  if (to < from) {
+    return searchRange(to, from, rules);
+  }
+
+  await readyPromise;
+
+  const startupStart = performance.now();
 
   const seedSearcher = new SeedSearcher(gameInfoProvider);
 
@@ -30,15 +38,20 @@ const searchRange = async (from: number, to: number, rules: ILogicRules): Promis
     rules
   });
 
-  const res: number[] = [];
+  const startupEnd = performance.now();
 
+  const res: number[] = [];
+  let info;
   seedSearcher.onFound(info => {
     res.push(info.foundSeed!);
   });
+  seedSearcher.onInfo(_info => {
+    info = _info;
+  });
 
-  await seedSearcher.start();
-  return res;
+  seedSearcher.findSync(from, to);
 
+  return { res, info: { ...info, startupTime: startupEnd - startupStart } };
 }
 
 export const handler = async (event) => {
