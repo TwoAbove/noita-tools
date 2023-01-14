@@ -27,9 +27,11 @@ jobs:
       - name: install
         env:
           CI: true
+        # npm_config_target_arch=arm64 npm_config_target_platform=linux yarn install --frozen-lockfile
         run: |
-          yarn install --frozen-lockfile
-
+          npm install --force --target_arch=arm64
+          npm install @napi-rs/canvas-linux-arm64-gnu --force
+          ls node_modules/@napi-rs
       - name: build
         env:
           CI: true
@@ -42,3 +44,65 @@ jobs:
         run: |
           zip -j deploy.zip lambda-build/*
           aws lambda update-function-code --function-name=noitool-search --zip-file=fileb://deploy.zip
+
+  # build_job:
+  #   # The host should always be linux
+  #   runs-on: ubuntu-22.04
+  #   name: Build
+  #   steps:
+  #     - uses: actions/checkout@v3
+
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ secrets.AWS_REGION }}
+
+  #     - uses: uraimo/run-on-arch-action@v2
+  #       name: Build artifact
+  #       id: build
+  #       with:
+  #         arch: aarch64
+  #         distro: ubuntu_latest
+
+  #         # Not required, but speeds up builds
+  #         githubToken: ${{ github.token }}
+
+  #         # Create an artifacts directory
+  #         # setup: |
+  #           # mkdir -p "${PWD}/artifacts"
+
+  #         # Mount the artifacts directory as /artifacts in the container
+  #         dockerRunArgs: |
+  #           --volume "${PWD}:/build"
+
+  #         # Pass some environment variables to the container
+  #         env: | # YAML, but pipe character is necessary
+  #           artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
+
+  #         # The shell to run commands with in the container
+  #         shell: /bin/bash
+
+  #         # Install some dependencies in the container. This speeds up builds if
+  #         # you are also using githubToken. Any dependencies installed here will
+  #         # be part of the container image that gets cached, so subsequent
+  #         # builds don't have to re-install them. The image layer is cached
+  #         # publicly in your project's package repository, so it is vital that
+  #         # no secrets are present in the container state or logs.
+  #         install: |
+  #           apt-get update -q -y
+  #           apt-get install -q -y git curl
+  #           curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
+  #           npm install -g yarn
+
+  #         # Produce a binary artifact and place it in the mounted volume
+  #         run: |
+  #           cd /build
+  #           yarn install --frozen-lockfile --network-timeout 100000 --inline-builds
+  #           yarn lambda-build
+  #           zip -j deploy.zip lambda-build/*
+
+  #     - name: Deploy
+  #       run: |
+  #         aws lambda update-function-code --function-name=noitool-search --zip-file=fileb://deploy.zip

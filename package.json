@@ -15,7 +15,6 @@
     "multer": "^1.4.4",
     "node-cron": "^3.0.2",
     "serve-handler": "^6.1.5",
-    "skia-canvas": "^1.0.1",
     "socket.io": "^4.5.4",
     "utf-8-validate": "^6.0.0"
   },

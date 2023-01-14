@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { ImageData } from 'skia-canvas';
+import { ImageData } from '@napi-rs/canvas';
 
 import { loadImageActions } from '../../../../imageActions';
 

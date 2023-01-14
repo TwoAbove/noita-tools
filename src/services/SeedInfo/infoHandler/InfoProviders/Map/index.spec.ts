@@ -10,7 +10,7 @@ import {
   Canvas,
   Image,
   ImageData,
-} from 'skia-canvas';
+} from '@napi-rs/canvas';
 
 import pixelmatch from 'pixelmatch';
 
@@ -32,7 +32,7 @@ const loadImage = async (p: string) => {
 const save = (data: ImageData, name: string) => {
   const resCV = createCanvas(data.width, data.height);
   const resCX = getContext(resCV);
-  resCX.putImageData(data, 0, 0);
+  resCX.putImageData(data as any, 0, 0);
   const b = resCV.toBuffer('image/png');
   fs.writeFileSync(path.resolve(__dirname, 'test', name), b);
 }
