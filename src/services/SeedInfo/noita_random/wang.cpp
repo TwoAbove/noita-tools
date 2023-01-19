@@ -9,7 +9,6 @@
 #include "coalmine_hax.cpp"
 #include "jps.hh"
 #include <emscripten/val.h>
-#include <wasm_simd128.h>
 
 const unsigned long COLOR_PURPLE = 0x7f007f;
 const unsigned long COLOR_BLACK = 0x000000;

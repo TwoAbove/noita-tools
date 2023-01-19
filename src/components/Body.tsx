@@ -7,6 +7,27 @@ import SearchSeeds from './SearchSeeds';
 import SeedInfo from './SeedInfo';
 import TestBench from './TestBench';
 
+import { Compute, ComputeConsole } from './Compute';
+
+const isDev = () => {
+	const host = window.location.host;
+	return (
+		process.env.NODE_ENV === 'development' || host.includes('dev.noitool.com')
+	);
+};
+
+const isLocal = () => {
+	return Boolean(
+		window.location.hostname === 'localhost' ||
+			// [::1] is the IPv6 localhost address.
+			window.location.hostname === '[::1]' ||
+			// 127.0.0.1/8 is considered localhost for IPv4.
+			window.location.hostname.match(
+				/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+			)
+	);
+};
+
 const Body = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const seedInSeachParams = searchParams.get('seed');
@@ -16,10 +37,10 @@ const Body = () => {
 		if (seedInSeachParams) {
 			setTab('SeedInfo');
 		}
-	// This is needed to do one-off routing if we have a seed query param in the url.
-	// TODO: I think the better way of doing this is to actually use react-router
-	// Routes instead of this db-memory-way.
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// This is needed to do one-off routing if we have a seed query param in the url.
+		// TODO: I think the better way of doing this is to actually use react-router
+		// Routes instead of this db-memory-way.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleTab = key => {
@@ -27,10 +48,9 @@ const Body = () => {
 		setSearchParams({});
 	};
 
-	const host = window.location.host;
-	const isDev = host.includes('dev.noitool.com');
-
-	const showTestBench = process.env.NODE_ENV === 'development' || isDev;
+	const showTestBench = isDev();
+	const showClusterCompute = isDev();
+	const showClusterComputeConsole = isLocal();
 
 	return (
 		<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
@@ -51,6 +71,16 @@ const Body = () => {
 				{showTestBench && (
 					<Tab mountOnEnter eventKey="TestBench" title="TestBench">
 						<TestBench />
+					</Tab>
+				)}
+				{showClusterCompute && (
+					<Tab mountOnEnter eventKey="Compute" title="Compute">
+						<Compute />
+					</Tab>
+				)}
+				{showClusterComputeConsole && (
+					<Tab mountOnEnter eventKey="ComputeConsole" title="Compute Console">
+						<ComputeConsole />
 					</Tab>
 				)}
 			</Tabs>

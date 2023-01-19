@@ -1,4 +1,5 @@
 const fs = require('fs');
+// const requireResolvePlugin = require('@chialab/esbuild-plugin-require-resolve');
 // const { resolve } = require('path');
 // const tsc = require('tsc-prog');
 
@@ -34,13 +35,18 @@ if (!fs.existsSync('lambda-build')) {
 }
 
 require('esbuild').buildSync({
-	entryPoints: ['src/lambdaSearch.ts'],
+	entryPoints: ['./src/consoleSearch.ts','./src/consoleSearchWorker.ts'],
 	bundle: true,
 	loader: { '.wasm': 'binary', '.node': 'copy', '.json': 'copy' },
 	platform: 'node',
 	metafile: true,
 	minify: true,
 	target: ['node18'],
-	outfile: 'lambda-build/lambdaSearch.js'
+	outdir: 'lambda-build',
+	external: ['./consoleSearchWorker'],
+	// plugins: [
+	// 	requireResolvePlugin(),
+	// ],
+	// outfile: 'lambda-build/consoleSearch.js'
 	// packages: 'external'
 });

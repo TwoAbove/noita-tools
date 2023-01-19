@@ -65,3 +65,5 @@ export const handler = async (event) => {
   };
   return response;
 };
+
+export default handler;

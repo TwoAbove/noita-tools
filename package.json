@@ -1,11 +1,12 @@
 {
   "name": "noita-helper",
-  "version": "2.24.1",
+  "version": "2.24.2",
   "private": true,
   "homepage": "https://www.noitool.com/",
   "dependencies": {
     "@gideo-llc/backblaze-b2-upload-any": "^0.1.4",
     "@napi-rs/canvas": "^0.1.34",
+    "@types/yargs": "^17.0.19",
     "backblaze-b2": "^1.7.0",
     "body-parser": "^1.20.1",
     "dotenv-flow": "^3.2.0",
@@ -16,10 +17,13 @@
     "node-cron": "^3.0.2",
     "serve-handler": "^6.1.5",
     "socket.io": "^4.5.4",
-    "utf-8-validate": "^6.0.0"
+    "utf-8-validate": "^6.0.0",
+    "worker-farm": "^1.7.0",
+    "yargs": "^17.6.2"
   },
   "devDependencies": {
     "@canvas/image-data": "^1.0.0",
+    "@chialab/esbuild-plugin-require-resolve": "^0.17.1",
     "@craco/craco": "^7.0.0",
     "@loadable/component": "^5.15.2",
     "@testing-library/cypress": "^9.0.0",
@@ -105,6 +109,7 @@
     "rescript-worker-loader": "^1.0.4",
     "rimraf": "^4.0.4",
     "sharp": "^0.31.3",
+    "simple-eta": "^3.0.2",
     "socket.io-client": "^4.5.4",
     "source-map-explorer": "^2.5.3",
     "tesseract.js": "^4.0.2",
@@ -134,9 +139,9 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "node ./server",
-    "dev": "concurrently 'nodemon ./server' 'craco start' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write **; do sh build.sh; done;'",
+    "dev": "concurrently --kill-others 'nodemon ./server' 'craco start' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write **; do sh build.sh; done;'",
     "cy": "cypress open --e2e",
-    "dev-win": "concurrently \"nodemon ./server\" \"craco start\"",
+    "dev-win": "concurrently --kill-others \"nodemon ./server\" \"craco start\"",
     "build-noita_random": "pwsh -nol -noni -nop -f src/services/SeedInfo/noita_random/build.ps1",
     "build": "craco build",
     "lambda-build": "node lambdaBuild.js",
@@ -166,5 +171,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.7"
   }
 }

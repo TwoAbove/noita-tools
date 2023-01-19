@@ -116,10 +116,12 @@ export class SeedSearcher {
 		}
 	}
 
-	findSync(from: number, to: number) {
+	findSync(from: number, to: number): number[] {
 		if (to < from) {
 			return this.findSync(to, from);
 		}
+
+		const res: number[] = [];
 
 		for (let seed = from; seed < to; seed++) {
 			const startTime = performance.now();
@@ -135,6 +137,7 @@ export class SeedSearcher {
 			if (found) {
 				this.foundSeed = +seed;
 				if (this.findAll) {
+					res.push(+seed);
 					this.foundcb(this.getInfo());
 				} else {
 					break;
@@ -146,6 +149,8 @@ export class SeedSearcher {
 		// setTimeout(() => console.profileEnd(), 10);
 		this.calculateStats();
 		this.sendInfo();
+
+		return res;
 	}
 
 	async work() {
@@ -198,6 +203,10 @@ export class SeedSearcher {
 	calculateStats() {
 		this.avgExecTime = this.sumExecTime / this.infoFreq;
 		this.sumExecTime = 0;
+	}
+
+	async ready() {
+		await this.gameInfoProvider.ready();
 	}
 
 	async start() {

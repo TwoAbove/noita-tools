@@ -1,29 +1,33 @@
-import socketIOClient from 'socket.io-client';
+import socketIOClient, { Socket } from 'socket.io-client';
 
 // const ENDPOINT = `wss://localhost:3000`;
 
 // const io = socketIOClient();
 
 export interface SocketHandlerConfig {
-  onUpdate?: () => void;
+	url?: string;
+
+	onUpdate?: () => void;
 }
 
 class SocketHandler extends EventTarget {
 	ready = false;
 	connected = false;
-	io = socketIOClient();
-  onUpdate: () => void;
 
+	io: Socket;
+
+	onUpdate: () => void;
 
 	constructor(config: SocketHandlerConfig) {
 		super();
+		this.io = socketIOClient(config.url as any);
 		if (
-      config.onUpdate
-    ) {
-      this.onUpdate = config.onUpdate;
-    } else {
-      this.onUpdate = () => { };
-    }
+			config.onUpdate
+		) {
+			this.onUpdate = config.onUpdate;
+		} else {
+			this.onUpdate = () => { };
+		}
 		this.configIO();
 	}
 

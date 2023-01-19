@@ -5,6 +5,7 @@ import humanize from 'humanize-duration';
 import { localizeNumber } from '../../../services/helpers';
 import SeedDataOutput from '../../SeedInfo/SeedDataOutput';
 import { SearchContext } from '../SearchContext';
+import UseMultithreadingButton from '../UseMultithreading';
 
 const MemoSeedDataOutput = React.memo(SeedDataOutput);
 
@@ -35,10 +36,8 @@ const Search = () => {
 		stopCalculation,
 		handleSeedStartChange,
 		handleSeedEndChange,
-		handleMultithreading,
 		setFindAll,
 		findAll,
-		useCores,
 		running,
 		seed,
 		seedEnd,
@@ -106,12 +105,7 @@ const Search = () => {
 				{navigator.hardwareConcurrency && (
 					<Col className="">
 						<Row className="m-3">
-							<Button
-								onClick={handleMultithreading}
-								variant={useCores > 1 ? 'outline-success' : 'outline-secondary'}
-							>
-								Multithreading {useCores > 1 ? `on (x${useCores})` : 'off'}
-							</Button>
+							<UseMultithreadingButton />
 						</Row>
 						<Row className="m-3">
 							Multithreading will use as many CPU threads as possible,

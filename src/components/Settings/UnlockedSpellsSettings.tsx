@@ -22,7 +22,11 @@ const flags = spellInfoProvider.spellsArr.reduce((c, r) => {
 
 const flagNames = Object.keys(flags);
 
-const setFlagArr = (spells: typeof spellInfoProvider['spellsArr'], unlockedSpells: boolean[], val: boolean) => {
+const setFlagArr = (
+	spells: typeof spellInfoProvider['spellsArr'],
+	unlockedSpells: boolean[],
+	val: boolean
+) => {
 	const indexes = spells.map(spell =>
 		spellInfoProvider.spellsArr.findIndex(s => s.id === spell.id)
 	);
@@ -46,7 +50,7 @@ const FlagToggle = (props: { flag: string }) => {
 
 	let unlocked = false;
 	for (const spell of spells) {
-		const i = spellInfoProvider.spellsArr.findIndex(s => s.id === spell.id)
+		const i = spellInfoProvider.spellsArr.findIndex(s => s.id === spell.id);
 		if (!unlockedSpells[i]) {
 			unlocked = false;
 			continue;
@@ -94,12 +98,14 @@ const UnlockedSpellsSettings = () => {
 	);
 	const onDrop = (acceptedFiles: File[]) => {
 		let newUnlockedSpells = Array(393).fill(true);
-		const notFoundFlags = flagNames.filter(f => -1 === acceptedFiles.findIndex(file => file.name === f));
+		const notFoundFlags = flagNames.filter(
+			f => -1 === acceptedFiles.findIndex(file => file.name === f)
+		);
 		for (const flag of notFoundFlags) {
 			const spells = spellInfoProvider.spellsArr.filter(
 				s => s.spawn_requires_flag === flag
 			);
-			newUnlockedSpells = setFlagArr(spells, newUnlockedSpells, false)
+			newUnlockedSpells = setFlagArr(spells, newUnlockedSpells, false);
 		}
 		setUnlockedSpells(newUnlockedSpells);
 	};
@@ -119,7 +125,9 @@ const UnlockedSpellsSettings = () => {
 						<code>..\LocalLow\Nolla_Games_Noita\save00\persistent\flags</code>
 						<br />
 						<br />
-						<DropZone onDrop={onDrop} />
+						<DropZone onDrop={onDrop}>
+							<p>Drag 'n' drop the folder here, or click to select files</p>
+						</DropZone>
 					</>
 				}
 			/>

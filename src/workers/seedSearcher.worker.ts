@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-globals */
+import { Remote, wrap, releaseProxy, proxy, expose } from 'comlink';
 import { SeedSearcher } from '../services/seedSearcher';
 
 const seedSearcher = new SeedSearcher();
@@ -30,6 +31,8 @@ seedSearcher.onInfo((data) => {
 seedSearcher.onFound((data) => {
   self.postMessage({ type: "found", data });
 });
+
+expose(seedSearcher);
 
 export { seedSearcher };
 

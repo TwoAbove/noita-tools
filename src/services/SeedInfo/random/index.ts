@@ -3,7 +3,8 @@ import createModule from '../noita_random/noita_random.js';
 import { IRandomModule, genRandom } from './random';
 
 const loadWasm = async () => {
-  const noitaRandomModule = global.window ? (await import('../noita_random/noita_random.wasm')).default : '../noita_random/noita_random.wasm';
+  const noitaRandomModule = typeof process === 'object' && typeof require === 'function' ? '../noita_random/noita_random.wasm' : (await import('../noita_random/noita_random.wasm')).default;
+
   const Module: IRandomModule = await createModule({
     locateFile(path) {
       if (path.endsWith('.wasm')) {

@@ -1,13 +1,18 @@
-// import { Remote, wrap, releaseProxy, proxy } from 'comlink';
-import { SeedSearcher,  ISeedSearcherConfig } from './seedSearcher';
+import { Remote, wrap, releaseProxy, proxy } from 'comlink';
+import { ILogicRules, IRules } from './SeedInfo/infoHandler/IRule';
+import * as seedSearcher from './seedSearcher';
 
 export class WorkerHandler extends EventTarget {
-  latestData?: ReturnType<SeedSearcher['getInfo']>;
+  latestData?: ReturnType<seedSearcher.SeedSearcher['getInfo']>;
   worker: Worker;
+  comlinkWorker: Remote<seedSearcher.SeedSearcher>;
 
   constructor(offset: number, step: number) {
     super();
-    this.worker = new Worker(new URL('../workers/seedSearcher.worker.ts', import.meta.url));
+    this.worker = new Worker(
+      new URL('../workers/seedSearcher.worker.ts', import.meta.url)
+    );
+    this.comlinkWorker = wrap(this.worker);
     this.worker.postMessage({ type: 'init', offset, step });
     this.worker.addEventListener('message', ({ data }) => {
       switch (data.type) {
@@ -28,6 +33,23 @@ export class WorkerHandler extends EventTarget {
       }
     });
   }
+
+  async searchChunk(from: number, to: number, rules: ILogicRules) {
+    await this.comlinkWorker.update({
+      findAll: true,
+      currentSeed: from,
+      seedEnd: to,
+      rules
+    })
+    const res = await this.comlinkWorker.findSync(from, to);
+
+    return res;
+  }
+
+  async ready() {
+    await this.comlinkWorker.ready();
+  }
+
   terminate() {
     this.worker.terminate();
   }
@@ -39,9 +61,7 @@ export default class SeedSolver {
 
   foundSeeds: string[] = [];
 
-
-
-  constructor(workerCount: number = 1, stopOnFind) {
+  constructor(workerCount: number = 1, stopOnFind = true) {
     for (let i = 0; i < workerCount; i++) {
       const worker = new WorkerHandler(i, workerCount);
       worker.addEventListener('foundSeed', e => {
@@ -63,7 +83,7 @@ export default class SeedSolver {
     }
   }
 
-  public update(config: ISeedSearcherConfig) {
+  public update(config: seedSearcher.ISeedSearcherConfig) {
     for (const worker of this.workerList) {
       worker.worker.postMessage({ type: 'update', config });
     }
@@ -88,7 +108,32 @@ export default class SeedSolver {
     }
   }
 
-  public getInfo(): ReturnType<SeedSearcher['getInfo']>[] {
+  public async searchChunk(
+    from: number,
+    to: number,
+    rules: ILogicRules
+  ) {
+    const subChunkSize = Math.ceil((to - from) / this.workerList.length);
+
+    const chunkConfigs = new Array(this.workerList.length).fill(0).map((_, i) => {
+      return {
+        subFrom: from + subChunkSize * i,
+        subTo: Math.min(from + subChunkSize * (i + 1), to)
+      }
+    });
+
+    const res: number[] = [];
+
+    await Promise.allSettled(this.workerList.map(async (worker, i) => {
+      const { subFrom, subTo } = chunkConfigs[i];
+      const r = await worker.searchChunk(subFrom, subTo, rules);
+      res.push(...r);
+    }));
+
+    return res;
+  }
+
+  public getInfo(): ReturnType<seedSearcher.SeedSearcher['getInfo']>[] {
     const allInfo = this.workerList
       .map(worker => worker.latestData!)
       .filter(Boolean);
@@ -107,7 +152,7 @@ export default class SeedSolver {
         acc.avgExecTime = cur.avgExecTime;
         return acc;
       },
-      { count: 0 } as ReturnType<SeedSearcher['getInfo']>
+      { count: 0 } as ReturnType<seedSearcher.SeedSearcher['getInfo']>
     );
     const duration = new Date().getTime() - this.startTime;
     const rate = res.currentSeed / duration;
