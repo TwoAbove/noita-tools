@@ -61,7 +61,10 @@ export default class SeedSolver {
 
   foundSeeds: string[] = [];
 
+  workersReadyPromise: Promise<void>;
+
   constructor(workerCount: number = 1, stopOnFind = true) {
+    const workerReady: Promise<void>[] = [];
     for (let i = 0; i < workerCount; i++) {
       const worker = new WorkerHandler(i, workerCount);
       worker.addEventListener('foundSeed', e => {
@@ -74,7 +77,9 @@ export default class SeedSolver {
         this.foundSeeds.push(seed);
       });
       this.workerList.push(worker);
+      workerReady.push(worker.ready());
     }
+    this.workersReadyPromise = Promise.allSettled(workerReady).catch(e => console.error(e)).then(() => { console.log('workers ready') });
   }
 
   public destroy() {
@@ -113,6 +118,8 @@ export default class SeedSolver {
     to: number,
     rules: ILogicRules
   ) {
+    await this.workersReadyPromise;
+
     const subChunkSize = Math.ceil((to - from) / this.workerList.length);
 
     const chunkConfigs = new Array(this.workerList.length).fill(0).map((_, i) => {

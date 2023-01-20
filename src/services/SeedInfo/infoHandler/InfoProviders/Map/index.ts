@@ -13,6 +13,7 @@ import impls from '../../../data/obj/impl.json';
 
 import MapImplementations from './MapImplementations';
 import { IRandom } from '../../../random';
+import { promiseMap } from '../../../../helpers';
 
 export interface Interest {
 	item: string;
@@ -108,24 +109,35 @@ export class MapInfoProvider extends InfoProvider {
 
 	async loadAllImages() {
 		await this.loadImageActionsPromise;
-		await Promise.allSettled([
-			...Array.from(this.maps, async ([k, v]) => {
-				const mapData = v;
-				if (!mapData || !mapData.wang || !mapData.wang.template_file) {
-					return;
-				}
-				this.wang_maps[k] = await this.imageActions.imageFromBase64(
-					mapData.wang.template_file,
-					mapData.wang.map_width,
-					mapData.wang.map_height,
-				);
-			}),
-			...Object.keys(impls).map(async (k) => {
-				if (!impls[k].src) {
-					return;
-				}
-				this.impls.set(k, await this.imageActions.imageFromBase64(impls[k].src, impls[k].w, impls[k].h));
-			})
+
+		const loadMaps = async (key: number, mapData: any) => {
+			if (!mapData || !mapData.wang || !mapData.wang.template_file) {
+				return;
+			}
+			this.wang_maps[key] = await this.imageActions.imageFromBase64(
+				mapData.wang.template_file,
+				mapData.wang.map_width,
+				mapData.wang.map_height
+			);
+		};
+
+		const loadImpls = async (k: string) => {
+			if (!impls[k].src) {
+				return;
+			}
+			this.impls.set(
+				k,
+				await this.imageActions.imageFromBase64(
+					impls[k].src,
+					impls[k].w,
+					impls[k].h
+				)
+			);
+		};
+
+		return Promise.allSettled([
+			promiseMap(this.maps, async ([k, v]) => loadMaps(k, v), { concurrency: 20 }),
+			promiseMap(Object.keys(impls), async k => loadImpls(k), { concurrency: 20 }),
 		]);
 	}
 

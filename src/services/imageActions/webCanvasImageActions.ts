@@ -1,18 +1,18 @@
 import { IRandom } from "../SeedInfo/random";
 
 export const getContext = (
-	canvas: OffscreenCanvas,
+	canvas: HTMLCanvasElement,
 	config?: CanvasRenderingContext2DSettings
-): OffscreenCanvasRenderingContext2D => {
+): CanvasRenderingContext2D => {
 	return canvas.getContext('2d', {
 		...config,
 		willReadFrequently: true,
 		desynchronized: true
-	})! as OffscreenCanvasRenderingContext2D;
+	})! as CanvasRenderingContext2D;
 };
 
 export const getBitmapContext = (
-	canvas: OffscreenCanvas,
+	canvas: HTMLCanvasElement,
 	config?: ImageBitmapRenderingContextSettings
 ): ImageBitmapRenderingContext => {
 	return canvas.getContext('bitmaprenderer', {
@@ -20,10 +20,10 @@ export const getBitmapContext = (
 	})! as ImageBitmapRenderingContext;
 };
 
-export const createCanvas = (w, h): OffscreenCanvas => {
-	const can = new OffscreenCanvas(w, h); // document.createElement('canvas');
-	// can.width = w;
-	// can.height = h;
+export const createCanvas = (w, h): HTMLCanvasElement => {
+	const can = document.createElement('canvas');
+	can.width = w;
+	can.height = h;
 	const ctx = getContext(can) as any;
 	ctx.msImageSmoothingEnabled = false;
 	ctx.webkitImageSmoothingEnabled = false;
@@ -45,6 +45,7 @@ export const imageFromBase64 = async (dataUri: string): Promise<ImageData> => {
 
 	return new Promise(res => {
 		const img = new Image();
+		img.crossOrigin = "Anonymous";
 		img.onload = () => {
 			const can = createCanvas(img.width, img.height);
 			const ctx = getContext(can);
@@ -96,7 +97,7 @@ export const copyImage = img => {
 };
 
 export const getPixels = (img): ImageData => {
-	if (!(img instanceof OffscreenCanvas)) {
+	if (!(img instanceof HTMLCanvasElement)) {
 		return getPixels(copyImage(img));
 	}
 	const ctx = img.getContext('2d')!;
@@ -135,7 +136,7 @@ export const toDark = (pixels: ImageData, dark = [0, 0, 0]) => {
 	return pixels;
 };
 
-const scale = (cv: OffscreenCanvas, scale: number): OffscreenCanvas => {
+const scale = (cv: HTMLCanvasElement, scale: number): HTMLCanvasElement => {
 	const canvas = createCanvas(cv.width * scale, cv.height * scale);
 	const ctx = getContext(canvas);
 
@@ -156,7 +157,7 @@ export const scaleImageData = (img: ImageData, s: number): ImageData => {
 	);
 };
 
-export const stretch = (img, width, height): OffscreenCanvas => {
+export const stretch = (img, width, height): HTMLCanvasElement => {
 	const canvas = createCanvas(width, height);
 	const ctx = getContext(canvas);
 	ctx.drawImage(img, 0, 0, width, height);
@@ -165,10 +166,10 @@ export const stretch = (img, width, height): OffscreenCanvas => {
 	return canvas;
 };
 
-const g = (c: OffscreenCanvas): Uint8ClampedArray =>
+const g = (c: HTMLCanvasElement): Uint8ClampedArray =>
 	getContext(c).getImageData(0, 0, c.width, c.height)!.data;
 
-export const diff = (img1: OffscreenCanvas, img2: OffscreenCanvas): number => {
+export const diff = (img1: HTMLCanvasElement, img2: HTMLCanvasElement): number => {
 	const d1 = g(img1);
 	const d2 = g(img2);
 	let count = 0;
@@ -208,12 +209,12 @@ export const cropImageData = (
 };
 
 export const crop = (
-	cv: OffscreenCanvas | CanvasImageSource,
+	cv: HTMLCanvasElement | CanvasImageSource,
 	cropX: number,
 	cropY: number,
 	cropWidth: number,
 	cropHeight: number
-): OffscreenCanvas => {
+): HTMLCanvasElement => {
 	const canvas = createCanvas(cropWidth, cropHeight);
 	const ctx = getContext(canvas);
 	ctx.drawImage(
@@ -230,7 +231,7 @@ export const crop = (
 	return canvas;
 };
 
-export const invert = (cv: OffscreenCanvas): OffscreenCanvas => {
+export const invert = (cv: HTMLCanvasElement): HTMLCanvasElement => {
 	const ctx = getContext(cv);
 	const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
 	const data = imageData.data;
@@ -245,7 +246,7 @@ export const invert = (cv: OffscreenCanvas): OffscreenCanvas => {
 	return cv;
 };
 
-export const unAlpha = (cv: OffscreenCanvas): OffscreenCanvas => {
+export const unAlpha = (cv: HTMLCanvasElement): HTMLCanvasElement => {
 	const ctx = getContext(cv);
 	const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
 	const data = imageData.data;
@@ -255,7 +256,7 @@ export const unAlpha = (cv: OffscreenCanvas): OffscreenCanvas => {
 	return cv;
 };
 
-export const enhance = (cv: OffscreenCanvas): OffscreenCanvas => {
+export const enhance = (cv: HTMLCanvasElement): HTMLCanvasElement => {
 	const canvas = createCanvas(cv.width, cv.height);
 	const ctx = getContext(canvas);
 	ctx.filter = 'brightness(600%) contrast(400%)';
@@ -268,7 +269,7 @@ export const enhance = (cv: OffscreenCanvas): OffscreenCanvas => {
 	return thresholdImage;
 };
 
-export const clearBg = (cv: OffscreenCanvas): OffscreenCanvas => {
+export const clearBg = (cv: HTMLCanvasElement): HTMLCanvasElement => {
 	const ctx = getContext(cv);
 	const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
 	const data = imageData.data;

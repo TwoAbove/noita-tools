@@ -5613,6 +5613,11 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001035, caniuse-lite@^1.0.30001272, can
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001431.tgz"
   integrity sha512-zBUoFU0ZcxpvSt9IU66dXVT/3ctO1cy4y9cscs1szkPlcWb6pasYM144GqrUygUbT+k7cmUCW61cvskjcv0enQ==
 
+canvaskit-wasm@^0.38.0:
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/canvaskit-wasm/-/canvaskit-wasm-0.38.0.tgz#83e6c46f3015c2ff3f6503157f47453af76a7be7"
+  integrity sha512-ZEG6lucpbQ4Ld+mY8C1Ng+PMLVP+/AX02jS0Sdl28NyMxuKSa9uKB8oGd1BYp1XWPyO2Jgr7U8pdyjJ/F3xR5Q==
+
 case-sensitive-paths-webpack-plugin@^2.4.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.4.0.tgz"
@@ -15353,6 +15358,11 @@ wasm-feature-detect@^1.2.11:
   version "1.3.0"
   resolved "https://registry.npmjs.org/wasm-feature-detect/-/wasm-feature-detect-1.3.0.tgz"
   integrity sha512-w9datO3OReMouWgKOelvu1CozmLK/VbkXOtlzNTanBJpR0uBHyUwS3EYdXf5vBPoHKYS0lpuYo91rpqMNIZM9g==
+
+wasm-feature-detect@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/wasm-feature-detect/-/wasm-feature-detect-1.4.0.tgz#45a26f8740da8aaa0b5af2529facd9db0892ab87"
+  integrity sha512-9z4Yk3SeHQdb7E4g6ywQYcUt1CHr9HFiCIA5h29rv0gmW4lCE5dnDhheiJI5qzVPSDnXHyXQPLGPyucsuIzacw==
 
 wasm-loader@^1.3.0:
   version "1.3.0"
