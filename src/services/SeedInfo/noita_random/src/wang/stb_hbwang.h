@@ -5,8 +5,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h" // http://nothings.org/stb/stb_image_write.h
 
-#include "noita_random.cpp"
-
 #include <functional>
 
 /* stbhw - v0.7 -  http://nothings.org/gamedev/herringbone
@@ -239,7 +237,7 @@ STBHW_EXTERN void stbhw_free_tileset(stbhw_tileset *ts);
 // not thread-safe (uses a global data structure to avoid memory management)
 // weighting should be NULL, as non-NULL weighting is currently untested
 int stbhw_generate_image(stbhw_tileset *ts, int **weighting,
-                         unsigned char *pixels, int stride_in_bytes, int w, int h, std::function<int(void)> rand);
+                         unsigned char *pixels, int stride_in_bytes, int w, int h, std::function<uint()> rand);
 
 // computes the size needed for the template image
 STBHW_EXTERN void stbhw_get_template_size(stbhw_config *c, int *w, int *h);
@@ -614,7 +612,7 @@ static stbhw_tile *stbhw__choose_tile(stbhw_tile **list, int numlist,
                                       signed char *a, signed char *b, signed char *c,
                                       signed char *d, signed char *e, signed char *f,
                                       int **weighting,
-                                      std::function<int(void)> getRandom)
+                                      std::function<uint()> getRandom)
 {
    int i, n, m = 1 << 30, pass;
    for (pass = 0; pass < 2; ++pass)
@@ -668,7 +666,7 @@ static int stbhw__match(int x, int y)
    return c_color[y][x] == c_color[y + 1][x + 1];
 }
 
-static int stbhw__weighted(int num_options, int *weights, std::function<int(void)> getRandom)
+static int stbhw__weighted(int num_options, int *weights, std::function<uint()> getRandom)
 {
    int k, total, choice;
    total = 0;
@@ -686,7 +684,7 @@ static int stbhw__weighted(int num_options, int *weights, std::function<int(void
    return k;
 }
 
-static int stbhw__change_color(int old_color, int num_options, int *weights, std::function<int(void)> getRandom)
+static int stbhw__change_color(int old_color, int num_options, int *weights, std::function<uint()> getRandom)
 {
    if (weights)
    {
@@ -718,7 +716,7 @@ static int stbhw__change_color(int old_color, int num_options, int *weights, std
 
 // generate a map that is w * h pixels (3-bytes each)
 // returns 1 on success, 0 on error
-int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *output, int stride, int w, int h, std::function<int(void)> getRandom)
+int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *output, int stride, int w, int h, std::function<uint()> getRandom)
 {
    int sidelen = ts->short_side_len;
    int xmax = (w / sidelen) + 6;

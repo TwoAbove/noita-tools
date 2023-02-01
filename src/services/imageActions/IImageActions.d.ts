@@ -8,7 +8,7 @@ export interface IImageActions {
   getPixels: (img) => ImageData;
   threshold: <T>(pixels: T, threshold, light = [255, 255, 255], dark = [0, 0, 0]) => T;
   toDark: (pixels: ImageData, dark: [0, 0, 0]) => ImageData;
-  scaleImageData: (img: ImageData, s: number) => ImageData;
+  scaleImageData: (img: ImageData, s: number) => OffscreenCanvas;
   stretch: (img, width, height) => OffscreenCanvas;
   diff: (img1: OffscreenCanvas, img2: OffscreenCanvas) => number;
   cropImageData: (
@@ -32,11 +32,11 @@ export interface IImageActions {
   hexRGBAtoIntRGB: (hex: string) => number;
   rgbaToHex: (r, g, b, a) => string;
   drawImageData: (src: ImageData,
-    dest: ImageData,
+    dest: OffscreenCanvas,
     startX: number,
     startY: number,
     color_to_material_table?: { [color: string]: string }) => void;
-  printImage: (image: ImageData) => void;
+  printImage: (image: ImageData | OffscreenCanvas) => void;
   getColor: (map: ImageData, x: number, y: number) => number;
   somePixelsSync: (
     image: ImageData,
@@ -45,7 +45,7 @@ export interface IImageActions {
   somePixels: (image: ImageData,
     step: number,
     cb: (x: number, y: number, color: number) => Promise<boolean>) => Promise<boolean>
-  iteratePixels: (image: ImageData,
+  iteratePixels: (image: ImageData | OffscreenCanvas,
     step: number,
     cb: (x: number, y: number, color: number) => void) => void;
   rgbaToInt: (r: number, g: number, b: number, a: number) => number;
@@ -80,6 +80,7 @@ export interface IImageActions {
     map_w: number,
     map_h: number,
     isCoalMine: boolean,
+    shouldBlockOutRooms: boolean,
     randomMaterials: number[],
     xOffset: number,
     yOffset: number) => ImageData;

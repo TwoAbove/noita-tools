@@ -1,15 +1,176 @@
+import { uniqueId } from 'lodash';
 import { useState, useEffect } from 'react';
-import { Col, Container, Form, Row, Stack } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import i18n from '../../i18n';
 import GameInfoProvider from '../../services/SeedInfo/infoHandler';
 import { SpellInfoProvider } from '../../services/SeedInfo/infoHandler/InfoProviders/Spell';
+import { RuleType } from '../../services/SeedInfo/infoHandler/IRule';
+import { SeedSearcher } from '../../services/seedSearcher';
 import useLocalStorage from '../../services/useLocalStorage';
 import Icon from '../Icons/Icon';
 import Spell from '../Icons/Spell';
 import { useGameInfoProvider } from '../SeedInfo/SeedDataOutput';
 import MapComponent from '../SeedInfo/SeedInfoViews/Map';
+
+const rules = {
+	coalmine: {
+		pos: {
+			x: 34,
+			y: 15
+		},
+		search: [
+			'data/biome_impl/coalmine/physics_swing_puzzle.png',
+			'data/biome_impl/coalmine/receptacle_oil.png',
+			'data/biome_impl/coalmine/oiltank_puzzle.png'
+		],
+		funcs: ['load_pixel_scene2', 'load_pixel_scene', 'load_oiltank']
+	},
+	excavationSite: {
+		pos: {
+			x: 34,
+			y: 17
+		},
+		search: [
+			'data/biome_impl/excavationsite/meditation_cube.png',
+			'data/biome_impl/excavationsite/receptacle_steam.png'
+		],
+		funcs: ['spawn_meditation_cube', 'load_pixel_scene4_alt']
+	},
+	snowCave: {
+		pos: {
+			x: 34,
+			y: 21
+		},
+		search: [
+			'data/biome_impl/snowcave/receptacle_water.png',
+			'data/biome_impl/snowcave/buried_eye.png'
+		],
+		funcs: ['load_pixel_scene', 'load_pixel_scene3']
+	},
+	snowCastle: {
+		pos: {
+			x: 34,
+			y: 25
+		},
+		search: ['data/biome_impl/snowcastle/kitchen.png'],
+		funcs: ['load_pixel_scene2']
+	},
+	vault: {
+		pos: {
+			x: 34,
+			y: 31
+		},
+		search: ['data/biome_impl/vault/lab_puzzle.png'],
+		funcs: ['load_pixel_scene2']
+	}
+};
+
+const compute = async (infoProvider: GameInfoProvider) => {
+	await new Promise(res => setTimeout(res, 1000));
+	const seedSearcher = new SeedSearcher(infoProvider);
+
+	await new Promise(res => setTimeout(res, 100));
+	console.log('starting profiling');
+	console.profile('find coalmine 5000');
+	await seedSearcher.update({
+		rules: {
+			id: uniqueId(),
+			type: RuleType.AND,
+			rules: [
+				{
+					id: uniqueId(),
+					type: 'map',
+					val: { coalmine: rules.coalmine }
+				}
+			],
+			selectedRule: 'search'
+		}
+	} as any);
+	seedSearcher.findSync(1, 5000);
+	console.profileEnd('find coalmine 5000');
+
+	await new Promise(res => setTimeout(res, 100));
+	console.log('starting profiling');
+	console.profile('find excavationSite 5000');
+	await seedSearcher.update({
+		rules: {
+			id: uniqueId(),
+			type: RuleType.AND,
+			rules: [
+				{
+					id: uniqueId(),
+					type: 'map',
+					val: { excavationSite: rules.excavationSite }
+				}
+			],
+			selectedRule: 'search'
+		}
+	} as any);
+	seedSearcher.findSync(1, 5000);
+	console.profileEnd('find excavationSite 5000');
+
+	await new Promise(res => setTimeout(res, 100));
+	console.log('starting profiling');
+	console.profile('find snowCave 5000');
+	await seedSearcher.update({
+		rules: {
+			id: uniqueId(),
+			type: RuleType.AND,
+			rules: [
+				{
+					id: uniqueId(),
+					type: 'map',
+					val: { snowCave: rules.snowCave }
+				}
+			],
+			selectedRule: 'search'
+		}
+	} as any);
+	seedSearcher.findSync(1, 5000);
+	console.profileEnd('find snowCave 5000');
+
+	await new Promise(res => setTimeout(res, 100));
+	console.log('starting profiling');
+	console.profile('find snowCastle 5000');
+	await seedSearcher.update({
+		rules: {
+			id: uniqueId(),
+			type: RuleType.AND,
+			rules: [
+				{
+					id: uniqueId(),
+					type: 'map',
+					val: { snowCastle: rules.snowCastle }
+				}
+			],
+			selectedRule: 'search'
+		}
+	} as any);
+	seedSearcher.findSync(1, 5000);
+	console.profileEnd('find snowCastle 5000');
+
+	await new Promise(res => setTimeout(res, 100));
+	console.log('starting profiling');
+	console.profile('find vault 5000');
+	await seedSearcher.update({
+		rules: {
+			id: uniqueId(),
+			type: RuleType.AND,
+			rules: [
+				{
+					id: uniqueId(),
+					type: 'map',
+					val: { vault: rules.vault }
+				}
+			],
+			selectedRule: 'search'
+		}
+	} as any);
+	seedSearcher.findSync(1, 5000);
+	console.profileEnd('find vault 5000');
+};
 
 const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 	const { infoProvider } = props;
@@ -17,8 +178,7 @@ const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 	const [worldOffset, setworldOffset] = useState(0);
 	const [xOffset, setxOffset] = useState(0);
 	const [yOffset, setyOffset] = useState(0);
-	const [iter, setiter] = useState(0);
-
+	const [iter, setiter] = useState(1);
 	return (
 		<div>
 			<Form.Control
@@ -45,6 +205,7 @@ const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 				onChange={e => setiter(parseInt(e.target.value, 10) || 0)}
 				placeholder="iter"
 			/>
+			<Button onClick={() => compute(infoProvider)}>Test</Button>
 			<MapComponent
 				xOffset={xOffset}
 				yOffset={yOffset}
@@ -58,7 +219,8 @@ const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 };
 
 const TestBench = () => {
-	const seed = '1674055821';
+	// const seed = '1674055821';
+	const seed = '410';
 	const [unlockedSpells] = useLocalStorage(
 		'unlocked-spells',
 		Array(393).fill(true)

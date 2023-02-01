@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-import { loadRandom } from '../../testHelpers';
+import { loadRandom } from '../../../testHelpers';
 
 describe('Randoms', () => {
 

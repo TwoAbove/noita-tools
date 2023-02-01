@@ -40,7 +40,8 @@ const searchWeights = {
 	waterCave: 0.04069,
 	rain: 0.04068,
 	spells: 0.04035,
-	default: 0.06155 // average
+	default: 0.06155, // average
+	map: 0.6
 };
 
 const sortRules = (rules: ILogicRules | IRuleRules): void => {
@@ -125,7 +126,7 @@ export class SeedSearcher {
 
 		for (let seed = from; seed < to; seed++) {
 			const startTime = performance.now();
-			this.gameInfoProvider.randoms!.SetWorldSeed(seed);
+			this.gameInfoProvider.randoms.SetWorldSeed(seed);
 			let found = false;
 			try {
 				found = this.rules.rules.every(r => this.check(r));
@@ -159,7 +160,7 @@ export class SeedSearcher {
 		// console.profile();
 		while (
 			!this.shouldCancel &&
-			this.currentSeed <= (this.seedEnd || 4_294_967_294)
+			this.currentSeed <= (this.seedEnd || 2_147_483_645)
 		) {
 			if (this.count && this.count % this.gcEvery === 0) {
 				// Free the event loop to GC
@@ -172,7 +173,7 @@ export class SeedSearcher {
 				await new Promise(res => setTimeout(res, 0));
 			}
 			const startTime = performance.now();
-			this.gameInfoProvider.randoms!.SetWorldSeed(this.currentSeed);
+			this.gameInfoProvider.randoms.SetWorldSeed(this.currentSeed);
 			let found = false;
 			try {
 				found = this.rules.rules.every(r => this.check(r));

@@ -5,6 +5,7 @@ import SeedSolver from '../../../services/seedSolverHandler';
 import useLocalStorage from '../../../services/useLocalStorage';
 import UseMultithreadingButton from '../../SearchSeeds/UseMultithreading';
 import { ComputeSocket } from '../ComputeSocket';
+import { localizeNumber } from '../../../services/helpers';
 
 
 const Compute = () => {
@@ -16,10 +17,11 @@ const Compute = () => {
 
 
 	const [computeUrl, setComputeUrl] = useState(window.location.host);
-	const [computeId, setComputeId] = useState('1234');
+	const [computeId, setComputeId] = useLocalStorage('search-compute-id', '');
 
 	const [connected, setConnected] = useState(false);
 	const [computeRunning, setComputeRunning] = useState(false);
+	const [computeInfo, setComputeInfo] = useState<any>({});
 
 	useEffect(() => {
 		if (!seedSolver) {
@@ -33,17 +35,32 @@ const Compute = () => {
 			onUpdate: () => {
 				setConnected(newComputeSocket.connected);
 				setComputeRunning(newComputeSocket.running);
+				setComputeInfo({
+					jobName: newComputeSocket.jobName,
+					chunkTo: newComputeSocket.chunkTo,
+					chunkFrom: newComputeSocket.chunkFrom,
+				})
 			}
 		});
 		if (startAutomatically) {
-			newComputeSocket.start().catch(console.error);
+			newComputeSocket.start().catch(e => {
+				console.error(e);
+				newComputeSocket.stop();
+			});
 		}
 		setComputeSocket(newComputeSocket);
+
+		return (() => {
+			newComputeSocket.stop();
+		});
 	}, [computeUrl, computeId, seedSolver, startAutomatically]);
 
 	useEffect(() => {
 		const newSeedSolver = new SeedSolver(useCores, false);
 		setSeedSolver(newSeedSolver);
+		return (() => {
+			newSeedSolver.destroy();
+		});
 	}, [useCores]);
 
 	return (
@@ -66,26 +83,60 @@ const Compute = () => {
 				</Row>
 			</Container>
 			<hr />
-			<Row>
-				<Col>{computeRunning ? "Running" : "Stopped"}</Col>
-				<Col>
-					<Form.Group>
-						<Form.Label>Start automatically</Form.Label>
-						<Form.Check type="switch" checked={startAutomatically as any} onChange={() => setStartAutomatically(!startAutomatically)} />
-					</Form.Group>
-				</Col>
-				<Col>
-					<UseMultithreadingButton />
-				</Col>
-				<Col>
-					<Button disabled={computeRunning} onClick={() => computeSocket?.start()}>Start</Button>
-				</Col>
-				<Col>
-					<Button disabled={!computeRunning} onClick={() => computeSocket?.stop()}>Stop</Button>
-				</Col>
-			</Row>
+			<Stack gap={3}>
+				<Row>
+					<Col md={3}>{computeRunning ? "Running" : "Stopped"}</Col>
+				</Row>
+				<Row>
+					{computeRunning
+						&&
+						<Col md={8}>
+							{computeInfo.jobName ?
+								<Col>
+									<Col>Working on job: {computeInfo.jobName}</Col>
+									<Col>Chunk {localizeNumber(computeInfo.chunkFrom)} - {localizeNumber(computeInfo.chunkTo)}</Col>
+								</Col> : <Col>Waiting for next job</Col>
+							}
+						</Col>
+					}
+				</Row>
+				<Row>
+					<Col>
+						<Form.Group>
+							<Form.Label>Start automatically</Form.Label>
+							<Form.Check type="switch" checked={startAutomatically as any} onChange={() => setStartAutomatically(!startAutomatically)} />
+						</Form.Group>
+					</Col>
+					<Col>
+						<UseMultithreadingButton />
+					</Col>
+					<Col>
+						<Button disabled={computeRunning} onClick={() => computeSocket?.start()}>Start</Button>
+					</Col>
+					<Col>
+						<Button disabled={!computeRunning} onClick={() => computeSocket?.stop()}>Stop</Button>
+					</Col>
+				</Row>
+			</Stack>
 		</Container>
 	);
 };
 
-export default Compute;
+const withSupport = (props) => {
+	if (typeof OffscreenCanvas === "undefined") {
+		return (
+			<Container>
+				<p>
+					Compute not supported on this device.
+					<br />
+					If you are on a mobile apple device, they are not supported.
+					<br />
+					If on an apple desktop device, please use a Chromium browser (Chrome, edge, etc.) or Firefox.
+				</p>
+			</Container>
+		);
+	}
+	return <Compute {...props} />;
+}
+
+export default withSupport;

@@ -821,9 +821,6 @@ export default class Base {
 		}
 		// console.group(`${f} ${x} ${y}`);
 		this.debug && console.group(`${f} ${x} ${y} ${w} ${h} ${is_open_path}`);
-		if (f === 'spawn_potion_altar') {
-		} else {
-		}
 		this[f](x, y, w, h, is_open_path);
 		this.debug && console.groupEnd();
 	}

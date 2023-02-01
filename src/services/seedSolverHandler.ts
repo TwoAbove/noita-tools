@@ -163,7 +163,7 @@ export default class SeedSolver {
     );
     const duration = new Date().getTime() - this.startTime;
     const rate = res.currentSeed / duration;
-    (res as any).msLeft = Math.floor((4_294_967_294 - res.currentSeed) / rate);
+    (res as any).msLeft = Math.floor((2_147_483_645 - res.currentSeed) / rate);
     return [res, ...allInfo];
   }
 }

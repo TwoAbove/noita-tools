@@ -70,7 +70,7 @@ export const copyImage = img => {
 };
 
 export const getPixels = (img): ImageData => {
-	if (!(img instanceof Canvas)) {
+	if (!img.getContext) {
 		return getPixels(copyImage(img));
 	}
 	const ctx = img.getContext('2d')!;
@@ -117,17 +117,12 @@ const scale = (cv: Canvas, scale: number): Canvas => {
 	return canvas;
 };
 
-export const scaleImageData = (img: ImageData, s: number): ImageData => {
+export const scaleImageData = (img: ImageData, s: number): Canvas => {
 	const cv = createCanvas(img.width, img.height);
 	const cx = getContext(cv);
 	cx.putImageData(img as any, 0, 0);
 
-	return getContext(scale(cv, s)).getImageData(
-		0,
-		0,
-		img.width * s,
-		img.height * s
-	);
+	return scale(cv, s);
 };
 
 export const stretch = (img, width, height): Canvas => {
@@ -313,17 +308,19 @@ export const rgbaToHex = (r, g, b, a) => {
 	return '0' + hex;
 };
 
-const getPos = (w, x, y) => w * y * 4 + 4 * x;
+const getPos = (w, x, y) => 4 * (w * y + x);
 const isBlack = (data, p) => {
 	return data[p] === 0 && data[p + 1] === 0 && data[p + 2] === 0;
 };
 export const drawImageData = (
 	src: ImageData,
-	dest: ImageData,
+	dest: Canvas,
 	startX: number,
 	startY: number,
 	color_to_material_table?: { [color: string]: string }
 ) => {
+	const img = new ImageData(src.data, src.width, src.height);
+
 	let f = {};
 	if (color_to_material_table) {
 		for (const color in color_to_material_table) {
@@ -332,37 +329,28 @@ export const drawImageData = (
 			);
 		}
 	}
-	for (let y = 0; y < src.height; y++) {
-		for (let x = 0; x < src.width; x++) {
-			const srcP = getPos(src.width, x, y);
-			if (isBlack(src.data, srcP)) {
-				continue;
+
+	if (color_to_material_table) {
+		for (let p = 0; p < src.data.length; p += 4) {
+			const c = rgbaToInt(
+				src.data[p + 0],
+				src.data[p + 1],
+				src.data[p + 2],
+				src.data[p + 3]
+			);
+			if (f[c]) {
+				img.data[p + 0] = f[c][0];
+				img.data[p + 1] = f[c][1];
+				img.data[p + 2] = f[c][2];
+				img.data[p + 3] = f[c][3];
 			}
-			if (startX + x >= dest.width || startY + y >= dest.height) {
-				continue;
-			}
-			const destP = getPos(dest.width, startX + x, startY + y);
-			if (color_to_material_table) {
-				const c = rgbaToInt(
-					src.data[srcP + 0],
-					src.data[srcP + 1],
-					src.data[srcP + 2],
-					src.data[srcP + 3]
-				);
-				if (f[c]) {
-					dest.data[destP + 0] = f[c][0];
-					dest.data[destP + 1] = f[c][1];
-					dest.data[destP + 2] = f[c][2];
-					dest.data[destP + 3] = f[c][3];
-					continue;
-				}
-			}
-			dest.data[destP + 0] = src.data[srcP + 0];
-			dest.data[destP + 1] = src.data[srcP + 1];
-			dest.data[destP + 2] = src.data[srcP + 2];
-			dest.data[destP + 3] = src.data[srcP + 3];
 		}
 	}
+
+	// use temporary canvas to preserve transparent pixels
+	const tmp = copyImage(img);
+	const ctx = getContext(dest);
+	ctx.drawImage(tmp, startX, startY);
 };
 
 export const printImage = (img: ImageData) => {
@@ -408,17 +396,24 @@ export const getColor = (map: ImageData, x: number, y: number) => {
 };
 
 export const somePixelsSync = (
-	image: ImageData,
+	image: ImageData | Canvas,
 	step: number,
 	cb: (x: number, y: number, color: number) => boolean
 ) => {
-	for (let y = 0; y < image.height; y += step) {
-		for (let x = 0; x < image.width; x += step) {
-			const pos = image.width * y * 4 + x * 4;
-			const r = image.data[pos + 0];
-			const g = image.data[pos + 1];
-			const b = image.data[pos + 2];
-			const a = image.data[pos + 3];
+	let img: ImageData;
+	if (typeof image.data === 'function') {
+		img = getPixels(image);
+	} else {
+		img = image as ImageData;
+	}
+
+	for (let y = 0; y < img.height; y += step) {
+		for (let x = 0; x < img.width; x += step) {
+			const pos = img.width * y * 4 + x * 4;
+			const r = img.data[pos + 0];
+			const g = img.data[pos + 1];
+			const b = img.data[pos + 2];
+			const a = img.data[pos + 3];
 			const color = rgbaToInt(r, g, b, a);
 			if (cb(x, y, color)) {
 				return true;
@@ -450,17 +445,23 @@ export const somePixels = async (
 }
 
 export const iteratePixels = (
-	image: ImageData,
+	image: ImageData | Canvas,
 	step: number,
 	cb: (x: number, y: number, color: number) => void
 ) => {
-	for (let y = 0; y < image.height; y += step) {
-		for (let x = 0; x < image.width; x += step) {
-			const pos = image.width * y * 4 + x * 4;
-			const r = image.data[pos + 0];
-			const g = image.data[pos + 1];
-			const b = image.data[pos + 2];
-			const a = image.data[pos + 3];
+	let img: ImageData;
+	if (typeof image.data === 'function') {
+		img = getPixels(image);
+	} else {
+		img = image as ImageData;
+	}
+	for (let y = 0; y < img.height; y += step) {
+		for (let x = 0; x < img.width; x += step) {
+			const pos = 4 * (img.width * y + x);
+			const r = img.data[pos + 0];
+			const g = img.data[pos + 1];
+			const b = img.data[pos + 2];
+			const a = img.data[pos + 3];
 			const color = rgbaToInt(r, g, b, a);
 			cb(x, y, color);
 		}
@@ -541,9 +542,10 @@ export const GenerateMap = (
 	map_w: number,
 	map_h: number,
 	isCoalMine: boolean,
+	shouldBlockOutRooms: boolean,
 	randomMaterials: number[],
 	xOffset: number,
-	yOffset: number
+	yOffset: number,
 ): ImageData => {
 	const tilesDataPtr = randoms.Module._malloc(4 * tiles_w * tiles_h);
 	// 8-bit (char)
@@ -583,6 +585,7 @@ export const GenerateMap = (
 		map_w,
 		map_h,
 		isCoalMine,
+		shouldBlockOutRooms,
 		randomMaterialsPtr,
 		xOffset,
 		yOffset

@@ -40,7 +40,7 @@ const loadWasm = async () => {
 
 const load = async () => {
   const Module = await loadWasm();
-  return genRandom(Module);
+  return genRandom(Module) as any;
 };
 
 export type IRandom = Awaited<ReturnType<typeof load>>;

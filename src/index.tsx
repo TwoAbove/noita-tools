@@ -1,12 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
+import 'react-virtualized/styles.css';
+
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import "bootswatch/dist/spacelab/bootstrap.min.css";
 
 import './index.css';
 import './i18n';
-
 import App from './components/App';
 
 import * as serviceWorker from './serviceWorker';

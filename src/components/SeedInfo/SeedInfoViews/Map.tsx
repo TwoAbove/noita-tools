@@ -104,10 +104,19 @@ const mapParts = {
 	Jungle: {
 		xr: [30, 31, 32, 33, 34, 35, 36, 37, 38],
 		yr: [27, 28, 29]
+	},
+	coalmineTower: {
+		xr: [53, 54, 55],
+		yr: [31]
+	},
+	fungiforest: {
+		xr: [58, 59, 60, 61],
+		yr: [35, 36, 37, 38, 39, 40]
 	}
 };
 
-const { xr, yr } = mapParts.liquidcave;
+const { xr, yr } = mapParts.MainPath;
+// const { xr, yr } = mapParts.coalmine;
 // const xr = new Array(70).fill(1).map((_, i) => i);
 // const yr = new Array(48).fill(1).map((_, i) => i);
 
@@ -152,16 +161,17 @@ export const Tile = (props: ITileProps) => {
 
 // Name collision with js Map
 const MapComponent = (props: IMapProps) => {
-	const { infoProvider, seed } = props;
+	const { infoProvider, seed, iter } = props;
 
 	const [images, setImages] = useState<Map<string, OffscreenCanvas>>();
 
 	useEffect(() => {
-		(async () => {
+		console.profile('Map');
+		try {
 			const res = new Map<string, OffscreenCanvas>();
 			for (const x of xr) {
 				for (const y of yr) {
-					const mapData = await infoProvider.providers.map.provide(x, y, seed);
+					const mapData = infoProvider.providers.map.provide(x, y, seed);
 					if (!mapData) {
 						continue;
 					}
@@ -172,10 +182,11 @@ const MapComponent = (props: IMapProps) => {
 				}
 			}
 			setImages(res);
-		})().catch(e => {
+		} catch (e) {
 			console.error(e);
-		});
-	}, [infoProvider, seed]);
+		}
+		console.profileEnd('Map');
+	}, [infoProvider, seed, iter]);
 
 	if (!images) {
 		return <div>loading</div>;

@@ -9,12 +9,13 @@ export const loadImageActions = async (): Promise<IImageActions | any> => {
   if (isNode) {
     return import('./nodeImageActions');
   } else {
-    if (window.OffscreenCanvas) {
-      return import('./webImageActions');
+    if (typeof OffscreenCanvas === "undefined") {
+      // Mobile Safari support
+      return import('./webCanvasImageActions');
     }
 
-    // Safari support
-    return import('./webCanvasImageActions');
+    return import('./webImageActions');
+
 
     const skiawasm = await (await import('canvaskit-wasm/bin/canvaskit.wasm')).default;
     const canvaskitLoad = await (await import('canvaskit-wasm')).default;

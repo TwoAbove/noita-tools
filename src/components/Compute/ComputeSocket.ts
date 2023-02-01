@@ -15,6 +15,10 @@ export class ComputeSocket extends SocketHandler {
   seedSolver?: SeedSolver;
   isHost: boolean;
 
+  jobName?: string;
+  chunkTo?: number;
+  chunkFrom?: number;
+
   running = false;
 
   constructor(config: ComputeSocketConfig) {
@@ -55,16 +59,34 @@ export class ComputeSocket extends SocketHandler {
       await new Promise<void>(res => {
         const t = setTimeout(() => res(), 10000);
         this.io.emit('compute:need_job', async (data, cb) => {
-          clearTimeout(t);
-          if (!data || data.done) {
-            setTimeout(() => res(), 5000);
-            return;
+          try {
+            clearTimeout(t);
+            if (!data || data.done) {
+              setTimeout(() => res(), 5000);
+              return;
+            }
+            const { from, to, jobName, rules, hostId, chunkId } = data;
+
+            this.jobName = jobName;
+            this.chunkTo = to;
+            this.chunkFrom = from;
+            this.onUpdate();
+
+            const result = await this.seedSolver!.searchChunk(from, to, rules);
+
+            this.io.emit('compute:done', { hostId, result, chunkId });
+
+            this.jobName = '';
+            this.chunkTo = 0;
+            this.chunkFrom = 0;
+            this.onUpdate();
+
+            res();
+          } catch (e) {
+            this.stop();
+            res();
+            throw e;
           }
-          const { from, to, rules, hostId, chunkId } = data;
-          const result = await this.seedSolver!.searchChunk(from, to, rules);
-          this.io.emit('compute:done', { hostId, result, chunkId })
-          this.onUpdate();
-          res();
         });
       });
     }

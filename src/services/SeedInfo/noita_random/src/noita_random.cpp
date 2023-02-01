@@ -119,12 +119,12 @@ public:
         return (((v9 << 10) ^ (v7 - v9 - v8)) >> 15) ^ (v8 - v9 - ((v9 << 10) ^ (v7 - v9 - v8)));
     }
 
-    void SetRandomFromWorldSeed(uint worldSeed)
+    void SetRandomFromWorldSeed(uint s)
     {
-        Seed = worldSeed;
+        Seed = s;
         if (2147483647.0 <= Seed)
         {
-            Seed = worldSeed * 0.5;
+            Seed = s * 0.5;
         }
     }
 
@@ -186,13 +186,13 @@ public:
     uint NextU()
     {
         Next();
-        return (Seed * 4.656612875e-10) * 2147483645.0;
+        return Seed * 4.656612875e-10 * 2147483645.0;
     }
 
     double Next()
     {
-        int v4 = (int)Seed * 0x41a7 + ((int)Seed / 0x1f31d) * -0x7fffffff;
-        if (v4 < 0)
+        int v4 = 0x41a7 * (int)Seed - 0x7FFFFFFF * ((int)Seed / 0x1f31d);
+        if (v4 <= 0)
         {
             v4 += 0x7fffffff;
         }

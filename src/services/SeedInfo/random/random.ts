@@ -19,10 +19,13 @@ export const logify = func => (...args) => {
 };
 
 export interface IRandomModule {
+	Module: any;
+
 	printErr: any;
 	print: any;
 	cwrap: any;
 	_generate_map: any;
+	_generate_path_map: any;
 
 	doLeakCheck: () => void;
 
@@ -94,11 +97,15 @@ export interface IRandomModule {
 		xs: number,
 		ys: number,
 		isCoalMine: boolean,
+		shouldBlockOutRooms: boolean,
 		randomMaterials: number[],
 		xOffset: number,
 		yOffset: number,
 		limit: number
 	): void;
+
+	GetGlobalPos(): number;
+	GeneratePathMap(): void;
 
 	SetUnlockedSpells(i: number, val: number): void;
 	GetWidthFromPix(x1: number, x2: number): number;
@@ -110,7 +117,7 @@ interface IRND {
 }
 
 
-export const genRandom = async Module => {
+export const genRandom = async (Module: IRandomModule) => {
 	Module.GenerateMap = Module._generate_map;
 	Module.GeneratePathMap = Module._generate_path_map;
 

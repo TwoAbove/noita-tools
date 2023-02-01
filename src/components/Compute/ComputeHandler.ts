@@ -19,6 +19,7 @@ export interface IComputeHandlerConfig {
   searchFrom: number;
   searchTo: number;
   chunkSize: number;
+  jobName?: string
 }
 
 export type ChunkStatus = {
@@ -42,21 +43,27 @@ export default class ComputeHandler {
   eta!: ReturnType<typeof SimpleETA>;
   progress = 0;
 
+  jobName?: string;
+
+  updateInterval: NodeJS.Timer;
+
   constructor(
     public computeSocket: ComputeSocket,
     public rules: ILogicRules,
     public config: IComputeHandlerConfig,
     public onUpdate: (status: Status) => void
   ) {
-    setInterval(() => {
+    this.updateInterval = setInterval(() => {
       this.computeSocket.io.emit('compute:workers', workers => {
         this.numberOfWorkers = workers;
         this.update();
       });
     }, 5000);
+
     this.handleJob = this.handleJob.bind(this);
 
     this.computeSocket.io.on('compute:done', ({ result, chunkId }) => {
+      console.log({ result });
       const chunk = this.chunkStatus.find(c => c.chunkId === chunkId);
       if (!chunk) {
         return;
@@ -70,6 +77,10 @@ export default class ComputeHandler {
     });
   }
 
+  destruct() {
+    clearInterval(this.updateInterval);
+  }
+
   setRules(rules: ILogicRules) {
     this.rules = rules;
   }
@@ -78,6 +89,9 @@ export default class ComputeHandler {
     this.searchFrom = newConfig.searchFrom;
     this.searchTo = newConfig.searchTo;
     this.chunkSize = newConfig.chunkSize;
+    if (newConfig.jobName) {
+      this.jobName = newConfig.jobName;
+    }
 
     const chunkAmount = Math.ceil(
       (this.searchTo - this.searchFrom) / this.chunkSize
@@ -127,13 +141,14 @@ export default class ComputeHandler {
       // return it to the "queue"
       console.error('Timed out on chunk', chunk);
       chunk.status = 'waiting';
-    }, 1000 * 60 * 60); // Wait about an hour before returning
+    }, 1000 * 60 * 10); // Wait a bit before re-running
     // cb({})
     cb({
       rules: this.rules,
       to: chunk.to,
       from: chunk.from,
-      chunkId: chunk.chunkId
+      chunkId: chunk.chunkId,
+      jobName: this.jobName
     });
   }
 
@@ -144,7 +159,7 @@ export default class ComputeHandler {
     this.eta = SimpleETA({
       min: this.searchFrom,
       max: this.searchTo,
-      historyTimeConstant: 30
+      historyTimeConstant: 120
     });
     this.results = [];
     this.progress = this.searchFrom;

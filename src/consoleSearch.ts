@@ -72,7 +72,7 @@ const rules = {
 };
 
 const from = argv.from || 1;
-const to = argv.to || 4294967295;
+const to = argv.to || 2147483645;
 const chunk = argv.chunk || 1000;
 
 const workers = workerFarm(require.resolve('./consoleSearchWorker'));

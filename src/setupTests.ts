@@ -5,4 +5,3 @@
 import '@testing-library/jest-dom/extend-expect';
 
 global.performance = require('perf_hooks').performance;
-// global.ImageData = require('@napi-rs/canvas');

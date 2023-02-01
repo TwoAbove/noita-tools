@@ -47,7 +47,7 @@ string _GetRandomAction(double x, double y, int level, int offset = 0)
     return s.id;
 }
 
-#include "wang.cpp"
+#include "wang/wang.cpp"
 
 #include <emscripten/bind.h>
 

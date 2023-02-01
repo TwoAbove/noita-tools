@@ -28,6 +28,7 @@ export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], 
 		i18n
 	);
 	gameInfoProvider.onRandomLoad(() => {
+		gameInfoProvider.randoms.SetWorldSeed(parseInt(seed, 10));
 		gameInfoProvider.randoms.SetUnlockedSpells(unlockedSpells);
 		gameInfoProvider.provideAll().then(data => {
 			setData(data);

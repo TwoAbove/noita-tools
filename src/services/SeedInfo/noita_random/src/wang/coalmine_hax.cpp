@@ -1,4 +1,4 @@
-unsigned char coalmine_overlay[] = {
+static unsigned char coalmine_overlay[] = {
     0,
     64,
     0,
