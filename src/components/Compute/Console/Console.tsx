@@ -133,13 +133,13 @@ interface ChunkStatusesProps {
 }
 const ChunkStatuses: FC<ChunkStatusesProps> = ({ chunkStatuses }) => {
 	const pending = chunkStatuses.filter(c => c.status === 'pending');
-	const waiting = chunkStatuses.filter(c => c.status === 'waiting');
-	const done = chunkStatuses.filter(c => c.status === 'done');
+	// const waiting = chunkStatuses.filter(c => c.status === 'waiting');
+	// const done = chunkStatuses.filter(c => c.status === 'done');
 	return (
 		<Stack>
 			<Col>Working on: <Stack gap={3} direction='horizontal'>{pending.map(p => <div className='p-2' key={p.chunkId}>{p.chunkId} <br /> [{p.from} - {p.to}]</div>)}</Stack></Col>
-			<Col>Waiting: {waiting.length}</Col>
-			<Col>Done: {done.length}</Col>
+			{/* <Col>Waiting: {waiting.length}</Col> */}
+			{/* <Col>Done: {done.length}</Col> */}
 		</Stack>
 	)
 }
@@ -151,18 +151,20 @@ const ComputeConsole = () => {
 
 	const [computeHandler, setComputeHandler] = useState<ComputeHandler>();
 
-	const [computeUrl, setComputeUrl] = useState(window.location.host);
+	const [computeUrl, setComputeUrl] = useState("https://dev.noitool.com");
+	// const [computeUrl, setComputeUrl] = useState(window.location.host);
 	const [computeId, setComputeId] = useLocalStorage('search-compute-id', '');
-	const [computeJobName, setComputeJobName] = useState((Math.random() + 1).toString(36).substring(7));
+	const [computeJobName, setComputeJobName] = useState("The Seed");
+	// const [computeJobName, setComputeJobName] = useState((Math.random() + 1).toString(36).substring(7));
 
 	const [rules, setRules] = useState<ILogicRules>(testConfig as any);
 
 	const [computeStatus, setComputeStatus] = useState<Status>({ running: false, chunkStatus: [], numberOfWorkers: 0, checked: 0, estimate: 0, rate: 0, results: [] });
 
-	const [searchFrom, setSearchFrom] = useState(0);
+	const [searchFrom, setSearchFrom] = useState(448_000_000);
 	// const [searchTo, setSearchTo] = useState(10_000_000);
 	const [searchTo, setSearchTo] = useState(2_147_483_645);
-	const [chunkSize, setChunkSize] = useState(2500);
+	const [chunkSize, setChunkSize] = useState(2000);
 
 	useEffect(() => {
 		const newComputeSocket = new ComputeSocket({

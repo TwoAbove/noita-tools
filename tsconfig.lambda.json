@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/node18/tsconfig.json",
-  "files": ["src/lambdaSearch.ts"],
+  "files": ["src/consoleSearch.ts"],
   "buildOptions": {
     "verbose": true
   },

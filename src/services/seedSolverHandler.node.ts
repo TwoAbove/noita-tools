@@ -1,8 +1,12 @@
+import { Worker } from 'worker_threads';
+
 import { Remote, wrap, releaseProxy, proxy } from 'comlink';
 import { ILogicRules, IRules } from './SeedInfo/infoHandler/IRule';
 import * as seedSearcher from './seedSearcher';
+import nodeEndpoint from 'comlink/dist/umd/node-adapter.js';
+import EventEmitter from 'events';
 
-export class WorkerHandler extends EventTarget {
+export class WorkerHandler extends EventEmitter {
 	latestData?: ReturnType<seedSearcher.SeedSearcher['getInfo']>;
 	worker: Worker;
 	comlinkWorker: Remote<seedSearcher.SeedSearcher>;
@@ -10,32 +14,30 @@ export class WorkerHandler extends EventTarget {
 	constructor(offset: number, step: number) {
 		super();
 		this.worker = new Worker(
-			new URL('../workers/seedSearcher.worker.ts', import.meta.url)
-		);
-		this.comlinkWorker = wrap(this.worker);
-		this.worker.postMessage({ type: 'init', offset, step });
-		try {
-			this.worker.addEventListener('message', ({ data }) => {
-				switch (data.type) {
-					case 'info': {
-						this.latestData = data.data;
-						if (data.data.foundSeed) {
-							this.dispatchEvent(
-								new CustomEvent('foundSeed', { detail: data.data })
-							);
-						}
-						break;
-					}
-					case 'found': {
-						this.dispatchEvent(
-							new CustomEvent('foundSeedAll', { detail: data.data })
-						);
-					}
+			new URL('../workers/seedSearcher.worker.node.ts', import.meta.url),
+			 {
+				resourceLimits: {
+					maxYoungGenerationSizeMb: 1024,
+					maxOldGenerationSizeMb: 1024
 				}
-			});
-		} catch (e) {
-			// console.error(e);
-		}
+			 }
+		);
+		this.comlinkWorker = wrap(nodeEndpoint(this.worker));
+		this.worker.postMessage({ type: 'init', offset, step });
+		this.worker.on('message', (data) => {
+			switch (data.type) {
+				case 'info': {
+					this.latestData = data.data;
+					if (data.data.foundSeed) {
+						this.emit('foundSeed', { detail: data.data });
+					}
+					break;
+				}
+				case 'found': {
+					this.emit('foundSeedAll', { detail: data.data });
+				}
+			}
+		});
 	}
 
 	async searchChunk(from: number, to: number, rules: ILogicRules) {
@@ -55,7 +57,7 @@ export class WorkerHandler extends EventTarget {
 	}
 
 	terminate() {
-		this.worker.terminate();
+		return this.worker.terminate();
 	}
 }
 
@@ -71,12 +73,12 @@ export default class SeedSolver {
 		const workerReady: Promise<void>[] = [];
 		for (let i = 0; i < workerCount; i++) {
 			const worker = new WorkerHandler(i, workerCount);
-			worker.addEventListener('foundSeed', e => {
+			worker.on('foundSeed', e => {
 				if (stopOnFind) {
 					this.stop();
 				}
 			});
-			worker.addEventListener('foundSeedAll', (e: any) => {
+			worker.on('foundSeedAll', (e: any) => {
 				const seed = e.detail.foundSeed;
 				this.foundSeeds.push(seed);
 			});
@@ -90,9 +92,9 @@ export default class SeedSolver {
 			});
 	}
 
-	public destroy() {
+	public async destroy() {
 		for (const worker of this.workerList) {
-			worker.terminate();
+			await worker.terminate();
 		}
 	}
 
@@ -136,14 +138,17 @@ export default class SeedSolver {
 			});
 
 		const res: number[] = [];
-
-		await Promise.allSettled(
-			this.workerList.map(async (worker, i) => {
-				const { subFrom, subTo } = chunkConfigs[i];
-				const r = await worker.searchChunk(subFrom, subTo, rules);
-				res.push(...r);
-			})
-		);
+		try {
+			await Promise.all(
+				this.workerList.map(async (worker, i) => {
+					const { subFrom, subTo } = chunkConfigs[i];
+					const r = await worker.searchChunk(subFrom, subTo, rules);
+					res.push(...r);
+				})
+			);
+		} catch (e) {
+			throw e;
+		}
 
 		return res;
 	}

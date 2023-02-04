@@ -1,95 +1,38 @@
-import workerFarm from 'worker-farm';
+import os from 'os';
 
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
+import { ComputeSocket } from './components/Compute/ComputeSocket';
+import SeedSolver from './services/seedSolverHandler.node';
 
 const argv = yargs(hideBin(process.argv)).argv as any;
 
+var SegfaultHandler = require('segfault-handler');
+SegfaultHandler.registerHandler("crash.log");
+
 console.log(argv);
 
-const rules = {
-	id: '1',
-	type: 'and',
-	rules: [
-		{
-			id: '2',
-			type: 'map',
-			val: {
-				coalmine: {
-					pos: {
-						x: 34,
-						y: 15
-					},
-					search: [
-						'data/biome_impl/coalmine/physics_swing_puzzle.png',
-						'data/biome_impl/coalmine/receptacle_oil.png',
-						'data/biome_impl/coalmine/oiltank_puzzle.png'
-					],
-					funcs: ['load_pixel_scene2', 'load_pixel_scene', 'load_oiltank']
-				},
-				excavationSite: {
-					pos: {
-						x: 34,
-						y: 17
-					},
-					search: [
-						'data/biome_impl/excavationsite/meditation_cube.png',
-						'data/biome_impl/excavationsite/receptacle_steam.png'
-					],
-					funcs: ['spawn_meditation_cube', 'load_pixel_scene4_alt']
-				},
-				snowCave: {
-					pos: {
-						x: 34,
-						y: 21
-					},
-					search: [
-						'data/biome_impl/snowcave/receptacle_water.png',
-						'data/biome_impl/snowcave/buried_eye.png'
-					],
-					funcs: ['load_pixel_scene', 'load_pixel_scene3']
-				},
-				snowCastle: {
-					pos: {
-						x: 34,
-						y: 25
-					},
-					search: ['data/biome_impl/snowcastle/kitchen.png'],
-					funcs: ['load_pixel_scene2']
-				},
-				vault: {
-					pos: {
-						x: 34,
-						y: 31
-					},
-					search: ['data/biome_impl/vault/lab_puzzle.png'],
-					funcs: ['load_pixel_scene2']
-				}
+// const seedSolver = new SeedSolver(1, false);
+const seedSolver = new SeedSolver(argv.cores || os.cpus().length, false);
+
+const newComputeSocket = new ComputeSocket({
+	url: argv.computeUrl || 'https://dev.noitool.com/',
+	computeId: argv.computeId,
+	seedSolver: seedSolver as any,
+	onUpdate: () => {
+		console.log({
+			connected: newComputeSocket.connected,
+			running: newComputeSocket.running,
+			info: {
+				jobName: newComputeSocket.jobName,
+				chunkTo: newComputeSocket.chunkTo,
+				chunkFrom: newComputeSocket.chunkFrom,
 			}
-		}
-	],
-	selectedRule: 'search'
-};
+		});
+	}
+});
 
-const from = argv.from || 1;
-const to = argv.to || 2147483645;
-const chunk = argv.chunk || 1000;
-
-const workers = workerFarm(require.resolve('./consoleSearchWorker'));
-
-let currFrom = from;
-let currTo = currFrom + chunk;
-
-while (currFrom < to) {
-  workers({body: {
-    rules, from, to
-  }}, (err, res) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log(res);
-    }
-  });
-  currFrom += chunk;
-  currTo += chunk;
-}
+newComputeSocket.start().catch(e => {
+	console.error(e);
+	newComputeSocket.stop();
+});
