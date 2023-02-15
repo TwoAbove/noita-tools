@@ -6,8 +6,6 @@ import { ComputeSocket } from './ComputeSocket';
 
 export interface Status {
   running: boolean;
-  chunkStatus: ChunkStatus[];
-  numberOfWorkers: number;
   checked: number;
   results: number[];
 
@@ -111,8 +109,6 @@ export default class ComputeHandler {
   getStatus(): Status {
     return {
       running: this.running,
-      chunkStatus: this.chunkStatus,
-      numberOfWorkers: this.numberOfWorkers,
       estimate: this.eta?.estimate(),
       rate: this.eta?.rate(),
       checked: this.progress,
@@ -141,15 +137,17 @@ export default class ComputeHandler {
       // return it to the "queue"
       console.error('Timed out on chunk', chunk);
       chunk.status = 'waiting';
-    }, 1000 * 60 * 10); // Wait a bit before re-running
-    // cb({})
-    cb({
+    }, 1000 * 60 * 5); // Wait a bit before re-running
+
+    const data = {
       rules: this.rules,
       to: chunk.to,
       from: chunk.from,
       chunkId: chunk.chunkId,
-      jobName: this.jobName
-    });
+      jobName: this.jobName,
+      stats: this.getStatus()
+    };
+    cb(data);
   }
 
   async start() {
@@ -162,7 +160,7 @@ export default class ComputeHandler {
       historyTimeConstant: 120
     });
     this.results = [];
-    this.progress = this.searchFrom;
+    this.progress = this.searchFrom  - 1;
     this.eta.start();
     this.running = true;
     this.computeSocket.io.on('compute:get_job', this.handleJob);

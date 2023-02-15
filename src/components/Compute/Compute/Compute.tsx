@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import humanize from 'humanize-duration';
+
 import SeedSolver from '../../../services/seedSolverHandler';
 import useLocalStorage from '../../../services/useLocalStorage';
 import UseMultithreadingButton from '../../SearchSeeds/UseMultithreading';
@@ -39,6 +41,7 @@ const Compute = () => {
 					jobName: newComputeSocket.jobName,
 					chunkTo: newComputeSocket.chunkTo,
 					chunkFrom: newComputeSocket.chunkFrom,
+					jobStats: newComputeSocket.jobStats
 				})
 			}
 		});
@@ -95,6 +98,7 @@ const Compute = () => {
 								<Col>
 									<Col>Working on job: {computeInfo.jobName}</Col>
 									<Col>Chunk {localizeNumber(computeInfo.chunkFrom)} - {localizeNumber(computeInfo.chunkTo)}</Col>
+									<Col className='text-muted fw-lighter'>Cluster stats: Seeds checked: {localizeNumber(computeInfo.jobStats.checked)} (Estimated time left: {humanize(computeInfo.jobStats.estimate * 1000, { round: true, units: ["h", "m"] })}, {localizeNumber(Math.round(computeInfo.jobStats.rate * 100) / 100)} avg seeds/s)</Col>
 								</Col> : <Col>Waiting for next job</Col>
 							}
 						</Col>

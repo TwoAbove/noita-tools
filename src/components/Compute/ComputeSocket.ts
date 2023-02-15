@@ -2,6 +2,7 @@ import SeedSolver from '../../services/seedSolverHandler';
 import SocketHandler, {
   SocketHandlerConfig
 } from '../../services/socketHandler';
+import { Status } from './ComputeHandler';
 
 export interface ComputeSocketConfig extends SocketHandlerConfig {
   computeId: string;
@@ -16,6 +17,7 @@ export class ComputeSocket extends SocketHandler {
   isHost: boolean;
 
   jobName?: string;
+  jobStats?: Status;
   chunkTo?: number;
   chunkFrom?: number;
 
@@ -65,9 +67,12 @@ export class ComputeSocket extends SocketHandler {
               setTimeout(() => res(), 5000);
               return;
             }
-            const { from, to, jobName, rules, hostId, chunkId } = data;
+
+
+            const { from, to, jobName, rules, hostId, chunkId, stats } = data;
 
             this.jobName = jobName;
+            this.jobStats = stats;
             this.chunkTo = to;
             this.chunkFrom = from;
             this.onUpdate();
@@ -77,6 +82,7 @@ export class ComputeSocket extends SocketHandler {
             this.io.emit('compute:done', { hostId, result, chunkId });
 
             this.jobName = '';
+            this.jobStats = undefined;
             this.chunkTo = 0;
             this.chunkFrom = 0;
             this.onUpdate();

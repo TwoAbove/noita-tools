@@ -575,16 +575,16 @@ export class MapInfoProvider extends InfoProvider {
 				config.funcs
 			)!;
 			// const mapData = (await map.provide(x, y, seed.toString(), config.funcs))!;
-			// console.log(interestPoints);
-			const all = (config.search as string[]).every(
+			const method = config.searchType === 'and' ? 'every' : 'some';
+			const check = (config.search as string[])[method](
 				// These might be equal string values, but not equal "Strings"
 				// eslint-disable-next-line eqeqeq
 				s => interestPoints.points.findIndex(p => String(p.item) == String(s)) !== -1
 			);
-			if (!all) {
+			if (!check) {
 				return false;
 			}
-			this.imageActions.printImage(areaMapToScale);
+			// this.imageActions.printImage(areaMapToScale);
 		}
 
 		return true;
@@ -600,55 +600,13 @@ snowCave: 12942
 snowCastle: 37912
 vault: 18253
 */
-// const configs = {
-// 	coalmine: {
-// 		pos: {
-// 			x: 34,
-// 			y: 15
-// 		},
-// 		search: [
-// 			'data/biome_impl/coalmine/physics_swing_puzzle.png',
-// 			'data/biome_impl/coalmine/receptacle_oil.png',
-// 			'data/biome_impl/coalmine/oiltank_puzzle.png'
-// 		],
-// 		funcs: ['load_pixel_scene2', 'load_pixel_scene', 'load_oiltank']
-// 	},
-// 	excavationSite: {
-// 		pos: {
-// 			x: 34,
-// 			y: 17
-// 		},
-// 		search: [
-// 			'data/biome_impl/excavationsite/meditation_cube.png',
-// 			'data/biome_impl/excavationsite/receptacle_steam.png'
-// 		],
-// 		funcs: ['spawn_meditation_cube', 'load_pixel_scene4_alt']
-// 	},
-// 	snowCave: {
-// 		pos: {
-// 			x: 34,
-// 			y: 21
-// 		},
-// 		search: [
-// 			'data/biome_impl/snowcave/receptacle_water.png',
-// 			'data/biome_impl/snowcave/buried_eye.png'
-// 		],
-// 		funcs: ['load_pixel_scene', 'load_pixel_scene3']
-// 	},
-// 	snowCastle: {
-// 		pos: {
-// 			x: 34,
-// 			y: 25
-// 		},
-// 		search: ['data/biome_impl/snowcastle/kitchen.png'],
-// 		funcs: ['load_pixel_scene2']
-// 	},
-// 	vault: {
-// 		pos: {
-// 			x: 34,
-// 			y: 31
-// 		},
-// 		search: ['data/biome_impl/vault/lab_puzzle.png'],
-// 		funcs: ['load_pixel_scene2']
-// 	}
-// };
+
+/*
+from - 1
+to - 5 000
+coalmine, 87000, 370
+excavationSite, 93000, 29
+snowCave, 191000, 98
+snowCastle, 99000, 1333
+vault, 194000, 631
+*/

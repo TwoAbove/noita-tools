@@ -4,8 +4,6 @@ import { Button, Col, Collapse, Container, Form, FormGroup, ListGroup, ProgressB
 import { useTranslation } from 'react-i18next';
 import humanize from 'humanize-duration';
 import copy from 'copy-to-clipboard';
-import createDOMPurify from 'dompurify'
-
 
 import { localizeNumber } from '../../../services/helpers';
 import { ILogicRules } from '../../../services/SeedInfo/infoHandler/IRule';
@@ -16,36 +14,6 @@ import { ComputeSocket } from '../ComputeSocket';
 import './console.css';
 import useLocalStorage from '../../../services/useLocalStorage';
 
-const DOMPurify = createDOMPurify(window);
-// const testConfig = {
-// 	"id": "1",
-// 	"type": "and",
-// 	"rules": [
-// 		{
-// 			"id": "6",
-// 			"type": "startingFlask",
-// 			"path": "",
-// 			"params": [],
-// 			"val": "magic_liquid_movement_faster"
-// 		},
-// 		{
-// 			"id": "15",
-// 			"type": "startingSpell",
-// 			"path": "",
-// 			"params": [],
-// 			"val": "RUBBER_BALL"
-// 		},
-// 		{
-// 			"id": "22",
-// 			"type": "startingBombSpell",
-// 			"path": "",
-// 			"params": [],
-// 			"val": "MINE"
-// 		}
-// 	],
-// 	"selectedRule": "search"
-// };
-
 const testConfig = {
 	"id": "1",
 	"type": "and",
@@ -54,27 +22,12 @@ const testConfig = {
 			"id": "2",
 			"type": "map",
 			"val": {
-				"coalmine": {
-					"pos": {
-						"x": 34,
-						"y": 15
-					},
-					"search": [
-						"data/biome_impl/coalmine/physics_swing_puzzle.png",
-						"data/biome_impl/coalmine/receptacle_oil.png",
-						"data/biome_impl/coalmine/oiltank_puzzle.png"
-					],
-					"funcs": [
-						"load_pixel_scene2",
-						"load_pixel_scene",
-						"load_oiltank"
-					]
-				},
 				"excavationSite": {
 					"pos": {
 						"x": 34,
 						"y": 17
 					},
+					"searchType": "and",
 					"search": [
 						"data/biome_impl/excavationsite/meditation_cube.png",
 						"data/biome_impl/excavationsite/receptacle_steam.png"
@@ -84,11 +37,39 @@ const testConfig = {
 						"load_pixel_scene4_alt"
 					]
 				},
+				"coalmine": {
+					"pos": {
+						"x": 34,
+						"y": 15
+					},
+					"searchType": "and",
+					"search": [
+						"data/biome_impl/coalmine/receptacle_oil.png",
+					],
+					"funcs": [
+						"load_pixel_scene2",
+					]
+				},
+				"snowCastle": {
+					"pos": {
+						"x": 34,
+						"y": 25
+					},
+					"searchType": "or",
+					"search": [
+						"data/biome_impl/snowcastle/kitchen.png",
+						"data/biome_impl/snowcastle/sauna.png"
+					],
+					"funcs": [
+						"load_pixel_scene2"
+					]
+				},
 				"snowCave": {
 					"pos": {
 						"x": 34,
 						"y": 21
 					},
+					"searchType": "and",
 					"search": [
 						"data/biome_impl/snowcave/receptacle_water.png",
 						"data/biome_impl/snowcave/buried_eye.png"
@@ -98,30 +79,19 @@ const testConfig = {
 						"load_pixel_scene3"
 					]
 				},
-				// "snowCastle": {
-				// 	"pos": {
-				// 		"x": 34,
-				// 		"y": 25
-				// 	},
-				// 	"search": [
-				// 		"data/biome_impl/snowcastle/kitchen.png"
-				// 	],
-				// 	"funcs": [
-				// 		"load_pixel_scene2"
-				// 	]
-				// },
 				"vault": {
 					"pos": {
 						"x": 34,
 						"y": 31
 					},
+					"searchType": "and",
 					"search": [
 						"data/biome_impl/vault/lab_puzzle.png"
 					],
 					"funcs": [
 						"load_pixel_scene2"
 					]
-				}
+				},
 			}
 		}
 	],
@@ -129,9 +99,9 @@ const testConfig = {
 };
 
 interface ChunkStatusesProps {
-	chunkStatuses: Status['chunkStatus'];
+	chunkStatuses?: ComputeHandler['chunkStatus'];
 }
-const ChunkStatuses: FC<ChunkStatusesProps> = ({ chunkStatuses }) => {
+const ChunkStatuses: FC<ChunkStatusesProps> = ({ chunkStatuses = [] }) => {
 	const pending = chunkStatuses.filter(c => c.status === 'pending');
 	// const waiting = chunkStatuses.filter(c => c.status === 'waiting');
 	// const done = chunkStatuses.filter(c => c.status === 'done');
@@ -151,17 +121,17 @@ const ComputeConsole = () => {
 
 	const [computeHandler, setComputeHandler] = useState<ComputeHandler>();
 
-	const [computeUrl, setComputeUrl] = useState("https://dev.noitool.com");
-	// const [computeUrl, setComputeUrl] = useState(window.location.host);
+	// const [computeUrl, setComputeUrl] = useState("https://dev.noitool.com");
+	const [computeUrl, setComputeUrl] = useState(window.location.host);
 	const [computeId, setComputeId] = useLocalStorage('search-compute-id', '');
 	const [computeJobName, setComputeJobName] = useState("The Seed");
 	// const [computeJobName, setComputeJobName] = useState((Math.random() + 1).toString(36).substring(7));
 
 	const [rules, setRules] = useState<ILogicRules>(testConfig as any);
 
-	const [computeStatus, setComputeStatus] = useState<Status>({ running: false, chunkStatus: [], numberOfWorkers: 0, checked: 0, estimate: 0, rate: 0, results: [] });
+	const [computeStatus, setComputeStatus] = useState<Status>({ running: false, checked: 0, estimate: 0, rate: 0, results: [] });
 
-	const [searchFrom, setSearchFrom] = useState(448_000_000);
+	const [searchFrom, setSearchFrom] = useState(1);
 	// const [searchTo, setSearchTo] = useState(10_000_000);
 	const [searchTo, setSearchTo] = useState(2_147_483_645);
 	const [chunkSize, setChunkSize] = useState(2000);
@@ -201,7 +171,7 @@ const ComputeConsole = () => {
 		copy(seedList.join(','));
 	}
 
-	const nextUp = computeStatus.chunkStatus.find(c => c.status === 'waiting');
+	const nextUp = computeHandler?.chunkStatus.find(c => c.status === 'waiting');
 
 	return (
 		<Container>
@@ -302,16 +272,13 @@ const ComputeConsole = () => {
 						</div>
 
 						}
-						<Col xs={4}>
-							Workers Connected: {computeStatus.numberOfWorkers}
-						</Col>
 						{nextUp &&
 							<Col xs={4}>
 								Next up: Chunk [{nextUp?.from} - {nextUp?.to}]
 							</Col>
 						}
 					</Row>
-					<ChunkStatuses chunkStatuses={computeStatus.chunkStatus} />
+					<ChunkStatuses chunkStatuses={computeHandler?.chunkStatus} />
 					<Row>
 						<h6>Results:</h6>
 						{<div>

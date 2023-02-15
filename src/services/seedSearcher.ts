@@ -88,8 +88,8 @@ export class SeedSearcher {
 		}
 	}
 
-	infocb!: (info: ReturnType<SeedSearcher['getInfo']>) => void;
-	foundcb!: (info: ReturnType<SeedSearcher['getInfo']>) => void;
+	infocb = (info: ReturnType<SeedSearcher['getInfo']>) => { };
+	foundcb = (info: ReturnType<SeedSearcher['getInfo']>) => { };
 
 	init(offset: number, step: number) {
 		this.offset = offset;
