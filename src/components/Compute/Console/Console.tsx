@@ -22,76 +22,60 @@ const testConfig = {
 			"id": "2",
 			"type": "map",
 			"val": {
-				"excavationSite": {
-					"pos": {
-						"x": 34,
-						"y": 17
+				coalmine: {
+					pos: {
+						x: 34,
+						y: 15
 					},
-					"searchType": "and",
-					"search": [
-						"data/biome_impl/excavationsite/meditation_cube.png",
-						"data/biome_impl/excavationsite/receptacle_steam.png"
-					],
-					"funcs": [
-						"spawn_meditation_cube",
-						"load_pixel_scene4_alt"
-					]
+					searchType: 'and',
+					search: ['data/biome_impl/coalmine/receptacle_oil.png'],
+					funcs: ['load_pixel_scene2']
 				},
-				"coalmine": {
-					"pos": {
-						"x": 34,
-						"y": 15
+				excavationSite: {
+					pos: {
+						x: 34,
+						y: 17
 					},
-					"searchType": "and",
-					"search": [
-						"data/biome_impl/coalmine/receptacle_oil.png",
+					searchType: 'and',
+					search: [
+						'data/biome_impl/excavationsite/meditation_cube.png',
+						'data/biome_impl/excavationsite/receptacle_steam.png'
 					],
-					"funcs": [
-						"load_pixel_scene2",
-					]
+					funcs: ['spawn_meditation_cube', 'load_pixel_scene4_alt']
 				},
-				"snowCastle": {
-					"pos": {
-						"x": 34,
-						"y": 25
+				// snowCastle: {
+				// 	pos: {
+				// 		x: 34,
+				// 		y: 25
+				// 	},
+				// 	searchType: 'or',
+				// 	search: [
+				// 		'data/biome_impl/snowcastle/kitchen.png',
+				// 		'data/biome_impl/snowcastle/sauna.png'
+				// 	],
+				// 	funcs: ['load_pixel_scene2']
+				// },
+				snowCave: {
+					pos: {
+						x: 34,
+						y: 21
 					},
-					"searchType": "or",
-					"search": [
-						"data/biome_impl/snowcastle/kitchen.png",
-						"data/biome_impl/snowcastle/sauna.png"
+					searchType: 'and',
+					search: [
+						'data/biome_impl/snowcave/receptacle_water.png',
+						'data/biome_impl/snowcave/buried_eye.png'
 					],
-					"funcs": [
-						"load_pixel_scene2"
-					]
+					funcs: ['load_pixel_scene', 'load_pixel_scene3']
 				},
-				"snowCave": {
-					"pos": {
-						"x": 34,
-						"y": 21
+				vault: {
+					pos: {
+						x: 34,
+						y: 31
 					},
-					"searchType": "and",
-					"search": [
-						"data/biome_impl/snowcave/receptacle_water.png",
-						"data/biome_impl/snowcave/buried_eye.png"
-					],
-					"funcs": [
-						"load_pixel_scene",
-						"load_pixel_scene3"
-					]
-				},
-				"vault": {
-					"pos": {
-						"x": 34,
-						"y": 31
-					},
-					"searchType": "and",
-					"search": [
-						"data/biome_impl/vault/lab_puzzle.png"
-					],
-					"funcs": [
-						"load_pixel_scene2"
-					]
-				},
+					searchType: 'and',
+					search: ['data/biome_impl/vault/lab_puzzle.png'],
+					funcs: ['load_pixel_scene2']
+				}
 			}
 		}
 	],
@@ -132,8 +116,8 @@ const ComputeConsole = () => {
 	const [computeStatus, setComputeStatus] = useState<Status>({ running: false, checked: 0, estimate: 0, rate: 0, results: [] });
 
 	const [searchFrom, setSearchFrom] = useState(1);
-	// const [searchTo, setSearchTo] = useState(10_000_000);
-	const [searchTo, setSearchTo] = useState(2_147_483_645);
+	const [searchTo, setSearchTo] = useState(5_000);
+	// const [searchTo, setSearchTo] = useState(2_147_483_645);
 	const [chunkSize, setChunkSize] = useState(2000);
 
 	useEffect(() => {

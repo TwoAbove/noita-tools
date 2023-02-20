@@ -17,7 +17,7 @@ export interface ISeedSearcherConfig {
 	findAll?: boolean;
 }
 
-const searchWeights = {
+export const searchWeights = {
 	alchemy: 0.22039,
 	fungalShift: 0.15964,
 	wand: 0.07342,

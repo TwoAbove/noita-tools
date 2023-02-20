@@ -359,9 +359,11 @@ export class MapInfoProvider extends InfoProvider {
 				if (!funcName) {
 					return;
 				}
+
 				// TODO: doing a second flood fill just for this seems
 				// like too much. Maybe we can reuse it from the map gen?
 				// const is_open_path = inMainPath(pathMap, gx + dx, gy + dy, 1);
+
 				points.push({
 					item: funcName,
 					gx: gx + dx, gy: gy + dy, px, py, type: InterestType.Pixel
@@ -576,10 +578,10 @@ export class MapInfoProvider extends InfoProvider {
 			)!;
 			// const mapData = (await map.provide(x, y, seed.toString(), config.funcs))!;
 			const method = config.searchType === 'and' ? 'every' : 'some';
+			const points = new Set(interestPoints.points.map(p => p.item));
 			const check = (config.search as string[])[method](
 				// These might be equal string values, but not equal "Strings"
-				// eslint-disable-next-line eqeqeq
-				s => interestPoints.points.findIndex(p => String(p.item) == String(s)) !== -1
+				s => points.has(String(s))
 			);
 			if (!check) {
 				return false;
@@ -591,7 +593,7 @@ export class MapInfoProvider extends InfoProvider {
 	}
 }
 
-/*
+/* v1
 from - 1
 to - 1 000 000
 coalmine: 33
@@ -601,7 +603,7 @@ snowCastle: 37912
 vault: 18253
 */
 
-/*
+/* v2
 from - 1
 to - 5 000
 coalmine, 87000, 370
@@ -609,4 +611,14 @@ excavationSite, 93000, 29
 snowCave, 191000, 98
 snowCastle, 99000, 1333
 vault, 194000, 631
+*/
+
+/* v2
+from - 1
+to - 100 000
+coalmine, 942357, 7236
+excavationSite, 1063416, 646
+snowCave, 2160684, 2030
+snowCastle, 1104125, 26552
+vault, 2252795, 12392
 */

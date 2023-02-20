@@ -1,4 +1,5 @@
 import { Remote, wrap, releaseProxy, proxy } from 'comlink';
+import { getTreeTools } from '../components/SearchSeeds/node';
 import { ILogicRules, IRules } from './SeedInfo/infoHandler/IRule';
 import * as seedSearcher from './seedSearcher';
 
@@ -121,12 +122,25 @@ export default class SeedSolver {
 		}
 	}
 
-	public async searchChunk(from: number, to: number, rules: ILogicRules) {
+	public async searchChunk(from: number, to: number, rules: ILogicRules, progress?: (percent: number) => void) {
 		await this.workersReadyPromise;
 
-		const subChunkSize = Math.ceil((to - from) / this.workerList.length);
+		// If we have map rules, then we'll also check if we need to subdivide the chunk even
+		// more so that GC will have time to clean up the large memory allocations for maps
+		const tt = getTreeTools('id', 'rules');
 
-		const chunkConfigs = new Array(this.workerList.length)
+		const hasMapRules = tt.dfs(rules, (n) => {
+			return n.type === 'map'
+		});
+
+		let subChunkSize = Math.ceil((to - from) / this.workerList.length);
+		if (hasMapRules) {
+			subChunkSize = Math.min(subChunkSize, 100); // TODO: Figure out map complexity (by map size?) and adjust further
+		}
+
+		const numberOfChunks = Math.ceil((to - from) / subChunkSize);
+
+		const chunkConfigs = new Array(numberOfChunks)
 			.fill(0)
 			.map((_, i) => {
 				return {
@@ -137,11 +151,20 @@ export default class SeedSolver {
 
 		const res: number[] = [];
 
-		await Promise.allSettled(
+		let checked = 0;
+
+		await Promise.all(
 			this.workerList.map(async (worker, i) => {
-				const { subFrom, subTo } = chunkConfigs[i];
-				const r = await worker.searchChunk(subFrom, subTo, rules);
-				res.push(...r);
+				for (let config = chunkConfigs.pop(); config; config = chunkConfigs.pop()) {
+					const { subFrom, subTo } = config;
+					checked += subTo - subFrom;
+					const r = await worker.searchChunk(subFrom, subTo, rules);
+					res.push(...r);
+					if (progress) {
+						progress(checked / (to - from));
+					}
+					await new Promise(res => setTimeout(res, 0));
+				}
 			})
 		);
 
