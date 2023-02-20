@@ -56,6 +56,7 @@ export default class ComputeHandler {
         this.numberOfWorkers = workers;
         this.update();
       });
+      console.log(this.chunkStatus);
     }, 5000);
 
     this.handleJob = this.handleJob.bind(this);

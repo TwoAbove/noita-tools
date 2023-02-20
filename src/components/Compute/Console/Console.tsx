@@ -55,27 +55,27 @@ const testConfig = {
 				// 	],
 				// 	funcs: ['load_pixel_scene2']
 				// },
-				snowCave: {
-					pos: {
-						x: 34,
-						y: 21
-					},
-					searchType: 'and',
-					search: [
-						'data/biome_impl/snowcave/receptacle_water.png',
-						'data/biome_impl/snowcave/buried_eye.png'
-					],
-					funcs: ['load_pixel_scene', 'load_pixel_scene3']
-				},
-				vault: {
-					pos: {
-						x: 34,
-						y: 31
-					},
-					searchType: 'and',
-					search: ['data/biome_impl/vault/lab_puzzle.png'],
-					funcs: ['load_pixel_scene2']
-				}
+				// snowCave: {
+				// 	pos: {
+				// 		x: 34,
+				// 		y: 21
+				// 	},
+				// 	searchType: 'and',
+				// 	search: [
+				// 		'data/biome_impl/snowcave/receptacle_water.png',
+				// 		'data/biome_impl/snowcave/buried_eye.png'
+				// 	],
+				// 	funcs: ['load_pixel_scene', 'load_pixel_scene3']
+				// },
+				// vault: {
+				// 	pos: {
+				// 		x: 34,
+				// 		y: 31
+				// 	},
+				// 	searchType: 'and',
+				// 	search: ['data/biome_impl/vault/lab_puzzle.png'],
+				// 	funcs: ['load_pixel_scene2']
+				// }
 			}
 		}
 	],
@@ -116,7 +116,7 @@ const ComputeConsole = () => {
 	const [computeStatus, setComputeStatus] = useState<Status>({ running: false, checked: 0, estimate: 0, rate: 0, results: [] });
 
 	const [searchFrom, setSearchFrom] = useState(1);
-	// const [searchTo, setSearchTo] = useState(5_000);
+	// const [searchTo, setSearchTo] = useState(6658);
 	const [searchTo, setSearchTo] = useState(2_147_483_646);
 	const [chunkSize, setChunkSize] = useState(2000);
 

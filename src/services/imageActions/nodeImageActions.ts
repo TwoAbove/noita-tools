@@ -357,27 +357,9 @@ export const printImage = (img: ImageData) => {
 	const cv = createCanvas(img.width, img.height);
 	const cx = getContext(cv);
 	cx.putImageData(img as any, 0, 0);
-	cv[
-		cv['convertToBlob']
-			? 'convertToBlob' // specs
-			: 'toBlob' // current Firefox
-	]().then(blob => {
-		const fr = new FileReader();
-		fr.readAsDataURL(blob);
-
-		fr.addEventListener(
-			'load',
-			() => {
-				// convert image file to base64 string
-				const dataURL = fr.result;
-				console.log(dataURL);
-				// console.log(
-				// 	'%c ',
-				// 	`font-size:400px; width:1000px; background:url(${dataURL}) no-repeat;`
-				// );
-			},
-			false
-		);
+	return cv.toDataURLAsync().then(blob => {
+		// console.trace();
+		console.log(blob);
 	});
 };
 

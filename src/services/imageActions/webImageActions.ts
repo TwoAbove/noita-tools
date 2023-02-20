@@ -390,6 +390,7 @@ export const printImage = (image: ImageData | OffscreenCanvas) => {
 			() => {
 				// convert image file to base64 string
 				const dataURL = fr.result;
+				console.trace();
 				console.log(dataURL);
 				// console.log(
 				// 	'%c ',
@@ -612,7 +613,8 @@ export const GenerateMap = (
 		yOffset
 	);
 
-	const resImgData = new ImageData(result, map_w, map_h);
+	const resImgData = new ImageData(map_w, map_h);
+	resImgData.data.set(result);
 	// rgb2rgba(result, resImgData.data);
 
 	randoms.Module._free(randomMaterialsPtr);

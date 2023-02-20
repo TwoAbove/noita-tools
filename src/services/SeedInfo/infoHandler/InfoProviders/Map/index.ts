@@ -586,9 +586,11 @@ export class MapInfoProvider extends InfoProvider {
 			if (!check) {
 				return false;
 			}
-			// this.imageActions.printImage(areaMapToScale);
 		}
-
+		// for (const key in configs) {
+		// 	const areaMap = maps[key];
+		// 	this.imageActions.printImage(areaMap);
+		// }
 		return true;
 	}
 }
@@ -616,9 +618,9 @@ vault, 194000, 631
 /* v2
 from - 1
 to - 100 000
-coalmine, 942357, 7236
-excavationSite, 1063416, 646
-snowCave, 2160684, 2030
-snowCastle, 1104125, 26552
-vault, 2252795, 12392
+coalmine, 942357, 7057
+excavationSite, 1063416, 583
+snowCave, 2160684, 1988
+snowCastle, 1104125, 25762
+vault, 2252795, 11505
 */

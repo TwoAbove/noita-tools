@@ -16,59 +16,59 @@ import { useGameInfoProvider } from '../SeedInfo/SeedDataOutput';
 import MapComponent from '../SeedInfo/SeedInfoViews/Map';
 
 const rules = {
-	coalmine: {
-		pos: {
-			x: 34,
-			y: 15
+	"coalmine": {
+		"pos": {
+			"x": 34,
+			"y": 15
 		},
-		searchType: 'and',
-		search: ['data/biome_impl/coalmine/receptacle_oil.png'],
-		funcs: ['load_pixel_scene2']
+		"searchType": "and",
+		"search": ["data/biome_impl/coalmine/receptacle_oil.png"],
+		"funcs": ["load_pixel_scene2"]
 	},
-	excavationSite: {
-		pos: {
-			x: 34,
-			y: 17
+	"excavationSite": {
+		"pos": {
+			"x": 34,
+			"y": 17
 		},
-		searchType: 'and',
-		search: [
-			'data/biome_impl/excavationsite/meditation_cube.png',
-			'data/biome_impl/excavationsite/receptacle_steam.png'
+		"searchType": "and",
+		"search": [
+			"data/biome_impl/excavationsite/meditation_cube.png",
+			"data/biome_impl/excavationsite/receptacle_steam.png"
 		],
-		funcs: ['spawn_meditation_cube', 'load_pixel_scene4_alt']
+		"funcs": ["spawn_meditation_cube", "load_pixel_scene4_alt"]
 	},
-	snowCastle: {
-		pos: {
-			x: 34,
-			y: 25
+	"snowCastle": {
+		"pos": {
+			"x": 34,
+			"y": 25
 		},
-		searchType: 'or',
-		search: [
-			'data/biome_impl/snowcastle/kitchen.png',
-			'data/biome_impl/snowcastle/sauna.png'
+		"searchType": "or",
+		"search": [
+			"data/biome_impl/snowcastle/kitchen.png",
+			"data/biome_impl/snowcastle/sauna.png"
 		],
-		funcs: ['load_pixel_scene2']
+		"funcs": ["load_pixel_scene2"]
 	},
-	snowCave: {
-		pos: {
-			x: 34,
-			y: 21
+	"snowCave": {
+		"pos": {
+			"x": 34,
+			"y": 21
 		},
-		searchType: 'and',
-		search: [
-			'data/biome_impl/snowcave/receptacle_water.png',
-			'data/biome_impl/snowcave/buried_eye.png'
+		"searchType": "and",
+		"search": [
+			"data/biome_impl/snowcave/receptacle_water.png",
+			"data/biome_impl/snowcave/buried_eye.png"
 		],
-		funcs: ['load_pixel_scene', 'load_pixel_scene3']
+		"funcs": ["load_pixel_scene", "load_pixel_scene3"]
 	},
-	vault: {
-		pos: {
-			x: 34,
-			y: 31
+	"vault": {
+		"pos": {
+			"x": 34,
+			"y": 31
 		},
-		searchType: 'and',
-		search: ['data/biome_impl/vault/lab_puzzle.png'],
-		funcs: ['load_pixel_scene2']
+		"searchType": "and",
+		"search": ["data/biome_impl/vault/lab_puzzle.png"],
+		"funcs": ["load_pixel_scene2"]
 	}
 };
 
@@ -190,8 +190,8 @@ const compute = async (infoProvider: GameInfoProvider) => {
 	console.log('starting');
 	console.profile('find all 5000');
 	res = await seedSolver.searchChunk(
-		1,
-		5000,
+		6656,
+		6657,
 		{
 			id: uniqueId(),
 			type: RuleType.AND,
@@ -200,11 +200,11 @@ const compute = async (infoProvider: GameInfoProvider) => {
 					id: uniqueId(),
 					type: 'map',
 					val: {
-						excavationSite: rules.excavationSite,
-						snowCastle: rules.snowCastle,
 						coalmine: rules.coalmine,
-						snowCave: rules.snowCave,
-						vault: rules.vault
+						excavationSite: rules.excavationSite,
+						// snowCastle: rules.snowCastle,
+						// snowCave: rules.snowCave,
+						// vault: rules.vault
 					}
 				}
 			],
@@ -387,21 +387,21 @@ const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 				placeholder="iter"
 			/>
 			<Button onClick={() => compute(infoProvider)}>Test</Button>
-			{/* <MapComponent
+			<MapComponent
 				xOffset={xOffset}
 				yOffset={yOffset}
 				iter={iter}
 				worldOffset={worldOffset}
 				infoProvider={infoProvider}
 				seed={infoProvider.config.seed.toString()}
-			/> */}
+			/>
 		</div>
 	);
 };
 
 const TestBench = () => {
 	// const seed = '1674055821';
-	const seed = '410';
+	const seed = '6657';
 	const [unlockedSpells] = useLocalStorage(
 		'unlocked-spells',
 		Array(393).fill(true)

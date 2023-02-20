@@ -7,6 +7,8 @@ import path from 'path';
 
 import dirTree from "directory-tree";
 
+import comlilnk from 'comlink/dist/esm/node-adapter';
+
 import {
   loadImage as skiaLoadImage,
   Canvas,

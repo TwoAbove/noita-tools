@@ -230,7 +230,10 @@ export class SeedSearcher {
 			}
 		}
 		if (config.rules) {
-			this.rules = config.rules;
+			// stringify and parse the JSON to fix a [bug/feature?] in
+			// string equality when sending between worker threads
+			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/String#string_constructor_and_string_function
+			this.rules = JSON.parse(JSON.stringify(config.rules));
 			sortRules(this.rules);
 		}
 		if (config.findAll) {
