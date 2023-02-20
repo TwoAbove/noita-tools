@@ -105,8 +105,8 @@ const ComputeConsole = () => {
 
 	const [computeHandler, setComputeHandler] = useState<ComputeHandler>();
 
-	// const [computeUrl, setComputeUrl] = useState("https://dev.noitool.com");
-	const [computeUrl, setComputeUrl] = useState(window.location.host);
+	const [computeUrl, setComputeUrl] = useState("https://dev.noitool.com");
+	// const [computeUrl, setComputeUrl] = useState(window.location.host);
 	const [computeId, setComputeId] = useLocalStorage('search-compute-id', '');
 	const [computeJobName, setComputeJobName] = useState("The Seed");
 	// const [computeJobName, setComputeJobName] = useState((Math.random() + 1).toString(36).substring(7));
@@ -116,8 +116,8 @@ const ComputeConsole = () => {
 	const [computeStatus, setComputeStatus] = useState<Status>({ running: false, checked: 0, estimate: 0, rate: 0, results: [] });
 
 	const [searchFrom, setSearchFrom] = useState(1);
-	const [searchTo, setSearchTo] = useState(5_000);
-	// const [searchTo, setSearchTo] = useState(2_147_483_645);
+	// const [searchTo, setSearchTo] = useState(5_000);
+	const [searchTo, setSearchTo] = useState(2_147_483_646);
 	const [chunkSize, setChunkSize] = useState(2000);
 
 	useEffect(() => {
