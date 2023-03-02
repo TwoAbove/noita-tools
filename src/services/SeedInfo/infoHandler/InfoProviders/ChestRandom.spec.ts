@@ -10,26 +10,52 @@ describe('ChestRandomProvider', () => {
 		{
 			seed: 1674055821,
 			params: {
-				x: -78, y: 1371, greed: false
-			},
-			ans: [{ entity: 'data/entities/items/pickup/heart.xml', x: -78, y: 1371 }]
-		},
-		{
-			seed: 551,
-			params: {
-				x: -78, y: 1371, greed: false
-			},
-			ans: [{ entity: 'data/entities/items/pickup/potion.xml', x: -78, y: 1373 }]
-		},
-		{
-			seed: 551,
-			params: {
-				x: -78, y: 2907, greed: false
+				x: -78,
+				y: 1371,
+				greed: false
 			},
 			ans: [
-				{ entity: 'Spell', extra: 'GRAVITY', x: -78, y: 2907 },
-				{ entity: 'Spell', extra: 'BURST_3', x: -78, y: 2907 },
-				{ entity: 'Spell', extra: 'TENTACLE_RAY_ENEMY', x: -78, y: 2907 },
+				{
+					entity: 'data/entities/items/pickup/spell_refresh.xml',
+					pos_x: -68,
+					pos_y: 1371,
+					x: 431.7,
+					y: 2054.1
+				}
+			]
+		},
+		{
+			seed: 551,
+			params: {
+				x: -78,
+				y: 1371,
+				greed: false
+			},
+			ans: [
+				{
+					entity: 'data/entities/items/pickup/spell_refresh.xml',
+					pos_x: -70,
+					pos_y: 1374,
+					x: 431.7,
+					y: 2054.1
+				}
+			]
+		},
+		{
+			seed: 551,
+			params: {
+				x: -78,
+				y: 2907,
+				greed: false
+			},
+			ans: [
+				{
+					entity: 'data/entities/items/pickup/thunderstone.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				}
 			]
 		}
 	];

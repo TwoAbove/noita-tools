@@ -43,39 +43,39 @@ const testConfig = {
 					],
 					funcs: ['spawn_meditation_cube', 'load_pixel_scene4_alt']
 				},
-				// snowCastle: {
-				// 	pos: {
-				// 		x: 34,
-				// 		y: 25
-				// 	},
-				// 	searchType: 'or',
-				// 	search: [
-				// 		'data/biome_impl/snowcastle/kitchen.png',
-				// 		'data/biome_impl/snowcastle/sauna.png'
-				// 	],
-				// 	funcs: ['load_pixel_scene2']
-				// },
-				// snowCave: {
-				// 	pos: {
-				// 		x: 34,
-				// 		y: 21
-				// 	},
-				// 	searchType: 'and',
-				// 	search: [
-				// 		'data/biome_impl/snowcave/receptacle_water.png',
-				// 		'data/biome_impl/snowcave/buried_eye.png'
-				// 	],
-				// 	funcs: ['load_pixel_scene', 'load_pixel_scene3']
-				// },
-				// vault: {
-				// 	pos: {
-				// 		x: 34,
-				// 		y: 31
-				// 	},
-				// 	searchType: 'and',
-				// 	search: ['data/biome_impl/vault/lab_puzzle.png'],
-				// 	funcs: ['load_pixel_scene2']
-				// }
+				snowCastle: {
+					pos: {
+						x: 34,
+						y: 25
+					},
+					searchType: 'or',
+					search: [
+						'data/biome_impl/snowcastle/kitchen.png',
+						'data/biome_impl/snowcastle/sauna.png'
+					],
+					funcs: ['load_pixel_scene2']
+				},
+				snowCave: {
+					pos: {
+						x: 34,
+						y: 21
+					},
+					searchType: 'and',
+					search: [
+						'data/biome_impl/snowcave/receptacle_water.png',
+						'data/biome_impl/snowcave/buried_eye.png'
+					],
+					funcs: ['load_pixel_scene', 'load_pixel_scene3']
+				},
+				vault: {
+					pos: {
+						x: 34,
+						y: 31
+					},
+					searchType: 'and',
+					search: ['data/biome_impl/vault/lab_puzzle.png'],
+					funcs: ['load_pixel_scene2']
+				}
 			}
 		}
 	],

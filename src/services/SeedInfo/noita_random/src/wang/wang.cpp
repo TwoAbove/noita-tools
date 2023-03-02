@@ -13,6 +13,7 @@
 
 #include "pix.cpp"
 #include "search.cpp"
+#include "png.cpp"
 
 // TODO: Look into optimizing with <https://github.com/google/highway>
 
@@ -552,6 +553,160 @@ public:
 };
 
 std::map<unsigned long, stbhw_tileset *> ts_map = {};
+
+class MapHandler
+{
+   uint width;
+   uint height;
+   unsigned long color;
+   bool isCoalMine;
+   bool shouldBlockOutRooms;
+   unsigned int *randomMaterials;
+   int worldX;
+   int worldY;
+
+   enum MapType
+   {
+      one,
+      ten
+   };
+
+   unsigned char *map;
+   unsigned char *bigMap;
+
+   MapHandler(uint _width, uint _height, unsigned long _color, bool _isCoalMine, bool _shouldBlockOutRooms, unsigned int *_randomMaterials, int _worldX, int _worldY)
+   {
+      width = _width;
+      height = _height;
+      color = _color;
+      isCoalMine = _isCoalMine;
+      shouldBlockOutRooms = _shouldBlockOutRooms;
+      randomMaterials = _randomMaterials;
+      worldX = _worldX;
+      worldY = _worldY;
+      map = (unsigned char *)malloc(_width * _height * 4);
+      bigMap = (unsigned char *)malloc(_width * 10 * _height * 10 * 4);
+   }
+   ~MapHandler()
+   {
+      free(map);
+   }
+
+   void generate_map(
+       std::string rgba_tiles_b64)
+   {
+      stbhw_tileset *ts;
+      if (ts_map.contains(color))
+      {
+         ts = ts_map[color];
+      }
+      else
+      {
+         auto _ts = new stbhw_tileset();
+         auto tiles = load_png(rgba_tiles_b64);
+         unsigned char *rgb_tiles_data = (unsigned char *)malloc(3 * tiles.width * tiles.height);
+         rgbaToRgb(tiles.image, rgb_tiles_data, tiles.width, tiles.height);
+         int success = stbhw_build_tileset_from_image(_ts, rgb_tiles_data, tiles.width * 3, tiles.width, tiles.height);
+         if (!success)
+         {
+            printf("stbhw_build_tileset_from_image error: %s\n", stbhw_get_last_error());
+            return;
+         }
+         free(rgb_tiles_data);
+         ts_map[color] = _ts;
+         ts = _ts;
+      }
+
+      NollaPrng rng = GetRNG(width);
+
+      int tries = 0;
+      long mod_malloc_amount = 3 * width * (height + 4);
+      unsigned char *res = (unsigned char *)malloc(mod_malloc_amount);
+      long malloc_amount = 3 * width * height;
+
+      unsigned char *rgb_result = (unsigned char *)malloc(malloc_amount);
+
+      bool hasPath = false;
+      do
+      {
+         if (tries >= 100)
+         {
+            break;
+         }
+
+         NollaPrng rng2 = NollaPrng(rng.NextU());
+
+         int success = stbhw_generate_image(ts, NULL, res, width * 3, width, height + 4, [&rng2]()
+                                            { return rng2.NextU(); });
+         if (!success)
+         {
+            printf("stbhw_generate_image error: %s\n", stbhw_get_last_error());
+            return;
+         }
+
+         for (int i = 4 * 3 * width, j = 0; i < mod_malloc_amount; i++, j++)
+         {
+            rgb_result[j] = res[i];
+         }
+
+         MapGen mg = MapGen(rgb_result, width, height, isCoalMine, shouldBlockOutRooms, randomMaterials, worldX, worldY);
+
+         hasPath = mg.hasPath();
+         if (hasPath)
+         {
+            mg.finalize();
+         }
+
+         tries++;
+         // } while (tries <= 0);
+      } while (hasPath == false);
+
+      // Cleanup
+      free(res);
+      rgbToRgba(rgb_result, map, width, height);
+      free(rgb_result);
+   }
+
+   void iterateMap(unsigned char *m, int w, int h, int step, emscripten::val cb)
+   {
+      unsigned long posMax = w * h;
+
+      for (int y = 0; y < h; y += step)
+      {
+         for (int x = 0; x < w; x += step)
+         {
+            unsigned long pos = w * y + x;
+            long color = getPixelColor(m, pos * 3);
+            cb.call<void>("call", 0, x, y, color);
+         }
+      }
+   }
+
+   bool somePixels(unsigned char *m, int w, int h, int step, emscripten::val cb)
+   {
+      unsigned long posMax = w * h;
+
+      for (int y = 0; y < h; y += step)
+      {
+         for (int x = 0; x < w; x += step)
+         {
+            unsigned long pos = w * y + x;
+            long color = getPixelColor(m, pos * 3);
+            bool ans = cb.call<bool>("call", 0, x, y, color);
+            if (ans)
+            {
+               return true;
+            }
+         }
+      }
+      return false;
+   }
+
+   std::string getMap()
+   {
+      return unload_png(map, width, height);
+   }
+};
 
 // tiles_data and result are allocated and freed in js.
 STBHW_EXTERN void generate_map(

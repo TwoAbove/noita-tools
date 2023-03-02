@@ -32,7 +32,7 @@ export enum InterestType {
 	Wang,
 	PixelScene,
 	Pixel,
-	Interest,
+	Interest
 }
 
 const maps = Object.values(mapData).reduce((c, v: any) => {
@@ -125,7 +125,7 @@ export class MapInfoProvider extends InfoProvider {
 				return;
 			}
 			this.wang_maps[key] = await this.imageActions.imageFromBase64(
-				mapData.wang.template_file,
+				mapData.wang.template_file
 				// mapData.wang.map_width,
 				// mapData.wang.map_height
 			);
@@ -138,7 +138,7 @@ export class MapInfoProvider extends InfoProvider {
 			this.impls.set(
 				k,
 				await this.imageActions.imageFromBase64(
-					impls[k].src,
+					impls[k].src
 					// impls[k].w,
 					// impls[k].h
 				)
@@ -146,8 +146,12 @@ export class MapInfoProvider extends InfoProvider {
 		};
 
 		return Promise.allSettled([
-			promiseMap(this.maps, async ([k, v]) => loadMaps(k, v), { concurrency: 20 }),
-			promiseMap(Object.keys(impls), async k => loadImpls(k), { concurrency: 20 }),
+			promiseMap(this.maps, async ([k, v]) => loadMaps(k, v), {
+				concurrency: 20
+			}),
+			promiseMap(Object.keys(impls), async k => loadImpls(k), {
+				concurrency: 20
+			})
 		]);
 	}
 
@@ -164,13 +168,9 @@ export class MapInfoProvider extends InfoProvider {
 
 		const x = _x % tiles_w;
 		const y = _y % tiles_h;
-		return this.imageActions.getPixels(this.imageActions.crop(
-			map,
-			x * width,
-			y * height,
-			width,
-			height
-		));
+		return this.imageActions.getPixels(
+			this.imageActions.crop(map, x * width, y * height, width, height)
+		);
 	};
 
 	inMainPath = (
@@ -247,7 +247,12 @@ export class MapInfoProvider extends InfoProvider {
 			w,
 			h,
 			['solid_wall_tower_1', 'coalmine'].includes(mapData.name),
-			['solid_wall_tower_1', 'solid_wall_tower_2', 'coalmine', 'excavationsite'].includes(mapData.name),
+			[
+				'solid_wall_tower_1',
+				'solid_wall_tower_2',
+				'coalmine',
+				'excavationsite'
+			].includes(mapData.name),
 			flatRandomMaterials,
 			area.x1,
 			area.y1
@@ -333,7 +338,10 @@ export class MapInfoProvider extends InfoProvider {
 			}
 
 			// if fits
-			if (px + impl.width >= areaMap.width || py + impl.height >= areaMap.height) {
+			if (
+				px + impl.width >= areaMap.width ||
+				py + impl.height >= areaMap.height
+			) {
 				return;
 			}
 
@@ -366,7 +374,11 @@ export class MapInfoProvider extends InfoProvider {
 
 				points.push({
 					item: funcName,
-					gx: gx + dx, gy: gy + dy, px, py, type: InterestType.Pixel
+					gx: gx + dx,
+					gy: gy + dy,
+					px,
+					py,
+					type: InterestType.Pixel
 				});
 
 				mapImplementation.handle(
@@ -439,7 +451,11 @@ export class MapInfoProvider extends InfoProvider {
 				// console.log(funcName, px, py, gx, gy, is_open_path);
 				points.push({
 					item: funcName,
-					gx, gy, px, py, type: InterestType.Wang
+					gx,
+					gy,
+					px,
+					py,
+					type: InterestType.Wang
 				});
 				mapImplementation.handle(funcName, gx, gy, 10, 10, false);
 			});
@@ -452,6 +468,71 @@ export class MapInfoProvider extends InfoProvider {
 			points,
 			area
 		};
+	}
+
+	testProvide(tx: number, ty: number, seed: string, funcs?) {
+		if (this.seed !== seed) {
+			this.seed = seed;
+			this.clearCache();
+		}
+		const color = this.imageActions.getColor(this.worldMap, tx, ty);
+		const area = this.getArea(tx, ty, color);
+		const mapData = this.maps.get(color)!;
+
+		const randomMaterials: number[][] = [];
+
+		if (mapData.randomMaterials) {
+			for (const from of Object.keys(mapData.randomMaterials)) {
+				const fromInt = this.imageActions.hexRGBAtoIntRGB(from);
+				const to = mapData.randomMaterials[from].map(
+					this.imageActions.hexRGBAtoIntRGB
+				);
+				// To send a 1d array to c++
+				const flat = [fromInt, to.length, ...to];
+				randomMaterials.push(flat);
+			}
+		}
+
+		const w = this.randoms.GetWidthFromPix(area.x1, area.x2 + 1);
+		const h = this.randoms.GetWidthFromPix(area.y1, area.y2 + 1);
+
+		const flatRandomMaterials = [
+			randomMaterials.length,
+			...randomMaterials.flat()
+		];
+		const randomMaterialsPtr = this.randoms.Module._malloc(
+			randomMaterials.length * 4
+		);
+		// 32-bit (uint)
+		const randomMatData = new Uint32Array(
+			this.randoms.Module.HEAPU32.buffer,
+			randomMaterialsPtr,
+			randomMaterials.length * 4
+		);
+		randomMatData.set(flatRandomMaterials);
+
+		const mh = new this.randoms.MapHandler(
+			w,
+			h,
+			color,
+			['solid_wall_tower_1', 'coalmine'].includes(mapData.name),
+			[
+				'solid_wall_tower_1',
+				'solid_wall_tower_2',
+				'coalmine',
+				'excavationsite'
+			].includes(mapData.name),
+			randomMaterialsPtr,
+			area.x1,
+			area.y1
+		);
+
+		mh.generate_map(mapData.wang.template_file);
+
+		console.log("data:image/png;base64," + mh.getMap());
+
+		this.randoms.Module._free(randomMaterialsPtr);
+		mh.delete();
 	}
 
 	provide(tx: number, ty: number, seed: string, funcs?) {

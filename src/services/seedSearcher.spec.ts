@@ -44,7 +44,7 @@ describe('SeedSearcher', () => {
 					selectedRule: '13'
 				}
 			},
-			ans: 1405
+			ans: 1151
 		},
 		{
 			config: {

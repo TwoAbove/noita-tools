@@ -11,9 +11,7 @@ import { Compute, ComputeConsole } from './Compute';
 
 const isDev = () => {
 	const host = window.location.host;
-	return (
-		process.env.NODE_ENV === 'development' || host.includes('dev.noitool.com')
-	);
+	return process.env.NODE_ENV === 'development' || host === 'dev.noitool.com';
 };
 
 const isLocal = () => {

@@ -18,6 +18,43 @@ export const logify = func => (...args) => {
 	return res;
 };
 
+class MapHandler {
+	map!: number; // ptr
+	bigMap!: number; // ptr
+
+	constructor(
+		public width: number,
+		public height: number,
+		public color: number,
+		public isCoalMine: boolean,
+		public shouldBlockOutRooms: boolean,
+		public randomMaterials: number,
+		public worldX: number,
+		public worldY: number
+	) { }
+
+	delete() { };
+	generate_map(rgba_tiles_b64: string) { };
+	iterateMap(
+		map_ptr: number,
+		width: number,
+		height: number,
+		stet: number,
+		cb: (x: number, y: number, color: number) => void
+	) { };
+	somePixels(
+		map_ptr: number,
+		width: number,
+		height: number,
+		stet: number,
+		cb: (x: number, y: number, color: number) => boolean
+	) {
+		return Boolean()
+	};
+	getMap() {
+		return String();
+	};
+}
 export interface IRandomModule {
 	Module: any;
 
@@ -109,13 +146,14 @@ export interface IRandomModule {
 
 	SetUnlockedSpells(i: number, val: number): void;
 	GetWidthFromPix(x1: number, x2: number): number;
+
+	MapHandler: typeof MapHandler
 }
 
 interface IRND {
 	x: number;
 	y: number;
 }
-
 
 export const genRandom = async (Module: IRandomModule) => {
 	Module.GenerateMap = Module._generate_map;

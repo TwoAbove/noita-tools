@@ -115,7 +115,7 @@ const mapParts = {
 	}
 };
 
-const { xr, yr } = mapParts.coalmine;
+const { xr, yr } = mapParts.MainPath;
 // const { xr, yr } = mapParts.coalmine;
 // const xr = new Array(70).fill(1).map((_, i) => i);
 // const yr = new Array(48).fill(1).map((_, i) => i);

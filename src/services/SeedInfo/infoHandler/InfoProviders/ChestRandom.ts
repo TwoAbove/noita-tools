@@ -9,10 +9,13 @@ import { IRandom } from '../../random';
 
 // TODO: There are many places where we will deal with items
 // We should ideally standardize this.
+type PartialExcept<T, K extends keyof T> = Pick<T, K> & Partial<Omit<T, K>>;
 export interface IItem {
 	entity: string;
 	x: number;
 	y: number;
+	pos_x: number;
+	pos_y: number;
 	extra?: any;
 }
 
@@ -55,8 +58,10 @@ export class ChestRandomProvider extends InfoProvider {
 	}
 
 	provide(x: number, y: number, greed = false): IItem[] {
-		this.randoms.SetRandomSeed(x, y);
-		const entities: Partial<IItem>[] = [];
+		const rand_x = x + 509.7;
+		const rand_y = y + 683.1;
+		this.randoms.SetRandomSeed(rand_x, rand_y);
+		const entities: PartialExcept<IItem, 'entity'>[] = [];
 		let count = 1;
 		while (count > 0) {
 			count--;
@@ -140,7 +145,7 @@ export class ChestRandomProvider extends InfoProvider {
 					entities.push({
 						entity: 'data/entities/items/pickup/potion.xml',
 						x,
-						y: y + 2
+						y
 					});
 				} else if (rnd <= 98) {
 					entities.push({
@@ -152,13 +157,13 @@ export class ChestRandomProvider extends InfoProvider {
 						entities.push({
 							entity: 'data/entities/items/pickup/potion_secret.xml',
 							x,
-							y: y + 2
+							y
 						});
 					} else if (rnd <= 100) {
 						entities.push({
 							entity: 'data/entities/items/pickup/potion_random_material.xml',
 							x,
-							y: y + 2
+							y
 						});
 					}
 				}
@@ -215,9 +220,6 @@ export class ChestRandomProvider extends InfoProvider {
 					}
 				}
 				const entity = { entity: opt, x, y: y - 10 };
-				if (entity.entity === 'data/entities/items/pickup/potion.xml') {
-					entity.y += 2;
-				}
 				entities.push(entity);
 			} else if (rnd <= 65) {
 				// Random card
@@ -358,13 +360,32 @@ export class ChestRandomProvider extends InfoProvider {
 			}
 		}
 
-		return entities.map(e => {
-			if (!e.x || !e.y) {
-				e.x = x;
-				e.y = y;
+		return entities.map<IItem>((e): IItem => {
+			const res: Partial<IItem> = { entity: e.entity };
+			if (e.x && e.y) {
+				res.x = x;
+				res.y = y;
+				res.pos_x = x;
+				res.pos_y = y;
+			} else {
+				res.x = rand_x;
+				res.y = rand_y;
+				res.pos_x = x + this.randoms.Random(-10,10);
+				res.pos_y = y + this.randoms.Random(-5,5);
 			}
-			return e;
-		}) as IItem[];
+			switch(res.entity) {
+				case 'data/entities/items/pickup/potion.xml':
+				case 'data/entities/items/pickup/potion_secret.xml':
+				case 'data/entities/items/pickup/potion_random_material.xml':
+					res.y += 2;
+					res.pos_y! += 2;
+					break;
+			}
+			if (e.extra) {
+				res.extra = e.extra;
+			}
+			return res as IItem;
+		});
 	}
 
 	test(rule: IRule): boolean {

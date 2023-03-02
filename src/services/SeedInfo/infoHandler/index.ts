@@ -5,7 +5,7 @@ import { FungalInfoProvider } from './InfoProviders/Fungal';
 import { InfoProvider } from './InfoProviders/Base';
 import { IPerkChangeAction, PerkInfoProvider } from './InfoProviders/Perk';
 import { LotteryInfoProvider } from './InfoProviders/Lottery';
-import { MapInfoProvider } from './InfoProviders/Map';
+// import { MapInfoProvider } from './InfoProviders/Map';
 import { MaterialInfoProvider } from './InfoProviders/Material';
 import { RainInfoProvider } from './InfoProviders/Rain';
 import { ShopInfoProvider } from './InfoProviders/Shop';
@@ -35,7 +35,7 @@ interface IProviders {
   biomeModifier: BiomeModifierInfoProvider;
   fungalShift: FungalInfoProvider;
   lottery: LotteryInfoProvider;
-  map: MapInfoProvider;
+  // map: MapInfoProvider;
   material: MaterialInfoProvider;
   perk: PerkInfoProvider;
   rain: RainInfoProvider;
@@ -148,7 +148,7 @@ export class GameInfoProvider extends EventTarget {
       biomeModifier: new BiomeModifierInfoProvider(this.randoms),
       fungalShift: new FungalInfoProvider(this.randoms),
       lottery: new LotteryInfoProvider(this.randoms),
-      map: new MapInfoProvider(this.randoms),
+      // map: new MapInfoProvider(this.randoms),
       material: new MaterialInfoProvider(this.i18n),
       perk: new PerkInfoProvider(this.randoms),
       rain: new RainInfoProvider(this.randoms),
