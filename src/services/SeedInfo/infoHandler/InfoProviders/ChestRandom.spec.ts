@@ -71,4 +71,19 @@ describe('ChestRandomProvider', () => {
 			});
 		});
 	});
+
+	it("Should correctly handle PW >27", async () => {
+		const randoms = await loadRandom();
+		const ap = new ChestRandomProvider(randoms, getUnlockedSpells());
+		randoms.SetWorldSeed(1151);
+		// assuming regular rounding
+		const x1 = 1003442;
+		const x2 = 1003442 + 1;
+		const x3 = 1003442 - 5;
+		const res1 = ap.provide(x1, 2000);
+		const res2 = ap.provide(x2, 2000);
+		const res3 = ap.provide(x3, 2000);
+		expect(res1).toEqual(res2);
+		expect(res1).toEqual(res3);
+	});
 });

@@ -60,7 +60,7 @@ export class MapInfoProvider extends InfoProvider {
 	rawMapCache = new Map<string, ImageData>();
 	mapCache = new Map<string, OffscreenCanvas>();
 	mapMainPathCache = new Map<string, ImageData>();
-	interestPointsCache = new Map<string, any>();
+	interestPointsCache = new Map<string, ReturnType<MapInfoProvider["getInterestPoints"]>>();
 	seed?: string;
 
 	imageActions!: IImageActions;

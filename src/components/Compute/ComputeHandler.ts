@@ -56,13 +56,11 @@ export default class ComputeHandler {
         this.numberOfWorkers = workers;
         this.update();
       });
-      console.log(this.chunkStatus);
     }, 5000);
 
     this.handleJob = this.handleJob.bind(this);
 
     this.computeSocket.io.on('compute:done', ({ result, chunkId }) => {
-      console.log({ result });
       const chunk = this.chunkStatus.find(c => c.chunkId === chunkId);
       if (!chunk) {
         return;

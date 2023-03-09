@@ -17,6 +17,7 @@ import HolyMountain from './SeedInfoViews/HolyMountain';
 
 import { db } from '../../services/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import MapComponent from './SeedInfoViews/Map';
 
 const WithShow = (props: {
 	id: string;
@@ -42,6 +43,8 @@ interface ISeedInfoProps {
 
 const SeedInfo = (props: ISeedInfoProps) => {
 	const { data, infoProvider, seed } = props;
+	const searchParams = new URLSearchParams(document.location.search);
+	const showMap = !!searchParams.get('map');
 
 	return (
 		<Row className="m-0">
@@ -105,6 +108,14 @@ const SeedInfo = (props: ISeedInfoProps) => {
 					/>
 				</WithShow>
 			</Col>
+			{showMap && (
+				<WithShow id="map">
+					<MapComponent
+						infoProvider={infoProvider}
+						seed={infoProvider.config.seed.toString()}
+					/>
+				</WithShow>
+			)}
 		</Row>
 	);
 };

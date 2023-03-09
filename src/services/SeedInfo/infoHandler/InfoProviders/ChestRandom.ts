@@ -1,5 +1,6 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import D from 'decimal.js';
 
 import { IRule } from '../IRule';
 import { InfoProvider } from './Base';
@@ -57,7 +58,10 @@ export class ChestRandomProvider extends InfoProvider {
 		return this.unlockedSpells[pos];
 	}
 
-	provide(x: number, y: number, greed = false): IItem[] {
+	provide(_x: number, _y: number, greed = false): IItem[] {
+		// see https://github.com/TwoAbove/noita-tools/issues/270
+		const x = new D(_x).toSD(6).toNumber();
+		const y = new D(_y).toSD(6).toNumber();
 		const rand_x = x + 509.7;
 		const rand_y = y + 683.1;
 		this.randoms.SetRandomSeed(rand_x, rand_y);

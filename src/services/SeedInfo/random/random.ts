@@ -56,6 +56,7 @@ class MapHandler {
 	};
 }
 export interface IRandomModule {
+	HEAPU32: any;
 	Module: any;
 
 	printErr: any;
@@ -135,14 +136,13 @@ export interface IRandomModule {
 		ys: number,
 		isCoalMine: boolean,
 		shouldBlockOutRooms: boolean,
-		randomMaterials: number[],
+		randomMaterials: number,
 		xOffset: number,
 		yOffset: number,
-		limit: number
 	): void;
 
 	GetGlobalPos(): number;
-	GeneratePathMap(): void;
+	GeneratePathMap(...args): void;
 
 	SetUnlockedSpells(i: number, val: number): void;
 	GetWidthFromPix(x1: number, x2: number): number;
@@ -268,6 +268,7 @@ export const genRandom = async (Module: IRandomModule) => {
 		GetRandomActionWithType: Module.GetRandomActionWithType,
 		GetWidthFromPix: Module.GetWidthFromPix,
 		GetGlobalPos: Module.GetGlobalPos,
+		MapHandler: Module.MapHandler,
 
 		SetUnlockedSpells,
 		random_next,

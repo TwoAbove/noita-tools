@@ -134,7 +134,7 @@ export default class Base {
 					value_min: 72,
 					value_max: 72,
 					load_entity_func: (data, x, y) => {
-						this.randoms.SetRandomSeed(x + 425, y - 243);
+						this.randoms.SetRandomSeed(x + 2617.941, y - 1229.3581);
 						const opts = [
 							'laser',
 							'fireball',
@@ -154,8 +154,10 @@ export default class Base {
 							y + oy
 						);
 						rnd = this.randoms.Random(1, 10);
+						let active = false;
 						if (rnd === 2) {
 							// runestone_activate(entity_id);
+							active = true;
 						}
 					},
 					offset_y: -10

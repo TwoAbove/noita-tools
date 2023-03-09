@@ -168,6 +168,73 @@ describe('PacifistChestProvider', () => {
 					y: 2907
 				}
 			]
+		},
+		{
+			seed: 1151,
+			params: {
+				level: 0,
+				worldOffset: 28,
+				fallback: 0,
+				greed: false
+			},
+			ans: [
+				{
+					entity: 'data/entities/items/pickup/goldnugget_200.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				}
+			]
 		}
 		// {
 		// 	seed: 123435616,

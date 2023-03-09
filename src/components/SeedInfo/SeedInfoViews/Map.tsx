@@ -6,6 +6,7 @@ import {
 	copyImage,
 	imageToBase64
 } from '../../../services/imageActions/webImageActions';
+import { useContainerDimensions } from '../../helpers';
 
 interface IMapProps {
 	infoProvider: GameInfoProvider;
@@ -162,6 +163,8 @@ export const Tile = (props: ITileProps) => {
 // Name collision with js Map
 const MapComponent = (props: IMapProps) => {
 	const { infoProvider, seed, iter } = props;
+	const componentRef = useRef<HTMLDivElement>(null);
+	const { width, height } = useContainerDimensions(componentRef);
 
 	const [images, setImages] = useState<Map<string, OffscreenCanvas>>();
 
@@ -193,7 +196,7 @@ const MapComponent = (props: IMapProps) => {
 	}
 
 	return (
-		<div className="flex-nowrap justify-content-center">
+		<div ref={componentRef} className="flex-nowrap overflow-auto justify-content-center">
 			{yr.map(y => {
 				return (
 					<div className="row flex-nowrap" key={y + seed}>
