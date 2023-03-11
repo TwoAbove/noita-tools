@@ -3,10 +3,10 @@ import Tesseract from '../../../../node_modules/tesseract.js/src/index.js';
 
 
 import genCanvases, { IFontCanvases } from './getFontCanvases';
-import { copyImage, crop, enhance, stretch, diff, invert } from './imageActions';
+import { copyImage, crop, enhance, stretch, diff, invert, printImage } from '../../../services/imageActions/webCanvasImageActions';
 
 const startCapture = async (
-  displayMediaOptions: DisplayMediaStreamConstraints
+  displayMediaOptions: MediaStreamConstraints
 ): Promise<MediaStream | null> => {
   let captureStream: MediaStream;
   try {
@@ -78,7 +78,6 @@ class OCRHandler extends EventTarget {
       cacheMethod: 'none'
       // logger: this.canvasRef ? console.log : () => { },
     });
-    await worker.load();
     await worker.loadLanguage('eng');
     await worker.initialize('eng');
     await worker.setParameters({
@@ -96,7 +95,7 @@ class OCRHandler extends EventTarget {
     this.tesseractWorker = worker;
   }
 
-  async startCapture(displayMediaOptions: DisplayMediaStreamConstraints = {}) {
+  async startCapture(displayMediaOptions: MediaStreamConstraints = {}) {
     const ms = await startCapture(displayMediaOptions);
     if (ms) {
       this.mediaStream = ms;
@@ -142,7 +141,7 @@ class OCRHandler extends EventTarget {
     } catch (e) {
       console.error('captureLoop error:', e);
       await this.stopCapture();
-      return this.startCapture();
+      // return this.startCapture();
     }
     this.lastCapture = new Date();
   }
@@ -150,7 +149,7 @@ class OCRHandler extends EventTarget {
   async captureLoop() {
     while (this.loop) {
       if (((+new Date()) - (+this.lastCapture)) < 1000) {
-        await new Promise(r => setTimeout(r, 100));
+        await new Promise(r => setTimeout(r, 250));
       }
       if (this.canvasRef) { // to debug
         console.log('One-time capture');
@@ -205,7 +204,7 @@ class OCRHandler extends EventTarget {
       ctx.drawImage(img, 40, 0);
     }
 
-    const res = await this.tesseractWorker.recognize(img);
+    const res = await this.tesseractWorker.recognize(img as any);
     const secondLine = res.data.lines[1]; // seed is on the second line always
     if (!secondLine) {
       return;
@@ -225,7 +224,7 @@ class OCRHandler extends EventTarget {
     return text;
   }
 
-  getBestFitChar = (char: HTMLCanvasElement, debugOffset = 0): string => {
+  getBestFitChar = (char: any, debugOffset = 0): string => {
     let maxFit = Number.MAX_SAFE_INTEGER;
     let bestChar = '';
     let i = 0;

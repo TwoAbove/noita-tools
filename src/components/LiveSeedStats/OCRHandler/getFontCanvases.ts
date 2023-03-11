@@ -1,8 +1,8 @@
 import font from '../font.json';
-import { invert, unAlpha } from './imageActions';
+import { createCanvas, getContext, invert, unAlpha } from '../../../services/imageActions/webImageActions';
 
 export interface IFontCanvases {
-	[char: string]: HTMLCanvasElement;
+	[char: string]: OffscreenCanvas;
 }
 
 const genCanvases = async (): Promise<IFontCanvases> => {
@@ -14,11 +14,8 @@ const genCanvases = async (): Promise<IFontCanvases> => {
 					const img = new Image();
 					img.src = data;
 					img.onload = () => {
-						const canvas = document.createElement('canvas');
-						canvas.width = img.width;
-						canvas.height = img.height;
-						const ctx = canvas.getContext('2d')!;
-						ctx.imageSmoothingEnabled = false;
+						const canvas = createCanvas(img.width, img.height);
+						const ctx = getContext(canvas);
 						ctx.drawImage(img, 0, 0);
 						fontCanvases[c] = invert(unAlpha(canvas));
 						res();

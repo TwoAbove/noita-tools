@@ -150,8 +150,8 @@ const QuirkModal = props => {
 						perks that you will get, <b>not their position</b>. <br />
 						<br />
 						When looking at <i>always cast</i> and <i>perk lottery</i> info,
-						please note that they are <b>position</b>-dependent, not
-						perk-dependent. That means that if the position of{' '}
+						note that they are <b>position</b>-dependent, not
+						<b>perk</b>-dependent. That means that if the position of{' '}
 						<i>always cast</i> in-tool is different from that in-game, then the
 						value will be different. As a non-perfect solution, please enable
 						"show always-cast for whole row" in the settings (shortcut below).
@@ -179,30 +179,6 @@ const QuirkModal = props => {
 						<code className="mx-1">data/materials.xml</code> will change the
 						generated materials.
 					</p>
-				</Part>
-				<Part>
-					<h4>Always Cast</h4>
-					<p>
-						The probabilities in the{' '}
-						<a
-							href="https://noita.wiki.gg/wiki/Perks"
-							rel="noreferrer"
-							target="_blank"
-						>
-							Noita wiki
-						</a>{' '}
-						are incorrect, as there is a bug in the Noita code that does not
-						enable any random tier 6 modifier, static projectile, and utility
-						spells to be added to the wands. <br />
-						<br /> The only ones available are:
-					</p>
-					<div className="d-flex align-content-start flex-wrap pb-3">
-						{[...spellsToShow].map(s => (
-							<div className="m-1 p-0 " key={s}>
-								<Spell id={s} />
-							</div>
-						))}
-					</div>
 				</Part>
 				<Part>
 					<h4>Fungal Shifts</h4>

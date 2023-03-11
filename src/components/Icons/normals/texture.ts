@@ -57,7 +57,7 @@ class Texture {
 
 		this.ready = false;
 		this.renderElement = document.createElement('canvas');
-		this.renderContext = this.renderElement.getContext('2d')!;
+		this.renderContext = this.renderElement.getContext('2d', { willReadFrequently: true, desynchronized: true })!;
 		this.normals = [];
 	}
 

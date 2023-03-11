@@ -390,59 +390,59 @@ class Liquidcave extends Base {
     }
   ];
 
-  async spawn_small_enemies(x: number, y: number) {
-    await this.spawn(this.g_small_enemies, x, y);
+  spawn_small_enemies(x: number, y: number) {
+    this.spawn(this.g_small_enemies, x, y);
   }
-  async spawn_big_enemies(x: number, y: number) {
-    await this.spawn(this.g_big_enemies, x, y);
+  spawn_big_enemies(x: number, y: number) {
+    this.spawn(this.g_big_enemies, x, y);
   }
-  async spawn_lamp(x: number, y: number) {
-    await this.spawn(this.g_lamp, x, y + 4, 0, 0);
+  spawn_lamp(x: number, y: number) {
+    this.spawn(this.g_lamp, x, y + 4, 0, 0);
   }
-  async spawn_props(x: number, y: number) {
-    await this.spawn(this.g_props, x, y, 0, 0);
+  spawn_props(x: number, y: number) {
+    this.spawn(this.g_props, x, y, 0, 0);
   }
-  async spawn_props2(x: number, y: number) {
-    await this.spawn(this.g_props2, x, y, 0, 0);
+  spawn_props2(x: number, y: number) {
+    this.spawn(this.g_props2, x, y, 0, 0);
   }
-  async spawn_bottle(x: number, y: number) {
-    await this.spawn(this.g_bottle, x, y, 0, 0);
+  spawn_bottle(x: number, y: number) {
+    this.spawn(this.g_bottle, x, y, 0, 0);
   }
-  async spawn_chest(x: number, y: number) { }
-  async spawn_shopkeeper(x: number, y: number) { }
-  async spawn_items(x: number, y: number) { }
-  async spawn_props3(x: number, y: number) { }
-  async spawn_blood(x: number, y: number) { }
-  async load_pixel_scene2(x: number, y: number) { }
-  async spawn_unique_enemy(x: number, y: number) { }
-  async spawn_unique_enemy2(x: number, y: number) { }
-  async spawn_unique_enemy3(x: number, y: number) { }
-  async spawn_save(x: number, y: number) { }
-  async spawn_ghostlamp(x: number, y: number) { }
-  async spawn_persistent_teleport(x: number, y: number) { }
-  async spawn_candles(x: number, y: number) { }
-  async init(x: number, y: number) { }
+  spawn_chest(x: number, y: number) { }
+  spawn_shopkeeper(x: number, y: number) { }
+  spawn_items(x: number, y: number) { }
+  spawn_props3(x: number, y: number) { }
+  spawn_blood(x: number, y: number) { }
+  load_pixel_scene2(x: number, y: number) { }
+  spawn_unique_enemy(x: number, y: number) { }
+  spawn_unique_enemy2(x: number, y: number) { }
+  spawn_unique_enemy3(x: number, y: number) { }
+  spawn_save(x: number, y: number) { }
+  spawn_ghostlamp(x: number, y: number) { }
+  spawn_persistent_teleport(x: number, y: number) { }
+  spawn_candles(x: number, y: number) { }
+  init(x: number, y: number) { }
 
-  async load_pixel_scene(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_pixel_scene_01, x - 5, y - 3);
-  }
-
-  async load_background_panel_big(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_background_panel_big, x, y);
+  load_pixel_scene(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_pixel_scene_01, x - 5, y - 3);
   }
 
-  async spawn_lasergun(x: number, y: number) {
-    await this.EntityLoad('data/entities/buildings/lasergun.xml', x + 5, y + 5);
+  load_background_panel_big(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_background_panel_big, x, y);
   }
 
-  async spawn_vines(x: number, y: number) {
-    await this.spawn(this.g_vines, x + 5, y + 5);
+  spawn_lasergun(x: number, y: number) {
+    this.EntityLoad('data/entities/buildings/lasergun.xml', x + 5, y + 5);
   }
-  async spawn_statues(x: number, y: number) {
-    await this.spawn(this.g_statues, x + 5, y - 10);
+
+  spawn_vines(x: number, y: number) {
+    this.spawn(this.g_vines, x + 5, y + 5);
   }
-  async spawn_potions(x: number, y: number) {
-    await this.spawn_from_list('potion_spawnlist_liquidcave', x, y);
+  spawn_statues(x: number, y: number) {
+    this.spawn(this.g_statues, x + 5, y - 10);
+  }
+  spawn_potions(x: number, y: number) {
+    this.spawn_from_list('potion_spawnlist_liquidcave', x, y);
   }
 }
 export default Liquidcave;

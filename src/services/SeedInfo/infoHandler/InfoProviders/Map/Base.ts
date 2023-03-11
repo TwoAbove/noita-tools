@@ -14,17 +14,21 @@ type TLoadPixelScene = (
 	skip_edge_textures?: boolean,
 	color_to_material_table?: {},
 	background_z_index?: number
-) => Promise<void>;
+) => void;
 
 type THandleInterest = (
 	item: string,
 	x: number,
 	y: number,
 	extra?: any
-) => Promise<void>;
+) => void;
 
 type TBiomeMapGetVerticalPositionInsideBiome = (x: number, y: number) => number;
 type TRaytracePlatforms = (x1: number, y1: number, x2: number, y2: number) => [boolean, number, number];
+
+type IConfig = {
+	funcs?: string[]
+};
 
 interface IProb {
 	prob?: number;
@@ -57,6 +61,8 @@ interface IProbScene {
 }
 
 export default class Base {
+	debug = false; // Enable to see logging. Very verbose!
+
 	spawnlists = {
 		potion_spawnlist: {
 			rnd_min: 1,
@@ -65,7 +71,7 @@ export default class Base {
 				{
 					value_min: 90,
 					value_max: 91,
-					load_entity_func: async (data, x, y) => {
+					load_entity_func: (data, x, y) => {
 						const ox = data.offset_x || 0;
 						const oy = data.offset_y || 0;
 
@@ -73,13 +79,13 @@ export default class Base {
 							this.GameHasFlagRun('greed_curse') &&
 							this.GameHasFlagRun('greed_curse_gone') === false
 						) {
-							await this.EntityLoad(
+							this.EntityLoad(
 								'data/entities/items/pickup/physics_gold_orb_greed.xml',
 								x + ox,
 								y + oy
 							);
 						} else {
-							await this.EntityLoad(
+							this.EntityLoad(
 								'data/entities/items/pickup/physics_gold_orb.xml',
 								x + ox,
 								y + oy
@@ -127,8 +133,8 @@ export default class Base {
 				{
 					value_min: 72,
 					value_max: 72,
-					load_entity_func: async (data, x, y) => {
-						this.randoms.SetRandomSeed(x + 425, y - 243);
+					load_entity_func: (data, x, y) => {
+						this.randoms.SetRandomSeed(x + 2617.941, y - 1229.3581);
 						const opts = [
 							'laser',
 							'fireball',
@@ -142,14 +148,16 @@ export default class Base {
 						const opt = opts[rnd];
 						const ox = data.offset_x || 0;
 						const oy = data.offset_y || 0;
-						const entity_id = await this.EntityLoad(
+						const entity_id = this.EntityLoad(
 							'data/entities/items/pickup/runestones/runestone_' + opt + '.xml',
 							x + ox,
 							y + oy
 						);
 						rnd = this.randoms.Random(1, 10);
+						let active = false;
 						if (rnd === 2) {
 							// runestone_activate(entity_id);
+							active = true;
 						}
 					},
 					offset_y: -10
@@ -157,7 +165,7 @@ export default class Base {
 				{
 					value_min: 71,
 					value_max: 71,
-					load_entity_func: async (data, x, y) => {
+					load_entity_func: (data, x, y) => {
 						const ox = data.offset_x || 0;
 						const oy = data.offset_y || 0;
 
@@ -165,13 +173,13 @@ export default class Base {
 							this.GameHasFlagRun('greed_curse') &&
 							this.GameHasFlagRun('greed_curse_gone') === false
 						) {
-							await this.EntityLoad(
+							this.EntityLoad(
 								'data/entities/items/pickup/physics_greed_die.xml',
 								x + ox,
 								y + oy
 							);
 						} else {
-							await this.EntityLoad(
+							this.EntityLoad(
 								'data/entities/items/pickup/physics_die.xml',
 								x + ox,
 								y + oy
@@ -263,16 +271,16 @@ export default class Base {
 	g_candles?: any;
 	g_ghostlamp?: any;
 
-	async init(x?: number, y?: number, w?: number, h?: number) {
+	init(x?: number, y?: number, w?: number, h?: number) {
 
 	}
 
-	async spawn(what: IProb[], x, y, rand_x?, rand_y?) {
+	spawn(what: IProb[], x, y, rand_x?, rand_y?) {
 		const x_offset = 5;
 		const y_offset = 5;
 		const v = this.random_from_table(what, x, y);
 		if (v) {
-			await this.entity_load_camera_bound(
+			this.entity_load_camera_bound(
 				v,
 				x + x_offset,
 				y + y_offset,
@@ -282,7 +290,7 @@ export default class Base {
 		}
 	}
 
-	async spawn_with_limited_random(what: IProb[], x, y, rand_x, rand_y, entities_to_randomize: string[]) {
+	spawn_with_limited_random(what: IProb[], x, y, rand_x, rand_y, entities_to_randomize: string[]) {
 		let x_offset = 5;
 		let y_offset = 5;
 
@@ -326,7 +334,7 @@ export default class Base {
 			random_x += 4;
 		}
 
-		await this.entity_load_camera_bound(v, x + x_offset, y + y_offset, random_x, random_y)
+		this.entity_load_camera_bound(v, x + x_offset, y + y_offset, random_x, random_y)
 	};
 
 	total_prob = (prob: IProbScene[], x: number): number => {
@@ -353,7 +361,7 @@ export default class Base {
 		return newgame_n >= level;
 	}
 
-	async load_random_pixel_scene(what: IProbScene[], x: number, y: number) {
+	load_random_pixel_scene(what: IProbScene[], x: number, y: number) {
 		let r = new D(
 			this.randoms.ProceduralRandomf(x, y, 0, 1) * this.total_prob(what, x)
 		);
@@ -399,7 +407,7 @@ export default class Base {
 			if (v.z_index) {
 				z_index = v.z_index;
 			}
-			await this.LoadPixelScene(
+			this.LoadPixelScene(
 				v.material_file!,
 				v.visual_file!,
 				x,
@@ -427,7 +435,7 @@ export default class Base {
 				!last_element.visual_file &&
 				!last_element.background_file
 			) {
-				await this.LoadPixelScene(
+				this.LoadPixelScene(
 					last_element.material_file!,
 					last_element.visual_file!,
 					x,
@@ -447,7 +455,7 @@ export default class Base {
 		}
 	}
 
-	async entity_load_camera_bound(
+	entity_load_camera_bound(
 		entity_data: IProb,
 		x: number,
 		y: number,
@@ -455,7 +463,7 @@ export default class Base {
 		rand_y = 4
 	) {
 		if (entity_data.entities) {
-			await Promise.all(entity_data.entities.map(async (ev, j) => {
+			entity_data.entities.forEach((ev, j) => {
 				if (typeof ev === 'object') {
 					let count = 1;
 					if (ev.min_count && ev.max_count) {
@@ -478,7 +486,7 @@ export default class Base {
 						if (ev.offset_x) {
 							pos_x = pos_x + ev.offset_x;
 						}
-						await this.HandleInterest(ev.entity!, pos_x, pos_y);
+						this.HandleInterest(ev.entity!, pos_x, pos_y);
 						// EntityLoadCameraBound(ev.entity, pos_x, pos_y)
 					}
 				} else if (ev) {
@@ -492,9 +500,9 @@ export default class Base {
 					// if (ev.offset_x) {
 					// 	pos_x = pos_x + ev.offset_x
 					// }
-					await this.HandleInterest(ev, pos_x, pos_y);
+					this.HandleInterest(ev, pos_x, pos_y);
 				}
-			}));
+			});
 		}
 
 		if (!entity_data.entity) {
@@ -523,7 +531,7 @@ export default class Base {
 				pos_x = pos_x + entity_data.offset_x;
 			}
 
-			await this.HandleInterest(entity_data.entity, pos_x, pos_y);
+			this.HandleInterest(entity_data.entity, pos_x, pos_y);
 			// EntityLoadCameraBound(entity_data.entity, pos_x, pos_y)
 		}
 	}
@@ -567,8 +575,8 @@ export default class Base {
 		return false;
 	}
 
-	async spawn_mimic_sign(x: number, y: number) {
-		await this.LoadPixelScene(
+	spawn_mimic_sign(x: number, y: number) {
+		this.LoadPixelScene(
 			'data/biome_impl/mimic_sign.png',
 			'data/biome_impl/mimic_sign_visual.png',
 			x,
@@ -579,7 +587,7 @@ export default class Base {
 		);
 	}
 
-	async spawn_heart(x: number, y: number) {
+	spawn_heart(x: number, y: number) {
 		let r = this.randoms.ProceduralRandomf(x, y, 0, 1);
 		this.randoms.SetRandomSeed(x, y);
 		let heart_spawn_percent = 0.7;
@@ -589,7 +597,7 @@ export default class Base {
 		}
 
 		if (r > heart_spawn_percent) {
-			const entity = await this.EntityLoad(
+			const entity = this.EntityLoad(
 				'data/entities/items/pickup/heart.xml',
 				x,
 				y
@@ -600,16 +608,16 @@ export default class Base {
 			if (rnd <= 90 || y < 512 * 3) {
 				rnd = this.randoms.Random(1, 1000);
 				if (this.randoms.Random(1, 300) === 1) {
-					await this.spawn_mimic_sign(x, y);
+					this.spawn_mimic_sign(x, y);
 				}
 				if (rnd < 1000) {
-					const entity = await this.EntityLoad(
+					const entity = this.EntityLoad(
 						'data/entities/items/pickup/chest_random.xml',
 						x,
 						y
 					);
 				} else {
-					const entity = await this.EntityLoad(
+					const entity = this.EntityLoad(
 						'data/entities/items/pickup/chest_random_super.xml',
 						x,
 						y
@@ -618,16 +626,16 @@ export default class Base {
 			} else {
 				rnd = this.randoms.Random(1, 100);
 				if (this.randoms.Random(1, 30) === 1) {
-					await this.spawn_mimic_sign(x, y);
+					this.spawn_mimic_sign(x, y);
 				}
 				if (rnd <= 95) {
-					const entity = await this.EntityLoad(
+					const entity = this.EntityLoad(
 						'data/entities/animals/chest_mimic.xml',
 						x,
 						y
 					);
 				} else {
-					const entity = await this.EntityLoad(
+					const entity = this.EntityLoad(
 						'data/entities/items/pickup/chest_leggy.xml',
 						x,
 						y
@@ -637,9 +645,9 @@ export default class Base {
 		}
 	}
 
-	async EntityLoad(entity, x, y) {
+	EntityLoad(entity, x, y) {
 		this.log('EntityLoad', entity, x, y);
-		await this.HandleInterest(entity, x, y);
+		this.HandleInterest(entity, x, y);
 	}
 
 	constructor(
@@ -648,9 +656,10 @@ export default class Base {
 		public HandleInterest: THandleInterest,
 		public BiomeMapGetVerticalPositionInsideBiome: TBiomeMapGetVerticalPositionInsideBiome,
 		public RaytracePlatforms: TRaytracePlatforms,
+		public config: IConfig
 	) { }
 
-	async spawn_from_list(list: any, x: number, y: number) {
+	spawn_from_list(list: any, x: number, y: number) {
 		this.randoms.SetRandomSeed(x + 425, y - 243);
 
 		const spawnlist = this.spawnlists[list] || list;
@@ -675,62 +684,62 @@ export default class Base {
 				const oy = data.offset_y || 0;
 
 				if (data.load_entity_func) {
-					await data.load_entity_func(data, x, y);
+					data.load_entity_func(data, x, y);
 					return;
 				} else if (data.load_entity_from_list) {
-					await this.spawn_from_list(data.load_entity_from_list, x, y);
+					this.spawn_from_list(data.load_entity_from_list, x, y);
 					return;
 				} else if (data.load_entity) {
-					await this.EntityLoad(data.load_entity, x + ox, y + oy);
+					this.EntityLoad(data.load_entity, x + ox, y + oy);
 					return;
 				}
 			}
 		}
 	}
 
-	async spawn_wands(x: number, y: number) {
+	spawn_wands(x: number, y: number) {
 		if (!this.g_items) {
 			this.err(
 				`g_items needs to exist on class ${this.constructor.name}`
 			);
 			return;
 		}
-		await this.spawn(this.g_items, x, y, 0, 0);
+		this.spawn(this.g_items, x, y, 0, 0);
 	}
 
-	async spawn_shopitem(x, y) {
-		await this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 10]);
+	spawn_shopitem(x, y) {
+		this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 10]);
 	}
 
-	async spawn_candles(x: number, y: number) {
+	spawn_candles(x: number, y: number) {
 		if (!this.g_candles) {
 			this.err(
 				`g_candles needs to exist on class ${this.constructor.name}`
 			);
 			return;
 		}
-		await this.spawn(this.g_candles, x - 5, y, 0, 0);
+		this.spawn(this.g_candles, x - 5, y, 0, 0);
 	}
 
-	async spawn_ghostlamp(x: number, y: number) {
+	spawn_ghostlamp(x: number, y: number) {
 		if (!this.g_ghostlamp) {
 			this.err(
 				`g_ghostlamp needs to exist on class ${this.constructor.name}`
 			);
 			return;
 		}
-		await this.spawn(this.g_ghostlamp, x, y, 0, 0);
+		this.spawn(this.g_ghostlamp, x, y, 0, 0);
 	}
 
-	async spawn_potions(x: number, y: number) {
-		await this.spawn_from_list('potion_spawnlist', x, y);
+	spawn_potions(x: number, y: number) {
+		this.spawn_from_list('potion_spawnlist', x, y);
 	}
 
-	async spawn_potion_altar(x: number, y: number) {
+	spawn_potion_altar(x: number, y: number) {
 		const r = this.randoms.ProceduralRandomf(x, y, 0, 1);
 		if (r > 0.65) {
-			console.log('spawn_potion_altar', x, y);
-			await this.LoadPixelScene(
+			this.log('spawn_potion_altar', x, y);
+			this.LoadPixelScene(
 				'data/biome_impl/potion_altar.png',
 				'',
 				x - 5,
@@ -740,30 +749,30 @@ export default class Base {
 			);
 		}
 	}
-	async spawn_collapse(x, y) {
-		await this.EntityLoad('data/entities/misc/loose_chunks.xml', x, y);
+	spawn_collapse(x, y) {
+		this.EntityLoad('data/entities/misc/loose_chunks.xml', x, y);
 	}
-	async spawn_moon(x, y) {
-		await this.EntityLoad('data/entities/buildings/moon_altar.xml', x, y);
+	spawn_moon(x, y) {
+		this.EntityLoad('data/entities/buildings/moon_altar.xml', x, y);
 	}
-	async spawn_wand_trap(x, y) {
-		await this.EntityLoad('data/entities/props/physics_trap_circle_acid.xml', x, y);
+	spawn_wand_trap(x, y) {
+		this.EntityLoad('data/entities/props/physics_trap_circle_acid.xml', x, y);
 	}
-	async spawn_wand_trap_ignite(x, y) {
-		await this.EntityLoad('data/entities/props/physics_trap_ignite.xml', x, y);
+	spawn_wand_trap_ignite(x, y) {
+		this.EntityLoad('data/entities/props/physics_trap_ignite.xml', x, y);
 	}
-	async spawn_wand_trap_electricity(x, y) {
-		await this.EntityLoad('data/entities/props/physics_trap_electricity.xml', x, y);
+	spawn_wand_trap_electricity(x, y) {
+		this.EntityLoad('data/entities/props/physics_trap_electricity.xml', x, y);
 	}
-	async spawn_wand_trap_electricity_source(x, y) {
-		await this.EntityLoad(
+	spawn_wand_trap_electricity_source(x, y) {
+		this.EntityLoad(
 			'data/entities/buildings/wand_trap_electricity.xml',
 			x,
 			y
 		);
 	}
 
-	async spawn_apparition(x, y) {
+	spawn_apparition(x, y) {
 		this.randoms.SetRandomSeed(x, y);
 		let PlaceItems1 = 1;
 		let PlaceItems2 = 2;
@@ -775,18 +784,18 @@ export default class Base {
 		// -- let r = ProceduralRandom(x + 5.352, y - 4.463)
 		// -- if (r > 0.1) then
 
-		let place_items = async () => {
+		let place_items = () => {
 			for (let i = 1; i <= 4; i++) {
 				let rx = x + this.randoms.Random(-10, 10);
-				await this.spawn_candles(rx, y);
+				this.spawn_candles(rx, y);
 			}
 		};
 
 		if (state === PlaceItems1 || state === PlaceItems2) {
-			await place_items();
+			place_items();
 			// print( tostring(x) .. ", " .. tostring(y) ) -- DEBUG:
 		} else if (state === Spawn) {
-			await this.LoadPixelScene(
+			this.LoadPixelScene(
 				'data/biome_impl/grave.png',
 				'data/biome_impl/grave_visual.png',
 				x - 10,
@@ -804,25 +813,25 @@ export default class Base {
 		// print( tostring(x) .. ", " .. tostring(y) ) -- DEBUG:
 	}
 
-	async handle(f: string, x: number, y: number, w, h, is_open_path) {
+	handle(f: string, x: number, y: number, w, h, is_open_path) {
 		if (!this[f]) {
 			this.err(`${f} not implemented for ${this.constructor.name}`);
 			return;
 		}
-		// console.group(`${f} ${x} ${y}`);
-		console.group(`${f} ${x} ${y} ${w} ${h} ${is_open_path}`);
-		if (f === 'spawn_potion_altar') {
-		} else {
+		if (this.config.funcs && !this.config.funcs.includes(f)) {
+			return;
 		}
-		await this[f](x, y, w, h, is_open_path);
-		console.groupEnd();
+		// console.group(`${f} ${x} ${y}`);
+		this.debug && console.group(`${f} ${x} ${y} ${w} ${h} ${is_open_path}`);
+		this[f](x, y, w, h, is_open_path);
+		this.debug && console.groupEnd();
 	}
 
 	log(...args) {
-		console.log(...args);
+		this.debug && console.log(...args);
 	}
 	warn(...args) {
-		console.warn(...args);
+		this.debug && console.warn(...args);
 	}
 	err(...args) {
 		console.error(...args);

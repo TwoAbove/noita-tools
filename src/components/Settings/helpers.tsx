@@ -58,8 +58,11 @@ export const PanelToggle = (props: IPanelToggleProps) => {
 	);
 };
 
-export const DropZone = (props: { onDrop: DropzoneOptions['onDrop'] }) => {
-	const { onDrop } = props;
+export const DropZone = (props: {
+	children?: React.ReactChild;
+	onDrop: DropzoneOptions['onDrop'];
+}) => {
+	const { children, onDrop } = props;
 	const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
 	return (
@@ -68,7 +71,7 @@ export const DropZone = (props: { onDrop: DropzoneOptions['onDrop'] }) => {
 			{...getRootProps()}
 		>
 			<input {...getInputProps()} />
-			<p>Drag 'n' drop the folder here, or click to select files</p>
+			{children}
 		</Container>
 	);
 };

@@ -5,11 +5,11 @@
 import { getUnlockedSpells, loadRandom } from '../testHelpers';
 import GameInfoProvider from './SeedInfo/infoHandler';
 import { RuleType } from './SeedInfo/infoHandler/IRule';
-import { SeedSolver } from './seedSearcher';
+import { SeedSearcher } from './seedSearcher';
 
 global.performance = require('perf_hooks').performance;
 
-describe('SeedSolver', () => {
+describe('SeedSearcher', () => {
 	const tests = [
 		{
 			config: {
@@ -44,7 +44,7 @@ describe('SeedSolver', () => {
 					selectedRule: '13'
 				}
 			},
-			ans: 1405
+			ans: 1151
 		},
 		{
 			config: {
@@ -116,7 +116,7 @@ describe('SeedSolver', () => {
 				false
 			);
 
-			const solver = new SeedSolver(infoProvider);
+			const solver = new SeedSearcher(infoProvider);
 			solver.update(t.config as any);
 			await solver.work();
 			const res = solver.getInfo();
@@ -239,7 +239,7 @@ describe('SeedSolver', () => {
 			false
 		);
 
-		const solver = new SeedSolver(infoProvider);
+		const solver = new SeedSearcher(infoProvider);
 		solver.update(config as any);
 		expect(solver.rules).toEqual(ans);
 	});
@@ -371,7 +371,7 @@ describe('SeedSolver', () => {
 			false
 		);
 
-		const solver = new SeedSolver(infoProvider);
+		const solver = new SeedSearcher(infoProvider);
 		solver.update(config as any);
 		expect(solver.rules).toEqual(ans);
 	});

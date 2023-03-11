@@ -1,0 +1,19 @@
+.waiting {
+  background-color: grey;
+}
+
+.pending {
+  background-color: rgb(36, 74, 210);
+
+}
+
+.done {
+  background-color: rgb(15, 133, 32);
+
+}
+
+.chunk-status {
+  width: 4px;
+  height: 4px;
+  margin: 1px;
+}

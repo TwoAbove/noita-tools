@@ -7,7 +7,7 @@ import { includesAll, includesSome, Objectify } from '../../../helpers';
 import { IRule } from '../IRule';
 import { InfoProvider } from './Base';
 import { Global } from './Global';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep.js';
 
 export enum IPerkChangeStateType {
   shift,

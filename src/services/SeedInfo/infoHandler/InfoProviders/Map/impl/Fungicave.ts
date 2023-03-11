@@ -334,20 +334,20 @@ class Fungicave extends Base {
     return [portal_x, portal_y];
   }
 
-  async init(x: number, y: number, w: number, h: number) {
+  init(x: number, y: number, w: number, h: number) {
     const is_inside_tile = (pos_x, pos_y) =>
       pos_x >= x && pos_x <= x + w && pos_y >= y && pos_y <= y + h;
 
     const [portal_x, portal_y] = this.get_portal_position();
-    await this.HandleInterest('jungle_portal', portal_x, portal_y);
+    this.HandleInterest('jungle_portal', portal_x, portal_y);
 
     if (is_inside_tile(portal_x, portal_y)) {
-      await this.EntityLoad(
+      this.EntityLoad(
         'data/entities/misc/summon_portal_target.xml',
         portal_x,
         portal_y
       );
-      await this.LoadPixelScene(
+      this.LoadPixelScene(
         'data/biome_impl/hole.png',
         '',
         portal_x - 22,
@@ -360,44 +360,44 @@ class Fungicave extends Base {
   };
 
 
-  async spawn_small_enemies(x: number, y: number) {
-    await this.spawn(this.g_small_enemies, x, y);
+  spawn_small_enemies(x: number, y: number) {
+    this.spawn(this.g_small_enemies, x, y);
   }
-  async spawn_big_enemies(x: number, y: number) {
-    await this.spawn(this.g_big_enemies, x, y);
+  spawn_big_enemies(x: number, y: number) {
+    this.spawn(this.g_big_enemies, x, y);
   }
-  async spawn_items(x: number, y: number) {
+  spawn_items(x: number, y: number) {
     const r = this.randoms.ProceduralRandomf(x - 11.631, y + 10.2257, 0, 1);
     if (r > 0.06) {
-      await this.LoadPixelScene("data/biome_impl/wand_altar.png", "data/biome_impl/wand_altar_visual.png", x - 10, y - 17, "", true);
+      this.LoadPixelScene("data/biome_impl/wand_altar.png", "data/biome_impl/wand_altar_visual.png", x - 10, y - 17, "", true);
     }
   }
-  async spawn_nest(x: number, y: number) {
-    await this.spawn(this.g_nest, x, y);
+  spawn_nest(x: number, y: number) {
+    this.spawn(this.g_nest, x, y);
 
   }
-  async spawn_robots(x: number, y: number) {
-    await this.spawn(this.g_robots, x, y);
+  spawn_robots(x: number, y: number) {
+    this.spawn(this.g_robots, x, y);
   }
-  async spawn_props(x: number, y: number) {
-    await this.spawn(this.g_props, x, y);
+  spawn_props(x: number, y: number) {
+    this.spawn(this.g_props, x, y);
   }
-  async spawn_potion_altar(x: number, y: number) {
-    await this.LoadPixelScene("data/biome_impl/potion_altar.png", "data/biome_impl/potion_altar_visual.png", x - 10, y - 17, "", true)
+  spawn_potion_altar(x: number, y: number) {
+    this.LoadPixelScene("data/biome_impl/potion_altar.png", "data/biome_impl/potion_altar_visual.png", x - 10, y - 17, "", true)
   }
-  async spawn_physics_fungus(x: number, y: number) {
-    await this.spawn(this.g_physics_fungi, x, y);
+  spawn_physics_fungus(x: number, y: number) {
+    this.spawn(this.g_physics_fungi, x, y);
   }
 
-  async spawn_lamp(x, y) { }
-  async load_pixel_scene(x, y) { }
-  async load_pixel_scene2(x, y) { }
-  async spawn_props2(x, y) { }
-  async spawn_props3(x, y) { }
-  async spawn_unique_enemy(x, y) { }
-  async spawn_unique_enemy2(x, y) { }
-  async spawn_unique_enemy3(x, y) { }
-  async spawn_ghostlamp(x, y) { }
-  async spawn_candles(x, y) { }
+  spawn_lamp(x, y) { }
+  load_pixel_scene(x, y) { }
+  load_pixel_scene2(x, y) { }
+  spawn_props2(x, y) { }
+  spawn_props3(x, y) { }
+  spawn_unique_enemy(x, y) { }
+  spawn_unique_enemy2(x, y) { }
+  spawn_unique_enemy3(x, y) { }
+  spawn_ghostlamp(x, y) { }
+  spawn_candles(x, y) { }
 }
 export default Fungicave;

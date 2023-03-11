@@ -34,7 +34,12 @@ class SeedLinkHandler extends SocketHandler {
 	}
 
 	async host() {
-		this.io.emit('host');
+		return new Promise<void>(res => {
+			this.io.emit('host', null, () => {
+				this.dispatchEvent(new Event('update'));
+				res();
+			});
+		})
 	}
 
 	async joinRoom(room) {
