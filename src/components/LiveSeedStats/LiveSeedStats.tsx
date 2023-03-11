@@ -260,7 +260,7 @@ const LiveSeedStats = () => {
 					<Col className="mb-5" xs={12}>
 						<Host ready={everythingReady} hostRoom={seedLink?.hostRoom} recording={!!ocrHandler?.mediaStream} onClickStartHosting={onClickScannerStart} onClickStopHosting={onClickScannerStop} />
 					</Col>
-					<Col className="mb-5" xs={12}>
+					<Col className="mb-5" id="ocr-paste" xs={12}>
 						<Paste onImageBlob={blob => ocrHandler.doSingleDetect(blob)} />
 					</Col>
 				</Stack>
