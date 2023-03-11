@@ -12,14 +12,12 @@ interface ISeedDataProps {
 	seed: string;
 }
 
-const waitToLoad = (gameInfoProvider): Promise<void> =>
+const waitToLoad = (gameInfoProvider?: GameInfoProvider): Promise<void> =>
 	new Promise(async res => {
 		if (!gameInfoProvider) {
 			return res();
 		}
-		while (!gameInfoProvider.ready) {
-			await new Promise(r => setTimeout(r, 50));
-		}
+		await gameInfoProvider.ready();
 		return res();
 	});
 
@@ -30,6 +28,7 @@ export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], 
 		i18n
 	);
 	gameInfoProvider.onRandomLoad(() => {
+		gameInfoProvider.randoms.SetWorldSeed(parseInt(seed, 10));
 		gameInfoProvider.randoms.SetUnlockedSpells(unlockedSpells);
 		gameInfoProvider.provideAll().then(data => {
 			setData(data);
@@ -55,7 +54,7 @@ export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], 
 	return gameInfoProvider;
 }
 
-export const GameInfoContext = createContext<{gameInfoProvider?: GameInfoProvider, data?: Awaited<ReturnType<GameInfoProvider['provideAll']>>}>({});
+export const GameInfoContext = createContext<{ gameInfoProvider?: GameInfoProvider, data?: Awaited<ReturnType<GameInfoProvider['provideAll']>> }>({});
 
 
 export const useGameInfoProvider = (

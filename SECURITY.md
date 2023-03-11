@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Only the most recent version (that is on `master` branch) is supported and all fixed will be made to that branch as well as `develop`.
+Only the most recent version (that is on `master` branch) is supported and all fixes will be made to that branch as well as `develop`.
 
 ## Reporting a Vulnerability
 

@@ -676,7 +676,7 @@ class Rainforest extends Base {
     return [portal_x, portal_y];
   }
 
-  async init(x: number, y: number, w: number, h: number) {
+  init(x: number, y: number, w: number, h: number) {
     const is_inside_tile = (pos_x, pos_y) =>
       pos_x >= x && pos_x <= x + w && pos_y >= y && pos_y <= y + h;
 
@@ -687,15 +687,15 @@ class Rainforest extends Base {
     const rim = 200; // -- hint statues spawn on rim, portal target inside rim
 
     const [portal_x, portal_y] = this.get_portal_position();
-    await this.HandleInterest('jungle_portal', portal_x, portal_y);
+    this.HandleInterest('jungle_portal', portal_x, portal_y);
 
     if (is_inside_tile(portal_x, portal_y)) {
-      await this.EntityLoad(
+      this.EntityLoad(
         'data/entities/misc/summon_portal_target.xml',
         portal_x,
         portal_y
       );
-      await this.LoadPixelScene(
+      this.LoadPixelScene(
         'data/biome_impl/hole.png',
         '',
         portal_x - 22,
@@ -705,14 +705,14 @@ class Rainforest extends Base {
       );
     }
 
-    const spawn_statue = async (
+    const spawn_statue = (
       statue_num,
       spawn_x,
       spawn_y,
       ray_dir_x,
       ray_dir_y
     ) => {
-      let [_, x1, y1] = await this.RaytracePlatforms(
+      let [_, x1, y1] = this.RaytracePlatforms(
         spawn_x,
         spawn_y,
         spawn_x + ray_dir_x * 100,
@@ -722,7 +722,7 @@ class Rainforest extends Base {
       x1 = x1 + ray_dir_x * 20;
       y1 = y1 + ray_dir_y * 12;
 
-      await this.LoadPixelScene(
+      this.LoadPixelScene(
         'data/biome_impl/rainforest/rainforest_statue_0' + statue_num + '.png',
         'data/biome_impl/rainforest/rainforest_statue_0' +
         statue_num +
@@ -741,7 +741,7 @@ class Rainforest extends Base {
     );
     let pos_y = portal_y - 38; // -- offset to match staff position in pixel scene
     if (is_inside_tile(pos_x, pos_y))
-      await spawn_statue(1, pos_x, pos_y, -1, 0);
+      spawn_statue(1, pos_x, pos_y, -1, 0);
     // -- statue 1, right
     pos_x = this.randoms.ProceduralRandomi(
       8,
@@ -749,7 +749,7 @@ class Rainforest extends Base {
       biome_x_max - rim,
       biome_x_max
     );
-    if (is_inside_tile(pos_x, pos_y)) await spawn_statue(1, pos_x, pos_y, 1, 0);
+    if (is_inside_tile(pos_x, pos_y)) spawn_statue(1, pos_x, pos_y, 1, 0);
 
     // -- statue 2, top
     pos_x = portal_x - 13;
@@ -759,7 +759,7 @@ class Rainforest extends Base {
       biome_y_min,
       biome_y_min + rim
     );
-    if (is_inside_tile(pos_x, pos_y)) await spawn_statue(2, pos_x, pos_y, 0, 1);
+    if (is_inside_tile(pos_x, pos_y)) spawn_statue(2, pos_x, pos_y, 0, 1);
     // -- statue 2, bottom
     pos_y = this.randoms.ProceduralRandomi(
       -415,
@@ -767,25 +767,25 @@ class Rainforest extends Base {
       biome_y_max - rim,
       biome_y_max
     );
-    if (is_inside_tile(pos_x, pos_y)) await spawn_statue(2, pos_x, pos_y, 0, 1);
+    if (is_inside_tile(pos_x, pos_y)) spawn_statue(2, pos_x, pos_y, 0, 1);
   }
 
-  async spawn_small_enemies(x: number, y: number) {
-    await this.spawn(this.g_small_enemies, x, y);
+  spawn_small_enemies(x: number, y: number) {
+    this.spawn(this.g_small_enemies, x, y);
   }
-  async spawn_big_enemies(x: number, y: number) {
-    await this.spawn(this.g_big_enemies, x, y);
+  spawn_big_enemies(x: number, y: number) {
+    this.spawn(this.g_big_enemies, x, y);
   }
-  async spawn_unique_enemy(x: number, y: number) {
-    await this.spawn(this.g_unique_enemy, x, y + 12);
+  spawn_unique_enemy(x: number, y: number) {
+    this.spawn(this.g_unique_enemy, x, y + 12);
   }
-  async spawn_unique_enemy2(x: number, y: number) {
-    await this.spawn(this.g_unique_enemy2, x, y);
+  spawn_unique_enemy2(x: number, y: number) {
+    this.spawn(this.g_unique_enemy2, x, y);
   }
-  async spawn_items(x: number, y: number) {
+  spawn_items(x: number, y: number) {
     const r = this.randoms.ProceduralRandomf(x - 11.631, y + 10.2257, 0, 1);
     if (r > 0.27) {
-      await this.LoadPixelScene(
+      this.LoadPixelScene(
         'data/biome_impl/wand_altar.png',
         'data/biome_impl/wand_altar_visual.png',
         x - 10,
@@ -795,50 +795,50 @@ class Rainforest extends Base {
       );
     }
   }
-  async spawn_nest(x: number, y: number) {
-    await this.spawn(this.g_nest, x, y);
+  spawn_nest(x: number, y: number) {
+    this.spawn(this.g_nest, x, y);
   }
-  async spawn_props(x: number, y: number) {
-    await this.spawn(this.g_props, x, y);
+  spawn_props(x: number, y: number) {
+    this.spawn(this.g_props, x, y);
   }
-  async spawn_scavengers(x: number, y: number) {
-    await this.spawn(this.g_scavengers, x, y);
+  spawn_scavengers(x: number, y: number) {
+    this.spawn(this.g_scavengers, x, y);
   }
-  async spawn_large_enemies(x: number, y: number) {
-    await this.spawn(this.g_large_enemies, x, y);
+  spawn_large_enemies(x: number, y: number) {
+    this.spawn(this.g_large_enemies, x, y);
   }
-  async spawn_lamp(x: number, y: number) {
-    await this.spawn(this.g_lamp, x, y - 10);
+  spawn_lamp(x: number, y: number) {
+    this.spawn(this.g_lamp, x, y - 10);
   }
-  async spawn_lamp2(x: number, y: number) {
-    await this.spawn(this.g_lamp2, x - 8, y - 4, 0, 0);
+  spawn_lamp2(x: number, y: number) {
+    this.spawn(this.g_lamp2, x - 8, y - 4, 0, 0);
   }
-  async load_pixel_scene(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
+  load_pixel_scene(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
   }
-  async load_pixel_scene2(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
+  load_pixel_scene2(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
   }
-  async load_pixel_scene4(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_pixel_scene_04, x, y);
+  load_pixel_scene4(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_pixel_scene_04, x, y);
   }
-  async spawn_vines(x: number, y: number) {
-    await this.spawn(this.g_vines, x + 5, y + 5);
+  spawn_vines(x: number, y: number) {
+    this.spawn(this.g_vines, x + 5, y + 5);
     if (this.randoms.ProceduralRandomf(x, y, 0, 1) < 0.5) {
-      await this.spawn(this.g_vines, x, y + 5);
+      this.spawn(this.g_vines, x, y + 5);
     }
   }
-  async spawn_dragonspot(x: number, y: number) {
-    await this.EntityLoad('data/entities/buildings/dragonspot.xml', x, y);
+  spawn_dragonspot(x: number, y: number) {
+    this.EntityLoad('data/entities/buildings/dragonspot.xml', x, y);
   }
-  async spawn_tree(x: number, y: number) {
-    await this.spawn(this.g_trees, x + 5, y + 5);
+  spawn_tree(x: number, y: number) {
+    this.spawn(this.g_trees, x + 5, y + 5);
   }
-  async spawn_root_grower(x: number, y: number) {
+  spawn_root_grower(x: number, y: number) {
     if (this.randoms.ProceduralRandomf(x, y, 0, 1) < 0.5) {
       return;
     }
-    await this.EntityLoad('data/entities/props/root_grower.xml', x + 5, y + 5);
+    this.EntityLoad('data/entities/props/root_grower.xml', x + 5, y + 5);
   }
 }
 export default Rainforest;

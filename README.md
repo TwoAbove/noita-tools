@@ -1,6 +1,6 @@
 # Noitool
 
-A web app with many things Noita.
+A web app for many things Noita.
 
 Helps you get a specific seed for your specific needs.
 

@@ -5,7 +5,11 @@ import { ILogicRules, RuleType } from '../../services/SeedInfo/infoHandler/IRule
 import useLocalStorage from '../../services/useLocalStorage';
 import copy from 'copy-to-clipboard';
 import { avg } from '../../services/helpers';
-import { cloneDeep, uniqueId, isEqual } from 'lodash';
+
+import cloneDeep from 'lodash/cloneDeep.js';
+import uniqueId from 'lodash/uniqueId.js';
+import isEqual from 'lodash/isEqual.js';
+
 import { getTreeTools } from './node';
 import { RuleConstructors } from './RuleConstructor';
 
@@ -88,7 +92,7 @@ const ruleReducer = (state: IState, action: IActions) => {
 			try {
 				const str = action.data;
 				return JSON.parse(atob(str));
-			}	catch(e) {
+			} catch (e) {
 				console.error(e);
 			}
 		}
@@ -105,12 +109,14 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 }) => {
 	const [unlockedSpells] = useLocalStorage<boolean[] | undefined>('unlocked-spells', undefined);
 	const [useCores, setUseCores] = useLocalStorage('useCores', 1);
+	const [concurrency] = useLocalStorage('search-max-concurrency', navigator.hardwareConcurrency);
+
+	const [findAll, setFindAll] = useLocalStorage('findAll', false);
 	const [seedSolver, setSeedSolver] = React.useState(
 		() => new SeedSolver(useCores, true)
 	);
-	const [seed, setSeed] = React.useState('1');
-	const [seedEnd, setSeedEnd] = React.useState('');
-	const [findAll, setFindAll] = React.useState(false);
+	const [seed, setSeed] = useLocalStorage('search-min-seed', '1');
+	const [seedEnd, setSeedEnd] = useLocalStorage('search-max-seed', '');
 	const handleSeedStartChange = (e: any) => {
 		setSeed(e.target.value);
 	};
@@ -118,10 +124,73 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		setSeedEnd(e.target.value);
 	};
 
+	// const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
+	// 	id: uniqueId(),
+	// 	type: RuleType.AND,
+	// 	rules: [],
+	// 	selectedRule: 'search',
+	// });
 	const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
 		id: uniqueId(),
 		type: RuleType.AND,
-		rules: [],
+		rules: [
+			{
+				id: uniqueId(),
+				type: 'map',
+				val: {
+					coalmine: {
+						pos: {
+							x: 34,
+							y: 15
+						},
+						search: [
+							'data/biome_impl/coalmine/physics_swing_puzzle.png',
+							'data/biome_impl/coalmine/receptacle_oil.png',
+							'data/biome_impl/coalmine/oiltank_puzzle.png'
+						],
+						funcs: ['load_pixel_scene2', 'load_pixel_scene', 'load_oiltank']
+					},
+					// excavationSite: {
+					// 	pos: {
+					// 		x: 34,
+					// 		y: 17
+					// 	},
+					// 	search: [
+					// 		'data/biome_impl/excavationsite/meditation_cube.png',
+					// 		'data/biome_impl/excavationsite/receptacle_steam.png'
+					// 	],
+					// 	funcs: ['spawn_meditation_cube', 'load_pixel_scene4_alt']
+					// },
+				// 	snowCave: {
+				// 		pos: {
+				// 			x: 34,
+				// 			y: 21
+				// 		},
+				// 		search: [
+				// 			'data/biome_impl/snowcave/receptacle_water.png',
+				// 			'data/biome_impl/snowcave/buried_eye.png'
+				// 		],
+				// 		funcs: ['load_pixel_scene', 'load_pixel_scene3']
+				// 	},
+				// 	snowCastle: {
+				// 		pos: {
+				// 			x: 34,
+				// 			y: 25
+				// 		},
+				// 		search: ['data/biome_impl/snowcastle/kitchen.png'],
+				// 		funcs: ['load_pixel_scene2']
+				// 	},
+				// 	vault: {
+				// 		pos: {
+				// 			x: 34,
+				// 			y: 31
+				// 		},
+				// 		search: ['data/biome_impl/vault/lab_puzzle.png'],
+				// 		funcs: ['load_pixel_scene2']
+				// 	}
+				}
+			},
+		],
 		selectedRule: 'search',
 	});
 	// const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
@@ -165,7 +234,6 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	const running = !!solverInfo?.running;
 
 	const handleMultithreading = () => {
-		const concurrency = navigator.hardwareConcurrency || 1;
 		if (useCores > 1) {
 			setUseCores(1);
 		} else {
@@ -180,6 +248,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 				return;
 			}
 			if (!isEqual(infoArray, info)) {
+				console.log(info[0]);
 				setSolverInfo(info);
 			}
 		};
@@ -237,7 +306,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({})
 		};
-		fetch('/api/data', requestOptions).catch(e=>{});
+		fetch('/api/data', requestOptions).catch(e => { });
 
 		await seedSolver.start();
 	};
@@ -246,9 +315,10 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		await seedSolver.stop();
 	};
 
-	const seedsChecked = avg(results.map(i => i.currentSeed));
-	const totalSeeds = 4_294_967_294;
+	const seedsChecked = Math.floor(Math.min(...results.map(i => i.currentSeed)));
+	const totalSeeds = 2_147_483_645;
 	const percentChecked = Math.floor((seedsChecked / totalSeeds) * 100);
+	const seedsPerSecond = Math.floor(seedsChecked / ((new Date().getTime() - seedSolver.startTime) / 1000));
 
 	return <SearchContext.Provider value={{
 		seedSolver,
@@ -271,7 +341,8 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		seedEnd,
 		seedsChecked,
 		totalSeeds,
-		percentChecked
+		percentChecked,
+		seedsPerSecond
 	}}>{children}</SearchContext.Provider>;
 };
 

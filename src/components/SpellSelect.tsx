@@ -50,6 +50,7 @@ const SpellSelect: FC<ISpellSelectProps> = ({
 			name: t(s.name),
 			description: t(s.description)
 		}));
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [t, i18n, i18n.language]);
 
 	const [fuse, setFuse] = useState(
@@ -69,7 +70,7 @@ const SpellSelect: FC<ISpellSelectProps> = ({
 				)
 			);
 		});
-	}, [t, i18n, i18n.language]);
+	}, [t, i18n, i18n.language, translatedShop]);
 
 	const spellsToShow = (filter
 		? fuse.search(filter).map(s => s.item)

@@ -30,14 +30,16 @@ describe('Base Map Implementation', () => {
 				LoadPixelScene,
 				HandleInterest,
 				BiomeMapGetVerticalPositionInsideBiome,
-				RaytracePlatforms
+				RaytracePlatforms,
+				{}
 			);
 			const cmi = new Coalmine(
 				randoms,
 				LoadPixelScene,
 				HandleInterest,
 				BiomeMapGetVerticalPositionInsideBiome,
-				RaytracePlatforms
+				RaytracePlatforms,
+				{}
 			);
 			await impl.load_random_pixel_scene(cmi.g_pixel_scene_02, 645, 77);
 			expect(LoadPixelScene.mock.calls[0][0]).toEqual(

@@ -15,7 +15,15 @@ describe('PacifistChestProvider', () => {
 				fallback: 0,
 				greed: false
 			},
-			ans: [{ entity: 'data/entities/items/pickup/heart.xml', x: -78, y: 1371 }]
+			ans: [
+				{
+					entity: 'data/entities/items/pickup/spell_refresh.xml',
+					pos_x: -68,
+					pos_y: 1371,
+					x: 431.7,
+					y: 2054.1
+				}
+			]
 		},
 		{
 			seed: 1674055821,
@@ -26,7 +34,62 @@ describe('PacifistChestProvider', () => {
 				greed: false
 			},
 			ans: [
-				{ entity: 'data/entities/misc/custom_cards/bomb.xml', x: -78, y: 2907 }
+				{
+					entity: 'data/entities/items/pickup/goldnugget_200.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				}
 			]
 		},
 		{
@@ -39,13 +102,15 @@ describe('PacifistChestProvider', () => {
 			},
 			ans: [
 				{
-					entity: 'data/entities/items/wand_level_01.xml',
-					x: -78,
-					y: 4955,
+					entity: 'data/entities/items/wand_level_03.xml',
+					x: 431.7,
+					y: 5638.1,
+					pos_x: -74,
+					pos_y: 4959,
 					extra: {
-						cost: 30,
+						cost: 60,
 						force_unshuffle: false,
-						level: 1
+						level: 3
 					}
 				}
 			]
@@ -59,9 +124,13 @@ describe('PacifistChestProvider', () => {
 				greed: false
 			},
 			ans: [
-				{ entity: 'data/entities/items/pickup/potion.xml', x: -78, y: 1373 },
-				{ entity: 'Spell', extra: 'GRENADE_LARGE', x: -78, y: 1371 },
-				{ entity: 'Spell', extra: 'PHASING_ARC', x: -78, y: 1371 }
+				{
+					entity: 'data/entities/items/pickup/heart_better.xml',
+					pos_x: -72,
+					pos_y: 1368,
+					x: 431.7,
+					y: 2054.1
+				}
 			]
 		},
 		{
@@ -73,7 +142,13 @@ describe('PacifistChestProvider', () => {
 				greed: false
 			},
 			ans: [
-				{ entity: 'data/entities/items/pickup/potion.xml', x: -78, y: 1373 },
+				{
+					entity: 'data/entities/items/pickup/spell_refresh.xml',
+					pos_x: -70,
+					pos_y: 1374,
+					x: 431.7,
+					y: 2054.1
+				}
 			]
 		},
 		{
@@ -85,9 +160,80 @@ describe('PacifistChestProvider', () => {
 				greed: false
 			},
 			ans: [
-				{ entity: 'Spell', extra: 'GRAVITY', x: -78, y: 2907 },
-				{ entity: 'Spell', extra: 'BURST_3', x: -78, y: 2907 },
-				{ entity: 'Spell', extra: 'TENTACLE_RAY_ENEMY', x: -78, y: 2907 },
+				{
+					entity: 'data/entities/items/pickup/thunderstone.xml',
+					pos_x: -78,
+					pos_y: 2907,
+					x: -78,
+					y: 2907
+				}
+			]
+		},
+		{
+			seed: 1151,
+			params: {
+				level: 0,
+				worldOffset: 28,
+				fallback: 0,
+				greed: false
+			},
+			ans: [
+				{
+					entity: 'data/entities/items/pickup/goldnugget_200.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				},
+				{
+					entity: 'data/entities/items/pickup/goldnugget.xml',
+					pos_x: 1003440,
+					pos_y: 1371,
+					x: 1003440,
+					y: 1371
+				}
 			]
 		}
 		// {

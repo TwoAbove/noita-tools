@@ -894,7 +894,7 @@ class Snowcavetunnel extends Base {
     return true;
   }
 
-  async init(x: number, y: number, w, h) {
+  init(x: number, y: number, w, h) {
     for (let i = 0; i < 8; i++) {
       let biome_x_min = -2350;
       let biome_x_max = 2350;
@@ -915,7 +915,7 @@ class Snowcavetunnel extends Base {
       );
 
       if (pos_x >= x && pos_x <= x + w && pos_y >= y && pos_y <= y + h) {
-        await this.LoadPixelScene(
+        this.LoadPixelScene(
           'data/biome_impl/snowcave/statue_hand.png',
           '',
           pos_x - 22,
@@ -927,35 +927,35 @@ class Snowcavetunnel extends Base {
     }
   }
 
-  async spawn_small_enemies(x: number, y: number) {
+  spawn_small_enemies(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.spawn(this.g_small_enemies, x, y);
+      this.spawn(this.g_small_enemies, x, y);
     }
   }
-  async spawn_big_enemies(x: number, y: number) {
+  spawn_big_enemies(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.spawn(this.g_big_enemies, x, y);
+      this.spawn(this.g_big_enemies, x, y);
     }
   }
-  async spawn_unique_enemy(x: number, y: number) {
+  spawn_unique_enemy(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.spawn(this.g_unique_enemy, x, y);
+      this.spawn(this.g_unique_enemy, x, y);
     }
   }
-  async spawn_unique_enemy2(x: number, y: number) {
+  spawn_unique_enemy2(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.spawn(this.g_unique_enemy2, x, y);
+      this.spawn(this.g_unique_enemy2, x, y);
     }
   }
-  async spawn_scavenger_party(x: number, y: number) {
+  spawn_scavenger_party(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.spawn(this.g_scavenger_party, x, y);
+      this.spawn(this.g_scavenger_party, x, y);
     }
   }
-  async spawn_items(x: number, y: number) {
+  spawn_items(x: number, y: number) {
     const r = this.randoms.ProceduralRandomf(x - 11.631, y + 10.2257, 0, 1);
     if (r < 0.45) {
-      await this.LoadPixelScene(
+      this.LoadPixelScene(
         'data/biome_impl/wand_altar.png',
         'data/biome_impl/wand_altar_visual.png',
         x - 15,
@@ -965,20 +965,20 @@ class Snowcavetunnel extends Base {
       );
     }
   }
-  async spawn_lamp(x: number, y: number) {
+  spawn_lamp(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.spawn(this.g_lamp, x + 5, y + 10, 0, 0);
+      this.spawn(this.g_lamp, x + 5, y + 10, 0, 0);
     }
   }
-  async spawn_props(x: number, y: number) {
+  spawn_props(x: number, y: number) {
     if (!this.safe(x, y)) {
       return;
     }
     const r = this.randoms.ProceduralRandomf(x - 11.231, y + 10.2157, 0, 1);
     if (r < 0.9) {
-      await this.spawn(this.g_props, x, y - 3, 0, 0);
+      this.spawn(this.g_props, x, y - 3, 0, 0);
     } else {
-      await this.LoadPixelScene(
+      this.LoadPixelScene(
         'data/biome_impl/snowperson.png',
         'data/biome_impl/snowperson_visual.png',
         x - 12,
@@ -988,47 +988,47 @@ class Snowcavetunnel extends Base {
       );
     }
   }
-  async spawn_skulls(x: number, y: number) {
-    await this.spawn(this.g_skulls, x, y, 0, 0);
+  spawn_skulls(x: number, y: number) {
+    this.spawn(this.g_skulls, x, y, 0, 0);
   }
-  async spawn_stones(x: number, y: number) {
-    await this.spawn(this.g_stones, x, y, 0, 0);
+  spawn_stones(x: number, y: number) {
+    this.spawn(this.g_stones, x, y, 0, 0);
   }
-  async load_pixel_scene(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
+  load_pixel_scene(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
   }
-  async load_pixel_scene_alt(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_pixel_scene_01_alt, x, y);
+  load_pixel_scene_alt(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_pixel_scene_01_alt, x, y);
   }
-  async load_pixel_scene2(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
+  load_pixel_scene2(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
   }
-  async load_pixel_scene3(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_pixel_scene_03, x, y);
+  load_pixel_scene3(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_pixel_scene_03, x, y);
   }
-  async load_pixel_scene4(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_pixel_scene_04, x, y);
+  load_pixel_scene4(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_pixel_scene_04, x, y);
   }
-  async load_puzzle_capsule(x: number, y: number) {
-    await this.load_random_pixel_scene(this.g_puzzle_capsule, x, y);
+  load_puzzle_capsule(x: number, y: number) {
+    this.load_random_pixel_scene(this.g_puzzle_capsule, x, y);
   }
-  async load_puzzle_capsule_b(x: number, y: number) {
-    await this.load_random_pixel_scene(
+  load_puzzle_capsule_b(x: number, y: number) {
+    this.load_random_pixel_scene(
       this.g_puzzle_capsule_b,
       x - 50,
       y - 230
     );
   }
-  async spawn_altar_torch(x: number, y: number) {
-    await this.EntityLoad('data/entities/props/altar_torch.xml', x - 7, y - 36);
+  spawn_altar_torch(x: number, y: number) {
+    this.EntityLoad('data/entities/props/altar_torch.xml', x - 7, y - 36);
   }
-  async spawn_acid(x: number, y: number) {
+  spawn_acid(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.EntityLoad('data/entities/props/dripping_acid_gas.xml', x, y);
+      this.EntityLoad('data/entities/props/dripping_acid_gas.xml', x, y);
     }
   }
-  async load_altar(x: number, y: number) {
-    await this.LoadPixelScene(
+  load_altar(x: number, y: number) {
+    this.LoadPixelScene(
       'data/biome_impl/altar.png',
       'data/biome_impl/altar_visual.png',
       x - 92,
@@ -1036,55 +1036,55 @@ class Snowcavetunnel extends Base {
       '',
       true
     );
-    await this.EntityLoad('data/entities/buildings/altar.xml', x, y - 32);
+    this.EntityLoad('data/entities/buildings/altar.xml', x, y - 32);
   }
-  async load_acidtank_right(x: number, y: number) {
+  load_acidtank_right(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.load_random_pixel_scene(this.g_acidtank_right, x - 12, y - 12);
+      this.load_random_pixel_scene(this.g_acidtank_right, x - 12, y - 12);
     }
   }
-  async load_acidtank_left(x: number, y: number) {
+  load_acidtank_left(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.load_random_pixel_scene(this.g_acidtank_left, x - 252, y - 12);
+      this.load_random_pixel_scene(this.g_acidtank_left, x - 252, y - 12);
     }
   }
-  async spawn_shopitem(x: number, y: number) {
-    await this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 3]);
+  spawn_shopitem(x: number, y: number) {
+    this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 3]);
   }
-  async spawn_vines(x: number, y: number) {
-    await this.spawn(this.g_vines, x + 5, y + 5);
+  spawn_vines(x: number, y: number) {
+    this.spawn(this.g_vines, x + 5, y + 5);
   }
-  async spawn_electricity_trap(x: number, y: number) {
-    await this.EntityLoad(
+  spawn_electricity_trap(x: number, y: number) {
+    this.EntityLoad(
       'data/entities/props/physics_trap_electricity_enabled.xml',
       x,
       y
     );
   }
-  async spawn_burning_barrel(x: number, y: number) {
+  spawn_burning_barrel(x: number, y: number) {
     if (this.safe(x, y)) {
-      await this.EntityLoad(
+      this.EntityLoad(
         'data/entities/props/physics_barrel_burning.xml',
         x,
         y
       );
     }
   }
-  async spawn_fish(x: number, y: number) {
-    await this.spawn(this.g_fish, x, y);
+  spawn_fish(x: number, y: number) {
+    this.spawn(this.g_fish, x, y);
   }
-  async spawn_buried_eye_teleporter(x: number, y: number) {
-    await this.EntityLoad(
+  spawn_buried_eye_teleporter(x: number, y: number) {
+    this.EntityLoad(
       'data/entities/buildings/teleport_snowcave_buried_eye.xml',
       x,
       y
     );
   }
-  async spawn_statue_hand(x: number, y: number) {
-    await this.EntityLoad('data/entities/buildings/statue_hand_1.xml', x, y);
+  spawn_statue_hand(x: number, y: number) {
+    this.EntityLoad('data/entities/buildings/statue_hand_1.xml', x, y);
   }
-  async spawn_receptacle(x: number, y: number) {
-    await this.EntityLoad('data/entities/buildings/receptacle_water.xml', x, y);
+  spawn_receptacle(x: number, y: number) {
+    this.EntityLoad('data/entities/buildings/receptacle_water.xml', x, y);
   }
 }
 export default Snowcavetunnel;

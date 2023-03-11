@@ -249,7 +249,7 @@ const validJSON = (s: string) => {
 interface IImportProps {
 	onClick: (data: string) => any;
 }
-const Import: FC<IImportProps> = ({ onClick }) => {
+export const Import: FC<IImportProps> = ({ onClick }) => {
 	const [ripple, setRipple] = useState(false);
 	const [rippleError, setRippleError] = useState(false);
 

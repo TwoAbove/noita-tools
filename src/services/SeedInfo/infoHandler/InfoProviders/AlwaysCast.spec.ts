@@ -15,12 +15,12 @@ describe('AlwaysCastInfoProvider', () => {
 		{
 			seed: 266197553,
 			params: [0, 3, 3, 0],
-			ans: "SPITTER_TIER_3"
+			ans: "SLOW_BUT_STEADY"
 		},
 		{
 			seed: 6023,
 			params: [0, 3, 3, 0],
-			ans: "CRUMBLING_EARTH"
+			ans: "FIREBALL_RAY_LINE"
 		},
 	]
 

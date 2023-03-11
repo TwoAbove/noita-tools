@@ -5,6 +5,7 @@ import humanize from 'humanize-duration';
 import { localizeNumber } from '../../../services/helpers';
 import SeedDataOutput from '../../SeedInfo/SeedDataOutput';
 import { SearchContext } from '../SearchContext';
+import UseMultithreadingButton from '../UseMultithreading';
 
 const MemoSeedDataOutput = React.memo(SeedDataOutput);
 
@@ -35,16 +36,15 @@ const Search = () => {
 		stopCalculation,
 		handleSeedStartChange,
 		handleSeedEndChange,
-		handleMultithreading,
 		setFindAll,
 		findAll,
-		useCores,
 		running,
 		seed,
 		seedEnd,
 		seedsChecked,
 		totalSeeds,
-		percentChecked
+		percentChecked,
+		seedsPerSecond
 	} = useContext(SearchContext);
 
 	return (<Container fluid className="col pt-3 shadow-lg">
@@ -105,12 +105,7 @@ const Search = () => {
 				{navigator.hardwareConcurrency && (
 					<Col className="">
 						<Row className="m-3">
-							<Button
-								onClick={handleMultithreading}
-								variant={useCores > 1 ? 'outline-success' : 'outline-secondary'}
-							>
-								Multithreading {useCores > 1 ? 'on' : 'off'}
-							</Button>
+							<UseMultithreadingButton />
 						</Row>
 						<Row className="m-3">
 							Multithreading will use as many CPU threads as possible,
@@ -142,7 +137,7 @@ const Search = () => {
 		<div>
 			{solverInfo?.running && <div>
 				<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
-				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverInfo as any).msLeft, { round: true, units: ["h", "m"] })})
+				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverInfo as any).msLeft, { round: true, units: ["h", "m"] })}, {seedsPerSecond} avg seeds/s)
 			</div>}
 			<h6>Results:</h6>
 			{findAll && <div>

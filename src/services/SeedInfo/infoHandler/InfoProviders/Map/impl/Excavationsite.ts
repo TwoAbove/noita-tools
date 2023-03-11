@@ -728,7 +728,7 @@ class Excavationsite extends Base {
 		}
 	];
 
-	async spawn_items(x: number, y: number) {
+	spawn_items(x: number, y: number) {
 		let r = this.randoms.ProceduralRandomf(x, y, 0, 1);
 		// -- 20% is air, nothing happens
 		// if (r < 0.47) {
@@ -738,7 +738,7 @@ class Excavationsite extends Base {
 
 		if (r < 0.755) {
 		} else {
-			await this.LoadPixelScene(
+			this.LoadPixelScene(
 				'data/biome_impl/wand_altar.png',
 				'data/biome_impl/wand_altar_visual.png',
 				x - 10,
@@ -749,126 +749,126 @@ class Excavationsite extends Base {
 		}
 	}
 
-	async spawn_small_enemies(x: number, y: number) {
+	spawn_small_enemies(x: number, y: number) {
 		const r = this.randoms.ProceduralRandomf(x, y, 0, 1);
 		let spawn_percent = this.BiomeMapGetVerticalPositionInsideBiome(x, y);
 		spawn_percent = 2.5 * spawn_percent + 0.35;
 		if (r > spawn_percent) return;
 
-		await this.spawn(this.g_small_enemies, x, y);
+		this.spawn(this.g_small_enemies, x, y);
 	}
 
-	async spawn_big_enemies(x: number, y: number) {
+	spawn_big_enemies(x: number, y: number) {
 		const r = this.randoms.ProceduralRandomf(x, y, 0, 1);
 		let spawn_percent = this.BiomeMapGetVerticalPositionInsideBiome(x, y);
 		spawn_percent = 2.1 * spawn_percent;
 		if (r > spawn_percent) return;
 
-		await this.spawn(this.g_big_enemies, x, y);
+		this.spawn(this.g_big_enemies, x, y);
 	}
 
-	async spawn_lamp(x: number, y: number) {
-		await this.spawn(this.g_lamp, x, y + 2, 0, 0);
+	spawn_lamp(x: number, y: number) {
+		this.spawn(this.g_lamp, x, y + 2, 0, 0);
 	}
 
-	async spawn_props(x: number, y: number) {
-		await this.spawn(this.g_props, x, y - 3, 0, 0);
+	spawn_props(x: number, y: number) {
+		this.spawn(this.g_props, x, y - 3, 0, 0);
 	}
 
-	async spawn_props2(x: number, y: number) {
-		await this.spawn(this.g_props2, x, y - 3, 0, 0);
+	spawn_props2(x: number, y: number) {
+		this.spawn(this.g_props2, x, y - 3, 0, 0);
 	}
 
-	async spawn_props3(x: number, y: number) {
-		await this.spawn(this.g_props3, x, y, 0, 0);
+	spawn_props3(x: number, y: number) {
+		this.spawn(this.g_props3, x, y, 0, 0);
 	}
 
-	async spawn_unique_enemy(x: number, y: number) {
-		await this.spawn(this.g_unique_enemy, x, y);
+	spawn_unique_enemy(x: number, y: number) {
+		this.spawn(this.g_unique_enemy, x, y);
 	}
 
-	async spawn_unique_enemy2(x: number, y: number) {
-		await this.spawn(this.g_unique_enemy2, x, y);
+	spawn_unique_enemy2(x: number, y: number) {
+		this.spawn(this.g_unique_enemy2, x, y);
 	}
 
-	async spawn_unique_enemy3(x: number, y: number) {
-		await this.spawn(this.g_unique_enemy3, x, y);
+	spawn_unique_enemy3(x: number, y: number) {
+		this.spawn(this.g_unique_enemy3, x, y);
 	}
 
-	async load_pixel_scene(x: number, y: number) {}
+	load_pixel_scene(x: number, y: number) {}
 
-	async load_pixel_scene2(x: number, y: number) {
+	load_pixel_scene2(x: number, y: number) {
 		// load_random_background_sprite
 	}
 
-	async load_pixel_scene4(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_pixel_scene_04, x, y);
+	load_pixel_scene4(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_pixel_scene_04, x, y);
 	}
-	async load_pixel_scene4_alt(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_pixel_scene_04_alt, x, y);
-	}
-
-	async load_puzzleroom(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_puzzleroom, x, y);
+	load_pixel_scene4_alt(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_pixel_scene_04_alt, x, y);
 	}
 
-	async load_gunpowderpool_01(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_gunpowderpool_01, x, y);
+	load_puzzleroom(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_puzzleroom, x, y);
 	}
 
-	async load_gunpowderpool_02(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_gunpowderpool_02, x, y);
+	load_gunpowderpool_01(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_gunpowderpool_01, x, y);
 	}
 
-	async load_gunpowderpool_03(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_gunpowderpool_03, x - 3, y + 3);
+	load_gunpowderpool_02(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_gunpowderpool_02, x, y);
 	}
 
-	async load_gunpowderpool_04(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_gunpowderpool_04, x, y);
+	load_gunpowderpool_03(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_gunpowderpool_03, x - 3, y + 3);
 	}
 
-	async spawn_physicsstructure(x: number, y: number) {
-		await this.spawn(this.g_physicsstructure, x - 5, y - 5, 0, 0);
+	load_gunpowderpool_04(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_gunpowderpool_04, x, y);
 	}
 
-	async spawn_wheel(x: number, y: number) {
-		await this.EntityLoad('data/entities/props/physics_wheel.xml', x, y);
-	}
-	async spawn_wheel_small(x: number, y: number) {
-		await this.EntityLoad('data/entities/props/physics_wheel_small.xml', x, y);
-	}
-	async spawn_wheel_tiny(x: number, y: number) {
-		await this.EntityLoad('data/entities/props/physics_wheel_tiny.xml', x, y);
+	spawn_physicsstructure(x: number, y: number) {
+		this.spawn(this.g_physicsstructure, x - 5, y - 5, 0, 0);
 	}
 
-	async spawn_hanger(x: number, y: number) {
-		await this.spawn(this.g_hanger, x, y, 0, 0);
+	spawn_wheel(x: number, y: number) {
+		this.EntityLoad('data/entities/props/physics_wheel.xml', x, y);
+	}
+	spawn_wheel_small(x: number, y: number) {
+		this.EntityLoad('data/entities/props/physics_wheel_small.xml', x, y);
+	}
+	spawn_wheel_tiny(x: number, y: number) {
+		this.EntityLoad('data/entities/props/physics_wheel_tiny.xml', x, y);
 	}
 
-	async spawn_rock(x: number, y: number) {
-		await this.spawn(this.g_rock, x, y);
+	spawn_hanger(x: number, y: number) {
+		this.spawn(this.g_hanger, x, y, 0, 0);
 	}
 
-	async spawn_hanging_prop(x: number, y: number) {
-		await this.spawn(this.g_hanging_props, x, y);
+	spawn_rock(x: number, y: number) {
+		this.spawn(this.g_rock, x, y);
 	}
 
-	async spawn_nest(x: number, y: number) {
-		await this.spawn(this.g_nest, x + 4, y + 8, 0, 0);
+	spawn_hanging_prop(x: number, y: number) {
+		this.spawn(this.g_hanging_props, x, y);
 	}
 
-	async spawn_ladder(x: number, y: number) {}
-
-	async spawn_shopitem(x: number, y: number) {
-		await this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 2]);
+	spawn_nest(x: number, y: number) {
+		this.spawn(this.g_nest, x + 4, y + 8, 0, 0);
 	}
 
-	async spawn_meditation_cube(x: number, y: number) {
+	spawn_ladder(x: number, y: number) {}
+
+	spawn_shopitem(x: number, y: number) {
+		this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 2]);
+	}
+
+	spawn_meditation_cube(x: number, y: number) {
 		this.randoms.SetRandomSeed(x, y);
 		const rnd = this.randoms.Random(1, 100);
 		if (rnd > 96 /* and not nightmare */) {
-			await this.LoadPixelScene(
+			this.LoadPixelScene(
 				'data/biome_impl/excavationsite/meditation_cube.png',
 				'data/biome_impl/excavationsite/meditation_cube_visual.png',
 				x - 20,
@@ -876,7 +876,7 @@ class Excavationsite extends Base {
 				'',
 				true
 			);
-			await this.EntityLoad(
+			this.EntityLoad(
 				'data/entities/buildings/teleport_meditation_cube.xml',
 				x,
 				y - 70
@@ -884,36 +884,36 @@ class Excavationsite extends Base {
 		}
 	}
 
-	async spawn_receptacle(x: number, y: number) {
-		await this.EntityLoad('data/entities/buildings/receptacle_steam.xml', x, y);
+	spawn_receptacle(x: number, y: number) {
+		this.EntityLoad('data/entities/buildings/receptacle_steam.xml', x, y);
 	}
 
-	async spawn_tower_short(x: number, y: number) {
-		await this.generate_tower(
+	spawn_tower_short(x: number, y: number) {
+		this.generate_tower(
 			x,
 			y,
 			this.randoms.ProceduralRandomi(x - 4, y + 3, 0, 2)
 		);
 	}
 
-	async spawn_tower_tall(x: number, y: number) {
-		await this.generate_tower(
+	spawn_tower_tall(x: number, y: number) {
+		this.generate_tower(
 			x,
 			y,
 			this.randoms.ProceduralRandomi(x + 7, y - 1, 0, 2)
 		);
 	}
 
-	async generate_tower(x: number, y: number, height: number) {
+	generate_tower(x: number, y: number, height: number) {
 		// if (this.randoms.ProceduralRandomf(x, y) > 0.5) {
 		//   return;
 		// }
 		// y = y + 15
-		// await this.LoadBackgroundSprite("data/biome_impl/excavationsite/tower_bottom_1.png", x, y, 40, true)
+		// this.LoadBackgroundSprite("data/biome_impl/excavationsite/tower_bottom_1.png", x, y, 40, true)
 		// y = y - 60
 		// for (let i = 1; i <= height; i++) {
 		//   if (y > 1600) {
-		//     await this.load_random_background_sprite(this.g_tower_mids, x, y);
+		//     this.load_random_background_sprite(this.g_tower_mids, x, y);
 		//     y = y - 60
 		//   }
 		// }
@@ -921,17 +921,17 @@ class Excavationsite extends Base {
 		// this.load_random_background_sprite(this.g_tower_tops, x, y);
 	}
 
-	async spawn_beam_low(x: number, y: number) {
-		//  await this.LoadBackgroundSprite("data/biome_impl/excavationsite/beam_low.png", x-60, y-35, 60, true);
+	spawn_beam_low(x: number, y: number) {
+		//  this.LoadBackgroundSprite("data/biome_impl/excavationsite/beam_low.png", x-60, y-35, 60, true);
 	}
-	async spawn_beam_low_flipped(x: number, y: number) {
-		//  await this.LoadBackgroundSprite("data/biome_impl/excavationsite/beam_low_flipped.png", x-60, y-35, 60, true);
+	spawn_beam_low_flipped(x: number, y: number) {
+		//  this.LoadBackgroundSprite("data/biome_impl/excavationsite/beam_low_flipped.png", x-60, y-35, 60, true);
 	}
-	async spawn_beam_steep(x: number, y: number) {
-		//  await this.LoadBackgroundSprite("data/biome_impl/excavationsite/beam_steep.png", x-35, y-60, 60, true);
+	spawn_beam_steep(x: number, y: number) {
+		//  this.LoadBackgroundSprite("data/biome_impl/excavationsite/beam_steep.png", x-35, y-60, 60, true);
 	}
-	async spawn_beam_steep_flipped(x: number, y: number) {
-		//  await this.LoadBackgroundSprite("data/biome_impl/excavationsite/beam_steep_flipped.png", x-35, y-60, 60, true);
+	spawn_beam_steep_flipped(x: number, y: number) {
+		//  this.LoadBackgroundSprite("data/biome_impl/excavationsite/beam_steep_flipped.png", x-35, y-60, 60, true);
 	}
 }
 export default Excavationsite;

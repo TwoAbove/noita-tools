@@ -21,7 +21,7 @@ export const removeFromArr = (arr: string[], thing: string) => {
 }
 
 export const between = (x: number, min: number, max: number) => {
-  return min <= x && x <= max;
+	return min <= x && x <= max;
 }
 
 export const ticksToS = (t: number) => Math.round(t * 0.01666666 * 100) / 100;
@@ -55,3 +55,31 @@ export type UnionToIntersection<U> = (U extends any
 	: never;
 
 export type Objectify<T> = { [id: string]: Merge<T[keyof T]> };
+
+export const promiseMap = function (iterable, mapper, options = { concurrency: Infinity }) {
+	let { concurrency } = options;
+
+	let index = 0
+	const results: any[] = []
+	const pending: any[] = []
+	const iterator = iterable[Symbol.iterator]()
+
+	while (concurrency-- > 0) {
+		const thread = wrappedMapper()
+		if (thread) pending.push(thread)
+		else break
+	}
+
+	return Promise.all(pending).then(() => results)
+
+	function wrappedMapper() {
+		const next = iterator.next()
+		if (next.done) return null
+		const i = index++
+		const mapped = mapper(next.value, i)
+		return Promise.resolve(mapped).then(resolved => {
+			results[i] = resolved
+			return wrappedMapper()
+		})
+	}
+}

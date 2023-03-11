@@ -28,14 +28,12 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 
 		if (r <= 50) {
 			const p = this.randoms.Random(1, 100);
-			// Due to an error in data/scripts/perks/perk_list.lua
-			// ACTION_TYPE_* is never imported, so it's 0 everywhere
 			if (p <= 86) {
 				card = this.randoms.GetRandomActionWithType(
 					x,
 					y,
 					level,
-					0, //ACTION_TYPE.MODIFIER,
+					ACTION_TYPE.MODIFIER,
 					666
 				);
 			} else if (p <= 93) {
@@ -43,7 +41,7 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 					x,
 					y,
 					level,
-					0, //ACTION_TYPE.STATIC_PROJECTILE,
+					ACTION_TYPE.STATIC_PROJECTILE,
 					666
 				);
 			} else if (p < 100) {
@@ -51,7 +49,7 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 					x,
 					y,
 					level,
-					0, //ACTION_TYPE.PROJECTILE,
+					ACTION_TYPE.PROJECTILE,
 					666
 				);
 			} else {
@@ -59,7 +57,7 @@ export class AlwaysCastInfoProvider extends InfoProvider {
 					x,
 					y,
 					level,
-					0, //ACTION_TYPE.UTILITY,
+					ACTION_TYPE.UTILITY,
 					666
 				);
 			}

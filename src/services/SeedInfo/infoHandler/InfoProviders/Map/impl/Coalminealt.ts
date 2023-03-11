@@ -559,7 +559,7 @@ class Coalminealt extends Base {
 		}
 	];
 
-	async spawn_items(x: number, y: number) {
+	spawn_items(x: number, y: number) {
 		let r = this.randoms.ProceduralRandomf(x, y, 0, 1);
 		// -- 20% is air, nothing happens
 		if (r < 0.47) {
@@ -569,7 +569,7 @@ class Coalminealt extends Base {
 
 		if (r < 0.725) {
 		} else {
-			await this.LoadPixelScene(
+			this.LoadPixelScene(
 				'data/biome_impl/wand_altar.png',
 				'data/biome_impl/wand_altar_visual.png',
 				x - 10,
@@ -580,82 +580,82 @@ class Coalminealt extends Base {
 		}
 	}
 
-	async spawn_small_enemies(x: number, y: number) {
-		await this.spawn_with_limited_random(this.g_small_enemies, x, y, 0, 0, [
+	spawn_small_enemies(x: number, y: number) {
+		this.spawn_with_limited_random(this.g_small_enemies, x, y, 0, 0, [
 			'fungus',
 			'frog'
 		]);
 	}
 
-	async spawn_big_enemies(x: number, y: number) {
-		await this.spawn_with_limited_random(this.g_big_enemies, x, y, 0, 0, [
+	spawn_big_enemies(x: number, y: number) {
+		this.spawn_with_limited_random(this.g_big_enemies, x, y, 0, 0, [
 			'fungus',
 			'frog'
 		]);
 	}
 
-	async spawn_lamp(x: number, y: number) {
-		await this.spawn(this.g_lamp, x, y, 0, 0);
+	spawn_lamp(x: number, y: number) {
+		this.spawn(this.g_lamp, x, y, 0, 0);
 	}
 
-	async spawn_ghostlamp(x: number, y: number) {
-		await this.spawn(this.g_ghostlamp, x, y, 0, 0);
+	spawn_ghostlamp(x: number, y: number) {
+		this.spawn(this.g_ghostlamp, x, y, 0, 0);
 	}
 
-	async spawn_props(x: number, y: number) {
-		await this.spawn(this.g_props, x, y - 3, 0, 0);
+	spawn_props(x: number, y: number) {
+		this.spawn(this.g_props, x, y - 3, 0, 0);
 	}
 
-	async spawn_props2(x: number, y: number) {
-		await this.spawn(this.g_props2, x, y - 3, 0, 0);
+	spawn_props2(x: number, y: number) {
+		this.spawn(this.g_props2, x, y - 3, 0, 0);
 	}
 
-	async spawn_props3(x: number, y: number) {
-		await this.spawn(this.g_props3, x, y, 0, 0);
+	spawn_props3(x: number, y: number) {
+		this.spawn(this.g_props3, x, y, 0, 0);
 	}
 
-	async spawn_unique_enemy(x: number, y: number) {
-		await this.spawn(this.g_unique_enemy, x, y);
+	spawn_unique_enemy(x: number, y: number) {
+		this.spawn(this.g_unique_enemy, x, y);
 	}
 
-	async spawn_unique_enemy2(x: number, y: number) {
-		await this.spawn(this.g_unique_enemy2, x, y);
+	spawn_unique_enemy2(x: number, y: number) {
+		this.spawn(this.g_unique_enemy2, x, y);
 	}
 
-	async spawn_unique_enemy3(x: number, y: number) {
-		await this.spawn(this.g_unique_enemy3, x, y);
+	spawn_unique_enemy3(x: number, y: number) {
+		this.spawn(this.g_unique_enemy3, x, y);
 	}
 
-	async load_pixel_scene(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
+	load_pixel_scene(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
 	}
 
-	async load_pixel_scene2(x: number, y: number) {
-		await this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
+	load_pixel_scene2(x: number, y: number) {
+		this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
 	}
 
-	async load_structures(x: number, y: number) {
-		await this.spawn(this.g_structures, x, y - 30, 0, 0);
+	load_structures(x: number, y: number) {
+		this.spawn(this.g_structures, x, y - 30, 0, 0);
 	}
 
-	async load_large_structures(x: number, y: number) {
-		await this.spawn(this.g_large_structures, x, y - 30, 0, 0);
+	load_large_structures(x: number, y: number) {
+		this.spawn(this.g_large_structures, x, y - 30, 0, 0);
 	}
 
-	async spawn_nest(x: number, y: number) {
-		await this.spawn(this.g_nest, x + 4, y);
+	spawn_nest(x: number, y: number) {
+		this.spawn(this.g_nest, x + 4, y);
 	}
 
-	async spawn_fungi(x: number, y: number) {
-		await this.spawn(this.g_fungi, x, y);
+	spawn_fungi(x: number, y: number) {
+		this.spawn(this.g_fungi, x, y);
 	}
 
-	async spawn_vines(x: number, y: number) {
-		await this.spawn(this.g_vines, x + 5, y + 5);
+	spawn_vines(x: number, y: number) {
+		this.spawn(this.g_vines, x + 5, y + 5);
 	}
 
-	async spawn_shopitem(x: number, y: number) {
-		await this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 1]);
+	spawn_shopitem(x: number, y: number) {
+		this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, 1]);
 	}
 }
 export default Coalminealt;

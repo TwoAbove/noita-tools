@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Col } from 'react-bootstrap';
 
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
-import { copyImage } from '../../LiveSeedStats/OCRHandler/imageActions';
+import {
+	copyImage,
+	imageToBase64
+} from '../../../services/imageActions/webImageActions';
+import { useContainerDimensions } from '../../helpers';
 
 interface IMapProps {
 	infoProvider: GameInfoProvider;
@@ -16,19 +20,47 @@ interface IMapProps {
 const mapParts = {
 	FullMap: {
 		xr: new Array(70).fill('').map((_, i) => i),
-		yr: new Array(48).fill('').map((_, i) => i),
+		yr: new Array(48).fill('').map((_, i) => i)
 	},
 	MainPath: {
 		xr: [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
-		yr: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+		yr: [
+			13,
+			14,
+			15,
+			16,
+			17,
+			18,
+			19,
+			20,
+			21,
+			22,
+			23,
+			24,
+			25,
+			26,
+			27,
+			28,
+			29,
+			30,
+			31,
+			32,
+			33,
+			34,
+			35,
+			36,
+			37,
+			38,
+			39
+		]
 	},
 	other: {
 		xr: [26],
-		yr: [14],
+		yr: [14]
 	},
 	other2: {
 		xr: [35],
-		yr: [15],
+		yr: [15]
 	},
 	top2: {
 		xr: [31, 32, 33, 34, 35, 36, 37, 38],
@@ -60,7 +92,7 @@ const mapParts = {
 	},
 	excavationSite: {
 		xr: [31, 32, 33, 34, 35, 36, 37, 38],
-		yr: [17, 18],
+		yr: [17, 18]
 	},
 	snowCave: {
 		xr: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
@@ -72,75 +104,99 @@ const mapParts = {
 	},
 	Jungle: {
 		xr: [30, 31, 32, 33, 34, 35, 36, 37, 38],
-		yr: [27,28,29]
+		yr: [27, 28, 29]
+	},
+	coalmineTower: {
+		xr: [53, 54, 55],
+		yr: [31]
+	},
+	fungiforest: {
+		xr: [58, 59, 60, 61],
+		yr: [35, 36, 37, 38, 39, 40]
 	}
 };
 
-const { xr, yr } = mapParts.top2;
+const { xr, yr } = mapParts.MainPath;
+// const { xr, yr } = mapParts.coalmine;
 // const xr = new Array(70).fill(1).map((_, i) => i);
 // const yr = new Array(48).fill(1).map((_, i) => i);
 
 // const xr = [29, 30,31, 32,33,34,35,36,37,38, 39];
 // const yr = [31, 32, 33];
 interface ITileProps {
-	cvs: HTMLCanvasElement;
+	cvs: OffscreenCanvas;
 	x: number;
 	y: number;
 	worldseedOffset?: number;
 }
 export const Tile = (props: ITileProps) => {
 	const { cvs, x, y, worldseedOffset = 0 } = props;
+	const [src, setSrc] = useState<string | undefined>();
+	useEffect(() => {
+		if (!cvs) {
+			return;
+		}
+		const work = async () => {
+			const d = await imageToBase64(cvs.transferToImageBitmap());
+			setSrc(d);
+		};
+		work().catch(e => console.error(e));
+	}, [cvs]);
 	// return cvs
 	return (
 		<img
 			style={{
-				width: "512px",
-				height: "512px",
+				width: '512px',
+				height: '512px',
 				// width: "10rem",
 				// height: "10rem",
 				// width: `300%`,
-				imageRendering: 'pixelated',
+				imageRendering: 'pixelated'
 			}}
-			alt=''
+			alt=""
 			title={`${x},${y} - ${worldseedOffset}`}
-			src={cvs?.toDataURL()}
+			src={src}
 		/>
 	);
 };
 
 // Name collision with js Map
 const MapComponent = (props: IMapProps) => {
-	const { infoProvider, seed, worldOffset = 0, iter = 0 } = props;
+	const { infoProvider, seed, iter } = props;
+	const componentRef = useRef<HTMLDivElement>(null);
+	const { width, height } = useContainerDimensions(componentRef);
 
-	const [images, setImages] = useState<Map<string, HTMLCanvasElement>>();
+	const [images, setImages] = useState<Map<string, OffscreenCanvas>>();
 
 	useEffect(() => {
-		(async () => {
-			const res = new Map<string, HTMLCanvasElement>();
+		console.profile('Map');
+		try {
+			const res = new Map<string, OffscreenCanvas>();
 			for (const x of xr) {
 				for (const y of yr) {
-					const mapData = await infoProvider.providers.map.provide(x, y, seed, worldOffset, iter);
+					const mapData = infoProvider.providers.map.provide(x, y, seed);
 					if (!mapData) {
 						continue;
 					}
 					// console.log(mapData);
 					const cvs = copyImage(mapData.map);
-
+					console.log(mapData.interestPoints);
 					res.set(`${x}-${y}`, cvs);
 				}
 			}
 			setImages(res);
-		})().catch(e => {
+		} catch (e) {
 			console.error(e);
-		});
-	}, [infoProvider, seed, worldOffset, iter]);
+		}
+		console.profileEnd('Map');
+	}, [infoProvider, seed, iter]);
 
 	if (!images) {
 		return <div>loading</div>;
 	}
 
 	return (
-		<div className="flex-nowrap justify-content-center">
+		<div ref={componentRef} className="flex-nowrap overflow-auto justify-content-center">
 			{yr.map(y => {
 				return (
 					<div className="row flex-nowrap" key={y + seed}>
@@ -148,7 +204,7 @@ const MapComponent = (props: IMapProps) => {
 							const key = `${x}-${y}`;
 							const image = images!.get(`${x}-${y}`)!;
 							return (
-								<Col xs='auto' className="p-0 m-0" key={key + seed}>
+								<Col xs="auto" className="p-0 m-0" key={key + seed}>
 									<Tile cvs={image} x={x} y={y} />
 								</Col>
 							);

@@ -2,11 +2,11 @@ if (!(Get-Command emcc -ErrorAction Ignore)) {
   Write-Error -Message "Emscripten Compiler Frontend (emcc) not found! Did you add it to the PATH?" -Exception ([System.Management.Automation.CommandNotFoundException]::new()) -ErrorAction Stop
 }
 
-if(!(Test-Path $PSScriptRoot\wasm_in.cpp) -or !(Test-Path $PSScriptRoot\pre.js)) {
+if(!(Test-Path $PSScriptRoot\src\wasm_in.cpp) -or !(Test-Path $PSScriptRoot\pre.js)) {
   Write-Error -Message "This script must be placed in the same directory as files 'wasm_in.cpp' and 'pre.js'!" -Exception ([System.IO.FileNotFoundException]::new()) -ErrorAction Stop
 }
 
-emcc --bind -Oz `
+emcc --bind -Oz -msimd128 `
   -o $PSScriptRoot\noita_random.js `
   --std=c++17 `
   --extern-pre-js="$PSScriptRoot\pre.js" `
@@ -22,4 +22,4 @@ emcc --bind -Oz `
   -s EXPORT_NAME="create_noita_random" `
   -s "EXPORTED_FUNCTIONS=['_generate_map','_generate_path_map']" `
   -s "EXPORTED_RUNTIME_METHODS='cwrap'" `
-  $PSScriptRoot\wasm_in.cpp
+  $PSScriptRoot\src\wasm_in.cpp

@@ -5,7 +5,7 @@ import { FungalInfoProvider } from './InfoProviders/Fungal';
 import { InfoProvider } from './InfoProviders/Base';
 import { IPerkChangeAction, PerkInfoProvider } from './InfoProviders/Perk';
 import { LotteryInfoProvider } from './InfoProviders/Lottery';
-// import { MapInfoProvider } from './InfoProviders/Map';
+import { MapInfoProvider } from './InfoProviders/Map';
 import { MaterialInfoProvider } from './InfoProviders/Material';
 import { RainInfoProvider } from './InfoProviders/Rain';
 import { ShopInfoProvider } from './InfoProviders/Shop';
@@ -35,7 +35,7 @@ interface IProviders {
   biomeModifier: BiomeModifierInfoProvider;
   fungalShift: FungalInfoProvider;
   lottery: LotteryInfoProvider;
-  // map: MapInfoProvider;
+  map: MapInfoProvider;
   material: MaterialInfoProvider;
   perk: PerkInfoProvider;
   rain: RainInfoProvider;
@@ -60,7 +60,6 @@ interface IProviders {
 
 export class GameInfoProvider extends EventTarget {
   randoms!: IRandom;
-  ready = false;
   dispatch = true;
 
   providers!: IProviders;
@@ -70,6 +69,8 @@ export class GameInfoProvider extends EventTarget {
   i18n?: i18n;
 
   unlockedSpells: boolean[];
+
+  loadRandomPromise: Promise<any>;
 
   constructor(
     initialConfig: Partial<IProviderConfig>,
@@ -83,9 +84,10 @@ export class GameInfoProvider extends EventTarget {
     this.resetConfig(initialConfig);
     this.unlockedSpells = unlockedSpells;
     if (randoms) {
+      this.loadRandomPromise = Promise.resolve();
       this.setRandoms(randoms);
     } else {
-      loadRandom()
+      this.loadRandomPromise = loadRandom()
         .then(r => this.setRandoms(r))
         .catch(e => console.error(e));
     }
@@ -95,15 +97,19 @@ export class GameInfoProvider extends EventTarget {
   setRandoms(randoms: IRandom) {
     this.randoms = randoms;
     this.providers = this.buildInfoProviders();
-    this.ready = true;
   }
 
-  onRandomLoad(cb) {
+  async ready() {
+    await this.loadRandomPromise;
+    return Promise.allSettled(Object.values(this.providers).map(p => p.ready()));
+  }
+
+  onRandomLoad(cb?) {
     return new Promise<void>(async res => {
-      while (!this.ready) {
-        await new Promise(r => setTimeout(r, 10));
+      await this.ready();
+      if (cb) {
+        await cb();
       }
-      await cb();
       res();
     });
   }
@@ -142,7 +148,7 @@ export class GameInfoProvider extends EventTarget {
       biomeModifier: new BiomeModifierInfoProvider(this.randoms),
       fungalShift: new FungalInfoProvider(this.randoms),
       lottery: new LotteryInfoProvider(this.randoms),
-      // map: new MapInfoProvider(this.randoms),
+      map: new MapInfoProvider(this.randoms),
       material: new MaterialInfoProvider(this.i18n),
       perk: new PerkInfoProvider(this.randoms),
       rain: new RainInfoProvider(this.randoms),

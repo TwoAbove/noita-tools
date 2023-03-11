@@ -73,11 +73,28 @@ export const getTreeTools = (idKey: string, nodeKey: string) => {
 		addToId(tree, destNode[idKey], sourceNode);
 	};
 
+	const dfs = (tree, cb: (node) => boolean): boolean => {
+		if (cb(tree)) {
+			return true;
+		}
+		for (const node of tree[nodeKey]) {
+			if (cb(node)) {
+				return true;
+			}
+			if (node[nodeKey]) {
+				return dfs(node, cb);
+			}
+		}
+		return false;
+	}
+
 	return {
 		getById,
 		addToId,
 		getParentNode,
 		deleteById,
-		move
+		move,
+
+		dfs
 	};
 };
