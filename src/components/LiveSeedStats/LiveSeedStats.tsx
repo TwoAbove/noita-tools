@@ -114,6 +114,7 @@ interface IHostProps {
 
 const Host = (props: IHostProps) => {
 	const { ready, hostRoom, recording, onClickStartHosting, onClickStopHosting } = props
+	console.log(props);
 	return (
 		<Stack gap={1}>
 			<Description />
@@ -185,11 +186,13 @@ const Watch = (props: IWatchProps) => {
 	)
 }
 
+const canvasDebug = false;
+
 const LiveSeedStats = () => {
 	// We need a way for the OCR handler to notify of a state change.
 	// Maybe refactoring this is the way to go, but I'm not sure how to
 	// make it simpler?
-	// const canvasRef = useRef(null);
+	const canvasRef = useRef(null);
 
 	const [lastSeed, setLastSeed] = useState<string>();
 	const forceUpdate = useForceUpdate();
@@ -197,7 +200,7 @@ const LiveSeedStats = () => {
 	const [ocrHandler, setOcrHandler] = useState<OCRHandler>(() => {
 		const ocrHandler = new OCRHandler({
 			onUpdate: forceUpdate,
-			// canvasRef
+			canvasRef: canvasDebug ? canvasRef : undefined
 		});
 		ocrHandler.addEventListener('seed', (event: any) => {
 			if (event.detail.seed) {
@@ -223,7 +226,7 @@ const LiveSeedStats = () => {
 	useEffect(() => {
 		const ocrHandler = new OCRHandler({
 			onUpdate: forceUpdate,
-			// canvasRef
+			canvasRef: canvasDebug ? canvasRef : undefined
 		});
 		ocrHandler.addEventListener('seed', (event: any) => {
 			if (event.detail.seed) {
@@ -247,7 +250,7 @@ const LiveSeedStats = () => {
 
 	return (
 		<Container className="container shadow-lg">
-			{/* <canvas style={{}} ref={canvasRef} /> */}
+			{canvasDebug && <canvas style={{}} ref={canvasRef} />}
 			<h4>Live seed data</h4>
 			{!everythingReady ? <div>Loading...</div> :
 				<Stack>

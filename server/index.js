@@ -205,11 +205,11 @@ io.on('connection', socket => {
 	socket.on('host', (customRoom, cb) => {
 		roomNumber = customRoom || getRoomNumber();
 		rooms.add(roomNumber);
-		socket.emit('set_room', roomNumber);
 		socket.join(roomNumber);
 		setHost(roomNumber, socket.id);
+		socket.emit('set_room', roomNumber);
 
-		cb('ok');
+		// cb('ok');
 	});
 
 	socket.on('compute:workers', async cb => {
