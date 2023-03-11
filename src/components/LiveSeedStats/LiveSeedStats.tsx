@@ -114,7 +114,6 @@ interface IHostProps {
 
 const Host = (props: IHostProps) => {
 	const { ready, hostRoom, recording, onClickStartHosting, onClickStopHosting } = props
-	console.log(props);
 	return (
 		<Stack gap={1}>
 			<Description />
