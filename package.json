@@ -155,7 +155,7 @@
     "lambda-build": "rimraf lambda-build/* && node lambdaBuild.js",
     "lambda-build-old": "rimraf lambda-build/* && webpack --config lambda.config.js",
     "test": "craco test",
-    "e2e": "yarn build && concurrently --restart-tries -1 --success=first 'PORT=3000 yarn start' 'cypress run'",
+    "e2e": "yarn build && concurrently 'PORT=3000 yarn start' 'cypress run'",
     "eject": "react-scripts eject",
     "deploy": "git checkout master && git pull && git push heroku master:main && git checkout develop"
   },

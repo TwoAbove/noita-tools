@@ -8,8 +8,6 @@ const _imageData = (w, h): ImageData => {
 	return new ImageData(w, h);
 };
 
-module.exports.ImageData = _imageData;
-
 export const getContext = (
 	canvas: HTMLCanvasElement,
 	config?: CanvasRenderingContext2DSettings
