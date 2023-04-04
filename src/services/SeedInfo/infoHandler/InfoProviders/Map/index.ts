@@ -13,15 +13,14 @@ import impls from '../../../data/obj/impl.json';
 
 import MapImplementations from './MapImplementations';
 import { IRandom } from '../../../random';
-import { promiseMap } from '../../../../helpers';
+import { generatePoints } from '../../../../helpers';
 import { IImageActions } from '../../../../imageActions/IImageActions';
+import { MapHandler } from '../../../random/random';
 
 export interface Interest {
 	item: string;
 	gx: number;
 	gy: number;
-	px: number;
-	py: number;
 	type: InterestType;
 
 	s?: number;
@@ -56,22 +55,19 @@ const isPurple = c => c === 0x7f007fff;
 
 export class MapInfoProvider extends InfoProvider {
 	maps = maps;
+	mapHandlerCache = new Map<string, MapHandler>();
 	imageCache = new Map<string, ImageData>();
 	rawMapCache = new Map<string, ImageData>();
 	mapCache = new Map<string, OffscreenCanvas>();
 	mapMainPathCache = new Map<string, ImageData>();
 	interestPointsCache = new Map<string, ReturnType<MapInfoProvider["getInterestPoints"]>>();
-	seed?: string;
+	seed?: number;
 
 	imageActions!: IImageActions;
 
 	worldMap!: ImageData;
-	impls = new Map<string, ImageData>();
 
-	loadAllImagesPromise: Promise<any>;
 	worldMapPromise: Promise<any>;
-	wangPromise: Promise<any>;
-	implPromise: Promise<any>;
 	loadImageActionsPromise: Promise<any>;
 
 	constructor(randoms: IRandom) {
@@ -80,10 +76,6 @@ export class MapInfoProvider extends InfoProvider {
 		this.loadImageActionsPromise = this.loadImageActions();
 
 		this.worldMapPromise = this.loadWorldMap();
-		this.loadAllImagesPromise = this.loadAllImages();
-
-		this.wangPromise = this.loadAllImagesPromise;
-		this.implPromise = this.loadAllImagesPromise;
 	}
 
 	wang_maps: { [color: number]: ImageData } = {};
@@ -92,8 +84,6 @@ export class MapInfoProvider extends InfoProvider {
 		return Promise.all([
 			this.loadImageActionsPromise,
 			this.worldMapPromise,
-			this.wangPromise,
-			this.implPromise
 		]);
 	}
 
@@ -117,44 +107,6 @@ export class MapInfoProvider extends InfoProvider {
 			.catch(e => console.error(e));
 	}
 
-	async loadAllImages() {
-		await this.loadImageActionsPromise;
-
-		const loadMaps = async (key: number, mapData: any) => {
-			if (!mapData || !mapData.wang || !mapData.wang.template_file) {
-				return;
-			}
-			this.wang_maps[key] = await this.imageActions.imageFromBase64(
-				mapData.wang.template_file
-				// mapData.wang.map_width,
-				// mapData.wang.map_height
-			);
-		};
-
-		const loadImpls = async (k: string) => {
-			if (!impls[k].src) {
-				return;
-			}
-			this.impls.set(
-				k,
-				await this.imageActions.imageFromBase64(
-					impls[k].src
-					// impls[k].w,
-					// impls[k].h
-				)
-			);
-		};
-
-		return Promise.allSettled([
-			promiseMap(this.maps, async ([k, v]) => loadMaps(k, v), {
-				concurrency: 20
-			}),
-			promiseMap(Object.keys(impls), async k => loadImpls(k), {
-				concurrency: 20
-			})
-		]);
-	}
-
 	getMapChunk = (
 		map: OffscreenCanvas,
 		_x: number,
@@ -172,6 +124,12 @@ export class MapInfoProvider extends InfoProvider {
 			this.imageActions.crop(map, x * width, y * height, width, height)
 		);
 	};
+
+	inOtherBiome = (color: number, gx: number, gy: number): boolean => {
+		const { x, y } = this.imageActions.getTilePos(gx, gy);
+		const mapColor = this.imageActions.getColor(this.worldMap, x, y);
+		return color !== mapColor;
+	}
 
 	inMainPath = (
 		map: ImageData,
@@ -198,71 +156,6 @@ export class MapInfoProvider extends InfoProvider {
 			a => a.x1 <= x && a.x2 >= x && a.y1 <= y && a.y2 >= y
 		);
 		return areas[areaIndex];
-	}
-
-	getMap(x: number, y: number, color: number) {
-		const mapData = this.maps.get(color);
-		if (!mapData || !mapData.wang) {
-			return;
-		}
-
-		const { map_width, map_height, template_file } = mapData.wang!;
-		const area = this.getArea(x, y, color);
-		const cacheKey = `${color} ${area.x1} ${area.y1}`;
-
-		if (this.rawMapCache.has(cacheKey)) {
-			const map = this.rawMapCache.get(cacheKey);
-
-			return map;
-		}
-
-		const wang_map = this.wang_maps[color];
-		const w = this.randoms.GetWidthFromPix(area.x1, area.x2 + 1);
-		const h = this.randoms.GetWidthFromPix(area.y1, area.y2 + 1);
-
-		const randomMaterials: number[][] = [];
-
-		if (mapData.randomMaterials) {
-			for (const from of Object.keys(mapData.randomMaterials)) {
-				const fromInt = this.imageActions.hexRGBAtoIntRGB(from);
-				const to = mapData.randomMaterials[from].map(
-					this.imageActions.hexRGBAtoIntRGB
-				);
-				// To send a 1d array to c++
-				const flat = [fromInt, to.length, ...to];
-				randomMaterials.push(flat);
-			}
-		}
-		const flatRandomMaterials = [
-			randomMaterials.length,
-			...randomMaterials.flat()
-		];
-		const startTime = performance.now();
-		const map = this.imageActions.GenerateMap(
-			this.randoms,
-			wang_map,
-			color,
-			map_width,
-			map_height,
-			w,
-			h,
-			['solid_wall_tower_1', 'coalmine'].includes(mapData.name),
-			[
-				'solid_wall_tower_1',
-				'solid_wall_tower_2',
-				'coalmine',
-				'excavationsite'
-			].includes(mapData.name),
-			flatRandomMaterials,
-			area.x1,
-			area.y1
-		);
-		const endTime = performance.now();
-		const execTime = endTime - startTime;
-		// console.log({ execTime });
-		this.rawMapCache.set(cacheKey, map);
-		// return map
-		return map;
 	}
 
 	// NYI
@@ -293,12 +186,11 @@ export class MapInfoProvider extends InfoProvider {
 	// }
 
 	getInterestPoints(
-		_x: number,
-		_y: number,
+		mh: MapHandler,
+		x: number,
+		y: number,
 		color: number,
-		areaMap: OffscreenCanvas,
-		funcs?
-	) {
+		funcs?) {
 		const points: Interest[] = [];
 		const mapData = this.maps.get(color)!;
 		const Implementation =
@@ -307,10 +199,6 @@ export class MapInfoProvider extends InfoProvider {
 			console.error(`No MapImplementation for ${color}`);
 			return;
 		}
-		const area = this.getArea(_x, _y, color);
-
-		const x = area.x1;
-		const y = area.y1;
 
 		// const pathMap = this.getPathMap(x, y, color)!;
 
@@ -325,11 +213,7 @@ export class MapInfoProvider extends InfoProvider {
 			color_to_material_table = {},
 			background_z_index = 50
 		) => {
-			// console.log('LoadPixelScene', path, gx, gy);
-
-			const { px, py } = this.imageActions.getLocalPos(x, y, gx, gy);
-
-			const impl = this.impls.get(path);
+			const impl = impls[path];
 			if (!impl) {
 				console.error(
 					`${path} not in impls! Please add it to dataScripts/src/pixelScenes.ts and re-run generation.`
@@ -337,10 +221,16 @@ export class MapInfoProvider extends InfoProvider {
 				return;
 			}
 
-			// if fits
+			// if fits and doesn't encroach onto other biomes
+			const r = gx + impl.w;
+			const b = gy + impl.h;
+			// TODO: handle LoadPixelScene where it draws outside of the chunks
+			// ex: Holy Mountains and spawn_altar_top
 			if (
-				px + impl.width >= areaMap.width ||
-				py + impl.height >= areaMap.height
+				this.inOtherBiome(color, gx, gy) ||
+				this.inOtherBiome(color, r, gy) ||
+				this.inOtherBiome(color, gx, b) ||
+				this.inOtherBiome(color, r, b)
 			) {
 				return;
 			}
@@ -349,18 +239,21 @@ export class MapInfoProvider extends InfoProvider {
 				item: path,
 				gx,
 				gy,
-				px,
-				py,
 				type: InterestType.PixelScene
 			});
 
-			this.imageActions.drawImageData(
-				impl,
-				areaMap,
-				px,
-				py,
-				color_to_material_table
-			);
+			const ctmtptr = this.randoms.objToMapUIntUIntPtr(color_to_material_table);
+			mh.drawImageData(path, impls[path].src, gx, gy, ctmtptr.$$.ptr);
+			// this.randoms.Module._free(ctmtptr);
+			ctmtptr.delete();
+
+			// this.imageActions.drawImageData(
+			// 	impl,
+			// 	areaMap,
+			// 	px,
+			// 	py,
+			// 	color_to_material_table
+			// );
 
 			impls[path].f.forEach(({ x: dx, y: dy, c }) => {
 				const funcName = mapData.config!.spawnFunctions.get(c);
@@ -371,13 +264,12 @@ export class MapInfoProvider extends InfoProvider {
 				// TODO: doing a second flood fill just for this seems
 				// like too much. Maybe we can reuse it from the map gen?
 				// const is_open_path = inMainPath(pathMap, gx + dx, gy + dy, 1);
+				const is_open_path = false;
 
 				points.push({
 					item: funcName,
 					gx: gx + dx,
 					gy: gy + dy,
-					px,
-					py,
 					type: InterestType.Pixel
 				});
 
@@ -387,7 +279,7 @@ export class MapInfoProvider extends InfoProvider {
 					gy + dy,
 					1,
 					1,
-					false // is_open_path
+					is_open_path
 				);
 			});
 		};
@@ -403,8 +295,6 @@ export class MapInfoProvider extends InfoProvider {
 				item,
 				gx,
 				gy,
-				px,
-				py,
 				type: InterestType.Interest
 			};
 			if (extra) {
@@ -416,7 +306,7 @@ export class MapInfoProvider extends InfoProvider {
 		const BiomeMapGetVerticalPositionInsideBiome = (x: number, y: number) => {
 			// This might not be accurate;
 			const y0 = Math.floor(y / 512) * 512;
-			const y1 = areaMap.height;
+			const y1 = mh.height * 10;
 
 			return (y - y0) / y1;
 		};
@@ -437,14 +327,15 @@ export class MapInfoProvider extends InfoProvider {
 			}
 		);
 		try {
-			mapImplementation.init();
-			this.imageActions.iteratePixels(areaMap, 10, (px, py, c) => {
+			const g = this.randoms.GetGlobalPos(x, y);
+			mapImplementation.init(g.get(0), g.get(1), 10, 10);
+			mh.iterateMap(x, y, (gx, gy, c) => {
 				// this.imageActions.drawImageData(new ImageData(new Uint8ClampedArray([0xff, 0x00, 0x00, 0x00]), 1, 1), areaMap, px, py);
 				const funcName = mapData.config!.spawnFunctions.get(c);
 				if (!funcName) {
 					return;
 				}
-				const { gx, gy } = this.imageActions.getGlobalPos(x, y, px, py);
+				// const { px, py } = this.imageActions.getLocalPos(x, y, gx, gy);
 				// is_open_path is only used in the coalmine biome:
 				// data/scripts/biomes/coalmine.lua
 				// const is_open_path = inMainPath(pathMap, px, py, 10);
@@ -453,8 +344,6 @@ export class MapInfoProvider extends InfoProvider {
 					item: funcName,
 					gx,
 					gy,
-					px,
-					py,
 					type: InterestType.Wang
 				});
 				mapImplementation.handle(funcName, gx, gy, 10, 10, false);
@@ -464,23 +353,15 @@ export class MapInfoProvider extends InfoProvider {
 			console.error(e);
 		}
 
-		return {
-			points,
-			area
-		};
+		return points;
 	}
 
-	testProvide(tx: number, ty: number, seed: string, funcs?) {
-		if (this.seed !== seed) {
-			this.seed = seed;
-			this.clearCache();
-		}
+	getMapHandler(tx: number, ty: number) {
 		const color = this.imageActions.getColor(this.worldMap, tx, ty);
 		const area = this.getArea(tx, ty, color);
 		const mapData = this.maps.get(color)!;
 
 		const randomMaterials: number[][] = [];
-
 		if (mapData.randomMaterials) {
 			for (const from of Object.keys(mapData.randomMaterials)) {
 				const fromInt = this.imageActions.hexRGBAtoIntRGB(from);
@@ -492,24 +373,22 @@ export class MapInfoProvider extends InfoProvider {
 				randomMaterials.push(flat);
 			}
 		}
-
-		const w = this.randoms.GetWidthFromPix(area.x1, area.x2 + 1);
-		const h = this.randoms.GetWidthFromPix(area.y1, area.y2 + 1);
-
 		const flatRandomMaterials = [
 			randomMaterials.length,
 			...randomMaterials.flat()
 		];
 		const randomMaterialsPtr = this.randoms.Module._malloc(
-			randomMaterials.length * 4
+			flatRandomMaterials.length * 4
 		);
-		// 32-bit (uint)
 		const randomMatData = new Uint32Array(
 			this.randoms.Module.HEAPU32.buffer,
 			randomMaterialsPtr,
-			randomMaterials.length * 4
+			flatRandomMaterials.length * 4
 		);
 		randomMatData.set(flatRandomMaterials);
+
+		const w = this.randoms.GetWidthFromPix(area.x1, area.x2 + 1);
+		const h = this.randoms.GetWidthFromPix(area.y1, area.y2 + 1);
 
 		const mh = new this.randoms.MapHandler(
 			w,
@@ -527,15 +406,27 @@ export class MapInfoProvider extends InfoProvider {
 			area.y1
 		);
 
-		mh.generate_map(mapData.wang.template_file);
+		const self = this;
 
-		console.log("data:image/png;base64," + mh.getMap());
-
-		this.randoms.Module._free(randomMaterialsPtr);
-		mh.delete();
+		return Object.assign(mh, {
+			release: function () {
+				self.randoms.Module._free(randomMaterialsPtr);
+				(this as any).delete();
+			},
+			getMapImageData: function () {
+				const resImgData = self.imageActions.ImageData(w, h);
+				resImgData.data.set(new Uint8ClampedArray(self.randoms.Module.HEAPU8.buffer, mh.map, 4 * w * h));
+				return resImgData;
+			},
+			getBigMapImageData: function () {
+				const areaMapToScaleID = self.imageActions.ImageData(w * 10, h * 10);
+				areaMapToScaleID.data.set(new Uint8ClampedArray(self.randoms.Module.HEAPU8.buffer, mh.bigMap, 4 * w * h * 10 * 10));
+				return areaMapToScaleID;
+			}
+		});
 	}
 
-	provide(tx: number, ty: number, seed: string, funcs?) {
+	provide(tx: number, ty: number, seed: number, funcs?) {
 		if (this.seed !== seed) {
 			this.seed = seed;
 			this.clearCache();
@@ -548,36 +439,46 @@ export class MapInfoProvider extends InfoProvider {
 		if (map) {
 			return {
 				map: this.getMapChunk(map, tx - area.x1, ty - area.y1, 512, 512),
-				interestPoints: this.interestPointsCache.get(cacheKey)
+				interestPoints: { points: this.interestPointsCache.get(cacheKey), area }
 			};
 		}
 
-		const startTime = performance.now();
-		const areaMap = this.getMap(tx, ty, color);
-		if (!areaMap) {
-			// console.groupEnd();
+		const mapData = this.maps.get(color)!;
+
+		if (mapData.type !== 'BIOME_WANG_TILE') {
 			return;
 		}
 
-		// return { map: areaMap };
+		const mh = this.getMapHandler(tx, ty);
 
-		const startTime_mapScale = performance.now();
-		const areaMapToScale = this.imageActions.scaleImageData(areaMap, 10);
-		const endTime_mapScale = performance.now();
-		// console.log(areaMapToScale);
-		// const interestPoints = {};
-		const startTime_interestingPoints = performance.now();
-		const interestPoints = this.getInterestPoints(
-			area.x1,
-			area.y1,
-			color,
-			areaMapToScale,
-			funcs
-		);
-		const endTime_interestingPoints = performance.now();
+		mh.generate_map(mapData?.wang?.template_file || '');
+
+		this.rawMapCache.set(cacheKey, mh.getMapImageData());
+
+		mh.toBig();
+
+		const interestPoints: Interest[] = [];
+		for (const [x, y] of generatePoints(area.x1, area.x2, area.y1, area.y2)) {
+			const points = this.getInterestPoints(
+				mh,
+				x,
+				y,
+				color,
+				funcs
+			);
+			if (!points) {
+				continue;
+			}
+			interestPoints.push(...points);
+		}
+
+		const areaMapToScale = this.imageActions.copyImage(mh.getBigMapImageData());
+
+		this.mapCache.set(cacheKey, areaMapToScale);
+		this.interestPointsCache.set(cacheKey, interestPoints);
 
 		const res = {
-			interestPoints: interestPoints,
+			interestPoints: { points: interestPoints, area },
 			map: this.getMapChunk(
 				areaMapToScale,
 				tx - area.x1,
@@ -586,20 +487,13 @@ export class MapInfoProvider extends InfoProvider {
 				512
 			)
 		};
-		const endTime = performance.now();
-		const fullExec = endTime - startTime;
-		const mapScale = endTime_mapScale - startTime_mapScale;
-		const interstingPointsTime =
-			endTime_interestingPoints - startTime_interestingPoints;
-		// console.log(res);
-		// console.log({ fullExec, mapScale, interstingPointsTime });
-		// console.groupEnd();
-		this.mapCache.set(cacheKey, areaMapToScale);
-		this.interestPointsCache.set(cacheKey, interestPoints);
+
+		mh.release();
 		return res;
 	}
 
 	clearCache() {
+		this.mapHandlerCache = new Map();
 		this.rawMapCache = new Map();
 		this.mapCache = new Map();
 		this.mapMainPathCache = new Map();
@@ -609,21 +503,24 @@ export class MapInfoProvider extends InfoProvider {
 	test(rule: IRule): boolean {
 		this.clearCache();
 		// Do two passes - First for all functions, then for all searches
-		const maps: { [key: string]: ImageData } = {};
-		const configs = rule.val;
-		for (const key in configs) {
-			const config = configs[key];
-			const { x, y } = config.pos;
-			const color = this.imageActions.getColor(this.worldMap, x, y);
-			const areaMap = this.getMap(x, y, color)!;
-			const mapData = this.maps.get(color)!;
+		// initialize handlers before the test for proper memory management
 
-			const set = new Set<string>(config.funcs);
+		const mapHandlers: { [key: string]: ReturnType<MapInfoProvider["getMapHandler"]> } = {};
 
-			const found = this.imageActions.somePixelsSync(
-				areaMap,
-				1,
-				(px, py, c) => {
+		const search = () => {
+			const configs = rule.val;
+			for (const key in configs) {
+				const config = configs[key];
+				const { x, y } = config.pos;
+				const color = this.imageActions.getColor(this.worldMap, x, y);
+				const mapData = this.maps.get(color)!;
+				const set = new Set<string>(config.funcs);
+
+				const mh = this.getMapHandler(x, y);
+				mh.generate_map(mapData.wang.template_file);
+				mapHandlers[key] = mh;
+
+				const found = mh.somePixels(mh.map, mh.width, mh.height, 1, (px, py, c) => {
 					if (set.size === 0) {
 						// Found all of the needed funcs
 						return true;
@@ -634,45 +531,50 @@ export class MapInfoProvider extends InfoProvider {
 					}
 					set.delete(funcName);
 					return false;
+				})
+
+				if (!found) {
+					return false;
 				}
-			);
-
-			if (!found) {
-				return false;
 			}
-			maps[key] = areaMap;
+
+			for (const key in configs) {
+				const config = configs[key];
+				const { x, y } = config.pos;
+				const color = this.imageActions.getColor(this.worldMap, x, y);
+				const mh = mapHandlers[key];
+				mh.toBig();
+				const interestPoints = this.getInterestPoints(
+					mh,
+					x,
+					y,
+					color,
+					config.funcs
+				)!;
+				// const mapData = (await map.provide(x, y, seed.toString(), config.funcs))!;
+				const method = config.searchType === 'and' ? 'every' : 'some';
+				const points = new Set(interestPoints.map(p => p.item));
+				const check = (config.search as string[])[method](
+					// These might be equal string values, but not equal "Strings"
+					s => points.has(String(s))
+				);
+				if (!check) {
+					return false;
+				}
+			}
+			// for (const key in configs) {
+			// 	const areaMap = maps[key];
+			// 	this.imageActions.printImage(areaMap);
+			// }
+			return true;
+		};
+
+		const found = search();
+		for (const mh of Object.values(mapHandlers)) {
+			mh.release();
 		}
 
-		for (const key in configs) {
-			const areaMap = maps[key];
-			const config = configs[key];
-			const { x, y } = config.pos;
-			const color = this.imageActions.getColor(this.worldMap, x, y);
-
-			const areaMapToScale = this.imageActions.scaleImageData(areaMap, 10);
-			const interestPoints = this.getInterestPoints(
-				x,
-				y,
-				color,
-				areaMapToScale,
-				config.funcs
-			)!;
-			// const mapData = (await map.provide(x, y, seed.toString(), config.funcs))!;
-			const method = config.searchType === 'and' ? 'every' : 'some';
-			const points = new Set(interestPoints.points.map(p => p.item));
-			const check = (config.search as string[])[method](
-				// These might be equal string values, but not equal "Strings"
-				s => points.has(String(s))
-			);
-			if (!check) {
-				return false;
-			}
-		}
-		// for (const key in configs) {
-		// 	const areaMap = maps[key];
-		// 	this.imageActions.printImage(areaMap);
-		// }
-		return true;
+		return found;
 	}
 }
 

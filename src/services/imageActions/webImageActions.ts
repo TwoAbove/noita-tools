@@ -1,5 +1,15 @@
 import { IRandom } from "../SeedInfo/random";
 
+import { rgbaToInt, hexTorgba } from './commonImageActions';
+
+export * from './commonImageActions';
+
+const _imageData = (w, h): ImageData => {
+	return new global.ImageData(w, h);
+};
+
+export const ImageData = _imageData;
+
 export const getContext = (
 	canvas: OffscreenCanvas,
 	config?: CanvasRenderingContext2DSettings
@@ -72,7 +82,7 @@ export const imageToBase64 = async (
 export const copyImage = img => {
 	const image = createCanvas(img.width, img.height);
 	const ctx = getContext(image);
-	if (img instanceof ImageData) {
+	if (img instanceof global.ImageData) {
 		ctx.putImageData(img, 0, 0);
 	} else {
 		ctx.drawImage(img, 0, 0, img.width, img.height);
@@ -88,23 +98,6 @@ export const getPixels = (img): ImageData => {
 	return ctx.getImageData(0, 0, img.width, img.height);
 };
 
-export const threshold = (
-	pixels,
-	threshold,
-	light = [255, 255, 255],
-	dark = [0, 0, 0]
-) => {
-	// light, dark arrays of RGB
-	var d = pixels.data,
-		i = 0,
-		l = d.length;
-	while (l-- > 0) {
-		const v = d[i] * 0.2126 + d[i + 1] * 0.7152 + d[i + 2] * 0.0722;
-		[d[i], d[i + 1], d[i + 2]] = v >= threshold ? light : dark;
-		i += 4;
-	}
-	return pixels;
-};
 
 export const toDark = (pixels: ImageData, dark = [0, 0, 0]) => {
 	// light, dark arrays of RGB
@@ -268,40 +261,6 @@ export const clearBg = (cv: OffscreenCanvas): OffscreenCanvas => {
 	// return cvs;
 };
 
-// [r, g, b, a, r, g, b, a...] => [r, g, b, r, g, b...]
-export const rgba2rgb = (src: any, dest: any) => {
-	let j = 0;
-	for (let i = 0; i < src.length; i++) {
-		if (i && (i + 1) % 4 === 0) continue;
-		dest[j] = src[i];
-		j++;
-	}
-};
-
-// [r, g, b, r, g, b...] => [r, g, b, a, r, g, b, a...]
-export const rgb2rgba = (src: any, dest: any) => {
-	let j = 0;
-	for (let i = 0; i < src.length; i++) {
-		dest[j] = src[i];
-		j++;
-		if (i && (i + 1) % 3 === 0) {
-			dest[j] = 255;
-			j++;
-		}
-	}
-};
-
-const pad = (s: string) => {
-	if (s.length === 1) {
-		s = '0' + s;
-	}
-	return s;
-};
-
-export const hexRGBAtoIntRGB = (hex: string) => {
-	const rgb = hex.substring(0, 6);
-	return parseInt(rgb, 16);
-};
 
 // export const rgbaToHex = (r, g, b, a) => {
 // 	let rs = pad(r.toString(16));
@@ -312,21 +271,6 @@ export const hexRGBAtoIntRGB = (hex: string) => {
 // 	return hex;
 // };
 
-export const rgbaToHex = (r, g, b, a) => {
-	const hex = rgbaToInt(r, g, b, a).toString(16);
-	if (hex.length === 8) {
-		return hex;
-	}
-	return '0' + hex;
-};
-
-const getPos = (w, x, y) => w * y * 4 + 4 * x;
-const isBlack = (data, p) => {
-	return data[p] === 0 && data[p + 1] === 0 && data[p + 2] === 0;
-};
-const isWhite = (data, p) => {
-	return data[p] === 255 && data[p + 1] === 255 && data[p + 2] === 255;
-};
 export const drawImageData = (
 	src: ImageData,
 	dest: OffscreenCanvas,
@@ -334,7 +278,7 @@ export const drawImageData = (
 	startY: number,
 	color_to_material_table?: { [color: string]: string }
 ) => {
-	const img = new ImageData(src.data, src.width, src.height);
+	const img = new global.ImageData(src.data, src.width, src.height);
 
 	let f = {};
 	if (color_to_material_table) {
@@ -373,9 +317,9 @@ export const printImage = (image: ImageData | OffscreenCanvas) => {
 	if (image instanceof ImageData) {
 		cv = createCanvas(image.width, image.height);
 		const cx = getContext(cv);
-		cx.putImageData(image, 0, 0);
+		cx.putImageData(image as any, 0, 0);
 	} else {
-		cv = image;
+		cv = image as any;
 	}
 	cv[
 		cv['convertToBlob']
@@ -490,70 +434,14 @@ export const iteratePixels = (
 	}
 };
 
-export const rgbaToInt = (r: number, g: number, b: number, a: number) =>
-	((r << 24) >>> 0) + (g << 16) + (b << 8) + a;
-
-export const hexTorgba = (h: string): [r: number, g: number, b: number, a: number] => {
-	const hh = parseInt(h, 16);
-	const r = (hh >> 24) & 0xff;
-	const g = (hh >> 16) & 0xff;
-	const b = (hh >> 8) & 0xff;
-	const a = hh & 0xff;
-	return [r, g, b, a];
-};
-
 export const imageFromHexArray = (
 	hexArray: string[],
 	w: number,
 	h: number
 ): ImageData => {
 	const arr = hexArray.flatMap(hexTorgba);
-	return new ImageData(new Uint8ClampedArray(arr), w, h);
+	return new global.ImageData(new Uint8ClampedArray(arr), w, h);
 };
-
-export const getGlobalPos = (x: number, y: number, px: number, py: number) => {
-	if (y === 14) {
-		py -= 10;
-	}
-	const gx = Math.floor(((x - 35) * 512) / 10) * 10 + px - 5;
-	const gy = Math.floor(((y - 14) * 512) / 10) * 10 + py - 3;
-	return { gx, gy };
-};
-
-export const getLocalPos = (x: number, y: number, gx: number, gy: number) => {
-	const px = gx - Math.floor(((x - 35) * 512) / 10) * 10 + 5;
-	let py = gy - Math.floor(((y - 14) * 512) / 10) * 10 + 3;
-	if (y === 14) {
-		py += 10;
-	}
-	return { px, py };
-};
-
-export const rgbToHsl = (_r, _g, _b): [h: number, s: number, l: number] => {
-	let r = _r / 255
-	let g = _g / 255
-	let b = _b / 255;
-
-	let max = Math.max(r, g, b), min = Math.min(r, g, b);
-	let h, s, l = (max + min) / 2;
-
-	if (max === min) {
-		h = s = 0; // achromatic
-	} else {
-		let d = max - min;
-		s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-		switch (max) {
-			case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-			case g: h = (b - r) / d + 2; break;
-			case b: h = (r - g) / d + 4; break;
-		}
-
-		h /= 6;
-	}
-
-	return [h, s, l];
-}
 
 export const GenerateMap = (
 	randoms: IRandom,
@@ -613,7 +501,7 @@ export const GenerateMap = (
 		yOffset
 	);
 
-	const resImgData = new ImageData(map_w, map_h);
+	const resImgData = new global.ImageData(map_w, map_h);
 	resImgData.data.set(result);
 	// rgb2rgba(result, resImgData.data);
 
@@ -658,7 +546,7 @@ export const GetPathMap = (
 		yOffset
 	);
 
-	const resImgData = new ImageData(result, map_w, map_h);
+	const resImgData = new global.ImageData(result, map_w, map_h);
 	// resImgData.data.set(result);
 	// rgb2rgba(result, resImgData.data);
 

@@ -3,7 +3,6 @@
 #define STBI_NO_STDIO
 #define STBI_ONLY_PNG
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 #include <algorithm>
 #include <array>
@@ -152,7 +151,7 @@ std::string encode_base64(std::span<std::uint8_t const> const input)
   return output;
 }
 
-std::vector<u_int8_t> decode_base64(
+std::vector<uint8_t> decode_base64(
     std::string_view const encoded_str)
 {
   auto const size = encoded_str.size();
@@ -164,7 +163,7 @@ std::vector<u_int8_t> decode_base64(
 
   if (((size % 4) != 0) || !is_valid_base64_str(encoded_str))
   {
-    return std::vector<u_int8_t>{};
+    return std::vector<uint8_t>{};
   }
 
   auto const full_quadruples = size / 4 - 1;
@@ -219,6 +218,13 @@ void zero_out(uint8_t *data, uint l)
   }
 }
 
+std::string_view strip_prefix(std::string_view s) {
+    if (s.substr(0, 22) == "data:image/png;base64,") {
+        s = s.substr(22);
+    }
+    return s;
+}
+
 struct image
 {
   int width;
@@ -230,7 +236,7 @@ struct image
 
 image load_png(std::string_view const encoded_str)
 {
-  auto data = decode_base64(encoded_str);
+  auto data = decode_base64(strip_prefix(encoded_str));
   int l = data.size();
   int width = 0;
   int height = 0;
@@ -242,12 +248,36 @@ image load_png(std::string_view const encoded_str)
   return out;
 }
 
-std::string unload_png(unsigned char *img, int width, int height)
+std::string unload_png(unsigned char *_img, int width, int height)
 {
   int out_len = 0;
-  unsigned char *img = stbi_write_png_to_mem(img, 0, width, height, 4, &out_len);
-  std::span<const u_int8_t> ing_vec(img, img + out_len);
+  unsigned char *img = stbi_write_png_to_mem(_img, 0, width, height, 4, &out_len);
+  std::span<const uint8_t> ing_vec(img, img + out_len);
   std::string out = encode_base64(ing_vec);
   free(img);
   return out;
+}
+
+void scaleImage(unsigned char *src, uint src_width, uint src_height, unsigned char *dest, unsigned char scale)
+{
+    int dest_width = src_width * scale;
+    int dest_height = src_height * scale;
+
+    for (int y = 0; y < dest_height; y++)
+    {
+        int src_y = y / scale;
+
+        for (int x = 0; x < dest_width; x++)
+        {
+            int src_x = x / scale;
+
+            int src_index = (src_y * src_width + src_x) * 4;
+            int dest_index = (y * dest_width + x) * 4;
+
+            dest[dest_index + 0] = src[src_index + 0];
+            dest[dest_index + 1] = src[src_index + 1];
+            dest[dest_index + 2] = src[src_index + 2];
+            dest[dest_index + 3] = src[src_index + 3];
+        }
+    }
 }

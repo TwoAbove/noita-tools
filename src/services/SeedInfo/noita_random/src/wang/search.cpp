@@ -225,7 +225,11 @@ public:
     return false;
   }
 
-  unsigned long pos(int x, int y)
+  // pos() roughly caches the result of getPos to avoid cache misses.
+  // see One-place cache: https://en.wikibooks.org/wiki/Optimizing_C%2B%2B/General_optimization_techniques/Memoization
+  // This is not thread safe, but we don't need it to be.
+  // If WASM ever supports threads, we would still thread on the map gen level.
+  unsigned long pos(int x, int y) const
   {
     static int prev_x = 0;
     static int prev_y = 0;
@@ -243,18 +247,20 @@ public:
 private:
   bool tryNext(int x, int y, shared_ptr<Node> n)
   {
-    if (!traversable(x, y))
-    {
-      return false;
-    }
     if (isVisited(x, y))
     {
       return false;
     }
+    if (!valid(x, y)) {
+      return false;
+    }
+    if (!traversable(x, y))
+    {
+      return false;
+    }
+
     setVisited(x, y);
-
     unsigned long p = pos(x, y);
-
     shared_ptr<Node> _n = make_shared<Node>(x, y, targetX, targetY, pos(n->x, n->y));
     nodeList[p] = _n;
     pq.push(_n);
@@ -274,19 +280,20 @@ private:
     return visited[pos(x, y)];
   }
 
-  bool traversable(int x, int y)
+  bool valid(int x, int y) const
   {
-    if (x >= 0 && y >= 0 && x < width && y < height)
-    {
-      unsigned long p = pos(x, y);
-      long c = getPixelColor(map, p * 3);
-
-      return c == COLOR_BLACK || c == COLOR_COFFEE;
-    }
-    return false;
+    return x >= 0 && y >= 0 && x < width && y < height;
   }
 
-  bool atTarget(shared_ptr<Node> n)
+  bool traversable(int x, int y) const
+  {
+    unsigned long p = pos(x, y);
+    long c = getPixelColor(map, p * 3);
+
+    return c == COLOR_BLACK || c == COLOR_COFFEE || c == COLOR_FROZEN_VAULT_MINT || c == COLOR_HELL_GREEN;
+  }
+
+  bool atTarget(shared_ptr<Node> n) const
   {
     return targetY == n->y;
   }

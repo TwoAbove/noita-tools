@@ -18,7 +18,7 @@ export const logify = func => (...args) => {
 	return res;
 };
 
-class MapHandler {
+export class MapHandler {
 	map!: number; // ptr
 	bigMap!: number; // ptr
 
@@ -36,11 +36,9 @@ class MapHandler {
 	delete() { };
 	generate_map(rgba_tiles_b64: string) { };
 	iterateMap(
-		map_ptr: number,
-		width: number,
-		height: number,
-		stet: number,
-		cb: (x: number, y: number, color: number) => void
+		x: number,
+		y: number,
+		cb: (gx: number, gy: number, color: number) => void
 	) { };
 	somePixels(
 		map_ptr: number,
@@ -54,6 +52,8 @@ class MapHandler {
 	getMap() {
 		return String();
 	};
+	toBig() { };
+	drawImageData(path: string, impl: string, gx: number, gy: number, color_to_material_table: number) { }
 }
 export interface IRandomModule {
 	HEAPU32: any;
@@ -141,13 +141,20 @@ export interface IRandomModule {
 		yOffset: number,
 	): void;
 
-	GetGlobalPos(): number;
+	GetGlobalPos(x: number, y: number): { get: (number) => number };
+	GetLocalPos(x: number, y: number, gx: number, gy: number): { get: (number) => number };
+	GetTilePos(gx: number, gy: number): { get: (number) => number };
 	GeneratePathMap(...args): void;
 
 	SetUnlockedSpells(i: number, val: number): void;
 	GetWidthFromPix(x1: number, x2: number): number;
+	GetWidthFromPixWithOffset(x1: number, x2: number, offset: number): number;
 
-	MapHandler: typeof MapHandler
+	MapHandler: typeof MapHandler;
+	MakeMapHandler: any;
+
+	MapUIntUInt: any;
+	objToMapUIntUIntPtr: (obj: any) => number;
 }
 
 interface IRND {
@@ -251,6 +258,16 @@ export const genRandom = async (Module: IRandomModule) => {
 		}
 	};
 
+	const objToMapUIntUIntPtr = (obj: any) => {
+		const myMapObj = new Module.MapUIntUInt();
+		for (const key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				myMapObj.set(parseInt(key, 16), parseInt(obj[key], 16));
+			}
+		}
+		return myMapObj;
+	};
+
 	return {
 		Module,
 
@@ -267,7 +284,10 @@ export const genRandom = async (Module: IRandomModule) => {
 		GetRandomAction: Module.GetRandomAction,
 		GetRandomActionWithType: Module.GetRandomActionWithType,
 		GetWidthFromPix: Module.GetWidthFromPix,
+		GetWidthFromPixWithOffset: Module.GetWidthFromPixWithOffset,
 		GetGlobalPos: Module.GetGlobalPos,
+		GetLocalPos: Module.GetLocalPos,
+		GetTilePos: Module.GetTilePos,
 		MapHandler: Module.MapHandler,
 
 		SetUnlockedSpells,
@@ -276,6 +296,8 @@ export const genRandom = async (Module: IRandomModule) => {
 		randomFromArray,
 		random_create,
 		pick_random_from_table_backwards,
-		pick_random_from_table_weighted
+		pick_random_from_table_weighted,
+
+		objToMapUIntUIntPtr,
 	};
 };
