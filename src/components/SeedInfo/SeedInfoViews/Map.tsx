@@ -10,11 +10,13 @@ import { useContainerDimensions } from '../../helpers';
 
 interface IMapProps {
 	infoProvider: GameInfoProvider;
-	seed: string;
-	worldOffset?: number;
-	xOffset?: number;
-	yOffset?: number;
-	iter?: number;
+	mapPart: keyof typeof mapParts;
+	worldOffset: number;
+	// seed: string;
+	// worldOffset?: number;
+	// xOffset?: number;
+	// yOffset?: number;
+	// iter?: number;
 }
 
 const mapParts = {
@@ -113,6 +115,22 @@ const mapParts = {
 	fungiforest: {
 		xr: [58, 59, 60, 61],
 		yr: [35, 36, 37, 38, 39, 40]
+	},
+	vault: {
+		xr: [29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+		yr: [31, 32, 33]
+	},
+	vaultFungal: {
+		xr: [39],
+		yr: [31]
+	},
+	Watercave: {
+		xr: [31],
+		yr: [15]
+	},
+	holyMountain: {
+		xr: [32, 33, 34, 35, 36, 37, 38],
+		yr: [16]
 	}
 };
 
@@ -162,9 +180,12 @@ export const Tile = (props: ITileProps) => {
 
 // Name collision with js Map
 const MapComponent = (props: IMapProps) => {
-	const { infoProvider, seed, iter } = props;
+	const { infoProvider, mapPart } = props;
+	const seed = infoProvider.config.seed;
 	const componentRef = useRef<HTMLDivElement>(null);
 	const { width, height } = useContainerDimensions(componentRef);
+
+	const { xr, yr } = mapParts[mapPart];
 
 	const [images, setImages] = useState<Map<string, OffscreenCanvas>>();
 
@@ -172,15 +193,19 @@ const MapComponent = (props: IMapProps) => {
 		console.profile('Map');
 		try {
 			const res = new Map<string, OffscreenCanvas>();
-			for (const x of xr) {
-				for (const y of yr) {
-					const mapData = infoProvider.providers.map.provide(x, y, seed);
+			for (const y of yr) {
+				for (const x of xr) {
+					const mapData = infoProvider.providers.map.provide(
+						x,
+						y,
+						infoProvider.config.seed
+					);
 					if (!mapData) {
 						continue;
 					}
 					// console.log(mapData);
 					const cvs = copyImage(mapData.map);
-					console.log(mapData.interestPoints);
+					// console.log(x, y, mapData.interestPoints);
 					res.set(`${x}-${y}`, cvs);
 				}
 			}
@@ -189,14 +214,14 @@ const MapComponent = (props: IMapProps) => {
 			console.error(e);
 		}
 		console.profileEnd('Map');
-	}, [infoProvider, seed, iter]);
+	}, [infoProvider, xr, yr]);
 
 	if (!images) {
 		return <div>loading</div>;
 	}
 
 	return (
-		<div ref={componentRef} className="flex-nowrap overflow-auto justify-content-center">
+		<div ref={componentRef} className="flex-nowrap justify-content-center">
 			{yr.map(y => {
 				return (
 					<div className="row flex-nowrap" key={y + seed}>

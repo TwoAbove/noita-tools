@@ -112,7 +112,8 @@ const SeedInfo = (props: ISeedInfoProps) => {
 				<WithShow id="map">
 					<MapComponent
 						infoProvider={infoProvider}
-						seed={infoProvider.config.seed.toString()}
+						worldOffset={0}
+						mapPart="MainPath"
 					/>
 				</WithShow>
 			)}

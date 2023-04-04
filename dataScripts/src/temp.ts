@@ -1,43 +1,70 @@
-import util from 'util';
-import data from './temp.json';
+import fs from 'fs';
+import path from 'path';
+import Jimp from 'jimp';
 
-function intersection(lists: any[]) {
-  var result: any[] = [];
+const { resolve } = require('path');
+const { readdir } = require('fs').promises;
 
-  for (var i = 0; i < lists.length; i++) {
-    var currentList = lists[i];
-    for (var y = 0; y < currentList.length; y++) {
-      var currentValue = currentList[y];
-      if (result.indexOf(currentValue) === -1) {
-        var existsInAll = true;
-        for (var x = 0; x < lists.length; x++) {
-          if (lists[x].indexOf(currentValue) === -1) {
-            existsInAll = false;
-            break;
-          }
-        }
-        if (existsInAll) {
-          result.push(currentValue);
-        }
+async function* getFiles(dir) {
+  const dirents = await readdir(dir, { withFileTypes: true });
+  for (const dirent of dirents) {
+    const res = resolve(dir, dirent.name);
+    if (dirent.isDirectory()) {
+      yield* getFiles(res);
+    } else {
+      if (res.endsWith('.png')) {
+        yield res;
       }
     }
   }
-  return result;
 }
 
-const getAllSubsets =
-  theArray => theArray.reduce(
-    (subsets, value) => subsets.concat(
-      subsets.map(set => [value, ...set])
-    ),
-    [[]]
-  );
+// iterate over all the images in the images folder
+const noitaData = path.resolve(
+  require('os').homedir(),
+  '.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/data'
+);
 
-for (const subset of getAllSubsets(Object.keys(data))) {
-  if (!subset.length) {
-    continue;
+; (async () => {
+  for await (const f of getFiles(noitaData)) {
+    try {
+      const png = await Jimp.read(f);
+      // see if the png contains the color 0xffb539ff (rgba)
+      const contains = png.scan(0, 0, png.bitmap.width, png.bitmap.height, function (x, y, idx) {
+        const red = this.bitmap.data[idx + 0];
+        const green = this.bitmap.data[idx + 1];
+        const blue = this.bitmap.data[idx + 2];
+        const alpha = this.bitmap.data[idx + 3];
+        if (red === 0xff && green === 0xb5 && blue === 0x39 && alpha === 0xff) {
+          // console.log(f);
+          console.log(f.replace('/home/twoabove/.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/', ''));
+          return;
+        }
+      });
+      // if (contains) {
+      // }
+    } catch (e) {
+
+    }
   }
-  const ints = intersection(subset.map(s => data[s])).sort((a, b) => a - b);
-  console.log(util.inspect(subset, undefined, 4, true), ints.length);
-  console.log(util.inspect(ints, undefined, 4, true));
-}
+})()
+
+// (async () => {
+// 	const impls: any = {};
+// 	for (const scene of scenes) {
+// 		const png = await Jimp.read(path.resolve(noitaData, scene));
+// 		impls[scene] = {
+// 			src: await png.getBase64Async(Jimp.MIME_PNG),
+// 			w: png.getWidth(),
+// 			h: png.getHeight()
+// 		};
+// 	}
+// 	fs.writeFileSync(
+// 		path.resolve(
+// 			__dirname,
+// 			'../../src/services/SeedInfo/data/obj',
+// 			'impl.json'
+// 		),
+// 		JSON.stringify(impls, null, 2)
+// 	);
+// })();
