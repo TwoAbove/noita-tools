@@ -130,40 +130,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		rules: [],
 		selectedRule: 'search',
 	});
-	// const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
-	// 	id: uniqueId(),
-	// 	type: RuleType.AND,
-	// 	rules: [
-	// 		{
-	// 			id: uniqueId(),
-	// 			type: RuleType.OR,
-	// 			rules: [
-	// 				{
-	// 					id: uniqueId(),
-	// 					type: 'alchemy',
-	// 					...RuleConstructors['alchemy'].defaultConfig
-	// 				},
-	// 			],
-	// 		},
-	// 		{
-	// 			id: uniqueId(),
-	// 			type: RuleType.NOT,
-	// 			rules: [
-	// 				{
-	// 					id: uniqueId(),
-	// 					type: 'shop',
-	// 					...RuleConstructors['shop'].defaultConfig
-	// 				},
-	// 			],
-	// 		},
-	// 		{
-	// 			id: uniqueId(),
-	// 			type: 'perk',
-	// 			...RuleConstructors['perk'].defaultConfig
-	// 		},
-	// 	],
-	// 	selectedRule: 'search',
-	// } as any);
+
 	const [infoArray, setSolverInfo] = React.useState<
 		ReturnType<SeedSolver['getInfo']>
 	>([]);
