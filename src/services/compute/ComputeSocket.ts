@@ -1,8 +1,8 @@
-import SeedSolver from '../../services/seedSolverHandler';
+import SeedSolver from '../seedSolverHandler';
 import SocketHandler, {
   SocketHandlerConfig
-} from '../../services/socketHandler';
-import { Status } from './ComputeHandler';
+} from '../socketHandler';
+import { Status } from './ChunkProvider';
 
 export interface ComputeSocketConfig extends SocketHandlerConfig {
   computeId: string;
@@ -60,7 +60,7 @@ export class ComputeSocket extends SocketHandler {
     while (this.running) {
       await new Promise<void>(res => {
         const t = setTimeout(() => res(), 10000);
-        this.io.emit('compute:need_job', async (data, cb) => {
+        this.io.emit('compute:need_job', this.seedSolver?.workerList.length, async (data, cb) => {
           try {
             clearTimeout(t);
             if (!data || data.done) {

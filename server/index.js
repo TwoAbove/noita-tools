@@ -217,7 +217,7 @@ io.on('connection', socket => {
 		cb(s.length - 1);
 	});
 
-	socket.on('compute:need_job', async cb => {
+	socket.on('compute:need_job', async (appetite, cb) => {
 		const hostSocketId = getHost(roomNumber);
 		if (!hostSocketId) {
 			cb();
@@ -228,7 +228,7 @@ io.on('connection', socket => {
 		if (!host) {
 			return;
 		}
-		host.emit('compute:get_job', data => {
+		host.emit('compute:get_job', appetite, data => {
 			data.hostId = hostSocketId;
 			cb(data);
 		});

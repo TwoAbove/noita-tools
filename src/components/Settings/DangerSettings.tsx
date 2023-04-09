@@ -6,26 +6,30 @@ import { ConfigRow, ConfigTitle } from './helpers';
 import SyncHandler from './SyncHandler';
 
 const SyncApp = () => {
-	const [val, setVal] = useState('');
-	const [id, setId] = useState<string | number>('');
+	const [syncId, setSyncId] = useState('');
+	const [thisId, setThisId] = useState<string | number>('');
 	const [sent, setSent] = useState(false);
+	const [synced, setSynced] = useState(false);
 	const [handler] = useState(() => new SyncHandler());
 
 	const handleSync = async () => {
-		await handler.getSettingsFrom(val);
+		await handler.getSettingsFrom(syncId);
+		setSyncId('');
+		setThisId('');
+		setSynced(true);
 	};
 
 	const handleSend = async () => {
 		await handler.sendToSync().then(id => {
-			setId(id);
+			setThisId(id);
 			setSent(true);
 		});
 	};
 	const handleChange = (e: any) => {
 		if (e.target.validity.valid) {
-			setVal(e.target.value);
-		} else if (val === '' || val === '-') {
-			setVal(val);
+			setSyncId(e.target.value);
+		} else if (syncId === '' || syncId === '-') {
+			setSyncId(syncId);
 		}
 	};
 	return (
@@ -44,12 +48,12 @@ const SyncApp = () => {
 			right={
 				<div className="my-1">
 					<div className="d-flex justify-content-between mb-2">
-						<p>{sent ? `Your Code: ${id}` : ``}</p>
+						<p>{sent ? `Your Code: ${thisId}` : ``}</p>
 						<Button
 							variant={sent ? 'success' : 'outline-info'}
 							onClick={handleSend}
 						>
-							{sent ? 'Sent' : 'Send db to sync'}
+							{sent ? 'Sent' : 'Send this Noitool for syncing'}
 						</Button>
 					</div>
 					<div className="d-flex justify-content-between">
@@ -57,15 +61,15 @@ const SyncApp = () => {
 							<Form.Label>Enter code to sync from</Form.Label>
 							<Form.Control
 								onChange={handleChange}
-								value={val}
+								value={syncId}
 								size="sm"
 								type="tel"
 								pattern="[0-9]*"
 								placeholder="Code"
 							/>
 						</Form.Group>
-						<Button variant="info" onClick={handleSync}>
-							Sync
+						<Button variant={synced ? 'success' : 'info'} onClick={handleSync}>
+							{synced ? 'Synced' : 'Sync'}
 						</Button>
 					</div>
 				</div>

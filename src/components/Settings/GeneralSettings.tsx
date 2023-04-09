@@ -17,7 +17,7 @@ const getFlagEmoji = countryCode =>
 
 const flags = {
 	de: 'de',
-	en: 'us',
+	'en-US': 'us',
 	es: 'es',
 	fr: 'fr',
 	jp: 'jp',

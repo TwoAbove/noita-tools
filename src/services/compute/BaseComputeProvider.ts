@@ -5,8 +5,6 @@ export class BaseComputeProvider {
   running = false;
   numberOfWorkers = 0;
 
-  jobName?: string;
-
   constructor(
     public onUpdate: (status: Status) => void,
     public chunkProvider: ChunkProvider,

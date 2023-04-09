@@ -12,6 +12,8 @@ import isEqual from 'lodash/isEqual.js';
 
 import { getTreeTools } from './node';
 import { RuleConstructors } from './RuleConstructor';
+import { CallbackComputeHandler } from '../../services/compute/CallbackComputeHandler';
+import { ChunkProvider, Status } from '../../services/compute/ChunkProvider';
 
 const treeTools = getTreeTools('id', 'rules');
 
@@ -112,11 +114,22 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	const [concurrency] = useLocalStorage('search-max-concurrency', navigator.hardwareConcurrency);
 
 	const [findAll, setFindAll] = useLocalStorage('findAll', false);
+	const [solverReady, setSolverReady] = React.useState(false);
 	const [seedSolver, setSeedSolver] = React.useState(
 		() => new SeedSolver(useCores, true)
 	);
-	const [seed, setSeed] = useLocalStorage('search-min-seed', '1');
-	const [seedEnd, setSeedEnd] = useLocalStorage('search-max-seed', '');
+
+	const [chunkProvider, setChunkProvider] = React.useState<ChunkProvider>();
+	const [callbackComputeHandler, setCallbackComputeHandler] = React.useState<CallbackComputeHandler>();
+
+	const [seedStr, setSeed] = useLocalStorage('search-min-seed', '1');
+	const seed = parseInt(seedStr) || 1;
+
+	const [seedEndStr, setSeedEnd] = useLocalStorage('search-max-seed', '');
+	const seedEnd = parseInt(seedEndStr) || Math.pow(2, 31);
+
+	const [computeJobName, setComputeJobName] = React.useState('');
+
 	const handleSeedStartChange = (e: any) => {
 		setSeed(e.target.value);
 	};
@@ -131,11 +144,8 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		selectedRule: 'search',
 	});
 
-	const [infoArray, setSolverInfo] = React.useState<
-		ReturnType<SeedSolver['getInfo']>
-	>([]);
-	const [solverInfo, ...results] = infoArray;
-	const running = !!solverInfo?.running;
+	const [solverStatus, setSolverStatus] = React.useState<Status>();
+	const running = solverStatus?.running;
 
 	const handleMultithreading = () => {
 		if (useCores > 1) {
@@ -146,52 +156,65 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	};
 
 	React.useEffect(() => {
-		const update = async () => {
-			const info = seedSolver.getInfo();
-			if (!info || !infoArray) {
-				return;
-			}
-			if (!isEqual(infoArray, info)) {
-				console.log(info[0]);
-				setSolverInfo(info);
-			}
+		if (!chunkProvider) {
+			const newChunkProvider = new ChunkProvider({
+				chunkSize: 100,
+				searchFrom: seed,
+				searchTo:	seedEnd,
+				jobName: computeJobName,
+				etaHistoryTimeConstant: 120,
+				chunkProcessingTimeTarget: 5,
+			});
+			setChunkProvider(newChunkProvider);
+			return;
+		}
+		chunkProvider.config = {
+			...chunkProvider.config,
+			searchFrom: seed,
+			searchTo: seedEnd,
+			jobName: computeJobName
 		};
-
-		const id = setInterval(() => update(), 1000);
-		return () => clearInterval(id);
-	}, [seedSolver, infoArray]);
+	}, [seed, seedEnd, computeJobName, chunkProvider]);
 
 	React.useEffect(() => {
-		const work = async () => {
-			await seedSolver.destroy();
-			const newSeedSolver = new SeedSolver(useCores, !findAll);
-			const newSeed = parseInt(seed);
-			const newSeedEnd = parseInt(seedEnd);
-			newSeedSolver.update({
-				rules: ruleTree,
-				currentSeed: newSeed,
-				seedEnd: newSeedEnd,
-				unlockedSpells,
-				findAll,
-			});
-			if (!isNaN(newSeed)) {
-				newSeedSolver.update({
-					currentSeed: newSeed,
-					seedEnd: newSeedEnd,
-					unlockedSpells,
-					findAll
-				});
-			}
-			setSeedSolver(newSeedSolver);
-		};
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		work(); // eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [useCores, seed, seedEnd, findAll, ruleTree, unlockedSpells]);
-	// ^
-	// seedSolver is both used and set here, so running this
-	// again will create a loop
-	// useEffect is used here idiomatically, but I'm not sure how to better do this
+		const newSeedSolver = new SeedSolver(useCores, true);
+		setSeedSolver(newSeedSolver);
+		setSolverReady(false);
+		newSeedSolver.workersReadyPromise.then(() => {
+			setSolverReady(true);
+		}).catch((e) => {
+			console.error(e);
+		});
+		return () => {
+			newSeedSolver.destroy();
+		}
+	}, [useCores]);
 
+	React.useEffect(() => {
+		seedSolver.update({
+			rules: ruleTree,
+			currentSeed: seed,
+			seedEnd: seedEnd,
+			unlockedSpells,
+			findAll,
+		});
+	}, [seed, seedEnd, ruleTree, unlockedSpells, seedSolver, findAll]);
+
+	React.useEffect(() => {
+		if (!chunkProvider || !ruleTree || !seedSolver) {
+			return;
+		}
+		const newCallbackComputeProvider = new CallbackComputeHandler((status) => {
+			setSolverStatus(status);
+		}, chunkProvider, ruleTree, seedSolver);
+		setCallbackComputeHandler(newCallbackComputeProvider);
+	}, [seedSolver, ruleTree, chunkProvider]);
+
+	React.useEffect(() => {
+		if (!findAll && solverStatus?.results.length && solverStatus?.running) {
+			callbackComputeHandler?.stop();
+		}
+	}, [findAll, solverStatus, callbackComputeHandler]);
 
 	const handleCopy = () => {
 		const seedList = seedSolver.foundSeeds;
@@ -208,26 +231,36 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		const requestOptions = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({})
+			body: JSON.stringify(ruleTree)
 		};
 		fetch('/api/data', requestOptions).catch(e => { });
-
-		await seedSolver.start();
+		await callbackComputeHandler?.start();
 	};
 
 	const stopCalculation = async () => {
-		await seedSolver.stop();
+		await callbackComputeHandler?.stop();
 	};
 
-	const seedsChecked = Math.floor(Math.min(...results.map(i => i.currentSeed)));
-	const totalSeeds = 2_147_483_645;
+	const seedsChecked = chunkProvider?.progress || 0;
+	const totalSeeds = (seedEnd - seed) + 1;
 	const percentChecked = Math.floor((seedsChecked / totalSeeds) * 100);
-	const seedsPerSecond = Math.floor(seedsChecked / ((new Date().getTime() - seedSolver.startTime) / 1000));
+	const seedsPerSecond = solverStatus?.rate;
+
+
+	const	clusterHelpAvailable = false;
+	const clusterHelpEnabled = false;
+	const toggleClusterHelp = () => {};
+
 
 	return <SearchContext.Provider value={{
 		seedSolver,
-		solverInfo,
-		results,
+		solverStatus,
+		solverReady,
+
+		clusterHelpAvailable,
+		clusterHelpEnabled,
+		toggleClusterHelp,
+
 		updateRules,
 		handleCopy,
 		startCalculation,

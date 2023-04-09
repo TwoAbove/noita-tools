@@ -17,7 +17,7 @@ const NeedInputAlert = () => {
     <Container>
       <Alert show={show} variant="info" dismissible onClose={handleClose}>
         <div className="mt-2">
-          Thank you for using this tool! <br />
+          Thank you for using Noitool! <br />
           I want to improve it further, and need your feedback. <br />
           Click{' '}
           <a

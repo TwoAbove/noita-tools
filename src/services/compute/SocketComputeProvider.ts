@@ -13,23 +13,23 @@ export class SocketComputeProvider extends BaseComputeProvider {
     super(onUpdate, chunkProvider, rules);
   }
 
-  destroy() {
+  destruct = () => {
     this.stop();
   }
 
-  start() {
-    if (this.running) {
-      return;
-    }
+  start = () => {
     this.socket.io.on('compute:get_job', this.handleJob);
+    this.socket.io.on('compute:done', this.handleResults);
+    super.start();
   }
 
-  stop() {
-    this.running = false;
+  stop = () => {
     this.socket.io.off('compute:get_job', this.handleJob);
+    this.socket.io.off('compute:done', this.handleResults);
+    super.stop();
   }
 
-  handleJob(appetite: number, cb) {
+  handleJob = (appetite: number, cb) => {
     const chunk = this.chunkProvider.getNextChunk(appetite);
     if (!chunk) {
       cb({ done: true });
@@ -42,9 +42,14 @@ export class SocketComputeProvider extends BaseComputeProvider {
       to: chunk.to,
       from: chunk.from,
       chunkId: chunk.chunkId,
-      jobName: this.jobName,
+      jobName: this.chunkProvider.config.jobName,
       stats: this.getStatus()
     };
     cb(data);
+  }
+
+  handleResults = ({ result, chunkId }) => {
+    this.chunkProvider.commitChunk(chunkId, result);
+    this.onUpdate(this.getStatus());
   }
 }

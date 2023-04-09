@@ -17,6 +17,7 @@ export class CallbackComputeHandler extends BaseComputeProvider {
     if (this.running) {
       return;
     }
+    this.running = true;
     while (this.running) {
       const chunk = this.chunkProvider.getNextChunk(this.seedSolver.workerList.length);
       if (!chunk) {
