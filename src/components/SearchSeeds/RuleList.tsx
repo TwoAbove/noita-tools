@@ -232,7 +232,7 @@ const Export: FC<IExportProps> = () => {
 			className="w-100"
 			variant="outline-secondary"
 		>
-			Export to string
+			Export search to string
 		</Button>
 	);
 };
@@ -266,12 +266,12 @@ export const Import: FC<IImportProps> = ({ onClick }) => {
 		var items = (
 			event.clipboardData ||
 			((event as any).originalEvent.clipboardData as DataTransfer)
-			).items;
-			for (const index in items) {
-				var item = items[index];
-				if (item.kind === 'string') {
-					item.getAsString(s => {
-						if(validJSON(s)) {
+		).items;
+		for (const index in items) {
+			var item = items[index];
+			if (item.kind === 'string') {
+				item.getAsString(s => {
+					if (validJSON(s)) {
 						setRipple(true);
 						setTimeout(() => setRipple(false), 500);
 						onClick(s);
@@ -306,8 +306,11 @@ export const Import: FC<IImportProps> = ({ onClick }) => {
 			<Form.Control
 				className={classNames([
 					rippleError && 'border-danger text-danger border-1',
-					ripple && 'border-success text-success border-1'])}
-			ref={inputRef} />
+					ripple && 'border-success text-success border-1'
+				])}
+				placeholder="Import search from string"
+				ref={inputRef}
+			/>
 			<Button
 				onClick={() => handleClick()}
 				style={{
@@ -316,7 +319,8 @@ export const Import: FC<IImportProps> = ({ onClick }) => {
 				className={classNames([
 					rippleError && 'border-danger text-danger border-1',
 					ripple && 'border-success text-success border-1',
-					'border'])}
+					'border'
+				])}
 				variant="outline-info"
 			>
 				Import
