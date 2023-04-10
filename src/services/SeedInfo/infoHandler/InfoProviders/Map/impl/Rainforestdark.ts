@@ -360,201 +360,64 @@ class Rainforestdark extends Base {
       entity: "data/entities/verlet_chains/vines/verlet_vine_dark_shorter.xml",
     },
   ];
+  init(x: number, y: number) {
+    // apply_modifier( "rainforest_dark", "FOG_OF_WAR_REAPPEARS" );
+  }
 
   spawn_small_enemies(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_small_enemies, x, y);
   }
   spawn_big_enemies(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_big_enemies, x, y);
   }
   spawn_items(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    const r = this.randoms.ProceduralRandomf(x - 11.631, y + 10.2257, 0, 1);
+
+    if (r > 0.27)
+      this.LoadPixelScene("data/biome_impl/wand_altar.png", "data/biome_impl/wand_altar_visual.png", x - 10, y - 17, "", true)
   }
   spawn_props(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_props2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_props3(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_props, x, y);
   }
   spawn_lamp(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_lamp, x, y - 10);
   }
   load_pixel_scene(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
   }
   load_pixel_scene2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
   }
   spawn_unique_enemy(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_unique_enemy, x, y + 12);
   }
   spawn_unique_enemy2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_unique_enemy3(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_ghostlamp(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_candles(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_potion_altar(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_potions(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_apparition(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_heart(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wands(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_portal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_end_portal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_orb(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_perk(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_all_perks(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wand_trap(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wand_trap_ignite(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wand_trap_electricity_source(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wand_trap_electricity(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_moon(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_collapse(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  init(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_unique_enemy, x, y);
   }
   spawn_scavengers(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
   }
   spawn_large_enemies(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_large_enemies, x, y);
   }
   spawn_lamp2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_lamp2, x - 8, y - 4, 0, 0);
   }
   load_pixel_scene4(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
   }
   spawn_vines(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_vines, x + 5, y + 5)
+    // -- chance for an extra spawn for denser vineage
+    if (this.randoms.ProceduralRandomf(x, y, 0, 1) < 0.5) {
+      this.spawn(this.g_vines, x, y + 5)
+    }
   }
   spawn_dragonspot(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
   }
   spawn_root_grower(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    if (this.randoms.ProceduralRandomf(x, y, 0, 1) < 0.5) return
+    this.EntityLoad("data/entities/props/root_grower.xml", x + 5, y + 5)
   }
   spawn_tree(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
   }
 }
 export default Rainforestdark;

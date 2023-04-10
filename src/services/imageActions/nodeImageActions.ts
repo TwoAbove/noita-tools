@@ -1,10 +1,15 @@
 import {
 	Canvas,
-	ImageData,
+	ImageData as CImageData,
 	loadImage
 } from '@napi-rs/canvas';
 
 import { IRandom } from '../SeedInfo/random';
+
+import { rgbaToInt, hexTorgba } from './commonImageActions';
+
+export * from './commonImageActions';
+
 
 export const getContext = (
 	canvas: Canvas
@@ -21,7 +26,11 @@ export const createCanvas = (w, h): Canvas => {
 	return can;
 };
 
-export const imageFromBase64 = async (dataUri: string): Promise<ImageData> => {
+export const ImageData = (w, h): CImageData => {
+	return new CImageData(w, h);
+};
+
+export const imageFromBase64 = async (dataUri: string): Promise<CImageData> => {
 	// const { data, width, height } = decode(blob);
 	// return new ImageData(new Uint8ClampedArray(data), width, height);
 
@@ -42,7 +51,7 @@ export const imageFromBase64 = async (dataUri: string): Promise<ImageData> => {
 };
 
 export const imageToBase64 = async (
-	img: ImageData
+	img: CImageData
 ): Promise<string> => {
 	// for some reason the typing is funky
 	const can: any = createCanvas(img.width, img.height);
@@ -61,7 +70,7 @@ export const imageToBase64 = async (
 export const copyImage = img => {
 	const image = createCanvas(img.width, img.height);
 	const ctx = getContext(image);
-	if (img instanceof ImageData) {
+	if (img instanceof CImageData) {
 		ctx.putImageData(img as any, 0, 0);
 	} else {
 		ctx.drawImage(img, 0, 0, img.width, img.height);
@@ -69,7 +78,7 @@ export const copyImage = img => {
 	return image;
 };
 
-export const getPixels = (img): ImageData => {
+export const getPixels = (img): CImageData => {
 	if (!img.getContext) {
 		return getPixels(copyImage(img));
 	}
@@ -77,25 +86,8 @@ export const getPixels = (img): ImageData => {
 	return ctx.getImageData(0, 0, img.width, img.height);
 };
 
-export const threshold = (
-	pixels,
-	threshold,
-	light = [255, 255, 255],
-	dark = [0, 0, 0]
-) => {
-	// light, dark arrays of RGB
-	var d = pixels.data,
-		i = 0,
-		l = d.length;
-	while (l-- > 0) {
-		const v = d[i] * 0.2126 + d[i + 1] * 0.7152 + d[i + 2] * 0.0722;
-		[d[i], d[i + 1], d[i + 2]] = v >= threshold ? light : dark;
-		i += 4;
-	}
-	return pixels;
-};
 
-export const toDark = (pixels: ImageData, dark = [0, 0, 0]) => {
+export const toDark = (pixels: CImageData, dark = [0, 0, 0]) => {
 	// light, dark arrays of RGB
 	var d = pixels.data,
 		i = 0,
@@ -117,7 +109,7 @@ const scale = (cv: Canvas, scale: number): Canvas => {
 	return canvas;
 };
 
-export const scaleImageData = (img: ImageData, s: number): Canvas => {
+export const scaleImageData = (img: CImageData, s: number): Canvas => {
 	const cv = createCanvas(img.width, img.height);
 	const cx = getContext(cv);
 	cx.putImageData(img as any, 0, 0);
@@ -150,12 +142,12 @@ export const diff = (img1: Canvas, img2: Canvas): number => {
 };
 
 export const cropImageData = (
-	img: ImageData,
+	img: CImageData,
 	cropX: number,
 	cropY: number,
 	cropWidth: number,
 	cropHeight: number
-): ImageData => {
+): CImageData => {
 	const c = copyImage(img);
 	const res = crop(c, cropX, cropY, cropWidth, cropHeight);
 	return getContext(res).getImageData(0, 0, res.width, res.height);
@@ -256,70 +248,14 @@ export const clearBg = (cv: Canvas): Canvas => {
 	// return cvs;
 };
 
-// [r, g, b, a, r, g, b, a...] => [r, g, b, r, g, b...]
-export const rgba2rgb = (src: any, dest: any) => {
-	let j = 0;
-	for (let i = 0; i < src.length; i++) {
-		if (i && (i + 1) % 4 === 0) continue;
-		dest[j] = src[i];
-		j++;
-	}
-};
-
-// [r, g, b, r, g, b...] => [r, g, b, a, r, g, b, a...]
-export const rgb2rgba = (src: any, dest: any) => {
-	let j = 0;
-	for (let i = 0; i < src.length; i++) {
-		dest[j] = src[i];
-		j++;
-		if (i && (i + 1) % 3 === 0) {
-			dest[j] = 255;
-			j++;
-		}
-	}
-};
-
-const pad = (s: string) => {
-	if (s.length === 1) {
-		s = '0' + s;
-	}
-	return s;
-};
-
-export const hexRGBAtoIntRGB = (hex: string) => {
-	const rgb = hex.substring(0, 6);
-	return parseInt(rgb, 16);
-};
-
-// export const rgbaToHex = (r, g, b, a) => {
-// 	let rs = pad(r.toString(16));
-// 	let gs = pad(g.toString(16));
-// 	let bs = pad(b.toString(16));
-// 	let as = pad(a.toString(16));
-// 	const hex = rs + gs + bs + as;
-// 	return hex;
-// };
-
-export const rgbaToHex = (r, g, b, a) => {
-	const hex = rgbaToInt(r, g, b, a).toString(16);
-	if (hex.length === 8) {
-		return hex;
-	}
-	return '0' + hex;
-};
-
-const getPos = (w, x, y) => 4 * (w * y + x);
-const isBlack = (data, p) => {
-	return data[p] === 0 && data[p + 1] === 0 && data[p + 2] === 0;
-};
 export const drawImageData = (
-	src: ImageData,
+	src: CImageData,
 	dest: Canvas,
 	startX: number,
 	startY: number,
 	color_to_material_table?: { [color: string]: string }
 ) => {
-	const img = new ImageData(src.data, src.width, src.height);
+	const img = new CImageData(src.data, src.width, src.height);
 
 	let f = {};
 	if (color_to_material_table) {
@@ -353,7 +289,7 @@ export const drawImageData = (
 	ctx.drawImage(tmp, startX, startY);
 };
 
-export const printImage = (img: ImageData) => {
+export const printImage = (img: CImageData) => {
 	const cv = createCanvas(img.width, img.height);
 	const cx = getContext(cv);
 	cx.putImageData(img as any, 0, 0);
@@ -363,7 +299,7 @@ export const printImage = (img: ImageData) => {
 	});
 };
 
-export const getColor = (map: ImageData, x: number, y: number) => {
+export const getColor = (map: CImageData, x: number, y: number) => {
 	if (x < 0 || y < 0 || x >= map.width || y >= map.height) {
 		return 0;
 	}
@@ -378,15 +314,15 @@ export const getColor = (map: ImageData, x: number, y: number) => {
 };
 
 export const somePixelsSync = (
-	image: ImageData | Canvas,
+	image: CImageData | Canvas,
 	step: number,
 	cb: (x: number, y: number, color: number) => boolean
 ) => {
-	let img: ImageData;
+	let img: CImageData;
 	if (typeof image.data === 'function') {
 		img = getPixels(image);
 	} else {
-		img = image as ImageData;
+		img = image as CImageData;
 	}
 
 	for (let y = 0; y < img.height; y += step) {
@@ -406,7 +342,7 @@ export const somePixelsSync = (
 }
 
 export const somePixels = async (
-	image: ImageData,
+	image: CImageData,
 	step: number,
 	cb: (x: number, y: number, color: number) => Promise<boolean>
 ) => {
@@ -427,15 +363,15 @@ export const somePixels = async (
 }
 
 export const iteratePixels = (
-	image: ImageData | Canvas,
+	image: CImageData | Canvas,
 	step: number,
 	cb: (x: number, y: number, color: number) => void
 ) => {
-	let img: ImageData;
+	let img: CImageData;
 	if (typeof image.data === 'function') {
 		img = getPixels(image);
 	} else {
-		img = image as ImageData;
+		img = image as CImageData;
 	}
 	for (let y = 0; y < img.height; y += step) {
 		for (let x = 0; x < img.width; x += step) {
@@ -450,74 +386,18 @@ export const iteratePixels = (
 	}
 };
 
-export const rgbaToInt = (r: number, g: number, b: number, a: number) =>
-	((r << 24) >>> 0) + (g << 16) + (b << 8) + a;
-
-export const hexTorgba = (h: string): [r: number, g: number, b: number, a: number] => {
-	const hh = parseInt(h, 16);
-	const r = (hh >> 24) & 0xff;
-	const g = (hh >> 16) & 0xff;
-	const b = (hh >> 8) & 0xff;
-	const a = hh & 0xff;
-	return [r, g, b, a];
-};
-
 export const imageFromHexArray = (
 	hexArray: string[],
 	w: number,
 	h: number
-): ImageData => {
+): CImageData => {
 	const arr = hexArray.flatMap(hexTorgba);
-	return new ImageData(new Uint8ClampedArray(arr), w, h);
+	return new CImageData(new Uint8ClampedArray(arr), w, h);
 };
-
-export const getGlobalPos = (x: number, y: number, px: number, py: number) => {
-	if (y === 14) {
-		py -= 10;
-	}
-	const gx = Math.floor(((x - 35) * 512) / 10) * 10 + px - 5;
-	const gy = Math.floor(((y - 14) * 512) / 10) * 10 + py - 3;
-	return { gx, gy };
-};
-
-export const getLocalPos = (x: number, y: number, gx: number, gy: number) => {
-	const px = gx - Math.floor(((x - 35) * 512) / 10) * 10 + 5;
-	let py = gy - Math.floor(((y - 14) * 512) / 10) * 10 + 3;
-	if (y === 14) {
-		py += 10;
-	}
-	return { px, py };
-};
-
-export const rgbToHsl = (_r, _g, _b): [h: number, s: number, l: number] => {
-	let r = _r / 255
-	let g = _g / 255
-	let b = _b / 255;
-
-	let max = Math.max(r, g, b), min = Math.min(r, g, b);
-	let h, s, l = (max + min) / 2;
-
-	if (max === min) {
-		h = s = 0; // achromatic
-	} else {
-		let d = max - min;
-		s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-		switch (max) {
-			case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-			case g: h = (b - r) / d + 2; break;
-			case b: h = (r - g) / d + 4; break;
-		}
-
-		h /= 6;
-	}
-
-	return [h, s, l];
-}
 
 export const GenerateMap = (
 	randoms: IRandom,
-	wang: ImageData,
+	wang: CImageData,
 	color: number,
 	tiles_w: number,
 	tiles_h: number,
@@ -528,7 +408,7 @@ export const GenerateMap = (
 	randomMaterials: number[],
 	xOffset: number,
 	yOffset: number,
-): ImageData => {
+): CImageData => {
 	const tilesDataPtr = randoms.Module._malloc(4 * tiles_w * tiles_h);
 	// 8-bit (char)
 	const tileData = new Uint8ClampedArray(
@@ -572,7 +452,7 @@ export const GenerateMap = (
 		xOffset,
 		yOffset
 	);
-	const resImgData = new ImageData(map_w, map_h);
+	const resImgData = new CImageData(map_w, map_h);
 	resImgData.data.set(result);
 
 	randoms.Module._free(randomMaterialsPtr);
@@ -584,12 +464,12 @@ export const GenerateMap = (
 
 export const GetPathMap = (
 	randoms: IRandom,
-	map: ImageData,
+	map: CImageData,
 	map_w: number,
 	map_h: number,
 	xOffset: number,
 	yOffset: number
-): ImageData => {
+): CImageData => {
 	const mapDataPtr = randoms.Module._malloc(4 * map_w * map_h);
 	// 8-bit (char)
 	const mapData = new Uint8ClampedArray(
@@ -616,7 +496,7 @@ export const GetPathMap = (
 		yOffset
 	);
 
-	const resImgData = new ImageData(result, map_w, map_h);
+	const resImgData = new CImageData(result, map_w, map_h);
 
 	randoms.Module._free(mapDataPtr);
 	randoms.Module._free(resultPtr);

@@ -275,6 +275,14 @@ export default class Base {
 
 	}
 
+	rand(low: number, high: number) {
+		if (low > high) {
+			return this.rand(high, low);
+		}
+
+		return low + this.randoms.Random() * (high - low);
+	}
+
 	spawn(what: IProb[], x, y, rand_x?, rand_y?) {
 		const x_offset = 5;
 		const y_offset = 5;
@@ -336,6 +344,71 @@ export default class Base {
 
 		this.entity_load_camera_bound(v, x + x_offset, y + y_offset, random_x, random_y)
 	};
+
+	spawn_altar_top(x: number, y: number, is_solid: boolean) {
+		this.randoms.SetRandomSeed(x, y);
+		const randomtop = this.randoms.Random(1, 50);
+		const file_visual = "data/biome_impl/temple/altar_top_visual.png"
+
+		// this.LoadBackgroundSprite("data/biome_impl/temple/wall_background.png", x - 1, y - 30, 35)
+
+		if (y > 12000) {
+			this.LoadPixelScene("data/biome_impl/temple/altar_top_boss_arena.png", file_visual, x, y - 40, "", true)
+		} else {
+			if (randomtop === 5) {
+				this.LoadPixelScene("data/biome_impl/temple/altar_top_water.png", file_visual, x, y - 40, "", true)
+			} else if (randomtop === 8) {
+				this.LoadPixelScene("data/biome_impl/temple/altar_top_blood.png", file_visual, x, y - 40, "", true)
+			} else if (randomtop === 11) {
+				this.LoadPixelScene("data/biome_impl/temple/altar_top_oil.png", file_visual, x, y - 40, "", true)
+			} else if (randomtop === 13) {
+				this.LoadPixelScene("data/biome_impl/temple/altar_top_radioactive.png", file_visual, x, y - 40, "", true)
+			} else if (randomtop === 15) {
+				this.LoadPixelScene("data/biome_impl/temple/altar_top_lava.png", file_visual, x, y - 40, "", true)
+			} else {
+				this.LoadPixelScene("data/biome_impl/temple/altar_top.png", file_visual, x, y - 40, "", true)
+			}
+		}
+
+		if (is_solid) { this.LoadPixelScene("data/biome_impl/temple/solid.png", "", x, y - 40 + 300, "", true); }
+	}
+
+	spawn_portal(x, y) {
+		if (this.constructor.name === "Crypt") {
+			this.EntityLoad("data/entities/buildings/teleport_boss_arena.xml", x, y - 4);
+		} else {
+			this.EntityLoad("data/entities/buildings/teleport_liquid_powered.xml", x, y - 4);
+		}
+	}
+
+	temple_pos_to_id(pos_x, pos_y) {
+		const h = Math.floor(pos_y / 512);
+		const w = Math.floor((pos_x + (32 * 512)) / (64 * 512));
+
+		const result = w + "_" + h;
+		return result;
+	}
+
+	temple_should_we_spawn_checkers(pos_x, pos_y) {
+		// TODO: Should we support this?
+		return true;
+		// if (this.MagicNumbersGetValue("DESIGN_TEMPLE_CHECK_FOR_LEAKS") === "0") {
+		// 	return false
+		// }
+
+		// const leak_name = "TEMPLE_LEAKED_" + this.temple_pos_to_id(pos_x, pos_y)
+
+		// if (this.GlobalsGetValue(leak_name) === "1") {
+		// 	return false
+		// }
+
+		// const collapse_name = "TEMPLE_COLLAPSED_" + this.temple_pos_to_id(pos_x, pos_y)
+
+		// if (this.GlobalsGetValue(collapse_name) == "1") {
+		// 	return false
+		// }
+		// return true
+	}
 
 	total_prob = (prob: IProbScene[], x: number): number => {
 		return prob.reduce((c, p) => {
@@ -453,6 +526,10 @@ export default class Base {
 				"ERROR - director_helpers.lua - load_random_pixel_scene() shouldn't reach here"
 			);
 		}
+	}
+
+	load_random_background_sprite(...args) {
+		// TODO: We don't handle background sprites
 	}
 
 	entity_load_camera_bound(
@@ -821,7 +898,6 @@ export default class Base {
 		if (this.config.funcs && !this.config.funcs.includes(f)) {
 			return;
 		}
-		// console.group(`${f} ${x} ${y}`);
 		this.debug && console.group(`${f} ${x} ${y} ${w} ${h} ${is_open_path}`);
 		this[f](x, y, w, h, is_open_path);
 		this.debug && console.groupEnd();

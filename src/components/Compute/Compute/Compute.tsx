@@ -6,7 +6,7 @@ import humanize from 'humanize-duration';
 import SeedSolver from '../../../services/seedSolverHandler';
 import useLocalStorage from '../../../services/useLocalStorage';
 import UseMultithreadingButton from '../../SearchSeeds/UseMultithreading';
-import { ComputeSocket } from '../ComputeSocket';
+import { ComputeSocket } from '../../../services/compute/ComputeSocket';
 import { localizeNumber } from '../../../services/helpers';
 
 

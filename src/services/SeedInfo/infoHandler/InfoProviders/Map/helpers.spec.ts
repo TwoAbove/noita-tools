@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+import { loadRandom } from '../../../../../testHelpers';
 import {
 	hexRGBAtoIntRGB,
 	iteratePixels,
@@ -10,7 +11,8 @@ import {
 	getColor,
 	imageFromHexArray,
 	getGlobalPos,
-	getLocalPos
+	getLocalPos,
+	getTilePos
 } from '../../../../imageActions/nodeImageActions';
 
 const blackSquare = {
@@ -43,20 +45,25 @@ const withWhite = {
 };
 
 describe('helpers', () => {
+	let randoms: Awaited<ReturnType<typeof loadRandom>>;
+	beforeAll(async () => {
+		randoms = await loadRandom();
+	});
+
 	describe('hexTorgba', () => {
-		it("Should correctly convert hex", () => {
+		it('Should correctly convert hex', () => {
 			const c = '7f007fff';
 			const res = hexTorgba(c);
 			expect(res).toEqual([127, 0, 127, 255]);
 			expect(rgbaToInt(res[0], res[1], res[2], res[3])).toEqual(2130739199);
 		});
-		it("Should correctly convert hex", () => {
+		it('Should correctly convert hex', () => {
 			const c = 'ff020480';
 			const res = hexTorgba(c);
 			expect(res).toEqual([255, 2, 4, 128]);
 			expect(rgbaToInt(res[0], res[1], res[2], res[3])).toEqual(4278322304);
-		})
-	})
+		});
+	});
 
 	describe('iteratePixels', () => {
 		it('Should iterate with step', async () => {
@@ -92,57 +99,86 @@ describe('helpers', () => {
 		});
 	});
 
-	describe('getGlobalPos getLocalPos', () => {
+
+	describe('GetWidthFromPix', () => {
+		// TODO: Handle WORLD_OFFSET_X and WORLD_OFFSET_Y and not
+		// magic numbers
+
+		const WORLD_OFFSET_X = 35;
+		const WORLD_OFFSET_Y = 14;
+
 		const tests = [
 			{
-				x: 34,
-				y: 14,
-
-				px: 1170,
-				py: 90,
-
-				gx: 645,
-				gy: 77,
+				x0: 35,
+				x1: 36,
+				y0: 14,
+				y1: 15,
+				w: 51,
+				h: 52,
 			},
 			{
-				x: 31,
-				y: 17,
-
-				px: 2510,
-				py: 820,
-
-				gx: 455,
-				gy: 2347,
+				x0: 36,
+				x1: 37,
+				y0: 14,
+				y1: 15,
+				w: 51,
+				h: 52,
 			},
 			{
-				x: 31,
-				y: 17,
-
-				px: 2080,
-				py: 80,
-
-				gx: 25,
-				gy: 1607,
+				x0: 37,
+				x1: 38,
+				y0: 14,
+				y1: 15,
+				w: 51,
+				h: 52,
 			},
 			{
-				x: 31,
-				y: 17,
-
-				px: 1470,
-				py: 150,
-
-				gx: -585,
-				gy: 1677,
+				x0: 34,
+				x1: 35,
+				y0: 15,
+				y1: 16,
+				w: 52,
+				h: 51,
 			},
-		]
-
-		for (const t of tests) {
-			it('Should correctly convert from global to local and back', () => {
-				const res = getGlobalPos(t.x, t.y, t.px, t.py);
-				expect(res).toEqual({ gx: t.gx, gy: t.gy });
-				const res2 = getLocalPos(t.x, t.y, res.gx, res.gy);
-				expect(res2).toEqual({ px: t.px, py: t.py });
+			{
+				x0: 35,
+				x1: 36,
+				y0: 15,
+				y1: 16,
+				w: 51,
+				h: 51,
+			},
+			{
+				x0: 36,
+				x1: 37,
+				y0: 15,
+				y1: 16,
+				w: 51,
+				h: 51,
+			},
+			{
+				x0: 37,
+				x1: 38,
+				y0: 15,
+				y1: 16,
+				w: 51,
+				h: 51,
+			},
+			{
+				x0: 38,
+				x1: 39,
+				y0: 15,
+				y1: 16,
+				w: 51,
+				h: 51,
+			},
+		];
+		tests.forEach(test => {
+			it('Should handle the integer division discrepancy correctly', () => {
+				const w = randoms.GetWidthFromPixWithOffset(test.x0, test.x1, 0);
+				const h = randoms.GetWidthFromPixWithOffset(test.y0, test.y1, 0);
+				expect({ w, h }).toEqual({ w: test.w, h: test.h });
 			});
-		}
+		});
 	});
 });

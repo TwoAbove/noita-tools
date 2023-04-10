@@ -6,6 +6,8 @@ import { localizeNumber } from '../../../services/helpers';
 import SeedDataOutput from '../../SeedInfo/SeedDataOutput';
 import { SearchContext } from '../SearchContext';
 import UseMultithreadingButton from '../UseMultithreading';
+import { Status } from '../../../services/compute/ChunkProvider';
+import useLocalStorage from '../../../services/useLocalStorage';
 
 const MemoSeedDataOutput = React.memo(SeedDataOutput);
 
@@ -27,10 +29,16 @@ const Description = () => {
 };
 
 const Search = () => {
+	// TODO: Spilt Search Context into something more manageable
 	const {
 		seedSolver,
-		solverInfo,
-		results,
+		solverStatus,
+		solverReady,
+
+		clusterHelpAvailable,
+		clusterHelpEnabled,
+		toggleClusterHelp,
+
 		handleCopy,
 		startCalculation,
 		stopCalculation,
@@ -44,8 +52,14 @@ const Search = () => {
 		seedsChecked,
 		totalSeeds,
 		percentChecked,
-		seedsPerSecond
+		seedsPerSecond,
 	} = useContext(SearchContext);
+
+	const [profileOpen, setProfileOpen] = useLocalStorage('profile-open', false);
+
+	const openProfile = () => {
+		setProfileOpen(true);
+	}
 
 	return (<Container fluid className="col pt-3 shadow-lg">
 		<Description />
@@ -53,7 +67,7 @@ const Search = () => {
 			{/* <RuleConstructor onSubmit={updateRules} /> */}
 		</Row>
 		<Row>
-			<Col xs={12} sm={6} md={6} >
+			<Col xs={12} sm={6} md={4} >
 				<Form onSubmit={e => e.preventDefault()}>
 					<FormGroup>
 						<Col>
@@ -64,7 +78,7 @@ const Search = () => {
 								<Form.Control
 									id="SearchSeeds.seed"
 									type="number"
-									disabled={running}
+									disabled={running || !solverReady}
 									value={seed}
 									onChange={handleSeedStartChange}
 								/>
@@ -79,7 +93,7 @@ const Search = () => {
 									id="SearchSeeds.seedEnd"
 									type="number"
 									placeholder="Optional"
-									disabled={running}
+									disabled={running || !solverReady}
 									value={seedEnd}
 									onChange={handleSeedEndChange}
 								/>
@@ -89,6 +103,7 @@ const Search = () => {
 							<Form.Group className='mt-3'>
 								<Form.Check
 									checked={findAll}
+									disabled={!solverReady}
 									onChange={e => {
 										setFindAll(e.target.checked);
 									}}
@@ -101,31 +116,57 @@ const Search = () => {
 				</Form>
 			</Col>
 			{/* <Col /> */}
-			<Col md={6} className="p-3">
-				{navigator.hardwareConcurrency && (
-					<Col className="">
+			<Col md={8} className="p-3">
+				<Row>
+
+					{navigator.hardwareConcurrency && (
+						<Col className="">
+							<Row className="m-3">
+								<UseMultithreadingButton />
+							</Row>
+							<Row className="m-3">
+								<p>
+									Multithreading will use as many CPU threads as possible,
+									but slow down your PC. PC performance may suffer, as well as battery life. You may get
+									several results at once if you have enough cores.
+								</p>
+							</Row>
+						</Col>
+					)}
+					{false && <Col className="">
 						<Row className="m-3">
-							<UseMultithreadingButton />
+							<Button
+								variant="outline-primary"
+								onClick={toggleClusterHelp}
+							>
+								{clusterHelpEnabled ? 'Disable' : 'Enable'} cluster compute
+							</Button>
 						</Row>
-						<Row className="m-3">
-							Multithreading will use as many CPU threads as possible,
-							but slow down your PC. PC performance may suffer, as well as battery life. You may get
-							several results at once if you have enough cores.
+						<Row className='m-3'>
+							{clusterHelpAvailable && <>
+								Offload part of the work to a compute cluster.
+								See details in your profile page.
+							</>}
+							{!clusterHelpAvailable && <p>
+								Offloading part of the work to a compute cluster is <b>not available</b>.
+								<br />
+								See details in your <Button size='sm' variant='outline-primary' onClick={() => openProfile()}>profile page</Button>
+							</p>}
 						</Row>
-					</Col>
-				)}
+					</Col>}
+				</Row>
 				<Row className="p-3">
 					<ButtonGroup>
 						<Button
 							color="primary"
-							disabled={running}
+							disabled={running || !solverReady}
 							onClick={() => startCalculation()}
 						>
-							Find next
+							{!solverReady ? 'Loading searcher' : 'Find next'}
 						</Button>
 						<Button
 							color="primary"
-							disabled={!running}
+							disabled={!running || !solverReady}
 							onClick={() => stopCalculation()}
 						>
 							Stop
@@ -135,9 +176,9 @@ const Search = () => {
 			</Col>
 		</Row>
 		<div>
-			{solverInfo?.running && <div>
+			{solverStatus?.running && <div>
 				<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
-				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverInfo as any).msLeft, { round: true, units: ["h", "m"] })}, {seedsPerSecond} avg seeds/s)
+				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverStatus as Status).estimate * 1000, { round: true, units: ["h", "m"] })}, {seedsPerSecond} avg seeds/s)
 			</div>}
 			<h6>Results:</h6>
 			{findAll && <div>
@@ -155,19 +196,14 @@ const Search = () => {
 				</ListGroup>
 			</div>}
 			{
-				!findAll && <Stack gap={5}>
-					{results.map((info, index) => {
-						return (
-							<div
-								className="mb-4"
-								key={info.foundSeed || info.currentSeed}
-							>
-								{info.foundSeed && (
-									<MemoSeedDataOutput key={info.currentSeed} seed={`${info.currentSeed}`} />
-								)}
-							</div>
-						)
-					})}
+				!findAll && solverStatus?.results[0] && <Stack gap={5}>
+					{<div
+						className="mb-4"
+						key={solverStatus?.results[0]}
+					>
+						<MemoSeedDataOutput key={solverStatus?.results[0]} seed={`${solverStatus?.results[0]}`} />
+					</div>
+					}
 				</Stack>
 			}
 

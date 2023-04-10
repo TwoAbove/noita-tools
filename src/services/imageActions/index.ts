@@ -10,25 +10,11 @@ export const loadImageActions = async (): Promise<IImageActions | any> => {
     return import('./nodeImageActions');
   } else {
     if (typeof OffscreenCanvas === "undefined") {
-      // Mobile Safari support
+      // Old Mobile Safari support
       return import('./webCanvasImageActions');
     }
 
     return import('./webImageActions');
-
-
-    const skiawasm = await (await import('canvaskit-wasm/bin/canvaskit.wasm')).default;
-    const canvaskitLoad = await (await import('canvaskit-wasm')).default;
-    const skia = await canvaskitLoad({
-      locateFile: path => {
-        if (path.endsWith('.wasm')) {
-          return skiawasm;
-        }
-        return path;
-      }
-    });
-
-    return (await (await import('./webSkiaImageActions')).default)(skia)
   }
 }
 

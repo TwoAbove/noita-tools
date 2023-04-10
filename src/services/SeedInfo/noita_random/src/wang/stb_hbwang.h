@@ -625,29 +625,30 @@ static stbhw_tile *stbhw__choose_tile(stbhw_tile **list, int numlist,
       for (i = 0; i < numlist; ++i)
       {
          stbhw_tile *h = list[i];
-         if ((*a < 0 || *a == h->a) &&
-             (*b < 0 || *b == h->b) &&
-             (*c < 0 || *c == h->c) &&
-             (*d < 0 || *d == h->d) &&
-             (*e < 0 || *e == h->e) &&
-             (*f < 0 || *f == h->f))
+         if ((*a >= 0 && *a != h->a) ||
+             (*b >= 0 && *b != h->b) ||
+             (*c >= 0 && *c != h->c) ||
+             (*d >= 0 && *d != h->d) ||
+             (*e >= 0 && *e != h->e) ||
+             (*f >= 0 && *f != h->f))
          {
-            if (weighting)
-               n += weighting[0][i];
-            else
-               n += 1;
-            if (n > m)
-            {
-               // use list[i]
-               // update constraints to reflect what we placed
-               *a = h->a;
-               *b = h->b;
-               *c = h->c;
-               *d = h->d;
-               *e = h->e;
-               *f = h->f;
-               return h;
-            }
+            continue;
+         }
+         if (weighting)
+            n += weighting[0][i];
+         else
+            n += 1;
+         if (n > m)
+         {
+            // use list[i]
+            // update constraints to reflect what we placed
+            *a = h->a;
+            *b = h->b;
+            *c = h->c;
+            *d = h->d;
+            *e = h->e;
+            *f = h->f;
+            return h;
          }
       }
       if (n == 0)

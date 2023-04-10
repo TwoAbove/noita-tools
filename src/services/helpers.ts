@@ -83,3 +83,13 @@ export const promiseMap = function (iterable, mapper, options = { concurrency: I
 		})
 	}
 }
+
+export function generatePoints(x0: number, x1: number, y0: number, y1: number): number[][] {
+	const coordinates: number[][] = [];
+	for (let y = y0; y <= y1; y++) {
+		for (let x = x0; x <= x1; x++) {
+			coordinates.push([x, y]);
+		}
+	}
+	return coordinates;
+}

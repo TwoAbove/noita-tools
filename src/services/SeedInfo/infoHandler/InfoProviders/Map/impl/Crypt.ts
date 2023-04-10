@@ -867,264 +867,110 @@ class Crypt extends Base {
   ];
 
   spawn_small_enemies(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_small_enemies, x, y)
   }
   spawn_big_enemies(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_big_enemies, x, y)
   }
   spawn_items(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    const r = this.randoms.ProceduralRandomf(x - 11.631, y + 10.2257, 0, 1);
+
+    if (r > 0.38) {
+      this.LoadPixelScene("data/biome_impl/wand_altar.png", "data/biome_impl/wand_altar_visual.png", x - 10, y - 17, "", true)
+    }
   }
   spawn_props(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_props2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_props3(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_props, x - 4, y - 4, 0, 0)
   }
   spawn_lamp(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_lamp, x + 4, y - 8, 0, 0)
   }
   load_pixel_scene(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_pixel_scene_01, x, y)
+
   }
   load_pixel_scene2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_pixel_scene_02, x + 6, y)
   }
   spawn_unique_enemy(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_unique_enemy2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_unique_enemy3(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_ghostlamp(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_candles(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_potion_altar(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_potions(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_apparition(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_heart(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wands(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_portal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_end_portal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_orb(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_perk(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_all_perks(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wand_trap(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wand_trap_ignite(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wand_trap_electricity_source(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_wand_trap_electricity(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_moon(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
-  }
-  spawn_collapse(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_unique_enemy, x - 1, y, 0, 0)
   }
   init(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+
   }
   spawn_statues(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_statues, x - 4, y)
   }
   load_pixel_scene3(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_pixel_scene_03, x, y)
+
   }
   load_pixel_scene4(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_pixel_scene_04, x, y)
+
   }
   load_pixel_scene5(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_pixel_scene_05, x, y)
+
   }
   load_pixel_scene5b(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_pixel_scene_05b, x, y)
+
   }
   spawn_lamp2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_lamp2, x - 1, y, 0, 0)
   }
   spawn_large_enemies(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_large_enemies, x - 1, y, 0, 0)
   }
   spawn_ghost_crystal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_ghost_crystal, x - 1, y, 0, 0)
   }
   spawn_crawlers(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
   }
   spawn_pressureplates(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_pressureplates, x, y, 0, 0)
+
   }
   spawn_doors(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
   }
   spawn_scavengers(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_scavengers, x, y, 0, 0)
+
   }
   spawn_scorpions(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_scorpions, x, y)
+
   }
   spawn_bones(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_bones, x, y - 12)
+
   }
   load_beam(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_beam, x, y - 65)
+
   }
   load_background_scene(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_background_sprite(this.g_background_scenes, x + 5, y)
+
   }
   load_small_background_scene(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_background_sprite(this.g_small_background_scenes, x, y)
+
   }
   load_cavein(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.load_random_pixel_scene(this.g_caveins, x - 60, y - 10)
+
   }
   spawn_vines(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_vines, x + 5, y + 5)
+
   }
   spawn_statue_back(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.spawn(this.g_statue_back, x + 5, y)
   }
   spawn_shopitem(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, null]);
   }
 }
 export default Crypt;

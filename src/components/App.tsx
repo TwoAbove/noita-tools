@@ -14,17 +14,34 @@ import classNames from 'classnames';
 import SyncHandler from './Settings/SyncHandler';
 import { BrowserRouter } from 'react-router-dom';
 import DBError from './DBError';
+import useLocalStorage from '../services/useLocalStorage';
 
 const Settings = lazy(() => import('./Settings'));
 const LazySettings = props => {
 	const [show, setShow] = useState(false);
-
 	return (
 		<Suspense fallback={<LoadingComponent />}>
 			<Button onClick={() => setShow(true)} size="lg" variant="outline-primary">
 				<i className="bi bi-gear"></i>
 			</Button>
 			<Settings show={show} handleClose={() => setShow(false)} />
+		</Suspense>
+	);
+};
+
+const Profile = lazy(() => import('./Profile'));
+const LazyProfile = props => {
+	const [profileOpen, setProfileOpen] = useLocalStorage('profile-open', false);
+	return (
+		<Suspense fallback={<LoadingComponent />}>
+			<Button
+				onClick={() => setProfileOpen(true)}
+				size="lg"
+				variant="outline-primary"
+			>
+				<i className="bi bi-person"></i>
+			</Button>
+			<Profile show={profileOpen} handleClose={() => setProfileOpen(false)} />
 		</Suspense>
 	);
 };
@@ -50,7 +67,12 @@ const Header = () => {
 				)}
 			</div>
 			<div className=" d-flex pt-3 justify-content-end align-items-start">
-				<LazySettings />
+				{/* <div className="mx-2">
+					<LazyProfile />
+				</div> */}
+				<div className="mx-2">
+					<LazySettings />
+				</div>
 			</div>
 		</Container>
 	);
@@ -89,7 +111,6 @@ const WasmError = props => {
 	);
 };
 
-
 const Body = lazy(() => import('./Body'));
 const LazyBody = props => {
 	return (
@@ -118,19 +139,22 @@ const Footer = () => {
 					>
 						here
 					</a>
-					! {/* <br /> */}
-					Or DM me on Noita's discord:{' '}
+					{/* <br /> */}
+					{' '}
+					or DM me on Noita's discord:{' '}
 					<a
 						target="_blank"
 						rel="noreferrer"
-						href="https://discord.gg/WtdfUsJD"
+						href="https://discord.gg/noita"
 					>
 						TwoAbove#0493
 					</a>
+					{' '}
+					or send me an email:{' '}
+					<a href="mailto:me@noitool.com">me@noitool.com</a>
 				</div>
-				{/* https://discord.gg/WtdfUsJD */}
 				<div className="footer-copyright text-center py-1">
-					Noitool <code>{process.env.REACT_APP_VERSION} </code>© 2022{' '}
+					Noitool <code>{process.env.REACT_APP_VERSION} </code>© 2023{' '}
 					<a href="https://seva.dev/">Seva Maltsev</a>
 				</div>
 			</Stack>

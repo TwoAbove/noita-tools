@@ -110,3 +110,5 @@ lambda-build
 ssl
 
 dataScripts/src/mapsToObj/gen
+
+cypress/screenshots/

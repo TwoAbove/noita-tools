@@ -1,5 +1,7 @@
 
 export interface IImageActions {
+  ImageData: (w: number, h: number) => ImageData;
+
   getContext: (canvas: OffscreenCanvas, config?: CanvasRenderingContext2DSettings) => OffscreenCanvasRenderingContext2D,
   createCanvas: (w, h) => OffscreenCanvas;
   imageFromBase64: (dataUri: string) => Promise<ImageData>;
@@ -53,6 +55,10 @@ export interface IImageActions {
   imageFromHexArray: (hexArray: string[],
     w: number,
     h: number) => ImageData;
+  getTilePos: (gx: number, gy: number) => {
+    x: number;
+    y: number;
+  };
   getGlobalPos: (x: number, y: number, px: number, py: number) => {
     gx: number;
     gy: number;
