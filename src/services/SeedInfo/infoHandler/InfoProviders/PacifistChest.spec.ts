@@ -103,8 +103,8 @@ describe('PacifistChestProvider', () => {
 			ans: [
 				{
 					entity: 'data/entities/items/wand_level_03.xml',
-					x: 431.7,
-					y: 5638.1,
+					x: 432,
+					y: 5638,
 					pos_x: -74,
 					pos_y: 4959,
 					extra: {

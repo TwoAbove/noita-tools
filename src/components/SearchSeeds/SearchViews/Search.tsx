@@ -149,7 +149,7 @@ const Search = () => {
 							</>}
 							{!clusterHelpAvailable && <p>
 								Offloading part of the work to a compute cluster is <b>not available</b>.
-								<br/>
+								<br />
 								See details in your <Button size='sm' variant='outline-primary' onClick={() => openProfile()}>profile page</Button>
 							</p>}
 						</Row>
@@ -196,17 +196,14 @@ const Search = () => {
 				</ListGroup>
 			</div>}
 			{
-				!findAll && <Stack gap={5}>
-					{solverStatus?.results?.map(seed => {
-						return (
-							<div
-								className="mb-4"
-								key={seed}
-							>
-								<MemoSeedDataOutput key={seed} seed={`${seed}`} />
-							</div>
-						)
-					})}
+				!findAll && solverStatus?.results[0] && <Stack gap={5}>
+					{<div
+						className="mb-4"
+						key={solverStatus?.results[0]}
+					>
+						<MemoSeedDataOutput key={solverStatus?.results[0]} seed={`${solverStatus?.results[0]}`} />
+					</div>
+					}
 				</Stack>
 			}
 

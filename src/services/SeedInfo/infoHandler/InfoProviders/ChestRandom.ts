@@ -148,8 +148,6 @@ export class ChestRandomProvider extends InfoProvider {
 				if (rnd <= 94) {
 					entities.push({
 						entity: 'data/entities/items/pickup/potion.xml',
-						x,
-						y
 					});
 				} else if (rnd <= 98) {
 					entities.push({
@@ -160,14 +158,10 @@ export class ChestRandomProvider extends InfoProvider {
 					if (rnd <= 98) {
 						entities.push({
 							entity: 'data/entities/items/pickup/potion_secret.xml',
-							x,
-							y
 						});
 					} else if (rnd <= 100) {
 						entities.push({
 							entity: 'data/entities/items/pickup/potion_random_material.xml',
-							x,
-							y
 						});
 					}
 				}
@@ -374,10 +368,18 @@ export class ChestRandomProvider extends InfoProvider {
 			} else {
 				res.x = rand_x;
 				res.y = rand_y;
-				res.pos_x = x + this.randoms.Random(-10,10);
-				res.pos_y = y + this.randoms.Random(-5,5);
+				res.pos_x = x + this.randoms.Random(-10, 10);
+				res.pos_y = y + this.randoms.Random(-5, 5);
 			}
-			switch(res.entity) {
+			if (
+				res.entity?.includes('data/entities/items/wand_') ||
+				res.entity?.includes('data/entities/items/pickup/potion') ||
+				res.entity?.includes('data/entities/items/pickup/powder')
+			) {
+				res.y = this.randoms.RoundHalfOfEven(res.y);
+				res.x = this.randoms.RoundHalfOfEven(res.x);
+			}
+			switch (res.entity) {
 				case 'data/entities/items/pickup/potion.xml':
 				case 'data/entities/items/pickup/potion_secret.xml':
 				case 'data/entities/items/pickup/potion_random_material.xml':
