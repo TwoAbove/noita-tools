@@ -122,7 +122,7 @@ export default class SeedSolver {
 		}
 	}
 
-	public async searchChunk(from: number, to: number, rules: ILogicRules, progress?: (percent: number) => void) {
+	public async searchChunk(from: number, to: number, rules: ILogicRules) {
 		await this.workersReadyPromise;
 
 		// If we have map rules, then we'll also check if we need to subdivide the chunk even
@@ -153,6 +153,8 @@ export default class SeedSolver {
 
 		let checked = 0;
 
+		// This works by awaiting on searchChunk(), so a worker needs to finish their current chunk
+		// before they can start the next one.
 		await Promise.all(
 			this.workerList.map(async (worker, i) => {
 				for (let config = chunkConfigs.pop(); config; config = chunkConfigs.pop()) {
@@ -160,9 +162,6 @@ export default class SeedSolver {
 					checked += subTo - subFrom;
 					const r = await worker.searchChunk(subFrom, subTo, rules);
 					res.push(...r);
-					if (progress) {
-						progress(checked / (to - from));
-					}
 					await new Promise(res => setTimeout(res, 0));
 				}
 			})

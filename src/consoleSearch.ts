@@ -2,7 +2,7 @@ import os from 'os';
 
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
-import { ComputeSocket } from './components/Compute/ComputeSocket';
+import { ComputeSocket } from './services/compute/ComputeSocket';
 import SeedSolver from './services/seedSolverHandler.node';
 
 const argv = yargs(hideBin(process.argv)).argv as any;

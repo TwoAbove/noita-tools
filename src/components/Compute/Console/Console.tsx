@@ -9,10 +9,11 @@ import { localizeNumber } from '../../../services/helpers';
 import { ILogicRules } from '../../../services/SeedInfo/infoHandler/IRule';
 import SeedSolver from '../../../services/seedSolverHandler';
 import { Import } from '../../SearchSeeds/RuleList';
-import ComputeHandler, { Status } from '../ComputeHandler';
-import { ComputeSocket } from '../ComputeSocket';
-import './console.css';
+import { ComputeSocket } from '../../../services/compute/ComputeSocket';
 import useLocalStorage from '../../../services/useLocalStorage';
+import SocketHandler from '../../../services/socketHandler';
+import { ChunkProvider, Status } from '../../../services/compute/ChunkProvider';
+import { SocketComputeProvider } from '../../../services/compute/SocketComputeProvider';
 
 const testConfig = {
 	"id": "1",
@@ -82,38 +83,22 @@ const testConfig = {
 	"selectedRule": "search"
 };
 
-interface ChunkStatusesProps {
-	chunkStatuses?: ComputeHandler['chunkStatus'];
-}
-const ChunkStatuses: FC<ChunkStatusesProps> = ({ chunkStatuses = [] }) => {
-	const pending = chunkStatuses.filter(c => c.status === 'pending');
-	// const waiting = chunkStatuses.filter(c => c.status === 'waiting');
-	// const done = chunkStatuses.filter(c => c.status === 'done');
-	return (
-		<Stack>
-			<Col>Working on: <Stack gap={3} direction='horizontal'>{pending.map(p => <div className='p-2' key={p.chunkId}>{p.chunkId} <br /> [{p.from} - {p.to}]</div>)}</Stack></Col>
-			{/* <Col>Waiting: {waiting.length}</Col> */}
-			{/* <Col>Done: {done.length}</Col> */}
-		</Stack>
-	)
-}
-
 const ComputeConsole = () => {
 	const [computeSocket, setComputeSocket] = useState<ComputeSocket>();
 	const [connected, setConnected] = useState(false);
 	const [openDetails, setOpenDetails] = useState(false);
 
-	const [computeHandler, setComputeHandler] = useState<ComputeHandler>();
+	const [chunkProvider, setChunkProvider] = useState<ChunkProvider>();
+	const [socketComputeProvider, setSocketComputeProvider] = useState<SocketComputeProvider>();
 
-	const [computeUrl, setComputeUrl] = useState("https://dev.noitool.com");
-	// const [computeUrl, setComputeUrl] = useState(window.location.host);
+	const [computeUrl, setComputeUrl] = useState(window.location.host);
 	const [computeId, setComputeId] = useLocalStorage('search-compute-id', '');
 	const [computeJobName, setComputeJobName] = useState("The Seed");
 	// const [computeJobName, setComputeJobName] = useState((Math.random() + 1).toString(36).substring(7));
 
 	const [rules, setRules] = useState<ILogicRules>(testConfig as any);
 
-	const [computeStatus, setComputeStatus] = useState<Status>({ running: false, checked: 0, estimate: 0, rate: 0, results: [] });
+	const [computeStatus, setComputeStatus] = useState<Status>({ running: false, checked: 0, estimate: 0, rate: 0, currentChunk: 0, results: [] });
 
 	const [searchFrom, setSearchFrom] = useState(1);
 	// const [searchTo, setSearchTo] = useState(6658);
@@ -133,29 +118,46 @@ const ComputeConsole = () => {
 	}, [computeUrl, computeId]);
 
 	useEffect(() => {
-		if (!computeSocket || !rules) {
+		if (!computeSocket || !rules || !chunkProvider) {
 			return;
 		}
-		const newComputeHandler = new ComputeHandler(computeSocket, rules, { chunkSize, searchFrom, searchTo }, setComputeStatus);
-		setComputeHandler(newComputeHandler);
+		const newSocketComputeProvider = new SocketComputeProvider(setComputeStatus, chunkProvider, rules, computeSocket);
+		setSocketComputeProvider(newSocketComputeProvider);
 		return (() => {
-			newComputeHandler.destruct();
+			newSocketComputeProvider.destruct();
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [computeSocket, rules]);
+	}, [computeSocket, rules, chunkProvider]);
 
 	useEffect(() => {
-		computeHandler?.updateConfig({
-			chunkSize, searchFrom, searchTo, jobName: computeJobName
-		})
-	}, [chunkSize, computeHandler, searchFrom, searchTo, computeJobName]);
+		console.log(chunkProvider);
+		if (!chunkProvider) {
+			const newChunkProvider = new ChunkProvider({
+				chunkSize,
+				searchFrom,
+				searchTo,
+				jobName: computeJobName,
+				etaHistoryTimeConstant: 120,
+				chunkProcessingTimeTarget: 5,
+			});
+			setChunkProvider(newChunkProvider);
+			return;
+		}
+		chunkProvider.config = {
+			...chunkProvider.config,
+			chunkSize,
+			searchFrom,
+			searchTo,
+			jobName: computeJobName
+		};
+	}, [chunkSize, searchFrom, searchTo, computeJobName, chunkProvider]);
 
 	const handleCopy = () => {
 		const seedList = computeStatus.results;
 		copy(seedList.join(','));
 	}
 
-	const nextUp = computeHandler?.chunkStatus.find(c => c.status === 'waiting');
+	const nextUp = chunkProvider?.config.searchFrom;
 
 	return (
 		<Container>
@@ -241,32 +243,25 @@ const ComputeConsole = () => {
 				<hr />
 				<Row>
 					<Col>
-						<Button disabled={computeStatus.running} onClick={() => computeHandler?.start()}>Start</Button>
+						<Button disabled={computeStatus.running} onClick={() => socketComputeProvider?.start()}>Start</Button>
 					</Col>
 					<Col>
-						<Button disabled={!computeStatus.running} onClick={() => computeHandler?.stop()}>Stop</Button>
+						<Button disabled={!computeStatus.running} onClick={() => socketComputeProvider?.stop()}>Stop</Button>
 					</Col>
 				</Row>
 				<hr />
 				<Stack gap={3}>
 					<Row>
-						{nextUp && computeStatus.estimate && <div>
-							<ProgressBar min={searchFrom} max={searchTo} now={nextUp?.from} animated label={`${Math.round(computeStatus.checked * 100 / (searchTo - searchFrom))}%`} />
+						{nextUp && computeStatus.estimate && socketComputeProvider?.running && <div>
+							<ProgressBar min={searchFrom} max={searchTo} now={nextUp} animated label={`${Math.round(computeStatus.checked * 100 / (searchTo - searchFrom))}%`} />
 							Seeds checked: {localizeNumber(computeStatus.checked)} / {localizeNumber(searchTo - searchFrom)} (Estimated time left: {humanize(computeStatus.estimate * 1000, { round: true, units: ["h", "m"] })}, {localizeNumber(Math.round(computeStatus.rate * 100) / 100)} avg seeds/s)
 						</div>
-
-						}
-						{nextUp &&
-							<Col xs={4}>
-								Next up: Chunk [{nextUp?.from} - {nextUp?.to}]
-							</Col>
 						}
 					</Row>
-					<ChunkStatuses chunkStatuses={computeHandler?.chunkStatus} />
 					<Row>
 						<h6>Results:</h6>
-						{<div>
-							Found {computeStatus.results.length} seeds: <br />
+						{chunkProvider && <div>
+							Found {chunkProvider.results.length} seeds: <br />
 							<Button onClick={handleCopy}>Copy seed list to clipboard</Button>
 							<ListGroup style={
 								{
