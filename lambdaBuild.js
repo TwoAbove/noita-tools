@@ -44,6 +44,7 @@ const external = [
 require('esbuild')
 	.build({
 		entryPoints: [
+			'./src/services/SeedInfo/infoHandler/index.ts',
 			'./src/consoleSearch.ts',
 			'./src/workers/seedSearcher.worker.node.ts'
 		],

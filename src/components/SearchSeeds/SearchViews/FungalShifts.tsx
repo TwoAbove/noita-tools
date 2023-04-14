@@ -20,7 +20,7 @@ interface IOpen {
 	type?: string;
 }
 
-const materialsFrom = fungalInfoProvider.fungalData.materials_from.flatMap(
+const materialsFrom = fungalInfoProvider.fungalData.materials_from.map(
 	m => m.materials
 );
 const materialsTo = fungalInfoProvider.fungalData.materials_to.map(
@@ -83,7 +83,7 @@ const FungalShifts: FC<IFungalShiftsProps> = ({ onUpdateConfig, config }) => {
 			return materialsTo;
 		}
 		if (type === 'from') {
-			return materialsFrom;
+			return materialsFrom.map(m => m.join(','));
 		}
 		return [];
 	};

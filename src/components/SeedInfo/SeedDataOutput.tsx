@@ -9,6 +9,7 @@ import { db } from '../../services/db';
 import useLocalStorage from '../../services/useLocalStorage';
 
 interface ISeedDataProps {
+	isDaily?: boolean;
 	seed: string;
 }
 
@@ -46,11 +47,11 @@ export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], 
 		gameInfoProvider.addEventListener('reset', event => {
 			gameInfoProvider.provideAll().then(data => {
 				setData(data);
-			}).catch(() => {
-				// handle this?
-			});;
+			}).catch((e) => {
+				console.error(e);
+			});
 		});
-	}).finally(() => { });
+	}).catch((e) => { console.error(e); });
 	return gameInfoProvider;
 }
 
@@ -87,18 +88,19 @@ export const useGameInfoProvider = (
 };
 
 const SeedDataOutput = (props: ISeedDataProps) => {
-	const { seed } = props;
+	const { seed, isDaily } = props;
 	const [unlockedSpells] = useLocalStorage<boolean[]>('unlocked-spells', Array(393).fill(true));
 	const [gameInfoProvider, data] = useGameInfoProvider(seed, unlockedSpells);
-
 	return (
 		<>
 			{gameInfoProvider && data ? (
 				<GameInfoContext.Provider value={{ gameInfoProvider, data }}>
 					<Stack className='seed-info'>
 						{data && `Seed: ${seed}`}
+						{data && isDaily && ` (Daily)`}
 						{data && (
 							<SeedInfo
+								isDaily={isDaily || false}
 								seed={seed}
 								infoProvider={gameInfoProvider}
 								data={data}

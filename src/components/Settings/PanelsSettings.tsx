@@ -30,7 +30,7 @@ const PanelsSettings = () => {
 					/>
 				</ListGroup.Item>
 				<ListGroup.Item>
-					<PanelToggle key="rain" id="rain" title="Rain" />
+					<PanelToggle key="weather" id="weather" title="Weather" />
 				</ListGroup.Item>
 				<ListGroup.Item>
 					<PanelToggle key="start" id="start" title="Starting Setup" />

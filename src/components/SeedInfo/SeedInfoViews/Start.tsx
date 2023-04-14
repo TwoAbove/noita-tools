@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack } from 'react-bootstrap';
+import { Card, Stack } from 'react-bootstrap';
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { SpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Spell';
 import { StartingBombSpellInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/StartingBomb';
@@ -18,25 +18,33 @@ interface IStartProps {
 const spells = new SpellInfoProvider({} as any);
 
 const Start = (props: IStartProps) => {
-	const {
-		startingFlask,
-		startingSpell,
-		startingBombSpell,
-	} = props;
+	const { startingFlask, startingSpell, startingBombSpell } = props;
 	const startingSpellSpell = spells.provide(startingSpell.toUpperCase());
 	const startingBombSpellSpell = spells.provide(
 		startingBombSpell.toUpperCase()
 	);
 	return (
-		<div className="d-flex justify-content-between align-items-center">
-			<div className="m-3">Starting setup:</div>
-			<Stack className="justify-content-center" direction="horizontal" gap={3}>
-				<Icon uri={startingSpellSpell.sprite} />
-				<Icon uri={startingBombSpellSpell.sprite} />
-				<StaticPotion material={startingFlask} />
-			</Stack>
-			<div className="flex-grow-1"></div>
-		</div>
+		<Card
+			style={{
+				borderRadius: '0.75rem',
+				borderWidth: '0.125rem'
+			}}
+		>
+			<Card.Title className="mb-1 text-center m-0">Starting setup</Card.Title>
+			<Card.Body
+				className="d-flex justify-content-evenly p-0 mx-1 mb-1"
+			>
+				<Stack
+					className="justify-content-center"
+					direction="horizontal"
+					gap={3}
+				>
+					<Icon uri={startingSpellSpell.sprite} />
+					<Icon uri={startingBombSpellSpell.sprite} />
+					<StaticPotion material={startingFlask} />
+				</Stack>
+			</Card.Body>
+		</Card>
 	);
 };
 
