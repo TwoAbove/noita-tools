@@ -1,4 +1,4 @@
-import { ListGroup, Form, Stack } from 'react-bootstrap';
+import { ListGroup, Form, Stack, Accordion } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import { SpellInfoProvider } from '../../services/SeedInfo/infoHandler/InfoProviders/Spell';
@@ -131,15 +131,22 @@ const UnlockedSpellsSettings = () => {
 					</>
 				}
 			/>
-			<ListGroup variant="flush" className="mb-5 shadow">
-				{flagNames.map(flag => {
-					return (
-						<ListGroup.Item key={flag}>
-							<FlagToggle flag={flag} />
-						</ListGroup.Item>
-					);
-				})}
-			</ListGroup>
+			<Accordion flush>
+				<Accordion.Item eventKey="0">
+					<Accordion.Header>Manual toggles</Accordion.Header>
+					<Accordion.Body style={{ padding: 0 }}>
+						<ListGroup variant="flush" className="mb-5 shadow">
+							{flagNames.map(flag => {
+								return (
+									<ListGroup.Item key={flag}>
+										<FlagToggle flag={flag} />
+									</ListGroup.Item>
+								);
+							})}
+						</ListGroup>
+					</Accordion.Body>
+				</Accordion.Item>
+			</Accordion>
 		</>
 	);
 };

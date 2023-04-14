@@ -34,6 +34,7 @@ const Search = () => {
 		seedSolver,
 		solverStatus,
 		solverReady,
+		chunkProvider,
 
 		clusterHelpAvailable,
 		clusterHelpEnabled,
@@ -44,11 +45,13 @@ const Search = () => {
 		stopCalculation,
 		handleSeedStartChange,
 		handleSeedEndChange,
+		handleCustomSeedListChange,
 		setFindAll,
 		findAll,
 		running,
 		seed,
 		seedEnd,
+		customSeedList,
 		seedsChecked,
 		totalSeeds,
 		percentChecked,
@@ -67,7 +70,7 @@ const Search = () => {
 			{/* <RuleConstructor onSubmit={updateRules} /> */}
 		</Row>
 		<Row>
-			<Col xs={12} sm={6} md={4} >
+			<Col xs={12} sm={6} md={5} >
 				<Form onSubmit={e => e.preventDefault()}>
 					<FormGroup>
 						<Col>
@@ -101,6 +104,26 @@ const Search = () => {
 						</Col>
 						<Col>
 							<Form.Group className='mt-3'>
+								<Form.Label htmlFor="SearchSeeds.seedEnd">
+									Or, input a list of seeds (slower, best for filtering):{' '}
+								</Form.Label>
+								<Form.Control
+									id="SearchSeeds.seedList"
+									type="text"
+									placeholder="Optional"
+									disabled={running || !solverReady}
+									value={customSeedList}
+									onChange={handleCustomSeedListChange}
+								/>
+								{customSeedList
+									&& <Form.Text className="text-muted">
+										{chunkProvider.customSeeds?.length} seeds left
+									</Form.Text>
+								}
+							</Form.Group>
+						</Col>
+						<Col>
+							<Form.Group className='mt-3'>
 								<Form.Check
 									checked={findAll}
 									disabled={!solverReady}
@@ -116,7 +139,7 @@ const Search = () => {
 				</Form>
 			</Col>
 			{/* <Col /> */}
-			<Col md={8} className="p-3">
+			<Col md={7} className="p-3">
 				<Row>
 
 					{navigator.hardwareConcurrency && (
@@ -176,7 +199,7 @@ const Search = () => {
 			</Col>
 		</Row>
 		<div>
-			{solverStatus?.running && <div>
+			{!chunkProvider?.customSeeds && solverStatus?.running && <div>
 				<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
 				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverStatus as Status).estimate * 1000, { round: true, units: ["h", "m"] })}, {seedsPerSecond} avg seeds/s)
 			</div>}

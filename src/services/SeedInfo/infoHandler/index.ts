@@ -7,7 +7,7 @@ import { IPerkChangeAction, PerkInfoProvider } from './InfoProviders/Perk';
 import { LotteryInfoProvider } from './InfoProviders/Lottery';
 import { MapInfoProvider } from './InfoProviders/Map';
 import { MaterialInfoProvider } from './InfoProviders/Material';
-import { RainInfoProvider } from './InfoProviders/Rain';
+import { WeatherInfoProvider } from './InfoProviders/Weather';
 import { ShopInfoProvider } from './InfoProviders/Shop';
 import { SpellInfoProvider } from './InfoProviders/Spell';
 import { StartingBombSpellInfoProvider } from './InfoProviders/StartingBomb';
@@ -38,7 +38,7 @@ interface IProviders {
   map: MapInfoProvider;
   material: MaterialInfoProvider;
   perk: PerkInfoProvider;
-  rain: RainInfoProvider;
+  weather: WeatherInfoProvider;
   shop: ShopInfoProvider;
   startingBombSpell: StartingBombSpellInfoProvider;
   startingFlask: StartingFlaskInfoProvider;
@@ -151,7 +151,7 @@ export class GameInfoProvider extends EventTarget {
       map: new MapInfoProvider(this.randoms),
       material: new MaterialInfoProvider(this.i18n),
       perk: new PerkInfoProvider(this.randoms),
-      rain: new RainInfoProvider(this.randoms),
+      weather: new WeatherInfoProvider(this.randoms),
       spells: new SpellInfoProvider(this.randoms),
       startingBombSpell: new StartingBombSpellInfoProvider(this.randoms),
       startingFlask: new StartingFlaskInfoProvider(this.randoms),
@@ -197,7 +197,7 @@ export class GameInfoProvider extends EventTarget {
         this.config.perkStacks[this.config.perkStacks.length - 1],
         true
       ),
-      rainType: this.providers.rain.provide(),
+      weather: this.providers.weather.provide(),
       shop: this.providers.shop.provide(
         this.config.pickedPerks,
         this.config.perkWorldOffset

@@ -6,7 +6,7 @@ import Shop from './SearchViews/Shop';
 import StartingFlask from './SearchViews/StartingFlask';
 import StartingSpell from './SearchViews/StartingSpell';
 import StartingBombSpell from './SearchViews/StartingBomb';
-import Rain from './SearchViews/Rain';
+import Weather from './SearchViews/Weather';
 import Perks from './SearchViews/Perks';
 import FungalShifts from './SearchViews/FungalShifts';
 import MapSearch from './SearchViews/Map';
@@ -45,9 +45,9 @@ export const RuleConstructors = {
 			val: new Array(7).fill(undefined)
 		}
 	},
-	rain: {
-		Title: () => 'Rain',
-		Component: Rain,
+	weather: {
+		Title: () => 'Weather',
+		Component: Weather,
 		defaultConfig: {
 			path: '',
 			params: [],
@@ -89,7 +89,11 @@ export const RuleConstructors = {
 		defaultConfig: {
 			path: '',
 			params: [],
-			val: new Array(7).fill([])
+			val: {
+				some: new Array(7).fill([]),
+				all: new Array(7).fill([]),
+				deck: new Array(1).fill([])
+			}
 		}
 	},
 	pacifistChest: {
@@ -148,7 +152,6 @@ export const RuleConstructors = {
 	}
 };
 type IRuleConstructor = (typeof RuleConstructors)[keyof typeof RuleConstructors];
-
 
 interface IRuleConstructorProps {}
 const RuleConstructor: FC<IRuleConstructorProps> = () => {

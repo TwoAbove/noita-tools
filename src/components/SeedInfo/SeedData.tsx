@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
 	Table,
 	Button,
@@ -6,20 +6,21 @@ import {
 	Modal,
 	Row,
 	Stack,
-	ListGroup
+	ListGroup,
+	Form
 } from 'react-bootstrap';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParamsState } from 'react-use-search-params-state';
 
 import SeedForm from './SeedForm';
 import SeedDataOutput from './SeedDataOutput';
 import { db } from '../../services/db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import Spell from '../Icons/Spell';
-import { SpellInfoProvider } from '../../services/SeedInfo/infoHandler/InfoProviders/Spell';
 import FungalShifts from './SeedInfoViews/FungalShifts';
 import { MaterialInfoProvider } from '../../services/SeedInfo/infoHandler/InfoProviders/Material';
 import i18n from '../../i18n';
 import { ShowAlwaysCastRow } from '../Settings/GeneralSettings';
+import useLocalStorage from '../../services/useLocalStorage';
 
 const MemoSeedDataOutput = React.memo(SeedDataOutput);
 
@@ -110,22 +111,10 @@ const SeedHistoryModal = props => {
 	);
 };
 
-const spellInfoProvider = new SpellInfoProvider({} as any);
 const materialProvider = new MaterialInfoProvider(i18n);
 
-const spellsToShow = new Set<string>();
-spellInfoProvider.spellsArr
-	.filter(s => {
-		return s.type === 'ACTION_TYPE_PROJECTILE' && s.spawn_probabilities[6]! > 0;
-	})
-	.map(s => s.id)
-	.forEach(item => spellsToShow.add(item));
-['DAMAGE', 'CRITICAL_HIT', 'HOMING', 'SPEED', 'ACID_TRAIL', 'SINEWAVE'].forEach(
-	item => spellsToShow.add(item)
-);
-
 const Part: FC<{ children?: React.ReactNode }> = ({ children }) => {
-	return <div className='mt-3'>{children}</div>;
+	return <div className="mt-3">{children}</div>;
 };
 
 const QuirkModal = props => {
@@ -164,20 +153,35 @@ const QuirkModal = props => {
 				</Part>
 				<Part>
 					<h4>Pacifist Chest</h4>
-					<h5>
-						Greed
-					</h5>
-					<p>
-						Greed is currently not supported, coming later.
-					</p>
+					<h5>Greed</h5>
+					<p>Greed is currently not supported, coming later.</p>
 					<h5>Random Material Potion</h5>
-					<p className="ps-2">
+					<p>
 						The contents of the Random Material Potion is very mod dependent.{' '}
 						<br />
 						If the amount of materials in game changes, then the material in
 						this potion will differ. Even changing the material positions in{' '}
 						<code className="mx-1">data/materials.xml</code> will change the
 						generated materials.
+					</p>
+				</Part>
+				<Part>
+					<h4>Weather</h4>
+					<p>
+						In Noita, the occurrence of rain depends on the game's seed, while
+						snowfall relies on real-time dates. Snow only appears during the
+						months of December, January, and February.{' '}
+						<b>
+							<em>
+								Please note that the displayed value represents the current time
+								and date.
+							</em>
+						</b>
+						<br />
+						This also applies when searching for seeds. When looking for a seed
+						with snow, the results will only be relevant for the months of
+						December, January, and February, as well as being accurate for the
+						specific day and hour of generation.
 					</p>
 				</Part>
 				<Part>
@@ -231,15 +235,41 @@ const QuirkModal = props => {
 };
 
 const SeedData = () => {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const seedInSeachParams = searchParams.get('seed');
-	const [seed, setSeed] = React.useState<any>(() => seedInSeachParams || '');
+	const [showCurrentDailySeed, setShowCurrentDailySeed] = useLocalStorage(
+		'show-current-daily-seed',
+		false
+	);
 
-	const [open, setOpen] = React.useState(false);
+	const [filterParams, setFilterParams] = useSearchParamsState({
+		seed: {
+			type: 'string',
+			default: ''
+		}
+	});
+
+	const [dailySeed, setDailySeed] = useState<string | null>(null);
+
+	const seed = filterParams.seed;
+
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		(async () => {
+			const res = await fetch('/api/daily-seed').then(r => r.json());
+			setDailySeed(res.seed);
+			if (showCurrentDailySeed && !seed) {
+				setFilterParams({ seed: res.seed });
+			}
+		})();
+		// Only run on mount
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showCurrentDailySeed]);
+
+	// const [seed, setSeed] = React.useState<any>(() => seedInSeachParams || '');
+
+	const [openQuirks, setQuirksOpen] = React.useState(false);
 
 	const handleSetSeed = (newSeed: string) => {
-		setSeed(newSeed);
-		setSearchParams({ seed: newSeed });
+		setFilterParams({ seed: newSeed });
 	};
 
 	const [showHistory, setShowHistory] = React.useState(false);
@@ -252,46 +282,73 @@ const SeedData = () => {
 				onSelectSeed={seed => handleSetSeed(seed)}
 			/>
 			<Row className="align-items-center">
-				<Col xs="8">
+				<Col lg="8" sm="12">
 					<h4 className="pt-3">Seed info</h4>
 					<Row>
 						<Col xs={6}>
 							<p>
-								Get lots of information about a seed, like perks in holy
-								mountains, fungal shifts, etc.
+								Noitool provides information about perks, fungal shifts, shop
+								items, chests, biome info, LC and AP recipes, weather for the
+								given seed. <br />
 							</p>
 						</Col>
 						<Col>
 							<p>
-								Note that this tool has minor limitations in details of
+								Note that Noitool has minor limitations in details of
 								generation: <br />{' '}
 								<Button
 									className="align-self-baseline mt-1"
 									variant="outline-primary"
 									size="sm"
-									onClick={() => setOpen(true)}
+									onClick={() => setQuirksOpen(true)}
 								>
 									Show quirks
 								</Button>
-								<QuirkModal show={open} handleClose={() => setOpen(false)} />
+								<QuirkModal
+									show={openQuirks}
+									handleClose={() => setQuirksOpen(false)}
+								/>
 							</p>
 						</Col>
 					</Row>
 				</Col>
-				<Col xs="4" className="d-flex">
-					<Button
-						className="ms-auto"
-						variant="outline-secondary"
-						size="sm"
-						onClick={() => setShowHistory(true)}
-					>
-						Seed History
-					</Button>
+				<Col lg="4">
+					<Row>
+						<Col
+							xs={8}
+							className="d-flex justify-content-center align-items-center"
+						>
+							<Form.Check
+								checked={showCurrentDailySeed}
+								onChange={e => setShowCurrentDailySeed(e.target.checked)}
+								type="switch"
+								id="custom-switch"
+							/>
+							<Form.Label className="ms-2" htmlFor="custom-switch">
+								Automatically show current daily seed{' '}
+								{dailySeed && (
+									<Link to={`?seed=${dailySeed}`}>{dailySeed}</Link>
+								)}
+							</Form.Label>
+						</Col>
+						<Col className="d-flex">
+							<Button
+								className="ms-auto"
+								variant="outline-secondary"
+								size="sm"
+								onClick={() => setShowHistory(true)}
+							>
+								Seed History
+							</Button>
+						</Col>
+					</Row>
 				</Col>
 			</Row>
 			<Stack>
 				<SeedForm onSubmit={seed => handleSetSeed(seed)} />
-				{seed ? <MemoSeedDataOutput seed={seed} /> : null}
+				{seed ? (
+					<SeedDataOutput isDaily={seed === dailySeed} seed={seed} />
+				) : null}
 			</Stack>
 		</div>
 	);

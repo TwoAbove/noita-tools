@@ -2,7 +2,7 @@ import React from 'react';
 
 import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Stack } from 'react-bootstrap';
 import BiomeModifier from './BiomeMod';
 import { BiomeModifierInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/BiomeModifier';
 import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Boime';
@@ -25,7 +25,7 @@ const Biome = (props: IBiomeProps) => {
 	);
 
 	return (
-		<Row>
+		<Stack gap={1}>
 			{primaryBiomes.map(([biome, modifier], i) => {
 				return (
 					<Col
@@ -43,7 +43,7 @@ const Biome = (props: IBiomeProps) => {
 					</Col>
 				);
 			})}
-		</Row>
+		</Stack>
 	);
 };
 

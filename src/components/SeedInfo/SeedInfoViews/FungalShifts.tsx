@@ -31,7 +31,7 @@ export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor =
 	const { isFavorite } = useMaterialFavorite();
 	const name = gameInfoProvider!.providers.material.translate(id);
 	return (
-		<div className={classNames(isFavorite(id) && 'text-info', 'text-center lh-1')}>
+		<div className={classNames(isFavorite(id) && 'text-info', 'text-start lh-1')}>
 			{showColor &&
 				<div
 					className={'d-inline-block align-sub rounded-3 me-1 border border-light'}

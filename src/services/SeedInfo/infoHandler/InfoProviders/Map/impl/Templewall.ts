@@ -4,7 +4,6 @@ class Templewall extends Base {
   chestLevel = 3;
 
   init(x: number, y: number) {
-    console.log('here');
     this.spawn_altar_top(x, y, true);
   }
 }

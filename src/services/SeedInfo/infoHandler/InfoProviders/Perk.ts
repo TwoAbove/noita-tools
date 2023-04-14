@@ -481,18 +481,36 @@ export class PerkInfoProvider extends InfoProvider {
     }
   }
 
-  test(rule: IRule): boolean {
-    const check = rule.strict ? includesAll : includesSome;
-    const info = this.provide();
+  test(rule: IRule<IPerkRule>): boolean {
+    if (rule.val?.deck[0]?.length) {
+      const deck = this.getPerkDeck();
+      if (!includesAll(deck, rule.val.deck[0])) {
+        return false;
+      }
+    }
+
+    const info = this.provide() as any;
 
     for (let i = 0; i < info.length; i++) {
-      if (rule.val[i].length) {
-        const r = rule.val[i];
-        if (!check(info[i] as any as string[], r)) {
+      if (rule.val?.some?.[i]?.length) {
+        const r = rule.val.some[i];
+        if (!includesSome(info[i], r)) {
+          return false;
+        }
+      }
+      if (rule.val?.all?.[i]?.length) {
+        const r = rule.val.all[i];
+        if (!includesAll(info[i], r)) {
           return false;
         }
       }
     }
     return true;
   }
+}
+
+export interface IPerkRule {
+	some: string[][];
+	all: string[][];
+  deck: string[][];
 }

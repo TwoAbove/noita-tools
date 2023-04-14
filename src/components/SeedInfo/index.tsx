@@ -3,7 +3,7 @@ import { lazy } from '@loadable/component'
 
 import LoadingComponent from '../LoadingComponent';
 
-const L = lazy(() => import('./RecipesForSeed'));
+const L = lazy(() => import('./SeedData'));
 
 const LazySeedInfo = props => {
 	return (

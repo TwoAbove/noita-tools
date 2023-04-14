@@ -55,7 +55,7 @@ describe('SeedSearcher', () => {
 					rules: [
 						{
 							id: '19',
-							type: 'rain',
+							type: 'weather',
 							path: '',
 							params: [],
 							val: {
@@ -133,7 +133,7 @@ describe('SeedSearcher', () => {
 				rules: [
 					{
 						id: '19',
-						type: 'rain',
+						type: 'weather',
 						path: '',
 						params: [],
 						val: {
@@ -184,7 +184,7 @@ describe('SeedSearcher', () => {
 			rules: [
 				{
 					id: '19',
-					type: 'rain',
+					type: 'weather',
 					path: '',
 					params: [],
 					val: {
@@ -257,7 +257,7 @@ describe('SeedSearcher', () => {
 						rules: [
 							{
 								id: '19',
-								type: 'rain',
+								type: 'weather',
 								path: '',
 								params: [],
 								val: {
@@ -314,7 +314,7 @@ describe('SeedSearcher', () => {
 					rules: [
 						{
 							id: '19',
-							type: 'rain',
+							type: 'weather',
 							path: '',
 							params: [],
 							val: {

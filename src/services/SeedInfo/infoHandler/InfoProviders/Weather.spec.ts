@@ -2,10 +2,10 @@
  * @jest-environment node
  */
 
-import { RainInfoProvider } from './Rain';
+import { WeatherInfoProvider } from './Weather';
 import { loadRandom } from '../../../../testHelpers';
 
-describe('RainInfoProvider', () => {
+describe('WeatherInfoProvider', () => {
 	const tests = [
 		{
 			seed: 123,
@@ -33,7 +33,7 @@ describe('RainInfoProvider', () => {
 		tests.forEach((t, i) => {
 			it(`Should generate correct output #${i}`, async () => {
 				const randoms = await loadRandom();
-				const ap = new RainInfoProvider(randoms);
+				const ap = new WeatherInfoProvider(randoms);
 				randoms.SetWorldSeed(t.seed);
 				const res = ap.provide();
 				expect(res).toEqual(t.ans);

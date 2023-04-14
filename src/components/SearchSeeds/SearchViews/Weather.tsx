@@ -7,7 +7,7 @@ import Clickable from '../../Icons/Clickable';
 
 import i18n from '../../../i18n';
 
-interface IRainProps {
+interface IWeatherProps {
 	onUpdateConfig: (config: Partial<IRule>) => void;
 	config: IRule;
 }
@@ -16,16 +16,16 @@ const material = new MaterialInfoProvider(i18n);
 
 const rainOptions = ['', 'water', 'blood', 'acid', 'slime'];
 
-const Rain: FC<IRainProps> = ({ onUpdateConfig, config }) => {
-	const { material: rainMaterial } = config.val;
+const Weather: FC<IWeatherProps> = ({ onUpdateConfig, config }) => {
+	const { rain_material: rainMaterial } = config.val;
 
 	const setRainType = newConfig => {
 		onUpdateConfig({
-			type: 'rain',
+			type: 'weather',
 			path: '',
 			params: [],
 			val: {
-				material: newConfig
+				rain_material: newConfig
 			}
 		});
 	};
@@ -55,4 +55,4 @@ const Rain: FC<IRainProps> = ({ onUpdateConfig, config }) => {
 	);
 };
 
-export default Rain;
+export default Weather;

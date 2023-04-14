@@ -38,7 +38,7 @@ export const searchWeights = {
 	pacifistChest: 0.04087,
 	startingFlask: 0.0407,
 	waterCave: 0.04069,
-	rain: 0.04068,
+	weather: 0.04068,
 	spells: 0.04035,
 	default: 0.06155, // average
 	map: 0.6

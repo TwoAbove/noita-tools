@@ -1,32 +1,31 @@
-
 // Ideally we use a JSON schema validator, but it doesn't handle sparse arrays well.
 // Is there something to get deep sparse inclusion between js objects???
-export interface IRule {
-  id: string;
-  type: string;
-  params?: any;
-  path?: string;
-  strict?: boolean;
-  // val should be a supported type by the structured clone algorithm:
-  // https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
-  val?: any;
+export interface IRule<T = any> {
+	id: string;
+	type: string;
+	params?: any;
+	path?: string;
+	strict?: boolean;
+	// val should be a supported type by the structured clone algorithm:
+	// https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
+	val?: T;
 }
 
 export enum RuleType {
 	AND = 'and',
 	OR = 'or',
 	NOT = 'not',
-  RULES = 'rules'
+	RULES = 'rules'
 }
 
 export interface ILogicRules {
-  id: string;
-	type: RuleType.AND | RuleType.OR  | RuleType.NOT;
+	id: string;
+	type: RuleType.AND | RuleType.OR | RuleType.NOT;
 	rules: IRules[];
 }
 
 export interface IRuleRules {
-  id: string;
+	id: string;
 	type: RuleType.RULES;
 	rules: IRule[];
 }
