@@ -179,7 +179,7 @@ const PerkRow: FC<IPerkRowProps> = (props) => {
             const alwaysCast = (perk.id === 'ALWAYS_CAST' || (rowHasAlwaysCast && showAllAlwaysCast)) ? getAlwaysCast(i, perksToShow.length) : undefined;
             const fav = isPerkFavorite(perk.id);
             return <Perk
-              className={fav && 'mb-2'}
+              className={fav && 'border border-info border-3'}
               highlight={fav}
               rerollable={rerollable}
               key={perk.ui_name + i}
@@ -333,7 +333,7 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
           style={{
             whiteSpace: 'normal',
             wordWrap: 'break-word',
-          }}>Show <br /> perk deck
+          }}>Show <br /> perk deck ({perkDeck.length})
           {favoritePerks.length ?
             <div className='position-absolute text-info top-0 end-0 pe-1'>{favoritePerks.length}</div> :
             ''

@@ -8,7 +8,7 @@ import Alchemy from './SeedInfoViews/Alchemy';
 import GameInfoProvider from '../../services/SeedInfo/infoHandler';
 
 // import Map from './SeedInfoViews/Map';
-import Rain from './SeedInfoViews/Rain';
+import Weather from './SeedInfoViews/Weather';
 import Start from './SeedInfoViews/Start';
 import Biome from './SeedInfoViews/Biome';
 import Watercave from './SeedInfoViews/Watercave';
@@ -39,10 +39,11 @@ interface ISeedInfoProps {
 	seed: string;
 	data: Awaited<ReturnType<GameInfoProvider['provideAll']>>;
 	infoProvider: GameInfoProvider; // This should be a context in the future
+	isDaily: boolean;
 }
 
 const SeedInfo = (props: ISeedInfoProps) => {
-	const { data, infoProvider, seed } = props;
+	const { data, infoProvider, seed, isDaily } = props;
 	const searchParams = new URLSearchParams(document.location.search);
 	const showMap = !!searchParams.get('map');
 
@@ -52,7 +53,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 				{/* <Row xs="auto">
 						<Map seed={seed} infoProvider={infoProvider} />
 				</Row> */}
-				<Row xs="auto">
+				<Row xs="auto" className="gap-2 justify-content-center">
 					<Col className="col-12">
 						<WithShow id="holy-mountain">
 							<HolyMountain
@@ -63,26 +64,28 @@ const SeedInfo = (props: ISeedInfoProps) => {
 							/>
 						</WithShow>
 					</Col>
-					<Col>
-						<WithShow id="start">
-							<Start
-								startingFlask={data.startingFlask}
-								startingSpell={data.startingSpell}
-								startingBombSpell={data.startingBombSpell}
-							/>
+					<Col className="my-auto">
+						{!isDaily && (
+							<WithShow id="start">
+								<Start
+									startingFlask={data.startingFlask}
+									startingSpell={data.startingSpell}
+									startingBombSpell={data.startingBombSpell}
+								/>
+							</WithShow>
+						)}
+					</Col>
+					<Col className="my-auto">
+						<WithShow id="weather">
+							<Weather infoProvider={infoProvider} weather={data.weather} />
 						</WithShow>
 					</Col>
-					<Col>
-						<WithShow id="rain">
-							<Rain infoProvider={infoProvider} rainData={data.rainType} />
-						</WithShow>
-					</Col>
-					<Col>
+					<Col className="my-auto">
 						<WithShow id="alchemy">
 							<Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
 						</WithShow>
 					</Col>
-					<Col>
+					<Col className="my-auto">
 						<WithShow id="biome">
 							<Biome
 								infoProvider={infoProvider}
@@ -90,7 +93,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 							/>
 						</WithShow>
 					</Col>
-					<Col>
+					<Col className="my-auto">
 						<WithShow id="watercave">
 							<Watercave
 								infoProvider={infoProvider}

@@ -29,7 +29,7 @@ const isLocal = () => {
 const Body = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const seedInSeachParams = searchParams.get('seed');
-	const [tab, setTab] = useLocalStorage('last-tab', 'SeedInfo');
+	const [tab, setTab] = useLocalStorage('last-tab', '');
 
 	useEffect(() => {
 		if (seedInSeachParams) {

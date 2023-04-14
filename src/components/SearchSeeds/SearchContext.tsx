@@ -1,4 +1,4 @@
-import React, { FC, useReducer } from 'react';
+import React, { FC, useReducer, useState } from 'react';
 
 import SeedSolver from '../../services/seedSolverHandler';
 import { ILogicRules, RuleType } from '../../services/SeedInfo/infoHandler/IRule';
@@ -128,6 +128,8 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	const [seedEndStr, setSeedEnd] = useLocalStorage('search-max-seed', '');
 	const seedEnd = parseInt(seedEndStr) || Math.pow(2, 31);
 
+	const [customSeedList, setCustomSeedList] = useState('');
+
 	const [computeJobName, setComputeJobName] = React.useState('');
 
 	const handleSeedStartChange = (e: any) => {
@@ -135,6 +137,10 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	};
 	const handleSeedEndChange = (e: any) => {
 		setSeedEnd(e.target.value);
+	};
+	const handleCustomSeedListChange = (e: any) => {
+		chunkProvider?.setCustomSeedList(e.target.value.replace(/\D/g,',').split(',').map((s: string) => parseInt(s)).filter((s: number) => !isNaN(s)));
+		setCustomSeedList(e.target.value);
 	};
 
 	const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
@@ -256,6 +262,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		seedSolver,
 		solverStatus,
 		solverReady,
+		chunkProvider,
 
 		clusterHelpAvailable,
 		clusterHelpEnabled,
@@ -267,6 +274,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		stopCalculation,
 		handleSeedStartChange,
 		handleSeedEndChange,
+		handleCustomSeedListChange,
 		handleMultithreading,
 		setFindAll,
 		ruleDispatch,
@@ -276,6 +284,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		ruleTree,
 		seed,
 		seedEnd,
+		customSeedList,
 		seedsChecked,
 		totalSeeds,
 		percentChecked,

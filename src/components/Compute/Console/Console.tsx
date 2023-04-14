@@ -130,7 +130,6 @@ const ComputeConsole = () => {
 	}, [computeSocket, rules, chunkProvider]);
 
 	useEffect(() => {
-		console.log(chunkProvider);
 		if (!chunkProvider) {
 			const newChunkProvider = new ChunkProvider({
 				chunkSize,

@@ -1,6 +1,7 @@
 import React, { FC, useState, Suspense, useEffect } from 'react';
 import { Container, Stack, Button } from 'react-bootstrap';
 import { lazy } from '@loadable/component';
+import { useSearchParamsState } from 'react-use-search-params-state';
 
 import Donate from './Donate';
 
@@ -12,7 +13,7 @@ import LoadingComponent from './LoadingComponent';
 import { db } from '../services/db';
 import classNames from 'classnames';
 import SyncHandler from './Settings/SyncHandler';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useLocation, useSearchParams } from 'react-router-dom';
 import DBError from './DBError';
 import useLocalStorage from '../services/useLocalStorage';
 
@@ -30,18 +31,54 @@ const LazySettings = props => {
 };
 
 const Profile = lazy(() => import('./Profile'));
-const LazyProfile = props => {
-	const [profileOpen, setProfileOpen] = useLocalStorage('profile-open', false);
+const LazyProfile = () => {
+	const [profileEnabled, setProfileEnabled] = useState(false);
+
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const [filterParams, setFilterParams] = useSearchParamsState({
+		profile: {
+			type: 'boolean',
+			default: false
+		}
+	});
+
+	const profileOpen = filterParams.profile;
+
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		(async () => {
+			const profileEnabled = await fetch('/api/profile_enabled').then(res =>
+				res.json()
+			);
+			if (profileEnabled.enabled) {
+				setProfileEnabled(true);
+			}
+		})();
+	}, []);
+
+	const handleProfile = () => {
+		if (!profileOpen) {
+			setFilterParams({ profile: true });
+		} else {
+			// delete the param outright - I don't like profile=false in the url
+			searchParams.delete('profile');
+			setSearchParams(searchParams);
+		}
+	};
+
+	if (!profileEnabled) return null;
+
 	return (
 		<Suspense fallback={<LoadingComponent />}>
 			<Button
-				onClick={() => setProfileOpen(true)}
+				onClick={() => handleProfile()}
 				size="lg"
 				variant="outline-primary"
 			>
 				<i className="bi bi-person"></i>
 			</Button>
-			<Profile show={profileOpen} handleClose={() => setProfileOpen(false)} />
+			<Profile show={profileOpen} handleClose={() => handleProfile()} />
 		</Suspense>
 	);
 };
@@ -67,9 +104,9 @@ const Header = () => {
 				)}
 			</div>
 			<div className=" d-flex pt-3 justify-content-end align-items-start">
-				{/* <div className="mx-2">
+				<div className="mx-2">
 					<LazyProfile />
-				</div> */}
+				</div>
 				<div className="mx-2">
 					<LazySettings />
 				</div>
@@ -139,17 +176,10 @@ const Footer = () => {
 					>
 						here
 					</a>
-					{/* <br /> */}
-					{' '}
-					or DM me on Noita's discord:{' '}
-					<a
-						target="_blank"
-						rel="noreferrer"
-						href="https://discord.gg/noita"
-					>
+					{/* <br /> */} or DM me on Noita's discord:{' '}
+					<a target="_blank" rel="noreferrer" href="https://discord.gg/noita">
 						TwoAbove#0493
-					</a>
-					{' '}
+					</a>{' '}
 					or send me an email:{' '}
 					<a href="mailto:me@noitool.com">me@noitool.com</a>
 				</div>

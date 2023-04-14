@@ -8,7 +8,9 @@ import { InfoProvider } from './Base';
 export class StartingFlaskInfoProvider extends InfoProvider {
   materials = startingMaterialsData;
   provide() {
-    this.randoms.SetRandomSeed(-4.5, -4);
+    let x = -4.5;
+    let y = -4;
+    this.randoms.SetRandomSeed(x, y);
 
     let material = 'unknown';
 
