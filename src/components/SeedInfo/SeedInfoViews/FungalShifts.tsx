@@ -47,7 +47,7 @@ export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor =
 			{' '}
 			{capitalize(name)}
 			{' '}
-			{showId && id}
+			{showId && <span className='text-muted fw-lighter'>{id}</span>}
 		</div>
 	)
 }
@@ -95,7 +95,7 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({ materia
 							{' '}
 							{capitalize(name)}
 							{' '}
-							{showId && `(${ids.join(', ')})`}
+							{showId && <span className='text-muted fw-lighter'>{`(${ids.join(', ')})`}</span>}
 						</div>
 					</div>
 				)

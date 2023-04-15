@@ -1,5 +1,5 @@
 import { AlchemyInfoProvider } from './InfoProviders/Alchemy';
-import { BiomeInfoProvider } from './InfoProviders/Boime';
+import { BiomeInfoProvider } from './InfoProviders/Biome';
 import { BiomeModifierInfoProvider } from './InfoProviders/BiomeModifier';
 import { FungalInfoProvider } from './InfoProviders/Fungal';
 import { InfoProvider } from './InfoProviders/Base';

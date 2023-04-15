@@ -1,6 +1,6 @@
 import { capitalize, Objectify } from '../../../services/helpers';
 
-import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Boime';
+import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Biome';
 import { BiomeModifierInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/BiomeModifier';
 
 interface IBiomeModifierProps {

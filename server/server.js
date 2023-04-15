@@ -42,7 +42,8 @@ app.get('/api/daily-seed', async (req, res) => {
 	const ans = await fetch('http://takapuoli.noitagame.com/callback/').then(r =>
 		r.text()
 	);
-  const [a, b, c, d] = ans.split(';');
+	const [a, b, c, d] = ans.split(';');
+	res.append('Cache-Control', 'no-store');
 	res.send({ seed: b });
 });
 
@@ -108,7 +109,7 @@ app.post('/api/db_debug/', m.any(), async (req, res) => {
 app.get('/m/*', async (req, res) => {
 	const m = req.params[0];
 	console.log(m);
-	res.append('Cache-Control', 'public, immutable, max-age=604800');
+	res.append('Cache-Control', 'immutable, max-age=360');
 	res.send({});
 });
 
@@ -118,11 +119,20 @@ app.use((req, res) =>
 		rewrites: [{ source: '/', destination: '/index.html' }],
 		headers: [
 			{
+				source: '/',
+				headers: [
+					{
+						key: 'Cache-Control',
+						value: 'no-store'
+					}
+				]
+			},
+			{
 				source: 'static/**',
 				headers: [
 					{
 						key: 'Cache-Control',
-						value: 'public, immutable, max-age=604800'
+						value: 'immutable, max-age=3600'
 					}
 				]
 			}
@@ -163,6 +173,10 @@ cron.schedule('0 0 * * *', upload);
 
 const shutdown = signal => err => {
 	if (err) console.error(err.stack || err);
+	if (process.env.NODE_ENV !== 'production') {
+		console.log('Not Production, exiting non-gracefully');
+		process.exit(0);
+	}
 	setTimeout(() => {
 		console.error('Waited 10s, exiting non-gracefully');
 		process.exit(1);

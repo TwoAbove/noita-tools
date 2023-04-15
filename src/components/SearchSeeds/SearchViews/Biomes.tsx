@@ -13,7 +13,7 @@ import { Square } from '../../helpers';
 import BiomeSelect from '../../BiomeSelect';
 import BiomeModifier from '../../SeedInfo/SeedInfoViews/BiomeMod';
 import { IRule } from '../../../services/SeedInfo/infoHandler/IRule';
-import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Boime';
+import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Biome';
 
 const biomeInfoProvider = new BiomeInfoProvider({} as any);
 

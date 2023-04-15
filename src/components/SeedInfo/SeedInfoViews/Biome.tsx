@@ -5,7 +5,7 @@ import GameInfoProvider from '../../../services/SeedInfo/infoHandler';
 import { Col, Row, Stack } from 'react-bootstrap';
 import BiomeModifier from './BiomeMod';
 import { BiomeModifierInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/BiomeModifier';
-import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Boime';
+import { BiomeInfoProvider } from '../../../services/SeedInfo/infoHandler/InfoProviders/Biome';
 
 interface IBiomeProps {
 	biomeData: ReturnType<BiomeModifierInfoProvider['provide']>;

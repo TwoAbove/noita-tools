@@ -25,15 +25,14 @@ const Start = (props: IStartProps) => {
 	);
 	return (
 		<Card
+			className="border"
 			style={{
 				borderRadius: '0.75rem',
-				borderWidth: '0.125rem'
+				borderWidth: '0.125rem',
 			}}
 		>
 			<Card.Title className="mb-1 text-center m-0">Starting setup</Card.Title>
-			<Card.Body
-				className="d-flex justify-content-evenly p-0 mx-1 mb-1"
-			>
+			<Card.Body className="d-flex justify-content-evenly p-0 mx-1 mb-1">
 				<Stack
 					className="justify-content-center"
 					direction="horizontal"

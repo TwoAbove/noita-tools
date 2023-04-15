@@ -41,13 +41,13 @@ const AlchemyCard: FC<{ materials: string[]; Title: JSX.Element }> = ({
 					{materials.map(l => (
 						<ListGroupItem
 							key={l}
-							style={{ height: '2rem' }}
+							style={{ minHeight: '2rem' }}
 							className={classNames(
 								isFavorite(l) && 'text-info',
 								'text-start m-0 p-0 fs-6'
 							)}
 						>
-							<div className='mt-2'>
+							<div className="mt-2">
 								<FungalMaterial id={l} />
 							</div>
 						</ListGroupItem>
@@ -62,7 +62,9 @@ const Alchemy = (props: IAlchemyProps) => {
 	const { alchemy, infoProvider } = props;
 	const [showId] = useContext(AlchemyConfigContext);
 	return (
-		<CardGroup>
+		<CardGroup
+			className="border rounded-3"
+		>
 			<AlchemyCard Title={<>Lively Concoction</>} materials={alchemy.LC} />
 			<AlchemyCard Title={<>Alchemic Precursor</>} materials={alchemy.AP} />
 		</CardGroup>
