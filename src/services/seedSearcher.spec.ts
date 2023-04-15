@@ -59,7 +59,7 @@ describe('SeedSearcher', () => {
 							path: '',
 							params: [],
 							val: {
-								material: 'acid'
+								rain_material: 'acid'
 							}
 						},
 						{
@@ -67,7 +67,11 @@ describe('SeedSearcher', () => {
 							type: 'perk',
 							path: '',
 							params: [],
-							val: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+							val: {
+								all: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+								some: [[]],
+								deck: [[]]
+							},
 							strict: true
 						},
 						{
@@ -145,7 +149,11 @@ describe('SeedSearcher', () => {
 						type: 'perk',
 						path: '',
 						params: [],
-						val: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+						val: {
+							all: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+							some: [[]],
+							deck: [[]]
+						},
 						strict: true
 					},
 					{
@@ -222,9 +230,13 @@ describe('SeedSearcher', () => {
 					type: 'perk',
 					path: '',
 					params: [],
-					val: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+					val: {
+						all: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+						some: [[]],
+						deck: [[]]
+					},
 					strict: true
-				},
+				}
 			],
 			selectedRule: 'search'
 		};
@@ -269,7 +281,11 @@ describe('SeedSearcher', () => {
 								type: 'perk',
 								path: '',
 								params: [],
-								val: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+								val: {
+									all: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+									some: [[]],
+									deck: [[]]
+								},
 								strict: true
 							},
 							{
@@ -299,7 +315,7 @@ describe('SeedSearcher', () => {
 								strict: true
 							}
 						]
-					},
+					}
 				],
 				selectedRule: 'search'
 			}
@@ -352,11 +368,15 @@ describe('SeedSearcher', () => {
 							type: 'perk',
 							path: '',
 							params: [],
-							val: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+							val: {
+								all: [['REMOVE_FOG_OF_WAR'], [], [], [], [], [], []],
+								some: [[]],
+								deck: [[]]
+							},
 							strict: true
-						},
+						}
 					]
-				},
+				}
 			],
 			selectedRule: 'search'
 		};
