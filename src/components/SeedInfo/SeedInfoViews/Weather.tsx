@@ -62,7 +62,7 @@ const PrecipitationDescription: FC<{ weather: IWeather }> = ({ weather }) => {
 		materialName = materials.translate(weather.rain_material);
 	}
 	return (
-		<span style={{ fontSize: '2rem' }} className="me-2 text-capitalize">
+		<span style={{ fontSize: '2rem' }} className="me-3 text-capitalize">
 			{materialName}
 		</span>
 	);
@@ -107,7 +107,7 @@ const PrecipitationIcon: FC<{ weather: IWeather }> = ({ weather }) => {
 };
 
 const Weather: FC<IWeatherProps> = ({ weather }) => {
-	let color = '';
+	let color = '#ffef88';
 
 	if (weather.rain_material) {
 		const material = materials.provide(weather.rain_material);
@@ -119,8 +119,8 @@ const Weather: FC<IWeatherProps> = ({ weather }) => {
 			style={{
 				width: '18rem',
 				borderRadius: '1rem',
-				borderWidth: '0.25rem',
-				borderColor: color || 'none'
+				borderWidth: '0.2rem',
+				borderColor: color,
 			}}
 		>
 			<Card.Body className="d-flex justify-content-evenly p-0">

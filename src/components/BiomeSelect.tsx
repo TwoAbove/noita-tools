@@ -15,7 +15,7 @@ import Fuse from 'fuse.js';
 import { capitalize, Objectify } from '../services/helpers';
 import BiomeModifier from './SeedInfo/SeedInfoViews/BiomeMod';
 import { BiomeModifierInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/BiomeModifier';
-import { BiomeInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/Boime';
+import { BiomeInfoProvider } from '../services/SeedInfo/infoHandler/InfoProviders/Biome';
 
 const options = {
 	shouldSort: false,
