@@ -10,22 +10,48 @@ describe('WeatherInfoProvider', () => {
 		{
 			seed: 123,
 			ans: {
-				isRaining: true,
-				material: 'water',
-				probability: 0.06666666666666667
+				chance: 1,
+				clouds: 0.32803621888160706,
+				fog: 0.32803621888160706,
+				rain_draw_long: true,
+				rain_draw_long_chance: 1,
+				rain_duration: 14400,
+				rain_material: 'water',
+				rain_particles: 6.031702041625977,
+				rain_particles_max: 7,
+				rain_particles_min: 4,
+				rain_type: 2,
+				hour: expect.any(Number),
+				day: expect.any(Number),
 			}
 		},
 		{
 			seed: 5151515,
 			ans: {
-				isRaining: true,
-				material: 'water',
-				probability: 0.06666666666666667
+				chance: 1,
+				clouds: 0.7956304550170898,
+				fog: 0.7956304550170898,
+				rain_draw_long: true,
+				rain_draw_long_chance: 1,
+				rain_duration: 14400,
+				rain_material: 'water',
+				rain_particles: 5.772556304931641,
+				rain_particles_max: 7,
+				rain_particles_min: 4,
+				rain_type: 2,
+				hour: expect.any(Number),
+				day: expect.any(Number),
 			}
 		},
 		{
 			seed: 123435616,
-			ans: { isRaining: false, material: '', probability: 0.9333333333333333 }
+			ans: {
+				clouds: 0,
+				hour: expect.any(Number),
+				day: expect.any(Number),
+				fog: 0,
+				rain_type: 0
+			}
 		}
 	];
 
