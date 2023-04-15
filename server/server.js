@@ -173,6 +173,10 @@ cron.schedule('0 0 * * *', upload);
 
 const shutdown = signal => err => {
 	if (err) console.error(err.stack || err);
+	if (process.env.NODE_ENV !== 'production') {
+		console.log('Not Production, exiting non-gracefully');
+		process.exit(0);
+	}
 	setTimeout(() => {
 		console.error('Waited 10s, exiting non-gracefully');
 		process.exit(1);
