@@ -55,6 +55,17 @@ export class ChunkProvider {
 	unCommittedChunks: ChunkStatus[] = [];
 	orphanChunks: ChunkStatus[] = [];
 
+	clear() {
+		this.results = [];
+		this.unCommittedChunks = [];
+		this.orphanChunks = [];
+		this.progress = 0;
+		this.startTime = Date.now();
+		this.ratePerAppetiteArr = [];
+		this.ratePerAppetite = 0;
+		this.chunkStartTimes = {};
+	}
+
 	commitChunk(chunkId: string, results: number[]) {
 		const chunk = this.unCommittedChunks.splice(
 			this.unCommittedChunks.findIndex(c => c.chunkId === chunkId),

@@ -15,28 +15,6 @@ export class WorkerHandler extends EventTarget {
 		);
 		this.comlinkWorker = wrap(this.worker);
 		this.worker.postMessage({ type: 'init', offset, step });
-		try {
-			this.worker.addEventListener('message', ({ data }) => {
-				switch (data.type) {
-					case 'info': {
-						this.latestData = data.data;
-						if (data.data.foundSeed) {
-							this.dispatchEvent(
-								new CustomEvent('foundSeed', { detail: data.data })
-							);
-						}
-						break;
-					}
-					case 'found': {
-						this.dispatchEvent(
-							new CustomEvent('foundSeedAll', { detail: data.data })
-						);
-					}
-				}
-			});
-		} catch (e) {
-			// console.error(e);
-		}
 	}
 
 	async searchChunk(from: number, to: number, rules: ILogicRules) {
@@ -64,23 +42,12 @@ export default class SeedSolver {
 	public workerList: WorkerHandler[] = [];
 	startTime!: number;
 
-	foundSeeds: string[] = [];
-
 	workersReadyPromise: Promise<void>;
 
 	constructor(workerCount: number = 1, stopOnFind = true) {
 		const workerReady: Promise<void>[] = [];
 		for (let i = 0; i < workerCount; i++) {
 			const worker = new WorkerHandler(i, workerCount);
-			worker.addEventListener('foundSeed', e => {
-				if (stopOnFind) {
-					this.stop();
-				}
-			});
-			worker.addEventListener('foundSeedAll', (e: any) => {
-				const seed = e.detail.foundSeed;
-				this.foundSeeds.push(seed);
-			});
 			this.workerList.push(worker);
 			workerReady.push(worker.ready());
 		}
@@ -129,8 +96,8 @@ export default class SeedSolver {
 		// more so that GC will have time to clean up the large memory allocations for maps
 		const tt = getTreeTools('id', 'rules');
 
-		const hasMapRules = tt.dfs(rules, (n) => {
-			return n.type === 'map'
+		const hasMapRules = tt.dfs(rules, n => {
+			return n.type === 'map';
 		});
 
 		let subChunkSize = Math.ceil((to - from) / this.workerList.length);
@@ -140,14 +107,12 @@ export default class SeedSolver {
 
 		const numberOfChunks = Math.ceil((to - from) / subChunkSize);
 
-		const chunkConfigs = new Array(numberOfChunks)
-			.fill(0)
-			.map((_, i) => {
-				return {
-					subFrom: from + subChunkSize * i,
-					subTo: Math.min(from + subChunkSize * (i + 1), to)
-				};
-			});
+		const chunkConfigs = new Array(numberOfChunks).fill(0).map((_, i) => {
+			return {
+				subFrom: from + subChunkSize * i,
+				subTo: Math.min(from + subChunkSize * (i + 1), to)
+			};
+		});
 
 		const res: number[] = [];
 
@@ -157,7 +122,11 @@ export default class SeedSolver {
 		// before they can start the next one.
 		await Promise.all(
 			this.workerList.map(async (worker, i) => {
-				for (let config = chunkConfigs.pop(); config; config = chunkConfigs.pop()) {
+				for (
+					let config = chunkConfigs.pop();
+					config;
+					config = chunkConfigs.pop()
+				) {
 					const { subFrom, subTo } = config;
 					checked += subTo - subFrom;
 					const r = await worker.searchChunk(subFrom, subTo, rules);
@@ -168,32 +137,5 @@ export default class SeedSolver {
 		);
 
 		return res;
-	}
-
-	public getInfo(): ReturnType<seedSearcher.SeedSearcher['getInfo']>[] {
-		const allInfo = this.workerList
-			.map(worker => worker.latestData!)
-			.filter(Boolean);
-		allInfo.sort((a, b) => a.currentSeed - b.currentSeed);
-		if (allInfo.length === 0) {
-			return [];
-		}
-		const res = allInfo.reduce(
-			(acc, cur) => {
-				acc.count += cur.count;
-				acc.currentSeed = Math.min(
-					acc.currentSeed || cur.currentSeed,
-					cur.currentSeed
-				);
-				acc.running = acc.running || cur.running;
-				acc.avgExecTime = cur.avgExecTime;
-				return acc;
-			},
-			{ count: 0 } as ReturnType<seedSearcher.SeedSearcher['getInfo']>
-		);
-		const duration = new Date().getTime() - this.startTime;
-		const rate = res.currentSeed / duration;
-		(res as any).msLeft = Math.floor((2_147_483_645 - res.currentSeed) / rate);
-		return [res, ...allInfo];
 	}
 }

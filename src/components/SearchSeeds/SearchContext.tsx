@@ -139,7 +139,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		setSeedEnd(e.target.value);
 	};
 	const handleCustomSeedListChange = (e: any) => {
-		chunkProvider?.setCustomSeedList(e.target.value.replace(/\D/g,',').split(',').map((s: string) => parseInt(s)).filter((s: number) => !isNaN(s)));
+		chunkProvider?.setCustomSeedList(e.target.value.replace(/\D/g, ',').split(',').map((s: string) => parseInt(s)).filter((s: number) => !isNaN(s)));
 		setCustomSeedList(e.target.value);
 	};
 
@@ -152,6 +152,19 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 
 	const [solverStatus, setSolverStatus] = React.useState<Status>();
 	const running = solverStatus?.running;
+
+	const clearSearch = () => {
+		setSolverStatus(undefined);
+		if (chunkProvider) {
+			chunkProvider.clear();
+			chunkProvider.config = {
+				...chunkProvider?.config,
+				searchFrom: seed,
+				searchTo: seedEnd,
+				jobName: computeJobName
+			};
+		}
+	}
 
 	const handleMultithreading = () => {
 		if (useCores > 1) {
@@ -166,7 +179,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 			const newChunkProvider = new ChunkProvider({
 				chunkSize: 100,
 				searchFrom: seed,
-				searchTo:	seedEnd,
+				searchTo: seedEnd,
 				jobName: computeJobName,
 				etaHistoryTimeConstant: 120,
 				chunkProcessingTimeTarget: 5,
@@ -216,14 +229,18 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		setCallbackComputeHandler(newCallbackComputeProvider);
 	}, [seedSolver, ruleTree, chunkProvider]);
 
+	const [lastResultLength, setLastResultLength] = useState(0);
+
 	React.useEffect(() => {
-		if (!findAll && solverStatus?.results.length && solverStatus?.running) {
+		const currentResultLength = chunkProvider?.results.length || 0;
+		if (!findAll && currentResultLength > lastResultLength && solverStatus?.running) {
 			callbackComputeHandler?.stop();
+			setLastResultLength(currentResultLength);
 		}
-	}, [findAll, solverStatus, callbackComputeHandler]);
+	}, [findAll, chunkProvider?.results.length, callbackComputeHandler, solverStatus?.running, lastResultLength]);
 
 	const handleCopy = () => {
-		const seedList = seedSolver.foundSeeds;
+		const seedList = chunkProvider?.results || [];
 		copy(seedList.join(','));
 	}
 
@@ -253,9 +270,9 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	const seedsPerSecond = solverStatus?.rate;
 
 
-	const	clusterHelpAvailable = false;
+	const clusterHelpAvailable = false;
 	const clusterHelpEnabled = false;
-	const toggleClusterHelp = () => {};
+	const toggleClusterHelp = () => { };
 
 
 	return <SearchContext.Provider value={{
@@ -263,6 +280,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		solverStatus,
 		solverReady,
 		chunkProvider,
+		clearSearch,
 
 		clusterHelpAvailable,
 		clusterHelpEnabled,

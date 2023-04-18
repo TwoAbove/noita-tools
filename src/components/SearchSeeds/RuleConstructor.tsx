@@ -20,127 +20,132 @@ import PacifistChest from './SearchViews/PacifistChest';
 const treeTools = getTreeTools('id', 'rules');
 
 export const RuleConstructors = {
-	search: {
-		Title: () => 'Search',
-		Component: Search
-	},
-	alchemy: {
-		Title: () => 'Alchemy',
-		Component: Alchemy,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: {
-				LC: [],
-				AP: []
-			}
-		}
-	},
-	shop: {
-		Title: () => 'Shop',
-		Component: Shop,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: new Array(7).fill(undefined)
-		}
-	},
-	weather: {
-		Title: () => 'Weather',
-		Component: Weather,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: {
-				material: ''
-			}
-		}
-	},
-	startingFlask: {
-		Title: () => 'Starting Flask',
-		Component: StartingFlask,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: ''
-		}
-	},
-	startingSpell: {
-		Title: () => 'Starting Spell',
-		Component: StartingSpell,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: ''
-		}
-	},
-	startingBombSpell: {
-		Title: () => 'Starting Bomb Spell',
-		Component: StartingBombSpell,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: ''
-		}
-	},
-	perk: {
-		Title: () => 'Perks',
-		Component: Perks,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: {
-				some: new Array(7).fill([]),
-				all: new Array(7).fill([]),
-				deck: new Array(1).fill([])
-			}
-		}
-	},
-	pacifistChest: {
-		Title: () => 'Pacifist Chest',
-		Component: PacifistChest,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: new Array(7).fill([])
-		}
-	},
-	fungalShift: {
-		Title: () => 'Fungal Shifts',
-		Component: FungalShifts,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: new Array(20).fill(undefined)
-		}
-	},
-	biomeModifier: {
-		Title: () => 'Biome Modifiers',
-		Component: Biomes,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: {}
-		}
-	},
-	[RuleType.AND]: {
-		Title: () => 'And',
-		defaultConfig: {
-			rules: []
-		}
-	},
-	[RuleType.OR]: {
-		Title: () => 'Or',
-		defaultConfig: {
-			rules: []
-		}
-	},
-	[RuleType.NOT]: {
-		Title: () => 'Not',
-		defaultConfig: {
-			rules: []
-		}
-	}
+	// Logic rules
+  [RuleType.AND]: {
+    defaultConfig: {
+      rules: []
+    },
+    Title: () => 'And'
+  },
+  [RuleType.OR]: {
+    defaultConfig: {
+      rules: []
+    },
+    Title: () => 'Or'
+  },
+  [RuleType.NOT]: {
+    defaultConfig: {
+      rules: []
+    },
+    Title: () => 'Not'
+  },
+
+	// Search rules
+  alchemy: {
+    Component: Alchemy,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: {
+        AP: [],
+        LC: []
+      }
+    },
+    Title: () => 'Alchemy'
+  },
+  biomeModifier: {
+    Component: Biomes,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: {}
+    },
+    Title: () => 'Biome Modifiers'
+  },
+  fungalShift: {
+    Component: FungalShifts,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: new Array(20).fill(undefined)
+    },
+    Title: () => 'Fungal Shifts'
+  },
+  pacifistChest: {
+    Component: PacifistChest,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: new Array(7).fill([])
+    },
+    Title: () => 'Pacifist Chest'
+  },
+  perk: {
+    Component: Perks,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: {
+        all: new Array(7).fill([]),
+        deck: new Array(1).fill([]),
+        some: new Array(7).fill([])
+      }
+    },
+    Title: () => 'Perks'
+  },
+  search: {
+    Component: Search,
+    Title: () => 'Search'
+  },
+  shop: {
+    Component: Shop,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: new Array(7).fill(undefined)
+    },
+    Title: () => 'Shop'
+  },
+  startingBombSpell: {
+    Component: StartingBombSpell,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: ''
+    },
+    Title: () => 'Starting Bomb Spell'
+  },
+  startingFlask: {
+    Component: StartingFlask,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: ''
+    },
+    Title: () => 'Starting Flask'
+  },
+  startingSpell: {
+    Component: StartingSpell,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: ''
+    },
+    Title: () => 'Starting Spell'
+  },
+  weather: {
+    Component: Weather,
+    defaultConfig: {
+      params: [],
+      path: '',
+      val: {
+        clouds: [0, 1],
+        fog: [0, 1],
+        rain_material: ''
+      }
+    },
+    Title: () => 'Weather'
+  }
 };
 type IRuleConstructor = (typeof RuleConstructors)[keyof typeof RuleConstructors];
 
