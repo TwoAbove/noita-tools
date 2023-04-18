@@ -32,20 +32,9 @@ app.use(
 let data = [];
 let stats = [];
 
-app.get('/api/profile_enabled', (req, res) => {
-	res.send({ enabled: process.env.PROFILE_ENABLED === 'true' });
-});
+const apiRoutes = require('./routes');
 
-app.get('/api/daily-seed', async (req, res) => {
-	// get the seed from http://takapuoli.noitagame.com/callback/
-	// and send it to the client
-	const ans = await fetch('http://takapuoli.noitagame.com/callback/').then(r =>
-		r.text()
-	);
-	const [a, b, c, d] = ans.split(';');
-	res.append('Cache-Control', 'no-store');
-	res.send({ seed: b });
-});
+app.use('/api', apiRoutes);
 
 app.post('/api/data', (req, res) => {
 	data.push(req.body);
@@ -57,29 +46,8 @@ app.post('/api/stats', (req, res) => {
 	res.sendStatus(200);
 });
 
-const dbs = {};
-
-app.get('/api/db_dump/:id', (req, res) => {
-	const id = Number(req.params.id);
-	if (isNaN(id)) {
-		return res.sendStatus(400);
-	}
-	res.status(200).send(dbs[id]);
-	delete dbs[id];
-});
-
-const m = multer();
-
-const { getRoomNumber } = require('./rooms');
-
-app.post('/api/db_dump/', m.any(), (req, res) => {
-	const id = getRoomNumber();
-	dbs[id] = req.files[0].buffer;
-	res.send({ id });
-	setTimeout(() => {
-		delete dbs[id];
-	}, 900000); // 15 minutes
-});
+const patreonRouter = require('./patreon');
+app.use('/api/patreon', patreonRouter);
 
 let r;
 const authorize = async () => {
@@ -91,6 +59,7 @@ if (hasB2) {
 	setInterval(authorize, 1000 * 60 * 60 * 23); // 23h
 }
 
+const m = multer();
 app.post('/api/db_debug/', m.any(), async (req, res) => {
 	const id = randomUUID();
 	res.send({ id });

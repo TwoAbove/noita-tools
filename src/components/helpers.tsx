@@ -1,5 +1,5 @@
-import classNames from "classnames";
-import { useEffect, useState } from "react";
+import classNames from 'classnames';
+import { useEffect, useState, useLayoutEffect } from 'react';
 
 export const Square = props => {
 	const { children, ...rest } = props;
@@ -14,34 +14,58 @@ export const Square = props => {
 	);
 };
 
-export function useForceUpdate(){
+export function useForceUpdate() {
 	const [, setValue] = useState(0); // integer state
 	return () => setValue(value => value + 1); // update the state to force render
 }
 
 export const useContainerDimensions = myRef => {
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+	const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  useEffect(() => {
-    const getDimensions = () => ({
-      width: myRef.current.offsetWidth,
-      height: myRef.current.offsetHeight
-    })
+	useEffect(() => {
+		const getDimensions = () => ({
+			width: myRef.current.offsetWidth,
+			height: myRef.current.offsetHeight
+		});
 
-    const handleResize = () => {
-      setDimensions(getDimensions())
-    }
+		const handleResize = () => {
+			setDimensions(getDimensions());
+		};
 
-    if (myRef.current) {
-      setDimensions(getDimensions())
-    }
+		if (myRef.current) {
+			setDimensions(getDimensions());
+		}
 
-    window.addEventListener("resize", handleResize)
+		window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [myRef])
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, [myRef]);
 
-  return dimensions;
+	return dimensions;
+};
+
+export const useIsOverflow = (ref, callback?) => {
+	const [isOverflow, setIsOverflow] = useState(false);
+
+	useLayoutEffect(() => {
+		const { current } = ref;
+
+		const trigger = () => {
+			const hasOverflow =
+				current.scrollHeight > current.clientHeight ||
+				current.scrollWidth > current.clientWidth;
+
+			setIsOverflow(hasOverflow);
+
+			if (callback) callback(hasOverflow);
+		};
+
+		if (current) {
+			trigger();
+		}
+	}, [ref, callback]);
+
+	return isOverflow;
 };

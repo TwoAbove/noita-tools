@@ -1,5 +1,5 @@
 import React, { FC, useState, Suspense, useEffect } from 'react';
-import { Container, Stack, Button } from 'react-bootstrap';
+import { Container, Stack, Button, Row } from 'react-bootstrap';
 import { lazy } from '@loadable/component';
 import { useSearchParamsState } from 'react-use-search-params-state';
 
@@ -16,6 +16,8 @@ import SyncHandler from './Settings/SyncHandler';
 import { BrowserRouter, useLocation, useSearchParams } from 'react-router-dom';
 import DBError from './DBError';
 import useLocalStorage from '../services/useLocalStorage';
+import Patrons from './Patrons';
+import PatreonButton from './misc/PatreonButton';
 
 const Settings = lazy(() => import('./Settings'));
 const LazySettings = props => {
@@ -89,7 +91,7 @@ const Header = () => {
 	const notNewUrl = !host.includes('noitool.com');
 	return (
 		<Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
-			<div className="">
+			<div className="text-nowrap">
 				<h3 className="fs-1 fw-bolder mt-2 mb-0 text-center">Noitool</h3>
 				<p className="fs-4 fw-lighter m-1 mt-0 my-1 text-center">
 					Noita tools and helpers
@@ -161,12 +163,14 @@ const Footer = () => {
 	return (
 		<footer className="footer font-small p-1 pt-3">
 			<Stack>
-				<div className="footer-copyright text-center">
-					<div className="mb-1">
-						Help keep servers running! Every dollar helps ❤️
+				<div className="d-flex justify-content-center align-items-center text-center">
+					<PatreonButton />
+					<div className="mx-2">or</div>
+					<div className="pt-2">
+						<Donate />
 					</div>
-					<Donate />
 				</div>
+				<Patrons />
 				<div className="footer text-center py-1">
 					Ideas? Issues? Bugs? Click{' '}
 					<a
@@ -238,7 +242,7 @@ const App: FC = () => {
 	return (
 		<DBErrorHandler>
 			<div className="App bg-gradient">
-				<div className="content bg-body rounded">
+				<div className="content bg-body rounded" style={{ minHeight: '85vh' }}>
 					<BrowserRouter>
 						<ThemeProvider>
 							<AlchemyConfigProvider>
