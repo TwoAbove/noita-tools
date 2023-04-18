@@ -46,6 +46,7 @@ describe('WeatherInfoProvider', () => {
 		{
 			seed: 123435616,
 			ans: {
+				rain_material: '',
 				clouds: 0,
 				hour: expect.any(Number),
 				day: expect.any(Number),
