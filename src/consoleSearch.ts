@@ -1,16 +1,16 @@
 import os from 'os';
 
-import yargs from 'yargs'
-import { hideBin } from 'yargs/helpers'
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 import { ComputeSocket } from './services/compute/ComputeSocket';
 import SeedSolver from './services/seedSolverHandler.node';
 
 const argv = yargs(hideBin(process.argv)).argv as any;
 
 var SegfaultHandler = require('segfault-handler');
-SegfaultHandler.registerHandler("crash.log");
+SegfaultHandler.registerHandler('crash.log');
 
-console.log(argv);
+console.log(argv, os.cpus().length);
 
 // const seedSolver = new SeedSolver(1, false);
 const seedSolver = new SeedSolver(argv.cores || os.cpus().length, false);
@@ -20,13 +20,16 @@ const newComputeSocket = new ComputeSocket({
 	computeId: argv.computeId,
 	seedSolver: seedSolver as any,
 	onUpdate: () => {
+		if (!newComputeSocket.jobName) {
+			return;
+		}
 		console.log({
 			connected: newComputeSocket.connected,
 			running: newComputeSocket.running,
 			info: {
 				jobName: newComputeSocket.jobName,
 				chunkTo: newComputeSocket.chunkTo,
-				chunkFrom: newComputeSocket.chunkFrom,
+				chunkFrom: newComputeSocket.chunkFrom
 			}
 		});
 	}

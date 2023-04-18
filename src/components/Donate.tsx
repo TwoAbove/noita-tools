@@ -4,7 +4,8 @@ const Donate = () => {
 		<form
 			action="https://www.paypal.com/cgi-bin/webscr"
 			method="post"
-			target="_top"
+			target="_blank"
+			rel="noreferrer"
 		>
 			<input type="hidden" name="cmd" value="_donations" />
 			<input type="hidden" name="business" value="Y9VJB7NEAVEX2" />
