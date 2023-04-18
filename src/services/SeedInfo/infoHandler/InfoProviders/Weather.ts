@@ -122,9 +122,9 @@ export class WeatherInfoProvider extends InfoProvider {
 		const rains =
 			!snows && this.randoms.random_next(rnd, 0.0, 1.0) <= rainfall_chance; // rain is based on world seed
 
+		let rain_type = RAIN_TYPE_NONE;
 		let weather: Partial<IWeather> = {};
 
-		let rain_type = RAIN_TYPE_NONE;
 		if (snows) {
 			rain_type = RAIN_TYPE_SNOW;
 			weather = this.randoms.pick_random_from_table_backwards(
@@ -135,11 +135,12 @@ export class WeatherInfoProvider extends InfoProvider {
 			rain_type = RAIN_TYPE_LIQUID;
 			weather = this.randoms.pick_random_from_table_backwards(rain_types, rnd);
 		}
-
-		// init weather struct
+		weather.rain_type = rain_type;
 		weather.hour = hour;
 		weather.day = day;
-		weather.rain_type = rain_type;
+		if (!weather.rain_material) {
+			weather.rain_material = '';
+		}
 
 		// make it foggy and cloudy if stuff is falling from the sky, randomize rain type
 		if (weather.rain_type === RAIN_TYPE_NONE) {
@@ -164,15 +165,40 @@ export class WeatherInfoProvider extends InfoProvider {
 		return weather as IWeather;
 	}
 
-	test(rule: IRule): boolean {
+	test(rule: IRule<IWeatherRule>): boolean {
 		let info = this.provide();
 
+		if (!rule.val) {
+			return true;
+		}
+
 		for (const [key, val] of Object.entries(rule.val)) {
-			if (val !== info[key]) {
-				return false;
+			switch (key) {
+				case 'rain_material':
+					if (val !== info.rain_material) {
+						return false;
+					}
+					break;
+				case 'fog':
+				case 'clouds':
+					if (info[key] < val[0] || info[key] > val[1]) {
+						return false;
+					}
+					break;
+
+				default:
+					if (val !== info[key]) {
+						return false;
+					}
 			}
 		}
 
 		return true;
 	}
+}
+
+export interface IWeatherRule {
+	rain_material?: string;
+	fog?: [number, number];
+	clouds?: [number, number];
 }

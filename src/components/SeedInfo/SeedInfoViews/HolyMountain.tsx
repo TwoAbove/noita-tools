@@ -31,6 +31,7 @@ interface IRerollPaneProps {
   loaded: boolean;
   advanced: boolean;
   rerollsForLevel: number;
+  nextRerollPrices: number;
   rerollsToFavorite?: number;
   favoritesInNextReroll?: number;
 
@@ -38,8 +39,7 @@ interface IRerollPaneProps {
   handleLoad: () => void;
 }
 const RerollPane = (props: IRerollPaneProps) => {
-  const { handleRerollUndo, rerollsToFavorite, favoritesInNextReroll, loaded, advanced, rerollsForLevel, handleReroll, handleLoad } = props;
-
+  const { handleRerollUndo, rerollsToFavorite, favoritesInNextReroll, loaded, advanced, rerollsForLevel, nextRerollPrices, handleReroll, handleLoad } = props;
   return (
     <div className='d-flex justify-content-center'>
       {!loaded && advanced ? <Button
@@ -58,6 +58,9 @@ const RerollPane = (props: IRerollPaneProps) => {
           >
             {"<"}
           </Button>}
+          {advanced && <div>
+            Next: {nextRerollPrices}
+          </div>}
           <span className="m-2">
             {rerollsForLevel || 0}
           </span>
@@ -84,7 +87,7 @@ const RerollPane = (props: IRerollPaneProps) => {
 };
 
 interface IPacifistChestProps {
-    items: IItem[];
+  items: IItem[];
 }
 // TODO: Extract this into it's own file to decouple
 const PacifistChest: FC<IPacifistChestProps> = ({ items }) => {
@@ -131,6 +134,7 @@ const Shop = ({ type, handleOpenShopInfo, favoriteSpells }) => {
 interface IPerkRowProps {
   pickedPerks: string[];
   perkRerolls: number;
+  nextRerollPrices: number;
   shop: IShopItems;
   perks: IPerk[];
   advanced: boolean;
@@ -151,7 +155,7 @@ interface IPerkRowProps {
   getAlwaysCast: (i: number, perks: number) => string;
 };
 const PerkRow: FC<IPerkRowProps> = (props) => {
-  const { pacifistChestItems, rerollsToFavorite, favoritesInNextReroll, advanced, pickedPerks, perkRerolls, shop, perks, showAllAlwaysCast, infoProvider, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, getAlwaysCast, handleOpenShopInfo, handleLoad, isPerkFavorite, isSpellFavorite } = props;
+  const { pacifistChestItems, rerollsToFavorite, favoritesInNextReroll, advanced, pickedPerks, perkRerolls, nextRerollPrices, shop, perks, showAllAlwaysCast, infoProvider, handleReroll, handleRerollUndo, handleClickPerk, isRerollable, getAlwaysCast, handleOpenShopInfo, handleLoad, isPerkFavorite, isSpellFavorite } = props;
   const numberOfGambles = pickedPerks?.filter(p => p === 'GAMBLE').length;
   const type = shop.type;
   const rerollsForLevel = perkRerolls ? perkRerolls : 0;
@@ -217,7 +221,7 @@ const PerkRow: FC<IPerkRowProps> = (props) => {
         </Stack>
       </td>
       <td>
-        <RerollPane rerollsToFavorite={rerollsToFavorite} favoritesInNextReroll={favoritesInNextReroll} handleReroll={handleReroll} handleRerollUndo={handleRerollUndo} loaded={!!perks?.length} advanced={advanced} rerollsForLevel={rerollsForLevel} handleLoad={handleLoad} />
+        <RerollPane rerollsToFavorite={rerollsToFavorite} favoritesInNextReroll={favoritesInNextReroll} handleReroll={handleReroll} handleRerollUndo={handleRerollUndo} loaded={!!perks?.length} advanced={advanced} rerollsForLevel={rerollsForLevel} nextRerollPrices={nextRerollPrices} handleLoad={handleLoad} />
       </td>
     </tr>
   )
@@ -321,7 +325,7 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
           alignSelf: 'stretch',
         }}>
           <span> Rerolls: {rerolls}</span>
-          <span> Next: {localizeNumber(price)}</span>
+          {!advanced && <span> Next: {localizeNumber(price)}</span>}
           <span> Total: {localizeNumber(total)}</span>
         </div>
         <div className="ms-auto" />
@@ -350,6 +354,55 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
     </>
   )
 };
+
+
+const getRerollPrices = (perkStack: IPerkChangeAction[]): [Map<number, number[]>, number] => {
+  const nextRerollPrices = new Map<number, number[]>();
+  nextRerollPrices.set(0, new Array(7));
+
+  let rerollTotal = 0;
+  let totalRerolls = 0;
+  let offset = 0;
+
+  const getNextPrice = () => {
+    const next = 200 * Math.pow(2, totalRerolls);
+    // Roughly simulate breaking the perk reroll machine
+    // https://youtu.be/DC976SBwSm4
+    if (next > 55e12) {
+      return 1;
+    }
+    return next;
+  }
+
+  for (const event of perkStack) {
+    let rerolls = nextRerollPrices.get(offset)!;
+    switch (event.type) {
+      case IPerkChangeStateType.reroll: {
+        rerollTotal += rerolls[event.data] || 0;
+        totalRerolls++;
+        const nextPrice = getNextPrice();
+
+        rerolls[event.data] = nextPrice;
+        break;
+      }
+      case IPerkChangeStateType.genRow: {
+        const nextPrice = getNextPrice();
+        rerolls[event.data] = nextPrice;
+        break;
+      }
+      case IPerkChangeStateType.shift: {
+        offset = event.data;
+        if (!nextRerollPrices.has(offset)) {
+          nextRerollPrices.set(offset, new Array(6));
+        }
+        break;
+      }
+    }
+    nextRerollPrices.set(offset, rerolls);
+  }
+
+  return [nextRerollPrices, rerollTotal];
+}
 
 const HolyMountainContext = createContext<any>({});
 
@@ -425,7 +478,12 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
   };
 
   const rerollPrice = getPrice(totalRerolls);
-  const rerollTotal = getTotal(totalRerolls);
+
+  let [nextRerollPrices, rerollTotal] = getRerollPrices(perkStack);
+
+  if (!advanced) {
+    rerollTotal = getTotal(totalRerolls);
+  }
 
   const lotteries = advanced ? pd.lotteries : [...infoProvider.config.pickedPerks.values()].reduce((c, r) => {
     const l = r.filter(p => (p || []).includes('PERKS_LOTTERY')).length;
@@ -567,6 +625,7 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
     perks: advanced ? perks : props.perks,
     pickedPerks: advanced ? pickedPerks : infoProvider.config.pickedPerks.get(infoProvider.config.perkWorldOffset) || [],
     perkRerolls: advanced ? perkRerolls : infoProvider.config.perkRerolls.get(infoProvider.config.perkWorldOffset) || [],
+    nextRerollPrices: advanced ? nextRerollPrices : new Map(),
     totalRerolls,
     rerollPrice,
     rerollTotal,
@@ -595,7 +654,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
 
   const { advanced, setAdvanced, perkMethods, perkData } = useContext(HolyMountainContext);
   const { handleReroll, handleRerollUndo, handleClickPerk, handleReset, handleBack, handleOffset, handleGenRowAdvanced } = perkMethods;
-  const { perks, pickedPerks, perkRerolls, totalRerolls, rerollPrice, rerollTotal, worldOffset, lotteries, rerollsToFavorite, favoritesInNextReroll, isFavorite } = perkData;
+  const { perks, pickedPerks, perkRerolls, totalRerolls, rerollPrice, rerollTotal, worldOffset, lotteries, rerollsToFavorite, favoritesInNextReroll, isFavorite, nextRerollPrices } = perkData;
   const [showInitialLottery] = useLocalStorage('show-initial-lottery', true);
   const [showAlwaysCastRow] = useLocalStorage('show-always-cast-row', false);
 
@@ -660,6 +719,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
                 shop={shop[level]}
                 rerollsToFavorite={rerollsToFavorite}
                 favoritesInNextReroll={favoritesInNextReroll}
+                nextRerollPrices={nextRerollPrices.get(worldOffset) ? nextRerollPrices.get(worldOffset)[level] : undefined}
                 isPerkFavorite={isFavorite}
                 showAllAlwaysCast={showAlwaysCastRow}
                 infoProvider={infoProvider}
