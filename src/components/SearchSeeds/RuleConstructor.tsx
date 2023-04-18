@@ -123,15 +123,6 @@ export const RuleConstructors = {
 			val: {}
 		}
 	},
-	map: {
-		Title: () => 'Map',
-		Component: MapSearch,
-		defaultConfig: {
-			path: '',
-			params: [],
-			val: {}
-		}
-	},
 	[RuleType.AND]: {
 		Title: () => 'And',
 		defaultConfig: {
