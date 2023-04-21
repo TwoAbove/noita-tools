@@ -82,6 +82,11 @@ const Search = () => {
 
 	const [showedSeed, setShowedSeed] = React.useState<number>(0);
 
+	let results: number[] = [];
+	if (chunkProvider?.results.size) {
+		results = [...chunkProvider?.results.values()];
+	}
+
 	return (<Container fluid className="col pt-3 shadow-lg">
 		<Description />
 		<Row>
@@ -222,11 +227,11 @@ const Search = () => {
 		<div>
 			{!chunkProvider?.customSeeds && solverStatus?.running && <div>
 				<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
-				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverStatus as Status).estimate * 1000, { round: true, units: ["h", "m"] })}, {seedsPerSecond} avg seeds/s)
+				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverStatus as Status).estimate * 1000, { round: true, units: ["h", "m"] })}, {Math.round(seedsPerSecond * 10) / 10} avg seeds/s)
 			</div>}
 			<h6>Results:</h6>
 			{findAll && chunkProvider && <div>
-				Found {chunkProvider.results.length} seeds: <br />
+				Found {results.length} seeds: <br />
 				<Button onClick={handleCopy}>Copy seed list to clipboard</Button>
 				<ListGroup style={
 					{
@@ -234,30 +239,30 @@ const Search = () => {
 						height: '100px',
 					}
 				}>
-					{chunkProvider.results.map(s => {
+					{results.map(s => {
 						return <ListGroup.Item variant="flush" key={s}>{s}</ListGroup.Item>
 					})}
 				</ListGroup>
 			</div>}
 			{
-				!findAll && chunkProvider?.results?.length > 0 &&
+				!findAll && results.length > 0 &&
 				<div>
 					<Row>
 						<Col>
 							<Button disabled={showedSeed === 0} onClick={() => setShowedSeed(showedSeed - 1)}>{'<'}</Button>
 						</Col>
 						<Col>
-							Showing Seed {showedSeed + 1} of {chunkProvider.results.length}
+							Showing Seed {showedSeed + 1} of {results.length}
 						</Col>
 						<Col>
-							<Button disabled={showedSeed === chunkProvider.results.length - 1} onClick={() => setShowedSeed(showedSeed + 1)}>{'>'}</Button>
+							<Button disabled={showedSeed === results.length - 1} onClick={() => setShowedSeed(showedSeed + 1)}>{'>'}</Button>
 						</Col>
 					</Row>
 					<div
 						className="mb-4"
-						key={chunkProvider.results[showedSeed]}
+						key={results[showedSeed]}
 					>
-						<MemoSeedDataOutput key={chunkProvider.results[showedSeed]} seed={`${chunkProvider.results[showedSeed]}`} />
+						<MemoSeedDataOutput key={results[showedSeed]} seed={`${results[showedSeed]}`} />
 					</div>
 				</div>
 			}

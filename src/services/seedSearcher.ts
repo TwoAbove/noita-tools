@@ -88,8 +88,8 @@ export class SeedSearcher {
 		}
 	}
 
-	infocb = (info: ReturnType<SeedSearcher['getInfo']>) => { };
-	foundcb = (info: ReturnType<SeedSearcher['getInfo']>) => { };
+	infocb = (info: ReturnType<SeedSearcher['getInfo']>) => {};
+	foundcb = (info: ReturnType<SeedSearcher['getInfo']>) => {};
 
 	init(offset: number, step: number) {
 		this.offset = offset;
@@ -137,8 +137,8 @@ export class SeedSearcher {
 			this.sumExecTime += endTime - startTime;
 			if (found) {
 				this.foundSeed = +seed;
+				res.push(+seed);
 				if (this.findAll) {
-					res.push(+seed);
 					this.foundcb(this.getInfo());
 				} else {
 					break;
@@ -247,7 +247,7 @@ export class SeedSearcher {
 						config.unlockedSpells!
 					);
 				})
-				.finally(() => { });
+				.finally(() => {});
 		}
 	}
 
