@@ -35,7 +35,7 @@ export class ChunkProvider {
 	progress = 0;
 	startTime = Date.now();
 
-	results: number[] = [];
+	results: Set<number> = new Set();
 
 	customSeeds?: number[];
 
@@ -56,8 +56,10 @@ export class ChunkProvider {
 	orphanChunks: ChunkStatus[] = [];
 
 	clear() {
-		this.results = [];
+		this.results = new Set();
+		this.unCommittedChunks.forEach(c => clearTimeout(c.crashId!));
 		this.unCommittedChunks = [];
+		this.orphanChunks.forEach(c => clearTimeout(c.crashId!));
 		this.orphanChunks = [];
 		this.progress = 0;
 		this.startTime = Date.now();
@@ -82,7 +84,10 @@ export class ChunkProvider {
 		this.progress += chunkSize;
 		this.eta.report(this.progress);
 		chunk.status = 'done';
-		this.results.push(...results);
+
+		for (const result of results) {
+			this.results.add(result);
+		}
 
 		this.ratePerAppetiteArr.push(
 			((chunkSize / (Date.now() - this.chunkStartTimes[chunk.chunkId])) *
@@ -135,15 +140,16 @@ export class ChunkProvider {
 
 		if (this.customSeeds) {
 			const seed = this.customSeeds.shift();
-			// don't register the chunk
 			if (seed) {
-				return {
+				const chunk: ChunkStatus = {
 					chunkId: uniqueId('chunk_'),
 					from: seed,
 					to: seed + 1,
 					status: 'pending',
 					appetite
 				};
+				this.registerChunk(chunk);
+				return chunk;
 			}
 			return null;
 		}

@@ -260,7 +260,7 @@ const ComputeConsole = () => {
 					<Row>
 						<h6>Results:</h6>
 						{chunkProvider && <div>
-							Found {chunkProvider.results.length} seeds: <br />
+							Found {chunkProvider.results.size} seeds: <br />
 							<Button onClick={handleCopy}>Copy seed list to clipboard</Button>
 							<ListGroup style={
 								{

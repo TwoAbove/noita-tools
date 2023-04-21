@@ -139,8 +139,9 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		setSeedEnd(e.target.value);
 	};
 	const handleCustomSeedListChange = (e: any) => {
-		chunkProvider?.setCustomSeedList(e.target.value.replace(/\D/g, ',').split(',').map((s: string) => parseInt(s)).filter((s: number) => !isNaN(s)));
-		setCustomSeedList(e.target.value);
+		const seedList = e.target.value.replace(/\D/g, ',').split(',').map((s: string) => parseInt(s)).filter((s: number) => !isNaN(s));
+		chunkProvider?.setCustomSeedList(seedList);
+		setCustomSeedList(seedList.join(', '));
 	};
 
 	const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
@@ -232,15 +233,18 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	const [lastResultLength, setLastResultLength] = useState(0);
 
 	React.useEffect(() => {
-		const currentResultLength = chunkProvider?.results.length || 0;
+		const currentResultLength = chunkProvider?.results.size || 0;
 		if (!findAll && currentResultLength > lastResultLength && solverStatus?.running) {
 			callbackComputeHandler?.stop();
 			setLastResultLength(currentResultLength);
 		}
-	}, [findAll, chunkProvider?.results.length, callbackComputeHandler, solverStatus?.running, lastResultLength]);
+	}, [findAll, chunkProvider?.results.size, callbackComputeHandler, solverStatus?.running, lastResultLength]);
 
 	const handleCopy = () => {
-		const seedList = chunkProvider?.results || [];
+		let seedList: number[]=[];
+		if (chunkProvider?.results.size) {
+			seedList = [...chunkProvider?.results.values() ];
+		}
 		copy(seedList.join(','));
 	}
 
@@ -261,6 +265,9 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	};
 
 	const stopCalculation = async () => {
+		if (chunkProvider?.customSeeds?.length) {
+			return;
+		}
 		await callbackComputeHandler?.stop();
 	};
 
