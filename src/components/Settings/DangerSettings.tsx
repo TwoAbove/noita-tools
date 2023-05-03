@@ -37,7 +37,7 @@ const SyncApp = () => {
 			left={
 				<>
 					<strong className="text-info">Sync with other Noitool</strong>
-					<p className="text-muted mb-0">
+					<p className="text-muted fw-light mb-0">
 						Copy noitool config from another online noitool. This includes all
 						seed configs and settings.
 						<br />
@@ -88,7 +88,7 @@ const ResetApp = () => {
 			left={
 				<>
 					<strong className="text-danger">Reset Noitool</strong>
-					<p className="text-muted mb-0">
+					<p className="text-muted fw-light mb-0">
 						Clear all persistent data of Noitool. <br />
 						This includes all seed configs and settings.
 					</p>
@@ -115,7 +115,7 @@ const ResetSeeds = () => {
 			left={
 				<>
 					<strong className="text-warning">Clear Seed states</strong>
-					<p className="text-muted mb-0">
+					<p className="text-muted fw-light mb-0">
 						Clear all saved seed states. <br />
 						Use this if there are issues with getting seed info.
 					</p>

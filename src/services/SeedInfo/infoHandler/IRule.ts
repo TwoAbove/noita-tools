@@ -22,6 +22,7 @@ export interface ILogicRules {
 	id: string;
 	type: RuleType.AND | RuleType.OR | RuleType.NOT;
 	rules: IRules[];
+	selectedRule?: string; // used only in UI
 }
 
 export interface IRuleRules {

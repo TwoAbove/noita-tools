@@ -2,6 +2,8 @@ import Dexie, { PromiseExtended, Table } from 'dexie';
 import deepEqual from 'fast-deep-equal/es6/react';
 import { exportDB, importInto } from 'dexie-export-import';
 import { useLiveQuery } from 'dexie-react-hooks';
+import uniqueId from 'lodash/uniqueId.js';
+import { ILogicRules, RuleType } from './SeedInfo/infoHandler/IRule';
 
 (Dexie as any).debug = 'dexie';
 
@@ -10,7 +12,7 @@ function replacer(key, value) {
 	if (value instanceof Map) {
 		return {
 			dataType: 'Map',
-			value: Array.from(value.entries()), // or with spread: value: [...value]
+			value: Array.from(value.entries()) // or with spread: value: [...value]
 		};
 	} else {
 		return value;
@@ -43,16 +45,34 @@ export enum FavoriteType {
 	Material = 'material',
 	Spell = 'spell'
 }
+
 export interface FavoriteItem {
 	id?: number;
 	type: FavoriteType;
 	key: string;
 }
 
+export interface SearchesItemConfig {
+	name?: string;
+	from?: number;
+	to?: number;
+	findAll?: boolean;
+	rules: string;
+}
+export interface SearchesItem {
+	id?: number;
+	uuid: string;
+	config: SearchesItemConfig;
+	madeUsingVersion: string;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
 export class NoitaDB extends Dexie {
 	configItems!: Table<ConfigItem, number>;
 	seedInfo!: Table<SeedInfoItem, number>;
 	favorites!: Table<FavoriteItem, number>;
+	searches!: Table<SearchesItem, number>;
 	errorOnOpen: PromiseExtended<Error>;
 
 	constructor() {
@@ -80,7 +100,8 @@ export class NoitaDB extends Dexie {
 							return;
 						}
 						s.updatedAt = new Date();
-					}).catch(e => {
+					})
+					.catch(e => {
 						console.error(e);
 					});
 			});
@@ -94,12 +115,14 @@ export class NoitaDB extends Dexie {
 				configItems: '++id, &key'
 			})
 			.upgrade(t => {
-				((t as any).db.configItems as NoitaDB['configItems']).add({
-					key: 'unlocked-spells',
-					val: Array(393).fill(true)
-				}).catch(e => {
-					console.error(e);
-				});;
+				((t as any).db.configItems as NoitaDB['configItems'])
+					.add({
+						key: 'unlocked-spells',
+						val: Array(393).fill(true)
+					})
+					.catch(e => {
+						console.error(e);
+					});
 			});
 
 		this.version(7)
@@ -107,21 +130,29 @@ export class NoitaDB extends Dexie {
 				seedInfo: '++id, &seed, updatedAt, config'
 			})
 			.upgrade(t => {
-				((t as any).db.seedInfo as NoitaDB['seedInfo']).toCollection()
+				((t as any).db.seedInfo as NoitaDB['seedInfo'])
+					.toCollection()
 					.modify(s => {
 						if (typeof s.config === 'string' || s.config instanceof String) {
 							return s;
 						}
-						s.config = JSON.stringify(s.config, replacer)
-					}).catch(e => {
+						s.config = JSON.stringify(s.config, replacer);
+					})
+					.catch(e => {
 						console.error(e);
-					});;
+					});
 			});
 
-		this.errorOnOpen = this.open().then(() => null).catch(e => {
-			console.error(e);
-			return e;
+		this.version(8).stores({
+			searches: '++id, &uuid, config, createdAt, updatedAt'
 		});
+
+		this.errorOnOpen = this.open()
+			.then(() => null)
+			.catch(e => {
+				console.error(e);
+				return e;
+			});
 	}
 
 	async toggleFavorite(type: FavoriteType, key: string) {
@@ -156,7 +187,9 @@ export class NoitaDB extends Dexie {
 			if (!config) {
 				return undefined;
 			}
-			return Object.assign(config, { config: JSON.parse(config.config, reviver) });
+			return Object.assign(config, {
+				config: JSON.parse(config.config, reviver)
+			});
 		});
 	}
 
@@ -179,7 +212,10 @@ export class NoitaDB extends Dexie {
 			return this.seedInfo
 				.where('seed')
 				.equals(seed)
-				.modify({ config: JSON.stringify(config, replacer), updatedAt: new Date() });
+				.modify({
+					config: JSON.stringify(config, replacer),
+					updatedAt: new Date()
+				});
 		});
 	}
 
@@ -201,7 +237,7 @@ export const useWithConfig = (seed: string) => {
 		return undefined;
 	}
 	return (config as SeedInfoItem).config;
-}
+};
 
 async function populate() {
 	await db.configItems.bulkAdd([
@@ -232,8 +268,32 @@ async function populate() {
 		{
 			key: 'show-initial-lottery',
 			val: true
-		},
+		}
 	]);
+
+	const uuid = crypto.randomUUID();
+
+	const initialSearch = await db.searches.add({
+		uuid,
+		config: {
+			rules: btoa(
+				JSON.stringify({
+					id: uniqueId(),
+					type: RuleType.AND,
+					rules: [],
+					selectedRule: 'search'
+				})
+			)
+		},
+		madeUsingVersion: process.env.REACT_APP_VERSION!,
+		createdAt: new Date(),
+		updatedAt: new Date()
+	});
+
+	await db.configItems.add({
+		key: 'search-current-search-uuid',
+		val: uuid
+	});
 }
 
 db.on('populate', populate);
@@ -245,4 +305,48 @@ export async function resetDatabase() {
 
 export async function clearSeeds() {
 	await db.seedInfo.clear();
+}
+
+export async function newSearch(): Promise<string> {
+	const uuid = crypto.randomUUID();
+	const search = await db.searches.add({
+		uuid,
+		config: {
+			rules: btoa(
+				JSON.stringify({
+					id: uniqueId(),
+					type: RuleType.AND,
+					rules: [],
+					selectedRule: 'search'
+				})
+			)
+		},
+		madeUsingVersion: process.env.REACT_APP_VERSION!,
+		createdAt: new Date(),
+		updatedAt: new Date()
+	});
+	return uuid;
+}
+
+export async function deleteSearch(uuid: string): Promise<string> {
+	const search = await db.searches.get({ uuid });
+	if (search) {
+		await db.searches.delete(search.id!);
+	}
+	const otherSearch = await db.searches.orderBy('createdAt').first();
+	return otherSearch?.uuid ?? '';
+}
+
+export async function getExportableSearch(
+	uuid: string
+): Promise<Partial<SearchesItem>> {
+	// to avoid typing issues in the export
+	const search = (await db.searches.get({ uuid }))! as any;
+
+	delete search.id;
+	delete search.uuid;
+	delete search.updatedAt;
+	delete search.createdAt;
+
+	return search;
 }

@@ -31,7 +31,7 @@ export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor =
 	const { isFavorite } = useMaterialFavorite();
 	const name = gameInfoProvider!.providers.material.translate(id);
 	return (
-		<div className={classNames(isFavorite(id) && 'text-info', 'text-start lh-1')}>
+		<div className={classNames(isFavorite(id) && 'text-info', 'text-center lh-1')}>
 			{showColor &&
 				<div
 					className={'d-inline-block align-sub rounded-3 me-1 border border-light'}
@@ -47,7 +47,7 @@ export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor =
 			{' '}
 			{capitalize(name)}
 			{' '}
-			{showId && <span className='text-muted fw-lighter'>{id}</span>}
+			{showId && <span className='text-muted fw-light'>{id}</span>}
 		</div>
 	)
 }
@@ -95,7 +95,7 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({ materia
 							{' '}
 							{capitalize(name)}
 							{' '}
-							{showId && <span className='text-muted fw-lighter'>{`(${ids.join(', ')})`}</span>}
+							{showId && <span className='text-muted fw-light'>{`(${ids.join(', ')})`}</span>}
 						</div>
 					</div>
 				)

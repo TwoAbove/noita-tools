@@ -41,7 +41,7 @@ const Locale = () => {
 			left={
 				<>
 					<strong className="">Locale</strong>
-					<p className="text-muted mb-0">
+					<p className="text-muted fw-light mb-0">
 						Change the localization on Noitool. Currently, only materials are
 						translated.
 					</p>
@@ -77,7 +77,7 @@ const AlchemyConfig = () => {
 			left={
 				<>
 					<strong className="">Material ID</strong>
-					<p className="text-muted mb-0">Show material ID next to name</p>
+					<p className="text-muted fw-light mb-0">Show material ID next to name</p>
 				</>
 			}
 			right={
@@ -102,7 +102,7 @@ const LotteryPreview = () => {
 			left={
 				<>
 					<strong className="">Lottery Preview</strong>
-					<p className="text-muted mb-0">If no lottery perks are selected, still show perk lottery chances for 1 lottery perk.</p>
+					<p className="text-muted fw-light mb-0">If no lottery perks are selected, still show perk lottery chances for 1 lottery perk.</p>
 				</>
 			}
 			right={
@@ -127,7 +127,7 @@ export const ShowAlwaysCastRow = () => {
 			left={
 				<>
 					<strong className="">Show Always Cast for whole row</strong>
-					<p className="text-muted mb-0">If there is an always cast perk in the row, show the potential always-cast for all perks in the row (as a solution to the reroll problem described in quirks).</p>
+					<p className="text-muted fw-light mb-0">If there is an always cast perk in the row, show the potential always-cast for all perks in the row (as a solution to the reroll problem described in quirks).</p>
 				</>
 			}
 			right={

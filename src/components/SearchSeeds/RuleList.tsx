@@ -11,7 +11,9 @@ import {
 	Dropdown,
 	DropdownButton,
 	Form,
-	InputGroup
+	InputGroup,
+	Modal,
+	Table
 } from 'react-bootstrap';
 import { useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -33,6 +35,15 @@ import { getTreeTools } from './node';
 import classNames from 'classnames';
 import SearchContextProvider, { SearchContext } from './SearchContext';
 import RuleConstructor, { RuleConstructors } from './RuleConstructor';
+import { useLiveQuery } from 'dexie-react-hooks';
+import {
+	SearchesItem,
+	db,
+	deleteSearch,
+	getExportableSearch,
+	newSearch
+} from '../../services/db';
+import useLocalStorage from '../../services/useLocalStorage';
 
 const treeTools = getTreeTools('id', 'rules');
 
@@ -41,10 +52,17 @@ type IIDRule = IRule & { id: string };
 interface IRuleProps extends IIDRule {
 	deletable?: boolean;
 	draggable?: boolean;
+	titleProps?: any;
 	onClick?: () => void;
 	onDelete?: () => void;
 }
-const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable }) => {
+const Rule: FC<IRuleProps> = ({
+	id,
+	type,
+	deletable,
+	draggable,
+	titleProps
+}) => {
 	const rc = RuleConstructors[type] || {};
 	const { ruleDispatch, ruleTree } = useContext(SearchContext);
 	const [collected, drag, dragPreview] = useDrag(
@@ -79,7 +97,7 @@ const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable }) => {
 				onClick={handleClick}
 				className="rounded"
 			>
-				<div>{rc.Title()}</div>
+				<div>{rc.Title(titleProps || {})}</div>
 			</ListGroup.Item>
 			{deletable && (
 				<Button onClick={handleDelete} size="sm" variant="outline-warning">
@@ -216,27 +234,6 @@ const Add: FC<IAddProps> = ({ onAdd }) => {
 	);
 };
 
-interface IExportProps {}
-const Export: FC<IExportProps> = () => {
-	const { ruleTree, ruleDispatch } = useContext(SearchContext);
-
-	const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		navigator.clipboard
-			.writeText(btoa(JSON.stringify(ruleTree)))
-			.catch(e => console.error(e));
-	};
-
-	return (
-		<Button
-			onClick={e => handleClick(e)}
-			className="w-100"
-			variant="outline-secondary"
-		>
-			Export search to string
-		</Button>
-	);
-};
-
 const validJSON = (s: string) => {
 	try {
 		JSON.parse(atob(s));
@@ -252,6 +249,10 @@ interface IImportProps {
 export const Import: FC<IImportProps> = ({ onClick }) => {
 	const [ripple, setRipple] = useState(false);
 	const [rippleError, setRippleError] = useState(false);
+	const [currentSearchUUID, setCurrentSearchUUID] = useLocalStorage(
+		'search-current-search-uuid',
+		''
+	);
 
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -294,6 +295,14 @@ export const Import: FC<IImportProps> = ({ onClick }) => {
 		clear();
 	};
 
+	const handleNew = () => {
+		newSearch()
+			.then(uuid => {
+				setCurrentSearchUUID(uuid);
+			})
+			.catch(e => console.error(e));
+	};
+
 	useEffect(() => {
 		window.addEventListener('paste', handlePaste as any);
 		return () => {
@@ -325,7 +334,197 @@ export const Import: FC<IImportProps> = ({ onClick }) => {
 			>
 				Import
 			</Button>
+			<div className="mx-3"></div>
+			<Button variant="outline-info" onClick={() => handleNew()}>
+				New Search
+			</Button>
 		</InputGroup>
+	);
+};
+
+const CustomSearchDropdownToggle = React.forwardRef<any, any>(
+	({ children, onClick }, ref) => (
+		<div
+			ref={ref}
+			onClick={e => {
+				e.stopPropagation();
+				e.preventDefault();
+				onClick(e);
+			}}
+			className="w-100 h-100 d-flex align-items-center justify-content-center"
+		>
+			<i className="bi bi-three-dots-vertical m-2"></i>
+			{children}
+		</div>
+	)
+);
+
+interface ISearchRowProps {
+	current: boolean;
+	search: SearchesItem;
+}
+const SearchRow: FC<ISearchRowProps> = ({ current, search }) => {
+	const [currentSearchUUID, setCurrentSearchUUID] = useLocalStorage(
+		'search-current-search-uuid',
+		''
+	);
+
+	const handleClick = () => {
+		setCurrentSearchUUID(search.uuid);
+	};
+
+	const { config } = search;
+
+	const [clickedDelete, setClickedDelete] = useState(false);
+	const [ripple, setRipple] = useState(false);
+
+	const handleExport = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+		const exportedSearch = await getExportableSearch(search.uuid);
+
+		navigator.clipboard
+			.writeText(btoa(JSON.stringify(exportedSearch)))
+			.catch(e => console.error(e))
+			.finally(() => {
+				setRipple(true);
+				setTimeout(() => setRipple(false), 1000);
+			});
+	};
+
+	const handleDelete = async e => {
+		e.stopPropagation();
+		if (!clickedDelete) {
+			setClickedDelete(true);
+			setTimeout(() => setClickedDelete(false), 1500);
+			return;
+		}
+		const newUUID = await deleteSearch(search.uuid)
+			.then(newUUID => {
+				if (!newUUID) {
+					return newSearch();
+				}
+				return newUUID;
+			})
+			.catch(console.error);
+		setCurrentSearchUUID(newUUID || '');
+	};
+
+	return (
+		<tr
+			style={{ cursor: 'pointer' }}
+			onClick={() => handleClick()}
+			className={classNames(current && 'table-active')}
+		>
+			<td className="w-50">{config.name || 'Unnamed search'}</td>
+			<td className="fw-light">
+				Updated at {search.updatedAt.toLocaleString()}
+			</td>
+			<td className="">
+				<div className="d-flex align-items-stretch justify-content-end">
+					<ButtonGroup>
+						{/* {!current && (
+							<Button onClick={() => handleClick()} variant="outline-info">
+								Load
+							</Button>
+						)} */}
+						<Dropdown
+							className={classNames([
+								'btn btn-outline-primary p-0',
+								ripple && 'border-success text-success border-1'
+							])}
+						>
+							<Dropdown.Toggle
+								as={CustomSearchDropdownToggle}
+							></Dropdown.Toggle>
+
+							<Dropdown.Menu>
+								<Dropdown.Item
+									className=""
+									as={'div'}
+									onClick={e => handleExport(e)}
+									// className="w-100"
+								>
+									Export to string
+								</Dropdown.Item>
+								<Dropdown.Divider />
+								<Dropdown.Item
+									as={'div'}
+									onClick={handleDelete}
+									className={classNames(
+										clickedDelete ? 'text-danger' : 'text-warning'
+									)}
+								>
+									{clickedDelete ? 'Delete?' : 'Delete'}
+								</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown>
+					</ButtonGroup>
+				</div>
+			</td>
+		</tr>
+	);
+};
+
+interface ISearchSelectProps {
+	open: boolean;
+	onClose: () => any;
+}
+const SearchSelect: FC<ISearchSelectProps> = ({ open, onClose }) => {
+	const { currentSearchUUID, handleImportSearch } = useContext(SearchContext);
+	const query = useLiveQuery(() => db.searches.toArray());
+	const searches = query ? query : [];
+
+	return (
+		<Modal
+			size="lg"
+			fullscreen="sm-down"
+			scrollable
+			show={open}
+			onHide={onClose}
+		>
+			<Modal.Header closeButton>
+				<Modal.Title>Load search</Modal.Title>
+			</Modal.Header>
+			<Modal.Body
+				style={{
+					minHeight: '40vh'
+				}}
+			>
+				<Import onClick={s => handleImportSearch(s)} />
+				<div className="my-4" />
+				<Table borderless hover className="align-middle me-auto">
+					<tbody>
+						{searches.map(s => (
+							<SearchRow
+								key={s.id}
+								current={s.uuid === currentSearchUUID}
+								search={s}
+							/>
+						))}
+					</tbody>
+				</Table>
+			</Modal.Body>
+		</Modal>
+	);
+};
+
+interface ILoadProps {
+	onLoad: (data: string) => any;
+}
+
+const Load: FC<ILoadProps> = props => {
+	const [loadOpen, setLoadOpen] = useState(false);
+
+	return (
+		<>
+			<Button
+				className="w-100"
+				variant="outline-info"
+				onClick={() => setLoadOpen(true)}
+			>
+				Manage saved searches
+			</Button>
+			<SearchSelect open={loadOpen} onClose={() => setLoadOpen(false)} />
+		</>
 	);
 };
 
@@ -372,7 +571,10 @@ const Logic: FC<ILogicProps> = ({ onLogic }) => {
 // I think DND should be replaced with https://github.com/atlassian/react-beautiful-dnd
 interface IRuleListProps {}
 const RuleList: FC<IRuleListProps> = () => {
-	const { ruleTree, ruleDispatch } = useContext(SearchContext);
+	const { ruleTree, computeJobName, ruleDispatch, uuid } = useContext(
+		SearchContext
+	);
+
 	return (
 		<DndProvider
 			options={{
@@ -395,20 +597,24 @@ const RuleList: FC<IRuleListProps> = () => {
 			}}
 		>
 			<ListGroup className="py-2">
-				<Row lg={1} className="mb-1 d-flex justify-content-between">
-					<Col className="my-2" xl={12}>
+				<Row className="mb-1 d-flex justify-content-between">
+					{/* <Col className="my-2" xl={12}>
 						<Import
 							onClick={data => ruleDispatch({ action: 'import', data })}
 						/>
 					</Col>
 					<Col className="my-2" xs={12}>
 						<Export />
+					</Col> */}
+					<Col xs={12} className="my-2">
+						<Load onLoad={data => ruleDispatch({ action: 'import', data })} />
 					</Col>
 				</Row>
 				<Rule
 					onClick={() => ruleDispatch({ action: 'select', data: 'search' })}
 					id="search"
 					type="search"
+					titleProps={{ name: computeJobName }} // TODO: Handle multiple searches
 				/>
 				<hr />
 				<LogicRule {...ruleTree} />

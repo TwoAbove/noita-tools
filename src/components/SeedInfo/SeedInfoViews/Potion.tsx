@@ -57,7 +57,12 @@ export const StaticPotion: FC<StaticPotionProps> = ({
 	const material = gameInfoProvider!.providers.material.provide(materialId);
 	const [Matrix, id] = colorMatrix(material.color);
 	return (
-		<div className="d-flex font-size-sm flex-column justify-content-center align-items-center">
+		<div
+			className="d-flex font-size-sm flex-column justify-content-center align-items-center"
+			style={{
+				maxWidth: '12rem'
+			}}
+		>
 			<Matrix />
 			<Icon
 				size="2rem"

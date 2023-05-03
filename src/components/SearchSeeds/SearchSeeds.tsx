@@ -7,18 +7,16 @@ import RuleList from './RuleList';
 const SearchSeeds = () => {
 	return (
 		<Container className="col container shadow-lg">
-			<Stack>
-				<Row>
-					<SearchContextProvider>
-						<Col className="border rounded-3" xs={12} md={3}>
-							<RuleList />
-						</Col>
-						<Col className="mx-auto" xs={12} md={9}>
-							<RuleConstructor />
-						</Col>
-					</SearchContextProvider>
-				</Row>
-			</Stack>
+			<Row>
+				<SearchContextProvider>
+					<Col className="border rounded-3" xs={12} md={3}>
+						<RuleList />
+					</Col>
+					<Col className="mx-auto" xs={12} md={9}>
+						<RuleConstructor />
+					</Col>
+				</SearchContextProvider>
+			</Row>
 		</Container>
 	);
 };

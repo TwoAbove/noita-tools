@@ -4,6 +4,7 @@ import { Button, Col, Collapse, Container, Form, FormGroup, ListGroup, ProgressB
 import { useTranslation } from 'react-i18next';
 import humanize from 'humanize-duration';
 import copy from 'copy-to-clipboard';
+import Cookies from 'js-cookie';
 
 import { localizeNumber } from '../../../services/helpers';
 import { ILogicRules } from '../../../services/SeedInfo/infoHandler/IRule';
@@ -92,7 +93,7 @@ const ComputeConsole = () => {
 	const [socketComputeProvider, setSocketComputeProvider] = useState<SocketComputeProvider>();
 
 	const [computeUrl, setComputeUrl] = useState(window.location.host);
-	const [computeId, setComputeId] = useLocalStorage('search-compute-id', '');
+	const noitoolSessionToken = Cookies.get('noitoolSessionToken');
 	const [computeJobName, setComputeJobName] = useState("The Seed");
 	// const [computeJobName, setComputeJobName] = useState((Math.random() + 1).toString(36).substring(7));
 
@@ -108,14 +109,15 @@ const ComputeConsole = () => {
 	useEffect(() => {
 		const newComputeSocket = new ComputeSocket({
 			url: computeUrl,
-			computeId,
+			sessionToken: noitoolSessionToken,
+			version: process.env.REACT_APP_VERSION!,
 			onUpdate: () => {
 				setConnected(newComputeSocket.connected);
 			},
 			isHost: true,
 		});
 		setComputeSocket(newComputeSocket);
-	}, [computeUrl, computeId]);
+	}, [computeUrl, noitoolSessionToken]);
 
 	useEffect(() => {
 		if (!computeSocket || !rules || !chunkProvider) {
@@ -213,12 +215,6 @@ const ComputeConsole = () => {
 							<Form.Label>Compute URL</Form.Label>
 							<Form.Control value={computeUrl} onChange={(e) => setComputeUrl(e.target.value)} />
 							<Form.Text>{connected ? "Connected" : "Not Connected"}</Form.Text>
-						</Form.Group>
-					</Col>
-					<Col>
-						<Form.Group>
-							<Form.Label>Compute Room</Form.Label>
-							<Form.Control value={computeId} onChange={(e) => setComputeId(e.target.value)} />
 						</Form.Group>
 					</Col>
 					<Col>

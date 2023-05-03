@@ -21,12 +21,10 @@ class SocketHandler extends EventTarget {
 	constructor(config: SocketHandlerConfig) {
 		super();
 		this.io = socketIOClient(config.url as any);
-		if (
-			config.onUpdate
-		) {
+		if (config.onUpdate) {
 			this.onUpdate = config.onUpdate;
 		} else {
-			this.onUpdate = () => { };
+			this.onUpdate = () => {};
 		}
 		this.configIO();
 	}
@@ -53,6 +51,10 @@ class SocketHandler extends EventTarget {
 
 	on(e: string, cb): void {
 		this.io.on(e, cb);
+	}
+
+	close() {
+		this.io.close();
 	}
 }
 

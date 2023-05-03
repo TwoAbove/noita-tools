@@ -18,6 +18,7 @@ const UseMultithreadingButton = () => {
 
 	return (
 		<Button
+			size='sm'
 			onClick={handleMultithreading}
 			variant={useCores > 1 ? 'outline-success' : 'outline-secondary'}
 		>

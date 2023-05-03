@@ -2,13 +2,15 @@ const handler = require('serve-handler');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const { Server: SocketIOServer } = require('socket.io');
+const cookieParser = require('cookie-parser');
 const cron = require('node-cron');
 const multer = require('multer');
 
 const B2 = require('backblaze-b2');
 const { randomUUID } = require('crypto');
 B2.prototype.uploadAny = require('@gideo-llc/backblaze-b2-upload-any');
+
+const { genSessionCookie } = require('./helpers');
 
 const PORT = process.env.PORT || 3001;
 
@@ -22,6 +24,7 @@ const b2 = new B2({
 const app = express();
 
 app.use(morgan('combined'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(
 	bodyParser.urlencoded({
@@ -33,6 +36,14 @@ let data = [];
 let stats = [];
 
 const apiRoutes = require('./routes');
+
+app.use((req, res, next) => {
+	// Set session cookie
+	if (!req.cookies.noitoolSessionToken) {
+		genSessionCookie(res);
+	}
+	next();
+});
 
 app.use('/api', apiRoutes);
 
@@ -82,6 +93,9 @@ app.get('/m/*', async (req, res) => {
 	res.send({});
 });
 
+const server = require('http').createServer(app);
+const io = require('./io')(server, app);
+
 app.use((req, res) =>
 	handler(req, res, {
 		public: './build',
@@ -114,11 +128,9 @@ app.use((err, req, res, next) => {
 	res.status(500).send('Server error');
 });
 
-const server = app.listen(PORT, () => {
+server.listen(PORT, () => {
 	console.log(`Running at http://localhost:${PORT}`);
 });
-
-const io = require('./io')(server);
 
 const upload = async () => {
 	if (!hasB2) {
@@ -161,3 +173,5 @@ const shutdown = signal => err => {
 process.on('SIGTERM', shutdown('SIGTERM')).on('SIGINT', shutdown('SIGINT'));
 
 process.on('uncaughtException', shutdown('SIGINT'));
+
+require('./jobs');

@@ -2,12 +2,14 @@ import React, { useContext } from 'react';
 import { Container, Stack, Row, Col, ListGroup, Button, ButtonGroup, Form, FormGroup, ProgressBar } from 'react-bootstrap';
 import humanize from 'humanize-duration';
 
-import { localizeNumber } from '../../../services/helpers';
-import SeedDataOutput from '../../SeedInfo/SeedDataOutput';
-import { SearchContext } from '../SearchContext';
-import UseMultithreadingButton from '../UseMultithreading';
-import { Status } from '../../../services/compute/ChunkProvider';
-import useLocalStorage from '../../../services/useLocalStorage';
+import { localizeNumber } from '../../../../services/helpers';
+import SeedDataOutput from '../../../SeedInfo/SeedDataOutput';
+import { SearchContext } from '../../SearchContext';
+import UseMultithreadingButton from '../../UseMultithreading';
+import { Status } from '../../../../services/compute/ChunkProvider';
+import useLocalStorage from '../../../../services/useLocalStorage';
+import ClusterInfo from './Cluster';
+import Multithreading from './Multithreading';
 
 const MemoSeedDataOutput = React.memo(SeedDataOutput);
 
@@ -37,13 +39,11 @@ const Search = () => {
 		chunkProvider,
 		clearSearch,
 
-		clusterHelpAvailable,
-		clusterHelpEnabled,
-		toggleClusterHelp,
-
 		handleCopy,
 		startCalculation,
 		stopCalculation,
+		computeJobName,
+		handleComputeJobNameChange,
 		handleSeedStartChange,
 		handleSeedEndChange,
 		handleCustomSeedListChange,
@@ -58,12 +58,6 @@ const Search = () => {
 		percentChecked,
 		seedsPerSecond,
 	} = useContext(SearchContext);
-
-	const [profileOpen, setProfileOpen] = useLocalStorage('profile-open', false);
-
-	const openProfile = () => {
-		setProfileOpen(true);
-	}
 
 	const [clearClicked, setClearClicked] = React.useState(false);
 
@@ -87,17 +81,30 @@ const Search = () => {
 		results = [...chunkProvider?.results.values()];
 	}
 
-	return (<Container fluid className="col pt-3 shadow-lg">
+	return (<div className="p-0 pt-3">
 		<Description />
 		<Row>
 			{/* <RuleConstructor onSubmit={updateRules} /> */}
 		</Row>
-		<Row>
+		<Row className="px-0 mt-2-xs">
 			<Col xs={12} sm={6} md={5} >
 				<Form onSubmit={e => e.preventDefault()}>
 					<FormGroup>
+						<Col className='mb-4'>
+							<Form.Group>
+								<Form.Label htmlFor="SearchSeeds.name">
+									Search name:
+								</Form.Label>
+								<Form.Control
+									id="SearchSeeds.name"
+									disabled={running || !solverReady}
+									value={computeJobName}
+									onChange={handleComputeJobNameChange}
+								/>
+							</Form.Group>
+						</Col>
 						<Col>
-							<Form.Group className=''>
+							<Form.Group className='my-2'>
 								<Form.Label htmlFor="SearchSeeds.seed">
 									Start search from seed:{' '}
 								</Form.Label>
@@ -111,7 +118,7 @@ const Search = () => {
 							</Form.Group>
 						</Col>
 						<Col>
-							<Form.Group className='mt-3'>
+							<Form.Group className='mt-2'>
 								<Form.Label htmlFor="SearchSeeds.seedEnd">
 									End search at seed:{' '}
 								</Form.Label>
@@ -162,44 +169,11 @@ const Search = () => {
 				</Form>
 			</Col>
 			{/* <Col /> */}
-			<Col md={7} className="p-3">
-				<Row>
-
-					{navigator.hardwareConcurrency && (
-						<Col className="">
-							<Row className="m-3">
-								<UseMultithreadingButton />
-							</Row>
-							<Row className="m-3">
-								<p>
-									Multithreading will use as many CPU threads as possible,
-									but slow down your PC. PC performance may suffer, as well as battery life. You may get
-									several results at once if you have enough cores.
-								</p>
-							</Row>
-						</Col>
-					)}
-					{false && <Col className="">
-						<Row className="m-3">
-							<Button
-								variant="outline-primary"
-								onClick={toggleClusterHelp}
-							>
-								{clusterHelpEnabled ? 'Disable' : 'Enable'} cluster compute
-							</Button>
-						</Row>
-						<Row className='m-3'>
-							{clusterHelpAvailable && <>
-								Offload part of the work to a compute cluster.
-								See details in your profile page.
-							</>}
-							{!clusterHelpAvailable && <p>
-								Offloading part of the work to a compute cluster is <b>not available</b>.
-								<br />
-								See details in your <Button size='sm' variant='outline-primary' onClick={() => openProfile()}>profile page</Button>
-							</p>}
-						</Row>
-					</Col>}
+			<Col md={7} className="px-0 mt-0-xs">
+				<Row className='d-flex flex-direction-column justify-content-center'>
+					<ClusterInfo />
+					<hr className='w-75' />
+					{navigator.hardwareConcurrency && <Multithreading />}
 				</Row>
 				<Row className="p-3">
 					<ButtonGroup>
@@ -222,14 +196,16 @@ const Search = () => {
 			</Col>
 		</Row>
 		<Row>
-			<Col><Button variant={clearClicked ? 'danger' : 'outline-warning'} onClick={() => handleClear()}>Clear search{clearClicked && '?'}</Button></Col>
+			<Col className='my-2'><Button variant={clearClicked ? 'danger' : 'outline-warning'} onClick={() => handleClear()}>Clear search{clearClicked && '?'}</Button></Col>
 		</Row>
 		<div>
 			{!chunkProvider?.customSeeds && solverStatus?.running && <div>
 				<ProgressBar animated now={percentChecked} label={`${percentChecked}%`} />
 				Seeds checked: {localizeNumber(seedsChecked)} / {localizeNumber(totalSeeds)} (Estimated time left: {humanize((solverStatus as Status).estimate * 1000, { round: true, units: ["h", "m"] })}, {Math.round(seedsPerSecond * 10) / 10} avg seeds/s)
+				<br />
+				{}
 			</div>}
-			<h6>Results:</h6>
+			<h5 className='mt-3 mb-1'>Results:</h5>
 			{findAll && chunkProvider && <div>
 				Found {results.length} seeds: <br />
 				<Button onClick={handleCopy}>Copy seed list to clipboard</Button>
@@ -268,7 +244,7 @@ const Search = () => {
 			}
 
 		</div>
-	</Container>);
+	</div>);
 };
 
 export default Search;

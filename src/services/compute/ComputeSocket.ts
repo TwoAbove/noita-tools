@@ -5,14 +5,22 @@ import SocketHandler, {
 import { Status } from './ChunkProvider';
 
 export interface ComputeSocketConfig extends SocketHandlerConfig {
-  computeId: string;
+  version: string,
+
+  sessionToken?: string;
+  userId?: string;
+
   seedSolver?: SeedSolver;
 
   isHost?: boolean;
 }
 
 export class ComputeSocket extends SocketHandler {
-  computeId: string;
+  version: string;
+
+  sessionToken?: string;
+  userId?: string;
+
   seedSolver?: SeedSolver;
   isHost: boolean;
 
@@ -26,7 +34,10 @@ export class ComputeSocket extends SocketHandler {
   constructor(config: ComputeSocketConfig) {
     super(config);
 
-    this.computeId = config.computeId;
+    this.version = config.version;
+
+    this.sessionToken = config.sessionToken;
+    this.userId = config.userId;
     this.seedSolver = config.seedSolver;
     this.isHost = config.isHost || false;
   }
@@ -34,10 +45,12 @@ export class ComputeSocket extends SocketHandler {
   configIO(): void {
     this.io.on('connect', () => {
       this.ready = true;
-      this.io.emit(this.isHost ? 'host' : 'join', this.computeId, this.onUpdate);
       // this.io.emit('join', this.computeId, this.onUpdate);
       this.connected = true;
       this.onUpdate();
+      if (this.running) {
+        this.register();
+      }
     });
 
     this.io.on('disconnect', reason => {
@@ -45,6 +58,13 @@ export class ComputeSocket extends SocketHandler {
       this.connected = false;
       this.onUpdate();
     });
+  }
+
+  register() {
+    this.io.emit(this.isHost ? 'compute:host:register' : 'compute:worker:register', { version: this.version, userId: this.userId, sessionToken: this.sessionToken, appetite: this.seedSolver?.workerList.length }, this.onUpdate);
+  }
+  unregister() {
+    this.io.emit(this.isHost ? 'compute:host:unregister' : 'compute:worker:unregister', { version: this.version, userId: this.userId, sessionToken: this.sessionToken, appetite: this.seedSolver?.workerList.length }, this.onUpdate);
   }
 
   async start() {
@@ -67,7 +87,6 @@ export class ComputeSocket extends SocketHandler {
               setTimeout(() => res(), 5000);
               return;
             }
-
 
             const { from, to, jobName, rules, hostId, chunkId, stats } = data;
 
@@ -102,5 +121,7 @@ export class ComputeSocket extends SocketHandler {
     this.running = false;
     console.log('Stop');
     this.onUpdate();
+    this.unregister();
+    this.io.disconnect();
   }
 }

@@ -18,7 +18,7 @@ const Multithread = () => {
 			left={
 				<>
 					<strong className="">Multithread limit</strong>
-					<p className="text-muted mb-0">
+					<p className="text-muted fw-light mb-0">
 						If Noitool is unstable with maximum concurrency, decrease this slider until it is.
 						<br/>
 						Disable and re-enable Multithreading in Search for changes to apply.

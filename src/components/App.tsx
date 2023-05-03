@@ -1,4 +1,4 @@
-import React, { FC, useState, Suspense, useEffect } from 'react';
+import React, { FC, useState, Suspense, useEffect, useContext } from 'react';
 import { Container, Stack, Button, Row } from 'react-bootstrap';
 import { lazy } from '@loadable/component';
 import { useSearchParamsState } from 'react-use-search-params-state';
@@ -15,19 +15,40 @@ import classNames from 'classnames';
 import SyncHandler from './Settings/SyncHandler';
 import { BrowserRouter, useLocation, useSearchParams } from 'react-router-dom';
 import DBError from './DBError';
-import useLocalStorage from '../services/useLocalStorage';
 import Patrons from './Patrons';
 import PatreonButton from './misc/PatreonButton';
+import { ProfileContext, ProfileProvider } from './Profile/ProfileContext';
 
 const Settings = lazy(() => import('./Settings'));
 const LazySettings = props => {
 	const [show, setShow] = useState(false);
+
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [filterParams, setFilterParams] = useSearchParamsState({
+		settings: {
+			type: 'boolean',
+			default: false
+		}
+	});
+
+	const handleSettings = () => {
+		if (!show) {
+			setFilterParams({ settings: true });
+			setShow(true);
+		} else {
+			// delete the param outright - I don't like settings=false in the url
+			searchParams.delete('settings');
+			setSearchParams(searchParams);
+			setShow(false);
+		}
+	}
+
 	return (
 		<Suspense fallback={<LoadingComponent />}>
-			<Button onClick={() => setShow(true)} size="lg" variant="outline-primary">
+			<Button onClick={() => handleSettings()} size="lg" variant="outline-primary">
 				<i className="bi bi-gear"></i>
 			</Button>
-			<Settings show={show} handleClose={() => setShow(false)} />
+			<Settings show={show || filterParams.settings} handleClose={() => handleSettings()} />
 		</Suspense>
 	);
 };
@@ -59,6 +80,8 @@ const LazyProfile = () => {
 		})();
 	}, []);
 
+	const { patreonData } = useContext(ProfileContext);
+
 	const handleProfile = () => {
 		if (!profileOpen) {
 			setFilterParams({ profile: true });
@@ -78,7 +101,16 @@ const LazyProfile = () => {
 				size="lg"
 				variant="outline-primary"
 			>
-				<i className="bi bi-person"></i>
+				{patreonData?.avatar ?
+					<img
+						src={patreonData.avatar}
+						alt="profile"
+						className="rounded-circle"
+						style={{ width: '2rem', height: '2rem' }}
+					/>
+					:
+					<i className="bi bi-person"></i>
+				}
 			</Button>
 			<Profile show={profileOpen} handleClose={() => handleProfile()} />
 		</Suspense>
@@ -93,7 +125,7 @@ const Header = () => {
 		<Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
 			<div className="text-nowrap">
 				<h3 className="fs-1 fw-bolder mt-2 mb-0 text-center">Noitool</h3>
-				<p className="fs-4 fw-lighter m-1 mt-0 my-1 text-center">
+				<p className="fs-4 fw-light m-1 mt-0 my-1 text-center">
 					Noita tools and helpers
 				</p>
 				{notNewUrl && (
@@ -171,7 +203,7 @@ const Footer = () => {
 					</div>
 				</div>
 				<Patrons />
-				<div className="footer text-center py-1">
+				<div className="footer text-center fw-light py-1">
 					Ideas? Issues? Bugs? Click{' '}
 					<a
 						target="_blank"
@@ -187,8 +219,8 @@ const Footer = () => {
 					or send me an email:{' '}
 					<a href="mailto:me@noitool.com">me@noitool.com</a>
 				</div>
-				<div className="footer-copyright text-center py-1">
-					Noitool <code>{process.env.REACT_APP_VERSION} </code>© 2023{' '}
+				<div className="footer-copyright text-center fw-light py-1">
+					<span className='fw-bold'>Noitool <code className='ms-1'>{process.env.REACT_APP_VERSION} </code></span>© 2023{' '}
 					<a href="https://seva.dev/">Seva Maltsev</a>
 				</div>
 			</Stack>
@@ -207,7 +239,7 @@ const DBErrorHandler: FC<IDBErrorHandlerProps> = props => {
 			.then(e => {
 				setHasDBError(e);
 			})
-			.finally(() => {});
+			.finally(() => { });
 	}, []);
 
 	let toShow = <>{props.children}</>;
@@ -241,19 +273,21 @@ const App: FC = () => {
 
 	return (
 		<DBErrorHandler>
-			<div className="App bg-gradient">
-				<div className="content bg-body rounded" style={{ minHeight: '85vh' }}>
-					<BrowserRouter>
-						<ThemeProvider>
-							<AlchemyConfigProvider>
-								<Header />
-								{toShow}
-							</AlchemyConfigProvider>
-						</ThemeProvider>
-					</BrowserRouter>
-				</div>
-				<Footer />
-			</div>
+			<BrowserRouter>
+				<ProfileProvider>
+					<div className="App bg-gradient">
+						<div className="content bg-body rounded" style={{ minHeight: '85vh' }}>
+							<ThemeProvider>
+								<AlchemyConfigProvider>
+									<Header />
+									{toShow}
+								</AlchemyConfigProvider>
+							</ThemeProvider>
+						</div>
+						<Footer />
+					</div>
+				</ProfileProvider>
+			</BrowserRouter>
 		</DBErrorHandler>
 	);
 };

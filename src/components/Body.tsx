@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { Container, Tabs, Tab } from 'react-bootstrap';
-import { useSearchParams } from 'react-router-dom';
-import useLocalStorage from '../services/useLocalStorage';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import LiveSeedStats from './LiveSeedStats';
 import SearchSeeds from './SearchSeeds';
 import SeedInfo from './SeedInfo';
 import TestBench from './TestBench';
 
 import { Compute, ComputeConsole } from './Compute';
+import { ProfileContext } from './Profile/ProfileContext';
 
 const isDev = () => {
 	const host = window.location.host;
@@ -28,12 +28,27 @@ const isLocal = () => {
 
 const Body = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const seedInSeachParams = searchParams.get('seed');
-	const [tab, setTab] = useLocalStorage('last-tab', '');
+	const seedInSearchParams = searchParams.get('seed');
+
+	const { pathname } = useLocation();
+	const navigate = useNavigate();
+	const { patreonData } = useContext(ProfileContext);
 
 	useEffect(() => {
-		if (seedInSeachParams) {
-			setTab('SeedInfo');
+		// This is needed for backwards compatibility with the old urls
+		// TODO: Somewhere in the future we can remove this. I think start of 2024?
+		if (pathname !== '/') {
+			return;
+		}
+
+		if (seedInSearchParams) {
+			navigate(
+				{
+					pathname: '/info',
+					search: window.location.search
+				},
+				{ replace: true }
+			);
 		}
 		// This is needed to do one-off routing if we have a seed query param in the url.
 		// TODO: I think the better way of doing this is to actually use react-router
@@ -42,42 +57,45 @@ const Body = () => {
 	}, []);
 
 	const handleTab = key => {
-		setTab(key);
-		setSearchParams({});
+		navigate(key);
 	};
 
+	const isLoggedIn = !!patreonData;
+
 	const showTestBench = isDev();
-	const showClusterCompute = isDev();
+	const showClusterCompute = isDev() || isLoggedIn;
 	const showClusterComputeConsole = isLocal();
 
 	return (
 		<Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">
-			<Tabs activeKey={tab} onSelect={handleTab} id="main-tabs" className="">
-				<Tab mountOnEnter eventKey="SeedInfo" title="Seed info">
+			<Tabs
+				activeKey={pathname}
+				onSelect={handleTab}
+				id="main-tabs"
+				mountOnEnter
+				className=""
+			>
+				<Tab eventKey="/info" title="Seed info">
 					<SeedInfo />
 				</Tab>
-				<Tab mountOnEnter eventKey="SearchSeeds" title="Search For Seed">
+				<Tab eventKey="/search" title="Search For Seed">
 					<SearchSeeds />
 				</Tab>
-				<Tab
-					mountOnEnter
-					eventKey="LiveSeedStats"
-					title="Live game helper (beta)"
-				>
+				<Tab eventKey="/live" title="Live game helper (beta)">
 					<LiveSeedStats />
 				</Tab>
 				{showTestBench && (
-					<Tab mountOnEnter eventKey="TestBench" title="TestBench">
+					<Tab eventKey="/test" title="TestBench">
 						<TestBench />
 					</Tab>
 				)}
 				{showClusterCompute && (
-					<Tab mountOnEnter eventKey="Compute" title="Compute">
+					<Tab eventKey="/compute" title="Compute">
 						<Compute />
 					</Tab>
 				)}
 				{showClusterComputeConsole && (
-					<Tab mountOnEnter eventKey="ComputeConsole" title="Compute Console">
+					<Tab eventKey="/compute-console" title="Compute Console">
 						<ComputeConsole />
 					</Tab>
 				)}

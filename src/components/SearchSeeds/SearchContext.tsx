@@ -1,4 +1,4 @@
-import React, { FC, useReducer, useState } from 'react';
+import React, { FC, useEffect, useReducer, useState } from 'react';
 
 import SeedSolver from '../../services/seedSolverHandler';
 import { ILogicRules, RuleType } from '../../services/SeedInfo/infoHandler/IRule';
@@ -9,11 +9,18 @@ import { avg } from '../../services/helpers';
 import cloneDeep from 'lodash/cloneDeep.js';
 import uniqueId from 'lodash/uniqueId.js';
 import isEqual from 'lodash/isEqual.js';
+import Cookies from 'js-cookie';
 
 import { getTreeTools } from './node';
 import { RuleConstructors } from './RuleConstructor';
 import { CallbackComputeHandler } from '../../services/compute/CallbackComputeHandler';
 import { ChunkProvider, Status } from '../../services/compute/ChunkProvider';
+import { SocketComputeProvider } from '../../services/compute/SocketComputeProvider';
+import SocketHandler from '../../services/socketHandler';
+import { ComputeSocket } from '../../services/compute/ComputeSocket';
+import { useLiveQuery, useObservable } from 'dexie-react-hooks';
+import { SearchesItem, db } from '../../services/db';
+import { liveQuery } from 'dexie';
 
 const treeTools = getTreeTools('id', 'rules');
 
@@ -102,6 +109,8 @@ const ruleReducer = (state: IState, action: IActions) => {
 	return state;
 };
 
+
+// TODO: split this up into separate contexts
 export const SearchContext = React.createContext<any>({});
 interface SearchContextProviderProps {
 	children: any;
@@ -109,47 +118,159 @@ interface SearchContextProviderProps {
 const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	children
 }) => {
-	const [unlockedSpells] = useLocalStorage<boolean[] | undefined>('unlocked-spells', undefined);
+	const [currentSearchUUID, setCurrentSearchUUID] = useLocalStorage('search-current-search-uuid', '');
+
+	const [query, setQuery] = React.useState<SearchesItem | undefined>();
+
+	const findAll = query?.config.findAll || false;
+	const setFindAll = (value: boolean) => {
+		if (!query) {
+			return;
+		}
+		db.searches.update(query.id!, { config: { ...query.config, findAll: value }, updatedAt: new Date() }).catch(console.error);
+	}
+
+	const seed = query?.config.from || 1;
+	const setSeed = (value: string) => {
+		if (!query) {
+			return;
+		}
+		const from = parseInt(value);
+		if (isNaN(from)) {
+			return;
+		}
+		db.searches.update(query.id!, { config: { ...query.config, from }, updatedAt: new Date() }).catch(console.error);
+	}
+	const handleSeedStartChange = (e: any) => {
+		setSeed(e.target.value);
+	};
+
+	const seedEnd = query?.config.to || Math.pow(2, 31);
+	const setSeedEnd = (value: string) => {
+		if (!query) {
+			return;
+		}
+		const to = parseInt(value);
+		if (isNaN(to)) {
+			return;
+		}
+		db.searches.update(query.id!, { config: { ...query.config, to }, updatedAt: new Date() }).catch(console.error);
+	}
+	const handleSeedEndChange = (e: any) => {
+		setSeedEnd(e.target.value);
+	};
+
+	const computeJobName = query?.config.name || '';
+	const setComputeJobName = (value: string) => {
+		if (!query) {
+			return;
+		}
+		db.searches.update(query.id!, { config: { ...query.config, name: value }, updatedAt: new Date() }).catch(console.error);
+	}
+	const [computeJobHash, setComputeJobHash] = React.useState('');
+	const handleComputeJobNameChange = async (e: any) => {
+		const string = e.target.value;
+		setComputeJobName(string);
+		const buf = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(string));
+		const stringHash = Array.prototype.map.call(new Uint8Array(buf), x => (('00' + x.toString(16)).slice(-2))).join('');
+		setComputeJobHash(stringHash);
+	};
+
+	const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
+		id: "root",
+		type: RuleType.AND,
+		rules: [],
+		selectedRule: 'search',
+	});
+
+	useEffect(() => {
+		if (!query) {
+			return;
+		}
+		if (isEqual(query.config.rules, ruleTree)) {
+			return;
+		}
+		db.searches.update(query.id!, { config: { ...query.config, rules: btoa(JSON.stringify(ruleTree)) }, updatedAt: new Date() }).catch(console.error);
+	}, [ruleTree, query]);
+
+	const handleImportSearch = (str: string) => {
+		const data = JSON.parse(atob(str));
+		db.searches.add({ ...data, uuid: crypto.randomUUID(), createdAt: new Date(), updatedAt: new Date() }).catch(console.error);
+	}
+
+	useEffect(() => {
+		// useEffect instead of useLiveQuery because there is some funkiness with equality checks that causes too many re-renders
+		const subscription = liveQuery(() => db.searches.get({ uuid: currentSearchUUID })).subscribe({
+			next: async (newQuery) => {
+				if (!newQuery) {
+					return;
+				}
+				if (isEqual(newQuery.config, query?.config)) {
+					return;
+				}
+
+				setQuery(newQuery);
+
+				const buf = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(newQuery.config.name));
+				const stringHash = Array.prototype.map.call(new Uint8Array(buf), x => (('00' + x.toString(16)).slice(-2))).join('');
+				setComputeJobHash(stringHash);
+
+				if (!isEqual(newQuery.config.rules, ruleTree)) {
+					ruleDispatch({ action: 'import', data: newQuery.config.rules });
+				}
+
+			},
+			error: (err) => console.error(err),
+		});
+
+		return () => {
+			subscription.unsubscribe();
+		}
+	}, [currentSearchUUID, query, ruleTree]);
+
 	const [useCores, setUseCores] = useLocalStorage('useCores', 1);
 	const [concurrency] = useLocalStorage('search-max-concurrency', navigator.hardwareConcurrency);
-
-	const [findAll, setFindAll] = useLocalStorage('findAll', false);
+	const handleMultithreading = () => {
+		if (useCores > 1) {
+			setUseCores(1);
+		} else {
+			setUseCores(concurrency);
+		}
+	};
 	const [solverReady, setSolverReady] = React.useState(false);
 	const [seedSolver, setSeedSolver] = React.useState(
 		() => new SeedSolver(useCores, true)
 	);
 
+
 	const [chunkProvider, setChunkProvider] = React.useState<ChunkProvider>();
 	const [callbackComputeHandler, setCallbackComputeHandler] = React.useState<CallbackComputeHandler>();
-
-	const [seedStr, setSeed] = useLocalStorage('search-min-seed', '1');
-	const seed = parseInt(seedStr) || 1;
-
-	const [seedEndStr, setSeedEnd] = useLocalStorage('search-max-seed', '');
-	const seedEnd = parseInt(seedEndStr) || Math.pow(2, 31);
-
 	const [customSeedList, setCustomSeedList] = useState('');
-
-	const [computeJobName, setComputeJobName] = React.useState('');
-
-	const handleSeedStartChange = (e: any) => {
-		setSeed(e.target.value);
-	};
-	const handleSeedEndChange = (e: any) => {
-		setSeedEnd(e.target.value);
-	};
 	const handleCustomSeedListChange = (e: any) => {
 		const seedList = e.target.value.replace(/\D/g, ',').split(',').map((s: string) => parseInt(s)).filter((s: number) => !isNaN(s));
 		chunkProvider?.setCustomSeedList(seedList);
 		setCustomSeedList(seedList.join(', '));
 	};
-
-	const [ruleTree, ruleDispatch] = useReducer(ruleReducer, {
-		id: uniqueId(),
-		type: RuleType.AND,
-		rules: [],
-		selectedRule: 'search',
-	});
+	React.useEffect(() => {
+		if (!chunkProvider) {
+			const newChunkProvider = new ChunkProvider({
+				chunkSize: 100,
+				searchFrom: seed,
+				searchTo: seedEnd,
+				jobName: computeJobHash,
+				etaHistoryTimeConstant: 120,
+				chunkProcessingTimeTarget: 5,
+			});
+			setChunkProvider(newChunkProvider);
+			return;
+		}
+		chunkProvider.config = {
+			...chunkProvider.config,
+			searchFrom: seed,
+			searchTo: seedEnd,
+			jobName: computeJobHash
+		};
+	}, [seed, seedEnd, computeJobHash, chunkProvider]);
 
 	const [solverStatus, setSolverStatus] = React.useState<Status>();
 	const running = solverStatus?.running;
@@ -162,39 +283,10 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 				...chunkProvider?.config,
 				searchFrom: seed,
 				searchTo: seedEnd,
-				jobName: computeJobName
+				jobName: computeJobHash
 			};
 		}
 	}
-
-	const handleMultithreading = () => {
-		if (useCores > 1) {
-			setUseCores(1);
-		} else {
-			setUseCores(concurrency);
-		}
-	};
-
-	React.useEffect(() => {
-		if (!chunkProvider) {
-			const newChunkProvider = new ChunkProvider({
-				chunkSize: 100,
-				searchFrom: seed,
-				searchTo: seedEnd,
-				jobName: computeJobName,
-				etaHistoryTimeConstant: 120,
-				chunkProcessingTimeTarget: 5,
-			});
-			setChunkProvider(newChunkProvider);
-			return;
-		}
-		chunkProvider.config = {
-			...chunkProvider.config,
-			searchFrom: seed,
-			searchTo: seedEnd,
-			jobName: computeJobName
-		};
-	}, [seed, seedEnd, computeJobName, chunkProvider]);
 
 	React.useEffect(() => {
 		const newSeedSolver = new SeedSolver(useCores, true);
@@ -209,6 +301,8 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 			newSeedSolver.destroy();
 		}
 	}, [useCores]);
+
+	const [unlockedSpells] = useLocalStorage<boolean[] | undefined>('unlocked-spells', undefined);
 
 	React.useEffect(() => {
 		seedSolver.update({
@@ -241,9 +335,9 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 	}, [findAll, chunkProvider?.results.size, callbackComputeHandler, solverStatus?.running, lastResultLength]);
 
 	const handleCopy = () => {
-		let seedList: number[]=[];
+		let seedList: number[] = [];
 		if (chunkProvider?.results.size) {
-			seedList = [...chunkProvider?.results.values() ];
+			seedList = [...chunkProvider?.results.values()];
 		}
 		copy(seedList.join(','));
 	}
@@ -254,6 +348,69 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		});
 	}
 
+	const seedsChecked = chunkProvider?.progress || 0;
+	const totalSeeds = (seedEnd - seed) + 1;
+	const percentChecked = Math.floor((seedsChecked / totalSeeds) * 100);
+	const seedsPerSecond = solverStatus?.rate;
+
+	// Cluster
+	const [clusterState, setClusterState] = useState({
+		hosts: 0,
+		workers: 0,
+		appetite: 0
+	});
+	const [clusterHelpAvailable, setClusterHelpAvailable] = useState(false);
+	const [clusterHelpEnabled, setClusterHelpEnabled] = useState(false);
+	const [clusterConnected, setClusterConnected] = useState(false);
+	const toggleClusterHelp = () => {
+		setClusterHelpEnabled(!clusterHelpEnabled)
+	};
+	useEffect(() => {
+		const getClusterStats = async () => {
+			const newClusterState = await fetch('/api/cluster_stats').then(r => r.json());
+			if (isEqual(clusterState, newClusterState)) {
+				return;
+			}
+			setClusterState(newClusterState);
+			setClusterHelpAvailable(newClusterState.workers > 0);
+		}
+		const interval = setInterval(() => getClusterStats(), 5000);
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		getClusterStats();
+		return () => clearInterval(interval);
+	}, [clusterState]);
+
+	const [socketComputeProvider, setSocketComputeProvider] = useState<SocketComputeProvider>();
+
+	useEffect(() => {
+		if (!clusterHelpEnabled) {
+			return;
+		}
+		if (!chunkProvider) {
+			return;
+		}
+
+		const newComputeSocket = new ComputeSocket({
+			url: window.location.host,
+			sessionToken: Cookies.get('noitoolSessionToken'),
+			version: process.env.REACT_APP_VERSION!,
+			onUpdate: () => {
+				setClusterConnected(newComputeSocket.connected);
+			},
+			isHost: true,
+		});
+
+		const newSocketComputeProvider = new SocketComputeProvider((status) => {
+			setSolverStatus(status);
+		}, chunkProvider, ruleTree, newComputeSocket);
+		setSocketComputeProvider(newSocketComputeProvider);
+		return () => {
+			setClusterConnected(false);
+			newComputeSocket.unregister();
+			newSocketComputeProvider.destruct();
+		};
+	}, [chunkProvider, ruleTree, clusterHelpEnabled]);
+
 	const startCalculation = async () => {
 		const requestOptions = {
 			method: 'POST',
@@ -261,26 +418,17 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 			body: JSON.stringify(ruleTree)
 		};
 		fetch('/api/data', requestOptions).catch(e => { });
-		await callbackComputeHandler?.start();
+		socketComputeProvider?.start();
+		callbackComputeHandler?.start().catch(e => { });
 	};
 
 	const stopCalculation = async () => {
+		socketComputeProvider?.stop();
 		if (chunkProvider?.customSeeds?.length) {
 			return;
 		}
 		await callbackComputeHandler?.stop();
 	};
-
-	const seedsChecked = chunkProvider?.progress || 0;
-	const totalSeeds = (seedEnd - seed) + 1;
-	const percentChecked = Math.floor((seedsChecked / totalSeeds) * 100);
-	const seedsPerSecond = solverStatus?.rate;
-
-
-	const clusterHelpAvailable = false;
-	const clusterHelpEnabled = false;
-	const toggleClusterHelp = () => { };
-
 
 	return <SearchContext.Provider value={{
 		seedSolver,
@@ -289,8 +437,15 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		chunkProvider,
 		clearSearch,
 
+		currentSearchUUID,
+		setCurrentSearchUUID,
+		handleImportSearch,
+
+		clusterState,
 		clusterHelpAvailable,
 		clusterHelpEnabled,
+		socketComputeProvider,
+		clusterConnected,
 		toggleClusterHelp,
 
 		updateRules,
@@ -300,6 +455,8 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({
 		handleSeedStartChange,
 		handleSeedEndChange,
 		handleCustomSeedListChange,
+		computeJobName,
+		handleComputeJobNameChange,
 		handleMultithreading,
 		setFindAll,
 		ruleDispatch,
