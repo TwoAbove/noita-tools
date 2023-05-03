@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cron = require('node-cron');
 const { createHash } = require('crypto');
 
+const RateLimit = require('express-rate-limit');
 
 const { User } = require('./db');
 const { genSessionCookie } = require('./helpers');
@@ -160,77 +161,84 @@ const getComputeAmountForTier = tierId => {
 	return amount;
 };
 
-router.get('/redirect', async (req, res) => {
-	// Login flow
-	const { code, state } = req.query;
+router.get(
+	'/redirect',
+	RateLimit({
+		windowMs: 1 * 60 * 1000, // 1 minute
+		max: 5
+	}),
+	async (req, res) => {
+		// Login flow
+		const { code, state } = req.query;
 
-	if (state !== req.cookies.noitoolSessionToken) {
-		res.redirect('/');
-		return;
-	}
-
-	try {
-		const tokens = await patreonOAuthClient.getTokens(
-			code,
-			process.env.PATREON_REDIRECT_URL
-		);
-
-		const data = await getIdentity(tokens.access_token);
-
-		const { id } = data.data;
-
-		let user = await User.findOne({ patreonId: id });
-
-		if (!user) {
-			user = await User.create({
-				_id: new mongoose.Types.ObjectId(),
-
-				patreonData: tokens,
-
-				patreonId: id,
-				sessionToken: req.cookies.noitoolSessionToken,
-				compute: {
-					lastReset: new Date(),
-					resetDay: new Date().getDate(),
-					patreonComputeLeft: 0,
-					providedComputeLeft: 0
-				}
-			});
-
-			// handle new user
-
-			let amount = 1000 * 60 * 60 * 5; // 5 hours
-
-			// Check if user is a patron
-			const patron = patronMembersCache.find(
-				m => m.relationships.user.data.id === id
-			);
-			if (patron) {
-				const tierIds = patron.relationships.currently_entitled_tiers.data.map(
-					t => t.id
-				);
-				const tierId = tierIds[0];
-				amount = getComputeAmountForTier(tierId);
-			}
-			user.compute.patreonComputeLeft = amount;
-
-			await user.save();
-		} else {
-			user.patreonData = tokens;
-			res.cookie('noitoolSessionToken', user.sessionToken, {
-				maxAge: 1000 * 60 * 60 * 24 * 365,
-				sameSite: 'lax'
-			});
-
-			await user.save();
+		if (state !== req.cookies.noitoolSessionToken) {
+			res.redirect('/');
+			return;
 		}
-	} catch (e) {
-		console.error(e);
-		return res.redirect('/');
-	}
 
-	res.redirect('/');
-});
+		try {
+			const tokens = await patreonOAuthClient.getTokens(
+				code,
+				process.env.PATREON_REDIRECT_URL
+			);
+
+			const data = await getIdentity(tokens.access_token);
+
+			const { id } = data.data;
+
+			let user = await User.findOne({ patreonId: id });
+
+			if (!user) {
+				user = await User.create({
+					_id: new mongoose.Types.ObjectId(),
+
+					patreonData: tokens,
+
+					patreonId: id,
+					sessionToken: req.cookies.noitoolSessionToken,
+					compute: {
+						lastReset: new Date(),
+						resetDay: new Date().getDate(),
+						patreonComputeLeft: 0,
+						providedComputeLeft: 0
+					}
+				});
+
+				// handle new user
+
+				let amount = 1000 * 60 * 60 * 5; // 5 hours
+
+				// Check if user is a patron
+				const patron = patronMembersCache.find(
+					m => m.relationships.user.data.id === id
+				);
+				if (patron) {
+					const tierIds = patron.relationships.currently_entitled_tiers.data.map(
+						t => t.id
+					);
+					const tierId = tierIds[0];
+					amount = getComputeAmountForTier(tierId);
+				}
+				user.compute.patreonComputeLeft = amount;
+
+				await user.save();
+			} else {
+				user.patreonData = tokens;
+				res.cookie('noitoolSessionToken', user.sessionToken, {
+					maxAge: 1000 * 60 * 60 * 24 * 365,
+					sameSite: 'lax'
+				});
+
+				await user.save();
+			}
+		} catch (e) {
+			console.error(e);
+			return res.redirect('/');
+		}
+
+		res.redirect('/');
+	}
+);
 
 const authenticated = (req, res, next) => {
 	const cookies = req.cookies;
@@ -301,6 +309,10 @@ const gatherMeData = (user, patreonUser) => {
 
 router.get(
 	'/me',
+	RateLimit({
+		windowMs: 1 * 60 * 1000, // 1 minute
+		max: 20
+	}),
 	authenticated,
 	loadUser,
 	loadPatreonClient,
@@ -389,12 +401,20 @@ router.get(
 // 	}
 // );
 
-router.post('/logout', authenticated, async (req, res) => {
-	res.clearCookie('noitoolSessionToken');
-	genSessionCookie(res);
+router.post(
+	'/logout',
+	RateLimit({
+		windowMs: 1 * 60 * 1000, // 1 minute
+		max: 60
+	}),
+	authenticated,
+	async (req, res) => {
+		res.clearCookie('noitoolSessionToken');
+		genSessionCookie(res);
 
-	res.status(200).send(null);
-});
+		res.status(200).send(null);
+	}
+);
 
 const updatePatreonCompute = async () => {
 	// all users with last update more than 1 month ago
