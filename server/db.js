@@ -4,10 +4,10 @@ const { Schema } = mongoose;
 
 const { ObjectId } = Schema.Types;
 
-const { MONGO_URI } = process.env;
+const { MONGO_SRV } = process.env;
 
 mongoose.connect(
-	MONGO_URI,
+	MONGO_SRV,
 	{
 		useNewUrlParser: true,
 		useUnifiedTopology: true
