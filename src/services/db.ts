@@ -275,7 +275,7 @@ async function populate() {
     config: {
       rules: btoa(
         JSON.stringify({
-          id: uniqueId(),
+          id: "root",
           type: RuleType.AND,
           rules: [],
           selectedRule: "search",
