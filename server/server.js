@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cron = require("node-cron");
 const multer = require("multer");
+const RateLimit = require("express-rate-limit");
 
 const B2 = require("backblaze-b2");
 const { randomUUID } = require("crypto");
@@ -129,10 +130,16 @@ app.use(
 // This is a hack for cleaner routing from the client's React Router.
 // So that 404s still work, but the client can still route to the correct page.
 for (const route of ["/", "/info", "/search", "/live", "/test", "/compute", "/compute-console"]) {
-  app.get(route, (req, res) => {
-    res.setHeader("Cache-Control", "no-store");
-    res.sendFile("build/index.html", { root: "." });
-  });
+  app.get(
+    route,
+    RateLimit({
+      max: 600, // to prevent ddos but allow a lot of refreshing
+    }),
+    (req, res) => {
+      res.setHeader("Cache-Control", "no-store");
+      res.sendFile("build/index.html", { root: "." });
+    }
+  );
 }
 
 app.use((err, req, res, next) => {
