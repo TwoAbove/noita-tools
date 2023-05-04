@@ -5,8 +5,8 @@ import Base from "../Base";
 
 const lab_liquids = {
   fff0bbee: ["radioactive_liquid", "radioactive_liquid", "acid", "acid", "acid", "alcohol"],
-  ffa4dbd5: ["radioactive_liquid", "radioactive_liquid", "acid", "acid", "acid", "alcohol"]
-}
+  ffa4dbd5: ["radioactive_liquid", "radioactive_liquid", "acid", "acid", "acid", "alcohol"],
+};
 class Vault extends Base {
   chestLevel = 6;
   g_small_enemies = [
@@ -51,10 +51,7 @@ class Vault extends Base {
       prob: 0.08,
       min_count: 1,
       max_count: 1,
-      entities: [
-        "data/entities/animals/vault/tentacler_small.xml",
-        "data/entities/animals/vault/tentacler.xml",
-      ],
+      entities: ["data/entities/animals/vault/tentacler_small.xml", "data/entities/animals/vault/tentacler.xml"],
     },
     {
       prob: 0.3,
@@ -84,10 +81,7 @@ class Vault extends Base {
       prob: 0.08,
       min_count: 1,
       max_count: 2,
-      entities: [
-        "data/entities/animals/vault/sniper.xml",
-        "data/entities/animals/vault/flamer.xml",
-      ],
+      entities: ["data/entities/animals/vault/sniper.xml", "data/entities/animals/vault/flamer.xml"],
     },
     {
       prob: 0.2,
@@ -125,10 +119,7 @@ class Vault extends Base {
       prob: 0.08,
       min_count: 1,
       max_count: 1,
-      entities: [
-        "data/entities/animals/vault/sniper.xml",
-        "data/entities/animals/vault/coward.xml",
-      ],
+      entities: ["data/entities/animals/vault/sniper.xml", "data/entities/animals/vault/coward.xml"],
     },
     {
       prob: 0.1,
@@ -167,10 +158,7 @@ class Vault extends Base {
       prob: 0.1,
       min_count: 1,
       max_count: 1,
-      entities: [
-        "data/entities/animals/vault/roboguard.xml",
-        "data/entities/animals/vault/healerdrone_physics.xml",
-      ],
+      entities: ["data/entities/animals/vault/roboguard.xml", "data/entities/animals/vault/healerdrone_physics.xml"],
     },
     {
       prob: 0.1,
@@ -487,8 +475,7 @@ class Vault extends Base {
       prob: 0.5,
       material_file: "data/biome_impl/vault/electric_tunnel_room.png",
       visual_file: "",
-      background_file:
-        "data/biome_impl/vault/electric_tunnel_room_background.png",
+      background_file: "data/biome_impl/vault/electric_tunnel_room_background.png",
       is_unique: 0,
     },
   ];
@@ -869,7 +856,7 @@ class Vault extends Base {
   safe(x: number, y: number) {
     let result = true;
 
-    if ((x >= 125) && (x <= 249) && (y >= 8694) && (y <= 8860)) {
+    if (x >= 125 && x <= 249 && y >= 8694 && y <= 8860) {
       result = false;
     }
 
@@ -889,7 +876,14 @@ class Vault extends Base {
   spawn_items(x: number, y: number) {
     const r = this.randoms.ProceduralRandomf(x - 11.631, y + 10.2257, 0, 1);
     if (r < 0.93) {
-      this.LoadPixelScene("data/biome_impl/wand_altar_vault.png", "data/biome_impl/wand_altar_vault_visual.png", x - 5, y - 10, "", true)
+      this.LoadPixelScene(
+        "data/biome_impl/wand_altar_vault.png",
+        "data/biome_impl/wand_altar_vault_visual.png",
+        x - 5,
+        y - 10,
+        "",
+        true
+      );
     }
   }
   spawn_props(x: number, y: number) {
@@ -909,111 +903,78 @@ class Vault extends Base {
     this.load_random_pixel_scene(this.g_pixel_scene_02, x, y);
   }
   spawn_unique_enemy(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_unique_enemy2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_unique_enemy3(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_ghostlamp(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_candles(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_potion_altar(x: number, y: number) {
     const r = this.randoms.ProceduralRandomf(x, y, 0, 1);
 
     if (r > 0.65) {
-      this.LoadPixelScene("data/biome_impl/potion_altar_vault.png", "data/biome_impl/potion_altar_vault_visual.png", x - 3, y - 10, "", true);
+      this.LoadPixelScene(
+        "data/biome_impl/potion_altar_vault.png",
+        "data/biome_impl/potion_altar_vault_visual.png",
+        x - 3,
+        y - 10,
+        "",
+        true
+      );
     }
   }
   spawn_potions(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_apparition(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_heart(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wands(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_portal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_end_portal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_orb(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_perk(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_all_perks(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wand_trap(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wand_trap_ignite(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wand_trap_electricity_source(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wand_trap_electricity(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_moon(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_collapse(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   load_pixel_scene_wide(x: number, y: number) {
     this.load_random_pixel_scene(this.g_pixel_scene_wide, x, y);
@@ -1094,7 +1055,7 @@ class Vault extends Base {
     this.EntityLoad("data/entities/props/physics_trap_electricity_enabled.xml", x, y);
   }
   spawn_shopitem(x: number, y: number) {
-    this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, null]);
+    this.HandleInterest("ShopInfoProvider", x, y, [x, y, false, null]);
   }
   spawn_laser_trap(x: number, y: number) {
     this.randoms.SetRandomSeed(x, y);
@@ -1106,19 +1067,9 @@ class Vault extends Base {
     }
   }
   spawn_lab_puzzle(x: number, y: number) {
-    this.randoms.SetRandomSeed(x, y)
-    const type_a = this.randoms.randomFromArray([
-      "poly",
-      "tele",
-      "charm",
-      "berserk",
-    ]);
-    const type_b = this.randoms.randomFromArray([
-      "protect",
-      "worm",
-      "invis",
-      "speed",
-    ]);
+    this.randoms.SetRandomSeed(x, y);
+    const type_a = this.randoms.randomFromArray(["poly", "tele", "charm", "berserk"]);
+    const type_b = this.randoms.randomFromArray(["protect", "worm", "invis", "speed"]);
     this.EntityLoad("data/entities/buildings/vault_lab_puzzle_" + type_a + ".xml", x - 10, y);
     this.EntityLoad("data/entities/buildings/vault_lab_puzzle_" + type_b + ".xml", x + 11, y);
   }

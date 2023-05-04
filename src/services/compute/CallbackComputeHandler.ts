@@ -8,7 +8,7 @@ export class CallbackComputeHandler extends BaseComputeProvider {
     public onUpdate: (status: Status) => void,
     public chunkProvider: ChunkProvider,
     public rules: ILogicRules,
-    public seedSolver: SeedSolver,
+    public seedSolver: SeedSolver
   ) {
     super(onUpdate, chunkProvider, rules);
   }

@@ -1,8 +1,7 @@
-import { capitalize, camelCase } from 'lodash';
+import { capitalize, camelCase } from "lodash";
 
 const MI = (maps: any[], luas: Map<string, string>) => {
-  let res =
-    '/* This file is auto-generated from dataScripts/mapsToObj. Do not modify it! */\n';
+  let res = "/* This file is auto-generated from dataScripts/mapsToObj. Do not modify it! */\n";
 
   for (let i of [...luas.values()]) {
     res += `import ${i} from './impl/${i}'; \n`;
@@ -25,9 +24,9 @@ const MI = (maps: any[], luas: Map<string, string>) => {
 
 const generateImpl = (map: any) => {
   if (!map.config) {
-    return '';
+    return "";
   }
-  let res = '';
+  let res = "";
 
   res += `\n // ${map.lua_script} \n`;
 
@@ -40,7 +39,7 @@ const generateImpl = (map: any) => {
   res += `chestLevel = ${map.config.chestLevel};\n`;
 
   for (const n in map.config) {
-    if (!n.startsWith('g_')) {
+    if (!n.startsWith("g_")) {
       continue;
     }
     res += `${n} = ${JSON.stringify(map.config[n])}\n`;
@@ -76,21 +75,20 @@ const generateMapImpls = async (maps: any): Promise<IRecturn> => {
   const mapImplFileData = Object.values(maps).map((m: any) => ({
     name: `${formatName(m.name)}`,
     lua_script: m.lua_script,
-    color: m.color
+    color: m.color,
   }));
 
   res.push({
-    fileName: 'MapImplementations.ts',
-    file: MI(mapImplFileData, uniqueLuas)
+    fileName: "MapImplementations.ts",
+    file: MI(mapImplFileData, uniqueLuas),
   });
 
   for (const l of [...uniqueLuas.keys()]) {
     const map = mapArr.find(m => m.lua_script === l);
     res.push({
       fileName: `impl/${formatName((map as any).name)}.ts`,
-      file: generateImpl(map)
+      file: generateImpl(map),
     });
-
   }
 
   return res;

@@ -374,7 +374,14 @@ class Rainforestdark extends Base {
     const r = this.randoms.ProceduralRandomf(x - 11.631, y + 10.2257, 0, 1);
 
     if (r > 0.27)
-      this.LoadPixelScene("data/biome_impl/wand_altar.png", "data/biome_impl/wand_altar_visual.png", x - 10, y - 17, "", true)
+      this.LoadPixelScene(
+        "data/biome_impl/wand_altar.png",
+        "data/biome_impl/wand_altar_visual.png",
+        x - 10,
+        y - 17,
+        "",
+        true
+      );
   }
   spawn_props(x: number, y: number) {
     this.spawn(this.g_props, x, y);
@@ -394,30 +401,26 @@ class Rainforestdark extends Base {
   spawn_unique_enemy2(x: number, y: number) {
     this.spawn(this.g_unique_enemy, x, y);
   }
-  spawn_scavengers(x: number, y: number) {
-  }
+  spawn_scavengers(x: number, y: number) {}
   spawn_large_enemies(x: number, y: number) {
     this.spawn(this.g_large_enemies, x, y);
   }
   spawn_lamp2(x: number, y: number) {
     this.spawn(this.g_lamp2, x - 8, y - 4, 0, 0);
   }
-  load_pixel_scene4(x: number, y: number) {
-  }
+  load_pixel_scene4(x: number, y: number) {}
   spawn_vines(x: number, y: number) {
-    this.spawn(this.g_vines, x + 5, y + 5)
+    this.spawn(this.g_vines, x + 5, y + 5);
     // -- chance for an extra spawn for denser vineage
     if (this.randoms.ProceduralRandomf(x, y, 0, 1) < 0.5) {
-      this.spawn(this.g_vines, x, y + 5)
+      this.spawn(this.g_vines, x, y + 5);
     }
   }
-  spawn_dragonspot(x: number, y: number) {
-  }
+  spawn_dragonspot(x: number, y: number) {}
   spawn_root_grower(x: number, y: number) {
-    if (this.randoms.ProceduralRandomf(x, y, 0, 1) < 0.5) return
-    this.EntityLoad("data/entities/props/root_grower.xml", x + 5, y + 5)
+    if (this.randoms.ProceduralRandomf(x, y, 0, 1) < 0.5) return;
+    this.EntityLoad("data/entities/props/root_grower.xml", x + 5, y + 5);
   }
-  spawn_tree(x: number, y: number) {
-  }
+  spawn_tree(x: number, y: number) {}
 }
 export default Rainforestdark;

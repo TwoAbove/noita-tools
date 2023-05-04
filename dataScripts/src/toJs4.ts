@@ -1,4 +1,4 @@
-const l2j = require('lua2js');
+const l2j = require("lua2js");
 
 const text = `
 

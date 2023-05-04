@@ -2,7 +2,9 @@
   padding: 16px;
 }
 
-html, .App, #root {
+html,
+.App,
+#root {
   height: 100%;
 }
 .App {

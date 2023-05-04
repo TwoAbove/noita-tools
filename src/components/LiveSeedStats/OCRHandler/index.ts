@@ -1,20 +1,23 @@
 // import Tesseract from 'tesseract.js';
-import Tesseract from '../../../../node_modules/tesseract.js/src/index.js';
+import Tesseract from "../../../../node_modules/tesseract.js/src/index.js";
 
+import genCanvases, { IFontCanvases } from "./getFontCanvases";
+import {
+  copyImage,
+  crop,
+  enhance,
+  stretch,
+  diff,
+  invert,
+  printImage,
+} from "../../../services/imageActions/webCanvasImageActions";
 
-import genCanvases, { IFontCanvases } from './getFontCanvases';
-import { copyImage, crop, enhance, stretch, diff, invert, printImage } from '../../../services/imageActions/webCanvasImageActions';
-
-const startCapture = async (
-  displayMediaOptions: MediaStreamConstraints
-): Promise<MediaStream | null> => {
+const startCapture = async (displayMediaOptions: MediaStreamConstraints): Promise<MediaStream | null> => {
   let captureStream: MediaStream;
   try {
-    captureStream = await navigator.mediaDevices.getDisplayMedia(
-      displayMediaOptions
-    );
+    captureStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
   } catch (err) {
-    console.error('Error: ' + err);
+    console.error("Error: " + err);
     return null;
   }
   return captureStream;
@@ -44,12 +47,10 @@ class OCRHandler extends EventTarget {
     if (config.canvasRef) {
       this.canvasRef = config.canvasRef;
     }
-    if (
-      config.onUpdate
-    ) {
+    if (config.onUpdate) {
       this.onUpdate = config.onUpdate;
     } else {
-      this.onUpdate = () => { };
+      this.onUpdate = () => {};
     }
     const init = async () => {
       await this.startTesseract();
@@ -69,23 +70,23 @@ class OCRHandler extends EventTarget {
     const worker = await Tesseract.createWorker({
       // langPath: 'https://tessdata.projectnaptha.com/4.0.0_fast',
       // langPath: '/ocr/good',
-      errorHandler: (e) => {
+      errorHandler: e => {
         console.error(e);
         this.startTesseract().catch(e => console.error(e));
       },
       // corePath: '/ocr/tesseract-core.wasm.js',
       // logger: console.log,
-      cacheMethod: 'none'
+      cacheMethod: "none",
       // logger: this.canvasRef ? console.log : () => { },
     });
-    await worker.loadLanguage('eng');
-    await worker.initialize('eng');
+    await worker.loadLanguage("eng");
+    await worker.initialize("eng");
     await worker.setParameters({
       tessedit_ocr_engine_mode: Tesseract.OEM.TESSERACT_ONLY,
       tessedit_pageseg_mode: Tesseract.PSM.AUTO_ONLY, // https://github.com/tesseract-ocr/tesseract/blob/4.0.0/src/ccstruct/publictypes.h#L163
-      tessjs_create_hocr: '0',
-      tessjs_create_tsv: '0',
-      tessjs_create_box: '0',
+      tessjs_create_hocr: "0",
+      tessjs_create_tsv: "0",
+      tessjs_create_box: "0",
     });
 
     if (this.tesseractWorker) {
@@ -136,10 +137,10 @@ class OCRHandler extends EventTarget {
         return;
       }
       if (seed) {
-        this.dispatchEvent(new CustomEvent('seed', { detail: { seed } }));
+        this.dispatchEvent(new CustomEvent("seed", { detail: { seed } }));
       }
     } catch (e) {
-      console.error('captureLoop error:', e);
+      console.error("captureLoop error:", e);
       await this.stopCapture();
       // return this.startCapture();
     }
@@ -148,16 +149,19 @@ class OCRHandler extends EventTarget {
 
   async captureLoop() {
     while (this.loop) {
-      if (((+new Date()) - (+this.lastCapture)) < 1000) {
+      if (+new Date() - +this.lastCapture < 1000) {
         await new Promise(r => setTimeout(r, 250));
       }
-      if (this.canvasRef) { // to debug
-        console.log('One-time capture');
-        await new Promise(res => setTimeout(res, 5000)).then(() => { this.loop = false });
+      if (this.canvasRef) {
+        // to debug
+        console.log("One-time capture");
+        await new Promise(res => setTimeout(res, 5000)).then(() => {
+          this.loop = false;
+        });
       }
       await this.getBitmap();
       if (!this.lastBitmap) {
-        throw new Error('Cannot get bitmap');
+        throw new Error("Cannot get bitmap");
       }
       await this.doLoop();
     }
@@ -175,10 +179,10 @@ class OCRHandler extends EventTarget {
   }
 
   getDisplayParams() {
-    return ({
+    return {
       width: this.lastBitmap!.width,
-      height: this.lastBitmap!.height
-    });
+      height: this.lastBitmap!.height,
+    };
   }
 
   async getSeedFromImage() {
@@ -189,16 +193,21 @@ class OCRHandler extends EventTarget {
     }
 
     const displayParams = this.getDisplayParams();
-    const img = invert(enhance(crop(
-      copyImage(bm),
-      20,
-      displayParams.height - displayParams.height / 8,
-      displayParams.width / 2.3,
-      displayParams.height / 8
-    )));
+    const img = invert(
+      enhance(
+        crop(
+          copyImage(bm),
+          20,
+          displayParams.height - displayParams.height / 8,
+          displayParams.width / 2.3,
+          displayParams.height / 8
+        )
+      )
+    );
 
-    if (this.canvasRef) { // to debug
-      const ctx = this.canvasRef.current!.getContext('2d')!;
+    if (this.canvasRef) {
+      // to debug
+      const ctx = this.canvasRef.current!.getContext("2d")!;
       // ctx.fillStyle = "#000000";
       // ctx.fillRect(0, 0, 1000, 1000);
       ctx.drawImage(img, 40, 0);
@@ -209,34 +218,37 @@ class OCRHandler extends EventTarget {
     if (!secondLine) {
       return;
     }
-    if (!secondLine.words[0].text.includes('eed')) {
+    if (!secondLine.words[0].text.includes("eed")) {
       return;
     }
     let i = 0; // to debug
-    const text = secondLine.words[1].symbols.reduce<string>((t, s) => {
-      const letter = (crop(img, s.bbox.x0, s.bbox.y0, s.bbox.x1 - s.bbox.x0, s.bbox.y1 - s.bbox.y0));
-      const char = this.getBestFitChar(letter, i);
-      t += char;
-      i++;
-      return t;
-    }, '').replace(/\s/g, '');
+    const text = secondLine.words[1].symbols
+      .reduce<string>((t, s) => {
+        const letter = crop(img, s.bbox.x0, s.bbox.y0, s.bbox.x1 - s.bbox.x0, s.bbox.y1 - s.bbox.y0);
+        const char = this.getBestFitChar(letter, i);
+        t += char;
+        i++;
+        return t;
+      }, "")
+      .replace(/\s/g, "");
     this.onUpdate();
     return text;
   }
 
   getBestFitChar = (char: any, debugOffset = 0): string => {
     let maxFit = Number.MAX_SAFE_INTEGER;
-    let bestChar = '';
+    let bestChar = "";
     let i = 0;
     for (const [fontChar, fontCharCanvas] of Object.entries(this.fontData)) {
       const stretched = stretch(fontCharCanvas, char.width, char.height);
       const d = diff(char, stretched);
 
       if (maxFit > d) {
-        if (this.canvasRef) { // to debug
-          const ctx = this.canvasRef.current!.getContext('2d')!;
-          ctx.drawImage(char, 1 + (20 * (i)), 20 * (debugOffset));
-          ctx.drawImage(stretched, 1 + (20 * (i)), 40 * (debugOffset));
+        if (this.canvasRef) {
+          // to debug
+          const ctx = this.canvasRef.current!.getContext("2d")!;
+          ctx.drawImage(char, 1 + 20 * i, 20 * debugOffset);
+          ctx.drawImage(stretched, 1 + 20 * i, 40 * debugOffset);
           // ctx.drawImage(fontCharCanvas, 1 + 20 * i, 60 * debugOffset);
         }
         maxFit = d;
@@ -245,13 +257,13 @@ class OCRHandler extends EventTarget {
       i++;
     }
     return bestChar;
-  }
+  };
 }
 
 export const useOCRHandler = (config: OCRConfig) => {
   const ocrHandler = new OCRHandler(config);
 
   return ocrHandler;
-}
+};
 
 export default OCRHandler;

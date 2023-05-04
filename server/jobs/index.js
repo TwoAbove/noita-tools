@@ -1,48 +1,48 @@
-const cron = require('node-cron');
+const cron = require("node-cron");
 
-const { Job } = require('../db');
+const { Job } = require("../db");
 
 const tasks = {};
 
 const handleJobs = async () => {
-	const logs = [];
-	logs.push('Running jobs');
+  const logs = [];
+  logs.push("Running jobs");
 
-	const now = new Date();
+  const now = new Date();
 
-	const jobs = await Job.find({ runAt: { $lte: now }, status: 'pending' });
+  const jobs = await Job.find({ runAt: { $lte: now }, status: "pending" });
 
-	logs.push(`Found jobs: ${jobs.length}`);
+  logs.push(`Found jobs: ${jobs.length}`);
 
-	for (const job of jobs) {
-		logs.push(`Running job: ${job._id}, ${job.type}`);
-		job.status = 'running';
-		job.updatedAt = new Date();
-		await job.save();
+  for (const job of jobs) {
+    logs.push(`Running job: ${job._id}, ${job.type}`);
+    job.status = "running";
+    job.updatedAt = new Date();
+    await job.save();
 
-		try {
-			const task = tasks[job.type];
-			if (!task) {
-				throw new Error(`No task found for job type: ${job.type}`);
-			}
-			const result = tasks[job.type](job.data);
-			job.result = result;
-			job.status = 'success';
-		} catch (e) {
-			logs.push(e);
-			job.result = e;
-			job.status = 'failed';
-		}
+    try {
+      const task = tasks[job.type];
+      if (!task) {
+        throw new Error(`No task found for job type: ${job.type}`);
+      }
+      const result = tasks[job.type](job.data);
+      job.result = result;
+      job.status = "success";
+    } catch (e) {
+      logs.push(e);
+      job.result = e;
+      job.status = "failed";
+    }
 
-		job.updatedAt = new Date();
-		await job.save();
-		logs.push(`Finished job: ${job._id}, ${job.type}`);
-	}
+    job.updatedAt = new Date();
+    await job.save();
+    logs.push(`Finished job: ${job._id}, ${job.type}`);
+  }
 
-	logs.push('Finished jobs');
+  logs.push("Finished jobs");
 
-	console.log(logs.join('\n'));
+  console.log(logs.join("\n"));
 };
 
 // Run every minute
-cron.schedule('* * * * *', handleJobs);
+cron.schedule("* * * * *", handleJobs);

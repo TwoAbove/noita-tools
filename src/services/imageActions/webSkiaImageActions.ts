@@ -1,596 +1,541 @@
 import { CanvasKit, EmulatedCanvas2D } from "canvaskit-wasm";
 import { IRandom } from "../SeedInfo/random";
 
-
-import { rgbaToInt, hexTorgba, getGlobalPos, getLocalPos, getTilePos, hexRGBAtoIntRGB, pad, rgb2rgba, rgba2rgb, rgbaToHex, rgbToHsl, threshold, getPos, isBlack } from './commonImageActions';
+import {
+  rgbaToInt,
+  hexTorgba,
+  getGlobalPos,
+  getLocalPos,
+  getTilePos,
+  hexRGBAtoIntRGB,
+  pad,
+  rgb2rgba,
+  rgba2rgb,
+  rgbaToHex,
+  rgbToHsl,
+  threshold,
+  getPos,
+  isBlack,
+} from "./commonImageActions";
 
 const load = (skia: CanvasKit) => {
+  const { MakeCanvas } = skia;
 
-	const { MakeCanvas } = skia;
+  class Canvas {
+    canvas: EmulatedCanvas2D;
 
-	class Canvas {
-		canvas: EmulatedCanvas2D;
+    constructor(public width, public height) {
+      this.canvas = MakeCanvas(width, height);
+    }
 
-		constructor(public width, public height) {
-			this.canvas = MakeCanvas(width, height);
-		}
+    getContext(type): CanvasRenderingContext2D {
+      return this.canvas.getContext("2d")!;
+    }
+  }
+  const getContext = (canvas: Canvas): CanvasRenderingContext2D => {
+    return canvas.getContext("2d")! as CanvasRenderingContext2D;
+  };
 
-		getContext(type): CanvasRenderingContext2D {
-			return this.canvas.getContext('2d')!;
-		}
-	}
-	const getContext = (
-		canvas: Canvas,
-	): CanvasRenderingContext2D => {
-		return canvas.getContext('2d')! as CanvasRenderingContext2D;
-	};
+  const createCanvas = (w, h): Canvas => {
+    const can = new Canvas(w, h); // document.createElement('canvas');
+    // can.width = w;
+    // can.height = h;
+    const ctx = getContext(can) as any;
+    ctx.msImageSmoothingEnabled = false;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
+    return can;
+  };
 
-	const createCanvas = (w, h): Canvas => {
-		const can = new Canvas(w, h); // document.createElement('canvas');
-		// can.width = w;
-		// can.height = h;
-		const ctx = getContext(can) as any;
-		ctx.msImageSmoothingEnabled = false;
-		ctx.webkitImageSmoothingEnabled = false;
-		ctx.imageSmoothingEnabled = false;
-		return can;
-	};
+  const imageFromBase64 = async (dataUri: string): Promise<ImageData> => {
+    // const { data, width, height } = decode(blob);
+    // return new ImageData(new Uint8ClampedArray(data), width, height);
 
-	const imageFromBase64 = async (dataUri: string): Promise<ImageData> => {
-		// const { data, width, height } = decode(blob);
-		// return new ImageData(new Uint8ClampedArray(data), width, height);
+    // return new Promise(res => {
+    // 	getPixelsFromString(blob, (err, pixels) => {
+    // 		savePixels(pixels, 'image/png').then(arr => {
+    // 			res(new ImageData(new Uint8ClampedArray(arr), pixels.shape[0], pixels.shape[1]));
+    // 		}).catch(e => console.error(e));
+    // 	});
+    // });
 
-		// return new Promise(res => {
-		// 	getPixelsFromString(blob, (err, pixels) => {
-		// 		savePixels(pixels, 'image/png').then(arr => {
-		// 			res(new ImageData(new Uint8ClampedArray(arr), pixels.shape[0], pixels.shape[1]));
-		// 		}).catch(e => console.error(e));
-		// 	});
-		// });
+    return new Promise(res => {
+      const img = new Image();
+      img.onload = () => {
+        const can = createCanvas(img.width, img.height);
+        const ctx = getContext(can);
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, img.width, img.height);
+        res(imageData);
+      };
+      img.src = dataUri;
+    });
 
-		return new Promise(res => {
-			const img = new Image();
-			img.onload = () => {
-				const can = createCanvas(img.width, img.height);
-				const ctx = getContext(can);
-				ctx.drawImage(img, 0, 0);
-				const imageData = ctx.getImageData(0, 0, img.width, img.height);
-				res(imageData);
-			}
-			img.src = dataUri;
-		});
+    // const btmp = await createImageBitmap(await (await fetch(dataUri.toString())).blob());
 
+    // ctx.drawImage(btmp, 0, 0);
+    // const imageData = getContext(can).getImageData(0, 0, btmp.width, btmp.height);
 
+    // return imageData;
+  };
 
-		// const btmp = await createImageBitmap(await (await fetch(dataUri.toString())).blob());
+  const imageToBase64 = async (img: ImageData | ImageBitmap): Promise<string> => {
+    // for some reason the typing is funky
+    const can: any = createCanvas(img.width, img.height);
+    const ctx = getContext(can);
+    // Draw the image
+    const i = await createImageBitmap(img);
+    ctx.drawImage(i, 0, 0);
+    return can.convertToBlob().then(blob => {
+      return new Promise((resolve, _) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    });
+  };
 
+  const copyImage = img => {
+    const image = createCanvas(img.width, img.height);
+    const ctx = getContext(image);
+    if (img instanceof ImageData) {
+      ctx.putImageData(img, 0, 0);
+    } else {
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+    }
+    return image;
+  };
 
-		// ctx.drawImage(btmp, 0, 0);
-		// const imageData = getContext(can).getImageData(0, 0, btmp.width, btmp.height);
+  const getPixels = (img: any): ImageData => {
+    const ctx = img.getContext("2d")!;
+    return ctx.getImageData(0, 0, img.width, img.height);
+  };
 
-		// return imageData;
-	};
+  const toDark = (pixels: ImageData, dark = [0, 0, 0]) => {
+    // light, dark arrays of RGB
+    var d = pixels.data,
+      i = 0,
+      l = d.length;
+    while (l-- > 0) {
+      if (d[i] !== 255 || d[i + 1] !== 255 || d[i + 2] !== 255) {
+        [d[i], d[i + 1], d[i + 2]] = dark;
+      }
+      i += 4;
+    }
+    return pixels;
+  };
 
-	const imageToBase64 = async (
-		img: ImageData | ImageBitmap
-	): Promise<string> => {
-		// for some reason the typing is funky
-		const can: any = createCanvas(img.width, img.height);
-		const ctx = getContext(can);
-		// Draw the image
-		const i = await createImageBitmap(img);
-		ctx.drawImage(i, 0, 0);
-		return can.convertToBlob().then(blob => {
-			return new Promise((resolve, _) => {
-				const reader = new FileReader();
-				reader.onloadend = () => resolve(reader.result);
-				reader.readAsDataURL(blob);
-			});
-		});
-	};
+  const scale = (cv: any, scale: number): Canvas => {
+    const canvas = createCanvas(cv.width * scale, cv.height * scale) as any;
+    const ctx = getContext(canvas);
 
-	const copyImage = img => {
-		const image = createCanvas(img.width, img.height);
-		const ctx = getContext(image);
-		if (img instanceof ImageData) {
-			ctx.putImageData(img, 0, 0);
-		} else {
-			ctx.drawImage(img, 0, 0, img.width, img.height);
-		}
-		return image;
-	};
+    ctx.drawImage(cv, 0, 0, canvas.width, canvas.height);
+    return canvas;
+  };
 
-	const getPixels = (img: any): ImageData => {
-		const ctx = img.getContext('2d')!;
-		return ctx.getImageData(0, 0, img.width, img.height);
-	};
+  const scaleImageData = (img: ImageData, s: number): Canvas => {
+    const cv = createCanvas(img.width, img.height);
+    const cx = getContext(cv);
+    cx.putImageData(img, 0, 0);
 
-	const toDark = (pixels: ImageData, dark = [0, 0, 0]) => {
-		// light, dark arrays of RGB
-		var d = pixels.data,
-			i = 0,
-			l = d.length;
-		while (l-- > 0) {
-			if (d[i] !== 255 || d[i + 1] !== 255 || d[i + 2] !== 255) {
-				[d[i], d[i + 1], d[i + 2]] = dark;
-			}
-			i += 4;
-		}
-		return pixels;
-	};
+    return scale(cv, s);
+  };
 
-	const scale = (cv: any, scale: number): Canvas => {
-		const canvas = createCanvas(cv.width * scale, cv.height * scale) as any;
-		const ctx = getContext(canvas);
+  const stretch = (img, width, height): Canvas => {
+    const canvas = createCanvas(width, height);
+    const ctx = getContext(canvas);
+    ctx.drawImage(img, 0, 0, width, height);
+    // canvas.style.transform =`scale(${img.width / width},${img.height / height})`;
 
-		ctx.drawImage(cv, 0, 0, canvas.width, canvas.height);
-		return canvas;
-	};
+    return canvas;
+  };
 
-	const scaleImageData = (img: ImageData, s: number): Canvas => {
-		const cv = createCanvas(img.width, img.height);
-		const cx = getContext(cv);
-		cx.putImageData(img, 0, 0);
+  const g = (c: any): Uint8ClampedArray => getContext(c).getImageData(0, 0, c.width, c.height)!.data;
 
-		return scale(cv, s)
-	};
+  const diff = (img1: Canvas, img2: Canvas): number => {
+    const d1 = g(img1);
+    const d2 = g(img2);
+    let count = 0;
+    for (let i = 0; i < d1.length; i++) {
+      if (d1[i] !== d2[i]) {
+        count++;
+      }
+    }
+    return count;
+  };
 
-	const stretch = (img, width, height): Canvas => {
-		const canvas = createCanvas(width, height);
-		const ctx = getContext(canvas);
-		ctx.drawImage(img, 0, 0, width, height);
-		// canvas.style.transform =`scale(${img.width / width},${img.height / height})`;
+  const cropImageData = (
+    img: ImageData,
+    cropX: number,
+    cropY: number,
+    cropWidth: number,
+    cropHeight: number
+  ): ImageData => {
+    const c = copyImage(img);
+    const res = crop(c, cropX, cropY, cropWidth, cropHeight) as any;
+    return getContext(res).getImageData(0, 0, res.width, res.height);
+    // console.log({ img, cropX, cropY, cropWidth, cropHeight });
+    // const res = new ImageData(cropWidth, cropHeight);
 
-		return canvas;
-	};
+    // let i = 0;
+    // for (let x = cropX; x < cropX + cropWidth; x++) {
+    // 	for (let y = cropY; y < cropY + cropHeight; y++) {
+    // 		let offset = (x * cropWidth + y) * 4;
+    // 		res.data[i++] = img.data[offset++];
+    // 		res.data[i++] = img.data[offset++];
+    // 		res.data[i++] = img.data[offset++];
+    // 		res.data[i++] = img.data[offset++];
+    // 	}
+    // }
+    // console.log({ cropWidth, cropHeight, pixels: cropWidth * cropHeight * 4, i });
+    // return res;
+  };
 
-	const g = (c: any): Uint8ClampedArray =>
-		getContext(c).getImageData(0, 0, c.width, c.height)!.data;
+  const crop = (cv: any, cropX: number, cropY: number, cropWidth: number, cropHeight: number): Canvas => {
+    const canvas = createCanvas(cropWidth, cropHeight);
+    const ctx = getContext(canvas);
+    ctx.drawImage(cv, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+    return canvas;
+  };
 
-	const diff = (img1: Canvas, img2: Canvas): number => {
-		const d1 = g(img1);
-		const d2 = g(img2);
-		let count = 0;
-		for (let i = 0; i < d1.length; i++) {
-			if (d1[i] !== d2[i]) {
-				count++;
-			}
-		}
-		return count;
-	};
+  const invert = (cv: any): Canvas => {
+    const ctx = getContext(cv);
+    const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
+    const data = imageData.data;
+    for (var i = 0; i < data.length; i += 4) {
+      // red
+      data[i] = 255 - data[i];
+      // green
+      data[i + 1] = 255 - data[i + 1];
+      // blue
+      data[i + 2] = 255 - data[i + 2];
+    }
+    return cv;
+  };
 
-	const cropImageData = (
-		img: ImageData,
-		cropX: number,
-		cropY: number,
-		cropWidth: number,
-		cropHeight: number
-	): ImageData => {
-		const c = copyImage(img);
-		const res = crop(c, cropX, cropY, cropWidth, cropHeight) as any;
-		return getContext(res).getImageData(0, 0, res.width, res.height);
-		// console.log({ img, cropX, cropY, cropWidth, cropHeight });
-		// const res = new ImageData(cropWidth, cropHeight);
+  const unAlpha = (cv: any): Canvas => {
+    const ctx = getContext(cv);
+    const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
+    const data = imageData.data;
+    for (var i = 0; i < data.length; i += 4) {
+      data[i + 3] = 255;
+    }
+    return cv;
+  };
 
-		// let i = 0;
-		// for (let x = cropX; x < cropX + cropWidth; x++) {
-		// 	for (let y = cropY; y < cropY + cropHeight; y++) {
-		// 		let offset = (x * cropWidth + y) * 4;
-		// 		res.data[i++] = img.data[offset++];
-		// 		res.data[i++] = img.data[offset++];
-		// 		res.data[i++] = img.data[offset++];
-		// 		res.data[i++] = img.data[offset++];
-		// 	}
-		// }
-		// console.log({ cropWidth, cropHeight, pixels: cropWidth * cropHeight * 4, i });
-		// return res;
-	};
+  const enhance = (cv: any): Canvas => {
+    const canvas = createCanvas(cv.width, cv.height);
+    const ctx = getContext(canvas);
+    ctx.filter = "brightness(600%) contrast(400%)";
+    ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(cv, 0, 0);
+    const pixels = getPixels(canvas);
+    toDark(pixels);
+    const thresholdImage = copyImage(pixels);
+    return thresholdImage;
+  };
 
-	const crop = (
-		cv: any,
-		cropX: number,
-		cropY: number,
-		cropWidth: number,
-		cropHeight: number
-	): Canvas => {
-		const canvas = createCanvas(cropWidth, cropHeight);
-		const ctx = getContext(canvas);
-		ctx.drawImage(
-			cv,
-			cropX,
-			cropY,
-			cropWidth,
-			cropHeight,
-			0,
-			0,
-			cropWidth,
-			cropHeight
-		);
-		return canvas;
-	};
+  const clearBg = (cv: any): Canvas => {
+    const ctx = getContext(cv);
+    const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
+    const data = imageData.data;
+    for (var i = 0; i < data.length; i += 4) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      // const a = data[i + 3];
+      if (r === 0 && g === 0 && b === 0) {
+        data[i + 3] = 0;
+      } else {
+        data[i + 3] = 255;
+      }
+    }
+    return copyImage(imageData);
+    // ctx.putImageData(imageData, 0, 0);
+    // return cvs;
+  };
 
-	const invert = (cv: any): Canvas => {
-		const ctx = getContext(cv);
-		const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
-		const data = imageData.data;
-		for (var i = 0; i < data.length; i += 4) {
-			// red
-			data[i] = 255 - data[i];
-			// green
-			data[i + 1] = 255 - data[i + 1];
-			// blue
-			data[i + 2] = 255 - data[i + 2];
-		}
-		return cv;
-	};
+  const drawImageData = (
+    src: ImageData,
+    dest: Canvas,
+    startX: number,
+    startY: number,
+    color_to_material_table?: { [color: string]: string }
+  ) => {
+    const img = new ImageData(src.data, src.width, src.height);
 
-	const unAlpha = (cv: any): Canvas => {
-		const ctx = getContext(cv);
-		const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
-		const data = imageData.data;
-		for (var i = 0; i < data.length; i += 4) {
-			data[i + 3] = 255;
-		}
-		return cv;
-	};
+    let f = {};
+    if (color_to_material_table) {
+      for (const color in color_to_material_table) {
+        f[rgbaToInt(...hexTorgba(color))] = hexTorgba(color_to_material_table[color]);
+      }
+    }
 
-	const enhance = (cv: any): Canvas => {
-		const canvas = createCanvas(cv.width, cv.height);
-		const ctx = getContext(canvas);
-		ctx.filter = 'brightness(600%) contrast(400%)';
-		ctx.imageSmoothingEnabled = false;
-		ctx.imageSmoothingQuality = 'high';
-		ctx.drawImage(cv, 0, 0);
-		const pixels = getPixels(canvas);
-		toDark(pixels);
-		const thresholdImage = copyImage(pixels);
-		return thresholdImage;
-	};
+    if (color_to_material_table) {
+      for (let p = 0; p < src.data.length; p += 4) {
+        const c = rgbaToInt(src.data[p + 0], src.data[p + 1], src.data[p + 2], src.data[p + 3]);
+        if (f[c]) {
+          img.data[p + 0] = f[c][0];
+          img.data[p + 1] = f[c][1];
+          img.data[p + 2] = f[c][2];
+          img.data[p + 3] = f[c][3];
+        }
+      }
+    }
 
-	const clearBg = (cv: any): Canvas => {
-		const ctx = getContext(cv);
-		const imageData = ctx.getImageData(0, 0, cv.width, cv.height);
-		const data = imageData.data;
-		for (var i = 0; i < data.length; i += 4) {
-			const r = data[i];
-			const g = data[i + 1];
-			const b = data[i + 2];
-			// const a = data[i + 3];
-			if (r === 0 && g === 0 && b === 0) {
-				data[i + 3] = 0;
-			} else {
-				data[i + 3] = 255;
-			}
-		}
-		return copyImage(imageData);
-		// ctx.putImageData(imageData, 0, 0);
-		// return cvs;
-	};
+    // use temporary canvas to preserve transparent pixels
+    const tmp = copyImage(img);
+    const ctx = getContext(dest);
+    ctx.drawImage(tmp as any, startX, startY);
+  };
 
-	const drawImageData = (
-		src: ImageData,
-		dest: Canvas,
-		startX: number,
-		startY: number,
-		color_to_material_table?: { [color: string]: string }
-	) => {
-		const img = new ImageData(src.data, src.width, src.height);
+  const printImage = (image: ImageData) => {
+    const cv = createCanvas(image.width, image.height);
+    const cx = getContext(cv);
+    cx.putImageData(image, 0, 0);
+    cv[
+      cv["convertToBlob"]
+        ? "convertToBlob" // specs
+        : "toBlob" // current Firefox
+    ]().then(blob => {
+      const fr = new FileReader();
+      fr.readAsDataURL(blob);
 
-		let f = {};
-		if (color_to_material_table) {
-			for (const color in color_to_material_table) {
-				f[rgbaToInt(...hexTorgba(color))] = hexTorgba(
-					color_to_material_table[color]
-				);
-			}
-		}
+      fr.addEventListener(
+        "load",
+        () => {
+          // convert image file to base64 string
+          const dataURL = fr.result;
+          console.trace();
+          console.log(dataURL);
+          // console.log(
+          // 	'%c ',
+          // 	`font-size:400px; width:1000px; background:url(${dataURL}) no-repeat;`
+          // );
+        },
+        false
+      );
+    });
+  };
 
-		if (color_to_material_table) {
-			for (let p = 0; p < src.data.length; p += 4) {
-				const c = rgbaToInt(
-					src.data[p + 0],
-					src.data[p + 1],
-					src.data[p + 2],
-					src.data[p + 3]
-				);
-				if (f[c]) {
-					img.data[p + 0] = f[c][0];
-					img.data[p + 1] = f[c][1];
-					img.data[p + 2] = f[c][2];
-					img.data[p + 3] = f[c][3];
-				}
-			}
-		}
+  const getColor = (map: ImageData, x: number, y: number) => {
+    if (x < 0 || y < 0 || x >= map.width || y >= map.height) {
+      return 0;
+    }
+    const pixelPos = 4 * (x + y * map.width);
+    const color = rgbaToInt(
+      map.data[pixelPos + 0],
+      map.data[pixelPos + 1],
+      map.data[pixelPos + 2],
+      map.data[pixelPos + 3]
+    );
+    return color;
+  };
 
-		// use temporary canvas to preserve transparent pixels
-		const tmp = copyImage(img);
-		const ctx = getContext(dest);
-		ctx.drawImage(tmp as any, startX, startY);
-	};
+  const somePixelsSync = (image: ImageData, step: number, cb: (x: number, y: number, color: number) => boolean) => {
+    let img: ImageData;
+    if (!(image as any).data) {
+      img = getPixels(image);
+    } else {
+      img = image as ImageData;
+    }
 
-	const printImage = (image: ImageData) => {
-		const cv = createCanvas(image.width, image.height);
-		const cx = getContext(cv);
-		cx.putImageData(image, 0, 0);
-		cv[
-			cv['convertToBlob']
-				? 'convertToBlob' // specs
-				: 'toBlob' // current Firefox
-		]().then(blob => {
-			const fr = new FileReader();
-			fr.readAsDataURL(blob);
+    for (let y = 0; y < image.height; y += step) {
+      for (let x = 0; x < image.width; x += step) {
+        const pos = image.width * y * 4 + x * 4;
+        const r = image.data[pos + 0];
+        const g = image.data[pos + 1];
+        const b = image.data[pos + 2];
+        const a = image.data[pos + 3];
+        const color = rgbaToInt(r, g, b, a);
+        if (cb(x, y, color)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
 
-			fr.addEventListener(
-				'load',
-				() => {
-					// convert image file to base64 string
-					const dataURL = fr.result;
-					console.trace();
-					console.log(dataURL);
-					// console.log(
-					// 	'%c ',
-					// 	`font-size:400px; width:1000px; background:url(${dataURL}) no-repeat;`
-					// );
-				},
-				false
-			);
-		});
-	};
+  const somePixels = async (
+    image: ImageData,
+    step: number,
+    cb: (x: number, y: number, color: number) => Promise<boolean>
+  ) => {
+    for (let y = 0; y < image.height; y += step) {
+      for (let x = 0; x < image.width; x += step) {
+        const pos = image.width * y * 4 + x * 4;
+        const r = image.data[pos + 0];
+        const g = image.data[pos + 1];
+        const b = image.data[pos + 2];
+        const a = image.data[pos + 3];
+        const color = rgbaToInt(r, g, b, a);
+        if (await cb(x, y, color)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
 
-	const getColor = (map: ImageData, x: number, y: number) => {
-		if (x < 0 || y < 0 || x >= map.width || y >= map.height) {
-			return 0;
-		}
-		const pixelPos = 4 * (x + y * map.width);
-		const color = rgbaToInt(
-			map.data[pixelPos + 0],
-			map.data[pixelPos + 1],
-			map.data[pixelPos + 2],
-			map.data[pixelPos + 3]
-		);
-		return color;
-	};
+  const iteratePixels = (image: ImageData, step: number, cb: (x: number, y: number, color: number) => void) => {
+    let img: ImageData;
+    if (!(image as any).data) {
+      img = getPixels(image);
+    } else {
+      img = image as ImageData;
+    }
 
-	const somePixelsSync = (
-		image: ImageData,
-		step: number,
-		cb: (x: number, y: number, color: number) => boolean
-	) => {
-		let img: ImageData;
-		if (!((image as any).data)) {
-			img = getPixels(image);
-		} else {
-			img = image as ImageData;
-		}
+    for (let y = 0; y < img.height; y += step) {
+      for (let x = 0; x < img.width; x += step) {
+        const pos = img.width * y * 4 + x * 4;
+        const r = img.data[pos + 0];
+        const g = img.data[pos + 1];
+        const b = img.data[pos + 2];
+        const a = img.data[pos + 3];
+        const color = rgbaToInt(r, g, b, a);
+        cb(x, y, color);
+      }
+    }
+  };
 
-		for (let y = 0; y < image.height; y += step) {
-			for (let x = 0; x < image.width; x += step) {
-				const pos = image.width * y * 4 + x * 4;
-				const r = image.data[pos + 0];
-				const g = image.data[pos + 1];
-				const b = image.data[pos + 2];
-				const a = image.data[pos + 3];
-				const color = rgbaToInt(r, g, b, a);
-				if (cb(x, y, color)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+  const imageFromHexArray = (hexArray: string[], w: number, h: number): ImageData => {
+    const arr = hexArray.flatMap(hexTorgba);
+    return new ImageData(new Uint8ClampedArray(arr), w, h);
+  };
 
-	const somePixels = async (
-		image: ImageData,
-		step: number,
-		cb: (x: number, y: number, color: number) => Promise<boolean>
-	) => {
-		for (let y = 0; y < image.height; y += step) {
-			for (let x = 0; x < image.width; x += step) {
-				const pos = image.width * y * 4 + x * 4;
-				const r = image.data[pos + 0];
-				const g = image.data[pos + 1];
-				const b = image.data[pos + 2];
-				const a = image.data[pos + 3];
-				const color = rgbaToInt(r, g, b, a);
-				if (await cb(x, y, color)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+  const GenerateMap = (
+    randoms: IRandom,
+    wang: ImageData,
+    color: number,
+    tiles_w: number,
+    tiles_h: number,
+    map_w: number,
+    map_h: number,
+    isCoalMine: boolean,
+    shouldBlockOutRooms: boolean,
+    randomMaterials: number[],
+    xOffset: number,
+    yOffset: number
+  ): ImageData => {
+    const tilesDataPtr = randoms.Module._malloc(4 * tiles_w * tiles_h);
+    // 8-bit (char)
+    const tileData = new Uint8ClampedArray(randoms.Module.HEAPU8.buffer, tilesDataPtr, 4 * tiles_w * tiles_h);
+    tileData.set(wang.data);
 
-	const iteratePixels = (
-		image: ImageData,
-		step: number,
-		cb: (x: number, y: number, color: number) => void
-	) => {
-		let img: ImageData;
-		if (!((image as any).data)) {
-			img = getPixels(image);
-		} else {
-			img = image as ImageData;
-		}
+    // rgba2rgb(wang.data, tileData);
 
-		for (let y = 0; y < img.height; y += step) {
-			for (let x = 0; x < img.width; x += step) {
-				const pos = img.width * y * 4 + x * 4;
-				const r = img.data[pos + 0];
-				const g = img.data[pos + 1];
-				const b = img.data[pos + 2];
-				const a = img.data[pos + 3];
-				const color = rgbaToInt(r, g, b, a);
-				cb(x, y, color);
-			}
-		}
-	};
+    const randomMaterialsPtr = randoms.Module._malloc(randomMaterials.length * 4);
+    // 32-bit (uint)
+    const randomMatData = new Uint32Array(
+      randoms.Module.HEAPU32.buffer,
+      randomMaterialsPtr,
+      randomMaterials.length * 4
+    );
+    randomMatData.set(randomMaterials);
 
-	const imageFromHexArray = (
-		hexArray: string[],
-		w: number,
-		h: number
-	): ImageData => {
-		const arr = hexArray.flatMap(hexTorgba);
-		return new ImageData(new Uint8ClampedArray(arr), w, h);
-	};
+    const resultPtr = randoms.Module._malloc(4 * map_w * map_h);
+    const result = new Uint8ClampedArray(randoms.Module.HEAPU8.buffer, resultPtr, 4 * map_w * map_h);
 
-	const GenerateMap = (
-		randoms: IRandom,
-		wang: ImageData,
-		color: number,
-		tiles_w: number,
-		tiles_h: number,
-		map_w: number,
-		map_h: number,
-		isCoalMine: boolean,
-		shouldBlockOutRooms: boolean,
-		randomMaterials: number[],
-		xOffset: number,
-		yOffset: number
-	): ImageData => {
-		const tilesDataPtr = randoms.Module._malloc(4 * tiles_w * tiles_h);
-		// 8-bit (char)
-		const tileData = new Uint8ClampedArray(
-			randoms.Module.HEAPU8.buffer,
-			tilesDataPtr,
-			4 * tiles_w * tiles_h
-		);
-		tileData.set(wang.data);
+    randoms.Module.GenerateMap(
+      tilesDataPtr,
+      color,
+      tiles_w,
+      tiles_h,
+      resultPtr,
+      map_w,
+      map_h,
+      isCoalMine,
+      shouldBlockOutRooms,
+      randomMaterialsPtr,
+      xOffset,
+      yOffset
+    );
 
-		// rgba2rgb(wang.data, tileData);
+    const resImgData = new ImageData(map_w, map_h);
+    resImgData.data.set(result);
+    // rgb2rgba(result, resImgData.data);
 
-		const randomMaterialsPtr = randoms.Module._malloc(
-			randomMaterials.length * 4
-		);
-		// 32-bit (uint)
-		const randomMatData = new Uint32Array(
-			randoms.Module.HEAPU32.buffer,
-			randomMaterialsPtr,
-			randomMaterials.length * 4
-		);
-		randomMatData.set(randomMaterials);
+    randoms.Module._free(randomMaterialsPtr);
+    randoms.Module._free(tilesDataPtr);
+    randoms.Module._free(resultPtr);
 
-		const resultPtr = randoms.Module._malloc(4 * map_w * map_h);
-		const result = new Uint8ClampedArray(
-			randoms.Module.HEAPU8.buffer,
-			resultPtr,
-			4 * map_w * map_h
-		);
+    return resImgData;
+  };
 
-		randoms.Module.GenerateMap(
-			tilesDataPtr,
-			color,
-			tiles_w,
-			tiles_h,
-			resultPtr,
-			map_w,
-			map_h,
-			isCoalMine,
-			shouldBlockOutRooms,
-			randomMaterialsPtr,
-			xOffset,
-			yOffset
-		);
+  const GetPathMap = (
+    randoms: IRandom,
+    map: ImageData,
+    map_w: number,
+    map_h: number,
+    xOffset: number,
+    yOffset: number
+  ): ImageData => {
+    const mapDataPtr = randoms.Module._malloc(4 * map_w * map_h);
+    // 8-bit (char)
+    const mapData = new Uint8ClampedArray(randoms.Module.HEAPU8.buffer, mapDataPtr, 4 * map_w * map_h);
+    mapData.set(map.data);
+    // rgba2rgb(map.data, mapData);
 
-		const resImgData = new ImageData(map_w, map_h);
-		resImgData.data.set(result);
-		// rgb2rgba(result, resImgData.data);
+    const resultPtr = randoms.Module._malloc(4 * map_w * map_h);
+    const result = new Uint8ClampedArray(randoms.Module.HEAPU8.buffer, resultPtr, 4 * map_w * map_h);
 
-		randoms.Module._free(randomMaterialsPtr);
-		randoms.Module._free(tilesDataPtr);
-		randoms.Module._free(resultPtr);
+    randoms.Module.GeneratePathMap(mapDataPtr, map_w, map_h, resultPtr, xOffset, yOffset);
 
-		return resImgData;
-	}
+    const resImgData = new ImageData(result, map_w, map_h);
+    // resImgData.data.set(result);
+    // rgb2rgba(result, resImgData.data);
 
-	const GetPathMap = (
-		randoms: IRandom,
-		map: ImageData,
-		map_w: number,
-		map_h: number,
-		xOffset: number,
-		yOffset: number
-	): ImageData => {
-		const mapDataPtr = randoms.Module._malloc(4 * map_w * map_h);
-		// 8-bit (char)
-		const mapData = new Uint8ClampedArray(
-			randoms.Module.HEAPU8.buffer,
-			mapDataPtr,
-			4 * map_w * map_h
-		);
-		mapData.set(map.data);
-		// rgba2rgb(map.data, mapData);
+    randoms.Module._free(mapDataPtr);
+    randoms.Module._free(resultPtr);
 
-		const resultPtr = randoms.Module._malloc(4 * map_w * map_h);
-		const result = new Uint8ClampedArray(
-			randoms.Module.HEAPU8.buffer,
-			resultPtr,
-			4 * map_w * map_h
-		);
+    return resImgData;
+  };
 
-		randoms.Module.GeneratePathMap(
-			mapDataPtr,
-			map_w,
-			map_h,
-			resultPtr,
-			xOffset,
-			yOffset
-		);
-
-		const resImgData = new ImageData(result, map_w, map_h);
-		// resImgData.data.set(result);
-		// rgb2rgba(result, resImgData.data);
-
-		randoms.Module._free(mapDataPtr);
-		randoms.Module._free(resultPtr);
-
-		return resImgData;
-	}
-
-	return {
-		ImageData,
-		getContext,
-		createCanvas,
-		imageFromBase64,
-		imageToBase64,
-		copyImage,
-		getPixels,
-		threshold,
-		toDark,
-		scale,
-		scaleImageData,
-		stretch,
-		g,
-		diff,
-		cropImageData,
-		crop,
-		invert,
-		unAlpha,
-		enhance,
-		clearBg,
-		rgba2rgb,
-		rgb2rgba,
-		pad,
-		hexRGBAtoIntRGB,
-		rgbaToHex,
-		getPos,
-		isBlack,
-		drawImageData,
-		printImage,
-		getColor,
-		somePixelsSync,
-		somePixels,
-		iteratePixels,
-		rgbaToInt,
-		hexTorgba,
-		imageFromHexArray,
-		getTilePos,
-		getGlobalPos,
-		getLocalPos,
-		rgbToHsl,
-		GenerateMap,
-		GetPathMap,
-	}
-}
+  return {
+    ImageData,
+    getContext,
+    createCanvas,
+    imageFromBase64,
+    imageToBase64,
+    copyImage,
+    getPixels,
+    threshold,
+    toDark,
+    scale,
+    scaleImageData,
+    stretch,
+    g,
+    diff,
+    cropImageData,
+    crop,
+    invert,
+    unAlpha,
+    enhance,
+    clearBg,
+    rgba2rgb,
+    rgb2rgba,
+    pad,
+    hexRGBAtoIntRGB,
+    rgbaToHex,
+    getPos,
+    isBlack,
+    drawImageData,
+    printImage,
+    getColor,
+    somePixelsSync,
+    somePixels,
+    iteratePixels,
+    rgbaToInt,
+    hexTorgba,
+    imageFromHexArray,
+    getTilePos,
+    getGlobalPos,
+    getLocalPos,
+    rgbToHsl,
+    GenerateMap,
+    GetPathMap,
+  };
+};
 
 export default load;

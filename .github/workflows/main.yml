@@ -18,18 +18,18 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
       - name: Cache Cypress
         uses: actions/cache@v2
         with:
-          path: '/home/runner/.cache/Cypress'
+          path: "/home/runner/.cache/Cypress"
           key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
 
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          cache: 'yarn'
+          cache: "yarn"
           node-version: ${{ matrix.node }}
 
       - name: Cache build
@@ -67,18 +67,18 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
       - name: Cache Cypress
         uses: actions/cache@v2
         with:
-          path: '/home/runner/.cache/Cypress'
+          path: "/home/runner/.cache/Cypress"
           key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
 
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          cache: 'yarn'
+          cache: "yarn"
           node-version: ${{ matrix.node }}
 
       - name: Cache build
@@ -101,8 +101,9 @@ jobs:
 
       - name: Check build
         env:
-          CI: false # This is needed because node throws console.warn messages that
-                    # get treated as errors in CI
+          CI:
+            false # This is needed because node throws console.warn messages that
+            # get treated as errors in CI
         run: |
           DISABLE_ESLINT_PLUGIN=true yarn build
           if [ -d "./build" ]; then
@@ -126,18 +127,18 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
       - name: Cache Cypress
         uses: actions/cache@v2
         with:
-          path: '/home/runner/.cache/Cypress'
+          path: "/home/runner/.cache/Cypress"
           key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
 
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          cache: 'yarn'
+          cache: "yarn"
           node-version: ${{ matrix.node }}
 
       - name: Cache build
@@ -177,18 +178,18 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
       - name: Cache Cypress
         uses: actions/cache@v2
         with:
-          path: '/home/runner/.cache/Cypress'
+          path: "/home/runner/.cache/Cypress"
           key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
 
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          cache: 'yarn'
+          cache: "yarn"
           node-version: ${{ matrix.node }}
 
       - name: Cache build
@@ -212,5 +213,6 @@ jobs:
       - name: e2e
         run: yarn e2e
         env:
-          CI: false # This is needed because node throws console.warn messages that
-                    # get treated as errors in CI
+          CI:
+            false # This is needed because node throws console.warn messages that
+            # get treated as errors in CI

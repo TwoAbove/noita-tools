@@ -1,7 +1,7 @@
-import { generatePoints } from './helpers';
+import { generatePoints } from "./helpers";
 
-describe('generatePoints', () => {
-  it('should generate points', () => {
+describe("generatePoints", () => {
+  it("should generate points", () => {
     const points = generatePoints(0, 2, 0, 2);
     expect(points).toEqual([
       [0, 0],
@@ -15,7 +15,7 @@ describe('generatePoints', () => {
       [2, 2],
     ]);
   });
-  it('should generate points', () => {
+  it("should generate points", () => {
     const points = generatePoints(34, 38, 14, 15);
     expect(points).toEqual([
       [34, 14],

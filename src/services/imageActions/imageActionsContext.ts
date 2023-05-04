@@ -1,16 +1,14 @@
-import { createContext, useState } from 'react';
-import { loadImageActions } from '.';
-import { IImageActions } from './IImageActions';
+import { createContext, useState } from "react";
+import { loadImageActions } from ".";
+import { IImageActions } from "./IImageActions";
 
 export const useImageActions = (): IImageActions | undefined => {
-  const [imageActions, setImageActions] = useState<IImageActions | undefined>(
-    () => {
-      loadImageActions()
-        .then(setImageActions)
-        .catch(e => console.error(e));
-      return undefined;
-    }
-  );
+  const [imageActions, setImageActions] = useState<IImageActions | undefined>(() => {
+    loadImageActions()
+      .then(setImageActions)
+      .catch(e => console.error(e));
+    return undefined;
+  });
 
   return imageActions;
 };

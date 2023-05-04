@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import {
   Container,
   Stack,
@@ -9,27 +9,27 @@ import {
   ButtonGroup,
   Form,
   FormGroup,
-  ProgressBar
-} from 'react-bootstrap';
-import humanize from 'humanize-duration';
+  ProgressBar,
+} from "react-bootstrap";
+import humanize from "humanize-duration";
 
-import { localizeNumber } from '../../../../services/helpers';
-import SeedDataOutput from '../../../SeedInfo/SeedDataOutput';
-import { SearchContext } from '../../SearchContext';
-import UseMultithreadingButton from '../../UseMultithreading';
-import { Status } from '../../../../services/compute/ChunkProvider';
-import useLocalStorage from '../../../../services/useLocalStorage';
-import { ProfileContext } from '../../../Profile/ProfileContext';
-import { useSearchParams } from 'react-router-dom';
-import { useSearchParamsState } from 'react-use-search-params-state';
+import { localizeNumber } from "../../../../services/helpers";
+import SeedDataOutput from "../../../SeedInfo/SeedDataOutput";
+import { SearchContext } from "../../SearchContext";
+import UseMultithreadingButton from "../../UseMultithreading";
+import { Status } from "../../../../services/compute/ChunkProvider";
+import useLocalStorage from "../../../../services/useLocalStorage";
+import { ProfileContext } from "../../../Profile/ProfileContext";
+import { useSearchParams } from "react-router-dom";
+import { useSearchParamsState } from "react-use-search-params-state";
 
 const InfoText = ({ clusterHelpAvailable, isLoggedIn, computeLeft }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filterParams, setFilterParams] = useSearchParamsState({
     profile: {
-      type: 'boolean',
-      default: false
-    }
+      type: "boolean",
+      default: false,
+    },
   });
 
   const profileOpen = filterParams.profile;
@@ -38,20 +38,22 @@ const InfoText = ({ clusterHelpAvailable, isLoggedIn, computeLeft }) => {
       setFilterParams({ profile: true });
     } else {
       // delete the param outright - I don't like profile=false in the url
-      searchParams.delete('profile');
+      searchParams.delete("profile");
       setSearchParams(searchParams);
     }
   };
 
-  const ProfileButton = () => <Button size="sm" variant="outline-info mx-1 my-0 px-1 py-0" onClick={() => handleProfile()}>
-    Open Profile
-  </Button>
+  const ProfileButton = () => (
+    <Button size="sm" variant="outline-info mx-1 my-0 px-1 py-0" onClick={() => handleProfile()}>
+      Open Profile
+    </Button>
+  );
 
   if (clusterHelpAvailable) {
     if (!isLoggedIn) {
       return (
         <p>
-          Connect your patreon account to enable cluster compute. <br/>
+          Connect your patreon account to enable cluster compute. <br />
           To learn more about cluster compute, visit your profile <ProfileButton />
         </p>
       );
@@ -73,15 +75,11 @@ const InfoText = ({ clusterHelpAvailable, isLoggedIn, computeLeft }) => {
 };
 
 const IndicatorConnected = () => {
-  return (
-    <i className="bi bi-cloud-check"></i>
-  )
-}
+  return <i className="bi bi-cloud-check"></i>;
+};
 const IndicatorNotConnected = () => {
-  return (
-    <i className="bi bi-cloud-slash"></i>
-  )
-}
+  return <i className="bi bi-cloud-slash"></i>;
+};
 
 const ClusterInfo = () => {
   const {
@@ -90,44 +88,71 @@ const ClusterInfo = () => {
     clusterHelpEnabled,
     toggleClusterHelp,
     clusterConnected,
+    computeVersionMismatch,
   } = useContext(SearchContext);
 
   const { patreonData } = useContext(ProfileContext);
 
   const isLoggedIn = !!patreonData;
   const buttonDisabled = !isLoggedIn || !clusterHelpAvailable;
-  let buttonVariant = 'outline-info';
+  let buttonVariant = "outline-info";
   if (clusterHelpEnabled) {
-    buttonVariant = 'outline-success';
+    buttonVariant = "outline-success";
   }
   if (buttonDisabled) {
-    buttonVariant = 'outline-secondary';
+    buttonVariant = "outline-secondary";
   }
   return (
     <Col md={12} className="mt-3 mt-sm-0 mb-3">
-      {clusterHelpAvailable && <Row className="mx-3 mb-1">
-        <Button
-          style={{
-            position: 'relative'
-          }}
-          disabled={buttonDisabled}
-          variant={buttonVariant}
-          onClick={toggleClusterHelp}
-        >
-          {clusterHelpEnabled
-            ? 'Cluster compute enabled'
-            : 'Enable cluster compute'}
-            <div style={{
-              position: 'absolute',
-              top: '-0.0rem',
-              right: '0.5rem',
-              fontSize: '1rem'
-
-            }} className="ms-2">{
-              clusterConnected ? <IndicatorConnected /> : <IndicatorNotConnected />
-            }</div>
-        </Button>
-      </Row> }
+      {computeVersionMismatch && (
+        <Row className="mx-3 mb-1">
+          <Button
+            style={{
+              position: "relative",
+            }}
+            disabled={true}
+            variant={"outline-danger"}
+          >
+            Noitool version mismatch, please reload
+            <div
+              style={{
+                position: "absolute",
+                top: "-0.0rem",
+                right: "0.5rem",
+                fontSize: "1rem",
+              }}
+              className="ms-2"
+            >
+              <i className="bi bi-exclamation-triangle-fill"></i>
+            </div>
+          </Button>
+        </Row>
+      )}
+      {clusterHelpAvailable && (
+        <Row className="mx-3 mb-1">
+          <Button
+            style={{
+              position: "relative",
+            }}
+            disabled={buttonDisabled}
+            variant={buttonVariant}
+            onClick={toggleClusterHelp}
+          >
+            {clusterHelpEnabled ? "Cluster compute enabled" : "Enable cluster compute"}
+            <div
+              style={{
+                position: "absolute",
+                top: "-0.0rem",
+                right: "0.5rem",
+                fontSize: "1rem",
+              }}
+              className="ms-2"
+            >
+              {clusterConnected ? <IndicatorConnected /> : <IndicatorNotConnected />}
+            </div>
+          </Button>
+        </Row>
+      )}
       <Row className="mx-3 mb-0">
         <InfoText
           isLoggedIn={isLoggedIn}
@@ -136,8 +161,15 @@ const ClusterInfo = () => {
         />
       </Row>
       <Row className="mx-3 mt-0">
-        <Col className='fw-light p-1' xs={12} sm={6}>Cluster size: <b>{clusterState.workers} ({clusterState.appetite} cores)</b></Col>
-        <Col className='fw-light p-1' xs={12} sm={6}>Searchers online: <b>{clusterState.hosts}</b></Col>
+        <Col className="fw-light p-1" xs={12} sm={6}>
+          Cluster size:{" "}
+          <b>
+            {clusterState.workers} ({clusterState.appetite} cores)
+          </b>
+        </Col>
+        <Col className="fw-light p-1" xs={12} sm={6}>
+          Searchers online: <b>{clusterState.hosts}</b>
+        </Col>
       </Row>
     </Col>
   );

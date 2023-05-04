@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "lib": [
-     "es2018", "webworker", "dom", "dom.iterable", "esnext"
-    ],
+    "lib": ["es2018", "webworker", "dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -25,8 +23,8 @@
     // these options are overrides used only by ts-node
     // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable
     "compilerOptions": {
-    "module": "es2022"
-    // "module": "commonjs"
+      "module": "es2022"
+      // "module": "commonjs"
     }
   },
   "include": ["src"],

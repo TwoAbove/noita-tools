@@ -1,14 +1,16 @@
-import { db } from '../../services/db';
+import { db } from "../../services/db";
 
 class SyncHandler {
   async sendDB(url: string): Promise<any> {
     const data = await db.exportDB();
     const fd = new FormData();
-    fd.append('upl', data, 'db');
-    const res = await (await fetch(url, {
-      method: 'POST',
-      body: fd
-    })).json();
+    fd.append("upl", data, "db");
+    const res = await (
+      await fetch(url, {
+        method: "POST",
+        body: fd,
+      })
+    ).json();
     return res;
   }
 

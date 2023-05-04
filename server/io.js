@@ -1,79 +1,74 @@
-const { Server: SocketIOServer } = require('socket.io');
-const cron = require('node-cron');
-const mongoose = require('mongoose');
+const { Server: SocketIOServer } = require("socket.io");
+const cron = require("node-cron");
+const mongoose = require("mongoose");
 
-const B2 = require('backblaze-b2');
-const { randomUUID } = require('crypto');
-B2.prototype.uploadAny = require('@gideo-llc/backblaze-b2-upload-any');
+const B2 = require("backblaze-b2");
+const { randomUUID } = require("crypto");
+B2.prototype.uploadAny = require("@gideo-llc/backblaze-b2-upload-any");
 
-const corsDomains = [
-	'dev.noitool.com',
-	'noitool.com',
-	'localhost:3000',
-	'localhost:3001'
-];
-const corsSchemes = ['http://', 'https://', 'ws://', 'wss://', ''];
+const corsDomains = ["dev.noitool.com", "noitool.com", "localhost:3000", "localhost:3001"];
+const corsSchemes = ["http://", "https://", "ws://", "wss://", ""];
 const allowedCORS = corsSchemes.flatMap(ext => corsDomains.map(d => ext + d));
 
-const { getRoomNumber, rooms } = require('./rooms');
-const { User } = require('./db');
-const { inspect } = require('util');
+const { getRoomNumber, rooms } = require("./rooms");
+const { User } = require("./db");
+const { inspect } = require("util");
 
-const handleLiveSeed = (socket) => {
-	let roomNumber;
-	let isHostOfRoom = false;
-	socket.on('host', (customRoom) => {
-		roomNumber = customRoom || getRoomNumber();
-		rooms.add(roomNumber);
-		isHostOfRoom = true;
-		socket.join(roomNumber);
-		socket.emit('set_room', roomNumber);
+const handleLiveSeed = socket => {
+  let roomNumber;
+  let isHostOfRoom = false;
+  socket.on("host", customRoom => {
+    roomNumber = customRoom || getRoomNumber();
+    rooms.add(roomNumber);
+    isHostOfRoom = true;
+    socket.join(roomNumber);
+    socket.emit("set_room", roomNumber);
 
-		// cb('ok');
-	});
+    // cb('ok');
+  });
 
-	socket.on('seed', seed => {
-		if (!isHostOfRoom) {
-			return;
-		}
-		socket.to(roomNumber).emit('seed', seed);
-	});
+  socket.on("seed", seed => {
+    if (!isHostOfRoom) {
+      return;
+    }
+    socket.to(roomNumber).emit("seed", seed);
+  });
 
-	socket.on('restart', () => {
-		socket.to(roomNumber).emit('restart', '');
-	});
+  socket.on("restart", () => {
+    socket.to(roomNumber).emit("restart", "");
+  });
 
-	socket.on('disconnect', () => {
-		//
-	});
+  socket.on("disconnect", () => {
+    //
+  });
 };
 
 const counts = {
-	hosts: 0,
-	workers: 0,
-	appetite: 0
+  hosts: 0,
+  workers: 0,
+  appetite: 0,
 };
 const users = {};
 
 const registerUserSocket = (userId, socketId, type, appetite = 0) => {
-	if (!users[userId]) {
-		users[userId] = { hosts: new Set(), workers: new Set() };
-	}
-	if (!users[userId][type].has(socketId)) {
-		counts[type]++;
-		counts.appetite += appetite;
-		users[userId][type].add(socketId);
-	}
+  if (!users[userId]) {
+    users[userId] = { hosts: new Set(), workers: new Set() };
+  }
+  if (!users[userId][type].has(socketId)) {
+    counts[type]++;
+    counts.appetite += appetite;
+    users[userId][type].add(socketId);
+  }
 };
 const unregisterUserSocket = (userId, socketId, type, appetite = 0) => {
-	if (!users[userId]) {
-		return;
-	}
-	if (users[userId][type].has(socketId)) {
-		counts[type]--;
-		counts.appetite -= appetite;
-		users[userId][type].delete(socketId);
-	}
+  if (!users[userId]) {
+    return;
+  }
+  if (users[userId][type].has(socketId)) {
+    counts[type]--;
+    counts.appetite -= appetite;
+    users[userId][type].delete(socketId);
+  }
 };
 
 const randomFromArray = arr => arr[Math.floor(Math.random() * arr.length)];
@@ -81,200 +76,197 @@ const randomFromArray = arr => arr[Math.floor(Math.random() * arr.length)];
 // Track the time it takes to compute a job
 const pendingJobs = {};
 
-const transactComputeTime = async (hostId, workerId, time) => {
-	if (hostId === workerId) {
-		// Don't count time spent on self
-		return;
-	}
+const transactComputeTime = async (hostId, workerId, hostTime, workerTime) => {
+  if (hostId === workerId) {
+    // Don't count time spent on self
+    return;
+  }
 
-	const hostUser = await User.findById(hostId);
-	const workerUser = await User.findById(workerId);
+  const hostUser = await User.findById(hostId);
+  const workerUser = await User.findById(workerId);
 
-	if (!hostUser || !workerUser) {
-		return;
-	}
+  if (!hostUser || !workerUser) {
+    return;
+  }
 
-	if (hostUser.compute.providedComputeLeft) {
-		hostUser.compute.providedComputeLeft -= time;
-		if (hostUser.compute.providedComputeLeft < 0) {
-			hostUser.compute.providedComputeLeft = 0;
-		}
-	} else {
-		hostUser.compute.patreonComputeLeft -= time;
-		if (hostUser.compute.patreonComputeLeft < 0) {
-			hostUser.compute.patreonComputeLeft = 0;
-		}
-	}
-	workerUser.compute.providedComputeLeft += time;
+  if (hostUser.compute.providedComputeLeft) {
+    hostUser.compute.providedComputeLeft -= hostTime;
+    if (hostUser.compute.providedComputeLeft < 0) {
+      hostUser.compute.providedComputeLeft = 0;
+    }
+  } else {
+    hostUser.compute.patreonComputeLeft -= hostTime;
+    if (hostUser.compute.patreonComputeLeft < 0) {
+      hostUser.compute.patreonComputeLeft = 0;
+    }
+  }
+  workerUser.compute.providedComputeLeft += workerTime;
 
-	await hostUser.save();
-	await workerUser.save();
+  await hostUser.save();
+  await workerUser.save();
 };
 
 const handleCompute = (socket, io) => {
-	let computeUserId;
-	let user;
-	let computeAppetite = 0;
+  let computeUserId;
+  let user;
+  let computeAppetite = 0;
 
-	const register = async (type, config, cb) => {
-		if (!config.sessionToken && !config.userId) {
-			return;
-		}
+  const register = async (type, config, cb) => {
+    if (!config.sessionToken && !config.userId) {
+      return;
+    }
 
-		user =
-			(await User.findOne({ sessionToken: config.sessionToken })) ||
-			(await User.findOne({ _id: config.userId }));
-		if (!user) {
-			return;
-		}
+    if (config.version !== process.env.npm_package_version) {
+      socket.emit("compute:version_mismatch", {
+        serverVersion: process.env.npm_package_version,
+        clientVersion: config.version,
+      });
+      return;
+    }
 
-		computeAppetite = config.appetite || 0;
-		computeUserId = user.id;
+    user = (await User.findOne({ sessionToken: config.sessionToken })) || (await User.findOne({ _id: config.userId }));
+    if (!user) {
+      return;
+    }
 
-		registerUserSocket(computeUserId, socket.id, type, config.appetite || 0);
-		cb('ok');
-	};
+    computeAppetite = config.appetite || 0;
+    computeUserId = user.id;
 
-	socket.on('compute:host:register', (config, cb) =>
-		register('hosts', config, cb)
-	);
-	socket.on('compute:host:unregister', () => {
-		unregisterUserSocket(computeUserId, socket.id, 'hosts');
-	});
-	socket.on('compute:worker:register', (config, cb) =>
-		register('workers', config, cb)
-	);
-	socket.on('compute:worker:unregister', () => {
-		unregisterUserSocket(computeUserId, socket.id, 'workers', computeAppetite);
-	});
-	socket.on('compute:workers', async cb => {
-		const workers = counts.workers;
-		cb(workers);
-	});
+    registerUserSocket(computeUserId, socket.id, type, config.appetite || 0);
+    cb("ok");
+  };
 
-	socket.on('compute:need_job', async (appetite, cb) => {
-		// Worker asks for a job, we find a host,
-		// ask it for a job, and send it to the worker
+  socket.on("compute:host:register", (config, cb) => register("hosts", config, cb));
+  socket.on("compute:host:unregister", () => {
+    unregisterUserSocket(computeUserId, socket.id, "hosts");
+  });
+  socket.on("compute:worker:register", (config, cb) => register("workers", config, cb));
+  socket.on("compute:worker:unregister", () => {
+    unregisterUserSocket(computeUserId, socket.id, "workers", computeAppetite);
+  });
+  socket.on("compute:workers", async cb => {
+    const workers = counts.workers;
+    cb(workers);
+  });
 
-		const usersHosts = users[computeUserId]?.hosts;
-		// Prioritize hosts of the user, randomly
-		let hostId;
-		if (usersHosts?.size > 0) {
-			hostId = randomFromArray([...usersHosts]);
-		} else {
-			// If no hosts of the user, pick a random host, but check that it has compute left
-			const hostsWithCompute = Object.values(users).flatMap(u =>
-				u.computeLeft > 0 ? [...u.hosts] : []
-			);
-			hostId = randomFromArray(hostsWithCompute);
-		}
-		if (!hostId) {
-			cb();
-			return;
-		}
+  socket.on("compute:need_job", async (appetite, cb) => {
+    // Worker asks for a job, we find a host,
+    // ask it for a job, and send it to the worker
 
-		// Hack - there should be a better way to handle getting specific sockets;
-		const host = io.sockets.sockets.get(hostId);
-		if (!host) {
-			return;
-		}
+    const usersHosts = users[computeUserId]?.hosts;
+    // Prioritize hosts of the user, randomly
+    let hostId;
+    if (usersHosts?.size > 0) {
+      hostId = randomFromArray([...usersHosts]);
+    } else {
+      // If no hosts of the user, pick a random host, but check that it has compute left
+      const hostsWithCompute = Object.values(users).flatMap(u => (u.computeLeft > 0 ? [...u.hosts] : []));
+      hostId = randomFromArray(hostsWithCompute);
+    }
+    if (!hostId) {
+      cb();
+      return;
+    }
 
-		host.emit('compute:get_job', appetite, data => {
-			// job from host
-			data.hostId = hostId;
-			// Track the time it takes to compute a job
-			pendingJobs[`${hostId}:${data.chunkId}`] = {
-				hostId,
-				workerId: socket.id,
-				appetite,
-				start: Date.now()
-			};
+    // Hack - there should be a better way to handle getting specific sockets;
+    const host = io.sockets.sockets.get(hostId);
+    if (!host) {
+      return;
+    }
 
-			// Sent to the worker, which will send its result in the compute:done event
-			cb(data);
-		});
-	});
+    host.emit("compute:get_job", appetite, data => {
+      // job from host
+      data.hostId = hostId;
+      // Track the time it takes to compute a job
+      pendingJobs[`${hostId}:${data.chunkId}`] = {
+        hostId,
+        workerId: socket.id,
+        appetite,
+        start: Date.now(),
+      };
 
-	socket.on('compute:done', async ({ hostId, result, chunkId }) => {
-		// Worker sends its result to the host
-		const host = io.sockets.sockets.get(hostId);
-		if (!host) {
-			return;
-		}
-		const job = pendingJobs[`${hostId}:${chunkId}`];
-		if (!job) {
-			return;
-		}
+      // Sent to the worker, which will send its result in the compute:done event
+      cb(data);
+    });
+  });
 
-		// This is a compromise to make sure that the worker doesn't get penalized for
-		// being fast. It's not a perfect solution, but it's better than nothing.
-		// This works because of the "smart" compute time target in the client
-		// 1 standard unit of compute is 5 seconds by 4 appetite.
-		const computeCredits = (Date.now() - job.start) * (job.appetite / 4);
+  socket.on("compute:done", async ({ hostId, result, chunkId }) => {
+    // Worker sends its result to the host
+    const host = io.sockets.sockets.get(hostId);
+    if (!host) {
+      return;
+    }
+    const job = pendingJobs[`${hostId}:${chunkId}`];
+    if (!job) {
+      return;
+    }
 
-		const hostUserId = Object.keys(users).find(k => users[k].hosts.has(hostId));
-		const workerUserId = Object.keys(users).find(k =>
-			users[k].workers.has(socket.id)
-		);
+    // This is a compromise to make sure that the worker doesn't get penalized for
+    // being fast. It's not a perfect solution, but it's better than nothing.
+    // This works because of the "smart" compute time target in the client
+    // 5 seconds of compute is 5 seconds of work for an 18-core CPU
+    const computeCredits = (Date.now() - job.start) * (job.appetite / 18);
 
-		await transactComputeTime(hostUserId, workerUserId, computeCredits);
+    const hostUserId = Object.keys(users).find(k => users[k].hosts.has(hostId));
+    const workerUserId = Object.keys(users).find(k => users[k].workers.has(socket.id));
 
-		delete pendingJobs[`${hostId}:${chunkId}`];
-		host.emit('compute:done', { result, chunkId });
-	});
+    await transactComputeTime(hostUserId, workerUserId, computeCredits, computeCredits);
 
-	socket.on('disconnect', () => {
-		unregisterUserSocket(computeUserId, socket.id, 'hosts');
-		unregisterUserSocket(computeUserId, socket.id, 'workers');
-		if (computeAppetite) {
-			counts.appetite -= computeAppetite;
-		}
-	});
+    delete pendingJobs[`${hostId}:${chunkId}`];
+    host.emit("compute:done", { result, chunkId });
+  });
+
+  socket.on("disconnect", () => {
+    unregisterUserSocket(computeUserId, socket.id, "hosts");
+    unregisterUserSocket(computeUserId, socket.id, "workers");
+    if (computeAppetite) {
+      counts.appetite -= computeAppetite;
+    }
+  });
 };
 
-cron.schedule('*/10 * * * * *', async () => {
-	const connectedUsers = Object.keys(users);
-	const dbUsers = await User.find({ _id: { $in: connectedUsers } });
-	dbUsers.forEach(u => {
-		users[u.id].computeLeft =
-			u.compute.providedComputeLeft + u.compute.patreonComputeLeft;
-	});
+cron.schedule("*/10 * * * * *", async () => {
+  const connectedUsers = Object.keys(users);
+  const dbUsers = await User.find({ _id: { $in: connectedUsers } });
+  dbUsers.forEach(u => {
+    users[u.id].computeLeft = u.compute.providedComputeLeft + u.compute.patreonComputeLeft;
+  });
 });
 
 const handleConnection = (socket, io) => {
-	handleLiveSeed(socket, io);
-	handleCompute(socket, io);
+  handleLiveSeed(socket, io);
+  handleCompute(socket, io);
 };
 
 const makeIO = (server, app) => {
-	app.get('/api/cluster_stats', (req, res) => {
-		res.json({
-			hosts: counts.hosts,
-			workers: counts.workers,
-			appetite: counts.appetite
-		});
-	});
+  app.get("/api/cluster_stats", (req, res) => {
+    res.json({
+      hosts: counts.hosts,
+      workers: counts.workers,
+      appetite: counts.appetite,
+    });
+  });
 
-	const io = new SocketIOServer(server, {
-		cors: {
-			origin: function(origin, callback) {
-				if (allowedCORS.indexOf(origin) !== -1 || !origin) {
-					callback(null, true);
-				} else {
-					callback(new Error('Not allowed by CORS'));
-				}
-			}
-		}
-	});
+  const io = new SocketIOServer(server, {
+    cors: {
+      origin: function (origin, callback) {
+        if (allowedCORS.indexOf(origin) !== -1 || !origin) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
+      },
+    },
+  });
 
-	io.on('connection', socket => {
-		handleConnection(socket, io);
-	});
+  io.on("connection", socket => {
+    handleConnection(socket, io);
+  });
 
-	io.of('/').adapter.on('delete-room', room => {
-		// Room is empty
-		rooms.delete(room);
-	});
+  io.of("/").adapter.on("delete-room", room => {
+    // Room is empty
+    rooms.delete(room);
+  });
 };
 
 module.exports = makeIO;

@@ -1,26 +1,22 @@
-import { loadRandom, getUnlockedSpells } from './testHelpers';
-import GameInfoProvider from './services/SeedInfo/infoHandler';
+import { loadRandom, getUnlockedSpells } from "./testHelpers";
+import GameInfoProvider from "./services/SeedInfo/infoHandler";
 
-import { SeedSearcher } from './services/seedSearcher'
-import { ILogicRules } from './services/SeedInfo/infoHandler/IRule';
-import { IRandom } from './services/SeedInfo/random';
+import { SeedSearcher } from "./services/seedSearcher";
+import { ILogicRules } from "./services/SeedInfo/infoHandler/IRule";
+import { IRandom } from "./services/SeedInfo/random";
 
 let randoms: IRandom;
 let gameInfoProvider: GameInfoProvider;
-const readyPromise = loadRandom().then(r => {
-  randoms = r;
-}).then(() => {
-  gameInfoProvider = new GameInfoProvider(
-    { seed: 1 },
-    getUnlockedSpells(),
-    undefined,
-    randoms,
-    false
-  );
-  return gameInfoProvider.ready();
-});
+const readyPromise = loadRandom()
+  .then(r => {
+    randoms = r;
+  })
+  .then(() => {
+    gameInfoProvider = new GameInfoProvider({ seed: 1 }, getUnlockedSpells(), undefined, randoms, false);
+    return gameInfoProvider.ready();
+  });
 
-const searchRange = async (from: number, to: number, rules: ILogicRules): Promise<{ res: number[], info: any }> => {
+const searchRange = async (from: number, to: number, rules: ILogicRules): Promise<{ res: number[]; info: any }> => {
   if (to < from) {
     return searchRange(to, from, rules);
   }
@@ -35,7 +31,7 @@ const searchRange = async (from: number, to: number, rules: ILogicRules): Promis
     findAll: true,
     seedEnd: to,
     currentSeed: from,
-    rules
+    rules,
   });
 
   const startupEnd = performance.now();
@@ -52,9 +48,9 @@ const searchRange = async (from: number, to: number, rules: ILogicRules): Promis
   seedSearcher.findSync(from, to);
 
   return { res, info: { ...info, startupTime: startupEnd - startupStart } };
-}
+};
 
-export const handler = async (event) => {
+export const handler = async event => {
   const { rules, from, to } = event.body;
 
   const res = await searchRange(from, to, rules);

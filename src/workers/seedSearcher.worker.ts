@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
-import { Remote, wrap, releaseProxy, proxy, expose } from 'comlink';
-import { SeedSearcher } from '../services/seedSearcher';
+import { Remote, wrap, releaseProxy, proxy, expose } from "comlink";
+import { SeedSearcher } from "../services/seedSearcher";
 
 const seedSearcher = new SeedSearcher();
 
@@ -21,14 +21,14 @@ self.onmessage = async message => {
       break;
     case "init":
       seedSearcher.init(data.offset, data.step);
-  };
+  }
 };
 
-seedSearcher.onInfo((data) => {
+seedSearcher.onInfo(data => {
   self.postMessage({ type: "info", data });
 });
 
-seedSearcher.onFound((data) => {
+seedSearcher.onFound(data => {
   self.postMessage({ type: "found", data });
 });
 
