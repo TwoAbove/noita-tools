@@ -96,32 +96,44 @@ app.get('/m/*', async (req, res) => {
 const server = require('http').createServer(app);
 const io = require('./io')(server, app);
 
-app.use((req, res) =>
-	handler(req, res, {
-		public: './build',
-		rewrites: [{ source: '/', destination: '/index.html' }],
-		headers: [
-			{
-				source: '/',
-				headers: [
-					{
-						key: 'Cache-Control',
-						value: 'no-store'
-					}
-				]
-			},
-			{
-				source: 'static/**',
-				headers: [
-					{
-						key: 'Cache-Control',
-						value: 'immutable, max-age=3600'
-					}
-				]
-			}
-		]
+app.use(
+	'/static',
+	express.static('build/static', {
+		maxAge: '1y',
+		fallthrough: true
 	})
 );
+app.use(
+	'/locales',
+	express.static('build/locales', {
+		maxAge: '1d',
+		fallthrough: true
+	})
+);
+app.use(
+	'/',
+	express.static('build/', {
+		maxAge: '1d',
+		fallthrough: true
+	})
+);
+
+// This is a hack for cleaner routing from the client's React Router.
+// So that 404s still work, but the client can still route to the correct page.
+for (const route of [
+	'/',
+	'/info',
+	'/search',
+	'/live',
+	'/test',
+	'/compute',
+	'/compute-console'
+]) {
+	app.get(route, (req, res) => {
+		res.setHeader('Cache-Control', 'no-store');
+		res.sendFile('build/index.html', { root: '.' });
+	});
+}
 
 app.use((err, req, res, next) => {
 	console.error(err.stack);
