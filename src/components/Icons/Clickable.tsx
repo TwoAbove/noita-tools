@@ -36,6 +36,12 @@ const Clickable = (props: IClickableProps | any) => {
         cursor: "pointer",
         transition: "0.1s",
       }}
+      onClick={e => {
+        if (props.onClick) {
+          e.stopPropagation();
+          props.onClick();
+        }
+      }}
       className={classNames(clickedOrHoveredStyle, "p-1 rounded-1")}
     >
       {childrenWithProps}

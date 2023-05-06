@@ -7,6 +7,8 @@ import Icon from "../../Icons/Icon";
 import { GameInfoContext } from "../SeedDataOutput";
 import { FungalMaterial } from "./FungalShifts";
 import { useMaterialFavorite } from "./helpers";
+import { MaterialInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Material";
+import i18n from "../../../i18n";
 
 const potionImage =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA4klEQVR4Ac3BsY3CQBBA0T/g3OFGux0wkVMaGQpxChkUQOzMJbgBd7Al4ELmDomVVpZBZHfv8eeEDX3fO79SSqgqxfF4FHdHRCiEirtTnE4njzFSXK9X4UVEKBreiDGSUkJVyTnzzo4vqCrvNFREhKLve1SVQkR4mueZ2p4NZuaHw4EQAkXXdedpmi7DMFDbs2JmHmOkbVtCCBQhBLquO0/TdKGyo2Jmzgeqyv1+dyo7Psg5U8s5s9awYVkWnlJK5JypPR4PasKKmTkvMUbWbrebUBEqZsY4jpiZs2EcR+Hf+QGdHkNFg+Qw2wAAAABJRU5ErkJggg==";
@@ -34,15 +36,16 @@ const colorMatrix = hex => {
   ];
 };
 
+const materialProvider = new MaterialInfoProvider(i18n);
+
 interface StaticPotionProps {
   material: string;
 }
 export const StaticPotion: FC<StaticPotionProps> = ({ material: materialId }) => {
-  const { gameInfoProvider } = useContext(GameInfoContext);
   const [t] = useTranslation("materials");
 
-  const materialName = gameInfoProvider!.providers.material.translate(materialId);
-  const material = gameInfoProvider!.providers.material.provide(materialId);
+  const materialName = materialProvider.translate(materialId);
+  const material = materialProvider.provide(materialId);
   const [Matrix, id] = colorMatrix(material.color);
   return (
     <div

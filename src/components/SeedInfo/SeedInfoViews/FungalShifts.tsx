@@ -10,6 +10,9 @@ import { useTranslation } from "react-i18next";
 import { useMaterialFavorite } from "./helpers";
 import { GameInfoContext } from "../SeedDataOutput";
 import classNames from "classnames";
+import i18n from "../../../i18n";
+
+const materialProvider = new MaterialInfoProvider(i18n);
 
 enum Direction {
   From,
@@ -26,10 +29,9 @@ interface IFungalMaterialProps {
 }
 
 export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor = true }) => {
-  const { gameInfoProvider } = useContext(GameInfoContext);
   const [showId] = useContext(AlchemyConfigContext);
   const { isFavorite } = useMaterialFavorite();
-  const name = gameInfoProvider!.providers.material.translate(id);
+  const name = materialProvider.translate(id);
   return (
     <div className={classNames(isFavorite(id) && "text-info", "text-center lh-1")}>
       {showColor && (
@@ -39,7 +41,7 @@ export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor =
             marginBottom: "-2px",
             width: "1rem",
             height: "1rem",
-            backgroundColor: "#" + gameInfoProvider!.providers.material.provide(id).color,
+            backgroundColor: "#" + materialProvider.provide(id).color,
           }}
         >
           {" "}

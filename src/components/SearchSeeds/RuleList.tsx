@@ -362,8 +362,33 @@ const SearchRow: FC<ISearchRowProps> = ({ current, search }) => {
 
   return (
     <tr style={{ cursor: "pointer" }} onClick={() => handleClick()} className={classNames(current && "table-active")}>
-      <td className="w-50">{config.name || "Unnamed search"}</td>
-      <td className="fw-light">Updated at {search.updatedAt.toLocaleString()}</td>
+      <td>
+        <i className={classNames(["bi", !current && "bi-play", current && "bi-play-fill"])}></i>
+      </td>
+      <td className="w-50">
+        {/* Load search button and Name input field */}
+        <InputGroup>
+          <Form.Control
+            className={classNames([
+              ripple && "border-success text-success border-1",
+              current && "border-primary text-primary border-1",
+            ])}
+            onClick={e => e.stopPropagation()}
+            onChange={e => {
+              e.stopPropagation();
+              db.searches
+                .update(search.id!, {
+                  config: { ...search.config, name: e.target.value },
+                  updatedAt: new Date(),
+                })
+                .catch(console.error);
+            }}
+            placeholder="Unnamed Search"
+            value={config.name}
+          />
+        </InputGroup>
+      </td>
+      <td className="fw-light">{search.updatedAt.toLocaleString()}</td>
       <td className="">
         <div className="d-flex align-items-stretch justify-content-end">
           <ButtonGroup>
@@ -373,7 +398,11 @@ const SearchRow: FC<ISearchRowProps> = ({ current, search }) => {
 							</Button>
 						)} */}
             <Dropdown
-              className={classNames(["btn btn-outline-primary p-0", ripple && "border-success text-success border-1"])}
+              className={classNames([
+                "btn btn-outline-secondary p-0",
+                current && "border-primary text-primary border-1",
+                ripple && "border-success text-success border-1",
+              ])}
             >
               <Dropdown.Toggle as={CustomSearchDropdownToggle}></Dropdown.Toggle>
 
@@ -425,6 +454,14 @@ const SearchSelect: FC<ISearchSelectProps> = ({ open, onClose }) => {
         <Import onClick={s => handleImportSearch(s)} />
         <div className="my-4" />
         <Table borderless hover className="align-middle me-auto">
+          <thead>
+            <tr>
+              <td>{/* <i className="bi bi-search"></i> */}</td>
+              <td className="ps-2 w-50">Name</td>
+              <td className="ps-2 fw-light">Last updated</td>
+              <td className=""></td>
+            </tr>
+          </thead>
           <tbody>
             {searches.map(s => (
               <SearchRow key={s.id} current={s.uuid === currentSearchUUID} search={s} />

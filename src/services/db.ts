@@ -92,8 +92,8 @@ export class NoitaDB extends Dexie {
         configItems: "++id, &key",
         seedInfo: "++id, &seed, updatedAt",
       })
-      .upgrade(t => {
-        ((t as any).seedInfo as NoitaDB["seedInfo"])
+      .upgrade(async t => {
+        await ((t as any).seedInfo as NoitaDB["seedInfo"])
           .toCollection()
           .modify(s => {
             if (s.updatedAt) {
@@ -114,8 +114,8 @@ export class NoitaDB extends Dexie {
       .stores({
         configItems: "++id, &key",
       })
-      .upgrade(t => {
-        ((t as any).db.configItems as NoitaDB["configItems"])
+      .upgrade(async t => {
+        await ((t as any).db.configItems as NoitaDB["configItems"])
           .add({
             key: "unlocked-spells",
             val: Array(393).fill(true),
@@ -129,8 +129,8 @@ export class NoitaDB extends Dexie {
       .stores({
         seedInfo: "++id, &seed, updatedAt, config",
       })
-      .upgrade(t => {
-        ((t as any).db.seedInfo as NoitaDB["seedInfo"])
+      .upgrade(async t => {
+        await ((t as any).db.seedInfo as NoitaDB["seedInfo"])
           .toCollection()
           .modify(s => {
             if (typeof s.config === "string" || s.config instanceof String) {
@@ -143,9 +143,30 @@ export class NoitaDB extends Dexie {
           });
       });
 
-    this.version(8).stores({
-      searches: "++id, &uuid, config, createdAt, updatedAt",
-    });
+    this.version(8)
+      .stores({
+        searches: "++id, &uuid, config, createdAt, updatedAt",
+      })
+      .upgrade(async t => {
+        const uuid = crypto.randomUUID();
+        const search = await ((t as any).db.seedInfo as NoitaDB["searches"]).add({
+          uuid,
+          config: {
+            name: "",
+            rules: btoa(
+              JSON.stringify({
+                id: "root",
+                type: RuleType.AND,
+                rules: [],
+                selectedRule: "search",
+              })
+            ),
+          },
+          madeUsingVersion: process.env.REACT_APP_VERSION!,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      });
 
     this.errorOnOpen = this.open()
       .then(() => null)
@@ -273,6 +294,7 @@ async function populate() {
   const initialSearch = await db.searches.add({
     uuid,
     config: {
+      name: "",
       rules: btoa(
         JSON.stringify({
           id: "root",
@@ -309,6 +331,7 @@ export async function newSearch(): Promise<string> {
   const search = await db.searches.add({
     uuid,
     config: {
+      name: "",
       rules: btoa(
         JSON.stringify({
           id: "root",

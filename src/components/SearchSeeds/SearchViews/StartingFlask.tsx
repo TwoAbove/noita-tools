@@ -6,6 +6,7 @@ import { capitalize } from "../../../services/helpers";
 import { IRule } from "../../../services/SeedInfo/infoHandler/IRule";
 import { MaterialInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Material";
 import i18n from "../../../i18n";
+import { StaticPotion } from "../../SeedInfo/SeedInfoViews/Potion";
 
 interface IStartingFlaskProps {
   onUpdateConfig: (config: Partial<IRule>) => void;
@@ -13,7 +14,6 @@ interface IStartingFlaskProps {
 }
 
 const flaskOptions = [
-  "",
   "mud",
   "water_swamp",
   "water_salt",
@@ -57,7 +57,7 @@ const StartingFlask: FC<IStartingFlaskProps> = ({ onUpdateConfig, config }) => {
           return (
             <Col key={type}>
               <Clickable onClick={() => handleClicked(type)} clicked={type === startingFlaskType}>
-                <div className="m-3">{type ? capitalize(material.translate(type)) : "Any"}</div>
+                <StaticPotion material={type} />
               </Clickable>
             </Col>
           );
