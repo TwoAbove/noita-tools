@@ -22,6 +22,7 @@ import useLocalStorage from "../../../../services/useLocalStorage";
 import { ProfileContext } from "../../../Profile/ProfileContext";
 import { useSearchParams } from "react-router-dom";
 import { useSearchParamsState } from "react-use-search-params-state";
+import { VersionMisatch } from "../../../misc/VersionMismatch";
 
 const InfoText = ({ clusterHelpAvailable, isLoggedIn, computeLeft }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -106,26 +107,7 @@ const ClusterInfo = () => {
     <Col md={12} className="mt-3 mt-sm-0 mb-3">
       {computeVersionMismatch && (
         <Row className="mx-3 mb-1">
-          <Button
-            style={{
-              position: "relative",
-            }}
-            disabled={true}
-            variant={"outline-danger"}
-          >
-            Noitool version mismatch, please reload
-            <div
-              style={{
-                position: "absolute",
-                top: "-0.0rem",
-                right: "0.5rem",
-                fontSize: "1rem",
-              }}
-              className="ms-2"
-            >
-              <i className="bi bi-exclamation-triangle-fill"></i>
-            </div>
-          </Button>
+          <VersionMisatch />
         </Row>
       )}
       {clusterHelpAvailable && (

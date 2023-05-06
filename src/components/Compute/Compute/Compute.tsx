@@ -9,6 +9,7 @@ import useLocalStorage from "../../../services/useLocalStorage";
 import UseMultithreadingButton from "../../SearchSeeds/UseMultithreading";
 import { ComputeSocket } from "../../../services/compute/ComputeSocket";
 import { localizeNumber } from "../../../services/helpers";
+import { VersionMisatch } from "../../misc/VersionMismatch";
 
 const Compute = () => {
   const [computeSocket, setComputeSocket] = useState<ComputeSocket>();
@@ -23,6 +24,7 @@ const Compute = () => {
   const [connected, setConnected] = useState(false);
   const [computeRunning, setComputeRunning] = useState(false);
   const [computeInfo, setComputeInfo] = useState<any>({});
+  const [computeVersionMismatch, setComputeVersionMismatch] = useState<boolean>(false);
 
   useEffect(() => {
     if (!seedSolver) {
@@ -48,7 +50,8 @@ const Compute = () => {
     });
 
     newComputeSocket.on("compute:version_mismatch", () => {
-      window.location.reload();
+      setComputeVersionMismatch(true);
+      newComputeSocket.stop();
     });
 
     setComputeSocket(newComputeSocket);
@@ -108,14 +111,11 @@ const Compute = () => {
       <Row>
         <p>{connected ? "Connected" : "Not Connected"}</p>{" "}
       </Row>
-      {/* <Row>
-				<Col>
-					<Form.Group>
-						<Form.Label>Compute URL</Form.Label>
-						<Form.Control value={computeUrl} onChange={(e) => setComputeUrl(e.target.value)} />
-					</Form.Group>
-				</Col>
-			</Row> */}
+      {computeVersionMismatch && (
+        <Row className="mx-3 mb-3">
+          <VersionMisatch />
+        </Row>
+      )}
       <Stack gap={3}>
         <Row>
           <Col md={3}>{computeRunning ? "Running" : "Stopped"}</Col>

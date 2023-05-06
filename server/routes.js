@@ -29,7 +29,7 @@ router.get("/api/db_dump/:id", (req, res) => {
 
 const m = multer();
 
-const { getRoomNumber } = require("./rooms");
+const { getRoomNumber } = require("./io/rooms");
 
 router.post("/api/db_dump/", m.any(), (req, res) => {
   const id = getRoomNumber();

@@ -4,7 +4,7 @@ import SeedSolver from "../../services/seedSolverHandler";
 import { ILogicRules, RuleType } from "../../services/SeedInfo/infoHandler/IRule";
 import useLocalStorage from "../../services/useLocalStorage";
 import copy from "copy-to-clipboard";
-import { avg } from "../../services/helpers";
+import { avg, randomUUID } from "../../services/helpers";
 
 import cloneDeep from "lodash/cloneDeep.js";
 import uniqueId from "lodash/uniqueId.js";
@@ -220,7 +220,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({ children }) => 
     db.searches
       .add({
         ...data,
-        uuid: crypto.randomUUID(),
+        uuid: randomUUID(),
         createdAt: new Date(),
         updatedAt: new Date(),
       })

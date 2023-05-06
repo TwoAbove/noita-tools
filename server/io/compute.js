@@ -1,47 +1,9 @@
-const { Server: SocketIOServer } = require("socket.io");
 const cron = require("node-cron");
-const mongoose = require("mongoose");
 
 const B2 = require("backblaze-b2");
-const { randomUUID } = require("crypto");
 B2.prototype.uploadAny = require("@gideo-llc/backblaze-b2-upload-any");
 
-const corsDomains = ["dev.noitool.com", "noitool.com", "localhost:3000", "localhost:3001"];
-const corsSchemes = ["http://", "https://", "ws://", "wss://", ""];
-const allowedCORS = corsSchemes.flatMap(ext => corsDomains.map(d => ext + d));
-
-const { getRoomNumber, rooms } = require("./rooms");
-const { User } = require("./db");
-const { inspect } = require("util");
-
-const handleLiveSeed = socket => {
-  let roomNumber;
-  let isHostOfRoom = false;
-  socket.on("host", customRoom => {
-    roomNumber = customRoom || getRoomNumber();
-    rooms.add(roomNumber);
-    isHostOfRoom = true;
-    socket.join(roomNumber);
-    socket.emit("set_room", roomNumber);
-
-    // cb('ok');
-  });
-
-  socket.on("seed", seed => {
-    if (!isHostOfRoom) {
-      return;
-    }
-    socket.to(roomNumber).emit("seed", seed);
-  });
-
-  socket.on("restart", () => {
-    socket.to(roomNumber).emit("restart", "");
-  });
-
-  socket.on("disconnect", () => {
-    //
-  });
-};
+const { User } = require("../db");
 
 const counts = {
   hosts: 0,
@@ -218,10 +180,7 @@ const handleCompute = (socket, io) => {
 
   socket.on("disconnect", () => {
     unregisterUserSocket(computeUserId, socket.id, "hosts");
-    unregisterUserSocket(computeUserId, socket.id, "workers");
-    if (computeAppetite) {
-      counts.appetite -= computeAppetite;
-    }
+    unregisterUserSocket(computeUserId, socket.id, "workers", computeAppetite);
   });
 };
 
@@ -233,40 +192,4 @@ cron.schedule("*/10 * * * * *", async () => {
   });
 });
 
-const handleConnection = (socket, io) => {
-  handleLiveSeed(socket, io);
-  handleCompute(socket, io);
-};
-
-const makeIO = (server, app) => {
-  app.get("/api/cluster_stats", (req, res) => {
-    res.json({
-      hosts: counts.hosts,
-      workers: counts.workers,
-      appetite: counts.appetite,
-    });
-  });
-
-  const io = new SocketIOServer(server, {
-    cors: {
-      origin: function (origin, callback) {
-        if (allowedCORS.indexOf(origin) !== -1 || !origin) {
-          callback(null, true);
-        } else {
-          callback(new Error("Not allowed by CORS"));
-        }
-      },
-    },
-  });
-
-  io.on("connection", socket => {
-    handleConnection(socket, io);
-  });
-
-  io.of("/").adapter.on("delete-room", room => {
-    // Room is empty
-    rooms.delete(room);
-  });
-};
-
-module.exports = makeIO;
+module.exports = { handleCompute, counts };

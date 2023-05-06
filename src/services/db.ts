@@ -4,6 +4,7 @@ import { exportDB, importInto } from "dexie-export-import";
 import { useLiveQuery } from "dexie-react-hooks";
 import uniqueId from "lodash/uniqueId.js";
 import { ILogicRules, RuleType } from "./SeedInfo/infoHandler/IRule";
+import { randomUUID } from "./helpers";
 
 (Dexie as any).debug = "dexie";
 
@@ -148,7 +149,7 @@ export class NoitaDB extends Dexie {
         searches: "++id, &uuid, config, createdAt, updatedAt",
       })
       .upgrade(async t => {
-        const uuid = crypto.randomUUID();
+        const uuid = randomUUID();
         const search = await ((t as any).db.seedInfo as NoitaDB["searches"]).add({
           uuid,
           config: {
@@ -289,7 +290,7 @@ async function populate() {
     },
   ]);
 
-  const uuid = crypto.randomUUID();
+  const uuid = randomUUID();
 
   const initialSearch = await db.searches.add({
     uuid,
@@ -327,7 +328,7 @@ export async function clearSeeds() {
 }
 
 export async function newSearch(): Promise<string> {
-  const uuid = crypto.randomUUID();
+  const uuid = randomUUID();
   const search = await db.searches.add({
     uuid,
     config: {
