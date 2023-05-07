@@ -101,12 +101,13 @@ export class ComputeSocket extends SocketHandler {
     while (this.running) {
       await new Promise<void>(res => {
         const t = setTimeout(() => res(), 10000);
-        this.io.emit("compute:need_job", this.seedSolver?.workerList.length, async (data, cb) => {
+        this.io.emit("compute:need_job", this.seedSolver?.workerList.length, async data => {
           try {
             clearTimeout(t);
             if (!data || data.done) {
               setTimeout(() => res(), 5000);
               this.onDone?.();
+              return;
             }
 
             const { from, to, jobName, rules, hostId, chunkId, stats } = data;
