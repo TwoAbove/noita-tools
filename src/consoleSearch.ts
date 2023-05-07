@@ -16,7 +16,7 @@ console.log(argv, os.cpus().length);
 const seedSolver = new SeedSolver(argv.cores || os.cpus().length, false);
 
 const newComputeSocket = new ComputeSocket({
-  url: argv.computeUrl || "https://www.noitool.com/",
+  url: argv.url || "https://www.noitool.com/",
   version: process.env.npm_package_version || "0.0.0",
   sessionToken: argv.sessionToken,
   userId: argv.userId,
@@ -46,6 +46,11 @@ const newComputeSocket = new ComputeSocket({
 
 newComputeSocket.on("compute:version_mismatch", () => {
   console.log("Version mismatch. Please update your client.");
+  newComputeSocket.stop();
+});
+
+newComputeSocket.on("compute:unauthorized", () => {
+  console.log("userID or sessionToken is invalid");
   newComputeSocket.stop();
 });
 

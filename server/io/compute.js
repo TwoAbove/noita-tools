@@ -88,6 +88,7 @@ const handleCompute = (socket, io) => {
 
     user = (await User.findOne({ sessionToken: config.sessionToken })) || (await User.findOne({ _id: config.userId }));
     if (!user) {
+      socket.emit("compute:unauthorized");
       return;
     }
 
