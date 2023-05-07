@@ -16,7 +16,7 @@ console.log(argv, os.cpus().length);
 const seedSolver = new SeedSolver(argv.cores || os.cpus().length, false);
 
 const newComputeSocket = new ComputeSocket({
-  url: argv.computeUrl || "https://dev.noitool.com/",
+  url: argv.computeUrl || "https://www.noitool.com/",
   version: process.env.npm_package_version || "0.0.0",
   sessionToken: argv.sessionToken,
   userId: argv.userId,
@@ -34,6 +34,13 @@ const newComputeSocket = new ComputeSocket({
         chunkFrom: newComputeSocket.chunkFrom,
       },
     });
+  },
+  onDone: () => {
+    if (argv.exit) {
+      console.log("Done!");
+      newComputeSocket.stop();
+      process.exit(0);
+    }
   },
 });
 
