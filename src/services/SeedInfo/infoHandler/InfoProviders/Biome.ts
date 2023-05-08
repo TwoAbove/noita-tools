@@ -1,9 +1,9 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import biomesData from '../../data/biome_names.json';
-import { IRule } from '../IRule';
-import { InfoProvider } from './Base';
+import biomesData from "../../data/biome_names.json";
+import { IRule } from "../IRule";
+import { InfoProvider } from "./Base";
 
 export class BiomeInfoProvider extends InfoProvider {
   biomes = biomesData;
@@ -12,7 +12,7 @@ export class BiomeInfoProvider extends InfoProvider {
     if (found) return found;
     console.warn("Could not find biome: " + biomeId);
     return {
-      translated_name: biomeId
+      translated_name: biomeId,
     };
   }
 

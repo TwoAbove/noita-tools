@@ -55,18 +55,14 @@
     "ui_decoration_file": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAYCAYAAABZY7uwAAACCElEQVRYw91ZIW/CQBh9V2AJWRYMCQKDIBgEZlg0CWDmZlHlVzB+xapmcRggQWOZQWAIAoMgwSwIkpFyM23Tlrv2DhJ215eQkgaO7728+971g1BKIYNGo3F1bzjKyS3yILy//ZDwvfl8LrVG+p4Cvj5faLZgYDk5WyoKNBzl6Gl/Qbd3JLeukb5HnPXCtgAbAGYqCrScnL1abxWJKdBm1XK3DClXpxHiqCmMDzMAWC/sSJGi+PIcNIj61WzBgOMcF1tFBSoFa+aCy5eEm7RPTfBU3axafgdtFXdRCUCzUk+Z5eqURLiHydeI+TAA0M2qxXCQXmDVLMLXYO1Dx3ID5z0AeAvtDh26nJytWjtj6iJOrZ0xl5OztTt0qCxfnhX6zusKv9lXAJg5Vy0gUDOXr8heIT5l8XT6BoCmc9UCkjUH+N6UYglEfIo5jYnVtBKZYqJ8DYa9YlMsQYjl6wnkUy02xdYLW7sUWy/sQIqJ8g04yPclbldPEkT4Bs5BnINTImNelK90imkf889yfNOhhkVDnb0fbmbF/Jic6i2q6gyIM/awKvWUWcyPiSxfkRQjIs81Oj6LifAVTTEPjJFrSfEzELN2Ub7pcFd3zgCu1T5CiwEATvuLTiLxahbiS24d2vumioC6k8UmAFTqKdOdJj5saN/tHYlvaK/sAfHfhvauSIBef/vI4g96wR0sxx0dEQAAAABJRU5ErkJggg==",
     "probability": 0.00025,
     "id": "GOLD_VEIN_SUPER",
-    "apply_only_to_biome": [
-      "coalmine", "coalmine_alt", "excavationsite", "snowcave"
-    ],
+    "apply_only_to_biome": ["coalmine", "coalmine_alt", "excavationsite", "snowcave"],
     "ui_description": "You sense extremely lucrative opportunities"
   },
   "PLANT_INFESTED": {
     "ui_decoration_file": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAYCAYAAABZY7uwAAACMUlEQVRYw+1ZsW7CMBB9jhBbKrEQqVOl/ADf0CkbWxmZWmVi4QNKP4CFKWJja9mYmolvyA9E6lQpLEhkY3GXBDmXM07L4kQ9KUpk2da957tn+yKklACAw+GAJuZ5Xq1tsg4kLLSPl1jQtizLGo0dDocAgN4tDjwtH6Vw+zglWWQjQZN1IGV+xna+F3+do0bQbDcFALkab4SJnDw9lsTENhJ0SrKLryaSZrupBCBW402l3WH6SgCiGGAiJ7aVHGXh4jw9Rk/LR2kip8DOR1AZOUpHMdtN2UgSbp82fVlK0MMVnzlyysAQ78+f1QgqQktQkjiRk/m5DeRUfJP5WSfQNcxqmjkqk5Sk1XgDLtV0q2GzcT43waxqkKo7CxJ+lUlPSRbdjbywLeTcjbzwlGQRs9hGzFyKXTpzqu7fjwAgLt6tMJ3PTTBzKXbpzKVY+p0AQFC8W2E6n5tgdhhFp+HWaTNhdoiag4QbbcdqvBGuPwhtPT1rDoyR6w9C5shixOxoBiw4cjpqVzGrBFXyUfmWNCTz9Ni6XSxPj9wuJhWxXijfZg1STtZdN1lgNWoQNPnY2W2+CeZfi3SXtvlbRPpNJ9Id28WMmHtUsBR71UVRV+5iTTD3SMPClJue52GyDmhJwfpyR+k7udEbMfeuMKgVL1LuqDli5VZV97kRZsc0Mb2sAsB2vheuPwgBBMVjqwUAAtcfhFzJlcNG7c9F++18L5SivbUHxFuL9uL/tw9v5W+fHypKRBOmIobDAAAAAElFTkSuQmCC",
     "probability": 1,
     "id": "PLANT_INFESTED",
-    "does_not_apply_to_biome": [
-      "snowcastle", "snowcave", "rainforest", "rainforest_open", "mountain_hall"
-    ],
+    "does_not_apply_to_biome": ["snowcastle", "snowcave", "rainforest", "rainforest_open", "mountain_hall"],
     "ui_description": "It smells like soil after rain"
   },
   "FURNISHED": {
@@ -87,9 +83,7 @@
     "ui_decoration_file": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAYCAYAAABZY7uwAAACI0lEQVRYw+1ZsW6DMBQ8RwztkJWRRO2YfgjfkLVDUbIgdWiHSDykLhkqZQnK0rXf0A9pxlYNI6uHZHOHQuWA7YCSVgblJIRk4OXd8XzPOEwIgSbo9/uVsdv7ebMg/4SX5wdWHuOcN4rBjhFoPJ2Jy4s+Nul6ZaNAA28UbHccr8sndjKBQkoAgABgQRPSCTSezkSWpYUwb7ATPgC4rhcUIqkECikpeNKCJnvXHE1gMv2qJI6twkB+cVmWYjydCbmS6vJ1FNXz+0BISUVRALi8qPjQl6UCDQ05V2YMAAopgcy5ZwgeqQY559jueBvE2cttu+Mm/4l0F/YEUlWLVFU49DZshipnFbeyBr0DcUkRVGzS9WrgjYK2iDPwRsEmXa9CSkRTvzUJFOeltxf05voKAN7ycytgyFnkHONaAkklF+UHy49fvH98AoCfn1sBQ84Fv4JvZdo5CkVhUrSjiEv8mW6KMenmSLVwWtCEua4X2Lp6VmGTrleu6wULmjCFIZPUxeLyjOkZTCsGEGmMrRPIuckeRHVNWutBISUiy9LWdbEsS1VdrOJBxpX02YNO4EFdavN/4kFdavN1PMg58G3CFEtxdvc4F13oYhI/UVegWh7UlW+xYzyoqCBR9iDFluvQYl2GptxzbkKaNRUPcjQeJLf5CkrbHbaLpMtZLgrRdB0EnTgA8Lp8Yq7rBfjZ0vQt1sUH4Mtbrk25njftD4Cd//Yx4xvNZRPTA+yPUQAAAABJRU5ErkJggg==",
     "probability": 0.75,
     "id": "PERFORATED",
-    "does_not_apply_to_biome": [
-      "vault", "vault_frozen", "crypt", "snowcave"
-    ],
+    "does_not_apply_to_biome": ["vault", "vault_frozen", "crypt", "snowcave"],
     "ui_description": "It feels roomy in here"
   },
   "SPOOKY": {
@@ -110,41 +104,28 @@
     "ui_decoration_file": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAYCAYAAABZY7uwAAACK0lEQVRYw+WZsWoCMRjH/8kJcptjwUUySQ8cCh1bEBykb+Ab3FsY38I38A2KQ0Goo+AgHHXp0UVwdDscjnTJlRiTO0+Lzdn/Ek1i+P4/Qr7kkwghUEaMsaO+pT8vt8iV9JA8Eb0vjuNSa9QuCeDVfxN3qGOSLsYuAlr6c7HFHi9Jj5y7Ru0SOLN0lYGZughoki5+Yj0XUu1COE6CUTQFgFm6OhvSWYDuUNe7vhwF1MqJuRygdRADwBAAl10cwKgdsaNDTs51HU4WWwsAttgbD+gi31SZK7RJXPadsoOcV07MQvEL3TeVFIUyqLbqGABgF2zEJF2MB95jWBU4A+8xnKSL8S7YCG33qN8PvGdjdB3EQ8MkKyT/OQGAqWwrIVPMFji67yHVBlH0o+TdB4C+bCshS8zc8vlgDi2YzAEQACPcnkbSW553kI/7z6GBINehqNlsHcTqPejLcRAtAP2u1wnbESNa9lJl5EAVksRAFO2IQU/1tyCLL66xGFHbLrGB2QUbMUtXlctis3R1lMVMPnXP1AZCT++3LJPXjAvNyV781JRZxTR/quc8QEayN5Tmi+5DxYBMakRN0vU6oas1IEvZY9z1OmEjaha95nnua16mPqK8Rcg/eIsd+NXTf81yeltJM8aw9Of6PcP5ckcWu/6il77Jr9aDttjnBuKiDDGXqweV0UvSI7KqmHW5WlnsA0DX64RXLbmqkGTR3tkL4p8V7TNIQLX+9imrb/fEEOPyoEhaAAAAAElFTkSuQmCC",
     "probability": 0.5,
     "id": "FUNGAL",
-    "does_not_apply_to_biome": [
-      "mountain_hall", "snowcastle", "snowcave", "fungicave"
-    ],
+    "does_not_apply_to_biome": ["mountain_hall", "snowcastle", "snowcave", "fungicave"],
     "ui_description": "The air is filled with fungal spores"
   },
   "FLOODED": {
     "ui_decoration_file": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAYCAYAAABZY7uwAAACOElEQVRYw+1ZMY7CMBCcRXBcQU0XxC/uC+gknhGEdCU8I5QgBM9AOvEFfoGgo6bAR7FXxA7GsU2S4uTArYQMURLtTDae2YWYGWWCiPIH55dyN/mr+HrPJVsWb9NLxvqY3jOOyHrC6sC4dgGxWQZJ0PzCaJ2AUY8c+BgAcRxVI8gbqwPjvFPEbIMkSGwAIXN1kPQoGg+qZyK/TxzkbIMl5/bgtjjvllgd2MCnME0k1koVlGjrLDt67Zrn7QMlqO/J2Y6taAUBYABT+VHva7rJtU51IOc+t9Yp26AVFg0fVyHIHfmnEX5UzLlR4BVLVBUBAC0EQ2yWaA/HtSGnPRxDbJa0EHqlTDV8jwmi9VEvPQAggygCgM+3NgBs5VqLsORMBjGkS7++aXs3ad3/qIu+fwQADORai7jPue3E5lQxU9I5jmbmhT4zVbfgOLKSYkj/jOMIxMyZY7ZVjtOB3nzQPnA++gAG6HyMC+HSfnIcZXuQVdJfKVzSX1rmaSHS6qmbip13poqVblYTQ/5eMXLYGz5Jt0j/s8i8TdKt0t/0SfpjyayvzBe1NbqK2WRwopy0kv5nUTEp6apLmNmkP1Mx3eMYficx1mfqxXLYbDw0PUaQtR4sofWROY6IiID5xXxC4Y87kI6L5RujS7rCSjYeqk0UW6d0UudIJMi4H9FUknlXN5+Xv1GP5FRRHQl1qjgAAHQ+xpaRayE74yOItPYjMazAjaR0aB+uQbQP7XVsyGG76zf+//bxxi9FqTNNPdYX3gAAAABJRU5ErkJggg==",
     "probability": 0.75,
     "id": "FLOODED",
-    "does_not_apply_to_biome": [
-      "mountain_hall", "rainforest", "rainforest_open", "snowcave", "vault"
-    ],
+    "does_not_apply_to_biome": ["mountain_hall", "rainforest", "rainforest_open", "snowcave", "vault"],
     "ui_description": "Where did all this water come from?"
   },
   "GAS_FLOODED": {
     "ui_decoration_file": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAYCAYAAABZY7uwAAACe0lEQVRYw+1ZPYvbMBh+XnGBbCFgMgVaMnRPf0X2G+vJx4Gpt/wByX/gNh+GUE++Mfv9ist+Q2ghUwiEbIEM7lDJyLJix7QU29y7KMiRrOfJ837oDWVZhiZGRKW57z++NdvkP9nzw0vpsI3x/g1Bj0/32WA0xH6zi9tI0GQ+9S+nM1bLNf1TgoLEBQD1IATAIy8lNf/88EKPT/fZcXtQxLyinbYAgPHM8VfLNUmlU+SlCBI3U9gUF5GX1hOkkRNaXigA4HI6K3LaSkyJqPHM8QejIek4DOM2ku4akKM2FoPR0Jz/2VJiPqsP2pnFle+GALIgcQsksYYvFJGX4nI6d4GcwtkupzMkcNFkA9ZAPbD8Gp2xG8+sVHSzgrg2ChXc9ptdPJlP/a6QM5lP/f1mFweJm2kq4gZGu4IUW3IhGQtDnVkA+PLpKwC8yrETZjlzZmDjtkAdJC7upCr0RfpCU354//UGAAs5dsIsZ7Zik6MIEjcnilXEHm5L8T0xUYM1j0XMQg63SE+5ICIvpfHM8dtaPdtsv9nF45njR15KOhZLKOEmSczCZGiRHg8StzcKkli4xd1CU03MCMxV6U/IzbPj9tC5LHbcHmJ5vVAuVlfOcACkKmnSXM1UESIv7VP8yQtGi1dwjQPS6yBxJe3pkkSP0jwqyCl4DKuI4oV5Jc8+pHnN1XAlFuXz7MpDW71AfcliCsst2Jml9K6tHXpwF6uLqfnVipkKqSLKkGappdDmdkcNBtPdqNAP0q4bQmPXxjKp1kGHSIJxZrqCTceeF5OsxqUKt3n1YLVc03jm+PjT0ly0mJcFZDdR70tXYSsp4qNpX4P342+favsNYpBG86ssL2UAAAAASUVORK5CYII=",
     "probability": 0.5,
     "id": "GAS_FLOODED",
-    "does_not_apply_to_biome": [
-      "mountain_hall",
-      "excavationsite",
-      "snowcave",
-      "snowcastle",
-      "vault",
-      "crypt"
-    ],
+    "does_not_apply_to_biome": ["mountain_hall", "excavationsite", "snowcave", "snowcastle", "vault", "crypt"],
     "ui_description": "There's a smell of gas in the air"
   },
   "SHIELDED": {
     "ui_decoration_file": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAYCAYAAABZY7uwAAACWklEQVRYw+2ZPXLiQBCF3wwEW4sc2c4J5QAjn0IcwgfQLTS6BQfgEOgUSCZAoXPsyPKWA2A2QdrWqPVDlWtrZLsTCg0M3Z/edLcaobXGJSaEqF1z0pfLNvlPls9vas5eGu/YSbK2dbqbyj03oouTzU4LeYtDulraCMhJX7Q+7fH+cFcB5SRZCEDR+94IqAOMAhBxH5hsdvq4jQswaxsBHdJV6asBKSJxhSRe0QWoE4wBx0owxNYAcNzGHCQTFgtqbMBpBVPqUd6al54tBTRt8bkLlAAAWUlq/3KMyj0XueeCS3L6tB8CnIpv+rRnEzSJUxkMQAFpI2mpCxVkvfXw2YxfmwqK+vzQ1dOrPqSr5Xj+GAwFznj+GBzS1fLq6bVvjY+ogkr1kJLfqCD/4zcArM+vg7CePnMMtGxQTyOg+NcfAFicXwdhPX1WnIqk0QjiuxtN2AAgJptdWdIoIK7DLtadJKN90LPlMU8BLEYzP8g9V3TFZqxrabTg315BJgPJ9APse1rFjtt4cFXsuI3ZKtYVt8SPtVoBKHSSDE6SqU8qmUMs88URU+djFhaABMnanYC+cJk3y70CIOgRC2mialLT2/21GM38wNYZUMPYYzma+cHb/bXoUE2NhSSP96pvs/gFn8W42AWXpENK0kmyWvPIjFynlvdAjb7nnls5KTT3cPMgQZ7LirmQIhuBjg4GBIn1mdx4RY6VIizKTprdj3w5opsWd2EII1cACwAYzfygmCZqrcHkmxoYTkEw1GTOiSqw3h/uBBnaW9sgckN7AwoLplz4+dun3f4CkJ8081z5pLwAAAAASUVORK5CYII=",
     "probability": 0.1,
     "id": "SHIELDED",
-    "does_not_apply_to_biome": [
-      "mountain_hall", "excavationsite", "snowcave"
-    ],
+    "does_not_apply_to_biome": ["mountain_hall", "excavationsite", "snowcave"],
     "ui_description": "This place feels exceptionally secure"
   },
   "PROTECTION_FIELDS": {
@@ -160,27 +141,21 @@
     "probability": 0.2,
     "id": "OMINOUS",
     "requires_flag": "darkmoon_is_darksun",
-    "does_not_apply_to_biome": [
-      "mountain_hall", "coalmine", "excavationsite"
-    ],
+    "does_not_apply_to_biome": ["mountain_hall", "coalmine", "excavationsite"],
     "ui_description": "There's an ominous atmosphere here...!"
   },
   "INVISIBILITY": {
     "ui_decoration_file": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAYCAYAAABZY7uwAAABtklEQVRYhe2YMU/CQBTH/0c6oQMhjg6dnAwmspHYmUQ/SBfb0c/AiCz9IJgwYyIbiYaJqYOjIQzARPIc4MhZMb1X7qBFftNBj+v/PXrv/3oCBrh9fCMT65hm2GmIXdfYaYFa0CWHqpgu+tGuQmxQKXv+Ukzw8fyQOU4BAGFrTADw+vmFYach5BMhx3eXFwCA9tPV5ka1oEuz+UgmppdVgGWaAHB+du2rSeLEu0mQGvw21DlKcvKamCRNNUmceB1glck01DkOVZOXY6bgfeHKgaqZE28J0Ctmcg4RYSkm6qVYS+phiOVgKSYgWnkJJ94SoOdC6pwtT1DuUTVz4i1xb1QPBjRd9KNK2fO5vz0UlbLnTxf9qB4M2O0Ie4utK3xPVvoikNRsdYuti1dTp9DlhaRmq1vsv8HuMIkIN+GL2gfFxlWZxcW6D3pv3wsheCFncrGiY93FZvNR4VxsNh/tx8WOAasudgw2b3WLHYPNczi5WAqnd7E/+LHFdOqJnLPlH3B1RR4AV/0gtXPideQXYWtMaSdsksRxxy8heSSpWTfezNZd5CNXDqdD+xSMNH95fQ0x0dx+A+7wOQ3F2i1iAAAAAElFTkSuQmCC",
     "probability": 0.1,
     "id": "INVISIBILITY",
-    "does_not_apply_to_biome": [
-      "mountain_hall", "coalmine"
-    ],
+    "does_not_apply_to_biome": ["mountain_hall", "coalmine"],
     "ui_description": "You suddenly have trouble focusing your eyes..."
   },
   "WORMY": {
     "ui_decoration_file": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAYCAYAAABZY7uwAAAChUlEQVRYheVZMZKiQBR9bG1EIqnMVmmVuSYcwgkMZoMx8QBcYCcYYw3cC3CASTRYAwI9BAnmVknVimmTmPYG0mwD3dCMK4XuS8Cm/Pz/eP1/928NFdHv93Nj46lPq9qpA8vZQMuO7Xa7Sja+XuNAb7KhVseEGxHnGju3wnjqUy8Isf94zhGlilKCZktKAWA61lIv6U029GTojhsRANh+1oFbwo0IYOjoTTY0S5Isriy+FD2cLSn1gjBlEPhLDi7ENJKcGFsA25OhO73JJvGfxeIFYSouEUoVZHVMeEEIq2OmxmLlMBwqOl4XuuzG6pjYcw+yMckgVdDL4pgwa3XMRIq+74OpKsZB3d/acWA3XhDC930Al2nFk8PHmoVQQS+LI2XKWb895eaoQEGNR1Yt7IOzWLE4UlGsOQWVkTNfgboRcUYtw/6H/t8Uo5ZhuxFx5ivklLJ+e9LYdBMpKUVQGTkA8G0AANjG17tAmc9FJCUEqZADAL8v03gYX+8CKj7LSEoIYnO0iJxHB4udz1cJQawyFWV0AHh/hdYmZ7upq2cR3Ig4bXK2319R+PFZ7HyVTggqS1aPDlmKSSVpFZLmK9CTod9dFTsZurCKAcX5N1fm/zcllRUn4Uq6iKRHKvMqlVu61ZCR9ChlXnVZU1rSs4Yopfj+M+R384drA7gxugCGbXK2f/0wNU3TlMkBStodMkMqu+Cmgfe5Sp4t3M2LyBkMcsmn+zmXa0GX/8H7rkqStB9UJEEvCAFDlzrSRGRaNADilXMshLXkf8L5N1tSKmtFsqY911UEmttVHAJAm5xt1nKVNe1lMVfed/GnGk1v2o9ahp1t2td6qrH/eNb2uK9jn6r4A2DOnHejE8pCAAAAAElFTkSuQmCC",
     "probability": 0.05,
     "id": "WORMY",
-    "does_not_apply_to_biome": [
-      "mountain_hall", "coalmine"
-    ],
+    "does_not_apply_to_biome": ["mountain_hall", "coalmine"],
     "ui_description": "You hear creepy crawling everywhere!"
   }
 }

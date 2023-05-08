@@ -1,141 +1,135 @@
-import { Remote, wrap, releaseProxy, proxy } from 'comlink';
-import { getTreeTools } from '../components/SearchSeeds/node';
-import { ILogicRules, IRules } from './SeedInfo/infoHandler/IRule';
-import * as seedSearcher from './seedSearcher';
+import { Remote, wrap, releaseProxy, proxy } from "comlink";
+import { getTreeTools } from "../components/SearchSeeds/node";
+import { ILogicRules, IRules } from "./SeedInfo/infoHandler/IRule";
+import * as seedSearcher from "./seedSearcher";
 
 export class WorkerHandler extends EventTarget {
-	latestData?: ReturnType<seedSearcher.SeedSearcher['getInfo']>;
-	worker: Worker;
-	comlinkWorker: Remote<seedSearcher.SeedSearcher>;
+  latestData?: ReturnType<seedSearcher.SeedSearcher["getInfo"]>;
+  worker: Worker;
+  comlinkWorker: Remote<seedSearcher.SeedSearcher>;
 
-	constructor(offset: number, step: number) {
-		super();
-		this.worker = new Worker(
-			new URL('../workers/seedSearcher.worker.ts', import.meta.url)
-		);
-		this.comlinkWorker = wrap(this.worker);
-		this.worker.postMessage({ type: 'init', offset, step });
-	}
+  constructor(offset: number, step: number) {
+    super();
+    this.worker = new Worker(new URL("../workers/seedSearcher.worker.ts", import.meta.url));
+    this.comlinkWorker = wrap(this.worker);
+    this.worker.postMessage({ type: "init", offset, step });
+  }
 
-	async searchChunk(from: number, to: number, rules: ILogicRules) {
-		await this.comlinkWorker.update({
-			findAll: true,
-			currentSeed: from,
-			seedEnd: to,
-			rules
-		});
-		const res = await this.comlinkWorker.findSync(from, to);
+  async searchChunk(from: number, to: number, rules: ILogicRules) {
+    await this.comlinkWorker.update({
+      findAll: true,
+      currentSeed: from,
+      seedEnd: to,
+      rules,
+    });
+    const res = await this.comlinkWorker.findSync(from, to);
 
-		return res;
-	}
+    return res;
+  }
 
-	async ready() {
-		await this.comlinkWorker.ready();
-	}
+  async ready() {
+    await this.comlinkWorker.ready();
+  }
 
-	terminate() {
-		this.worker.terminate();
-	}
+  terminate() {
+    this.worker.terminate();
+  }
 }
 
 export default class SeedSolver {
-	public workerList: WorkerHandler[] = [];
-	startTime!: number;
+  public workerList: WorkerHandler[] = [];
+  startTime!: number;
 
-	workersReadyPromise: Promise<void>;
+  workersReadyPromise: Promise<void>;
 
-	constructor(workerCount: number = 1, stopOnFind = true) {
-		const workerReady: Promise<void>[] = [];
-		for (let i = 0; i < workerCount; i++) {
-			const worker = new WorkerHandler(i, workerCount);
-			this.workerList.push(worker);
-			workerReady.push(worker.ready());
-		}
-		this.workersReadyPromise = Promise.allSettled(workerReady)
-			.catch(e => console.error(e))
-			.then(() => {
-				console.log('workers ready');
-			});
-	}
+  constructor(workerCount: number = 1, stopOnFind = true) {
+    const workerReady: Promise<void>[] = [];
+    for (let i = 0; i < workerCount; i++) {
+      const worker = new WorkerHandler(i, workerCount);
+      this.workerList.push(worker);
+      workerReady.push(worker.ready());
+    }
+    this.workersReadyPromise = Promise.allSettled(workerReady)
+      .catch(e => console.error(e))
+      .then(() => {
+        console.log("workers ready");
+      });
+  }
 
-	public destroy() {
-		for (const worker of this.workerList) {
-			worker.terminate();
-		}
-	}
+  public destroy() {
+    for (const worker of this.workerList) {
+      worker.terminate();
+    }
+  }
 
-	public update(config: seedSearcher.ISeedSearcherConfig) {
-		for (const worker of this.workerList) {
-			worker.worker.postMessage({ type: 'update', config });
-		}
-	}
+  public update(config: seedSearcher.ISeedSearcherConfig) {
+    for (const worker of this.workerList) {
+      worker.worker.postMessage({ type: "update", config });
+    }
+  }
 
-	public start() {
-		this.startTime = new Date().getTime();
-		for (const worker of this.workerList) {
-			worker.worker.postMessage({ type: 'start' });
-		}
-	}
+  public start() {
+    this.startTime = new Date().getTime();
+    for (const worker of this.workerList) {
+      worker.worker.postMessage({ type: "start" });
+    }
+  }
 
-	public stop() {
-		for (const worker of this.workerList) {
-			worker.worker.postMessage({ type: 'stop' });
-		}
-	}
+  public stop() {
+    for (const worker of this.workerList) {
+      worker.worker.postMessage({ type: "stop" });
+    }
+  }
 
-	public hardGetInfo() {
-		for (const worker of this.workerList) {
-			worker.worker.postMessage({ type: 'getInfo' });
-		}
-	}
+  public hardGetInfo() {
+    for (const worker of this.workerList) {
+      worker.worker.postMessage({ type: "getInfo" });
+    }
+  }
 
-	public async searchChunk(from: number, to: number, rules: ILogicRules) {
-		await this.workersReadyPromise;
+  public async searchChunk(from: number, to: number, rules: ILogicRules) {
+    await this.workersReadyPromise;
 
-		// If we have map rules, then we'll also check if we need to subdivide the chunk even
-		// more so that GC will have time to clean up the large memory allocations for maps
-		const tt = getTreeTools('id', 'rules');
+    // If we have map rules, then we'll also check if we need to subdivide the chunk even
+    // more so that GC will have time to clean up the large memory allocations for maps
+    const tt = getTreeTools("id", "rules");
 
-		const hasMapRules = tt.dfs(rules, n => {
-			return n.type === 'map';
-		});
+    const hasMapRules = tt.dfs(rules, n => {
+      return n.type === "map";
+    });
 
-		let subChunkSize = Math.ceil((to - from) / this.workerList.length);
-		if (hasMapRules) {
-			subChunkSize = Math.min(subChunkSize, 100); // TODO: Figure out map complexity (by map size?) and adjust further
-		}
+    let subChunkSize = Math.ceil((to - from) / this.workerList.length);
+    if (hasMapRules) {
+      subChunkSize = Math.min(subChunkSize, 100); // TODO: Figure out map complexity (by map size?) and adjust further
+    }
 
-		const numberOfChunks = Math.ceil((to - from) / subChunkSize);
+    const numberOfChunks = Math.ceil((to - from) / subChunkSize);
 
-		const chunkConfigs = new Array(numberOfChunks).fill(0).map((_, i) => {
-			return {
-				subFrom: from + subChunkSize * i,
-				subTo: Math.min(from + subChunkSize * (i + 1), to)
-			};
-		});
+    const chunkConfigs = new Array(numberOfChunks).fill(0).map((_, i) => {
+      return {
+        subFrom: from + subChunkSize * i,
+        subTo: Math.min(from + subChunkSize * (i + 1), to),
+      };
+    });
 
-		const res: number[] = [];
+    const res: number[] = [];
 
-		let checked = 0;
+    let checked = 0;
 
-		// This works by awaiting on searchChunk(), so a worker needs to finish their current chunk
-		// before they can start the next one.
-		await Promise.all(
-			this.workerList.map(async (worker, i) => {
-				for (
-					let config = chunkConfigs.pop();
-					config;
-					config = chunkConfigs.pop()
-				) {
-					const { subFrom, subTo } = config;
-					checked += subTo - subFrom;
-					const r = await worker.searchChunk(subFrom, subTo, rules);
-					res.push(...r);
-					await new Promise(res => setTimeout(res, 0));
-				}
-			})
-		);
+    // This works by awaiting on searchChunk(), so a worker needs to finish their current chunk
+    // before they can start the next one.
+    await Promise.all(
+      this.workerList.map(async (worker, i) => {
+        for (let config = chunkConfigs.pop(); config; config = chunkConfigs.pop()) {
+          const { subFrom, subTo } = config;
+          checked += subTo - subFrom;
+          const r = await worker.searchChunk(subFrom, subTo, rules);
+          res.push(...r);
+          await new Promise(res => setTimeout(res, 0));
+        }
+      })
+    );
 
-		return res;
-	}
+    return res;
+  }
 }

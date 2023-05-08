@@ -265,10 +265,7 @@ class Pyramidhallway extends Base {
       prob: 0.2,
       min_count: 1,
       max_count: 3,
-      entities: [
-        "data/entities/animals/scavenger_smg.xml",
-        "data/entities/animals/scavenger_grenade.xml",
-      ],
+      entities: ["data/entities/animals/scavenger_smg.xml", "data/entities/animals/scavenger_grenade.xml"],
     },
     {
       prob: 0.1,
@@ -299,214 +296,130 @@ class Pyramidhallway extends Base {
   ];
 
   spawn_small_enemies(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_big_enemies(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_items(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_props(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_props2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_props3(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_lamp(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   load_pixel_scene(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   load_pixel_scene2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_unique_enemy(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_unique_enemy2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_unique_enemy3(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_ghostlamp(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_candles(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_potion_altar(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_potions(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_apparition(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_heart(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wands(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_portal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_end_portal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_orb(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_perk(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_all_perks(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wand_trap(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wand_trap_ignite(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wand_trap_electricity_source(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_wand_trap_electricity(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_moon(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_collapse(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   init(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_statues(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   load_pixel_scene4(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_lamp2(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_large_enemies(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_ghost_crystal(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_crawlers(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_pressureplates(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_doors(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_scavengers(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   load_pixel_scene3(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
   spawn_scorpions(x: number, y: number) {
-    this.warn(
-      `$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`
-    );
+    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
 }
 export default Pyramidhallway;

@@ -1,4 +1,4 @@
-require('dotenv-flow').config();
+require("dotenv-flow").config();
 
-require('./discord');
-require('./server')
+require("./discord");
+require("./server");

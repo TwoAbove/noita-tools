@@ -1,59 +1,61 @@
-import socketIOClient, { Socket } from 'socket.io-client';
+import socketIOClient, { Socket } from "socket.io-client";
 
 // const ENDPOINT = `wss://localhost:3000`;
 
 // const io = socketIOClient();
 
 export interface SocketHandlerConfig {
-	url?: string;
+  url?: string;
 
-	onUpdate?: () => void;
+  onUpdate?: () => void;
 }
 
 class SocketHandler extends EventTarget {
-	ready = false;
-	connected = false;
+  ready = false;
+  connected = false;
 
-	io: Socket;
+  io: Socket;
 
-	onUpdate: () => void;
+  onUpdate: () => void;
 
-	constructor(config: SocketHandlerConfig) {
-		super();
-		this.io = socketIOClient(config.url as any);
-		if (
-			config.onUpdate
-		) {
-			this.onUpdate = config.onUpdate;
-		} else {
-			this.onUpdate = () => { };
-		}
-		this.configIO();
-	}
+  constructor(config: SocketHandlerConfig) {
+    super();
+    this.io = socketIOClient(config.url as any);
+    if (config.onUpdate) {
+      this.onUpdate = config.onUpdate;
+    } else {
+      this.onUpdate = () => {};
+    }
+    this.configIO();
+  }
 
-	async waitForConnection() {
-		return new Promise<void>(res => {
-			res();
-		});
-	}
+  async waitForConnection() {
+    return new Promise<void>(res => {
+      res();
+    });
+  }
 
-	configIO(): void {
-		this.io.on('connect', () => {
-			this.ready = true;
-			this.connected = true;
-			this.onUpdate();
-		});
+  configIO(): void {
+    this.io.on("connect", () => {
+      this.ready = true;
+      this.connected = true;
+      this.onUpdate();
+    });
 
-		this.io.on('disconnect', reason => {
-			console.log('disconnected: ', reason);
-			this.connected = false;
-			this.onUpdate();
-		});
-	}
+    this.io.on("disconnect", reason => {
+      console.log("disconnected: ", reason);
+      this.connected = false;
+      this.onUpdate();
+    });
+  }
 
-	on(e: string, cb): void {
-		this.io.on(e, cb);
-	}
+  on(e: string, cb): void {
+    this.io.on(e, cb);
+  }
+
+  close() {
+    this.io.close();
+  }
 }
 
 export default SocketHandler;

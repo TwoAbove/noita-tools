@@ -1,10 +1,10 @@
-import { IRandom } from '../../random';
+import { IRandom } from "../../random";
 import { IRule } from "../IRule";
 
 export abstract class InfoProvider {
   randoms: IRandom;
 
-  async ready(): Promise<any> { }
+  async ready(): Promise<any> {}
 
   constructor(randoms: IRandom) {
     this.randoms = randoms;

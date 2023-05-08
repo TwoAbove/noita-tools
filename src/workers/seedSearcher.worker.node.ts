@@ -1,13 +1,13 @@
 /* eslint-disable no-restricted-globals */
 
 import { parentPort } from "worker_threads";
-import { Remote, wrap, releaseProxy, proxy, expose } from 'comlink';
-import nodeEndpoint from 'comlink/dist/umd/node-adapter.js';
-import { SeedSearcher } from '../services/seedSearcher';
+import { Remote, wrap, releaseProxy, proxy, expose } from "comlink";
+import nodeEndpoint from "comlink/dist/umd/node-adapter.js";
+import { SeedSearcher } from "../services/seedSearcher";
 
 const seedSearcher = new SeedSearcher();
 
-parentPort!.on('message', async message => {
+parentPort!.on("message", async message => {
   const data = message;
   switch (data.type) {
     case "start":
@@ -24,14 +24,14 @@ parentPort!.on('message', async message => {
       break;
     case "init":
       seedSearcher.init(data.offset, data.step);
-  };
+  }
 });
 
-seedSearcher.onInfo((data) => {
+seedSearcher.onInfo(data => {
   parentPort!.postMessage({ type: "info", data });
 });
 
-seedSearcher.onFound((data) => {
+seedSearcher.onFound(data => {
   parentPort!.postMessage({ type: "found", data });
 });
 
