@@ -167,6 +167,10 @@ export class NoitaDB extends Dexie {
           createdAt: new Date(),
           updatedAt: new Date(),
         });
+        await (t as any).db.configItems.add({
+          key: "search-current-search-uuid",
+          val: uuid,
+        });
       });
 
     this.errorOnOpen = this.open()
