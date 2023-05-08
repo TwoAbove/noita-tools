@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const mongoose = require("mongoose");
 const cron = require("node-cron");
+const crypto = require("crypto");
 
 const RateLimit = require("express-rate-limit");
 
@@ -391,6 +392,23 @@ router.post(
     res.status(200).send(null);
   }
 );
+
+// handle patreon webhook
+router.post("/webhook", async (req, res) => {
+  const headers = req.headers;
+  const secret = headers["x-patreon-signature"];
+  const hash = crypto.createHmac("md5", process.env.PATREON_WEBHOOK_SECRET).update(req.rawBody).digest("hex");
+  if (hash !== secret) {
+    res.status(401).send(null);
+    return;
+  }
+
+  console.log("Patreon webhook", headers["x-patreon-event"], req.body);
+
+  const trigger = headers["x-patreon-event"];
+  const { body } = req;
+  res.status(200).send(null);
+});
 
 const updatePatreonCompute = async () => {
   // all users with last update more than 1 month ago
