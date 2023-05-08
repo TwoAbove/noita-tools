@@ -1,8 +1,8 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { IRule } from '../IRule';
-import { InfoProvider } from './Base';
+import { IRule } from "../IRule";
+import { InfoProvider } from "./Base";
 
 export class StartingBombSpellInfoProvider extends InfoProvider {
   spells = ["BOMB", "DYNAMITE", "MINE", "ROCKET", "GRENADE"];
@@ -22,8 +22,7 @@ export class StartingBombSpellInfoProvider extends InfoProvider {
 
     if (res < 50) {
       return this.randoms.randomFromArray(actions);
-    }
-    else {
+    } else {
       return "BOMB";
     }
   }

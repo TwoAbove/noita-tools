@@ -1,13 +1,13 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import perksData from '../../data/obj/perks.json';
-import templeData from '../../data/temple-locations.json';
-import { includesAll, includesSome, Objectify } from '../../../helpers';
-import { IRule } from '../IRule';
-import { InfoProvider } from './Base';
-import { Global } from './Global';
-import cloneDeep from 'lodash/cloneDeep.js';
+import perksData from "../../data/obj/perks.json";
+import templeData from "../../data/temple-locations.json";
+import { includesAll, includesSome, Objectify } from "../../../helpers";
+import { IRule } from "../IRule";
+import { InfoProvider } from "./Base";
+import { Global } from "./Global";
+import cloneDeep from "lodash/cloneDeep.js";
 
 export enum IPerkChangeStateType {
   shift,
@@ -27,8 +27,8 @@ export interface ISelectAction {
   type: IPerkChangeStateType.select;
   data: {
     row: number;
-    pos: number
-  }
+    pos: number;
+  };
 }
 export interface IRerollAction {
   type: IPerkChangeStateType.reroll;
@@ -56,7 +56,7 @@ export class PerkInfoProvider extends InfoProvider {
     let perk_id = perkDeck[next_perk_index];
     while (!perk_id) {
       // if we over flow
-      perkDeck[next_perk_index] = "LEGGY_FEET"
+      perkDeck[next_perk_index] = "LEGGY_FEET";
       next_perk_index--;
       if (next_perk_index < 0) {
         next_perk_index = perkDeck.length - 1;
@@ -89,7 +89,7 @@ export class PerkInfoProvider extends InfoProvider {
     let perk_id = perkDeck[next_perk_index];
     while (!perk_id) {
       // if we over flow
-      perkDeck[next_perk_index] = "LEGGY_FEET"
+      perkDeck[next_perk_index] = "LEGGY_FEET";
       next_perk_index++;
       if (next_perk_index >= perkDeck.length) {
         next_perk_index = 0;
@@ -101,17 +101,17 @@ export class PerkInfoProvider extends InfoProvider {
     if (next_perk_index >= perkDeck.length) {
       next_perk_index = 0;
     }
-    this._G.SetValue("TEMPLE_NEXT_PERK_INDEX", next_perk_index)
-    this._G.GameAddFlagRun(this.get_perk_flag_name(perk_id))
+    this._G.SetValue("TEMPLE_NEXT_PERK_INDEX", next_perk_index);
+    this._G.GameAddFlagRun(this.get_perk_flag_name(perk_id));
     return perk_id;
   }
 
   get_perk_flag_name(perk_id: string) {
-    return "PERK_" + perk_id
+    return "PERK_" + perk_id;
   }
 
   get_perk_picked_flag_name(perk_id: string) {
-    return "PERK_PICKED_" + perk_id
+    return "PERK_PICKED_" + perk_id;
   }
 
   perk_spawn_many(extra = 0) {
@@ -122,14 +122,13 @@ export class PerkInfoProvider extends InfoProvider {
 
     for (let i = 0; i < perk_count; i++) {
       const nextPerk = this._getNextPerk(perks);
-      result.push(nextPerk)
+      result.push(nextPerk);
     }
     return result;
   }
 
-
-  table_contains = (table: { [s: string]: unknown; } | ArrayLike<unknown>, element: unknown) => {
-    return Object.values(table).indexOf(element) !== -1
+  table_contains = (table: { [s: string]: unknown } | ArrayLike<unknown>, element: unknown) => {
+    return Object.values(table).indexOf(element) !== -1;
   };
 
   shuffle_table = (t: any[]) => {
@@ -142,7 +141,7 @@ export class PerkInfoProvider extends InfoProvider {
       t[i] = t[j];
       t[j] = tmp;
     }
-  }
+  };
   // this generates global perk spawn order for current world seed
   perk_get_spawn_order = (ignore_these_?: any) => {
     // this function should return the same list in the same order no matter when or where during a run it is called.
@@ -167,7 +166,7 @@ export class PerkInfoProvider extends InfoProvider {
     // let perk_pool = {}
     const perk_deck: any[] = [];
     const stackable_distances = {};
-    const stackable_count = {};			// -1 = NON_STACKABLE otherwise the result is how many times can be stacked
+    const stackable_count = {}; // -1 = NON_STACKABLE otherwise the result is how many times can be stacked
 
     // function create_perk_pool
     for (const perk_data of this.perksArr) {
@@ -202,7 +201,8 @@ export class PerkInfoProvider extends InfoProvider {
           max_perks = 1;
         }
 
-        stackable_distances[perk_name] = perk_data.stackable_how_often_reappears || MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS;
+        stackable_distances[perk_name] =
+          perk_data.stackable_how_often_reappears || MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS;
 
         how_many_times = this.randoms.Random(1, max_perks);
       }
@@ -220,7 +220,6 @@ export class PerkInfoProvider extends InfoProvider {
     for (let i = perk_deck.length - 1; i >= 0; i--) {
       const perk = perk_deck[i];
       if (stackable_distances[perk] !== -1) {
-
         const min_distance = stackable_distances[perk];
         let remove_me = false;
 
@@ -232,7 +231,9 @@ export class PerkInfoProvider extends InfoProvider {
           }
         }
 
-        if (remove_me) { perk_deck.splice(i, 1); }
+        if (remove_me) {
+          perk_deck.splice(i, 1);
+        }
       }
     }
 
@@ -246,10 +247,10 @@ export class PerkInfoProvider extends InfoProvider {
 
       // GameHasFlagRun( flag_name ) - this is if its ever been spawned
       // has been picked up
-      if ((pickup_count > 0)) {
+      if (pickup_count > 0) {
         const stack_count = stackable_count[perk_name] || -1;
         // print( perk_name .. ": " .. tostring( stack_count ) )
-        if ((stack_count === -1) || (pickup_count >= stack_count)) {
+        if (stack_count === -1 || pickup_count >= stack_count) {
           perk_deck[i] = "";
         }
       }
@@ -259,12 +260,12 @@ export class PerkInfoProvider extends InfoProvider {
     if (false) {
       for (let i = 0; i < perk_deck.length; i++) {
         let perk = perk_deck[i];
-        console.log(String(i) + ": " + perk)
+        console.log(String(i) + ": " + perk);
       }
     }
 
     return perk_deck;
-  }
+  };
 
   getPerkDeck(returnPerkObjects?: boolean) {
     const result = this.perk_get_spawn_order();
@@ -282,7 +283,13 @@ export class PerkInfoProvider extends InfoProvider {
     this._G.SetValue(flag_name + "_PICKUP_COUNT", this._G.GetValue(flag_name + "_PICKUP_COUNT", 0) + 1);
   }
 
-  provide(_perkPicks?: Map<number, string[][]>, maxLevels?: number, returnPerkObjects?: boolean, worldOffset?: number, rerolls?: Map<number, number[]>): IPerk[][] {
+  provide(
+    _perkPicks?: Map<number, string[][]>,
+    maxLevels?: number,
+    returnPerkObjects?: boolean,
+    worldOffset?: number,
+    rerolls?: Map<number, number[]>
+  ): IPerk[][] {
     const perkPicks = cloneDeep(_perkPicks) || new Map();
     worldOffset = worldOffset || 0;
     if (!maxLevels || maxLevels === -1) maxLevels = Infinity;
@@ -297,7 +304,8 @@ export class PerkInfoProvider extends InfoProvider {
       let i = 0;
       for (let loc of temple_locations) {
         if (i >= maxLevels) break;
-        let offsetX = 0, offsetY = 0;
+        let offsetX = 0,
+          offsetY = 0;
         if (worldOffset !== 0 && world !== 0) {
           offsetX += 35840 * worldOffset;
           if (i + 1 === temple_locations.length) break;
@@ -305,7 +313,7 @@ export class PerkInfoProvider extends InfoProvider {
         let gambleSelected = false;
         const picksForWorld = perkPicks.get(world) || [];
         if (perkPicks.has(world) && picksForWorld[i]) {
-          if (picksForWorld[i].includes('GAMBLE')) {
+          if (picksForWorld[i].includes("GAMBLE")) {
             gambleSelected = true;
           }
         }
@@ -318,8 +326,8 @@ export class PerkInfoProvider extends InfoProvider {
           }
           let rerollRes = this._getReroll(res.length);
           if (gambleSelected) {
-            const p1 = this._getNextPerk(perkDeck)
-            const p2 = this._getNextPerk(perkDeck)
+            const p1 = this._getNextPerk(perkDeck);
+            const p2 = this._getNextPerk(perkDeck);
             rerollRes.push(p1);
             rerollRes.push(p2);
             picksForWorld[i].push(p1, p2);
@@ -329,8 +337,8 @@ export class PerkInfoProvider extends InfoProvider {
           }
         } else {
           if (gambleSelected) {
-            const p1 = this._getNextPerk(perkDeck)
-            const p2 = this._getNextPerk(perkDeck)
+            const p1 = this._getNextPerk(perkDeck);
+            const p2 = this._getNextPerk(perkDeck);
             res.push(p1);
             res.push(p2);
             picksForWorld[i].push(p1, p2);
@@ -345,7 +353,7 @@ export class PerkInfoProvider extends InfoProvider {
           for (const picked_perk of picked_perks) {
             this.flag_pickup(picked_perk);
             if (picked_perk === "EXTRA_PERK") {
-              this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
+              this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1);
             }
           }
         }
@@ -416,7 +424,7 @@ export class PerkInfoProvider extends InfoProvider {
 
           this.flag_pickup(perk);
 
-          if (perk === 'GAMBLE') {
+          if (perk === "GAMBLE") {
             const perkDeck = this.getPerkDeck();
             const p1 = this._getNextPerk(perkDeck);
             const p2 = this._getNextPerk(perkDeck);
@@ -425,17 +433,17 @@ export class PerkInfoProvider extends InfoProvider {
             selected[row][l] = p1;
             selected[row][l + 1] = p2;
             if ([p1, p2].includes("EXTRA_PERK")) {
-              this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
+              this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1);
             }
             this.flag_pickup(p1);
             this.flag_pickup(p2);
           }
 
           if (perk === "EXTRA_PERK") {
-            this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1)
+            this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1);
           }
 
-          if(perk === 'PERKS_LOTTERY') {
+          if (perk === "PERKS_LOTTERY") {
             lotteries += 1;
           }
           break;
@@ -463,9 +471,10 @@ export class PerkInfoProvider extends InfoProvider {
       rerollState.set(ws, rerolls);
     }
 
-    if (preview) { // Preview the rest of the rows if simple perk table is used
+    if (preview) {
+      // Preview the rest of the rows if simple perk table is used
       const ps = perkState.get(worldOffset) || [];
-      while (ps.length !== (7 - Number(!!worldOffset))) {
+      while (ps.length !== 7 - Number(!!worldOffset)) {
         let res = this.perk_spawn_many();
         ps.push(res);
       }
@@ -478,7 +487,7 @@ export class PerkInfoProvider extends InfoProvider {
       pickedPerks: pickedState.get(worldOffset) || [],
       perks: perkState.get(worldOffset) || [],
       perkRerolls: rerollState.get(worldOffset) || [],
-    }
+    };
   }
 
   test(rule: IRule<IPerkRule>): boolean {
@@ -510,7 +519,7 @@ export class PerkInfoProvider extends InfoProvider {
 }
 
 export interface IPerkRule {
-	some: string[][];
-	all: string[][];
+  some: string[][];
+  all: string[][];
   deck: string[][];
 }

@@ -1,9 +1,9 @@
-import fs from 'fs';
-import path from 'path';
-import Jimp from 'jimp';
+import fs from "fs";
+import path from "path";
+import Jimp from "jimp";
 
-const { resolve } = require('path');
-const { readdir } = require('fs').promises;
+const { resolve } = require("path");
+const { readdir } = require("fs").promises;
 
 async function* getFiles(dir) {
   const dirents = await readdir(dir, { withFileTypes: true });
@@ -12,7 +12,7 @@ async function* getFiles(dir) {
     if (dirent.isDirectory()) {
       yield* getFiles(res);
     } else {
-      if (res.endsWith('.png')) {
+      if (res.endsWith(".png")) {
         yield res;
       }
     }
@@ -21,11 +21,11 @@ async function* getFiles(dir) {
 
 // iterate over all the images in the images folder
 const noitaData = path.resolve(
-  require('os').homedir(),
-  '.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/data'
+  require("os").homedir(),
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/data"
 );
 
-; (async () => {
+(async () => {
   for await (const f of getFiles(noitaData)) {
     try {
       const png = await Jimp.read(f);
@@ -37,17 +37,20 @@ const noitaData = path.resolve(
         const alpha = this.bitmap.data[idx + 3];
         if (red === 0xff && green === 0xb5 && blue === 0x39 && alpha === 0xff) {
           // console.log(f);
-          console.log(f.replace('/home/twoabove/.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/', ''));
+          console.log(
+            f.replace(
+              "/home/twoabove/.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
+              ""
+            )
+          );
           return;
         }
       });
       // if (contains) {
       // }
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
-})()
+})();
 
 // (async () => {
 // 	const impls: any = {};

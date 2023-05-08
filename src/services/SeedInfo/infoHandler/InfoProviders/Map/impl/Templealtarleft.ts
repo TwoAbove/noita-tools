@@ -87,52 +87,44 @@ class Templealtarleft extends Base {
     },
   ];
 
-  spawn_small_enemies(x: number, y: number) {
-  }
-  spawn_big_enemies(x: number, y: number) {
-  }
-  spawn_items(x: number, y: number) {
-  }
-  spawn_props(x: number, y: number) {
-  }
-  spawn_props2(x: number, y: number) {
-  }
-  spawn_props3(x: number, y: number) {
-  }
+  spawn_small_enemies(x: number, y: number) {}
+  spawn_big_enemies(x: number, y: number) {}
+  spawn_items(x: number, y: number) {}
+  spawn_props(x: number, y: number) {}
+  spawn_props2(x: number, y: number) {}
+  spawn_props3(x: number, y: number) {}
   spawn_lamp(x: number, y: number) {
     this.spawn(this.g_lamp, x, y, 0, 10);
   }
-  load_pixel_scene(x: number, y: number) {
-  }
-  load_pixel_scene2(x: number, y: number) {
-  }
-  spawn_unique_enemy(x: number, y: number) {
-  }
-  spawn_unique_enemy2(x: number, y: number) {
-  }
-  spawn_unique_enemy3(x: number, y: number) {
-  }
-  spawn_ghostlamp(x: number, y: number) {
-  }
-  spawn_candles(x: number, y: number) {
-  }
-  spawn_potions(x: number, y: number) {
-  }
+  load_pixel_scene(x: number, y: number) {}
+  load_pixel_scene2(x: number, y: number) {}
+  spawn_unique_enemy(x: number, y: number) {}
+  spawn_unique_enemy2(x: number, y: number) {}
+  spawn_unique_enemy3(x: number, y: number) {}
+  spawn_ghostlamp(x: number, y: number) {}
+  spawn_candles(x: number, y: number) {}
+  spawn_potions(x: number, y: number) {}
   init(x: number, y: number) {
     this.spawn_altar_top(x, y, false);
 
-    this.LoadPixelScene("data/biome_impl/temple/altar_left.png", "data/biome_impl/temple/altar_left_visual.png", x, y - 40 + 300, "data/biome_impl/temple/altar_left_background.png", true);
+    this.LoadPixelScene(
+      "data/biome_impl/temple/altar_left.png",
+      "data/biome_impl/temple/altar_left_visual.png",
+      x,
+      y - 40 + 300,
+      "data/biome_impl/temple/altar_left_background.png",
+      true
+    );
   }
   spawn_hp(x: number, y: number) {
-    this.EntityLoad("data/entities/items/pickup/heart_fullhp_temple.xml", x - 16, y)
-    this.EntityLoad("data/entities/items/pickup/heart_refresh.xml", x + 16, y)
+    this.EntityLoad("data/entities/items/pickup/heart_fullhp_temple.xml", x - 16, y);
+    this.EntityLoad("data/entities/items/pickup/heart_refresh.xml", x + 16, y);
   }
   spawn_shopitem(x: number, y: number) {
-    this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, null]);
+    this.HandleInterest("ShopInfoProvider", x, y, [x, y, false, null]);
   }
   spawn_cheap_shopitem(x: number, y: number) {
-    this.HandleInterest('ShopInfoProvider', x, y, [x, y, true, null]);
-
+    this.HandleInterest("ShopInfoProvider", x, y, [x, y, true, null]);
   }
   spawn_workshop(x: number, y: number) {
     this.EntityLoad("data/entities/buildings/workshop.xml", x, y);
@@ -146,17 +138,16 @@ class Templealtarleft extends Base {
   spawn_pressureplate(x: number, y: number) {
     this.EntityLoad("data/entities/props/temple_pressure_plate.xml", x, y);
   }
-  spawn_music_trigger(x: number, y: number) {
-  }
+  spawn_music_trigger(x: number, y: number) {}
   spawn_duplicator(x: number, y: number) {
     this.EntityLoad("data/entities/buildings/temple_duplicator.xml", x, y);
   }
   spawn_areachecks(x: number, y: number) {
     if (this.temple_should_we_spawn_checkers(x, y)) {
-      this.EntityLoad("data/entities/buildings/temple_areacheck_horizontal.xml", x + 5 - 10, y - 65 - 16 - 20)
-      this.EntityLoad("data/entities/buildings/temple_areacheck_horizontal.xml", x - 10, y + 140)
-      this.EntityLoad("data/entities/buildings/temple_areacheck_vertical.xml", x - 120 - 10, y)
-      this.EntityLoad("data/entities/buildings/temple_areacheck_vertical_stub.xml", x - 120 - 10, y - 20 - 80)
+      this.EntityLoad("data/entities/buildings/temple_areacheck_horizontal.xml", x + 5 - 10, y - 65 - 16 - 20);
+      this.EntityLoad("data/entities/buildings/temple_areacheck_horizontal.xml", x - 10, y + 140);
+      this.EntityLoad("data/entities/buildings/temple_areacheck_vertical.xml", x - 120 - 10, y);
+      this.EntityLoad("data/entities/buildings/temple_areacheck_vertical_stub.xml", x - 120 - 10, y - 20 - 80);
     }
   }
   spawn_rubble(x: number, y: number) {

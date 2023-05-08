@@ -1,32 +1,32 @@
-import { AlchemyInfoProvider } from './InfoProviders/Alchemy';
-import { BiomeInfoProvider } from './InfoProviders/Biome';
-import { BiomeModifierInfoProvider } from './InfoProviders/BiomeModifier';
-import { FungalInfoProvider } from './InfoProviders/Fungal';
-import { InfoProvider } from './InfoProviders/Base';
-import { IPerkChangeAction, PerkInfoProvider } from './InfoProviders/Perk';
-import { LotteryInfoProvider } from './InfoProviders/Lottery';
-import { MapInfoProvider } from './InfoProviders/Map';
-import { MaterialInfoProvider } from './InfoProviders/Material';
-import { WeatherInfoProvider } from './InfoProviders/Weather';
-import { ShopInfoProvider } from './InfoProviders/Shop';
-import { SpellInfoProvider } from './InfoProviders/Spell';
-import { StartingBombSpellInfoProvider } from './InfoProviders/StartingBomb';
-import { StartingFlaskInfoProvider } from './InfoProviders/StartingFlask';
-import { StartingSpellInfoProvider } from './InfoProviders/StartingSpell';
-import { AlwaysCastInfoProvider } from './InfoProviders/AlwaysCast';
-import { WaterCaveInfoProvider } from './InfoProviders/WaterCave';
+import { AlchemyInfoProvider } from "./InfoProviders/Alchemy";
+import { BiomeInfoProvider } from "./InfoProviders/Biome";
+import { BiomeModifierInfoProvider } from "./InfoProviders/BiomeModifier";
+import { FungalInfoProvider } from "./InfoProviders/Fungal";
+import { InfoProvider } from "./InfoProviders/Base";
+import { IPerkChangeAction, PerkInfoProvider } from "./InfoProviders/Perk";
+import { LotteryInfoProvider } from "./InfoProviders/Lottery";
+import { MapInfoProvider } from "./InfoProviders/Map";
+import { MaterialInfoProvider } from "./InfoProviders/Material";
+import { WeatherInfoProvider } from "./InfoProviders/Weather";
+import { ShopInfoProvider } from "./InfoProviders/Shop";
+import { SpellInfoProvider } from "./InfoProviders/Spell";
+import { StartingBombSpellInfoProvider } from "./InfoProviders/StartingBomb";
+import { StartingFlaskInfoProvider } from "./InfoProviders/StartingFlask";
+import { StartingSpellInfoProvider } from "./InfoProviders/StartingSpell";
+import { AlwaysCastInfoProvider } from "./InfoProviders/AlwaysCast";
+import { WaterCaveInfoProvider } from "./InfoProviders/WaterCave";
 
 // Chests
-import { ChestRandomProvider } from './InfoProviders/ChestRandom';
-import { PacifistChestProvider } from './InfoProviders/PacifistChest';
+import { ChestRandomProvider } from "./InfoProviders/ChestRandom";
+import { PacifistChestProvider } from "./InfoProviders/PacifistChest";
 
-import loadRandom, { IRandom } from '../random';
-import { WandInfoProvider } from './InfoProviders/Wand';
-import { i18n } from 'i18next';
-import { PotionInfoProvider } from './InfoProviders/Potion';
-import { PotionSecretInfoProvider } from './InfoProviders/PotionSecret';
-import { PotionRandomMaterialInfoProvider } from './InfoProviders/PotionRandomMaterial';
-import { PowderStashInfoProvider } from './InfoProviders/PowderStash';
+import loadRandom, { IRandom } from "../random";
+import { WandInfoProvider } from "./InfoProviders/Wand";
+import { i18n } from "i18next";
+import { PotionInfoProvider } from "./InfoProviders/Potion";
+import { PotionSecretInfoProvider } from "./InfoProviders/PotionSecret";
+import { PotionRandomMaterialInfoProvider } from "./InfoProviders/PotionRandomMaterial";
+import { PowderStashInfoProvider } from "./InfoProviders/PowderStash";
 
 interface IProviders {
   alchemy: AlchemyInfoProvider;
@@ -123,12 +123,12 @@ export class GameInfoProvider extends EventTarget {
         pickedPerks: new Map(),
         perkWorldOffset: 0,
         perkStacks: [[]],
-        fungalShifts: []
+        fungalShifts: [],
       },
       initialConfig
     );
     if (this.dispatch) {
-      this.dispatchEvent(new CustomEvent('reset', { detail: {} }));
+      this.dispatchEvent(new CustomEvent("reset", { detail: {} }));
     }
   }
 
@@ -136,7 +136,7 @@ export class GameInfoProvider extends EventTarget {
   updateConfig(config: Partial<IProviderConfig>) {
     Object.assign(this.config, config);
     if (this.dispatch) {
-      this.dispatchEvent(new CustomEvent('update', { detail: {} }));
+      this.dispatchEvent(new CustomEvent("update", { detail: {} }));
     }
   }
 
@@ -166,10 +166,7 @@ export class GameInfoProvider extends EventTarget {
       powderStash: new PowderStashInfoProvider(this.randoms),
 
       chestRandom: new ChestRandomProvider(this.randoms, this.unlockedSpells),
-      pacifistChest: new PacifistChestProvider(
-        this.randoms,
-        this.unlockedSpells
-      )
+      pacifistChest: new PacifistChestProvider(this.randoms, this.unlockedSpells),
     };
 
     // shop needs the wand info provider to generate wands
@@ -198,14 +195,11 @@ export class GameInfoProvider extends EventTarget {
         true
       ),
       weather: this.providers.weather.provide(),
-      shop: this.providers.shop.provide(
-        this.config.pickedPerks,
-        this.config.perkWorldOffset
-      ),
+      shop: this.providers.shop.provide(this.config.pickedPerks, this.config.perkWorldOffset),
       startingBombSpell: this.providers.startingBombSpell.provide(),
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),
-      waterCave: this.providers.waterCave.provide()
+      waterCave: this.providers.waterCave.provide(),
     };
   }
 }

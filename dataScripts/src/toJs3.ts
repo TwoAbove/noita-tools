@@ -1,4 +1,4 @@
-const { format, parse } = require('lua-json');
+const { format, parse } = require("lua-json");
 
 const data = `
 return {
@@ -10286,6 +10286,6 @@ return {
 	},
 }
 `;
-let str = data + '';
+let str = data + "";
 
 export default parse(str);

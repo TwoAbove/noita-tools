@@ -1,0 +1,7 @@
+build
+lambda-build
+ssl
+dataScripts/src/mapsToObj/gen
+public
+.vscode
+src/services/SeedInfo/noita_random/*.js

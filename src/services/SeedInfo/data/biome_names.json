@@ -2,34 +2,44 @@
   {
     "translated_name": "mines",
     "id": "coalmine"
-  }, {
+  },
+  {
     "translated_name": "",
     "id": "mountain_hall"
-  }, {
+  },
+  {
     "translated_name": "collapsed mines",
     "id": "coalmine_alt"
-  }, {
+  },
+  {
     "translated_name": "Coal Pits",
     "id": "excavationsite"
-  }, {
+  },
+  {
     "translated_name": "Fungal Caverns",
     "id": "fungicave"
-  }, {
+  },
+  {
     "translated_name": "Snowy Depths",
     "id": "snowcave"
-  }, {
+  },
+  {
     "translated_name": "Hiisi Base",
     "id": "snowcastle"
-  }, {
+  },
+  {
     "translated_name": "Underground Jungle",
     "id": "rainforest"
-  }, {
+  },
+  {
     "translated_name": "",
     "id": "rainforest_open"
-  }, {
+  },
+  {
     "translated_name": "The Vault",
     "id": "vault"
-  }, {
+  },
+  {
     "translated_name": "Temple of the Art",
     "id": "crypt"
   }

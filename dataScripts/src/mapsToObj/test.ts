@@ -1,4 +1,4 @@
-import maps from './maps.json';
+import maps from "./maps.json";
 
 const S = new Set<number>();
 

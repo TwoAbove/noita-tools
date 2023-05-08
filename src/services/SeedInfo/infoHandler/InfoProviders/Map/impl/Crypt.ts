@@ -44,10 +44,7 @@ class Crypt extends Base {
       prob: 0.1,
       min_count: 1,
       max_count: 1,
-      entities: [
-        "data/entities/animals/crypt/tentacler_small.xml",
-        "data/entities/animals/crypt/tentacler.xml",
-      ],
+      entities: ["data/entities/animals/crypt/tentacler_small.xml", "data/entities/animals/crypt/tentacler.xml"],
     },
     {
       prob: 0.09,
@@ -148,10 +145,7 @@ class Crypt extends Base {
       prob: 0.1,
       min_count: 1,
       max_count: 1,
-      entities: [
-        "data/entities/animals/crypt/phantom_b.xml",
-        "data/entities/animals/crypt/phantom_a.xml",
-      ],
+      entities: ["data/entities/animals/crypt/phantom_b.xml", "data/entities/animals/crypt/phantom_a.xml"],
     },
     {
       prob: 0.1,
@@ -766,10 +760,7 @@ class Crypt extends Base {
       prob: 0.2,
       min_count: 1,
       max_count: 3,
-      entities: [
-        "data/entities/animals/scavenger_smg.xml",
-        "data/entities/animals/scavenger_grenade.xml",
-      ],
+      entities: ["data/entities/animals/scavenger_smg.xml", "data/entities/animals/scavenger_grenade.xml"],
     },
     {
       prob: 0.1,
@@ -867,110 +858,99 @@ class Crypt extends Base {
   ];
 
   spawn_small_enemies(x: number, y: number) {
-    this.spawn(this.g_small_enemies, x, y)
+    this.spawn(this.g_small_enemies, x, y);
   }
   spawn_big_enemies(x: number, y: number) {
-    this.spawn(this.g_big_enemies, x, y)
+    this.spawn(this.g_big_enemies, x, y);
   }
   spawn_items(x: number, y: number) {
     const r = this.randoms.ProceduralRandomf(x - 11.631, y + 10.2257, 0, 1);
 
     if (r > 0.38) {
-      this.LoadPixelScene("data/biome_impl/wand_altar.png", "data/biome_impl/wand_altar_visual.png", x - 10, y - 17, "", true)
+      this.LoadPixelScene(
+        "data/biome_impl/wand_altar.png",
+        "data/biome_impl/wand_altar_visual.png",
+        x - 10,
+        y - 17,
+        "",
+        true
+      );
     }
   }
   spawn_props(x: number, y: number) {
-    this.spawn(this.g_props, x - 4, y - 4, 0, 0)
+    this.spawn(this.g_props, x - 4, y - 4, 0, 0);
   }
   spawn_lamp(x: number, y: number) {
-    this.spawn(this.g_lamp, x + 4, y - 8, 0, 0)
+    this.spawn(this.g_lamp, x + 4, y - 8, 0, 0);
   }
   load_pixel_scene(x: number, y: number) {
-    this.load_random_pixel_scene(this.g_pixel_scene_01, x, y)
-
+    this.load_random_pixel_scene(this.g_pixel_scene_01, x, y);
   }
   load_pixel_scene2(x: number, y: number) {
-    this.load_random_pixel_scene(this.g_pixel_scene_02, x + 6, y)
+    this.load_random_pixel_scene(this.g_pixel_scene_02, x + 6, y);
   }
   spawn_unique_enemy(x: number, y: number) {
-    this.spawn(this.g_unique_enemy, x - 1, y, 0, 0)
+    this.spawn(this.g_unique_enemy, x - 1, y, 0, 0);
   }
-  init(x: number, y: number) {
-
-  }
+  init(x: number, y: number) {}
   spawn_statues(x: number, y: number) {
-    this.spawn(this.g_statues, x - 4, y)
+    this.spawn(this.g_statues, x - 4, y);
   }
   load_pixel_scene3(x: number, y: number) {
-    this.load_random_pixel_scene(this.g_pixel_scene_03, x, y)
-
+    this.load_random_pixel_scene(this.g_pixel_scene_03, x, y);
   }
   load_pixel_scene4(x: number, y: number) {
-    this.load_random_pixel_scene(this.g_pixel_scene_04, x, y)
-
+    this.load_random_pixel_scene(this.g_pixel_scene_04, x, y);
   }
   load_pixel_scene5(x: number, y: number) {
-    this.load_random_pixel_scene(this.g_pixel_scene_05, x, y)
-
+    this.load_random_pixel_scene(this.g_pixel_scene_05, x, y);
   }
   load_pixel_scene5b(x: number, y: number) {
-    this.load_random_pixel_scene(this.g_pixel_scene_05b, x, y)
-
+    this.load_random_pixel_scene(this.g_pixel_scene_05b, x, y);
   }
   spawn_lamp2(x: number, y: number) {
-    this.spawn(this.g_lamp2, x - 1, y, 0, 0)
+    this.spawn(this.g_lamp2, x - 1, y, 0, 0);
   }
   spawn_large_enemies(x: number, y: number) {
-    this.spawn(this.g_large_enemies, x - 1, y, 0, 0)
+    this.spawn(this.g_large_enemies, x - 1, y, 0, 0);
   }
   spawn_ghost_crystal(x: number, y: number) {
-    this.spawn(this.g_ghost_crystal, x - 1, y, 0, 0)
+    this.spawn(this.g_ghost_crystal, x - 1, y, 0, 0);
   }
-  spawn_crawlers(x: number, y: number) {
-  }
+  spawn_crawlers(x: number, y: number) {}
   spawn_pressureplates(x: number, y: number) {
-    this.spawn(this.g_pressureplates, x, y, 0, 0)
-
+    this.spawn(this.g_pressureplates, x, y, 0, 0);
   }
-  spawn_doors(x: number, y: number) {
-  }
+  spawn_doors(x: number, y: number) {}
   spawn_scavengers(x: number, y: number) {
-    this.spawn(this.g_scavengers, x, y, 0, 0)
-
+    this.spawn(this.g_scavengers, x, y, 0, 0);
   }
   spawn_scorpions(x: number, y: number) {
-    this.spawn(this.g_scorpions, x, y)
-
+    this.spawn(this.g_scorpions, x, y);
   }
   spawn_bones(x: number, y: number) {
-    this.spawn(this.g_bones, x, y - 12)
-
+    this.spawn(this.g_bones, x, y - 12);
   }
   load_beam(x: number, y: number) {
-    this.load_random_pixel_scene(this.g_beam, x, y - 65)
-
+    this.load_random_pixel_scene(this.g_beam, x, y - 65);
   }
   load_background_scene(x: number, y: number) {
-    this.load_random_background_sprite(this.g_background_scenes, x + 5, y)
-
+    this.load_random_background_sprite(this.g_background_scenes, x + 5, y);
   }
   load_small_background_scene(x: number, y: number) {
-    this.load_random_background_sprite(this.g_small_background_scenes, x, y)
-
+    this.load_random_background_sprite(this.g_small_background_scenes, x, y);
   }
   load_cavein(x: number, y: number) {
-    this.load_random_pixel_scene(this.g_caveins, x - 60, y - 10)
-
+    this.load_random_pixel_scene(this.g_caveins, x - 60, y - 10);
   }
   spawn_vines(x: number, y: number) {
-    this.spawn(this.g_vines, x + 5, y + 5)
-
+    this.spawn(this.g_vines, x + 5, y + 5);
   }
   spawn_statue_back(x: number, y: number) {
-    this.spawn(this.g_statue_back, x + 5, y)
+    this.spawn(this.g_statue_back, x + 5, y);
   }
   spawn_shopitem(x: number, y: number) {
-    this.HandleInterest('ShopInfoProvider', x, y, [x, y, false, null]);
+    this.HandleInterest("ShopInfoProvider", x, y, [x, y, false, null]);
   }
 }
 export default Crypt;

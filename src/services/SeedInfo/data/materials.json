@@ -9,10 +9,7 @@
     "wang_color": "7fFF6060",
     "color": "ff60607f",
     "name": "fire",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_fire",
@@ -24,10 +21,7 @@
     "wang_color": "7fff6024",
     "color": "ff60247f",
     "name": "spark",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark"
@@ -36,10 +30,7 @@
     "wang_color": "7f27b4f6",
     "color": "27b4f67f",
     "name": "spark_electric",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_electric"
@@ -48,10 +39,7 @@
     "wang_color": "7fce0f0f",
     "color": "ce0f0f7f",
     "name": "flame",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_flame"
@@ -61,13 +49,7 @@
     "color": "524f2dff",
     "name": "sand_static",
     "hp": "19000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_sand_static",
@@ -81,14 +63,7 @@
     "color": "a83e29ff",
     "name": "nest_static",
     "hp": "5000",
-    "tags": [
-      "static",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "10",
     "ui_name": "$mat_nest_static",
@@ -102,15 +77,7 @@
     "color": "435495ff",
     "name": "bluefungi_static",
     "hp": "20",
-    "tags": [
-      "static",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth",
-      "fungus"
-    ],
+    "tags": ["static", "corrodible", "burnable", "alchemy", "solid", "earth", "fungus"],
     "burnable": "1",
     "density": "10",
     "ui_name": "$mat_bluefungi_static",
@@ -124,14 +91,7 @@
     "color": "353923ff",
     "name": "rock_static",
     "hp": "100000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static",
@@ -145,9 +105,7 @@
     "wang_color": "A02F554D",
     "color": "2f554da0",
     "name": "water_static",
-    "tags": [
-      "static"
-    ],
+    "tags": ["static"],
     "burnable": "0",
     "density": "4",
     "ui_name": "$mat_water_static",
@@ -159,12 +117,7 @@
     "wang_color": "888BFF80",
     "color": "8bff8088",
     "name": "endslime_static",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "4",
     "ui_name": "$mat_endslime_static",
@@ -177,13 +130,7 @@
     "wang_color": "88E8BD5C",
     "color": "e8bd5c88",
     "name": "slime_static",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth", "food"],
     "burnable": "0",
     "density": "4",
     "ui_name": "$mat_slime_static",
@@ -196,14 +143,7 @@
     "wang_color": "ffE8BDCB",
     "color": "e8bdcbff",
     "name": "spore_pod_stalk",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "burnable",
-      "earth",
-      "fungus"
-    ],
+    "tags": ["static", "alchemy", "solid", "burnable", "earth", "fungus"],
     "burnable": "1",
     "density": "4",
     "ui_name": "$mat_bluefungi_static",
@@ -217,13 +157,7 @@
     "color": "5f2621ff",
     "name": "lavarock_static",
     "hp": "90000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_lavarock_static",
@@ -247,13 +181,7 @@
     "color": "1d1010ff",
     "name": "meteorite_static",
     "hp": "10000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_meteorite_static",
@@ -277,13 +205,7 @@
     "color": "6f5439ff",
     "name": "templerock_static",
     "hp": "10000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templerock_static",
@@ -307,15 +229,7 @@
     "color": "404041ff",
     "name": "steel_static",
     "hp": "130000",
-    "tags": [
-      "static",
-      "corrodible",
-      "rust",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "rust", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steel_static",
@@ -330,14 +244,7 @@
     "color": "145014ff",
     "name": "rock_static_glow",
     "hp": "60000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_glow",
@@ -351,14 +258,7 @@
     "color": "ebebecff",
     "name": "snow_static",
     "hp": "1000",
-    "tags": [
-      "static",
-      "corrodible",
-      "frozen",
-      "meltable_to_water",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["static", "corrodible", "frozen", "meltable_to_water", "alchemy", "solid"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_snow_static",
@@ -372,14 +272,7 @@
     "color": "cff7c8ff",
     "name": "ice_static",
     "hp": "30000",
-    "tags": [
-      "static",
-      "corrodible",
-      "frozen",
-      "meltable_to_water",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["static", "corrodible", "frozen", "meltable_to_water", "alchemy", "solid"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_ice_static",
@@ -393,14 +286,7 @@
     "color": "cfffc8ff",
     "name": "ice_acid_static",
     "hp": "30000",
-    "tags": [
-      "static",
-      "corrodible",
-      "frozen",
-      "meltable_to_acid",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["static", "corrodible", "frozen", "meltable_to_acid", "alchemy", "solid"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_ice_acid_static",
@@ -414,14 +300,7 @@
     "color": "afffc8ff",
     "name": "ice_cold_static",
     "hp": "30000",
-    "tags": [
-      "static",
-      "corrodible",
-      "frozen",
-      "meltable_to_cold",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["static", "corrodible", "frozen", "meltable_to_cold", "alchemy", "solid"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_ice_cold_static",
@@ -435,14 +314,7 @@
     "color": "bfffc8ff",
     "name": "ice_radioactive_static",
     "hp": "30000",
-    "tags": [
-      "static",
-      "corrodible",
-      "frozen",
-      "meltable_to_radioactive",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["static", "corrodible", "frozen", "meltable_to_radioactive", "alchemy", "solid"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_ice_radioactive_static",
@@ -456,14 +328,7 @@
     "color": "ba2de0ff",
     "name": "ice_poison_static",
     "hp": "30000",
-    "tags": [
-      "static",
-      "corrodible",
-      "frozen",
-      "meltable_to_poison",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["static", "corrodible", "frozen", "meltable_to_poison", "alchemy", "solid"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_ice_poison_static",
@@ -477,15 +342,7 @@
     "color": "cf1fc8ff",
     "name": "ice_meteor_static",
     "hp": "30000",
-    "tags": [
-      "static",
-      "corrodible",
-      "frozen",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "frozen", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_ice_meteor_static",
@@ -499,13 +356,7 @@
     "color": "cff7c5ff",
     "name": "tubematerial",
     "hp": "30000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_tubematerial",
@@ -519,12 +370,7 @@
     "color": "a16065ff",
     "name": "glass_static",
     "hp": "30000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_glass_static",
@@ -538,12 +384,7 @@
     "color": "1a43f4ff",
     "name": "waterrock",
     "hp": "10000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_waterrock",
@@ -557,14 +398,7 @@
     "color": "aedde3ff",
     "name": "ice_glass",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "static",
-      "meltable_to_water",
-      "alchemy",
-      "solid",
-      "cold"
-    ],
+    "tags": ["box2d", "static", "meltable_to_water", "alchemy", "solid", "cold"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_glass",
@@ -578,13 +412,7 @@
     "color": "aedde5ff",
     "name": "ice_glass_b2",
     "hp": "10000",
-    "tags": [
-      "static",
-      "meltable_to_water",
-      "alchemy",
-      "solid",
-      "cold"
-    ],
+    "tags": ["static", "meltable_to_water", "alchemy", "solid", "cold"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_glass_b2",
@@ -598,12 +426,7 @@
     "color": "aeddd3ff",
     "name": "glass_brittle",
     "hp": "10000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_glass_brittle",
@@ -617,13 +440,7 @@
     "color": "dbdbdcff",
     "name": "snowrock_static",
     "hp": "70000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_snowrock_static",
@@ -638,14 +455,7 @@
     "color": "767677ff",
     "name": "concrete_static",
     "hp": "30000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_concrete_static",
@@ -659,13 +469,7 @@
     "color": "413f24ff",
     "name": "wood_static",
     "hp": "2000",
-    "tags": [
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "11",
     "ui_name": "$mat_wood_static",
@@ -680,14 +484,7 @@
     "color": "f3cd67ff",
     "name": "cheese_static",
     "hp": "1000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "5",
     "ui_name": "$mat_cheese_static"
@@ -696,9 +493,7 @@
     "wang_color": "7f848485",
     "color": "8484857f",
     "name": "smoke",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_smoke"
@@ -707,9 +502,7 @@
     "wang_color": "7fAFAFBF",
     "color": "afafbf7f",
     "name": "cloud",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "4.17",
     "ui_name": "$mat_cloud"
@@ -718,9 +511,7 @@
     "wang_color": "7fAFAFE5",
     "color": "afafe57f",
     "name": "cloud_lighter",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_cloud"
@@ -729,9 +520,7 @@
     "wang_color": "7f848486",
     "color": "8484867f",
     "name": "smoke_explosion",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_smoke_explosion"
@@ -740,9 +529,7 @@
     "wang_color": "7fc5c5ff",
     "color": "c5c5ff7f",
     "name": "steam",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_steam"
@@ -751,10 +538,7 @@
     "wang_color": "af4eb815",
     "color": "4eb815af",
     "name": "acid_gas",
-    "tags": [
-      "gas",
-      "burnable_fast"
-    ],
+    "tags": ["gas", "burnable_fast"],
     "burnable": "1",
     "density": "2",
     "ui_name": "$mat_acid_gas",
@@ -766,10 +550,7 @@
     "wang_color": "af4eb817",
     "color": "4eb817af",
     "name": "acid_gas_static",
-    "tags": [
-      "gas",
-      "burnable_fast"
-    ],
+    "tags": ["gas", "burnable_fast"],
     "burnable": "1",
     "density": "2",
     "ui_name": "$mat_acid_gas_static",
@@ -781,9 +562,7 @@
     "wang_color": "7f848487",
     "color": "8484877f",
     "name": "smoke_static",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_smoke_static"
@@ -792,11 +571,7 @@
     "wang_color": "7f5C98CD",
     "color": "5c98cd7f",
     "name": "blood_cold_vapour",
-    "tags": [
-      "gas",
-      "vapour",
-      "cold"
-    ],
+    "tags": ["gas", "vapour", "cold"],
     "burnable": "0",
     "density": "2",
     "ui_name": "$mat_blood_cold_vapour"
@@ -805,10 +580,7 @@
     "wang_color": "7f6E8C3B",
     "color": "6e8c3b7f",
     "name": "sand_herb_vapour",
-    "tags": [
-      "gas",
-      "vapour"
-    ],
+    "tags": ["gas", "vapour"],
     "burnable": "0",
     "density": "2",
     "ui_name": "$mat_sand_herb_vapour"
@@ -817,9 +589,7 @@
     "wang_color": "af43b815",
     "color": "43b815af",
     "name": "radioactive_gas",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "2",
     "ui_name": "$mat_radioactive_gas",
@@ -831,9 +601,7 @@
     "wang_color": "af43b818",
     "color": "43b818af",
     "name": "radioactive_gas_static",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "2",
     "ui_name": "$mat_radioactive_gas_static",
@@ -845,11 +613,7 @@
     "wang_color": "7fA1F18C",
     "color": "a1f18c7f",
     "name": "magic_gas_hp_regeneration",
-    "tags": [
-      "gas",
-      "vapour",
-      "regenerative_gas"
-    ],
+    "tags": ["gas", "vapour", "regenerative_gas"],
     "burnable": "0",
     "density": "2",
     "ui_name": "$mat_magic_gas_hp_regeneration"
@@ -858,9 +622,7 @@
     "wang_color": "7fF2E604",
     "color": "f2e6047f",
     "name": "rainbow_gas",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "2",
     "ui_name": "$mat_rainbow_gas",
@@ -874,13 +636,7 @@
     "wang_color": "902F554C",
     "color": "2f554c90",
     "name": "water",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "freezable",
-      "water",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "freezable", "water", "liquid_common"],
     "burnable": "0",
     "density": "4",
     "ui_name": "$mat_water",
@@ -892,13 +648,7 @@
     "wang_color": "902F554F",
     "color": "2f554f90",
     "name": "water_temp",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "freezable",
-      "water",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "freezable", "water", "liquid_common"],
     "burnable": "0",
     "density": "4",
     "ui_name": "$mat_water_temp"
@@ -907,14 +657,7 @@
     "wang_color": "602F557F",
     "color": "2f557f60",
     "name": "water_ice",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "meltable_to_water",
-      "freezable",
-      "water",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "meltable_to_water", "freezable", "water", "liquid_common"],
     "burnable": "0",
     "density": "3.5",
     "ui_name": "$mat_water_ice",
@@ -926,14 +669,7 @@
     "wang_color": "802F552C",
     "color": "2f552c80",
     "name": "water_swamp",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "meltable_to_water",
-      "water",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "meltable_to_water", "water", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3.4",
     "ui_name": "$mat_water_swamp"
@@ -942,12 +678,7 @@
     "wang_color": "ff3B3B3C",
     "color": "3b3b3cff",
     "name": "oil",
-    "tags": [
-      "liquid",
-      "burnable",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "burnable", "impure", "liquid_common"],
     "burnable": "1",
     "density": "1",
     "ui_name": "$mat_oil",
@@ -959,12 +690,7 @@
     "wang_color": "90d0ffe8",
     "color": "d0ffe890",
     "name": "alcohol",
-    "tags": [
-      "liquid",
-      "water",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "water", "impure", "liquid_common"],
     "density": "3.5",
     "ui_name": "$mat_alcohol",
     "graphics": {
@@ -975,12 +701,7 @@
     "wang_color": "90d0ffe9",
     "color": "d0ffe990",
     "name": "sima",
-    "tags": [
-      "liquid",
-      "water",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "water", "impure", "liquid_common"],
     "density": "3.5",
     "ui_name": "$mat_sima",
     "graphics": {
@@ -991,12 +712,7 @@
     "wang_color": "90d0ffe7",
     "color": "d0ffe790",
     "name": "juhannussima",
-    "tags": [
-      "liquid",
-      "water",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "water", "impure", "liquid_common"],
     "density": "3.5",
     "ui_name": "$mat_juhannussima",
     "graphics": {
@@ -1007,11 +723,7 @@
     "wang_color": "1101FD13",
     "color": "01fd1311",
     "name": "alcohol_gas",
-    "tags": [
-      "gas",
-      "burnable",
-      "evaporable"
-    ],
+    "tags": ["gas", "burnable", "evaporable"],
     "burnable": "1",
     "density": "1",
     "ui_name": "$mat_alcohol_gas",
@@ -1023,12 +735,7 @@
     "wang_color": "80fffea2",
     "color": "fffea280",
     "name": "magic_liquid",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "burnable": "0",
     "density": "5.23",
     "ui_name": "$mat_magic_liquid"
@@ -1037,12 +744,7 @@
     "wang_color": "80ff0204",
     "color": "ff020480",
     "name": "material_confusion",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "density": "1.2",
     "ui_name": "$mat_confusion",
     "graphics": {
@@ -1055,12 +757,7 @@
     "wang_color": "80563e66",
     "color": "563e6680",
     "name": "material_darkness",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "density": "1.2434",
     "ui_name": "$mat_darkness",
     "graphics": {
@@ -1073,12 +770,7 @@
     "wang_color": "80FFA2CD",
     "color": "ffa2cd80",
     "name": "material_rainbow",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "density": "1.874",
     "ui_name": "$mat_rainbow",
     "graphics": {
@@ -1091,13 +783,7 @@
     "wang_color": "80c1dba4",
     "color": "c1dba480",
     "name": "magic_liquid_movement_faster",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure",
-      "magic_faster"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure", "magic_faster"],
     "burnable": "0",
     "density": "1.1",
     "ui_name": "$mat_magic_liquid_movement_faster"
@@ -1106,13 +792,7 @@
     "wang_color": "80F6FFDC",
     "color": "f6ffdc80",
     "name": "magic_liquid_faster_levitation",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure",
-      "magic_faster"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure", "magic_faster"],
     "burnable": "0",
     "density": "1.11",
     "ui_name": "$mat_magic_liquid_faster_levitation"
@@ -1121,13 +801,7 @@
     "wang_color": "80C7F865",
     "color": "c7f86580",
     "name": "magic_liquid_faster_levitation_and_movement",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure",
-      "magic_faster"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure", "magic_faster"],
     "burnable": "0",
     "density": "1.091",
     "ui_name": "$mat_magic_liquid_faster_levitation_and_movement"
@@ -1136,12 +810,7 @@
     "wang_color": "80687478",
     "color": "68747880",
     "name": "magic_liquid_worm_attractor",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "burnable": "0",
     "density": "4.76",
     "ui_name": "$mat_magic_liquid_worm_attractor"
@@ -1150,12 +819,7 @@
     "wang_color": "80df9828",
     "color": "df982880",
     "name": "magic_liquid_protection_all",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "burnable": "0",
     "density": "5.12",
     "ui_name": "$mat_magic_liquid_protection_all"
@@ -1164,12 +828,7 @@
     "wang_color": "800bffe5",
     "color": "0bffe580",
     "name": "magic_liquid_mana_regeneration",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "burnable": "0",
     "density": "4.921",
     "ui_name": "$mat_magic_liquid_mana_regeneration"
@@ -1178,12 +837,7 @@
     "wang_color": "8000BEE4",
     "color": "00bee480",
     "name": "magic_liquid_unstable_teleportation",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "burnable": "1",
     "density": "4.43",
     "ui_name": "$mat_magic_liquid_unstable_teleportation",
@@ -1196,12 +850,7 @@
     "wang_color": "807fceea",
     "color": "7fceea80",
     "name": "magic_liquid_teleportation",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "burnable": "1",
     "density": "4.21",
     "ui_name": "$mat_magic_liquid_teleportation"
@@ -1210,12 +859,7 @@
     "wang_color": "80a1f18b",
     "color": "a1f18b80",
     "name": "magic_liquid_hp_regeneration",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "regenerative"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "regenerative"],
     "burnable": "0",
     "density": "5.53",
     "ui_name": "$mat_magic_liquid_hp_regeneration"
@@ -1224,12 +868,7 @@
     "wang_color": "80a1f18c",
     "color": "a1f18c80",
     "name": "magic_liquid_hp_regeneration_unstable",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "regenerative"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "regenerative"],
     "burnable": "0",
     "density": "5.74",
     "ui_name": "$mat_magic_liquid_hp_regeneration_unstable"
@@ -1238,13 +877,7 @@
     "wang_color": "80f18beb",
     "color": "f18beb80",
     "name": "magic_liquid_polymorph",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "magic_polymorph",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "magic_polymorph", "impure"],
     "burnable": "0",
     "density": "4.14",
     "ui_name": "$mat_magic_liquid_polymorph"
@@ -1253,13 +886,7 @@
     "wang_color": "8091448D",
     "color": "91448d80",
     "name": "magic_liquid_random_polymorph",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "magic_polymorph",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "magic_polymorph", "impure"],
     "burnable": "0",
     "density": "4.15",
     "ui_name": "$mat_magic_liquid_random_polymorph"
@@ -1268,13 +895,7 @@
     "wang_color": "80a3569f",
     "color": "a3569f80",
     "name": "magic_liquid_unstable_polymorph",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "magic_polymorph",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "magic_polymorph", "impure"],
     "burnable": "0",
     "density": "4.16",
     "ui_name": "$mat_magic_liquid_unstable_polymorph",
@@ -1287,12 +908,7 @@
     "wang_color": "80f86868",
     "color": "f8686880",
     "name": "magic_liquid_berserk",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "burnable": "0",
     "density": "2.412",
     "ui_name": "$mat_magic_liquid_berserk"
@@ -1301,12 +917,7 @@
     "wang_color": "80c23055",
     "color": "c2305580",
     "name": "magic_liquid_charm",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "burnable": "0",
     "density": "3.513",
     "ui_name": "$mat_magic_liquid_charm",
@@ -1318,12 +929,7 @@
     "wang_color": "80306cc0",
     "color": "306cc080",
     "name": "magic_liquid_invisibility",
-    "tags": [
-      "liquid",
-      "water",
-      "magic_liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
     "burnable": "0",
     "density": "5.3272",
     "ui_name": "$mat_magic_liquid_invisibility"
@@ -1332,12 +938,7 @@
     "wang_color": "1101FF34",
     "color": "01ff3411",
     "name": "cloud_radioactive",
-    "tags": [
-      "liquid",
-      "radioactive",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "radioactive", "impure", "liquid_common"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_cloud_radioactive",
@@ -1349,12 +950,7 @@
     "wang_color": "2201FD34",
     "color": "01fd3422",
     "name": "cloud_blood",
-    "tags": [
-      "liquid",
-      "blood",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "blood", "impure", "liquid_common"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_cloud_blood",
@@ -1366,12 +962,7 @@
     "wang_color": "2201FC34",
     "color": "01fc3422",
     "name": "cloud_slime",
-    "tags": [
-      "liquid",
-      "impure",
-      "slime",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "impure", "slime", "liquid_common"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_cloud_slime",
@@ -1383,16 +974,7 @@
     "wang_color": "802f2f0a",
     "color": "2f2f0a80",
     "name": "swamp",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "meltable_to_water",
-      "freezable",
-      "water",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "meltable_to_water", "freezable", "water", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3.5",
     "ui_name": "$mat_swamp",
@@ -1406,12 +988,7 @@
     "color": "363e21a0",
     "name": "mud",
     "hp": "2000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava",
-      "impure"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava", "impure"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_mud",
@@ -1424,15 +1001,7 @@
     "wang_color": "aa830000",
     "color": "830000aa",
     "name": "blood",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "blood",
-      "impure",
-      "liquid_common",
-      "food"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "blood", "impure", "liquid_common", "food"],
     "burnable": "0",
     "density": "4.1",
     "ui_name": "$mat_blood"
@@ -1441,16 +1010,7 @@
     "wang_color": "aa830002",
     "color": "830002aa",
     "name": "blood_fading",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "evaporable_fast",
-      "blood",
-      "impure",
-      "liquid_common",
-      "food"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "evaporable_fast", "blood", "impure", "liquid_common", "food"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_blood_fading"
@@ -1459,17 +1019,7 @@
     "wang_color": "aa830001",
     "color": "830001aa",
     "name": "blood_fungi",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "evaporable",
-      "blood",
-      "impure",
-      "liquid_common",
-      "food",
-      "fungus"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "evaporable", "blood", "impure", "liquid_common", "food", "fungus"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_blood_fungi",
@@ -1482,15 +1032,7 @@
     "wang_color": "88C8BC00",
     "color": "c8bc0088",
     "name": "blood_worm",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "blood",
-      "impure",
-      "liquid_common",
-      "food"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "blood", "impure", "liquid_common", "food"],
     "burnable": "0",
     "density": "2.123",
     "ui_name": "$mat_blood_worm",
@@ -1504,15 +1046,7 @@
     "color": "d7cfaeee",
     "name": "porridge",
     "hp": "1000",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "impure",
-      "liquid_common",
-      "evaporable_by_fire",
-      "food"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "impure", "liquid_common", "evaporable_by_fire", "food"],
     "burnable": "1",
     "density": "2.123",
     "ui_name": "$mat_porridge",
@@ -1525,16 +1059,7 @@
     "wang_color": "aa830023",
     "color": "830023aa",
     "name": "blood_cold",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "evaporable_custom",
-      "blood",
-      "impure",
-      "cold",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "evaporable_custom", "blood", "impure", "cold", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_blood_cold",
@@ -1547,14 +1072,7 @@
     "wang_color": "4400FF33",
     "color": "00ff3344",
     "name": "radioactive_liquid",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "radioactive",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "radioactive", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_radioactive_liquid",
@@ -1566,15 +1084,7 @@
     "wang_color": "4400FF34",
     "color": "00ff3444",
     "name": "radioactive_liquid_fading",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "evaporable",
-      "radioactive",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "evaporable", "radioactive", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_radioactive_liquid_fading",
@@ -1586,14 +1096,7 @@
     "wang_color": "7734bfff",
     "color": "34bfff77",
     "name": "plasma_fading",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "evaporable_fast",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "evaporable_fast", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_plasma_fading"
@@ -1602,16 +1105,7 @@
     "wang_color": "ffebcd04",
     "color": "ebcd04ff",
     "name": "gold_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_gold_molten",
@@ -1624,16 +1118,7 @@
     "wang_color": "ffEAACAB",
     "color": "eaacabff",
     "name": "wax_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten",
-      "alchemy",
-      "impure",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten", "alchemy", "impure", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "2",
     "ui_name": "$mat_wax_molten",
@@ -1646,15 +1131,7 @@
     "wang_color": "ff4e5263",
     "color": "4e5263ff",
     "name": "silver_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten",
-      "alchemy",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten", "alchemy", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_silver_molten",
@@ -1667,15 +1144,7 @@
     "wang_color": "ff4e5264",
     "color": "4e5264ff",
     "name": "copper_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten",
-      "alchemy",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten", "alchemy", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_copper_molten",
@@ -1688,15 +1157,7 @@
     "wang_color": "ff4e5285",
     "color": "4e5285ff",
     "name": "brass_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten",
-      "alchemy",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten", "alchemy", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_brass_molten",
@@ -1709,15 +1170,7 @@
     "wang_color": "ff4e5266",
     "color": "4e5266ff",
     "name": "glass_molten",
-    "tags": [
-      "liquid",
-      "molten",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "molten", "meltable_to_lava", "alchemy", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_glass_molten",
@@ -1730,15 +1183,7 @@
     "wang_color": "ff4e5237",
     "color": "4e5237ff",
     "name": "glass_broken_molten",
-    "tags": [
-      "liquid",
-      "molten",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "molten", "meltable_to_lava", "alchemy", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_glass_broken_molten",
@@ -1751,14 +1196,7 @@
     "wang_color": "ffebcd08",
     "color": "ebcd08ff",
     "name": "steel_molten",
-    "tags": [
-      "liquid",
-      "molten",
-      "alchemy",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "molten", "alchemy", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "2",
     "ui_name": "$mat_steel_molten",
@@ -1771,10 +1209,7 @@
     "wang_color": "7f381774",
     "color": "3817747f",
     "name": "creepy_liquid",
-    "tags": [
-      "liquid",
-      "impure"
-    ],
+    "tags": ["liquid", "impure"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_creepy_liquid"
@@ -1784,14 +1219,7 @@
     "color": "808081ff",
     "name": "cement",
     "hp": "1000",
-    "tags": [
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "impure",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "meltable_to_lava", "alchemy", "impure", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_cement",
@@ -1805,11 +1233,7 @@
     "color": "808082ff",
     "name": "concrete_sand",
     "hp": "15000",
-    "tags": [
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy"
-    ],
+    "tags": ["corrodible", "meltable_to_lava", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_concrete_sand",
@@ -1823,12 +1247,7 @@
     "color": "ebcd00ff",
     "name": "sand",
     "hp": "800",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava_fast",
-      "alchemy"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava_fast", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_sand",
@@ -1842,12 +1261,7 @@
     "color": "e6e6ffff",
     "name": "bone",
     "hp": "10000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_bone",
@@ -1861,14 +1275,7 @@
     "color": "36311eff",
     "name": "soil",
     "hp": "2000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "grows_grass",
-      "meltable_to_lava",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["sand_ground", "corrodible", "grows_grass", "meltable_to_lava", "alchemy", "solid"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_soil",
@@ -1882,14 +1289,7 @@
     "color": "90fe40ff",
     "name": "sandstone",
     "hp": "9000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_sandstone",
@@ -1902,16 +1302,7 @@
     "wang_color": "ff36312e",
     "color": "36312eff",
     "name": "fungisoil",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "grows_fungus",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth",
-      "fungus"
-    ],
+    "tags": ["sand_ground", "corrodible", "grows_fungus", "meltable_to_lava", "alchemy", "solid", "earth", "fungus"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_fungisoil",
@@ -1924,12 +1315,7 @@
     "wang_color": "55E8BD5A",
     "color": "e8bd5a55",
     "name": "honey",
-    "tags": [
-      "corrodible",
-      "meltable_to_lava_fast",
-      "alchemy",
-      "meltable_by_fire"
-    ],
+    "tags": ["corrodible", "meltable_to_lava_fast", "alchemy", "meltable_by_fire"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_honey",
@@ -1943,12 +1329,7 @@
     "color": "f6fce3ff",
     "name": "glue",
     "hp": "100",
-    "tags": [
-      "liquid",
-      "burnable",
-      "alchemy",
-      "impure"
-    ],
+    "tags": ["liquid", "burnable", "alchemy", "impure"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_glue",
@@ -1960,14 +1341,7 @@
     "wang_color": "88E8BD5A",
     "color": "e8bd5a88",
     "name": "slime",
-    "tags": [
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "slime",
-      "liquid_common",
-      "food"
-    ],
+    "tags": ["corrodible", "meltable_to_lava", "alchemy", "slime", "liquid_common", "food"],
     "burnable": "0",
     "density": "5",
     "ui_name": "$mat_slime_pink",
@@ -1980,12 +1354,7 @@
     "wang_color": "90b5ceff",
     "color": "b5ceff90",
     "name": "slush",
-    "tags": [
-      "corrodible",
-      "meltable_to_water",
-      "alchemy",
-      "snow"
-    ],
+    "tags": ["corrodible", "meltable_to_water", "alchemy", "snow"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_slush",
@@ -1998,9 +1367,7 @@
     "wang_color": "88E8BD5B",
     "color": "e8bd5b88",
     "name": "vomit",
-    "tags": [
-      "food"
-    ],
+    "tags": ["food"],
     "ui_name": "$mat_vomit",
     "graphics": {
       "texture_file": "data/materials_gfx/vomit.png",
@@ -2012,10 +1379,7 @@
     "color": "36311fff",
     "name": "explosion_dirt",
     "hp": "1000",
-    "tags": [
-      "sand_ground",
-      "corrodible"
-    ],
+    "tags": ["sand_ground", "corrodible"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_explosion_dirt"
@@ -2025,13 +1389,7 @@
     "color": "526f40ff",
     "name": "vine",
     "hp": "10",
-    "tags": [
-      "static",
-      "sand_ground",
-      "corrodible",
-      "burnable",
-      "alchemy"
-    ],
+    "tags": ["static", "sand_ground", "corrodible", "burnable", "alchemy"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_vine",
@@ -2045,15 +1403,7 @@
     "color": "2a724aff",
     "name": "root",
     "hp": "5",
-    "tags": [
-      "static",
-      "sand_ground",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "sand_ground", "corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_root",
@@ -2067,14 +1417,7 @@
     "color": "f4f4f3ff",
     "name": "snow",
     "hp": "1000",
-    "tags": [
-      "static",
-      "sand_ground",
-      "corrodible",
-      "frozen",
-      "meltable_to_water",
-      "alchemy"
-    ],
+    "tags": ["static", "sand_ground", "corrodible", "frozen", "meltable_to_water", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_snow",
@@ -2088,13 +1431,7 @@
     "color": "eeeeedff",
     "name": "snow_sticky",
     "hp": "1000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "frozen",
-      "meltable_to_water",
-      "alchemy"
-    ],
+    "tags": ["sand_ground", "corrodible", "frozen", "meltable_to_water", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_snow",
@@ -2108,14 +1445,7 @@
     "color": "ebcdd0ff",
     "name": "rotten_meat",
     "hp": "5000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "meat",
-      "food"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava", "alchemy", "meat", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_rotten_meat",
@@ -2139,15 +1469,7 @@
     "color": "ed4c4cff",
     "name": "meat_slime_sand",
     "hp": "5000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "meat",
-      "slime",
-      "food"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava", "alchemy", "meat", "slime", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_slime_sand",
@@ -2161,16 +1483,7 @@
     "color": "00ff5344",
     "name": "rotten_meat_radioactive",
     "hp": "5000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_rotten_meat_radioactive",
@@ -2194,14 +1507,7 @@
     "color": "cfcff0ff",
     "name": "ice",
     "hp": "5000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "frozen",
-      "meltable_to_water",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["sand_ground", "corrodible", "frozen", "meltable_to_water", "alchemy", "solid"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice",
@@ -2215,12 +1521,7 @@
     "wang_color": "aa8300a0",
     "color": "8300a0aa",
     "name": "sand_herb",
-    "tags": [
-      "corrodible",
-      "evaporable_custom",
-      "burnable",
-      "alchemy"
-    ],
+    "tags": ["corrodible", "evaporable_custom", "burnable", "alchemy"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_sand_herb",
@@ -2234,14 +1535,7 @@
     "color": "eaaaabff",
     "name": "wax",
     "hp": "8000",
-    "tags": [
-      "burnable",
-      "corrodible",
-      "meltable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["burnable", "corrodible", "meltable", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_wax",
@@ -2255,15 +1549,7 @@
     "color": "ebcd01ff",
     "name": "gold",
     "hp": "8000",
-    "tags": [
-      "sand_metal",
-      "corrodible",
-      "meltable_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "earth"
-    ],
+    "tags": ["sand_metal", "corrodible", "meltable_metal", "alchemy", "gold", "solid", "earth"],
     "burnable": "0",
     "density": "9",
     "ui_name": "$mat_gold",
@@ -2277,14 +1563,7 @@
     "color": "4e5262ff",
     "name": "silver",
     "hp": "8000",
-    "tags": [
-      "sand_metal",
-      "corrodible",
-      "meltable_metal",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["sand_metal", "corrodible", "meltable_metal", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_silver",
@@ -2298,14 +1577,7 @@
     "color": "4e5265ff",
     "name": "copper",
     "hp": "8000",
-    "tags": [
-      "sand_metal",
-      "corrodible",
-      "meltable_metal",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["sand_metal", "corrodible", "meltable_metal", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_copper",
@@ -2319,14 +1591,7 @@
     "color": "4e5267ff",
     "name": "brass",
     "hp": "8000",
-    "tags": [
-      "sand_metal",
-      "corrodible",
-      "meltable_metal",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["sand_metal", "corrodible", "meltable_metal", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_brass",
@@ -2340,12 +1605,7 @@
     "color": "82dbe2ff",
     "name": "diamond",
     "hp": "200000",
-    "tags": [
-      "sand_metal",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["sand_metal", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_diamond",
@@ -2359,12 +1619,7 @@
     "color": "505052ff",
     "name": "coal",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "burnable",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "burnable", "alchemy"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_coal",
@@ -2378,11 +1633,7 @@
     "color": "141415ff",
     "name": "sulphur",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_sulphur",
@@ -2396,11 +1647,7 @@
     "color": "e1e1e2ff",
     "name": "salt",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_salt",
@@ -2414,11 +1661,7 @@
     "color": "411f24ff",
     "name": "sodium_unstable",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy"],
     "burnable": "1",
     "density": "2",
     "ui_name": "$mat_sodium_unstable",
@@ -2432,11 +1675,7 @@
     "color": "232324ff",
     "name": "gunpowder",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy"],
     "burnable": "1",
     "density": "7",
     "ui_name": "$mat_gunpowder",
@@ -2450,11 +1689,7 @@
     "color": "f7bb43ff",
     "name": "gunpowder_explosive",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy"],
     "burnable": "1",
     "density": "7",
     "ui_name": "$mat_gunpowder_explosive",
@@ -2468,11 +1703,7 @@
     "color": "f7bf43ff",
     "name": "gunpowder_tnt",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy"],
     "burnable": "1",
     "density": "7",
     "ui_name": "$mat_gunpowder_tnt",
@@ -2486,12 +1717,7 @@
     "color": "232373ff",
     "name": "gunpowder_unstable",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "burnable",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "burnable", "alchemy"],
     "burnable": "1",
     "density": "7",
     "ui_name": "$mat_gunpowder_unstable",
@@ -2505,12 +1731,7 @@
     "color": "230f73ff",
     "name": "gunpowder_unstable_big",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "burnable",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "burnable", "alchemy"],
     "burnable": "1",
     "density": "7",
     "ui_name": "$mat_gunpowder_unstable",
@@ -2524,12 +1745,7 @@
     "color": "200073ff",
     "name": "monster_powder_test",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "burnable",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "burnable", "alchemy"],
     "burnable": "1",
     "density": "7",
     "ui_name": "$mat_monster_powder_test",
@@ -2543,9 +1759,7 @@
     "color": "be4dffff",
     "name": "rat_powder",
     "hp": "1000",
-    "tags": [
-      "sand_other"
-    ],
+    "tags": ["sand_other"],
     "burnable": "0",
     "density": "7",
     "ui_name": "$mat_rat_powder",
@@ -2559,10 +1773,7 @@
     "color": "becafeff",
     "name": "fungus_powder",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "fungus"
-    ],
+    "tags": ["sand_other", "fungus"],
     "burnable": "0",
     "density": "7",
     "ui_name": "$mat_fungisoil",
@@ -2589,12 +1800,7 @@
     "color": "80c850ff",
     "name": "gunpowder_unstable_boss_limbs",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy",
-      "meat"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy", "meat"],
     "burnable": "1",
     "density": "7",
     "ui_name": "$mat_gunpowder_unstable_boss_limbs",
@@ -2608,11 +1814,7 @@
     "color": "900000ff",
     "name": "plastic_red",
     "hp": "100",
-    "tags": [
-      "corrodible",
-      "meltable",
-      "alchemy"
-    ],
+    "tags": ["corrodible", "meltable", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_plastic_red"
@@ -2622,14 +1824,7 @@
     "color": "9000abff",
     "name": "plastic_red_molten",
     "hp": "100",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten",
-      "meltable_to_lava",
-      "alchemy",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "molten", "meltable_to_lava", "alchemy", "liquid_common"],
     "burnable": "0",
     "density": "5.1",
     "ui_name": "$mat_plastic_red_molten"
@@ -2639,14 +1834,7 @@
     "color": "3abb30ff",
     "name": "grass",
     "hp": "200",
-    "tags": [
-      "plant",
-      "requires_air",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "impure"
-    ],
+    "tags": ["plant", "requires_air", "corrodible", "burnable", "alchemy", "impure"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_grass",
@@ -2661,12 +1849,7 @@
     "color": "3abb31ff",
     "name": "grass_ice",
     "hp": "200",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable",
-      "impure"
-    ],
+    "tags": ["plant", "corrodible", "burnable", "impure"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_ice",
@@ -2681,14 +1864,7 @@
     "color": "3abb35ff",
     "name": "grass_dry",
     "hp": "200",
-    "tags": [
-      "plant",
-      "requires_air",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "impure"
-    ],
+    "tags": ["plant", "requires_air", "corrodible", "burnable", "alchemy", "impure"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_grass",
@@ -2702,14 +1878,7 @@
     "wang_color": "ff3abb32",
     "color": "3abb32ff",
     "name": "fungi",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "impure",
-      "fungus"
-    ],
+    "tags": ["plant", "corrodible", "burnable", "alchemy", "impure", "fungus"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fungi_trippy",
@@ -2722,13 +1891,7 @@
     "wang_color": "ff3abb33",
     "color": "3abb33ff",
     "name": "spore",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "impure"
-    ],
+    "tags": ["plant", "corrodible", "burnable", "alchemy", "impure"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_spore",
@@ -2742,13 +1905,7 @@
     "color": "33b828ff",
     "name": "moss",
     "hp": "200",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "impure"
-    ],
+    "tags": ["plant", "corrodible", "burnable", "alchemy", "impure"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_moss",
@@ -2762,12 +1919,7 @@
     "color": "33b838ff",
     "name": "plant_material",
     "hp": "200",
-    "tags": [
-      "plant",
-      "requires_air",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "requires_air", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_plant_material",
@@ -2781,12 +1933,7 @@
     "color": "aa2818ff",
     "name": "plant_material_red",
     "hp": "200",
-    "tags": [
-      "plant",
-      "requires_air",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "requires_air", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_plant_material_red",
@@ -2800,11 +1947,7 @@
     "color": "33b848ff",
     "name": "ceiling_plant_material",
     "hp": "200",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_ceiling_plant_material",
@@ -2818,11 +1961,7 @@
     "color": "b89f6cff",
     "name": "mushroom_seed",
     "hp": "200",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_mushroom_seed"
@@ -2832,11 +1971,7 @@
     "color": "bc9b58ff",
     "name": "plant_seed",
     "hp": "200",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_plant_seed"
@@ -2846,11 +1981,7 @@
     "color": "b89f7cff",
     "name": "mushroom",
     "hp": "200",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_mushroom"
@@ -2860,12 +1991,7 @@
     "color": "d9d9cdff",
     "name": "mushroom_giant_red",
     "hp": "200",
-    "tags": [
-      "plant",
-      "requires_air",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "requires_air", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_mushroom_giant_red"
@@ -2875,12 +2001,7 @@
     "color": "d9d9ccff",
     "name": "mushroom_giant_blue",
     "hp": "200",
-    "tags": [
-      "plant",
-      "requires_air",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "requires_air", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_mushroom_giant_blue"
@@ -2890,12 +2011,7 @@
     "color": "d9d9cbff",
     "name": "glowshroom",
     "hp": "200",
-    "tags": [
-      "plant",
-      "requires_air",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "requires_air", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_glowshroom"
@@ -2905,12 +2021,7 @@
     "color": "4d5d44ff",
     "name": "bush_seed",
     "hp": "200",
-    "tags": [
-      "plant",
-      "requires_air",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "requires_air", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_bush_seed"
@@ -2919,12 +2030,7 @@
     "wang_color": "4B00ff12",
     "color": "00ff124b",
     "name": "acid",
-    "tags": [
-      "liquid",
-      "acid",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "acid", "impure", "liquid_common"],
     "burnable": "0",
     "density": "2.9",
     "ui_name": "$mat_acid",
@@ -2936,12 +2042,7 @@
     "wang_color": "ffff6000",
     "color": "ff6000ff",
     "name": "lava",
-    "tags": [
-      "fire_lava",
-      "liquid",
-      "lava",
-      "liquid_common"
-    ],
+    "tags": ["fire_lava", "liquid", "lava", "liquid_common"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_lava"
@@ -2951,13 +2052,7 @@
     "color": "613e03ff",
     "name": "wood_player",
     "hp": "2000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_player",
@@ -2972,14 +2067,7 @@
     "color": "613e02ff",
     "name": "wood_player_b2",
     "hp": "2000",
-    "tags": [
-      "static",
-      "box2d",
-      "alchemy",
-      "corrodible",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "box2d", "alchemy", "corrodible", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_player_b2",
@@ -2994,14 +2082,7 @@
     "color": "613e00ff",
     "name": "wood",
     "hp": "3000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "burnable",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "burnable", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood",
@@ -3016,12 +2097,7 @@
     "color": "eaaaacff",
     "name": "wax_b2",
     "hp": "2000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wax_b2",
@@ -3035,9 +2111,7 @@
     "color": "eaaaadff",
     "name": "fuse",
     "hp": "2000",
-    "tags": [
-      "box2d"
-    ],
+    "tags": ["box2d"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fuse",
@@ -3051,13 +2125,7 @@
     "color": "613e01ff",
     "name": "wood_loose",
     "hp": "2000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_loose",
@@ -3071,13 +2139,7 @@
     "color": "937d58ff",
     "name": "rock_loose",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_rock_loose",
@@ -3091,12 +2153,7 @@
     "color": "3b93baff",
     "name": "ice_ceiling",
     "hp": "3000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "solid"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_ceiling",
@@ -3120,13 +2177,7 @@
     "color": "b80900ff",
     "name": "brick",
     "hp": "4000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "50",
     "ui_name": "$mat_brick",
@@ -3150,13 +2201,7 @@
     "color": "b80901ff",
     "name": "concrete_collapsed",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "10",
     "ui_name": "$mat_concrete_collapsed",
@@ -3180,14 +2225,7 @@
     "color": "ab5e4fff",
     "name": "tnt",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "8",
     "ui_name": "$mat_tnt",
@@ -3211,14 +2249,7 @@
     "color": "c1ffeeff",
     "name": "tnt_static",
     "hp": "500",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "8",
     "ui_name": "$mat_tnt",
@@ -3254,12 +2285,7 @@
     "color": "1d1012ff",
     "name": "meteorite",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_meteorite",
@@ -3283,11 +2309,7 @@
     "color": "c9c169ff",
     "name": "sulphur_box2d",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "solid",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "solid", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_sulphur",
@@ -3301,12 +2323,7 @@
     "color": "1d1013ff",
     "name": "meteorite_test",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_meteorite",
@@ -3330,12 +2347,7 @@
     "color": "4e5244ff",
     "name": "meteorite_green",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_meteorite_green",
@@ -3359,14 +2371,7 @@
     "color": "3b5d4bff",
     "name": "steel",
     "hp": "100000",
-    "tags": [
-      "box2d",
-      "rust_box2d",
-      "alchemy",
-      "meltable_metal",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "rust_box2d", "alchemy", "meltable_metal", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_steel",
@@ -3390,13 +2395,7 @@
     "color": "73727eff",
     "name": "steel_rust",
     "hp": "8000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "meltable_metal",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "alchemy", "meltable_metal", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_steel_rust",
@@ -3420,14 +2419,7 @@
     "color": "73a27eff",
     "name": "metal_rust_rust",
     "hp": "8000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "corrodible",
-      "solid",
-      "meltable_metal_generic",
-      "earth"
-    ],
+    "tags": ["box2d", "alchemy", "corrodible", "solid", "meltable_metal_generic", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_rust_rust",
@@ -3451,14 +2443,7 @@
     "color": "73a27fff",
     "name": "metal_rust_barrel_rust",
     "hp": "8000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "corrodible",
-      "solid",
-      "meltable_metal_generic",
-      "earth"
-    ],
+    "tags": ["box2d", "alchemy", "corrodible", "solid", "meltable_metal_generic", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_rust_barrel_rust",
@@ -3482,14 +2467,7 @@
     "color": "3b5d3bff",
     "name": "plastic",
     "hp": "4000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "meltable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "meltable", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_plastic",
@@ -3513,15 +2491,7 @@
     "color": "3b5d3cff",
     "name": "aluminium",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "rust_oxide",
-      "alchemy",
-      "meltable_metal",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "rust_oxide", "alchemy", "meltable_metal", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_aluminium",
@@ -3535,13 +2505,7 @@
     "color": "2d2dffff",
     "name": "rock_static_box2d",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_rock_static_box2d",
@@ -3555,11 +2519,7 @@
     "color": "2d2dacff",
     "name": "rock_box2d",
     "hp": "100000",
-    "tags": [
-      "box2d",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_rock_box2d",
@@ -3573,10 +2533,7 @@
     "color": "3b5d2eff",
     "name": "crystal",
     "hp": "500000",
-    "tags": [
-      "box2d",
-      "alchemy"
-    ],
+    "tags": ["box2d", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_crystal",
@@ -3590,10 +2547,7 @@
     "color": "3b5d43ff",
     "name": "magic_crystal",
     "hp": "500000",
-    "tags": [
-      "box2d",
-      "alchemy"
-    ],
+    "tags": ["box2d", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_magic_crystal",
@@ -3608,10 +2562,7 @@
     "color": "3b5d2fff",
     "name": "crystal_magic",
     "hp": "500000",
-    "tags": [
-      "box2d",
-      "alchemy"
-    ],
+    "tags": ["box2d", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_crystal_magic",
@@ -3625,14 +2576,7 @@
     "color": "3b5d4dff",
     "name": "aluminium_oxide",
     "hp": "2500",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_aluminium_oxide",
@@ -3646,15 +2590,7 @@
     "color": "f2ddb2ff",
     "name": "meat",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat",
@@ -3678,16 +2614,7 @@
     "color": "f2ddb3ff",
     "name": "meat_slime",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "meltable_to_lava", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_meat_slime",
@@ -3700,12 +2627,7 @@
     "wang_color": "33FFEE00",
     "color": "ffee0033",
     "name": "urine",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_urine"
@@ -3715,11 +2637,7 @@
     "color": "36315fff",
     "name": "poo",
     "hp": "200",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "soluble"
-    ],
+    "tags": ["sand_other", "corrodible", "soluble"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_poo",
@@ -3732,10 +2650,7 @@
     "wang_color": "ffdee1fe",
     "color": "dee1feff",
     "name": "physics_throw_material_part2",
-    "tags": [
-      "box2d",
-      "alchemy"
-    ],
+    "tags": ["box2d", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_physics_throw_material_part2",
@@ -3748,9 +2663,7 @@
     "wang_color": "66FFFFFE",
     "color": "fffffe66",
     "name": "rocket_particles",
-    "tags": [
-      "liquid"
-    ],
+    "tags": ["liquid"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_rocket_particles"
@@ -3759,12 +2672,7 @@
     "wang_color": "ffdee1aa",
     "color": "dee1aaff",
     "name": "ice_melting_perf_killer",
-    "tags": [
-      "box2d",
-      "hax",
-      "meltable_to_water",
-      "ice"
-    ],
+    "tags": ["box2d", "hax", "meltable_to_water", "ice"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_melting_perf_killer",
@@ -3787,11 +2695,7 @@
     "wang_color": "ffdee1ec",
     "color": "dee1ecff",
     "name": "ice_b2",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["box2d", "alchemy", "solid"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_b2",
@@ -3814,12 +2718,7 @@
     "wang_color": "ffdee1fa",
     "color": "dee1faff",
     "name": "glass_liquidcave",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_glass_liquidcave",
@@ -3833,13 +2732,7 @@
     "color": "aeddeeff",
     "name": "glass",
     "hp": "200",
-    "tags": [
-      "static",
-      "meltable_metal",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "meltable_metal", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_glass",
@@ -3863,13 +2756,7 @@
     "color": "aeddefff",
     "name": "glass_broken",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "meltable_metal",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["sand_other", "meltable_metal", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_glass",
@@ -3883,14 +2770,7 @@
     "color": "aedde6ff",
     "name": "neon_tube_purple",
     "hp": "200",
-    "tags": [
-      "static",
-      "corrodible",
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "box2d", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_neon_tube_purple",
@@ -3904,12 +2784,7 @@
     "color": "ff7674ff",
     "name": "blood_thick",
     "hp": "1000",
-    "tags": [
-      "static",
-      "corrodible",
-      "blood",
-      "food"
-    ],
+    "tags": ["static", "corrodible", "blood", "food"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_blood_thick"
@@ -3919,13 +2794,7 @@
     "color": "b80902ff",
     "name": "snow_b2",
     "hp": "40",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_to_water",
-      "solid"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_to_water", "solid"],
     "burnable": "0",
     "density": "50",
     "ui_name": "$mat_snow_b2",
@@ -3947,10 +2816,7 @@
     "wang_color": "7fFF6061",
     "color": "ff60617f",
     "name": "fire_blue",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_fire_blue",
@@ -3963,10 +2829,7 @@
     "wang_color": "7f96FF46",
     "color": "96ff467f",
     "name": "spark_green",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_green",
@@ -3979,10 +2842,7 @@
     "wang_color": "7f96FF47",
     "color": "96ff477f",
     "name": "spark_green_bright",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_green",
@@ -3995,10 +2855,7 @@
     "wang_color": "7f82DCFF",
     "color": "82dcff7f",
     "name": "spark_blue",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_blue",
@@ -4011,10 +2868,7 @@
     "wang_color": "7f205bfe",
     "color": "205bfe7f",
     "name": "spark_blue_dark",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_blue",
@@ -4027,10 +2881,7 @@
     "wang_color": "7fFF2813",
     "color": "ff28137f",
     "name": "spark_red",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_red",
@@ -4043,10 +2894,7 @@
     "wang_color": "7fFF2814",
     "color": "ff28147f",
     "name": "spark_red_bright",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_red",
@@ -4059,10 +2907,7 @@
     "wang_color": "ffFEFEFF",
     "color": "fefeffff",
     "name": "spark_white",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_white",
@@ -4075,10 +2920,7 @@
     "wang_color": "ffFEFEFD",
     "color": "fefefdff",
     "name": "spark_white_bright",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_white",
@@ -4091,10 +2933,7 @@
     "wang_color": "ffFFF028",
     "color": "fff028ff",
     "name": "spark_yellow",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_yellow",
@@ -4107,10 +2946,7 @@
     "wang_color": "44B43C1F",
     "color": "b43c1f44",
     "name": "spark_purple",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_purple",
@@ -4122,10 +2958,7 @@
     "wang_color": "44B4323F",
     "color": "b4323f44",
     "name": "spark_purple_bright",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_purple",
@@ -4137,10 +2970,7 @@
     "wang_color": "ffFFF029",
     "color": "fff029ff",
     "name": "spark_player",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_player",
@@ -4153,10 +2983,7 @@
     "wang_color": "44A41C1F",
     "color": "a41c1f44",
     "name": "spark_teal",
-    "tags": [
-      "fire",
-      "hot"
-    ],
+    "tags": ["fire", "hot"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_spark_teal",
@@ -4169,13 +2996,7 @@
     "color": "524f00ff",
     "name": "sand_static_rainforest",
     "hp": "70000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_sand_static_rainforest",
@@ -4189,13 +3010,7 @@
     "color": "261f26ff",
     "name": "sand_static_rainforest_dark",
     "hp": "700000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_sand_static_rainforest",
@@ -4209,13 +3024,7 @@
     "color": "523f03ff",
     "name": "bone_static",
     "hp": "20000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_bone_static",
@@ -4229,13 +3038,7 @@
     "color": "ee8f49ff",
     "name": "rust_static",
     "hp": "30000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rust_static",
@@ -4249,13 +3052,7 @@
     "color": "ef8f49ff",
     "name": "sand_static_bright",
     "hp": "19000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_sand_static_bright",
@@ -4269,13 +3066,7 @@
     "color": "ff8f47ff",
     "name": "sand_static_red",
     "hp": "19000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_sand_static_red",
@@ -4289,12 +3080,7 @@
     "color": "0a3344ff",
     "name": "rock_static_intro",
     "hp": "160000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_intro",
@@ -4309,12 +3095,7 @@
     "color": "0abba4ff",
     "name": "rock_static_trip_secret",
     "hp": "160000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static",
@@ -4329,12 +3110,7 @@
     "color": "0baab4ff",
     "name": "rock_static_trip_secret2",
     "hp": "160000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static",
@@ -4349,13 +3125,7 @@
     "color": "3f4d3eff",
     "name": "rock_static_cursed",
     "hp": "160000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth",
-      "matter_eater_ignore_list"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth", "matter_eater_ignore_list"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_cursed",
@@ -4370,12 +3140,7 @@
     "color": "272224ff",
     "name": "rock_static_purple",
     "hp": "160000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_intro",
@@ -4390,12 +3155,7 @@
     "color": "003344ff",
     "name": "rock_hard",
     "hp": "200000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_hard",
@@ -4409,13 +3169,7 @@
     "color": "00a244ff",
     "name": "rock_static_fungal",
     "hp": "150000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth",
-      "fungus"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth", "fungus"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_fungisoil",
@@ -4429,12 +3183,7 @@
     "color": "005345ff",
     "name": "wood_tree",
     "hp": "200000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_wood",
@@ -4448,12 +3197,7 @@
     "color": "003345ff",
     "name": "rock_static_noedge",
     "hp": "200000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_noedge",
@@ -4467,12 +3211,7 @@
     "color": "104344ff",
     "name": "rock_hard_border",
     "hp": "200000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_hard_border",
@@ -4486,14 +3225,7 @@
     "color": "ab3347ff",
     "name": "rock_magic_gate",
     "hp": "400000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_magic_gate",
@@ -4507,14 +3239,7 @@
     "color": "abb346ff",
     "name": "rock_magic_bottom",
     "hp": "400000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_magic_bottom",
@@ -4528,14 +3253,7 @@
     "color": "afb146ff",
     "name": "rock_eroding",
     "hp": "100",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_eroding",
@@ -4549,14 +3267,7 @@
     "color": "003349ff",
     "name": "rock_vault",
     "hp": "200000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_vault",
@@ -4570,14 +3281,7 @@
     "color": "124444ff",
     "name": "coal_static",
     "hp": "25000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_coal_static",
@@ -4591,14 +3295,7 @@
     "color": "1244a4ff",
     "name": "rock_static_grey",
     "hp": "150000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_grey",
@@ -4612,14 +3309,7 @@
     "color": "00f344ff",
     "name": "rock_static_radioactive",
     "hp": "20000",
-    "tags": [
-      "static",
-      "alchemy",
-      "meltable_to_lava",
-      "corrodible",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "meltable_to_lava", "corrodible", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_radioactive",
@@ -4633,14 +3323,7 @@
     "color": "659244ff",
     "name": "rock_static_cursed_green",
     "hp": "180000",
-    "tags": [
-      "static",
-      "alchemy",
-      "meltable_to_lava",
-      "corrodible",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "meltable_to_lava", "corrodible", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_cursed_green",
@@ -4654,14 +3337,7 @@
     "color": "00fa44ff",
     "name": "rock_static_poison",
     "hp": "20000",
-    "tags": [
-      "static",
-      "alchemy",
-      "meltable_to_lava",
-      "corrodible",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "meltable_to_lava", "corrodible", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_poison",
@@ -4675,13 +3351,7 @@
     "color": "00a344ff",
     "name": "skullrock",
     "hp": "200000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "ui_name": "$mat_skullrock",
     "graphics": {
       "texture_file": "data/materials_gfx/skullrock.png",
@@ -4693,14 +3363,7 @@
     "color": "103344ff",
     "name": "rock_static_wet",
     "hp": "200000",
-    "tags": [
-      "static",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_wet",
@@ -4714,13 +3377,7 @@
     "color": "786c42ff",
     "name": "templebrick_static",
     "hp": "1000000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_static",
@@ -4734,13 +3391,7 @@
     "color": "9e8438ff",
     "name": "templebrick_static_broken",
     "hp": "80000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_static",
@@ -4754,13 +3405,7 @@
     "color": "af9f6aff",
     "name": "templebrick_static_soft",
     "hp": "80000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_static",
@@ -4774,13 +3419,7 @@
     "color": "786c44ff",
     "name": "templebrick_noedge_static",
     "hp": "1000000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_noedge_static",
@@ -4794,13 +3433,7 @@
     "color": "6a54a9ff",
     "name": "templerock_soft",
     "hp": "10000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templerock_static",
@@ -4824,13 +3457,7 @@
     "color": "646c58ff",
     "name": "templebrick_thick_static",
     "hp": "100000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_thick_static",
@@ -4844,13 +3471,7 @@
     "color": "606c5aff",
     "name": "templebrick_thick_static_noedge",
     "hp": "100000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_thick_static",
@@ -4864,13 +3485,7 @@
     "color": "947059ff",
     "name": "templeslab_static",
     "hp": "100000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templeslab_static",
@@ -4884,13 +3499,7 @@
     "color": "846049ff",
     "name": "templeslab_crumbling_static",
     "hp": "100000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templeslab_crumbling_static",
@@ -4905,13 +3514,7 @@
     "color": "5b5047ff",
     "name": "templebrickdark_static",
     "hp": "200000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrickdark_static",
@@ -4925,13 +3528,7 @@
     "color": "4c4356ff",
     "name": "wizardstone",
     "hp": "120000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_wizardstone",
@@ -4945,13 +3542,7 @@
     "color": "b07e13ff",
     "name": "templebrick_golden_static",
     "hp": "200000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_golden_static",
@@ -4965,13 +3556,7 @@
     "color": "5e9ab5ff",
     "name": "templebrick_diamond_static",
     "hp": "200000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_diamond_static",
@@ -4985,13 +3570,7 @@
     "color": "78caceff",
     "name": "templebrick_static_ruined",
     "hp": "10000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_static_ruined",
@@ -5005,13 +3584,7 @@
     "color": "aaf06eff",
     "name": "glowstone",
     "hp": "40000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_glowstone",
@@ -5025,13 +3598,7 @@
     "color": "ffc931ff",
     "name": "glowstone_altar",
     "hp": "40000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_glowstone_altar",
@@ -5045,13 +3612,7 @@
     "color": "ffc932ff",
     "name": "glowstone_altar_hdr",
     "hp": "40000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_glowstone_altar",
@@ -5065,13 +3626,7 @@
     "color": "a3f06eff",
     "name": "glowstone_potion",
     "hp": "40000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_glowstone_potion",
@@ -5085,13 +3640,7 @@
     "color": "78ac42ff",
     "name": "templebrick_red",
     "hp": "200000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_red",
@@ -5105,13 +3654,7 @@
     "color": "786c45ff",
     "name": "templebrick_moss_static",
     "hp": "10000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_templebrick_moss_static",
@@ -5125,13 +3668,7 @@
     "color": "026c05ff",
     "name": "the_end",
     "hp": "100000",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_the_end",
@@ -5145,15 +3682,7 @@
     "color": "787a55ff",
     "name": "steelmoss_static",
     "hp": "130000",
-    "tags": [
-      "static",
-      "corrodible",
-      "rust",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "rust", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steelrusted",
@@ -5167,15 +3696,7 @@
     "color": "904f3aff",
     "name": "steel_rusted_no_holes",
     "hp": "130000",
-    "tags": [
-      "static",
-      "corrodible",
-      "rust",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "rust", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steelrusted",
@@ -5189,15 +3710,7 @@
     "color": "9b4a3fff",
     "name": "steel_grey_static",
     "hp": "900000",
-    "tags": [
-      "static",
-      "corrodible",
-      "rust",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "rust", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steel_static_strong",
@@ -5211,15 +3724,7 @@
     "color": "787b34ff",
     "name": "steelfrost_static",
     "hp": "130000",
-    "tags": [
-      "static",
-      "corrodible",
-      "rust",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "rust", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steelfrost_static",
@@ -5233,15 +3738,7 @@
     "color": "787a85ff",
     "name": "steelmoss_slanted",
     "hp": "130000",
-    "tags": [
-      "static",
-      "corrodible",
-      "rust",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "rust", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steelmoss_slanted",
@@ -5255,15 +3752,7 @@
     "color": "646455ff",
     "name": "steelsmoke_static",
     "hp": "130000",
-    "tags": [
-      "static",
-      "corrodible",
-      "rust",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "rust", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steelsmoke_static",
@@ -5277,15 +3766,7 @@
     "color": "64c455ff",
     "name": "steelpipe_static",
     "hp": "90000",
-    "tags": [
-      "static",
-      "corrodible",
-      "rust",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "rust", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steelpipe_static",
@@ -5299,12 +3780,7 @@
     "color": "404a41ff",
     "name": "steel_static_strong",
     "hp": "130000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steel_static_strong",
@@ -5318,13 +3794,7 @@
     "color": "404f50ff",
     "name": "steel_static_unmeltable",
     "hp": "130000",
-    "tags": [
-      "static",
-      "alchemy",
-      "corrodible",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "corrodible", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_steel_static_unmeltable",
@@ -5338,12 +3808,7 @@
     "color": "0a3355ff",
     "name": "rock_static_intro_breakable",
     "hp": "30000",
-    "tags": [
-      "static",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_rock_static_intro_breakable",
@@ -5358,12 +3823,7 @@
     "color": "cb7070ff",
     "name": "ice_blood_static",
     "hp": "20000",
-    "tags": [
-      "static",
-      "alchemy",
-      "meltable_to_blood",
-      "solid"
-    ],
+    "tags": ["static", "alchemy", "meltable_to_blood", "solid"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_ice_blood_static",
@@ -5377,12 +3837,7 @@
     "color": "cba270ff",
     "name": "ice_slime_static",
     "hp": "20000",
-    "tags": [
-      "static",
-      "alchemy",
-      "meltable_to_slime",
-      "solid"
-    ],
+    "tags": ["static", "alchemy", "meltable_to_slime", "solid"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_ice_slime_static",
@@ -5396,14 +3851,7 @@
     "color": "413f42ff",
     "name": "tube_physics",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "static",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "static", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_tube_physics",
@@ -5417,13 +3865,7 @@
     "color": "41ff42ff",
     "name": "ice_acid_glass",
     "hp": "10000",
-    "tags": [
-      "static",
-      "meltable_to_acid",
-      "alchemy",
-      "solid",
-      "cold"
-    ],
+    "tags": ["static", "meltable_to_acid", "alchemy", "solid", "cold"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_acid_glass",
@@ -5437,13 +3879,7 @@
     "color": "a1ff42ff",
     "name": "ice_cold_glass",
     "hp": "10000",
-    "tags": [
-      "static",
-      "meltable_to_cold",
-      "alchemy",
-      "solid",
-      "cold"
-    ],
+    "tags": ["static", "meltable_to_cold", "alchemy", "solid", "cold"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_cold_glass",
@@ -5457,13 +3893,7 @@
     "color": "b1ff42ff",
     "name": "ice_radioactive_glass",
     "hp": "10000",
-    "tags": [
-      "static",
-      "meltable_to_radioactive",
-      "alchemy",
-      "solid",
-      "cold"
-    ],
+    "tags": ["static", "meltable_to_radioactive", "alchemy", "solid", "cold"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_radioactive_glass",
@@ -5477,13 +3907,7 @@
     "color": "bc3ae0ff",
     "name": "ice_poison_glass",
     "hp": "10000",
-    "tags": [
-      "static",
-      "meltable_to_poison",
-      "alchemy",
-      "solid",
-      "cold"
-    ],
+    "tags": ["static", "meltable_to_poison", "alchemy", "solid", "cold"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_poison_glass",
@@ -5497,13 +3921,7 @@
     "color": "bc40e2ff",
     "name": "ice_blood_glass",
     "hp": "10000",
-    "tags": [
-      "static",
-      "meltable_to_blood",
-      "alchemy",
-      "solid",
-      "cold"
-    ],
+    "tags": ["static", "meltable_to_blood", "alchemy", "solid", "cold"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_blood_glass",
@@ -5517,13 +3935,7 @@
     "color": "bc10e2ff",
     "name": "ice_slime_glass",
     "hp": "10000",
-    "tags": [
-      "static",
-      "meltable_to_slime",
-      "alchemy",
-      "solid",
-      "cold"
-    ],
+    "tags": ["static", "meltable_to_slime", "alchemy", "solid", "cold"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_ice_slime_glass",
@@ -5537,13 +3949,7 @@
     "color": "413f41ff",
     "name": "wood_static_wet",
     "hp": "2000",
-    "tags": [
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "11",
     "ui_name": "$mat_wood_static_wet",
@@ -5558,13 +3964,7 @@
     "color": "412d41ff",
     "name": "root_growth",
     "hp": "100",
-    "tags": [
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "11",
     "ui_name": "$mat_root",
@@ -5578,13 +3978,7 @@
     "color": "413f43ff",
     "name": "wood_burns_forever",
     "hp": "2000",
-    "tags": [
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "11",
     "ui_name": "$mat_wood_static",
@@ -5599,13 +3993,7 @@
     "color": "41af41ff",
     "name": "creepy_liquid_emitter",
     "hp": "2000",
-    "tags": [
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "11",
     "ui_name": "$mat_creepy_liquid_emitter",
@@ -5618,13 +4006,7 @@
     "color": "4aaf41ff",
     "name": "gold_static",
     "hp": "2000",
-    "tags": [
-      "corrodible",
-      "alchemy",
-      "gold",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "alchemy", "gold", "solid", "earth"],
     "burnable": "0",
     "density": "11",
     "ui_name": "$mat_gold_static",
@@ -5637,13 +4019,7 @@
     "color": "4aaf45ff",
     "name": "gold_static_radioactive",
     "hp": "2000",
-    "tags": [
-      "corrodible",
-      "alchemy",
-      "gold",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "alchemy", "gold", "solid", "earth"],
     "burnable": "0",
     "density": "11",
     "ui_name": "$mat_gold_radioactive",
@@ -5656,13 +4032,7 @@
     "color": "4acf41ff",
     "name": "gold_static_dark",
     "hp": "2000",
-    "tags": [
-      "corrodible",
-      "alchemy",
-      "gold",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "alchemy", "gold", "solid", "earth"],
     "burnable": "0",
     "density": "11",
     "ui_name": "$mat_gold_static_dark",
@@ -5675,13 +4045,7 @@
     "color": "413f3aff",
     "name": "wood_static_vertical",
     "hp": "2000",
-    "tags": [
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "11",
     "ui_name": "$mat_wood_static_vertical",
@@ -5694,13 +4058,7 @@
     "color": "414f41ff",
     "name": "wood_static_gas",
     "hp": "2000",
-    "tags": [
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["corrodible", "burnable", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "11",
     "ui_name": "$mat_wood_static_gas",
@@ -5715,10 +4073,7 @@
     "color": "7d0067ff",
     "name": "corruption_static",
     "hp": "20000",
-    "tags": [
-      "static",
-      "corrodible"
-    ],
+    "tags": ["static", "corrodible"],
     "burnable": "0",
     "density": "10",
     "ui_name": "$mat_corruption_static",
@@ -5731,9 +4086,7 @@
     "wang_color": "01c1e5ff",
     "color": "c1e5ff01",
     "name": "smoke_magic",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_smoke_magic",
@@ -5745,9 +4098,7 @@
     "wang_color": "ffc6c5ff",
     "color": "c6c5ffff",
     "name": "steam_trailer",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_steam",
@@ -5759,10 +4110,7 @@
     "wang_color": "7fB42CFF",
     "color": "b42cff7f",
     "name": "poison_gas",
-    "tags": [
-      "gas",
-      "burnable_fast"
-    ],
+    "tags": ["gas", "burnable_fast"],
     "burnable": "1",
     "density": "2",
     "ui_name": "$mat_poison_gas",
@@ -5774,11 +4122,7 @@
     "wang_color": "7fEA1CAF",
     "color": "ea1caf7f",
     "name": "fungal_gas",
-    "tags": [
-      "gas",
-      "burnable_fast",
-      "fungus"
-    ],
+    "tags": ["gas", "burnable_fast", "fungus"],
     "burnable": "1",
     "density": "2",
     "ui_name": "$mat_fungal_gas",
@@ -5790,9 +4134,7 @@
     "wang_color": "7f724f43",
     "color": "724f437f",
     "name": "poo_gas",
-    "tags": [
-      "gas"
-    ],
+    "tags": ["gas"],
     "burnable": "0",
     "density": "1",
     "ui_name": "$mat_poo_gas",
@@ -5804,13 +4146,7 @@
     "wang_color": "902F354C",
     "color": "2f354c90",
     "name": "water_fading",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "freezable",
-      "water",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "freezable", "water", "liquid_common"],
     "burnable": "0",
     "density": "4",
     "ui_name": "$mat_water_fading",
@@ -5822,13 +4158,7 @@
     "wang_color": "a02F754C",
     "color": "2f754ca0",
     "name": "water_salt",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "freezable",
-      "water",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "freezable", "water", "liquid_common"],
     "burnable": "0",
     "density": "4.01",
     "ui_name": "$mat_water_salt",
@@ -5840,9 +4170,7 @@
     "wang_color": "ffa2332a",
     "color": "a2332aff",
     "name": "void_liquid",
-    "tags": [
-      "liquid"
-    ],
+    "tags": ["liquid"],
     "burnable": "0",
     "density": "14.5",
     "ui_name": "$mat_void_liquid",
@@ -5854,14 +4182,7 @@
     "wang_color": "af3B3B3D",
     "color": "3b3b3daf",
     "name": "liquid_fire",
-    "tags": [
-      "liquid",
-      "burnable",
-      "impure",
-      "hot",
-      "fire_strong",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "burnable", "impure", "hot", "fire_strong", "liquid_common"],
     "burnable": "1",
     "density": "1",
     "ui_name": "$mat_liquid_fire",
@@ -5873,14 +4194,7 @@
     "wang_color": "ff3B3B4D",
     "color": "3b3b4dff",
     "name": "liquid_fire_weak",
-    "tags": [
-      "liquid",
-      "burnable",
-      "impure",
-      "hot",
-      "fire_strong",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "burnable", "impure", "hot", "fire_strong", "liquid_common"],
     "burnable": "1",
     "density": "1",
     "ui_name": "$mat_liquid_fire_weak",
@@ -5892,11 +4206,7 @@
     "wang_color": "e1243CFF",
     "color": "243cffe1",
     "name": "midas_precursor",
-    "tags": [
-      "liquid",
-      "burnable",
-      "water"
-    ],
+    "tags": ["liquid", "burnable", "water"],
     "density": "3.5",
     "ui_name": "$mat_midas_precursor",
     "graphics": {
@@ -5908,11 +4218,7 @@
     "wang_color": "efefa101",
     "color": "efa101ef",
     "name": "midas",
-    "tags": [
-      "liquid",
-      "burnable",
-      "water"
-    ],
+    "tags": ["liquid", "burnable", "water"],
     "density": "4",
     "ui_name": "$mat_midas",
     "graphics": {
@@ -5924,15 +4230,7 @@
     "wang_color": "44F13C23",
     "color": "f13c2344",
     "name": "blood_fading_slow",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "blood",
-      "impure",
-      "liquid_common",
-      "food"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "blood", "impure", "liquid_common", "food"],
     "burnable": "0",
     "density": "4.1",
     "ui_name": "$mat_blood",
@@ -5944,13 +4242,7 @@
     "wang_color": "44B43CFF",
     "color": "b43cff44",
     "name": "poison",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_poison",
@@ -5962,11 +4254,7 @@
     "wang_color": "44369244",
     "color": "36924444",
     "name": "cursed_liquid",
-    "tags": [
-      "corrodible",
-      "soluble",
-      "impure"
-    ],
+    "tags": ["corrodible", "soluble", "impure"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_cursed_liquid",
@@ -5978,14 +4266,7 @@
     "wang_color": "44B4FF10",
     "color": "b4ff1044",
     "name": "radioactive_liquid_yellow",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "radioactive",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "radioactive", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_radioactive_liquid_yellow",
@@ -5997,14 +4278,7 @@
     "wang_color": "ff36cdff",
     "color": "36cdffff",
     "name": "plasma_fading_bright",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "evaporable_fast",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "evaporable_fast", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_plasma_fading",
@@ -6016,14 +4290,7 @@
     "wang_color": "ff78F050",
     "color": "78f050ff",
     "name": "plasma_fading_green",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "evaporable_fast",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "evaporable_fast", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_plasma_fading_green",
@@ -6035,14 +4302,7 @@
     "wang_color": "ffFF50F0",
     "color": "ff50f0ff",
     "name": "plasma_fading_pink",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "soluble",
-      "evaporable_fast",
-      "impure",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "soluble", "evaporable_fast", "impure", "liquid_common"],
     "burnable": "0",
     "density": "3",
     "ui_name": "$mat_plasma_fading_pink",
@@ -6054,16 +4314,7 @@
     "wang_color": "ff404042",
     "color": "404042ff",
     "name": "steel_static_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_steel_static_molten",
@@ -6076,16 +4327,7 @@
     "wang_color": "ff404043",
     "color": "404043ff",
     "name": "steelmoss_slanted_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_steelmoss_slanted_molten",
@@ -6098,16 +4340,7 @@
     "wang_color": "ff404044",
     "color": "404044ff",
     "name": "steelmoss_static_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_steelmoss_static_molten",
@@ -6120,16 +4353,7 @@
     "wang_color": "ff404045",
     "color": "404045ff",
     "name": "steelsmoke_static_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_steelsmoke_static_molten",
@@ -6142,16 +4366,7 @@
     "wang_color": "ff4b4045",
     "color": "4b4045ff",
     "name": "metal_sand_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_metal_sand_molten",
@@ -6164,16 +4379,7 @@
     "wang_color": "ff404046",
     "color": "404046ff",
     "name": "metal_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_metal_molten",
@@ -6186,16 +4392,7 @@
     "wang_color": "ff404047",
     "color": "404047ff",
     "name": "metal_rust_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_metal_rust_molten",
@@ -6208,16 +4405,7 @@
     "wang_color": "ff404048",
     "color": "404048ff",
     "name": "metal_nohit_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_metal_nohit_molten",
@@ -6230,16 +4418,7 @@
     "wang_color": "ff404049",
     "color": "404049ff",
     "name": "aluminium_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_aluminium_molten",
@@ -6252,16 +4431,7 @@
     "wang_color": "ff404050",
     "color": "404050ff",
     "name": "aluminium_robot_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_aluminium_robot_molten",
@@ -6274,16 +4444,7 @@
     "wang_color": "ff404051",
     "color": "404051ff",
     "name": "metal_prop_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_metal_prop_molten",
@@ -6296,16 +4457,7 @@
     "wang_color": "ff404052",
     "color": "404052ff",
     "name": "steel_rust_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_steel_rust_molten",
@@ -6318,16 +4470,7 @@
     "wang_color": "ff404053",
     "color": "404053ff",
     "name": "aluminium_oxide_molten",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten_metal",
-      "alchemy",
-      "gold",
-      "solid",
-      "liquid_common",
-      "earth"
-    ],
+    "tags": ["liquid", "corrodible", "molten_metal", "alchemy", "gold", "solid", "liquid_common", "earth"],
     "burnable": "1",
     "density": "5",
     "ui_name": "$mat_aluminium_oxide_molten",
@@ -6341,12 +4484,7 @@
     "color": "008240ff",
     "name": "sand_blue",
     "hp": "800",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava_fast",
-      "alchemy"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava_fast", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_sand_blue",
@@ -6360,12 +4498,7 @@
     "color": "009242ff",
     "name": "sand_surface",
     "hp": "800",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava_fast",
-      "alchemy"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava_fast", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_sand",
@@ -6379,12 +4512,7 @@
     "color": "0a8240ff",
     "name": "lavasand",
     "hp": "800",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava_fast",
-      "alchemy"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava_fast", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_lavasand",
@@ -6398,12 +4526,7 @@
     "color": "433454ff",
     "name": "sand_petrify",
     "hp": "400",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava_fast",
-      "alchemy"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava_fast", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_sand",
@@ -6417,14 +4540,7 @@
     "color": "008040ff",
     "name": "soil_lush",
     "hp": "2000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "grows_grass",
-      "meltable_to_lava",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["sand_ground", "corrodible", "grows_grass", "meltable_to_lava", "alchemy", "solid"],
     "burnable": "1",
     "density": "10",
     "ui_name": "$mat_soil_lush",
@@ -6438,14 +4554,7 @@
     "color": "40323dff",
     "name": "soil_lush_dark",
     "hp": "10000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "grows_grass",
-      "meltable_to_lava",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["sand_ground", "corrodible", "grows_grass", "meltable_to_lava", "alchemy", "solid"],
     "burnable": "1",
     "density": "10",
     "ui_name": "$mat_soil_lush",
@@ -6459,14 +4568,7 @@
     "color": "708040ff",
     "name": "soil_dead",
     "hp": "2000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "grows_grass",
-      "meltable_to_lava",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["sand_ground", "corrodible", "grows_grass", "meltable_to_lava", "alchemy", "solid"],
     "burnable": "1",
     "density": "10",
     "ui_name": "$mat_soil_dead",
@@ -6480,14 +4582,7 @@
     "color": "af8040ff",
     "name": "soil_dark",
     "hp": "2000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "grows_grass",
-      "meltable_to_lava",
-      "alchemy",
-      "solid"
-    ],
+    "tags": ["sand_ground", "corrodible", "grows_grass", "meltable_to_lava", "alchemy", "solid"],
     "burnable": "1",
     "density": "10",
     "ui_name": "$mat_soil_dead",
@@ -6501,14 +4596,7 @@
     "color": "90fe4aff",
     "name": "sandstone_surface",
     "hp": "9000",
-    "tags": [
-      "sand_ground",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["sand_ground", "corrodible", "meltable_to_lava", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_sandstone",
@@ -6521,14 +4609,7 @@
     "wang_color": "8880FF80",
     "color": "80ff8088",
     "name": "slime_green",
-    "tags": [
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "slime",
-      "liquid_common",
-      "food"
-    ],
+    "tags": ["corrodible", "meltable_to_lava", "alchemy", "slime", "liquid_common", "food"],
     "burnable": "0",
     "density": "5",
     "ui_name": "$mat_slime_green",
@@ -6541,14 +4622,7 @@
     "wang_color": "889cb32b",
     "color": "9cb32b88",
     "name": "slime_yellow",
-    "tags": [
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "slime",
-      "liquid_common",
-      "food"
-    ],
+    "tags": ["corrodible", "meltable_to_lava", "alchemy", "slime", "liquid_common", "food"],
     "burnable": "0",
     "density": "5",
     "ui_name": "$mat_slime_static",
@@ -6561,14 +4635,7 @@
     "wang_color": "8880FF82",
     "color": "80ff8288",
     "name": "pea_soup",
-    "tags": [
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "slime",
-      "liquid_common",
-      "food"
-    ],
+    "tags": ["corrodible", "meltable_to_lava", "alchemy", "slime", "liquid_common", "food"],
     "burnable": "0",
     "density": "5",
     "ui_name": "$mat_pea_soup",
@@ -6581,12 +4648,7 @@
     "wang_color": "888AFF80",
     "color": "8aff8088",
     "name": "endslime",
-    "tags": [
-      "static",
-      "corrodible",
-      "alchemy",
-      "slime"
-    ],
+    "tags": ["static", "corrodible", "alchemy", "slime"],
     "burnable": "0",
     "density": "5",
     "ui_name": "$mat_endslime",
@@ -6599,11 +4661,7 @@
     "wang_color": "888CFF80",
     "color": "8cff8088",
     "name": "endslime_blood",
-    "tags": [
-      "static",
-      "corrodible",
-      "slime"
-    ],
+    "tags": ["static", "corrodible", "slime"],
     "burnable": "0",
     "density": "5",
     "ui_name": "$mat_endslime_blood",
@@ -6617,16 +4675,7 @@
     "color": "ed4d4cff",
     "name": "meat_slime_green",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "meltable_to_lava", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_meat_slime_green",
@@ -6640,16 +4689,7 @@
     "color": "feaf2cff",
     "name": "meat_slime_orange",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "meltable_to_lava", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_meat_slime_orange",
@@ -6662,15 +4702,7 @@
     "color": "ebcda1ff",
     "name": "meat_worm",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_worm",
@@ -6684,15 +4716,7 @@
     "color": "e3c3a2ff",
     "name": "meat_helpless",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_helpless",
@@ -6716,15 +4740,7 @@
     "color": "e2c2a4ff",
     "name": "meat_trippy",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_trippy",
@@ -6748,15 +4764,7 @@
     "color": "e2c2a5ff",
     "name": "meat_frog",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_frog",
@@ -6780,15 +4788,7 @@
     "color": "e3c1a1ff",
     "name": "meat_cursed",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_cursed",
@@ -6812,15 +4812,7 @@
     "color": "e3c1a4ff",
     "name": "meat_cursed_dry",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_cursed",
@@ -6844,16 +4836,7 @@
     "color": "e2cbb0ff",
     "name": "meat_slime_cursed",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "meltable_to_lava",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "meltable_to_lava", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "3",
     "ui_name": "$mat_meat_slime_cursed",
@@ -6867,15 +4850,7 @@
     "color": "bbc1a1ff",
     "name": "meat_teleport",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_teleport",
@@ -6899,15 +4874,7 @@
     "color": "bbf111ff",
     "name": "meat_fast",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_fast",
@@ -6931,15 +4898,7 @@
     "color": "b3a181ff",
     "name": "meat_polymorph",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_polymorph",
@@ -6963,15 +4922,7 @@
     "color": "b4a282ff",
     "name": "meat_polymorph_protection",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_polymorph_protection",
@@ -6995,15 +4946,7 @@
     "color": "b3a070ff",
     "name": "meat_confusion",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_confusion",
@@ -7027,15 +4970,7 @@
     "color": "fbf451ff",
     "name": "gold_radioactive",
     "hp": "8000",
-    "tags": [
-      "sand_metal",
-      "corrodible",
-      "meltable_metal_generic",
-      "alchemy",
-      "gold",
-      "solid",
-      "earth"
-    ],
+    "tags": ["sand_metal", "corrodible", "meltable_metal_generic", "alchemy", "gold", "solid", "earth"],
     "burnable": "0",
     "density": "9",
     "ui_name": "$mat_gold_radioactive",
@@ -7049,11 +4984,7 @@
     "color": "ebf4a1ff",
     "name": "steel_sand",
     "hp": "8000",
-    "tags": [
-      "sand_metal",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_metal", "corrodible", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_steel_sand",
@@ -7067,12 +4998,7 @@
     "color": "e4f4b0ff",
     "name": "metal_sand",
     "hp": "8000",
-    "tags": [
-      "sand_metal",
-      "corrodible",
-      "alchemy",
-      "meltable_metal"
-    ],
+    "tags": ["sand_metal", "corrodible", "alchemy", "meltable_metal"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_sand",
@@ -7086,11 +5012,7 @@
     "color": "410f24ff",
     "name": "sodium",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_sodium",
@@ -7103,11 +5025,7 @@
     "color": "b6d5d8ff",
     "name": "purifying_powder",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_purifying_powder",
@@ -7120,11 +5038,7 @@
     "color": "a10f24ff",
     "name": "burning_powder",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "corrodible",
-      "alchemy"
-    ],
+    "tags": ["sand_other", "corrodible", "alchemy"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_burning_powder",
@@ -7137,10 +5051,7 @@
     "color": "cacafeff",
     "name": "fungus_powder_bad",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "fungus"
-    ],
+    "tags": ["sand_other", "fungus"],
     "burnable": "0",
     "density": "7",
     "ui_name": "$mat_fungisoil",
@@ -7153,10 +5064,7 @@
     "color": "acacfeff",
     "name": "shock_powder",
     "hp": "1000",
-    "tags": [
-      "sand_other",
-      "fungus"
-    ],
+    "tags": ["sand_other", "fungus"],
     "burnable": "0",
     "density": "7",
     "ui_name": "$mat_fungisoil",
@@ -7169,14 +5077,7 @@
     "color": "ff00abff",
     "name": "plastic_molten",
     "hp": "100",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten",
-      "meltable_to_lava",
-      "alchemy",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "molten", "meltable_to_lava", "alchemy", "liquid_common"],
     "burnable": "0",
     "density": "5.1",
     "ui_name": "$mat_plastic_molten",
@@ -7200,14 +5101,7 @@
     "color": "bb00abff",
     "name": "plastic_prop_molten",
     "hp": "100",
-    "tags": [
-      "liquid",
-      "corrodible",
-      "molten",
-      "meltable_to_lava",
-      "alchemy",
-      "liquid_common"
-    ],
+    "tags": ["liquid", "corrodible", "molten", "meltable_to_lava", "alchemy", "liquid_common"],
     "burnable": "0",
     "density": "5.1",
     "ui_name": "$mat_plastic_prop_molten",
@@ -7230,14 +5124,7 @@
     "wang_color": "ff45FF45",
     "color": "45ff45ff",
     "name": "fungi_green",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "impure",
-      "fungus"
-    ],
+    "tags": ["plant", "corrodible", "burnable", "alchemy", "impure", "fungus"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fungi_green",
@@ -7251,14 +5138,7 @@
     "color": "7f506dff",
     "name": "grass_dark",
     "hp": "200",
-    "tags": [
-      "plant",
-      "requires_air",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "impure"
-    ],
+    "tags": ["plant", "requires_air", "corrodible", "burnable", "alchemy", "impure"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_grass",
@@ -7271,11 +5151,7 @@
     "wang_color": "ff46FF65",
     "color": "46ff65ff",
     "name": "fungi_creeping",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fungi_creeping",
@@ -7288,11 +5164,7 @@
     "wang_color": "ff461FF5",
     "color": "461ff5ff",
     "name": "fungi_creeping_secret",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable"
-    ],
+    "tags": ["plant", "corrodible", "burnable"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fungi_green",
@@ -7306,13 +5178,7 @@
     "color": "45aa45a0",
     "name": "peat",
     "hp": "200",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "impure"
-    ],
+    "tags": ["plant", "corrodible", "burnable", "alchemy", "impure"],
     "burnable": "1",
     "density": "3.4",
     "ui_name": "$mat_peat",
@@ -7326,13 +5192,7 @@
     "color": "45f145ff",
     "name": "moss_rust",
     "hp": "200",
-    "tags": [
-      "plant",
-      "corrodible",
-      "burnable",
-      "alchemy",
-      "impure"
-    ],
+    "tags": ["plant", "corrodible", "burnable", "alchemy", "impure"],
     "burnable": "1",
     "density": "3.4",
     "ui_name": "$mat_moss_rust",
@@ -7347,14 +5207,7 @@
     "color": "a13f02ff",
     "name": "wood_player_b2_vertical",
     "hp": "2000",
-    "tags": [
-      "static",
-      "box2d",
-      "alchemy",
-      "corrodible",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "box2d", "alchemy", "corrodible", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_player_b2_vertical",
@@ -7367,9 +5220,7 @@
     "color": "ea151eff",
     "name": "fuse_bright",
     "hp": "2000",
-    "tags": [
-      "box2d"
-    ],
+    "tags": ["box2d"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fuse",
@@ -7383,9 +5234,7 @@
     "color": "eaaaaeff",
     "name": "fuse_tnt",
     "hp": "2000",
-    "tags": [
-      "box2d"
-    ],
+    "tags": ["box2d"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fuse_tnt",
@@ -7399,9 +5248,7 @@
     "color": "eaabaeff",
     "name": "fuse_holy",
     "hp": "2000",
-    "tags": [
-      "box2d"
-    ],
+    "tags": ["box2d"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fuse_holy",
@@ -7415,14 +5262,7 @@
     "color": "644620ff",
     "name": "templebrick_box2d",
     "hp": "10000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "burnable",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "burnable", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_templebrick_box2d",
@@ -7437,13 +5277,7 @@
     "color": "a44620ff",
     "name": "wood_trailer",
     "hp": "2000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_trailer",
@@ -7456,14 +5290,7 @@
     "color": "644600ff",
     "name": "wood_wall",
     "hp": "3000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "burnable",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "burnable", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_wall",
@@ -7479,13 +5306,7 @@
     "color": "64f640ff",
     "name": "cactus",
     "hp": "2000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_loose",
@@ -7502,13 +5323,7 @@
     "color": "64e64aff",
     "name": "grass_loose",
     "hp": "2000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_grass_loose",
@@ -7524,13 +5339,7 @@
     "color": "64ab40ff",
     "name": "fungus_loose",
     "hp": "2000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth",
-      "fungus"
-    ],
+    "tags": ["box2d", "alchemy", "solid", "earth", "fungus"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fungus_loose",
@@ -7544,13 +5353,7 @@
     "color": "64ab2cff",
     "name": "fungus_loose_green",
     "hp": "2000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth",
-      "fungus"
-    ],
+    "tags": ["box2d", "alchemy", "solid", "earth", "fungus"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fungus_loose",
@@ -7564,13 +5367,7 @@
     "color": "64ab41ff",
     "name": "fungus_loose_trippy",
     "hp": "2000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth",
-      "fungus"
-    ],
+    "tags": ["box2d", "alchemy", "solid", "earth", "fungus"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_fungi_trippy",
@@ -7584,14 +5381,7 @@
     "color": "966400ff",
     "name": "wood_prop",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "burnable",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "burnable", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_prop",
@@ -7605,14 +5395,7 @@
     "color": "966401ff",
     "name": "wood_prop_noplayerhit",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "burnable",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "burnable", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_prop",
@@ -7626,11 +5409,7 @@
     "color": "937f52ff",
     "name": "cloth_box2d",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "burnable",
-      "solid"
-    ],
+    "tags": ["box2d", "burnable", "solid"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_cloth",
@@ -7644,14 +5423,7 @@
     "color": "966410ff",
     "name": "wood_prop_durable",
     "hp": "200000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "burnable",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "burnable", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_wood_prop_durable",
@@ -7665,14 +5437,7 @@
     "color": "3b8d4bff",
     "name": "nest_box2d",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "burnable",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "burnable", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_nest_box2d",
@@ -7686,14 +5451,7 @@
     "color": "3b3e3bff",
     "name": "nest_firebug_box2d",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "burnable",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "burnable", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_nest_box2d",
@@ -7707,14 +5465,7 @@
     "color": "3f8d4bff",
     "name": "cocoon_box2d",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "burnable",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "burnable", "solid", "earth"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_cocoon_box2d",
@@ -7728,12 +5479,7 @@
     "color": "a86c42ff",
     "name": "meteorite_crackable",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "4",
     "ui_name": "$mat_meteorite_crackable",
@@ -7747,14 +5493,7 @@
     "color": "3b6d4bff",
     "name": "plastic_prop",
     "hp": "4000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "meltable",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "meltable", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_plastic",
@@ -7768,14 +5507,7 @@
     "color": "3c2d3cff",
     "name": "aluminium_robot",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_aluminium",
@@ -7789,14 +5521,7 @@
     "color": "968800ff",
     "name": "metal_prop",
     "hp": "200000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_prop",
@@ -7810,14 +5535,7 @@
     "color": "9a8f00ff",
     "name": "metal_prop_low_restitution",
     "hp": "200000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_prop",
@@ -7831,14 +5549,7 @@
     "color": "9677a0ff",
     "name": "metal_prop_loose",
     "hp": "200000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_prop",
@@ -7852,14 +5563,7 @@
     "color": "3d2d3cff",
     "name": "metal",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal",
@@ -7873,13 +5577,7 @@
     "color": "3df03cff",
     "name": "metal_hard",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal_generic", "solid"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal",
@@ -7893,11 +5591,7 @@
     "color": "2ffda4ff",
     "name": "templebrick_box2d_edgetiles",
     "hp": "100000",
-    "tags": [
-      "box2d",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_templebrick_box2d",
@@ -7911,11 +5605,7 @@
     "color": "2d6dbcff",
     "name": "rock_box2d_hard",
     "hp": "100000",
-    "tags": [
-      "box2d",
-      "solid",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "solid", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_rock_box2d_hard",
@@ -7929,11 +5619,7 @@
     "color": "a38431ff",
     "name": "poop_box2d_hard",
     "hp": "100000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list",
-      "matter_eater_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list", "matter_eater_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_rock_box2d_hard",
@@ -7947,11 +5633,7 @@
     "color": "2d2dbcff",
     "name": "rock_box2d_nohit",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_rock_box2d_nohit",
@@ -7965,10 +5647,7 @@
     "color": "2d4dbcff",
     "name": "rock_box2d_nohit_hard",
     "hp": "100000",
-    "tags": [
-      "box2d",
-      "solid"
-    ],
+    "tags": ["box2d", "solid"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_rock_box2d_nohit_hard",
@@ -7982,9 +5661,7 @@
     "color": "fe2dacff",
     "name": "item_box2d",
     "hp": "30000",
-    "tags": [
-      "box2d"
-    ],
+    "tags": ["box2d"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_item_box2d",
@@ -7998,9 +5675,7 @@
     "color": "fe2dabff",
     "name": "item_box2d_glass",
     "hp": "30000",
-    "tags": [
-      "box2d"
-    ],
+    "tags": ["box2d"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_item_box2d",
@@ -8014,9 +5689,7 @@
     "color": "fe11a1ff",
     "name": "item_box2d_meat",
     "hp": "30000",
-    "tags": [
-      "box2d"
-    ],
+    "tags": ["box2d"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_meat",
@@ -8030,10 +5703,7 @@
     "color": "fd2dacff",
     "name": "gem_box2d",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d",
@@ -8048,9 +5718,7 @@
     "color": "fd2dabff",
     "name": "potion_glass_box2d",
     "hp": "30000",
-    "tags": [
-      "box2d"
-    ],
+    "tags": ["box2d"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_potion_glass_box2d",
@@ -8065,9 +5733,7 @@
     "color": "fd4dabff",
     "name": "glass_box2d",
     "hp": "30000",
-    "tags": [
-      "box2d"
-    ],
+    "tags": ["box2d"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_glass_box2d",
@@ -8081,12 +5747,7 @@
     "color": "ff9919ff",
     "name": "gem_box2d_yellow_sun",
     "hp": "1000000",
-    "tags": [
-      "box2d",
-      "matter_eater_ignore_list",
-      "indestructible",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "matter_eater_ignore_list", "indestructible", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_red",
@@ -8099,10 +5760,7 @@
     "color": "fd2d7dff",
     "name": "gem_box2d_red_float",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_red",
@@ -8115,12 +5773,7 @@
     "color": "af9019ff",
     "name": "gem_box2d_yellow_sun_gravity",
     "hp": "1000000",
-    "tags": [
-      "box2d",
-      "matter_eater_ignore_list",
-      "indestructible",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "matter_eater_ignore_list", "indestructible", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_red",
@@ -8133,12 +5786,7 @@
     "color": "1e4866ff",
     "name": "gem_box2d_darksun",
     "hp": "1000000",
-    "tags": [
-      "box2d",
-      "matter_eater_ignore_list",
-      "indestructible",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "matter_eater_ignore_list", "indestructible", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_red",
@@ -8151,10 +5799,7 @@
     "color": "fd2dadff",
     "name": "gem_box2d_pink",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_pink",
@@ -8167,10 +5812,7 @@
     "color": "fd2d9dff",
     "name": "gem_box2d_red",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_red",
@@ -8183,10 +5825,7 @@
     "color": "14ffd7ff",
     "name": "gem_box2d_turquoise",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_turquoise",
@@ -8199,10 +5838,7 @@
     "color": "52dd60ff",
     "name": "gem_box2d_opal",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_turquoise",
@@ -8215,10 +5851,7 @@
     "color": "ebeaefff",
     "name": "gem_box2d_white",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_white",
@@ -8231,10 +5864,7 @@
     "color": "fd2daeff",
     "name": "gem_box2d_green",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_green",
@@ -8247,10 +5877,7 @@
     "color": "f98227ff",
     "name": "gem_box2d_orange",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "sunbaby_ignore_list"
-    ],
+    "tags": ["box2d", "sunbaby_ignore_list"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gem_box2d_orange",
@@ -8263,11 +5890,7 @@
     "color": "f98228ff",
     "name": "gold_box2d",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "gold",
-      "alchemy"
-    ],
+    "tags": ["box2d", "gold", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gold_box2d",
@@ -8280,11 +5903,7 @@
     "color": "f92828ff",
     "name": "bloodgold_box2d",
     "hp": "30000",
-    "tags": [
-      "box2d",
-      "gold",
-      "alchemy"
-    ],
+    "tags": ["box2d", "gold", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_bloodgold_box2d",
@@ -8297,14 +5916,7 @@
     "color": "ad2dacff",
     "name": "metal_nohit",
     "hp": "40000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_nohit",
@@ -8318,14 +5930,7 @@
     "color": "ad2dadff",
     "name": "metal_chain_nohit",
     "hp": "40000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_nohit",
@@ -8339,14 +5944,7 @@
     "color": "ad2daeff",
     "name": "metal_wire_nohit",
     "hp": "40000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_nohit",
@@ -8360,15 +5958,7 @@
     "color": "4d2d3cff",
     "name": "metal_rust",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "rust_box2d",
-      "alchemy",
-      "meltable_metal",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "rust_box2d", "alchemy", "meltable_metal", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_rust",
@@ -8382,15 +5972,7 @@
     "color": "4d2d3dff",
     "name": "metal_rust_barrel",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "rust_box2d",
-      "alchemy",
-      "meltable_metal_generic",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "rust_box2d", "alchemy", "meltable_metal_generic", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_metal_rust_barrel",
@@ -8404,14 +5986,7 @@
     "color": "1c2d2cff",
     "name": "bone_box2d",
     "hp": "5000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meltable_to_lava",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meltable_to_lava", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_bone_box2d",
@@ -8425,10 +6000,7 @@
     "color": "b2d740ff",
     "name": "magic_crystal_green",
     "hp": "500000",
-    "tags": [
-      "box2d",
-      "alchemy"
-    ],
+    "tags": ["box2d", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_magic_crystal",
@@ -8443,13 +6015,7 @@
     "color": "fefae4ff",
     "name": "gold_b2",
     "hp": "500000",
-    "tags": [
-      "box2d",
-      "gold",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["box2d", "gold", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_gold_b2",
@@ -8463,10 +6029,7 @@
     "color": "a53d77ff",
     "name": "crystal_purple",
     "hp": "500000",
-    "tags": [
-      "box2d",
-      "alchemy"
-    ],
+    "tags": ["box2d", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_crystal_purple",
@@ -8480,10 +6043,7 @@
     "color": "a5ad11ff",
     "name": "crystal_solid",
     "hp": "500000",
-    "tags": [
-      "box2d",
-      "alchemy"
-    ],
+    "tags": ["box2d", "alchemy"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_crystal",
@@ -8497,15 +6057,7 @@
     "color": "a50e77ff",
     "name": "meat_fruit",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_fruit",
@@ -8519,15 +6071,7 @@
     "color": "ff531bff",
     "name": "meat_pumpkin",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_fruit",
@@ -8541,15 +6085,7 @@
     "color": "5b5246ff",
     "name": "meat_warm",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_warm",
@@ -8573,15 +6109,7 @@
     "color": "5c5246ff",
     "name": "meat_hot",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_hot",
@@ -8605,15 +6133,7 @@
     "color": "5d5246ff",
     "name": "meat_done",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_done",
@@ -8637,15 +6157,7 @@
     "color": "5e5246ff",
     "name": "meat_burned",
     "hp": "1000",
-    "tags": [
-      "box2d",
-      "corrodible",
-      "alchemy",
-      "meat",
-      "solid",
-      "earth",
-      "food"
-    ],
+    "tags": ["box2d", "corrodible", "alchemy", "meat", "solid", "earth", "food"],
     "burnable": "1",
     "density": "6",
     "ui_name": "$mat_meat_burned",
@@ -8669,14 +6181,7 @@
     "color": "aedde7ff",
     "name": "neon_tube_cyan",
     "hp": "200",
-    "tags": [
-      "static",
-      "corrodible",
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "box2d", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_neon_tube_cyan",
@@ -8690,14 +6195,7 @@
     "color": "aedde8ff",
     "name": "neon_tube_blood_red",
     "hp": "200",
-    "tags": [
-      "static",
-      "corrodible",
-      "box2d",
-      "alchemy",
-      "solid",
-      "earth"
-    ],
+    "tags": ["static", "corrodible", "box2d", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "6",
     "ui_name": "$mat_neon_tube_blood_red",

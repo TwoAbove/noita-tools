@@ -1,49 +1,45 @@
-import fs from 'fs';
-import util from 'util';
-import path from 'path';
-import Jimp from 'jimp';
-import _ from 'lodash';
-import { parseStringPromise } from 'xml2js';
+import fs from "fs";
+import util from "util";
+import path from "path";
+import Jimp from "jimp";
+import _ from "lodash";
+import { parseStringPromise } from "xml2js";
 import parser, {
   AssignmentStatement,
   Expression,
   NumericLiteral,
   StringLiteral,
-  TableConstructorExpression
-} from 'luaparse';
-import { parse } from 'csv-parse/sync';
+  TableConstructorExpression,
+} from "luaparse";
+import { parse } from "csv-parse/sync";
 
 // https://github.com/Dadido3/noita-mapcap
 
 const argbTorgba = (s: string) =>
   s
-    .replace('0x', '')
-    .replace(/(..)(......)/, '$2$1')
+    .replace("0x", "")
+    .replace(/(..)(......)/, "$2$1")
     .toLowerCase();
 
 const noitaData = path.resolve(
-  require('os').homedir(),
-  '.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/'
+  require("os").homedir(),
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
 );
-const defaultColorsPath = path.resolve(
-  noitaData,
-  'data/scripts/wang_scripts.csv'
-);
-const mapPNGPath = path.resolve(noitaData, 'data/biome_impl/biome_map.png');
-const extraLayersPath = path.resolve(noitaData, 'data/wang_tiles/extra_layers');
+const defaultColorsPath = path.resolve(noitaData, "data/scripts/wang_scripts.csv");
+const mapPNGPath = path.resolve(noitaData, "data/biome_impl/biome_map.png");
+const extraLayersPath = path.resolve(noitaData, "data/wang_tiles/extra_layers");
 
 const defaultColorArray: any[] = parse(fs.readFileSync(defaultColorsPath), {
   columns: true,
-  skip_empty_lines: true
+  skip_empty_lines: true,
 });
 const colors = defaultColorArray.reduce((o, c) => {
-  const color = argbTorgba(c['#COLOR']);
-  o[color] = c['#FUNCTION_NAME'];
+  const color = argbTorgba(c["#COLOR"]);
+  o[color] = c["#FUNCTION_NAME"];
   return o;
 }, {});
 
-const biomeDataXMLPath = path.resolve(noitaData, 'data/biome/_biomes_all.xml');
-
+const biomeDataXMLPath = path.resolve(noitaData, "data/biome/_biomes_all.xml");
 
 const getBase64 = (p: string) =>
   new Promise<{ src: string; width: number; height: number }>((res, rej) =>
@@ -59,7 +55,7 @@ const getBase64 = (p: string) =>
         res({
           src,
           width: image.getWidth(),
-          height: image.getHeight()
+          height: image.getHeight(),
         });
       });
     })
@@ -73,36 +69,36 @@ const parseLua = (script: string) => {
 
 const getValue = (ex: Expression): any => {
   switch (ex.type) {
-    case 'NumericLiteral': {
+    case "NumericLiteral": {
       return ex.value;
     }
-    case 'StringLiteral': {
-      return ex.raw.replaceAll('"', '');
+    case "StringLiteral": {
+      return ex.raw.replaceAll('"', "");
     }
-    case 'UnaryExpression': {
-      if (ex.operator === '-') {
-        if (ex.argument.type !== 'NumericLiteral') {
-          console.error('Unhandled type: ', ex);
+    case "UnaryExpression": {
+      if (ex.operator === "-") {
+        if (ex.argument.type !== "NumericLiteral") {
+          console.error("Unhandled type: ", ex);
           break;
         }
         return -ex.argument.value;
       }
-      console.error('Unhandled type: ', ex);
+      console.error("Unhandled type: ", ex);
       break;
     }
-    case 'Identifier': {
+    case "Identifier": {
       return ex.name;
     }
-    case 'FunctionDeclaration': {
+    case "FunctionDeclaration": {
       // Function, need to handle this manually
       return "TODO: FunctionDeclaration";
     }
-    case 'TableConstructorExpression': {
+    case "TableConstructorExpression": {
       let r: any;
       let ra: any;
-      const hasTableKey = ex.fields.findIndex(e => e.type === 'TableKey') !== -1;
-      const hasTableValue = ex.fields.findIndex(e => e.type === 'TableValue') !== -1;
-      const hasTableKeyString = ex.fields.findIndex(e => e.type === 'TableKeyString') !== -1;
+      const hasTableKey = ex.fields.findIndex(e => e.type === "TableKey") !== -1;
+      const hasTableValue = ex.fields.findIndex(e => e.type === "TableValue") !== -1;
+      const hasTableKeyString = ex.fields.findIndex(e => e.type === "TableKeyString") !== -1;
       if (hasTableKey && hasTableValue && hasTableKeyString) {
         console.error("Can't handle both TableKey and TableValue", ex);
         return {};
@@ -117,7 +113,7 @@ const getValue = (ex: Expression): any => {
         r = {};
       }
       if (hasTableValue) {
-        ra = []
+        ra = [];
       }
       for (const field of ex.fields) {
         switch (field.type) {
@@ -142,10 +138,10 @@ const getValue = (ex: Expression): any => {
       return ra || r;
     }
     default: {
-      console.error('Unhandled type: ', ex);
+      console.error("Unhandled type: ", ex);
     }
   }
-}
+};
 
 const addArea = (
   map: Jimp,
@@ -157,23 +153,23 @@ const addArea = (
 ) => {
   area.push({ x, y });
   visited[`${x} ${y}`] = true;
-  for (const direction of ['u', 'd', 'l', 'r']) {
+  for (const direction of ["u", "d", "l", "r"]) {
     let ox = +x;
     let oy = +y;
     switch (direction) {
-      case 'u': {
+      case "u": {
         ox -= 1;
         break;
       }
-      case 'd': {
+      case "d": {
         ox += 1;
         break;
       }
-      case 'l': {
+      case "l": {
         oy -= 1;
         break;
       }
-      case 'r': {
+      case "r": {
         oy += 1;
         break;
       }
@@ -199,7 +195,7 @@ const hexAt = (map: Jimp, x: number, y: number) => {
   const r = map.bitmap.data[idx + 0];
   const g = map.bitmap.data[idx + 1];
   const b = map.bitmap.data[idx + 2];
-  return (b | (g << 8) | (r << 16) | (1 << 24)).toString(16).slice(1) + 'ff';
+  return (b | (g << 8) | (r << 16) | (1 << 24)).toString(16).slice(1) + "ff";
 };
 
 const generateMaps = async () => {
@@ -216,7 +212,7 @@ const generateMaps = async () => {
       const area = addArea(mapPNG, x, y, hex, visited);
       areas.push({
         hex,
-        area
+        area,
       });
       // console.log(area);
       // const color =
@@ -224,7 +220,14 @@ const generateMaps = async () => {
   }
 
   const areaHexes: {
-    [hex: string]: { x1: number; x2: number; y1: number; y2: number, w: number, h: number }[];
+    [hex: string]: {
+      x1: number;
+      x2: number;
+      y1: number;
+      y2: number;
+      w: number;
+      h: number;
+    }[];
   } = {};
   for (const a of areas) {
     const { area, hex } = a;
@@ -242,7 +245,10 @@ const generateMaps = async () => {
       y2 = Math.max(y2, coords.y);
     }
     areaHexes[hex].push({
-      x1, x2, y1, y2,
+      x1,
+      x2,
+      y1,
+      y2,
       w: x2 - x1 + 1,
       h: y2 - y1 + 1,
     });
@@ -250,19 +256,15 @@ const generateMaps = async () => {
   // const allBiomeData = await cheerio.load(fs.readFileSync(biomeDataXMLPath), {
   // 	xmlMode: true
   // });
-  const allBiomeData = (await parseStringPromise(
-    fs.readFileSync(biomeDataXMLPath)
-  )).BiomesToLoad;
+  const allBiomeData = (await parseStringPromise(fs.readFileSync(biomeDataXMLPath))).BiomesToLoad;
 
   const maps: any = {};
 
   for (const b of allBiomeData.Biome as any) {
     const { biome_filename, height_index, color } = b.$;
     const biome_path = path.resolve(noitaData, biome_filename);
-    const name = path.basename(biome_path, '.xml');
-    const Biome = (await parseStringPromise(
-      fs.readFileSync(biome_path)
-    )).Biome;
+    const name = path.basename(biome_path, ".xml");
+    const Biome = (await parseStringPromise(fs.readFileSync(biome_path))).Biome;
     const { Topology: _T, Materials: _M } = Biome;
     const Topology = _T[0].$;
     const RandomMaterials = _T[0]?.RandomMaterials?.[0];
@@ -276,22 +278,20 @@ const generateMaps = async () => {
       name,
       translateName: Topology.name,
       type: Topology.type,
-      lua_script: Topology.lua_script
+      lua_script: Topology.lua_script,
     };
     if (RandomMaterials) {
       const randomMaterials: any = {};
       for (const randomColor of RandomMaterials.RandomColor) {
         const { input_color, output_colors } = randomColor.$;
-        const outputColors = output_colors.split(',').map(argbTorgba);
+        const outputColors = output_colors.split(",").map(argbTorgba);
         randomMaterials[argbTorgba(input_color)] = outputColors;
       }
       res.randomMaterials = randomMaterials;
     }
-    if (res.type === 'BIOME_WANG_TILE' && Topology.wang_template_file) {
+    if (res.type === "BIOME_WANG_TILE" && Topology.wang_template_file) {
       const data = Topology.wang_template_file
-        ? await getBase64(
-          path.resolve(noitaData, Topology.wang_template_file)
-        )
+        ? await getBase64(path.resolve(noitaData, Topology.wang_template_file))
         : null;
       res.wang = {
         template_file: data?.src,
@@ -300,50 +300,42 @@ const generateMaps = async () => {
       };
     }
     if (res.lua_script) {
-      const lua_things = parseLua(
-        fs.readFileSync(path.resolve(noitaData, res.lua_script)).toString()
-      );
+      const lua_things = parseLua(fs.readFileSync(path.resolve(noitaData, res.lua_script)).toString());
       const o: any = {
         include: [],
         spawnFunctions: {},
-        g: {}
+        g: {},
       };
       for (const statement of lua_things.body) {
         fs.writeFileSync("body.json", JSON.stringify(lua_things, null, 2));
         switch (statement.type) {
-          case 'AssignmentStatement': {
+          case "AssignmentStatement": {
             if (
-              statement.init[0].type === 'TableConstructorExpression' &&
-              statement.variables[0].type === 'Identifier'
+              statement.init[0].type === "TableConstructorExpression" &&
+              statement.variables[0].type === "Identifier"
             ) {
               // tables
               const name = statement.variables[0].name;
               const table = getValue(statement.init[0]);
               o[name] = table;
             }
-            if (
-              statement.variables[0].type === 'Identifier' &&
-              statement.variables[0].name === 'CHEST_LEVEL'
-            ) {
+            if (statement.variables[0].type === "Identifier" && statement.variables[0].name === "CHEST_LEVEL") {
               // chest
               o.chestLevel = (statement.init[0] as NumericLiteral).value;
             }
             break;
           }
-          case 'CallStatement': {
-            if (
-              statement.expression.type === 'CallExpression' &&
-              statement.expression.base.type === 'Identifier'
-            ) {
-              if (statement.expression.base.name === 'RegisterSpawnFunction') {
+          case "CallStatement": {
+            if (statement.expression.type === "CallExpression" && statement.expression.base.type === "Identifier") {
+              if (statement.expression.base.name === "RegisterSpawnFunction") {
                 const args = statement.expression.arguments;
                 let color = argbTorgba((args[0] as NumericLiteral).raw);
-                const val = (args[1] as StringLiteral).raw.replaceAll('"', '');
+                const val = (args[1] as StringLiteral).raw.replaceAll('"', "");
                 o.spawnFunctions[color] = val;
               }
-              if (statement.expression.base.name === 'dofile_once') {
+              if (statement.expression.base.name === "dofile_once") {
                 const args = statement.expression.arguments;
-                let path = (args[0] as StringLiteral).raw.replaceAll('"', '');
+                let path = (args[0] as StringLiteral).raw.replaceAll('"', "");
                 o.include.push(path);
               }
             }
@@ -353,7 +345,7 @@ const generateMaps = async () => {
       }
       o.spawnFunctions = { ...colors, ...o.spawnFunctions };
       res.config = o;
-      res.areas = areaHexes[res.color]
+      res.areas = areaHexes[res.color];
     }
     maps[res.color] = res;
   }

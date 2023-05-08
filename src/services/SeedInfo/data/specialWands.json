@@ -1,8 +1,10 @@
-[{
-  "name": "bomb_wand",
-  "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAlklEQVQYlZ2QMQ6CQBREZz0A9/jbWS2V18BbeAxsl1vsNbCisqSnwZqGjmeBEIyJUSaZZvLn5WeknXK/HkYzjlmm+zDo0rZzD/jqaAawQuoQOGyplfdI0i3PqbznfH3wypxzTkXZI0mnpnErYXE0oyh7AKVuRJKKsid1I0wTqRtZAB8vbQHRjGimBfDXgtHsrVCHwO5Vn5Sqebld3CqBAAAAAElFTkSuQmCC"
-},
-{
-  "name": "handgun",
-  "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAIAAABGc1mbAAAABnRSTlMAAAAAAABupgeRAAAANklEQVR4nGNgoCvQKd9Asur///9BuIxoBry/tEdQzwVCMjAw1Ga7Q8TD5TgJm2qy6w1V3YoGABTFEyRlTe82AAAAAElFTkSuQmCC"
-}]
+[
+  {
+    "name": "bomb_wand",
+    "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAlklEQVQYlZ2QMQ6CQBREZz0A9/jbWS2V18BbeAxsl1vsNbCisqSnwZqGjmeBEIyJUSaZZvLn5WeknXK/HkYzjlmm+zDo0rZzD/jqaAawQuoQOGyplfdI0i3PqbznfH3wypxzTkXZI0mnpnErYXE0oyh7AKVuRJKKsid1I0wTqRtZAB8vbQHRjGimBfDXgtHsrVCHwO5Vn5Sqebld3CqBAAAAAElFTkSuQmCC"
+  },
+  {
+    "name": "handgun",
+    "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAIAAABGc1mbAAAABnRSTlMAAAAAAABupgeRAAAANklEQVR4nGNgoCvQKd9Asur///9BuIxoBry/tEdQzwVCMjAw1Ga7Q8TD5TgJm2qy6w1V3YoGABTFEyRlTe82AAAAAElFTkSuQmCC"
+  }
+]

@@ -17,13 +17,41 @@ Current features include:
 - Live seed checking during play using machine learning computer vision
 - Seed search with customizable complexity
 
+## Connecting as a compute node
+
+### Prerequisites
+
+- The machine should have node installed (ideally v18.6+) and yarn.
+- Follow to <https://www.noitool.com/?profile=true> and link your patreon account. Under your patreon username, there will now be an id like `6456aff2478c4f8f91701018`
+
+### Installing and connecting
+
+To connect to noitool as a compute node, follow these steps:
+
+```bash
+git clone https://github.com/TwoAbove/noita-tools.git
+cd noita-tools
+git checkout master # for https://www.noitool.com
+# git checkout develop # for https://dev.noitool.com
+yarn install --frozen-lockfile
+yarn lambda-build
+yarn console-search --userId 6456aff2478c4f8f91701018
+```
+
+console-search args:
+
+- `--url`: default <https://www.noitool.com/>. Change to <https://dev.noitool.com/> for the dev build
+- `--cores`: default `os.cpus()`. The amount of threads to use.
+- `--userId`: The user to connect as.
+- `--exit` default `false`. Add if you want the worker to exit if there are no more jobs.
+
 ## Technical details and implementation details that I found interesting
 
 WASM is shaping up to be a very interesting technology. In our use-case, the communication overhead of JS <-> WASM is usually worth it,
 but it's the main vector of performance improvements, since we're constantly bouncing between JS and WASM for noita_random calls.
 
 Many parts of the critical core game functions that are needed to generate everything are written in C++.
- The c++ code is then compiled to wasm and is run in web workers (and partly in the main thread).
+The c++ code is then compiled to wasm and is run in web workers (and partly in the main thread).
 The performance improvements are 20-fold by transferring seed functions (like randoms and lc & ap recipes) from a typescript implementation to c++, even with the call overhead from worker -> wasm code.
 
 For map generation, [wang tiles](https://github.com/nothings/stb/blob/master/stb_herringbone_wang_tile.h) are used. In lua/xml code, **A**RGB color formats are used for color targeting. In browsers, in general, RGB**A** is used. The transformed colors (in data json) use RGB**A** to homogenize color format.

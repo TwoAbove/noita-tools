@@ -1,6 +1,6 @@
 {
   "name": "noita-helper",
-  "version": "2.26.5",
+  "version": "2.27.3",
   "private": true,
   "homepage": "https://www.noitool.com/",
   "dependencies": {
@@ -9,10 +9,14 @@
     "@types/yargs": "^17.0.24",
     "backblaze-b2": "^1.7.0",
     "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
     "discord.js": "^14.9.0",
     "dotenv-flow": "^3.2.0",
     "express": "^4.18.2",
     "express-favicon": "^2.0.4",
+    "express-rate-limit": "^6.7.0",
+    "lusca": "^1.7.0",
+    "mongoose": "^7.0.4",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "node-cron": "^3.0.2",
@@ -72,6 +76,7 @@
     "dompurify": "^3.0.1",
     "emoji-flags": "^1.3.0",
     "esbuild": "^0.17.15",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-cypress": "^2.13.2",
     "eslint-webpack-plugin": "^4.0.0",
     "fast-deep-equal": "^3.1.3",
@@ -81,11 +86,14 @@
     "glob": "^9.3.4",
     "http-proxy-middleware": "^2.0.6",
     "humanize-duration": "^3.28.0",
+    "husky": "^8.0.3",
     "i18next": "^21.8.4",
     "i18next-browser-languagedetector": "^6.1.4",
     "i18next-http-backend": "^1.4.1",
     "image-capture": "^0.4.0",
     "jimp": "^0.22.7",
+    "js-cookie": "^3.0.4",
+    "lint-staged": "^13.2.2",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "lua-json": "^1.0.1",
@@ -97,6 +105,7 @@
     "path": "^0.12.7",
     "path-browserify": "^1.0.1",
     "pixelmatch": "^5.3.0",
+    "prettier": "2.8.8",
     "rdndmb-html5-to-touch": "^8.0.0",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
@@ -166,7 +175,11 @@
     "test": "craco test",
     "e2e": "yarn build && concurrently -k  -s first 'cypress run' 'PORT=3000 yarn start'",
     "eject": "react-scripts eject",
-    "deploy": "git checkout master && git pull && git push heroku master:main && git checkout develop"
+    "deploy": "git checkout master && git pull && git push heroku master:main && git checkout develop",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "nodemonConfig": {
     "watch": [

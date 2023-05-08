@@ -133,9 +133,7 @@
     "ui_description": "$perkdesc_exploding_corpses",
     "ui_icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAABHklEQVR4AXXBvUrDUACA0S9paaGg4x0KGSQKToVuXR0KYsgSKBiX4uhLSEGcfAVBHWyQ0gSMmTsI4mQdHBwMHa44dPGnEEiG1l4kEAqeo7HUNIzFU7RPqxOQsy1BbjiQjKXUSk3DWFRqVc4Hryi+a3Lz8slue4uv7xnK9dket3eyV2ZF3Wnw6DT4s0GrExBGAYpeqVXxXRPFd02K+qMJtiVQKrUqOkuOF+O7JnWnQasTsMq2BEqZJdsSOF4MXkyuP5pwsLPB6eUHudJRd7sXRlNyvmvSPn5AiDn3z5LD9TVO/HdsS6CH0RTFd00Ux4spuviZkdOzJEVxvJhVYTSlSKfganPOf4YDiT6WUsuSlCxJ6b7pKLYlKMqSlLGU2i8Qa2KHIBNyagAAAABJRU5ErkJggg==",
     "perk_icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABXElEQVR4AY3BsUrrUACA4T8HaaElGVNoBylxcBLHM9Y5BCQQMS7i2tVX0FdwVRcLFRMhZNZF6CSOd7gliFRox4QW2sGaI0aCKPb7NHLdjlyO0imraBl1zu4HmtbtyOXt0z8auo7yGO8jvZCCY5sUbq5fGGcZu9ubiFE6paHrVGpVKrUq0gtRAt9Caa83KTzG+zR0nVE6ZY1fNN0tBscnkPSBNtILieKQgiBXqVUJfItC4Ft8ae9xdZfg2CZKpVZFEXxye0OUwLdoultIL+RD0qfg2CYFwSfHNlHc3hDphXxI+lzdJRzstPlOkHNskyieUBb4FtILSZ5fOb144MjQieIJjm2iCHJRPEEJfIuC2xtSdp5mlAlK3N6Qn0TxhO8EucVszqpurl9QBD+43HjjL6Jl1BlnGYvZnMVsjnL4X6A4tknZYjZnnGW0jDoauW5HLkfplFW0jDpn9wPtHWcddFrj6NkhAAAAAElFTkSuQmCC",
-    "remove_other_perks": [
-      "PROTECTION_EXPLOSION"
-    ],
+    "remove_other_perks": ["PROTECTION_EXPLOSION"],
     "stackable": false,
     "game_effect": "EXPLODING_CORPSE_SHOTS",
     "game_effect2": "PROTECTION_EXPLOSION"
@@ -524,9 +522,7 @@
     "perk_icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABl0lEQVR4AY3BMWsTYQCA4ffOeoHEZLhgQ80iMYXDs+gSSLcDhQ4Jh1O2/oEgDoEMpYsOpUKhg0g3pzp1kBLaoYhy21WyiHDQSsgWSlqaIdc7uKsQ75MeHHJgn0ci0jbqs9HU4zbKhRw71rEktY36bP/HCaV8HkHJZkgT+gHC2HV5+UxjbjT1KOXzKNkMaTrdBkVV5XIyYXvrkBIwmnrIpDBbJrGiqiIUVZUkmYiSzZDU2+thtkyWjRofP9kIH94fICjZDILMDbNlEjNbJtWHD7g/v8AT/TEHRye8et0k6Y62UHpzdf2bU+eUil5F0x/he1cE1/x1cX5Gc0VDeP7iKd++/uSecheZGxubqwydAbbVR+jt9bg4PyNpfW2Xjc1VBJlIp9tgfW2XmG31WTZq2Faf5opGmjki21uHxCp6laEzwLb6CNbRd5IuJxMEmUjoB8SGzoB/fbF+EXv39jOCTIqKXuV/5HIhx9h1Cf2A0A8Qhs4AodNtsFRbRFiqLRL6AWPXpVzIIRFpG/XZaOpxG+VCjh3rWPoDOemHtoNGfVYAAAAASUVORK5CYII=",
     "game_effect": "PROTECTION_FIRE",
     "stackable": false,
-    "remove_other_perks": [
-      "PROTECTION_FIRE"
-    ],
+    "remove_other_perks": ["PROTECTION_FIRE"],
     "usable_by_enemies": true
   },
   {
@@ -538,9 +534,7 @@
     "stackable": false,
     "usable_by_enemies": true,
     "game_effect": "PROTECTION_RADIOACTIVITY",
-    "remove_other_perks": [
-      "PROTECTION_RADIOACTIVITY"
-    ]
+    "remove_other_perks": ["PROTECTION_RADIOACTIVITY"]
   },
   {
     "id": "SHIELD",
@@ -786,9 +780,7 @@
     "perk_icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABVklEQVR4AY3BsUrrUACA4T8lJJcTU/QiBtLNSSdFDHTs4AMIeYvOGZonSIbMvkXAR3AUsigI6ujQQK3EprFHc7nQm+OlEEoLfp9GYzjoL8fzBT/R61pc3dxq2nDQX17fPeHYNoohTDb5I2uUSVVxeXpEZzxf4Ng2hjAxhElb7vmsGMLEECaObTOeL+iwRe75hElM7vls0qFhCJO23PMJk5goGLHOECaKzprc8wmTGCVMYpQoADdLadNZ42YpUcC3MImJghFulrKuwxZhEhMFI9wsZROdDdwsJQrAzVK20Wkcnnkoutjh177D7+MTvl2coxSP93y9TfgrP1Dk8wM6jel0yn9TzKLg/XXC3oGD8v464XNWUFclKxag05BSIoRAqauSuir5nBUodVXSJqXEAvRe1+JlJlkRQqDUVUmblBJFSklv10KjMRz0l+P5gp/odS2ubm61f6ATe7I4djDAAAAAAElFTkSuQmCC",
     "game_effect": "PROTECTION_ELECTRICITY",
     "stackable": false,
-    "remove_other_perks": [
-      "PROTECTION_ELECTRICITY"
-    ],
+    "remove_other_perks": ["PROTECTION_ELECTRICITY"],
     "usable_by_enemies": true
   },
   {

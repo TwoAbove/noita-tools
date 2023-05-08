@@ -1,198 +1,183 @@
-import { uniqueId } from 'lodash';
-import SimpleETA from 'simple-eta';
+import { uniqueId } from "lodash";
+import SimpleETA from "simple-eta";
 
 export interface Status {
-	running: boolean;
-	checked: number;
-	results: number[];
-	currentChunk: number;
-	estimate: number;
-	rate: number;
+  running: boolean;
+  checked: number;
+  results: number[];
+  currentChunk: number;
+  estimate: number;
+  rate: number;
 }
 
 export interface IComputeHandlerConfig {
-	searchFrom: number;
-	searchTo: number;
-	chunkSize: number;
-	etaHistoryTimeConstant: number;
+  searchFrom: number;
+  searchTo: number;
+  chunkSize: number;
+  etaHistoryTimeConstant: number;
 
-	chunkProcessingTimeTarget: number;
+  chunkProcessingTimeTarget: number;
 
-	jobName?: string;
+  jobName?: string;
 }
 
 export type ChunkStatus = {
-	chunkId: string;
-	from: number;
-	to: number;
-	appetite: number;
-	status: 'waiting' | 'pending' | 'done';
-	crashId?: NodeJS.Timeout;
+  chunkId: string;
+  from: number;
+  to: number;
+  appetite: number;
+  status: "waiting" | "pending" | "done";
+  crashId?: NodeJS.Timeout;
 };
 
 export class ChunkProvider {
-	eta: ReturnType<typeof SimpleETA>;
-	progress = 0;
-	startTime = Date.now();
+  eta: ReturnType<typeof SimpleETA>;
+  progress = 0;
+  startTime = Date.now();
 
-	results: Set<number> = new Set();
+  results: Set<number> = new Set();
 
-	customSeeds?: number[];
+  customSeeds?: number[];
 
-	ratePerAppetiteArr: number[] = [];
-	ratePerAppetite = 0;
+  ratePerAppetiteArr: number[] = [];
+  ratePerAppetite = 0;
 
-	chunkStartTimes: { [chunkId: string]: number } = {};
+  chunkStartTimes: { [chunkId: string]: number } = {};
 
-	constructor(public config: IComputeHandlerConfig) {
-		this.eta = SimpleETA({
-			min: this.config.searchFrom,
-			max: this.config.searchTo,
-			historyTimeConstant: this.config.etaHistoryTimeConstant
-		});
-	}
+  constructor(public config: IComputeHandlerConfig) {
+    this.eta = SimpleETA({
+      min: this.config.searchFrom,
+      max: this.config.searchTo,
+      historyTimeConstant: this.config.etaHistoryTimeConstant,
+    });
+  }
 
-	unCommittedChunks: ChunkStatus[] = [];
-	orphanChunks: ChunkStatus[] = [];
+  unCommittedChunks: ChunkStatus[] = [];
+  orphanChunks: ChunkStatus[] = [];
 
-	clear() {
-		this.results = new Set();
-		this.unCommittedChunks.forEach(c => clearTimeout(c.crashId!));
-		this.unCommittedChunks = [];
-		this.orphanChunks.forEach(c => clearTimeout(c.crashId!));
-		this.orphanChunks = [];
-		this.progress = 0;
-		this.startTime = Date.now();
-		this.ratePerAppetiteArr = [];
-		this.ratePerAppetite = 0;
-		this.chunkStartTimes = {};
-	}
+  clear() {
+    this.results = new Set();
+    this.unCommittedChunks.forEach(c => clearTimeout(c.crashId!));
+    this.unCommittedChunks = [];
+    this.orphanChunks.forEach(c => clearTimeout(c.crashId!));
+    this.orphanChunks = [];
+    this.progress = 0;
+    this.startTime = Date.now();
+    this.ratePerAppetiteArr = [];
+    this.ratePerAppetite = 0;
+    this.chunkStartTimes = {};
+  }
 
-	commitChunk(chunkId: string, results: number[]) {
-		const chunk = this.unCommittedChunks.splice(
-			this.unCommittedChunks.findIndex(c => c.chunkId === chunkId),
-			1
-		)[0];
+  commitChunk(chunkId: string, results: number[]) {
+    const chunk = this.unCommittedChunks.splice(
+      this.unCommittedChunks.findIndex(c => c.chunkId === chunkId),
+      1
+    )[0];
 
-		if (!chunk) {
-			return;
-		}
+    if (!chunk) {
+      return;
+    }
 
-		clearTimeout(chunk.crashId!);
+    clearTimeout(chunk.crashId!);
 
-		const chunkSize = chunk.to - chunk.from;
-		this.progress += chunkSize;
-		this.eta.report(this.progress);
-		chunk.status = 'done';
+    const chunkSize = chunk.to - chunk.from;
+    this.progress += chunkSize;
+    this.eta.report(this.progress);
+    chunk.status = "done";
 
-		for (const result of results) {
-			this.results.add(result);
-		}
+    for (const result of results) {
+      this.results.add(result);
+    }
 
-		this.ratePerAppetiteArr.push(
-			((chunkSize / (Date.now() - this.chunkStartTimes[chunk.chunkId])) *
-				1000) /
-				chunk.appetite
-		);
-		if (this.ratePerAppetiteArr.length > 10) {
-			this.ratePerAppetiteArr.shift();
-		}
+    this.ratePerAppetiteArr.push(
+      ((chunkSize / (Date.now() - this.chunkStartTimes[chunk.chunkId])) * 1000) / chunk.appetite
+    );
+    if (this.ratePerAppetiteArr.length > 10) {
+      this.ratePerAppetiteArr.shift();
+    }
 
-		this.ratePerAppetite =
-			this.ratePerAppetiteArr.reduce((a, b) => a + b, 0) /
-			this.ratePerAppetiteArr.length;
+    this.ratePerAppetite = this.ratePerAppetiteArr.reduce((a, b) => a + b, 0) / this.ratePerAppetiteArr.length;
 
-		delete this.chunkStartTimes[chunk.chunkId];
-	}
+    delete this.chunkStartTimes[chunk.chunkId];
+  }
 
-	registerChunk(chunk: ChunkStatus) {
-		const crashId = setTimeout(() => {
-			this.unCommittedChunks.splice(
-				this.unCommittedChunks.findIndex(c => c.chunkId === chunk.chunkId),
-				1
-			);
-			chunk.status = 'waiting';
-			this.orphanChunks.push(chunk);
-		}, 1000 * 60 * 5);
-		this.chunkStartTimes[chunk.chunkId] = Date.now();
-		chunk.crashId = crashId;
-		this.unCommittedChunks.push(chunk);
-	}
+  registerChunk(chunk: ChunkStatus) {
+    const crashId = setTimeout(() => {
+      this.unCommittedChunks.splice(
+        this.unCommittedChunks.findIndex(c => c.chunkId === chunk.chunkId),
+        1
+      );
+      chunk.status = "waiting";
+      this.orphanChunks.push(chunk);
+    }, 1000 * 60 * 5);
+    this.chunkStartTimes[chunk.chunkId] = Date.now();
+    chunk.crashId = crashId;
+    this.unCommittedChunks.push(chunk);
+  }
 
-	setCustomSeedList(seeds: number[]) {
-		if (seeds.length === 0) {
-			this.customSeeds = undefined;
-			return;
-		}
-		this.customSeeds = seeds;
-	}
+  setCustomSeedList(seeds: number[]) {
+    if (seeds.length === 0) {
+      this.customSeeds = undefined;
+      return;
+    }
+    this.customSeeds = seeds;
+  }
 
-	// Appetite is a rough measure of how much work the worker can do
-	// for now, this is just the number of workers
-	getNextChunk(appetite: number): ChunkStatus | null {
-		const {
-			searchFrom,
-			searchTo,
-			chunkSize,
-			etaHistoryTimeConstant,
-			chunkProcessingTimeTarget
-		} = this.config;
+  // Appetite is a rough measure of how much work the worker can do
+  // for now, this is just the number of workers
+  getNextChunk(appetite: number): ChunkStatus | null {
+    const { searchFrom, searchTo, chunkSize, etaHistoryTimeConstant, chunkProcessingTimeTarget } = this.config;
 
-		if (this.customSeeds) {
-			const seed = this.customSeeds.shift();
-			if (seed) {
-				const chunk: ChunkStatus = {
-					chunkId: uniqueId('chunk_'),
-					from: seed,
-					to: seed + 1,
-					status: 'pending',
-					appetite
-				};
-				this.registerChunk(chunk);
-				return chunk;
-			}
-			return null;
-		}
+    if (this.customSeeds) {
+      const seed = this.customSeeds.shift();
+      if (seed) {
+        const chunk: ChunkStatus = {
+          chunkId: uniqueId("chunk_"),
+          from: seed,
+          to: seed + 1,
+          status: "pending",
+          appetite,
+        };
+        this.registerChunk(chunk);
+        return chunk;
+      }
+      return null;
+    }
 
-		if (searchFrom >= searchTo) {
-			return null;
-		}
+    if (searchFrom >= searchTo) {
+      return null;
+    }
 
-		if (this.orphanChunks.length > 0) {
-			const chunk = this.orphanChunks.shift()!;
-			chunk.status = 'pending';
-			this.registerChunk(chunk);
-			return chunk;
-		}
+    if (this.orphanChunks.length > 0) {
+      const chunk = this.orphanChunks.shift()!;
+      chunk.status = "pending";
+      this.registerChunk(chunk);
+      return chunk;
+    }
 
-		// confidence is a measure of how confident we are in the ETA
-		// and will be used to adjust the ideal chunk size
-		const confidence = Math.min(
-			(Date.now() - this.startTime) / etaHistoryTimeConstant,
-			1
-		);
+    // confidence is a measure of how confident we are in the ETA
+    // and will be used to adjust the ideal chunk size
+    const confidence = Math.min((Date.now() - this.startTime) / etaHistoryTimeConstant, 1);
 
-		// modified chunk size that targets chunkProcessingTimeTarget seconds per chunk
-		const idealChunkSize = Math.max(
-			Math.round(
-				this.ratePerAppetite * appetite * confidence * chunkProcessingTimeTarget
-			),
-			chunkSize
-		);
+    // modified chunk size that targets chunkProcessingTimeTarget seconds per chunk
+    const idealChunkSize = Math.max(
+      Math.round(this.ratePerAppetite * appetite * confidence * chunkProcessingTimeTarget),
+      chunkSize
+    );
 
-		const chunk: ChunkStatus = {
-			chunkId: uniqueId('chunk_'),
-			from: searchFrom,
-			to: Math.min(searchFrom + idealChunkSize, searchTo),
-			status: 'pending',
-			appetite
-		};
+    const chunk: ChunkStatus = {
+      chunkId: uniqueId("chunk_"),
+      from: searchFrom,
+      to: Math.min(searchFrom + idealChunkSize, searchTo),
+      status: "pending",
+      appetite,
+    };
 
-		// Since this chunk will be either committed or orphaned, we can update the searchFrom
-		this.config.searchFrom = chunk.to;
+    // Since this chunk will be either committed or orphaned, we can update the searchFrom
+    this.config.searchFrom = chunk.to;
 
-		this.registerChunk(chunk);
+    this.registerChunk(chunk);
 
-		return chunk;
-	}
+    return chunk;
+  }
 }

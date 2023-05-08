@@ -2,16 +2,20 @@
   {
     "chance": 1.0,
     "rain_material": "water"
-  }, {
+  },
+  {
     "chance": 0.05,
     "rain_material": "water"
-  }, {
+  },
+  {
     "chance": 0.001,
     "rain_material": "blood"
-  }, {
+  },
+  {
     "chance": 0.0002,
     "rain_material": "acid"
-  }, {
+  },
+  {
     "chance": 0.0001,
     "rain_material": "slime"
   }
