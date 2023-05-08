@@ -397,6 +397,8 @@ router.post(
 router.post("/webhook", async (req, res) => {
   const headers = req.headers;
   const secret = headers["x-patreon-signature"];
+  console.log(headers);
+  console.log(req.rawBody);
   const hash = crypto.createHmac("md5", process.env.PATREON_WEBHOOK_SECRET).update(req.rawBody).digest("hex");
   if (hash !== secret) {
     res.status(401).send(null);
