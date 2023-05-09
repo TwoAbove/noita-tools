@@ -93,6 +93,16 @@ const Patrons = () => {
       .then(res => res.json())
       .then(data => {
         const patrons = data;
+        patrons.Donation = {
+          members: ["BurritoSuicide"],
+          tier: {
+            attributes: {
+              amount_cents: 0,
+              title: "Donation",
+              url: "",
+            },
+          },
+        };
         setPatrons(patrons);
       })
       .catch(e => {
@@ -115,7 +125,7 @@ const Patrons = () => {
     });
 
   return (
-    <Row xs={1} md={2} className="justify-content-center m-0 my-2">
+    <Row xs={1} md={3} className="justify-content-start m-0 my-2">
       <div className="text-center w-100 fs-5 fw-light">A huge thank you to Noitool's supporters:</div>
       {elements}
     </Row>
