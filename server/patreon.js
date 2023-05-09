@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const mongoose = require("mongoose");
 const cron = require("node-cron");
+const { randomUUID, createHmac } = require("crypto");
 
 const RateLimit = require("express-rate-limit");
 
@@ -112,34 +113,74 @@ const getIdentity = async token => {
   }).then(r => r.json());
 };
 
+const hamisAmount = 1000 * 60 * 60 * 20; // 20 hours
+const hamis2Amount = 1000 * 60 * 60 * 40; // 40 hours
+const hamis3Amount = 1000 * 60 * 60 * 80; // 80 hours
+const hamis4Amount = 1000 * 60 * 60 * 160; // 160 hours
+
 const getComputeAmountForTier = tierId => {
   let amount = 1000 * 60 * 60 * 5; // 5 hours
 
   switch (tierId) {
     case "9702578": {
       // Hämis
-      amount = 1000 * 60 * 60 * 20; // 5 hours
+      amount = hamisAmount;
 
       break;
     }
     case "9702590": {
       // Hämis Hämis
-      amount = 1000 * 60 * 60 * 40; // 40 hours
+      amount = hamis2Amount;
       break;
     }
     case "9702596": {
       // Hämis Hämis Hämis
-      amount = 1000 * 60 * 60 * 80; // 80 hours
+      amount = hamis3Amount;
       break;
     }
     case "9704115": {
       // Hämis Hämis Hämis Hämis
-      amount = 1000 * 60 * 60 * 160; // 160 hours
+      amount = hamis4Amount;
       break;
     }
     default: {
-      amount = 1000 * 60 * 60 * 5; // 5 hours
+      amount = 1000 * 60 * 60 * 5;
       console.error("Unknown tier", tierId);
+      break;
+    }
+  }
+
+  return amount;
+};
+
+const getComputeAmountForPledgeAmount = pledgeAmount => {
+  let amount = 1000 * 60 * 60 * 5; // 5 hours
+
+  switch (pledgeAmount) {
+    case 400: {
+      // Hämis
+      amount = hamisAmount;
+
+      break;
+    }
+    case 800: {
+      // Hämis Hämis
+      amount = hamis2Amount;
+      break;
+    }
+    case 1600: {
+      // Hämis Hämis Hämis
+      amount = hamis3Amount;
+      break;
+    }
+    case 3200: {
+      // Hämis Hämis Hämis Hämis
+      amount = hamis4Amount;
+      break;
+    }
+    default: {
+      amount = (1000 * 60 * 60 * 20 * 400) / pledgeAmount;
+      console.error("Unknown pledgeAmount", pledgeAmount);
       break;
     }
   }
@@ -391,6 +432,74 @@ router.post(
     res.status(200).send(null);
   }
 );
+
+// handle patreon webhook
+router.post("/webhook", async (req, res) => {
+  const headers = req.headers;
+  const secret = headers["x-patreon-signature"];
+  console.log(headers);
+  const hash = createHmac("md5", process.env.PATREON_WEBHOOK_SECRET).update(req.rawBody).digest("hex");
+  if (hash !== secret) {
+    res.status(401).send(null);
+    return;
+  }
+
+  console.log("Patreon webhook", headers["x-patreon-event"], req.body);
+
+  const trigger = headers["x-patreon-event"];
+  const { body } = req;
+
+  switch (trigger) {
+    case "members:pledge:create": {
+      const patron = body.data;
+      const patreonId = patron.relationships.user.data.id;
+      const pledgeAmount = patron.attributes.pledge_amount_cents;
+      const amount = getComputeAmountForPledgeAmount(pledgeAmount);
+
+      let user = await User.findOne({ patreonId });
+      if (!user) {
+        user = await User.create({
+          _id: new mongoose.Types.ObjectId(),
+
+          patreonId,
+
+          sessionToken: randomUUID(),
+
+          compute: {
+            lastReset: new Date(),
+            resetDay: new Date().getDate(),
+            patreonComputeLeft: amount,
+            providedComputeLeft: 0,
+          },
+        });
+      } else {
+        user.compute.patreonComputeLeft = amount;
+      }
+      await user.save();
+      break;
+    }
+    case "members:pledge:update": {
+      const patron = body.data;
+      const patreonId = patron.relationships.user.data.id;
+      const pledgeAmount = patron.attributes.pledge_amount_cents;
+      const amount = getComputeAmountForPledgeAmount(pledgeAmount);
+      const user = await User.findOne({ patreonId });
+      if (!user) {
+        // This should never happen
+        console.error("User not found", patreonId);
+        break;
+      }
+      user.compute.patreonComputeLeft = amount;
+      await user.save();
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
+  res.status(200).send(null);
+});
 
 const updatePatreonCompute = async () => {
   // all users with last update more than 1 month ago

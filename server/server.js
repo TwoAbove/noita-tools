@@ -26,7 +26,13 @@ const app = express();
 
 app.use(morgan("combined"));
 app.use(cookieParser());
-app.use(bodyParser.json());
+app.use(
+  bodyParser.json({
+    verify: (req, res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
 app.use(
   bodyParser.urlencoded({
     extended: true,

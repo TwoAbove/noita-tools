@@ -184,6 +184,9 @@ const Footer = () => {
           <div className="mx-2">or</div>
           <div className="pt-2">
             <Donate />
+            <small className="text-wrap d-block fw-light lh-1" style={{ width: "12rem" }}>
+              If you want your name below, please reach out!
+            </small>
           </div>
         </div>
         <Patrons />
