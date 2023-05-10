@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Col, Modal, Row } from "react-bootstrap";
 import Cookies from "js-cookie";
 import humanize from "humanize-duration";
 
@@ -104,7 +104,8 @@ const PatreonData: FC<IPatreonDataProps> = ({ data }) => {
 };
 
 const PatreonAccount = () => {
-  const { patreonData, patreonDataLoading, patreonDataError, handleLogout } = useContext(ProfileContext);
+  const { patreonData, patreonDataLoading, patreonDataError, handleLogout, handleLogoutAll } =
+    useContext(ProfileContext);
 
   const loggedIn = !!patreonData;
 
@@ -123,16 +124,29 @@ const PatreonAccount = () => {
       {patreonDataLoading ? (
         <p>Loading...</p>
       ) : (
-        <>
+        <Row>
           {!loggedIn && <LinkPatreon />}
           {patreonData && <PatreonData data={patreonData} />}
           {patreonData && patreonData.activePatron ? <p>Thank you for your support!</p> : <PatreonButton />}
           {loggedIn && (
-            <Button className="ms-auto" variant="outline-secondary" onClick={() => handleLogout()}>
-              Disconnect Patreon
-            </Button>
+            <>
+              <hr className="mt-4" />
+              <hr className="mb-4" />
+              <Row className="">
+                <Col>
+                  <Button className="ms-auto w-100" variant="outline-primary" onClick={() => handleLogout()}>
+                    Disconnect Patreon
+                  </Button>
+                </Col>
+                <Col>
+                  <Button className="ms-auto w-100" variant="outline-danger" onClick={() => handleLogoutAll()}>
+                    Disconnect ALL devices
+                  </Button>
+                </Col>
+              </Row>
+            </>
           )}
-        </>
+        </Row>
       )}
     </div>
   );

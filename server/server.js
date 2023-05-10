@@ -111,30 +111,8 @@ app.get("/m/*", async (req, res) => {
 const server = require("http").createServer(app);
 const io = require("./io")(server, app);
 
-app.use(
-  "/static",
-  express.static("build/static", {
-    maxAge: "1y",
-    fallthrough: true,
-  })
-);
-app.use(
-  "/locales",
-  express.static("build/locales", {
-    maxAge: "1d",
-    fallthrough: true,
-  })
-);
-app.use(
-  "/",
-  express.static("build/", {
-    maxAge: "1d",
-    fallthrough: true,
-  })
-);
-
 // This is a hack for cleaner routing from the client's React Router.
-// So that 404s still work, but the client can still route to the correct page.
+// So that 404s still work, but the client can still route only to existing pages.
 for (const route of ["/", "/info", "/search", "/live", "/test", "/compute", "/compute-console"]) {
   app.get(
     route,
@@ -147,6 +125,31 @@ for (const route of ["/", "/info", "/search", "/live", "/test", "/compute", "/co
     }
   );
 }
+
+app.use(
+  "/static",
+  express.static("build/static", {
+    maxAge: "1y",
+  })
+);
+app.use(
+  "/locales",
+  express.static("build/locales", {
+    maxAge: "1d",
+  })
+);
+app.use(
+  "/ocr",
+  express.static("build/ocr", {
+    maxAge: "1d",
+  })
+);
+app.use(
+  "/",
+  express.static("build/", {
+    maxAge: "1d",
+  })
+);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

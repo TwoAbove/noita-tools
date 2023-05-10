@@ -288,6 +288,10 @@ const loadUser = async (req, res, next) => {
 
 const loadPatreonClient = async (req, res, next) => {
   const patreonUser = await getIdentity(req.user.patreonData.access_token);
+  if (patreonUser.errors) {
+    res.status(401).send(null);
+    return;
+  }
 
   req.patreonUser = patreonUser.data;
   next();
