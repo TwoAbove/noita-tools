@@ -288,6 +288,10 @@ const loadUser = async (req, res, next) => {
 
 const loadPatreonClient = async (req, res, next) => {
   const patreonUser = await getIdentity(req.user.patreonData.access_token);
+  if (patreonUser.errors) {
+    res.status(401).send(null);
+    return;
+  }
 
   req.patreonUser = patreonUser.data;
   next();
@@ -430,6 +434,23 @@ router.post(
     genSessionCookie(res);
 
     res.status(200).send(null);
+  }
+);
+
+router.post(
+  "/logout_all",
+  RateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 60,
+  }),
+  authenticated,
+  loadUser,
+  async (req, res) => {
+    res.clearCookie("noitoolSessionToken");
+    genSessionCookie(res);
+    res.status(200).send(null);
+    const user = req.user;
+    user.sessionToken = randomUUID();
   }
 );
 

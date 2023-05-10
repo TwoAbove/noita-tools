@@ -47,10 +47,9 @@ const Body = () => {
         },
         { replace: true }
       );
+    } else {
+      navigate("/info", { replace: true });
     }
-    // This is needed to do one-off routing if we have a seed query param in the url.
-    // TODO: I think the better way of doing this is to actually use react-router
-    // Routes instead of this db-memory-way.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

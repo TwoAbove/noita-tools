@@ -20,6 +20,7 @@ interface IProfileContext {
   patreonDataLoading: boolean;
   patreonDataError: boolean;
   handleLogout: () => void;
+  handleLogoutAll: () => void;
 }
 
 const ProfileContext = createContext<IProfileContext>({
@@ -27,6 +28,7 @@ const ProfileContext = createContext<IProfileContext>({
   patreonDataLoading: true,
   patreonDataError: false,
   handleLogout: () => {},
+  handleLogoutAll: () => {},
 });
 
 const ProfileProvider = props => {
@@ -87,6 +89,26 @@ const ProfileProvider = props => {
       });
   };
 
+  const handleLogoutAll = () => {
+    setPatreonDataLoading(true);
+    fetch("/api/patreon/logout_all", {
+      method: "POST",
+    })
+      .then(async res => {
+        if (res.status === 401) {
+          return null;
+        }
+        try {
+          setPatreonData(null);
+        } catch (e) {
+          console.error(e);
+        }
+      })
+      .finally(() => {
+        setPatreonDataLoading(false);
+      });
+  };
+
   return (
     <ProfileContext.Provider
       value={{
@@ -94,6 +116,7 @@ const ProfileProvider = props => {
         patreonDataLoading,
         patreonDataError,
         handleLogout,
+        handleLogoutAll,
       }}
     >
       <Suspense fallback={<></>}>{props.children}</Suspense>
