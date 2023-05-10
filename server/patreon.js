@@ -437,6 +437,23 @@ router.post(
   }
 );
 
+router.post(
+  "/logout_all",
+  RateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 60,
+  }),
+  authenticated,
+  loadUser,
+  async (req, res) => {
+    res.clearCookie("noitoolSessionToken");
+    genSessionCookie(res);
+    res.status(200).send(null);
+    const user = req.user;
+    user.sessionToken = randomUUID();
+  }
+);
+
 // handle patreon webhook
 router.post("/webhook", async (req, res) => {
   const headers = req.headers;

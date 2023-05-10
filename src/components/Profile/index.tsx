@@ -106,6 +106,7 @@ const PatreonData: FC<IPatreonDataProps> = ({ data }) => {
 const PatreonAccount = () => {
   const { patreonData, patreonDataLoading, patreonDataError, handleLogout, handleLogoutAll } =
     useContext(ProfileContext);
+  const [clickedDelete, setClickedDelete] = useState(false);
 
   const loggedIn = !!patreonData;
 
@@ -117,6 +118,16 @@ const PatreonAccount = () => {
       </div>
     );
   }
+
+  const handleDelete = async e => {
+    e.stopPropagation();
+    if (!clickedDelete) {
+      setClickedDelete(true);
+      setTimeout(() => setClickedDelete(false), 1500);
+      return;
+    }
+    handleLogoutAll();
+  };
 
   return (
     <div className="d-flex flex-column">
@@ -139,8 +150,12 @@ const PatreonAccount = () => {
                   </Button>
                 </Col>
                 <Col>
-                  <Button className="ms-auto w-100" variant="outline-danger" onClick={() => handleLogoutAll()}>
-                    Disconnect ALL devices
+                  <Button
+                    className="ms-auto w-100"
+                    variant={clickedDelete ? "outline-danger" : "outline-warning"}
+                    onClick={handleDelete}
+                  >
+                    Disconnect ALL devices {clickedDelete && "?"}
                   </Button>
                 </Col>
               </Row>
