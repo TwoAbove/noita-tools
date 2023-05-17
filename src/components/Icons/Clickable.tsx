@@ -8,7 +8,7 @@ export interface IClickableProps {
 }
 
 const Clickable = (props: IClickableProps | any) => {
-  const { clicked, useHover, children, ...rest } = props;
+  const { clicked, useHover, children, onClick, ...rest } = props;
   const childrenWithProps = React.Children.map(children, child => {
     if (React.isValidElement(child)) {
       return React.cloneElement(child, { ...rest });
@@ -25,7 +25,7 @@ const Clickable = (props: IClickableProps | any) => {
     setHovered(false);
   };
 
-  // Clicked-style is prioritised, then hovered-style, otherwise fallback to default style.
+  // Clicked-style is prioritized, then hovered-style, otherwise fallback to default style.
   const clickedOrHoveredStyle = clicked ? "bg-info" : hovered ? "bg-light" : "bg-body";
 
   return (
@@ -37,9 +37,10 @@ const Clickable = (props: IClickableProps | any) => {
         transition: "0.1s",
       }}
       onClick={e => {
-        if (props.onClick) {
+        if (onClick) {
+          e.preventDefault();
           e.stopPropagation();
-          props.onClick();
+          onClick();
         }
       }}
       className={classNames(clickedOrHoveredStyle, "p-1 rounded-1")}

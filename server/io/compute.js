@@ -78,7 +78,10 @@ const handleCompute = (socket, io) => {
       return;
     }
 
-    if (config.version !== process.env.npm_package_version) {
+    // Check that the version matches at least MINOR
+    const [major, minor] = process.env.npm_package_version.split(".");
+    const [clientMajor, clientMinor] = config.version.split(".");
+    if (major !== clientMajor || minor !== clientMinor) {
       socket.emit("compute:version_mismatch", {
         serverVersion: process.env.npm_package_version,
         clientVersion: config.version,

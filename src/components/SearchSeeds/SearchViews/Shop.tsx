@@ -96,7 +96,7 @@ interface IShopProps {
 
 const Shop = (props: IShopProps) => {
   const { onUpdateConfig, config } = props;
-  const [d, setModal] = useState<[number, number]>([-1, 0]);
+  const [d, setModal] = useState<[number, number]>([-1, IShopType.item]);
   const level = d[0];
   const shopType = d[1];
   const [shops, dispatch] = useReducer(shopReducer, config.val);
