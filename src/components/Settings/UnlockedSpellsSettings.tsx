@@ -34,7 +34,7 @@ const setFlagArr = (spells: (typeof spellInfoProvider)["spellsArr"], unlockedSpe
 const FlagToggle = (props: { flag: string }) => {
   const { flag } = props;
 
-  const [unlockedSpells, setUnlockedSpells] = useLocalStorage("unlocked-spells", Array(393).fill(true));
+  const [unlockedSpells, setUnlockedSpells] = useLocalStorage("unlocked-spells", Array(398).fill(true));
   const { t } = useTranslation("materials");
 
   const spells = flags[flag];
@@ -77,9 +77,9 @@ const FlagToggle = (props: { flag: string }) => {
 };
 
 const UnlockedSpellsSettings = () => {
-  const [, setUnlockedSpells] = useLocalStorage("unlocked-spells", Array(393).fill(true));
+  const [, setUnlockedSpells] = useLocalStorage("unlocked-spells", Array(398).fill(true));
   const onDrop = (acceptedFiles: File[]) => {
-    let newUnlockedSpells = Array(393).fill(true);
+    let newUnlockedSpells = Array(398).fill(true);
     const notFoundFlags = flagNames.filter(f => -1 === acceptedFiles.findIndex(file => file.name === f));
     for (const flag of notFoundFlags) {
       const spells = spellInfoProvider.spellsArr.filter(s => s.spawn_requires_flag === flag);

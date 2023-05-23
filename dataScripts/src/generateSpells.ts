@@ -1,8 +1,12 @@
 import fs from "fs";
+import util from "util";
 import path from "path";
 import Jimp from "jimp";
 
-import spells from "./toJs3";
+import { parseAST } from "./ast";
+import parser from "luaparse";
+
+// import spells from "./toJs3";
 
 const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
 
@@ -12,6 +16,11 @@ const noitaData = path.resolve(
 );
 
 const spellPath = path.resolve(noitaData, "data/scripts/gun/gun_actions.lua");
+const spellFile = fs.readFileSync(spellPath).toString();
+const data = parseAST(parser.parse(spellFile, { wait: false }));
+console.log(util.inspect(data.actions, false, null, true));
+
+const spells = data.actions;
 
 (async () => {
   const newSpells: any[] = [];

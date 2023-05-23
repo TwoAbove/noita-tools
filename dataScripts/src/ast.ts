@@ -45,7 +45,7 @@ const getVal = (ex: parser.Expression, state: any): any => {
 };
 
 const getTable = (ex: TableConstructorExpression, state: any) => {
-  const res = [];
+  const res: any[] = [];
   for (const e of ex.fields) {
     if (e.type === "TableValue") {
       switch (e.value.type) {
