@@ -11,12 +11,17 @@ import cloneDeep from "lodash/cloneDeep.js";
 
 export enum IPerkChangeStateType {
   shift,
+  set,
   genRow,
   select,
   reroll,
 }
 export interface IShiftAction {
   type: IPerkChangeStateType.shift;
+  data: number; // WorldOffset
+}
+export interface ISetAction {
+  type: IPerkChangeStateType.set;
   data: number; // WorldOffset
 }
 export interface IGenRowAction {
@@ -35,7 +40,7 @@ export interface IRerollAction {
   data: number; // Row
 }
 
-export type IPerkChangeAction = IShiftAction | IGenRowAction | ISelectAction | IRerollAction;
+export type IPerkChangeAction = IShiftAction | ISetAction | IGenRowAction | ISelectAction | IRerollAction;
 
 type IPerkType = Objectify<typeof perksData>;
 
@@ -400,6 +405,10 @@ export class PerkInfoProvider extends InfoProvider {
       switch (s.type) {
         case IPerkChangeStateType.shift: {
           worldOffset += s.data;
+          break;
+        }
+        case IPerkChangeStateType.set: {
+          worldOffset = s.data;
           break;
         }
         case IPerkChangeStateType.genRow: {
