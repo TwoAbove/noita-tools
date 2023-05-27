@@ -284,6 +284,25 @@
     }
   },
   {
+    "id": "HOOK",
+    "name": "$action_hook",
+    "description": "$actiondesc_hook",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAjklEQVR4AcXBMQ7CIBSA4f+5suBt8AY9As505yzuOHMUehu6OD9pUpMOxmBr4vfxd0KnmI36wbO4nO/CN2I2yoY2rE50uF0fwsY0j+xWalD20oY9Sg264A1hFbNRP3icTUzziLOJT6ShV6lBFxylDUeVGpSjSg3K6kSHmI2y4WziRegUs1E/eJxNSMOvPAHsITuMQKoKPQAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bullet_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/hook.xml"],
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.1,0.3,0.4,0.2,0.1",
+    "price": 120,
+    "mana": 30,
+    "spawn_probabilities": {
+      "1": 0.1,
+      "2": 0.3,
+      "3": 0.4,
+      "4": 0.2,
+      "5": 0.1
+    }
+  },
+  {
     "id": "BLACK_HOLE",
     "name": "$action_black_hole",
     "description": "$actiondesc_black_hole",
@@ -344,6 +363,27 @@
       "5": 0.8,
       "6": 0.8,
       "10": 0.5
+    }
+  },
+  {
+    "id": "WHITE_HOLE_BIG",
+    "name": "$action_white_hole_big",
+    "description": "$actiondesc_white_hole_big",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABU0lEQVR4AaXBsUrkQACA4X8SrJYEjhAsxCLVFkNgmmks8xq+g+ADCJF7gIOrfJoUFqK3zUJYuFRTHIbgEJEE5IqDXLLswigRF/w+wYw4yQZmWFMI3hE44iQbGC3DlCjgjbaHqiuZWFMIdgQ7cZINZycpEyU1682Kj9w9llhTCEY+ozjJhrOTlL3G1sxRUtPYmtPwmGd/kb++mGuPAympyW/OUVLjEnGSDcswJQr4lJKa9WbFpO2h6ko8RlHA1tXlBS4lNa71ZsVESU0UsOUvviX5aXjM5Pb+AVdja+Y0tmbyp3/C44s8DnR1ecEcj1Hb86nvP37ianu2PGsKUXUle0pqDlF1JdYUwsOhpCa/OUdJzaF8Rq8v5vrZX+RHf//x+1fLerPCpaSmsTV7d48l1hSCkcARJ9nAaBmmRAFvtD1UXcnEmkKwI5gRJ9nADGsKwTv/Ae8sdhLyIaX8AAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_big_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/white_hole_big.xml"],
+    "spawn_level": "1,3,5,6,10",
+    "spawn_probability": "0.1,0.1,0.1,0.4,0.2",
+    "price": 320,
+    "mana": 240,
+    "max_uses": 6,
+    "custom_xml_file": "data/entities/misc/custom_cards/white_hole_big.xml",
+    "spawn_probabilities": {
+      "1": 0.1,
+      "3": 0.1,
+      "5": 0.1,
+      "6": 0.4,
+      "10": 0.2
     }
   },
   {
@@ -1238,15 +1278,16 @@
     "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB3klEQVR4Ab3BP2gTUQDA4V/i0annHZx3ZLgj4FuqV0KRnJBDdOhlK1IUQbhFhAyFDupUgiKaDnEvdEokUwYpdGi3GzJIbgmSodYOyWQLGTpkcE59gVc4in8Gwe/jX+WQ8m94fut4t2UWylyaTgac3dt4P33JW/7gGtJte/eLWSjT3FxmaaHPo4f3+XyssXB858HNd4cF9wlrZ5845BfySGahTHNzmaUbP4iiiKfPXtDcXMYslJlbdRyz3nO69Z7T5Yo8yulwn7mVtdcMD7Y5He4zt+o4JopwS8XWKOqTkUdxV9aZGx5sM+eurJMl3FIRpTWK+ih5pOlkwNbOESfniyRJwsn5Ils7R0wnA+aEWyqSEYrYa42iPlIOxX+8e2EWylyaTga8+rCXkhGK2EOx8A0nd/e6hvJ1byOHVO85XSThlopkhCL2kCx8wybQUTQy6j2niyTcUhElFLGHZOEbNoGO1B5X01onqSBpZAi3VEQJRewhWfiGTaAjtcfVtNZJKrMGIYqG0hpFfaRQxB6ShW/YBDpSe1xNa52kMmsQcoWGEorYQ7LwDZtAR2qPq2mtk1RmDUJ+Q0P6dvHxu4Vv2AQ6UntcTWudpDJrEPIXGopNoLfH1bTWSSqzBiH/y0/2kofLmZGvswAAAABJRU5ErkJggg==",
     "sprite_unidentified": "data/ui_gfx/gun_actions/chainsaw_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/luminous_drill.xml"],
-    "spawn_level": "0,2,6",
-    "spawn_probability": "1,1,0.2",
+    "spawn_level": "0,2,6,10",
+    "spawn_probability": "1,1,0.2,0.1",
     "price": 220,
     "mana": 30,
     "sound_loop_tag": "sound_digger",
     "spawn_probabilities": {
       "0": 1,
       "2": 1,
-      "6": 0.2
+      "6": 0.2,
+      "10": 0.1
     }
   },
   {
@@ -3710,6 +3751,23 @@
       "3": 0.3,
       "4": 0.6,
       "5": 0.1
+    }
+  },
+  {
+    "id": "TRUE_ORBIT",
+    "name": "$action_true_orbit",
+    "description": "$actiondesc_true_orbit",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAArElEQVR4Aa3BMUoDURSF4f8+sgi1TS1YBrMhS5cye3AJWcOIjRBInXYS0D2cHOEGHpM3Q2D8PpYKGvpB+vj+ZX8887J+YH888+fr/TmYI+sHiQmb7iCm9IPEnWSkQnp95IYSFRkm40pGgxIjMlJhgowkoxJGWjEio0GGhVFZMRKGyaiE0VBYqDAjEjMKFiZjCRl32nQH0aLEhH6Q3nY/ohI0yBj5PMH2KYL/dgE4h3JsWSupcAAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": ["data/entities/misc/true_orbit.xml"],
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.2,0.3,0.4",
+    "price": 40,
+    "mana": 2,
+    "spawn_probabilities": {
+      "2": 0.2,
+      "3": 0.3,
+      "4": 0.4
     }
   },
   {
