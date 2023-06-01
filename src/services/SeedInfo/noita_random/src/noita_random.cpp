@@ -225,7 +225,7 @@ public:
 
     vector<string> ALCHEMY = {
         "bone_box2d", "brass", "coal",
-        "copper", "diamond", "fungus_loose",
+        "copper", "diamond", "fungi",
         "gold", "grass", "gunpowder",
         "gunpowder_explosive", "rotten_meat", "sand_petrify",
         "silver", "slime", "snow_b2",
