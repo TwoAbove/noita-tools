@@ -27,7 +27,7 @@ export const loadRandom = async (flags?: string[]): Promise<Awaited<ReturnType<t
 
 export const getUnlockedSpells = (flags?: string[]) => {
   // This should be configurable with persistence flags
-  return Array(398)
+  return Array(401)
     .fill("")
     .map(s => true);
 };
