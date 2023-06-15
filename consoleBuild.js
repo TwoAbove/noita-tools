@@ -4,7 +4,7 @@ const path = require("path");
 // const { resolve } = require('path');
 // const tsc = require('tsc-prog');
 
-// rimraf lambda-build/* && tsc --project ./tsconfig.lambda.json && copyfiles -u 1 src/**/*.wasm lambda-build
+// rimraf console-build/* && tsc --project ./tsconfig.lambda.json && copyfiles -u 1 src/**/*.wasm console-build
 
 // tsc.build({
 // 	basePath: __dirname,
@@ -14,7 +14,7 @@ const path = require("path");
 // });
 
 // writeFileSync(
-// 	resolve(__dirname, 'lambda-build/package.json'),
+// 	resolve(__dirname, 'console-build/package.json'),
 // 	JSON.stringify(
 // 		{
 // 			// type: 'commonjs',
@@ -30,8 +30,8 @@ const path = require("path");
 // 		2
 // 	)
 // );
-if (!fs.existsSync("lambda-build")) {
-  fs.mkdirSync("lambda-build");
+if (!fs.existsSync("console-build")) {
+  fs.mkdirSync("console-build");
 }
 
 const pkg = require(path.resolve("./package.json"));
@@ -51,13 +51,13 @@ require("esbuild")
     metafile: true,
     sourcemap: true,
     // minify: true,
-    target: ["node18"],
-    outdir: "lambda-build",
+    target: ["node20"],
+    outdir: "console-build",
     format: "esm",
     banner: {
       js: `import { createRequire } from 'module';const require = createRequire(import.meta.url);`,
     },
-    // outfile: 'lambda-build/consoleSearch.js'
+    // outfile: 'console-build/consoleSearch.js'
     packages: "external",
     external,
   })
@@ -69,11 +69,11 @@ require("esbuild")
       version: "0.0.0",
     };
 
-    fs.writeFileSync(path.resolve(__dirname, "lambda-build", "package.json"), JSON.stringify(pkg, null, 4));
+    fs.writeFileSync(path.resolve(__dirname, "console-build", "package.json"), JSON.stringify(pkg, null, 4));
 
     {
       // Need to figure out how to correctly fix URL requires with esbuild
-      const fixFile = path.resolve(__dirname, "lambda-build", "consoleSearch.js");
+      const fixFile = path.resolve(__dirname, "console-build", "consoleSearch.js");
       let f = fs.readFileSync(fixFile, "utf8");
       let result = f.replace("../workers/seedSearcher.worker.node.ts", "./workers/seedSearcher.worker.node.js");
       fs.writeFileSync(fixFile, result);
@@ -81,7 +81,7 @@ require("esbuild")
 
     {
       // Need to figure out how to correctly fix URL requires with esbuild
-      const fixFile = path.resolve(__dirname, "lambda-build", "workers/seedSearcher.worker.node.js");
+      const fixFile = path.resolve(__dirname, "console-build", "workers/seedSearcher.worker.node.js");
       let f = fs.readFileSync(fixFile, "utf8");
       let result = "" + f;
       result = result.replaceAll(`.json";`, `.json"assert{type:"json"};`);

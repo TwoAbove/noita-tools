@@ -28,7 +28,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noFallthroughCasesInSwitch": true,
-    "outDir": "lambda-build"
+    "outDir": "console-build"
   },
   "exclude": ["node_modules", "**/*.spec.*"]
 }

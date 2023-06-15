@@ -1,4 +1,4 @@
-FROM node:18-slim as build-image
+FROM node:20-slim as build-image
 
 RUN apt-get update && \
   apt-get install -y \
@@ -19,13 +19,13 @@ COPY . .
 
 RUN yarn install --frozen-lockfile
 
-RUN yarn lambda-build
+RUN yarn console-build
 
 RUN rm -rf node_modules && yarn install --frozen-lockfile --production=true
 
-FROM node:18-alpine
+FROM node:20-alpine
 
-COPY --from=build-image /app/lambda-build  ./
+COPY --from=build-image /app/console-build  ./
 COPY --from=build-image /app/node_modules  ./
 
 ENTRYPOINT ["node", "consoleSearch.js"]

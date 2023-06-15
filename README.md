@@ -34,7 +34,7 @@ cd noita-tools
 git checkout master # for https://www.noitool.com
 # git checkout develop # for https://dev.noitool.com
 yarn install --frozen-lockfile
-yarn lambda-build
+yarn console-build
 yarn console-search --userId 6456aff2478c4f8f91701018
 ```
 
