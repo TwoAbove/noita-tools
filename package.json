@@ -169,7 +169,7 @@
     "dev-win": "concurrently --restart-tries -1 \"nodemon ./server\" \"craco start\"",
     "build-noita_random": "pwsh -nol -noni -nop -f src/services/SeedInfo/noita_random/build.ps1",
     "build": "craco build",
-    "console-search": "node console-build/consoleSearch.js",
+    "console-search": "node --no-warnings=ExperimentalWarning console-build/consoleSearch.js",
     "console-build": "rimraf console-build/* console-build/* && node consoleBuild.js",
     "test": "craco test",
     "e2e": "yarn build && concurrently -k  -s first 'cypress run' 'PORT=3000 yarn start'",
