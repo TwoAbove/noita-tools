@@ -89,7 +89,7 @@ const Compute = () => {
     const newSeedSolver = new SeedSolver(useCores, false);
     setSeedSolver(newSeedSolver);
     return () => {
-      newSeedSolver.destroy();
+      newSeedSolver.destroy().catch(e => {});
     };
   }, [useCores]);
 

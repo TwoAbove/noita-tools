@@ -23,9 +23,9 @@ RUN yarn console-build
 
 RUN rm -rf node_modules && yarn install --frozen-lockfile --production=true
 
-FROM node:20-alpine
+FROM node:20-slim
 
-COPY --from=build-image /app/console-build  ./
-COPY --from=build-image /app/node_modules  ./
+COPY --from=build-image /app/console-build /app/
+COPY --from=build-image /app/node_modules /app/node_modules
 
 ENTRYPOINT ["node", "consoleSearch.js"]
