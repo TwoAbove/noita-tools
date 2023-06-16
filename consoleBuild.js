@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const packageJson = require("./package.json");
 
 // const requireResolvePlugin = require('@chialab/esbuild-plugin-require-resolve');
 // const { resolve } = require('path');
@@ -54,24 +53,19 @@ require("esbuild")
     sourcemap: true,
     // minify: true,
     target: ["node20"],
-    outdir: "console-build",
     format: "esm",
     banner: {
       js: `import { createRequire } from 'module';const require = createRequire(import.meta.url);`,
     },
-    // outfile: 'console-build/consoleSearch.js'
+    outdir: "console-build",
     packages: "external",
     external,
   })
   .then(() => {
-    const pkg = {
-      name: "noitool-console",
-      type: "module",
-      module: "consoleSearch.js",
-      version: packageJson.version,
-    };
-
-    fs.writeFileSync(path.resolve(__dirname, "console-build", "package.json"), JSON.stringify(pkg, null, 4));
+    fs.copyFileSync(
+      path.resolve(__dirname, "search.package.json"),
+      path.resolve(__dirname, "console-build", "package.json")
+    );
 
     {
       // Need to figure out how to correctly fix URL requires with esbuild

@@ -19,6 +19,7 @@ console.log(`v${process.env.REACT_APP_VERSION}`);
 function sendToAnalytics(metric) {
   const body = JSON.stringify(metric);
   // Use `navigator.sendBeacon()` if available, falling back to `fetch()`.
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   (navigator.sendBeacon && navigator.sendBeacon("/api/stats", body)) ||
     fetch("/api/stats", { body, method: "POST", keepalive: true });
 }

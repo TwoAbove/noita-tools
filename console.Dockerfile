@@ -15,17 +15,24 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
+RUN npm i esbuild
+
 COPY . .
 
-RUN yarn install --frozen-lockfile
+# RUN yarn install --frozen-lockfile
 
-RUN yarn console-build
-
-RUN rm -rf node_modules && yarn install --frozen-lockfile --production=true
+RUN npm run console-build
 
 FROM node:20-slim
 
-COPY --from=build-image /app/console-build /app/
-COPY --from=build-image /app/node_modules /app/node_modules
+RUN apt-get update && \
+  apt-get install -y \
+  python3 make g++
 
-ENTRYPOINT ["node", "consoleSearch.js"]
+WORKDIR /app
+
+COPY --from=build-image /app/console-build /app/
+
+RUN yarn install --frozen-lockfile --production=true
+
+ENTRYPOINT ["yarn", "start"]

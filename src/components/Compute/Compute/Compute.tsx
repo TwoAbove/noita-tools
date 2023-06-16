@@ -71,6 +71,7 @@ const Compute = () => {
       computeSocket.stop();
     });
   };
+
   const handleStop = () => {
     if (!computeSocket) {
       return;
@@ -83,6 +84,7 @@ const Compute = () => {
     if (startAutomatically) {
       handleStart();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [computeSocket, startAutomatically]);
 
   useEffect(() => {

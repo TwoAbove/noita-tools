@@ -4,7 +4,14 @@ const { handleLiveSeed } = require("./liveSeed");
 const { handleCompute, counts } = require("./compute");
 const { rooms } = require("./rooms");
 
-const corsDomains = ["dev.noitool.com", "noitool.com", "localhost:3000", "localhost:3001"];
+const corsDomains = [
+  "dev.noitool.com",
+  "noitool.com",
+  "localhost:3000",
+  "localhost:3001",
+  "127.0.0.1:3000",
+  "127.0.0.1:3001",
+];
 const corsSchemes = ["http://", "https://", "ws://", "wss://", ""];
 const allowedCORS = corsSchemes.flatMap(ext => corsDomains.map(d => ext + d));
 
@@ -35,6 +42,7 @@ const makeIO = (server, app) => {
   });
 
   io.on("connection", socket => {
+    console.log("New connection");
     handleConnection(socket, io);
   });
 

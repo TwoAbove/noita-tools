@@ -38,13 +38,13 @@ yarn console-build
 yarn console-search --userId 6456aff2478c4f8f91701018
 ```
 
-console-search args:
+console-search args (or env vars):
 
-- `--url`: default <https://www.noitool.com/>. Change to <https://dev.noitool.com/> for the dev build
-- `--cores`: default `os.cpus()`. The amount of threads to use.
-- `--userId`: The user to connect as.
-- `--exit` default `false`. Add if you want the worker to exit if there are no more jobs.
-- `--minRunTime` default `0`. This minimum amount of time (in seconds) that the worker will run for. If there are no more jobs, it will exit after this time. A value of 0 means that this is disabled.
+- `--url` `NOITOOL_URL`: default <https://www.noitool.com/>. Change to <https://dev.noitool.com/> for the dev build
+- `--cores` `NOITOOL_CORES`: default `os.cpus()`. The amount of threads to use.
+- `--userId` `NOITOOL_USER_ID`: The user to connect as.
+- `--exit` `NOITOOL_EXIT` default `false`. Add if you want the worker to exit if there are no more jobs.
+- `--minRunTime` `NOITOOL_MIN_RUN_TIME` default `0`. This minimum amount of time (in seconds) that the worker will run for. If there are no more jobs, it will exit after this time. A value of 0 means that this is disabled.
 
 ## Technical details and implementation details that I found interesting
 
