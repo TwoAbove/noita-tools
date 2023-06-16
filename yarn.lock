@@ -12787,6 +12787,7 @@ __metadata:
     react: ^18.2.0
     react-bootstrap: ^2.7.4
     react-dark-mode-toggle: ^0.2.0
+    react-dev-utils: ^12.0.1
     react-dnd: ^16.0.1
     react-dnd-html5-backend: ^16.0.1
     react-dnd-multi-backend: ^8.0.1
