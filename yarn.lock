@@ -12811,6 +12811,7 @@ __metadata:
     socket.io-client: ^4.6.2
     source-map-explorer: ^2.5.3
     tesseract.js: ^4.1.0
+    tslib: ^2.5.3
     typescript: ^4.9.5
     web-vitals: ^3.3.2
     webpack: 5
@@ -17205,7 +17206,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.5.0":
+"tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.5.3":
   version: 2.5.3
   resolution: "tslib@npm:2.5.3"
   checksum: 88902b309afaf83259131c1e13da1dceb0ad1682a213143a1346a649143924d78cf3760c448b84d796938fd76127183894f8d85cbb3bf9c4fddbfcc140c0003c
