@@ -50,8 +50,12 @@ typings/
 
 # Optional npm cache directory
 .npm
-.yarn
-.yarnrc.yml
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # Optional eslint cache
 .eslintcache
