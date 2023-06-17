@@ -42,7 +42,16 @@ const pingLambda = () => {
     method: "POST",
     body: JSON.stringify({ hosts: counts.hosts, cluster: process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER }),
     headers: { "Content-Type": "application/json" },
-  }).catch(console.error);
+  })
+    .catch(console.error)
+    .then(() => {
+      console.log(
+        "Pinged lambda",
+        process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT,
+        counts.hosts,
+        process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER
+      );
+    });
 };
 
 // Make a function be called n times with backoff. ex: 0, 10, 100, 1000, 10000 seconds from now
