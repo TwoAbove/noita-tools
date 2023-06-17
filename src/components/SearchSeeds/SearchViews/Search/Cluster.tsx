@@ -143,13 +143,17 @@ const ClusterInfo = () => {
         />
       </Row>
       <Row className="mx-3 mt-0">
-        <Col className="fw-light p-1" xs={12} sm={6}>
-          Cluster size:{" "}
+        <Col className="fw-light p-1 lh-sm" xs={12} sm={6}>
+          Current cluster size: <br />
           <b>
-            {clusterState.workers} ({clusterState.appetite} cores)
+            {clusterState.workers} ({clusterState.appetite} cores online)
           </b>
+          <br />
+          <small className="text-muted pt-0">
+            <b>64</b> cores auto-connect on search start
+          </small>
         </Col>
-        <Col className="fw-light p-1" xs={12} sm={6}>
+        <Col className="fw-light p-1 lh-1" xs={12} sm={6}>
           Searchers online: <b>{clusterState.hosts}</b>
         </Col>
       </Row>

@@ -40,7 +40,11 @@ const pingLambda = () => {
 
   return fetch(process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT, {
     method: "POST",
-    body: JSON.stringify({ hosts: counts.hosts, cluster: process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER }),
+    body: JSON.stringify({
+      hosts: counts.hosts,
+      cluster: process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER,
+      bearer: process.env.START_SEARCH_CLUSTER_LAMBDA_BEARER,
+    }),
     headers: { "Content-Type": "application/json" },
   })
     .catch(console.error)

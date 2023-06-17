@@ -185,7 +185,7 @@ const Footer = () => {
           <div className="pt-2">
             <Donate />
             <small className="text-wrap d-block fw-light lh-1" style={{ width: "12rem" }}>
-              If you want your name below, please reach out!
+              If you want to see your name below, please reach out!
             </small>
           </div>
         </div>
@@ -197,7 +197,7 @@ const Footer = () => {
           </a>
           {/* <br /> */} or DM me on Noita's discord:{" "}
           <a target="_blank" rel="noreferrer" href="https://discord.gg/noita">
-            TwoAbove#0493
+            twoabove
           </a>{" "}
           or send me an email: <a href="mailto:me@noitool.com">me@noitool.com</a>
         </div>
