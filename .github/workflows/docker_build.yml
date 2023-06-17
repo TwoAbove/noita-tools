@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - develop
 
 jobs:
   build_and_push:
@@ -23,11 +24,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image tag based on branch
+        run: echo "IMAGE_TAG=$(if [ "${{ github.ref }}" = "refs/heads/master" ]; then echo 'latest'; else echo 'latest-dev'; fi)" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./console.Dockerfile
           push: true
-          tags: ghcr.io/twoabove/noitool-console-search:latest
+          tags: ghcr.io/twoabove/noitool-console-search:${{ env.IMAGE_TAG }}
           platforms: linux/amd64,linux/arm64
