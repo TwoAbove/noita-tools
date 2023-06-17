@@ -75,7 +75,7 @@ const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 const TestBench = () => {
   // const seed = '1674055821';
   const seed = "299840293";
-  const [unlockedSpells] = useLocalStorage("unlocked-spells", Array(401).fill(true));
+  const [unlockedSpells] = useLocalStorage("unlocked-spells", Array(405).fill(true));
   const [gameInfoProvider] = useGameInfoProvider(seed, unlockedSpells);
 
   return (

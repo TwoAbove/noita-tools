@@ -1043,6 +1043,26 @@
       "5": 0.8
     }
   },
+  "FISH": {
+    "id": "FISH",
+    "name": "$action_fish",
+    "description": "$actiondesc_fish",
+    "spawn_requires_flag": "card_unlocked_fish",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmUlEQVR4AaXBsQ2CQBSA4f+9WFq4ERV7XO8AN8MtYKhuA2obQ8ICFFdADIWNCzjBUxNNiEGa931iZngoToqT4qQ4KU6Kk7KhislCLsYGZUXIxXjpU5Tb9UzIxfhDzIw1VUx2uO9ZOlUX6ubBOHTCh7JhnlrmqeWrbh6MQycs7FgRcrE+RSFF3qqYrE9R4MgvMTM8FCfFSXF6AnYtM95hII+kAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/fish_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/fish.xml"],
+    "type": 0,
+    "spawn_level": "3,4,5",
+    "spawn_probability": "0.01,0.01,0.01",
+    "price": 250,
+    "mana": 90,
+    "max_uses": 20,
+    "spawn_probabilities": {
+      "3": 0.01,
+      "4": 0.01,
+      "5": 0.01
+    }
+  },
   "EXPLODING_DEER": {
     "id": "EXPLODING_DEER",
     "name": "$action_exploding_deer",
@@ -4026,6 +4046,49 @@
       "6": 0.4
     }
   },
+  "ANTI_HOMING": {
+    "id": "ANTI_HOMING",
+    "name": "$action_anti_homing",
+    "description": "$actiondesc_anti_homing",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABTklEQVR4AaXBsUsbYRwG4Pf9dHTpdqObnxA6lCySyeFcpYJkkhTSxc2DCkIGkyEgOPzGLC30EAqh4D9wg4u3ZQqB5k/4tizuby9yF2KQaPB5KAmVaZLImxEb2EZhFMdCYadWwyiOhUI9y4h3cCjVs4wo1LOM2AD/XVwIJW/GaZIIJW9GvMF5Mz5NJvBmnCaJvBmfJhN4M+IdHEqjOBYKozgWNkBJqEyTRN6M2MA2lngzYkECSCxpNSKhlOaBKGx1u128jj0saTUi9e6HOGyeYv9oD53j4+7X9o+ew1oSCq1GpN79EJXo02ec/+qg1YjksBaJFd++nyHMxri6vMWcw1oSVvz+eYc/f1Pc3F5izmEtEoU0D7w+aSLMxpj7crCLisOChBckLEnzwEG7jzAb4+H6ERWHBRLPJDwjsSLNAwftPtI8cNDuI80DKQkf8R9WrnstAf0GuwAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/anti_homing_unidentified.png",
+    "related_extra_entities": ["data/entities/misc/anti_homing.xml", "data/entities/particles/tinyspark_white.xml"],
+    "type": 2,
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.05,0.3,0.3,0.1,0.1,0.01",
+    "price": 110,
+    "mana": 1,
+    "spawn_probabilities": {
+      "1": 0.05,
+      "2": 0.3,
+      "3": 0.3,
+      "4": 0.1,
+      "5": 0.1,
+      "6": 0.01
+    }
+  },
+  "HOMING_WAND": {
+    "id": "HOMING_WAND",
+    "name": "$action_homing_wand",
+    "description": "$actiondesc_homing_wand",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA/ElEQVR4AaXBQUrDQACF4f+NvUMhLoVu4ymE7rxKvID0ApkzeADBXcF995k71AGXInQnz2nIItbYBvw+2Wbs9uHaXfsmZlpQSOKobip37Z7bh2unmEVhm3MCg7qp3LV7jrp2T91UZobAIMWsuDtwFHcHUsxihsDI0/OKuDvw9LxirsBIilkfnzekmMVMgZG6qUxRN5WZZHMiUNRNZYoUsyhSzKKom8r8INGzGSwoUsyqm8r3d19s1u963C798npFilm0TJAYLChsU6jgcbv0Zv0uLrJBkm3+I/CLzUU2g8AvEhdJDAKTbCbZnAhMkujZ9Gx6EicCZ0n0JP7wDRaDZETb4ip0AAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "spawn_requires_flag": "card_unlocked_homing_wand",
+    "related_extra_entities": ["data/entities/misc/homing_wand.xml", "data/entities/particles/tinyspark_white.xml"],
+    "type": 2,
+    "spawn_level": "1,2,4,5,6,10",
+    "spawn_probability": "0.00001,0.08,0.08,0.25,0.25,0.2",
+    "price": 500,
+    "mana": 200,
+    "spawn_probabilities": {
+      "1": 0.00001,
+      "2": 0.08,
+      "4": 0.08,
+      "5": 0.25,
+      "6": 0.25,
+      "10": 0.2
+    }
+  },
   "HOMING_SHORT": {
     "id": "HOMING_SHORT",
     "name": "$action_homing_short",
@@ -5276,6 +5339,21 @@
       "6": 0.2
     }
   },
+  "SEA_SWAMP": {
+    "id": "SEA_SWAMP",
+    "name": "$action_sea_swamp",
+    "description": "$actiondesc_sea_swamp",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABAUlEQVR4AaXBsWnEQBCG0e80F0xR28wWsg0pVBFKBAsO3Yj5HQxjLZxgEcYO7r1HZvKOhTctvCszqa0kk9pKclNbSSa1lTyxcNrXg9pKcqqt5L4e1FaSl9pK7utBbSU51Vayb53hycu+HtRWsm8dd6NvndpKctrXg6FvndpK7uuBuzE8mfStM+tbZ3A3pGDY14NBCoaFGymQgosUSIG7cXE3Lgt/kIKZFAxScHkykQJ34+Ju/Gfhxd24SMEgBXfuxmzhRgrcDSlwN6RgkILfLJzcjTt3Y3A3pGDmblyevEjB4G7MpGAmBbOF08fH18PdmEmBFMzcjcvn5/eD0yMzeccPMdCLyKgFj5QAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_swamp_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/sea_swamp.xml"],
+    "type": 4,
+    "spawn_level": "0",
+    "spawn_probability": "0",
+    "price": 350,
+    "mana": 140,
+    "max_uses": 3,
+    "spawn_probabilities": {}
+  },
   "SEA_ACID": {
     "id": "SEA_ACID",
     "name": "$action_sea_acid",
@@ -6182,12 +6260,12 @@
     "spawn_requires_flag": "card_unlocked_dragon",
     "type": 2,
     "spawn_level": "1,2,4,5",
-    "spawn_probability": "0.3,0.7,0.4,0.3",
+    "spawn_probability": "0.3,0.65,0.4,0.3",
     "price": 200,
     "mana": 70,
     "spawn_probabilities": {
       "1": 0.3,
-      "2": 0.7,
+      "2": 0.65,
       "4": 0.4,
       "5": 0.3
     }
@@ -6202,12 +6280,12 @@
     "spawn_requires_flag": "card_unlocked_dragon",
     "type": 2,
     "spawn_level": "0,1,2,4,5",
-    "spawn_probability": "0.5,0.2,0.7,0.4,0.2",
+    "spawn_probability": "0.2,0.3,0.7,0.4,0.2",
     "price": 140,
     "mana": 40,
     "spawn_probabilities": {
-      "0": 0.5,
-      "1": 0.2,
+      "0": 0.2,
+      "1": 0.3,
       "2": 0.7,
       "4": 0.4,
       "5": 0.2

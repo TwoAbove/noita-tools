@@ -359,7 +359,7 @@ float RandomDistributionf(float min, float max, float mean, float sharpness)
     return min + (max - min) * GetDistribution(adjMean, sharpness, 0.005f); // Baseline is always this
 }
 
-bool unlockedSpells[401] = {};
+bool unlockedSpells[405] = {};
 
 void SetUnlockedSpells(int i, int val)
 {
@@ -371,8 +371,8 @@ Spell GetRandomAction(float x, float y, int level, int offset = 0)
     NollaPrng *prng = new NollaPrng(0);
     prng->SetRandomSeed(world_seed + (uint)offset, x, y);
     double sum = 0;
-    // all_spells length is 401
-    for (int i = 0; i < 401; i++)
+    // all_spells length is 405
+    for (int i = 0; i < 405; i++)
     {
         if (!unlockedSpells[i])
         {
@@ -384,7 +384,7 @@ Spell GetRandomAction(float x, float y, int level, int offset = 0)
     double multiplyer = prng->Next();
     double accumulated = sum * multiplyer;
 
-    for (int i = 0; i < 401; i++)
+    for (int i = 0; i < 405; i++)
     {
         if (!unlockedSpells[i])
         {
@@ -413,8 +413,8 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
     prng->SetRandomSeed(world_seed + offset, x, y);
     double sum = 0;
 
-    // all_spells length is 401
-    for (int i = 0; i < 401; i++)
+    // all_spells length is 405
+    for (int i = 0; i < 405; i++)
     {
         if (!unlockedSpells[i])
         {
@@ -429,7 +429,7 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
     double multiplyer = prng->Next();
     double accumulated = sum * multiplyer;
 
-    for (int i = 0; i < 401; i++)
+    for (int i = 0; i < 405; i++)
     {
         if (!unlockedSpells[i])
         {
@@ -448,11 +448,11 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
         }
         accumulated -= probability;
     }
-    int rand = prng->Next() * 401;
+    int rand = prng->Next() * 405;
     Spell spell;
-    for (int j = 0; j < 401; j++)
+    for (int j = 0; j < 405; j++)
     {
-        spell = all_spells[(j + rand) % 401];
+        spell = all_spells[(j + rand) % 405];
         if (spell.type == type && spell.spawn_probabilities[level] > 0.0)
         {
             if (!unlockedSpells[j])
