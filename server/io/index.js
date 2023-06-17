@@ -24,7 +24,7 @@ const makeIO = (server, app) => {
   app.get("/api/cluster_stats", (req, res) => {
     res.json({
       hosts: counts.hosts,
-      workers: counts.workers,
+      workers: counts.workers + 8, // 8 from ECS
       appetite: counts.appetite,
     });
   });
