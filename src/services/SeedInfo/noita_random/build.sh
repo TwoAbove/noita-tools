@@ -4,16 +4,16 @@
 # while inotifywait -e close_write **; do sh build.sh; done
 
 # For memory debugging, add these:
-  # -s WARN_UNALIGNED=1 \
-  # -Wover-aligned \
-  # -fsanitize=address \
-  # --profiling \
+# -s WARN_UNALIGNED=1 \
+# -Wover-aligned \
+# -fsanitize=address \
+# --profiling \
 
 em++ --bind -O3 -msse2 -msimd128 \
   -o noita_random.js \
   --std=c++20 \
   --extern-pre-js="pre.js" \
-  --profiling \
+  --closure 1 \
   -s WASM=1 \
   -s FILESYSTEM=0 \
   -s ALLOW_MEMORY_GROWTH=1 \
@@ -30,6 +30,7 @@ em++ --bind -O3 \
   -o noita_random-base.js \
   --std=c++20 \
   --extern-pre-js="pre.js" \
+  --closure 1 \
   -s WASM=1 \
   -s FILESYSTEM=0 \
   -s ALLOW_MEMORY_GROWTH=1 \
@@ -43,6 +44,6 @@ em++ --bind -O3 \
   src/wasm_in.cpp
 
 # To see what the size is to sanity-check
-du -sh noita_random.wasm;
-du -sh noita_random.js;
-echo "";
+du -sh noita_random.wasm
+du -sh noita_random.js
+echo ""

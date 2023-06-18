@@ -214,7 +214,7 @@ export class MapInfoProvider extends InfoProvider {
       });
 
       const ctmtptr = this.randoms.objToMapUIntUIntPtr(color_to_material_table);
-      mh.drawImageData(path, impls[path].src, gx, gy, ctmtptr.$$.ptr);
+      mh.drawImageData(path, impls[path].src, gx, gy, ctmtptr.g.i);
       // this.randoms.Module._free(ctmtptr);
       ctmtptr.delete();
 
