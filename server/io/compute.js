@@ -62,7 +62,7 @@ setInterval(() => {
   if (counts.hosts > 0) {
     pingLambda();
   }
-}, 1000);
+}, 10000);
 
 // Make a function be called n times with backoff. ex: 0, 10, 100, 1000, 10000 seconds from now
 const echoedCall = (fn, count, backoff) => {
