@@ -24,7 +24,7 @@ const makeIO = (server, app) => {
   app.get("/api/cluster_stats", (req, res) => {
     res.json({
       hosts: counts.hosts,
-      workers: counts.workers + 1, // 1 is for the ECS task
+      workers: Math.max(counts.workers, 1), // Always at least 1 thanks to ECS
       appetite: counts.appetite,
     });
   });
