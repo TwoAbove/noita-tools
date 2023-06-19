@@ -18,7 +18,6 @@ em++ --bind -O3 -msse2 -msimd128 \
   -s FILESYSTEM=0 \
   -s ALLOW_MEMORY_GROWTH=1 \
   -s MODULARIZE=1 \
-  -s ASSERTIONS=1 \
   -s NO_EXIT_RUNTIME=1 \
   -s ENVIRONMENT="web,worker,node" \
   -s EXPORT_NAME="create_noita_random" \
@@ -35,7 +34,6 @@ em++ --bind -O3 \
   -s FILESYSTEM=0 \
   -s ALLOW_MEMORY_GROWTH=1 \
   -s MODULARIZE=1 \
-  -s ASSERTIONS=1 \
   -s NO_EXIT_RUNTIME=1 \
   -s ENVIRONMENT="web,worker,node" \
   -s EXPORT_NAME="create_noita_random" \

@@ -101,7 +101,9 @@ export class GameInfoProvider extends EventTarget {
 
   async ready() {
     await this.loadRandomPromise;
-    return Promise.allSettled(Object.values(this.providers).map(p => p.ready()));
+    return Promise.allSettled(Object.values(this.providers).map(p => p.ready())).catch(e => {
+      console.error(e);
+    });
   }
 
   onRandomLoad(cb?) {
@@ -177,7 +179,8 @@ export class GameInfoProvider extends EventTarget {
 
   async provideAll() {
     // I think the c++ code should be immutable. Idea for next refactor.
-    this.randoms!.SetWorldSeed(Number(this.config.seed));
+    const worldSeed = Number(this.config.seed);
+    this.randoms!.SetWorldSeed(worldSeed);
     return {
       alchemy: this.providers.alchemy.provide(),
       biomeModifiers: this.providers.biomeModifier.provide(),
