@@ -12,6 +12,7 @@ type IPerf = {
     min: number;
     max: number;
     avg: number;
+    median: number;
   };
   allTimings: {
     time: number;
@@ -61,21 +62,25 @@ const getParams = (provider: string, x: any, y: any, seed): any[] => {
 };
 
 const getStats = (timings: IPerf["allTimings"]): IPerf["stats"] => {
-  const stats = timings.reduce<{
-    avg: number;
-    min: number;
-    max: number;
-  }>(
-    (c, r) => {
-      c.min = Math.min(c.min, r.time);
-      c.max = Math.max(c.max, r.time);
-      c.avg = c.avg + r.time;
-      return c;
-    },
-    { min: Infinity, max: -Infinity, avg: 0 }
-  );
+  const stats = timings
+    .sort((a, b) => a.time - b.time)
+    .reduce<{
+      avg: number;
+      min: number;
+      median: number;
+      max: number;
+    }>(
+      (c, r) => {
+        c.min = Math.min(c.min, r.time);
+        c.max = Math.max(c.max, r.time);
+        c.avg = c.avg + r.time;
+        return c;
+      },
+      { min: Infinity, max: -Infinity, avg: 0, median: 0 }
+    );
 
   stats.avg = stats.avg / timings.length;
+  stats.median = timings[Math.floor(timings.length / 2)].time;
 
   return stats;
 };
@@ -92,12 +97,13 @@ const printStats = (info: { [provider: string]: IPerf }) => {
       "Min, µs": (data.min * 1000).toFixed(5),
       "Max, µs ": (data.max * 1000).toFixed(5),
       "Avg, µs": (data.avg * 1000).toFixed(5),
+      "Med, µs": (data.median * 1000).toFixed(5),
     }));
   console.table(data);
 };
 
-describe.skip("Performance", () => {
-  // describe.only('Performance', () => {
+// describe.skip("Performance", () => {
+describe.only("Performance", () => {
   const box = 20;
   const seedBox = 20;
 
@@ -112,7 +118,7 @@ describe.skip("Performance", () => {
     const providers = Object.keys(infoProvider.providers);
 
     for (const provider of providers) {
-      if (["statelessPerk"].includes(provider)) {
+      if (["statelessPerk", "map"].includes(provider)) {
         continue;
       }
       const timings: IPerf["allTimings"] = [];

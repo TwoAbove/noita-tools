@@ -115,7 +115,7 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "node ./server",
-    "dev": "NODE_ENV=development concurrently --restart-tries -1 'nodemon ./server' 'craco start' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write **/** **; do sh build.sh; done;'",
+    "dev": "NODE_ENV=development concurrently --restart-tries -1 'nodemon ./server' 'craco start > /dev/null' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write **/** **; do bash build.sh; done;' 'cd src/services/SeedInfo/infoHandler && while inotifywait -e close_write **/** **; do bash build.sh; done;'",
     "cy": "cypress open --e2e",
     "dev-win": "concurrently --restart-tries -1 \"nodemon ./server\" \"craco start\"",
     "build-noita_random": "pwsh -nol -noni -nop -f src/services/SeedInfo/noita_random/build.ps1",
