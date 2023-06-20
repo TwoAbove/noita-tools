@@ -26,6 +26,18 @@ Current features include:
 
 ### Installing and connecting
 
+#### Docker
+
+You can use docker to simply spin up a compute node:
+
+```bash
+docker pull ghcr.io/twoabove/noitool-console-search:latest && docker run -it ghcr.io/twoabove/noitool-console-search:latest --userId xxx
+# Or for dev
+docker pull ghcr.io/twoabove/noitool-console-search:latest-dev && docker run -it ghcr.io/twoabove/noitool-console-search:latest-dev --userId xxx --url https://dev.noitool.com/
+```
+
+#### CLI
+
 To connect to noitool as a compute node, follow these steps:
 
 ```bash
