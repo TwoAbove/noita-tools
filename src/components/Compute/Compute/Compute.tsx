@@ -16,6 +16,7 @@ const Compute = () => {
 
   const [useCores, setUseCores] = useLocalStorage("useCores", 1);
   const [startAutomatically, setStartAutomatically] = useLocalStorage("search-start-automatically", false);
+  const [shouldRefresh, setShouldRefresh] = useLocalStorage("search-should-refresh-on-version-mismatch", false);
   const [seedSolver, setSeedSolver] = useState<SeedSolver>();
 
   const [computeUrl, setComputeUrl] = useState(window.location.host);
@@ -50,6 +51,9 @@ const Compute = () => {
     });
 
     newComputeSocket.on("compute:version_mismatch", () => {
+      if (shouldRefresh) {
+        window.location.reload();
+      }
       setComputeVersionMismatch(true);
       newComputeSocket.stop();
     });
@@ -152,9 +156,13 @@ const Compute = () => {
               <Form.Label>Start automatically</Form.Label>
               <Form.Check
                 type="switch"
-                checked={startAutomatically as any}
+                checked={startAutomatically}
                 onChange={() => setStartAutomatically(!startAutomatically)}
               />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Automatically refresh Noitool if new version is available</Form.Label>
+              <Form.Check type="switch" checked={shouldRefresh} onChange={() => setShouldRefresh(!shouldRefresh)} />
             </Form.Group>
           </Col>
           <Col>
