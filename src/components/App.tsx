@@ -12,8 +12,6 @@ import { AlchemyConfigProvider } from "./AlchemyConfigContext";
 
 import LoadingComponent from "./LoadingComponent";
 import { db } from "../services/db";
-import classNames from "classnames";
-import SyncHandler from "./Settings/SyncHandler";
 import { BrowserRouter, useLocation, useSearchParams } from "react-router-dom";
 import DBError from "./DBError";
 import Patrons from "./Patrons";
@@ -113,12 +111,12 @@ const LazyProfile = () => {
 };
 
 const Header = () => {
-  // noita-tools.herokuapp.com
+  const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "";
   const host = window.location.host;
-  const notNewUrl = !host.includes("noitool.com");
+  const notNewUrl = !host.includes("noitool.com") && !isLocalhost;
   return (
     <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
-      <div className="text-nowrap">
+      <div className="text-nowrap lh-1">
         <h3 className="fs-1 fw-bolder mt-2 mb-0 text-center">Noitool</h3>
         <p className="fs-4 fw-light m-1 mt-0 my-1 text-center">Noita tools and helpers</p>
         {notNewUrl && (

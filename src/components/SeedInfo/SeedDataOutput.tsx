@@ -107,8 +107,11 @@ const SeedDataOutput = (props: ISeedDataProps) => {
       {gameInfoProvider && data ? (
         <GameInfoContext.Provider value={{ gameInfoProvider, data }}>
           <Stack className="seed-info">
-            {data && `Seed: ${seed}`}
-            {data && isDaily && ` (Daily)`}
+            {data && (
+              <p className="my-2">
+                Seed: {seed} {isDaily && ` (Daily)`}
+              </p>
+            )}
             {data && <SeedInfo isDaily={isDaily || false} seed={seed} infoProvider={gameInfoProvider} data={data} />}
           </Stack>
         </GameInfoContext.Provider>

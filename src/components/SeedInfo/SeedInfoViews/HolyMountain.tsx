@@ -410,7 +410,6 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
             ""
           )}
         </Button>
-        <div className="ms-auto" />
       </Stack>
       <PerkDeckModal
         perkDeck={perkDeck}

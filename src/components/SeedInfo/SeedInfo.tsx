@@ -44,7 +44,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
 
   return (
     <Row className="m-0">
-      <Col className="p-0" lg={8}>
+      <Col className="px-2" lg={8} md={12}>
         {/* <Row xs="auto">
 						<Map seed={seed} infoProvider={infoProvider} />
 				</Row> */}
@@ -54,40 +54,42 @@ const SeedInfo = (props: ISeedInfoProps) => {
               <HolyMountain infoProvider={infoProvider} shop={data.shop} perks={data.perks} perkDeck={data.perkDeck} />
             </WithShow>
           </Col>
-          <Col className="my-auto">
-            {!isDaily && (
-              <WithShow id="start">
-                <Start
-                  startingFlask={data.startingFlask}
-                  startingSpell={data.startingSpell}
-                  startingBombSpell={data.startingBombSpell}
-                />
+          <Row xs="auto" className="gap-2 justify-content-center flex-wrap">
+            <Col className="my-auto">
+              {!isDaily && (
+                <WithShow id="start">
+                  <Start
+                    startingFlask={data.startingFlask}
+                    startingSpell={data.startingSpell}
+                    startingBombSpell={data.startingBombSpell}
+                  />
+                </WithShow>
+              )}
+            </Col>
+            <Col className="my-auto">
+              <WithShow id="weather">
+                <Weather infoProvider={infoProvider} weather={data.weather} />
               </WithShow>
-            )}
-          </Col>
-          <Col className="my-auto">
-            <WithShow id="weather">
-              <Weather infoProvider={infoProvider} weather={data.weather} />
-            </WithShow>
-          </Col>
-          <Col className="my-auto">
-            <WithShow id="alchemy">
-              <Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
-            </WithShow>
-          </Col>
-          <Col className="my-auto">
-            <WithShow id="biome">
-              <Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
-            </WithShow>
-          </Col>
-          <Col className="my-auto">
-            <WithShow id="watercave">
-              <Watercave infoProvider={infoProvider} waterCave={data.waterCave} />
-            </WithShow>
-          </Col>
+            </Col>
+            <Col className="my-auto">
+              <WithShow id="watercave">
+                <Watercave infoProvider={infoProvider} waterCave={data.waterCave} />
+              </WithShow>
+            </Col>
+            <Col className="my-auto">
+              <WithShow id="alchemy">
+                <Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
+              </WithShow>
+            </Col>
+            <Col className="my-auto">
+              <WithShow id="biome">
+                <Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
+              </WithShow>
+            </Col>
+          </Row>
         </Row>
       </Col>
-      <Col className="p-0" lg={4}>
+      <Col className="px-2" lg={4}>
         <WithShow id="fungal">
           <FungalShifts infoProvider={infoProvider} fungalData={data.fungalShifts} />
         </WithShow>
