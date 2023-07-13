@@ -111,7 +111,7 @@ const Weather: FC<IWeatherProps> = ({ weather }) => {
 
   if (weather.rain_material) {
     const material = materials.provide(weather.rain_material);
-    const [a, r, g, b] = hexTorgba(material.graphics.color);
+    const [a, r, g, b] = hexTorgba(material?.graphics?.color || material.wang_color);
     color = `rgba(${r},${g},${b},${a})`;
   }
   return (
