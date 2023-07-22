@@ -15,9 +15,11 @@ const noitaData = path.resolve(
   ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
 );
 
+const spellTypes = fs.readFileSync(path.resolve(noitaData, "data/scripts/gun/gun_enums.lua")).toString();
+
 const spellPath = path.resolve(noitaData, "data/scripts/gun/gun_actions.lua");
 const spellFile = fs.readFileSync(spellPath).toString();
-const data = parseAST(parser.parse(spellFile, { wait: false }));
+const data = parseAST(parser.parse(spellTypes + "\n" + spellFile, { wait: false }));
 console.log(util.inspect(data.actions, false, null, true));
 
 const spells = data.actions;
@@ -60,7 +62,9 @@ const spells = data.actions;
     out[d.id] = d;
   }
 
-  fs.writeFileSync(path.resolve(__dirname, "spells.new.json"), JSON.stringify(newSpells, null, 2));
+  const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
 
-  fs.writeFileSync(path.resolve(__dirname, "spells.new.obj.json"), JSON.stringify(out, null, 2));
+  fs.writeFileSync(path.resolve(root, "spells.json"), JSON.stringify(newSpells, null, 2));
+
+  fs.writeFileSync(path.resolve(root, "obj", "spells.json"), JSON.stringify(out, null, 2));
 })();

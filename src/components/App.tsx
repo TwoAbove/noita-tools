@@ -117,7 +117,7 @@ const Header = () => {
   return (
     <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
       <div className="text-nowrap lh-1">
-        <h3 className="fs-1 fw-bolder mt-2 mb-0 text-center">Noitool</h3>
+        <h3 className="fs-1 fw-bolder mb-0 text-center">Noitool</h3>
         <p className="fs-4 fw-light m-1 mt-0 my-1 text-center">Noita tools and helpers</p>
         {notNewUrl && (
           <p className="mb-2 text-center">
@@ -128,7 +128,7 @@ const Header = () => {
           </p>
         )}
       </div>
-      <div className=" d-flex pt-3 justify-content-end align-items-start">
+      <div className=" d-flex pt-2 justify-content-end align-items-start">
         <div className="mx-2">
           <LazyProfile />
         </div>
