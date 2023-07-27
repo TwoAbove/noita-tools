@@ -10,7 +10,7 @@ const dest = path.resolve(root, "perks_new.json");
 
 (async () => {
   const data: any[] = JSON.parse(fs.readFileSync(src).toString());
-  const out = [];
+  const out: any[] = [];
   // console.log(data);
   for (const item of data) {
     await new Promise<void>((res, rej) => {

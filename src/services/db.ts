@@ -119,7 +119,7 @@ export class NoitaDB extends Dexie {
         await ((t as any).db.configItems as NoitaDB["configItems"])
           .add({
             key: "unlocked-spells",
-            val: Array(405).fill(true),
+            val: Array(406).fill(true),
           })
           .catch(e => {
             console.error(e);
@@ -270,7 +270,7 @@ async function populate() {
     },
     {
       key: "unlocked-spells",
-      val: Array(405).fill(true),
+      val: Array(406).fill(true),
     },
     {
       key: "useCores",

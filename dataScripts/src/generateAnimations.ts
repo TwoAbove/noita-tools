@@ -515,13 +515,33 @@ const parseObj = (obj: any) => {
     return out;
   };
 
+  let i = 0;
+  let total = files.length;
+
   for (let val of files) {
     val = val.substring(noitaData.length + 1);
-    console.log(val);
+    if (val.includes("_debug") || val.includes("debug_")) {
+      // Skip debug entities
+      continue;
+    }
+    if (val.includes("_workdir")) {
+      // Skip debug entities
+      continue;
+    }
+    if (
+      [
+        "data/entities/props/_test_physics_heavy.xml",
+        "data/entities/props/_test_physics_heavy.xml",
+        "data/entities/props/_test_physics_heavy.xml",
+      ].includes(val)
+    ) {
+      continue;
+    }
     if (entities[val]) {
       // Already parsed this entity
-      return;
+      continue;
     }
+    console.log(`${i++}/${total}: ${val}`);
     const entityXMLPath = path.resolve(noitaData, val);
     if (fs.existsSync(entityXMLPath)) {
       const entityData = await entityMemo(val, () => parseStringPromise(tryRead(entityXMLPath, "")));

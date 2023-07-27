@@ -11,19 +11,6 @@ const noitaData = path.resolve(
 );
 // Add to these when transferring map impl from Noita.
 
-import maps from "./maps.json";
-
-const functionColors = new Set<number>();
-
-for (let k of Object.keys(maps)) {
-  const map = maps[k];
-  if (map.config && map.config.spawnFunctions) {
-    for (let kk of Object.keys(map.config.spawnFunctions)) {
-      functionColors.add(parseInt(kk, 16));
-    }
-  }
-}
-
 const additional = [
   "data/biome_impl/wand_altar.png",
   "data/biome_impl/potion_altar.png",
@@ -34,16 +21,26 @@ const additional = [
   "data/biome_impl/snowcastle/pillar_filler_01.png",
 ];
 
-const exportImpl = async () => {
+const exportImpl = async maps => {
+  const functionColors = new Set<number>();
+
+  for (let k of Object.keys(maps)) {
+    const map = maps[k];
+    if (map.config && map.config.spawnFunctions) {
+      for (let kk of Object.keys(map.config.spawnFunctions)) {
+        functionColors.add(parseInt(kk, 16));
+      }
+    }
+  }
+
   const impls: any = {};
   const files = new Set<string>();
-  await new Promise<void>(r => {
-    glob("*/biome_impl/**/*.png", { cwd: noitaData, root: noitaData }, (err: any, ff: string[]) => {
-      for (const f of ff) {
-        files.add(f);
-      }
-      r();
-    });
+  await new Promise<void>(async r => {
+    const ff = await glob("*/biome_impl/**/*.png", { cwd: noitaData, root: noitaData });
+    for (const f of ff) {
+      files.add(f);
+    }
+    r();
   });
 
   for (const scene of [...files.values()]) {
@@ -77,9 +74,9 @@ const exportImpl = async () => {
   return impls;
 };
 
-exportImpl().then(impls => {
-  fs.writeFileSync(path.resolve(__dirname, "impl.json"), JSON.stringify(impls, null, 2));
-});
+// exportImpl().then(impls => {
+//   fs.writeFileSync(path.resolve(__dirname, "impl.json"), JSON.stringify(impls, null, 2));
+// });
 // const exportImpl = async (maps: any) => {
 // 	const impls: any = {};
 // 	const scenes = new Set<string>();

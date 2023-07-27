@@ -766,6 +766,25 @@
     }
   },
   {
+    "id": "LANCE_HOLY",
+    "name": "$action_holy",
+    "description": "$actiondesc_holy",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAeklEQVR4Ae3BsQ2DMBCG0f9WwAPReyVcnkei90LHCh+2hBCKIpIU6XhPjz+gZQZdMISjXxCOOlpGB8LRC9MNwrFUjJbRvOq0VVkqps7UEY6mRdqqNC36lg26QTiWitEymledtipLxXSHcNTRMjoQjj6hZQZdMISjx1s7LehKrlePregAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/lance_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/lance_holy.xml"],
+    "type": 0,
+    "spawn_level": "3,5,6",
+    "spawn_probability": "0.5,0.8,1",
+    "price": 250,
+    "mana": 120,
+    "custom_xml_file": "data/entities/misc/custom_cards/lance_holy.xml",
+    "spawn_probabilities": {
+      "3": 0.5,
+      "5": 0.8,
+      "6": 1
+    }
+  },
+  {
     "id": "ROCKET",
     "name": "$action_rocket",
     "description": "$actiondesc_rocket",

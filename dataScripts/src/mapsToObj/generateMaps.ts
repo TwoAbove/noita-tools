@@ -256,7 +256,8 @@ const generateMaps = async () => {
   // const allBiomeData = await cheerio.load(fs.readFileSync(biomeDataXMLPath), {
   // 	xmlMode: true
   // });
-  const allBiomeData = (await parseStringPromise(fs.readFileSync(biomeDataXMLPath))).BiomesToLoad;
+  const BiomeDataXML = await parseStringPromise(fs.readFileSync(biomeDataXMLPath));
+  const allBiomeData = BiomeDataXML.BiomesToLoad;
 
   const maps: any = {};
 
@@ -264,6 +265,7 @@ const generateMaps = async () => {
     const { biome_filename, height_index, color } = b.$;
     const biome_path = path.resolve(noitaData, biome_filename);
     const name = path.basename(biome_path, ".xml");
+    console.log(name);
     const Biome = (await parseStringPromise(fs.readFileSync(biome_path))).Biome;
     const { Topology: _T, Materials: _M } = Biome;
     const Topology = _T[0].$;

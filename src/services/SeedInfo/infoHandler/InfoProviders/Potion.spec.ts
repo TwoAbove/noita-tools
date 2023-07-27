@@ -4,7 +4,6 @@
 
 import { PotionInfoProvider } from "./Potion";
 import { loadRandom } from "../../../../testHelpers";
-import Decimal from "decimal.js";
 
 describe("PotionInfoProvider", () => {
   const tests = [
@@ -14,7 +13,7 @@ describe("PotionInfoProvider", () => {
         x: 1390,
         y: 183,
       },
-      ans: "magic_liquid_mana_regeneration",
+      ans: "material_confusion",
     },
     {
       seed: 1674055821,
@@ -30,7 +29,7 @@ describe("PotionInfoProvider", () => {
         x: 1480,
         y: 833,
       },
-      ans: "magic_liquid_random_polymorph",
+      ans: "magic_liquid_invisibility",
     },
     {
       seed: 1674055821,
@@ -38,7 +37,7 @@ describe("PotionInfoProvider", () => {
         x: 190,
         y: 113,
       },
-      ans: "magic_liquid_faster_levitation",
+      ans: "magic_liquid_invisibility",
     },
     {
       seed: 5,
@@ -46,7 +45,7 @@ describe("PotionInfoProvider", () => {
         x: -78,
         y: 1373,
       },
-      ans: "magic_liquid_unstable_teleportation",
+      ans: "magic_liquid_worm_attractor",
     },
     {
       seed: 10,
@@ -54,7 +53,7 @@ describe("PotionInfoProvider", () => {
         x: -78,
         y: 1373,
       },
-      ans: "magic_liquid_mana_regeneration",
+      ans: "magic_liquid_faster_levitation",
     },
   ];
 

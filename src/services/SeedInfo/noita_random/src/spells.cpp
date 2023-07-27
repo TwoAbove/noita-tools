@@ -61,6 +61,7 @@ const static Spell all_spells[] =
         {"ARROW", PROJECTILE, {0, 1, 1, 0, 0.6, 0.3, 0, 0, 0, 0, 0}},
         {"POLLEN", PROJECTILE, {0.6, 1, 0, 1, 0.6, 0, 0, 0, 0, 0, 0}},
         {"LANCE", PROJECTILE, {0, 0.9, 1, 0, 0, 0.8, 1, 0, 0, 0, 0}},
+        {"LANCE_HOLY", PROJECTILE, {0, 0, 0, 0.5, 0, 0.8, 1, 0, 0, 0, 0}},
         {"ROCKET", PROJECTILE, {0, 1, 1, 1, 0.5, 0.3, 0, 0, 0, 0, 0}},
         {"ROCKET_TIER_2", PROJECTILE, {0, 0, 0.5, 1, 1, 0.8, 0.5, 0, 0, 0, 0}},
         {"ROCKET_TIER_3", PROJECTILE, {0, 0, 0.25, 0.5, 1, 1, 1, 0, 0, 0, 0}},
@@ -426,4 +427,5 @@ const static Spell all_spells[] =
         {"COLOUR_BLUE", MODIFIER, {0, 0, 0.4, 0.1, 0.1, 0, 0, 0, 0, 0, 0}},
         {"COLOUR_RAINBOW", MODIFIER, {0, 0, 0.1, 0.1, 0.1, 0, 0, 0, 0, 0, 0.2}},
         {"COLOUR_INVIS", MODIFIER, {0, 0, 0.1, 0.1, 0.1, 0, 0, 0, 0, 0, 0.1}},
-        {"RAINBOW_TRAIL", MODIFIER, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}};
+        {"RAINBOW_TRAIL", MODIFIER, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+};
