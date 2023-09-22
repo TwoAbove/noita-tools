@@ -331,8 +331,7 @@ export class PerkInfoProvider extends InfoProvider {
           }
           let rerollRes = this._getReroll(res.length);
           if (gambleSelected) {
-            const p1 = this._getNextPerk(perkDeck);
-            const p2 = this._getNextPerk(perkDeck);
+            const [p1, p2] = this.getGamble(perkDeck);
             rerollRes.push(p1);
             rerollRes.push(p2);
             picksForWorld[i].push(p1, p2);
@@ -342,8 +341,7 @@ export class PerkInfoProvider extends InfoProvider {
           }
         } else {
           if (gambleSelected) {
-            const p1 = this._getNextPerk(perkDeck);
-            const p2 = this._getNextPerk(perkDeck);
+            const [p1, p2] = this.getGamble(perkDeck);
             res.push(p1);
             res.push(p2);
             picksForWorld[i].push(p1, p2);
@@ -384,6 +382,24 @@ export class PerkInfoProvider extends InfoProvider {
       hydrated[i] = perks[i]?.map((e: any) => this.perks[e]);
     }
     return hydrated;
+  }
+
+  getGamble(perkDeck: any[]): [string, string] {
+    // This naive approach works perfectly
+    // because of the deduplication of perks
+    // see MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS
+
+    let p1 = this._getNextPerk(perkDeck);
+    if (p1 === "GAMBLE") {
+      p1 = this._getNextPerk(perkDeck);
+    }
+
+    let p2 = this._getNextPerk(perkDeck);
+    if (p2 === "GAMBLE") {
+      p2 = this._getNextPerk(perkDeck);
+    }
+
+    return [p1, p2];
   }
 
   provideStateless(state: IPerkChangeAction[], preview?: boolean) {
@@ -435,8 +451,7 @@ export class PerkInfoProvider extends InfoProvider {
 
           if (perk === "GAMBLE") {
             const perkDeck = this.getPerkDeck();
-            const p1 = this._getNextPerk(perkDeck);
-            const p2 = this._getNextPerk(perkDeck);
+            const [p1, p2] = this.getGamble(perkDeck);
             const l = perks[row].length;
             perks[row].push(p1, p2);
             selected[row][l] = p1;

@@ -53,7 +53,7 @@ const ALCHEMY = [
   "coal",
   "copper",
   "diamond",
-  "fungus_loose",
+  "fungi",
   "gold",
   "grass",
   "gunpowder",
