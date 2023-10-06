@@ -181,6 +181,9 @@ const getComputeAmountForPledgeAmount = pledgeAmount => {
     default: {
       amount = (1000 * 60 * 60 * 20 * 400) / pledgeAmount;
       console.error("Unknown pledgeAmount", pledgeAmount);
+      if (isNaN(amount)) {
+        amount = hamis4Amount;
+      }
       break;
     }
   }
@@ -474,7 +477,7 @@ router.post("/webhook", async (req, res) => {
     case "members:pledge:create": {
       const patron = body.data;
       const patreonId = patron.relationships.user.data.id;
-      const pledgeAmount = patron.attributes.pledge_amount_cents;
+      const pledgeAmount = patron?.attributes?.pledge_amount_cents || patron.will_pay_amount_cents;
       const amount = getComputeAmountForPledgeAmount(pledgeAmount);
 
       let user = await User.findOne({ patreonId });
