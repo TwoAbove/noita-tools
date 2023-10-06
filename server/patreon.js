@@ -193,7 +193,7 @@ router.get(
   "/redirect",
   RateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 5,
+    max: 10,
   }),
   async (req, res) => {
     // Login flow
@@ -333,7 +333,7 @@ router.get(
   "/me",
   RateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 20,
+    max: 40,
   }),
   authenticated,
   loadUser,
