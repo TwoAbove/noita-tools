@@ -113,8 +113,6 @@ export class PotionInfoProvider extends InfoProvider {
         potion_material = "magic_liquid_hp_regeneration";
       } else if (this.randoms.Random(200, 100000) <= 250) {
         potion_material = "purifying_powder";
-      } else if (this.randoms.Random(250, 100000) <= 500) {
-        potion_material = "magic_liquid_weakness";
       } else {
         const p = this.randoms.randomFromArray(materials_magic);
         potion_material = p.material;

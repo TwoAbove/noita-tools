@@ -789,7 +789,7 @@
     "ui_description": "$perkdesc_attract_items",
     "ui_icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAtElEQVR4AX3BsW3EIABA0Q86geQdqKk9BcoC6TIAZRbICinZIQtENEl7ndtDLt2mRoLGAencoPO9J2hmY3YaNWlGNRe6ZduEmI3Z1aQZOevpYgp0NRckJ2IKxBRw1nOQatI8E1PAWY+aNJIHrreVRySD622Fv8Dni+IQU6CTNM56DuvXK+vPL+/fldGFwdvHwhlZcyGmgLOeZ2ouSO5iCjjrcdZzRtDMxuw0atKMai50y7aJf3vvPNZ/gG+GAAAAAElFTkSuQmCC",
     "perk_icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABCklEQVR4AY3BIUvEUADA8f8exwY7dnVh0TCj8WzXhs1k8wPsmn4Am9ki976DySav6AXBgUHjPQYWWTgwbWywlXMPHVzY2P1+Fq3lYr7L8pJDBLMpq3ViWcvFfPf4ucH3PAzbdejTVDXGtig4PzlmkuUlvudhuw59ojDGUFpi+ECWlwhGKC1RWhKFMfsELdt1GKO0JApjbNfBEAxINinJ6zVDBD2STUrn7symo7SkIxjyI3m7vWeI4F8UxnTShwvS5xeMq6eGPhN6XN58MEbQaqoapSVRGDOmqWoMwR6lJVEYE4UxYybBbMr71zc+f5SW9GmqGmNbFJweBVi0lov5LstLDhHMpqzWifUL8tlYW7ZzM0sAAAAASUVORK5CYII=",
-    "usable_by_enemies": false,
+    "usable_by_enemies": true,
     "stackable": true,
     "stackable_maximum": 6,
     "max_in_perk_pool": 1

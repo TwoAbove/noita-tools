@@ -1,7 +1,6 @@
 {
   "name": "noitool",
-  "version": "2.28.4",
-  "packageManager": "yarn@3.6.0",
+  "version": "2.28.5",
   "private": true,
   "homepage": "https://www.noitool.com/",
   "dependencies": {
@@ -80,6 +79,7 @@
     "lua2js": "^0.0.11",
     "luaparse": "^0.3.1",
     "pixelmatch": "^5.3.0",
+    "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dark-mode-toggle": "^0.2.0",
@@ -103,7 +103,7 @@
     "simple-eta": "^3.0.2",
     "socket.io-client": "^4.7.1",
     "source-map-explorer": "^2.5.3",
-    "tesseract.js": "^4.1.1",
+    "tesseract.js": "^5",
     "tslib": "^2.6.0",
     "typescript": "^4.9.5",
     "web-vitals": "^3.3.2",
@@ -121,7 +121,7 @@
     "cy": "cypress open --e2e",
     "dev-win": "concurrently --restart-tries -1 \"nodemon ./server\" \"craco start\"",
     "dev": "NODE_ENV=development concurrently --restart-tries -1 'nodemon ./server' 'craco start > /dev/null' 'cd src/services/SeedInfo/noita_random && while inotifywait -e close_write **/** **; do bash build.sh; done;' 'cd src/services/SeedInfo/infoHandler && while inotifywait -e close_write **/** **; do bash build.sh; done;'",
-    "e2e": "yarn build && concurrently -k  -s first 'cypress run' 'PORT=3000 yarn start'",
+    "e2e": "npm run build && concurrently -k  -s first 'cypress run' 'PORT=3000 npm run start'",
     "prepare": "husky install",
     "start": "node ./server",
     "test": "craco test"

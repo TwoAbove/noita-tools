@@ -6,7 +6,7 @@ import { parseStringPromise } from "xml2js";
 const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
 
 const src = path.resolve(root, "perks.json");
-const dest = path.resolve(root, "perks_new.json");
+const dest = path.resolve(__dirname, "out", "perks.json");
 
 (async () => {
   const data: any[] = JSON.parse(fs.readFileSync(src).toString());
@@ -30,7 +30,7 @@ const dest = path.resolve(root, "perks_new.json");
     });
     out.push(item);
   }
-  fs.writeFileSync(dest, JSON.stringify(out));
+  fs.writeFileSync(dest, JSON.stringify(out, null, 2));
 })();
 
 export {};

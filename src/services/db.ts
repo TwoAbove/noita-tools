@@ -119,7 +119,7 @@ export class NoitaDB extends Dexie {
         await ((t as any).db.configItems as NoitaDB["configItems"])
           .add({
             key: "unlocked-spells",
-            val: Array(406).fill(true),
+            val: Array(393).fill(true),
           })
           .catch(e => {
             console.error(e);
@@ -160,7 +160,7 @@ export class NoitaDB extends Dexie {
                 type: RuleType.AND,
                 rules: [],
                 selectedRule: "search",
-              })
+              }),
             ),
           },
           madeUsingVersion: process.env.REACT_APP_VERSION!,
@@ -270,7 +270,7 @@ async function populate() {
     },
     {
       key: "unlocked-spells",
-      val: Array(406).fill(true),
+      val: Array(393).fill(true),
     },
     {
       key: "useCores",
@@ -306,7 +306,7 @@ async function populate() {
           type: RuleType.AND,
           rules: [],
           selectedRule: "search",
-        })
+        }),
       ),
     },
     madeUsingVersion: process.env.REACT_APP_VERSION!,
@@ -343,7 +343,7 @@ export async function newSearch(): Promise<string> {
           type: RuleType.AND,
           rules: [],
           selectedRule: "search",
-        })
+        }),
       ),
     },
     madeUsingVersion: process.env.REACT_APP_VERSION!,

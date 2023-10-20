@@ -12,7 +12,7 @@ const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
 
 const noitaData = path.resolve(
   require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 
 const perkPath = path.resolve(noitaData, "data/scripts/perks/perk_list.lua");
@@ -60,7 +60,7 @@ const getImage = async (path: any) => {
     out[d.id] = d;
   }
 
-  fs.writeFileSync(path.resolve(__dirname, "perks.new.json"), JSON.stringify(newPerks, null, 2));
+  fs.writeFileSync(path.resolve(__dirname, "out", "perks.json"), JSON.stringify(newPerks, null, 2));
 
-  fs.writeFileSync(path.resolve(__dirname, "perks.new.obj.json"), JSON.stringify(out, null, 2));
+  fs.writeFileSync(path.resolve(__dirname, "out", "obj/perks.json"), JSON.stringify(out, null, 2));
 })();

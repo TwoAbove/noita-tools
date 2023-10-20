@@ -19,8 +19,10 @@ const argbTorgba = (s: string) =>
 
 const noitaData = path.resolve(
   require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
+
+const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
 
 const materialsXMLPath = path.resolve(noitaData, "data/materials.xml");
 
@@ -67,7 +69,7 @@ const getCellData = (cell: any) => {
       materials[c.name].graphics = Graphics[0].$;
     }
   }
-  fs.writeFileSync("./materials.json", JSON.stringify(materials, null, 2));
+  fs.writeFileSync(path.resolve(__dirname, "out", "./materials.json"), JSON.stringify(materials, null, 2));
 })();
 
 export {};

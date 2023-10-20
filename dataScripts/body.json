@@ -12,8 +12,8 @@
       "init": [
         {
           "type": "NumericLiteral",
-          "value": 2,
-          "raw": "2"
+          "value": 3,
+          "raw": "3"
         }
       ]
     },
@@ -74,40 +74,6 @@
         "type": "CallExpression",
         "base": {
           "type": "Identifier",
-          "name": "dofile_once"
-        },
-        "arguments": [
-          {
-            "type": "StringLiteral",
-            "value": null,
-            "raw": "\"data/scripts/biome_modifiers.lua\""
-          }
-        ]
-      }
-    },
-    {
-      "type": "CallStatement",
-      "expression": {
-        "type": "CallExpression",
-        "base": {
-          "type": "Identifier",
-          "name": "dofile"
-        },
-        "arguments": [
-          {
-            "type": "StringLiteral",
-            "value": null,
-            "raw": "\"data/scripts/items/generate_shop_item.lua\""
-          }
-        ]
-      }
-    },
-    {
-      "type": "CallStatement",
-      "expression": {
-        "type": "CallExpression",
-        "base": {
-          "type": "Identifier",
           "name": "RegisterSpawnFunction"
         },
         "arguments": [
@@ -135,13 +101,13 @@
         "arguments": [
           {
             "type": "NumericLiteral",
-            "value": 4283805580,
-            "raw": "0xff55AF8C"
+            "value": 4289318948,
+            "raw": "0xffa9d024"
           },
           {
             "type": "StringLiteral",
             "value": null,
-            "raw": "\"spawn_skulls\""
+            "raw": "\"spawn_tele1\""
           }
         ]
       }
@@ -157,3254 +123,104 @@
         "arguments": [
           {
             "type": "NumericLiteral",
-            "value": 4283196385,
-            "raw": "0xff4c63e1"
+            "value": 4290367524,
+            "raw": "0xffb9d024"
           },
           {
             "type": "StringLiteral",
             "value": null,
-            "raw": "\"spawn_cyst\""
+            "raw": "\"spawn_tele2\""
           }
         ]
       }
     },
     {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
+      "type": "CallStatement",
+      "expression": {
+        "type": "CallExpression",
+        "base": {
           "type": "Identifier",
-          "name": "g_small_enemies"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.1,
-                      "raw": "0.1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.3,
-                      "raw": "0.3"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 2,
-                      "raw": "2"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/shotgunner_hell.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.3,
-                      "raw": "0.3"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 2,
-                      "raw": "2"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/miner_hell.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.5,
-                      "raw": "0.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 4,
-                      "raw": "4"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/rat.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.2,
-                      "raw": "0.2"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/sniper_hell.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
-          "type": "Identifier",
-          "name": "g_big_enemies"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.3,
-                      "raw": "0.3"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.05,
-                      "raw": "0.05"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/worm_big.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.01,
-                      "raw": "0.01"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/worm.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.2,
-                      "raw": "0.2"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/wizard_hearty.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.05,
-                      "raw": "0.05"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/buildings/hpcrystal.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.01,
-                      "raw": "0.01"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 2,
-                      "raw": "2"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/easter/sniper.xml\""
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "spawn_check"
-                    },
-                    "value": {
-                      "type": "FunctionDeclaration",
-                      "identifier": null,
-                      "isLocal": false,
-                      "parameters": [],
-                      "body": [
-                        {
-                          "type": "LocalStatement",
-                          "variables": [
-                            {
-                              "type": "Identifier",
-                              "name": "year"
-                            },
-                            {
-                              "type": "Identifier",
-                              "name": "month"
-                            },
-                            {
-                              "type": "Identifier",
-                              "name": "day"
-                            }
-                          ],
-                          "init": [
-                            {
-                              "type": "CallExpression",
-                              "base": {
-                                "type": "Identifier",
-                                "name": "GameGetDateAndTimeLocal"
-                              },
-                              "arguments": []
-                            }
-                          ]
-                        },
-                        {
-                          "type": "IfStatement",
-                          "clauses": [
-                            {
-                              "type": "IfClause",
-                              "condition": {
-                                "type": "LogicalExpression",
-                                "operator": "and",
-                                "left": {
-                                  "type": "BinaryExpression",
-                                  "operator": "==",
-                                  "left": {
-                                    "type": "Identifier",
-                                    "name": "month"
-                                  },
-                                  "right": {
-                                    "type": "NumericLiteral",
-                                    "value": 8,
-                                    "raw": "8"
-                                  }
-                                },
-                                "right": {
-                                  "type": "BinaryExpression",
-                                  "operator": "==",
-                                  "left": {
-                                    "type": "Identifier",
-                                    "name": "day"
-                                  },
-                                  "right": {
-                                    "type": "NumericLiteral",
-                                    "value": 24,
-                                    "raw": "24"
-                                  }
-                                }
-                              },
-                              "body": [
-                                {
-                                  "type": "ReturnStatement",
-                                  "arguments": [
-                                    {
-                                      "type": "BooleanLiteral",
-                                      "value": true,
-                                      "raw": "true"
-                                    }
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "type": "ElseClause",
-                              "body": [
-                                {
-                                  "type": "ReturnStatement",
-                                  "arguments": [
-                                    {
-                                      "type": "BooleanLiteral",
-                                      "value": false,
-                                      "raw": "false"
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.2,
-                      "raw": "0.2"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/bloodcrystal_physics.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.1,
-                      "raw": "0.1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/necrobot.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.06,
-                      "raw": "0.06"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "ngpluslevel"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/necrobot_super.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.1,
-                      "raw": "0.1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/failed_alchemist.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
-          "type": "Identifier",
-          "name": "g_unique_enemy"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0.0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.1,
-                      "raw": "0.1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/wizard_tele.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.1,
-                      "raw": "0.1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/wizard_dark.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.07,
-                      "raw": "0.07"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/wizard_swapper.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.1,
-                      "raw": "0.1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/necromancer.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
-          "type": "Identifier",
-          "name": "g_unique_enemy2"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0.0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.5,
-                      "raw": "0.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 3,
-                      "raw": "3"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 4,
-                      "raw": "4"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/animals/sniper_hell.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
-          "type": "Identifier",
-          "name": "g_items"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 5,
-                      "raw": "5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/items/wand_level_03.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 5,
-                      "raw": "5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/items/wand_level_04.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 5,
-                      "raw": "5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/items/wand_unshuffle_02.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 5,
-                      "raw": "5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/items/wand_unshuffle_03.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
-          "type": "Identifier",
-          "name": "g_lamp"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.4,
-                      "raw": "0.4"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.7,
-                      "raw": "0.7"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_lantern_small.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
-          "type": "Identifier",
-          "name": "g_props"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.15,
-                      "raw": "0.15"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.5,
-                      "raw": "0.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_box_explosive.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.2,
-                      "raw": "0.2"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_propane_tank.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.3,
-                      "raw": "0.3"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_barrel_oil.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.05,
-                      "raw": "0.05"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_trap_electricity_enabled.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
-          "type": "Identifier",
-          "name": "g_skulls"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1.5,
-                      "raw": "1.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_skull_01.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1.5,
-                      "raw": "1.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_skull_02.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1.5,
-                      "raw": "1.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_skull_03.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.5,
-                      "raw": "0.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_bone_01.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.5,
-                      "raw": "0.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_bone_02.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.5,
-                      "raw": "0.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_bone_03.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.5,
-                      "raw": "0.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_bone_04.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.5,
-                      "raw": "0.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_bone_05.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.5,
-                      "raw": "0.5"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0,
-                      "raw": "0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_bone_06.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
-          "type": "Identifier",
-          "name": "g_ghostlamp"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1.0"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "offset_y"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 10,
-                      "raw": "10"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_chain_torch_ghostly.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "AssignmentStatement",
-      "variables": [
-        {
-          "type": "Identifier",
-          "name": "g_candles"
-        }
-      ],
-      "init": [
-        {
-          "type": "TableConstructorExpression",
-          "fields": [
-            {
-              "type": "TableKeyString",
-              "key": {
-                "type": "Identifier",
-                "name": "total_prob"
-              },
-              "value": {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.33,
-                      "raw": "0.33"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_candle_1.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.33,
-                      "raw": "0.33"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_candle_2.xml\""
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "TableValue",
-              "value": {
-                "type": "TableConstructorExpression",
-                "fields": [
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "prob"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 0.33,
-                      "raw": "0.33"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "min_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "max_count"
-                    },
-                    "value": {
-                      "type": "NumericLiteral",
-                      "value": 1,
-                      "raw": "1"
-                    }
-                  },
-                  {
-                    "type": "TableKeyString",
-                    "key": {
-                      "type": "Identifier",
-                      "name": "entity"
-                    },
-                    "value": {
-                      "type": "StringLiteral",
-                      "value": null,
-                      "raw": "\"data/entities/props/physics_candle_3.xml\""
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "FunctionDeclaration",
-      "identifier": {
-        "type": "Identifier",
-        "name": "init"
-      },
-      "isLocal": false,
-      "parameters": [
-        {
-          "type": "Identifier",
-          "name": "x"
+          "name": "RegisterSpawnFunction"
         },
-        {
+        "arguments": [
+          {
+            "type": "NumericLiteral",
+            "value": 4291416100,
+            "raw": "0xffc9d024"
+          },
+          {
+            "type": "StringLiteral",
+            "value": null,
+            "raw": "\"spawn_tele3\""
+          }
+        ]
+      }
+    },
+    {
+      "type": "CallStatement",
+      "expression": {
+        "type": "CallExpression",
+        "base": {
           "type": "Identifier",
-          "name": "y"
+          "name": "RegisterSpawnFunction"
         },
-        {
+        "arguments": [
+          {
+            "type": "NumericLiteral",
+            "value": 4292464676,
+            "raw": "0xffd9d024"
+          },
+          {
+            "type": "StringLiteral",
+            "value": null,
+            "raw": "\"spawn_tele4\""
+          }
+        ]
+      }
+    },
+    {
+      "type": "CallStatement",
+      "expression": {
+        "type": "CallExpression",
+        "base": {
           "type": "Identifier",
-          "name": "w"
+          "name": "RegisterSpawnFunction"
         },
-        {
+        "arguments": [
+          {
+            "type": "NumericLiteral",
+            "value": 4293513252,
+            "raw": "0xffe9d024"
+          },
+          {
+            "type": "StringLiteral",
+            "value": null,
+            "raw": "\"spawn_tele5\""
+          }
+        ]
+      }
+    },
+    {
+      "type": "CallStatement",
+      "expression": {
+        "type": "CallExpression",
+        "base": {
           "type": "Identifier",
-          "name": "h"
-        }
-      ],
-      "body": []
+          "name": "RegisterSpawnFunction"
+        },
+        "arguments": [
+          {
+            "type": "NumericLiteral",
+            "value": 4294561828,
+            "raw": "0xfff9d024"
+          },
+          {
+            "type": "StringLiteral",
+            "value": null,
+            "raw": "\"spawn_tele6\""
+          }
+        ]
+      }
     },
     {
       "type": "FunctionDeclaration",
@@ -3423,32 +239,7 @@
           "name": "y"
         }
       ],
-      "body": [
-        {
-          "type": "CallStatement",
-          "expression": {
-            "type": "CallExpression",
-            "base": {
-              "type": "Identifier",
-              "name": "spawn"
-            },
-            "arguments": [
-              {
-                "type": "Identifier",
-                "name": "g_small_enemies"
-              },
-              {
-                "type": "Identifier",
-                "name": "x"
-              },
-              {
-                "type": "Identifier",
-                "name": "y"
-              }
-            ]
-          }
-        }
-      ]
+      "body": []
     },
     {
       "type": "FunctionDeclaration",
@@ -3467,120 +258,7 @@
           "name": "y"
         }
       ],
-      "body": [
-        {
-          "type": "CallStatement",
-          "expression": {
-            "type": "CallExpression",
-            "base": {
-              "type": "Identifier",
-              "name": "spawn"
-            },
-            "arguments": [
-              {
-                "type": "Identifier",
-                "name": "g_big_enemies"
-              },
-              {
-                "type": "Identifier",
-                "name": "x"
-              },
-              {
-                "type": "Identifier",
-                "name": "y"
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "type": "FunctionDeclaration",
-      "identifier": {
-        "type": "Identifier",
-        "name": "spawn_unique_enemy"
-      },
-      "isLocal": false,
-      "parameters": [
-        {
-          "type": "Identifier",
-          "name": "x"
-        },
-        {
-          "type": "Identifier",
-          "name": "y"
-        }
-      ],
-      "body": [
-        {
-          "type": "CallStatement",
-          "expression": {
-            "type": "CallExpression",
-            "base": {
-              "type": "Identifier",
-              "name": "spawn"
-            },
-            "arguments": [
-              {
-                "type": "Identifier",
-                "name": "g_unique_enemy"
-              },
-              {
-                "type": "Identifier",
-                "name": "x"
-              },
-              {
-                "type": "Identifier",
-                "name": "y"
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "type": "FunctionDeclaration",
-      "identifier": {
-        "type": "Identifier",
-        "name": "spawn_unique_enemy2"
-      },
-      "isLocal": false,
-      "parameters": [
-        {
-          "type": "Identifier",
-          "name": "x"
-        },
-        {
-          "type": "Identifier",
-          "name": "y"
-        }
-      ],
-      "body": [
-        {
-          "type": "CallStatement",
-          "expression": {
-            "type": "CallExpression",
-            "base": {
-              "type": "Identifier",
-              "name": "spawn"
-            },
-            "arguments": [
-              {
-                "type": "Identifier",
-                "name": "g_unique_enemy2"
-              },
-              {
-                "type": "Identifier",
-                "name": "x"
-              },
-              {
-                "type": "Identifier",
-                "name": "y"
-              }
-            ]
-          }
-        }
-      ]
+      "body": []
     },
     {
       "type": "FunctionDeclaration",
@@ -3599,207 +277,7 @@
           "name": "y"
         }
       ],
-      "body": [
-        {
-          "type": "LocalStatement",
-          "variables": [
-            {
-              "type": "Identifier",
-              "name": "r"
-            }
-          ],
-          "init": [
-            {
-              "type": "CallExpression",
-              "base": {
-                "type": "Identifier",
-                "name": "ProceduralRandom"
-              },
-              "arguments": [
-                {
-                  "type": "BinaryExpression",
-                  "operator": "-",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "x"
-                  },
-                  "right": {
-                    "type": "NumericLiteral",
-                    "value": 11.631,
-                    "raw": "11.631"
-                  }
-                },
-                {
-                  "type": "BinaryExpression",
-                  "operator": "+",
-                  "left": {
-                    "type": "Identifier",
-                    "name": "y"
-                  },
-                  "right": {
-                    "type": "NumericLiteral",
-                    "value": 10.2257,
-                    "raw": "10.2257"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "IfStatement",
-          "clauses": [
-            {
-              "type": "IfClause",
-              "condition": {
-                "type": "BinaryExpression",
-                "operator": "<",
-                "left": {
-                  "type": "Identifier",
-                  "name": "r"
-                },
-                "right": {
-                  "type": "NumericLiteral",
-                  "value": 0.45,
-                  "raw": "0.45"
-                }
-              },
-              "body": [
-                {
-                  "type": "CallStatement",
-                  "expression": {
-                    "type": "CallExpression",
-                    "base": {
-                      "type": "Identifier",
-                      "name": "LoadPixelScene"
-                    },
-                    "arguments": [
-                      {
-                        "type": "StringLiteral",
-                        "value": null,
-                        "raw": "\"data/biome_impl/wand_altar.png\""
-                      },
-                      {
-                        "type": "StringLiteral",
-                        "value": null,
-                        "raw": "\"data/biome_impl/wand_altar_visual.png\""
-                      },
-                      {
-                        "type": "BinaryExpression",
-                        "operator": "-",
-                        "left": {
-                          "type": "Identifier",
-                          "name": "x"
-                        },
-                        "right": {
-                          "type": "NumericLiteral",
-                          "value": 15,
-                          "raw": "15"
-                        }
-                      },
-                      {
-                        "type": "BinaryExpression",
-                        "operator": "-",
-                        "left": {
-                          "type": "Identifier",
-                          "name": "y"
-                        },
-                        "right": {
-                          "type": "NumericLiteral",
-                          "value": 17,
-                          "raw": "17"
-                        }
-                      },
-                      {
-                        "type": "StringLiteral",
-                        "value": null,
-                        "raw": "\"\""
-                      },
-                      {
-                        "type": "BooleanLiteral",
-                        "value": true,
-                        "raw": "true"
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "FunctionDeclaration",
-      "identifier": {
-        "type": "Identifier",
-        "name": "spawn_lamp"
-      },
-      "isLocal": false,
-      "parameters": [
-        {
-          "type": "Identifier",
-          "name": "x"
-        },
-        {
-          "type": "Identifier",
-          "name": "y"
-        }
-      ],
-      "body": [
-        {
-          "type": "CallStatement",
-          "expression": {
-            "type": "CallExpression",
-            "base": {
-              "type": "Identifier",
-              "name": "spawn"
-            },
-            "arguments": [
-              {
-                "type": "Identifier",
-                "name": "g_lamp"
-              },
-              {
-                "type": "BinaryExpression",
-                "operator": "+",
-                "left": {
-                  "type": "Identifier",
-                  "name": "x"
-                },
-                "right": {
-                  "type": "NumericLiteral",
-                  "value": 5,
-                  "raw": "5"
-                }
-              },
-              {
-                "type": "BinaryExpression",
-                "operator": "+",
-                "left": {
-                  "type": "Identifier",
-                  "name": "y"
-                },
-                "right": {
-                  "type": "NumericLiteral",
-                  "value": 10,
-                  "raw": "10"
-                }
-              },
-              {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              },
-              {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            ]
-          }
-        }
-      ]
+      "body": []
     },
     {
       "type": "FunctionDeclaration",
@@ -3818,165 +296,13 @@
           "name": "y"
         }
       ],
-      "body": [
-        {
-          "type": "CallStatement",
-          "expression": {
-            "type": "CallExpression",
-            "base": {
-              "type": "Identifier",
-              "name": "spawn"
-            },
-            "arguments": [
-              {
-                "type": "Identifier",
-                "name": "g_props"
-              },
-              {
-                "type": "Identifier",
-                "name": "x"
-              },
-              {
-                "type": "BinaryExpression",
-                "operator": "-",
-                "left": {
-                  "type": "Identifier",
-                  "name": "y"
-                },
-                "right": {
-                  "type": "NumericLiteral",
-                  "value": 3,
-                  "raw": "3"
-                }
-              },
-              {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              },
-              {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            ]
-          }
-        }
-      ]
+      "body": []
     },
     {
       "type": "FunctionDeclaration",
       "identifier": {
         "type": "Identifier",
-        "name": "spawn_skulls"
-      },
-      "isLocal": false,
-      "parameters": [
-        {
-          "type": "Identifier",
-          "name": "x"
-        },
-        {
-          "type": "Identifier",
-          "name": "y"
-        }
-      ],
-      "body": [
-        {
-          "type": "CallStatement",
-          "expression": {
-            "type": "CallExpression",
-            "base": {
-              "type": "Identifier",
-              "name": "spawn"
-            },
-            "arguments": [
-              {
-                "type": "Identifier",
-                "name": "g_skulls"
-              },
-              {
-                "type": "Identifier",
-                "name": "x"
-              },
-              {
-                "type": "Identifier",
-                "name": "y"
-              },
-              {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              },
-              {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "type": "FunctionDeclaration",
-      "identifier": {
-        "type": "Identifier",
-        "name": "spawn_stones"
-      },
-      "isLocal": false,
-      "parameters": [
-        {
-          "type": "Identifier",
-          "name": "x"
-        },
-        {
-          "type": "Identifier",
-          "name": "y"
-        }
-      ],
-      "body": [
-        {
-          "type": "CallStatement",
-          "expression": {
-            "type": "CallExpression",
-            "base": {
-              "type": "Identifier",
-              "name": "spawn"
-            },
-            "arguments": [
-              {
-                "type": "Identifier",
-                "name": "g_stones"
-              },
-              {
-                "type": "Identifier",
-                "name": "x"
-              },
-              {
-                "type": "Identifier",
-                "name": "y"
-              },
-              {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              },
-              {
-                "type": "NumericLiteral",
-                "value": 0,
-                "raw": "0"
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "type": "FunctionDeclaration",
-      "identifier": {
-        "type": "Identifier",
-        "name": "load_pixel_scene"
+        "name": "spawn_props2"
       },
       "isLocal": false,
       "parameters": [
@@ -3995,7 +321,45 @@
       "type": "FunctionDeclaration",
       "identifier": {
         "type": "Identifier",
-        "name": "load_pixel_scene_alt"
+        "name": "spawn_props3"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
+        },
+        {
+          "type": "Identifier",
+          "name": "y"
+        }
+      ],
+      "body": []
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "spawn_lamp"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
+        },
+        {
+          "type": "Identifier",
+          "name": "y"
+        }
+      ],
+      "body": []
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "load_pixel_scene"
       },
       "isLocal": false,
       "parameters": [
@@ -4033,7 +397,7 @@
       "type": "FunctionDeclaration",
       "identifier": {
         "type": "Identifier",
-        "name": "load_pixel_scene3"
+        "name": "spawn_unique_enemy"
       },
       "isLocal": false,
       "parameters": [
@@ -4052,7 +416,7 @@
       "type": "FunctionDeclaration",
       "identifier": {
         "type": "Identifier",
-        "name": "load_pixel_scene4"
+        "name": "spawn_unique_enemy2"
       },
       "isLocal": false,
       "parameters": [
@@ -4071,7 +435,7 @@
       "type": "FunctionDeclaration",
       "identifier": {
         "type": "Identifier",
-        "name": "spawn_altar_torch"
+        "name": "spawn_unique_enemy3"
       },
       "isLocal": false,
       "parameters": [
@@ -4082,6 +446,109 @@
         {
           "type": "Identifier",
           "name": "y"
+        }
+      ],
+      "body": []
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "spawn_ghostlamp"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
+        },
+        {
+          "type": "Identifier",
+          "name": "y"
+        }
+      ],
+      "body": []
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "spawn_candles"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
+        },
+        {
+          "type": "Identifier",
+          "name": "y"
+        }
+      ],
+      "body": []
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "spawn_potions"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
+        },
+        {
+          "type": "Identifier",
+          "name": "y"
+        }
+      ],
+      "body": []
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "spawn_wands"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
+        },
+        {
+          "type": "Identifier",
+          "name": "y"
+        }
+      ],
+      "body": []
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "init"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
+        },
+        {
+          "type": "Identifier",
+          "name": "y"
+        },
+        {
+          "type": "Identifier",
+          "name": "w"
+        },
+        {
+          "type": "Identifier",
+          "name": "h"
         }
       ],
       "body": [
@@ -4091,72 +558,19 @@
             "type": "CallExpression",
             "base": {
               "type": "Identifier",
-              "name": "EntityLoad"
+              "name": "LoadPixelScene"
             },
             "arguments": [
               {
                 "type": "StringLiteral",
                 "value": null,
-                "raw": "\"data/entities/props/altar_torch.xml\""
+                "raw": "\"data/biome_impl/teleroom.png\""
               },
               {
-                "type": "BinaryExpression",
-                "operator": "-",
-                "left": {
-                  "type": "Identifier",
-                  "name": "x"
-                },
-                "right": {
-                  "type": "NumericLiteral",
-                  "value": 7,
-                  "raw": "7"
-                }
+                "type": "StringLiteral",
+                "value": null,
+                "raw": "\"\""
               },
-              {
-                "type": "BinaryExpression",
-                "operator": "-",
-                "left": {
-                  "type": "Identifier",
-                  "name": "y"
-                },
-                "right": {
-                  "type": "NumericLiteral",
-                  "value": 36,
-                  "raw": "36"
-                }
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "type": "FunctionDeclaration",
-      "identifier": {
-        "type": "Identifier",
-        "name": "spawn_shopitem"
-      },
-      "isLocal": false,
-      "parameters": [
-        {
-          "type": "Identifier",
-          "name": "x"
-        },
-        {
-          "type": "Identifier",
-          "name": "y"
-        }
-      ],
-      "body": [
-        {
-          "type": "CallStatement",
-          "expression": {
-            "type": "CallExpression",
-            "base": {
-              "type": "Identifier",
-              "name": "generate_shop_item"
-            },
-            "arguments": [
               {
                 "type": "Identifier",
                 "name": "x"
@@ -4164,16 +578,16 @@
               {
                 "type": "Identifier",
                 "name": "y"
+              },
+              {
+                "type": "StringLiteral",
+                "value": null,
+                "raw": "\"\""
               },
               {
                 "type": "BooleanLiteral",
-                "value": false,
-                "raw": "false"
-              },
-              {
-                "type": "NumericLiteral",
-                "value": 3,
-                "raw": "3"
+                "value": true,
+                "raw": "true"
               }
             ]
           }
@@ -4184,7 +598,7 @@
       "type": "FunctionDeclaration",
       "identifier": {
         "type": "Identifier",
-        "name": "spawn_vines"
+        "name": "spawn_orb"
       },
       "isLocal": false,
       "parameters": [
@@ -4203,7 +617,7 @@
       "type": "FunctionDeclaration",
       "identifier": {
         "type": "Identifier",
-        "name": "spawn_electricity_trap"
+        "name": "spawn_tele1"
       },
       "isLocal": false,
       "parameters": [
@@ -4229,7 +643,7 @@
               {
                 "type": "StringLiteral",
                 "value": null,
-                "raw": "\"data/entities/props/physics_trap_electricity_enabled.xml\""
+                "raw": "\"data/entities/buildings/teleport_teleroom_1.xml\""
               },
               {
                 "type": "Identifier",
@@ -4248,7 +662,7 @@
       "type": "FunctionDeclaration",
       "identifier": {
         "type": "Identifier",
-        "name": "spawn_burning_barrel"
+        "name": "spawn_tele2"
       },
       "isLocal": false,
       "parameters": [
@@ -4274,7 +688,7 @@
               {
                 "type": "StringLiteral",
                 "value": null,
-                "raw": "\"data/entities/props/physics_barrel_burning.xml\""
+                "raw": "\"data/entities/buildings/teleport_teleroom_2.xml\""
               },
               {
                 "type": "Identifier",
@@ -4293,26 +707,7 @@
       "type": "FunctionDeclaration",
       "identifier": {
         "type": "Identifier",
-        "name": "spawn_fish"
-      },
-      "isLocal": false,
-      "parameters": [
-        {
-          "type": "Identifier",
-          "name": "x"
-        },
-        {
-          "type": "Identifier",
-          "name": "y"
-        }
-      ],
-      "body": []
-    },
-    {
-      "type": "FunctionDeclaration",
-      "identifier": {
-        "type": "Identifier",
-        "name": "spawn_cyst"
+        "name": "spawn_tele3"
       },
       "isLocal": false,
       "parameters": [
@@ -4327,45 +722,50 @@
       ],
       "body": [
         {
-          "type": "IfStatement",
-          "clauses": [
-            {
-              "type": "IfClause",
-              "condition": {
-                "type": "BinaryExpression",
-                "operator": "<",
-                "left": {
-                  "type": "CallExpression",
-                  "base": {
-                    "type": "Identifier",
-                    "name": "ProceduralRandom"
-                  },
-                  "arguments": [
-                    {
-                      "type": "Identifier",
-                      "name": "x"
-                    },
-                    {
-                      "type": "Identifier",
-                      "name": "y"
-                    }
-                  ]
-                },
-                "right": {
-                  "type": "NumericLiteral",
-                  "value": 0.3,
-                  "raw": "0.3"
-                }
+          "type": "CallStatement",
+          "expression": {
+            "type": "CallExpression",
+            "base": {
+              "type": "Identifier",
+              "name": "EntityLoad"
+            },
+            "arguments": [
+              {
+                "type": "StringLiteral",
+                "value": null,
+                "raw": "\"data/entities/buildings/teleport_teleroom_3.xml\""
               },
-              "body": [
-                {
-                  "type": "ReturnStatement",
-                  "arguments": []
-                }
-              ]
-            }
-          ]
+              {
+                "type": "Identifier",
+                "name": "x"
+              },
+              {
+                "type": "Identifier",
+                "name": "y"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "spawn_tele4"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
         },
+        {
+          "type": "Identifier",
+          "name": "y"
+        }
+      ],
+      "body": [
         {
           "type": "CallStatement",
           "expression": {
@@ -4378,33 +778,105 @@
               {
                 "type": "StringLiteral",
                 "value": null,
-                "raw": "\"data/entities/props/meat_cyst.xml\""
+                "raw": "\"data/entities/buildings/teleport_teleroom_4.xml\""
               },
               {
-                "type": "BinaryExpression",
-                "operator": "+",
-                "left": {
-                  "type": "Identifier",
-                  "name": "x"
-                },
-                "right": {
-                  "type": "NumericLiteral",
-                  "value": 5,
-                  "raw": "5"
-                }
+                "type": "Identifier",
+                "name": "x"
               },
               {
-                "type": "BinaryExpression",
-                "operator": "+",
-                "left": {
-                  "type": "Identifier",
-                  "name": "y"
-                },
-                "right": {
-                  "type": "NumericLiteral",
-                  "value": 5,
-                  "raw": "5"
-                }
+                "type": "Identifier",
+                "name": "y"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "spawn_tele5"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
+        },
+        {
+          "type": "Identifier",
+          "name": "y"
+        }
+      ],
+      "body": [
+        {
+          "type": "CallStatement",
+          "expression": {
+            "type": "CallExpression",
+            "base": {
+              "type": "Identifier",
+              "name": "EntityLoad"
+            },
+            "arguments": [
+              {
+                "type": "StringLiteral",
+                "value": null,
+                "raw": "\"data/entities/buildings/teleport_teleroom_5.xml\""
+              },
+              {
+                "type": "Identifier",
+                "name": "x"
+              },
+              {
+                "type": "Identifier",
+                "name": "y"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "FunctionDeclaration",
+      "identifier": {
+        "type": "Identifier",
+        "name": "spawn_tele6"
+      },
+      "isLocal": false,
+      "parameters": [
+        {
+          "type": "Identifier",
+          "name": "x"
+        },
+        {
+          "type": "Identifier",
+          "name": "y"
+        }
+      ],
+      "body": [
+        {
+          "type": "CallStatement",
+          "expression": {
+            "type": "CallExpression",
+            "base": {
+              "type": "Identifier",
+              "name": "EntityLoad"
+            },
+            "arguments": [
+              {
+                "type": "StringLiteral",
+                "value": null,
+                "raw": "\"data/entities/buildings/teleport_teleroom_6.xml\""
+              },
+              {
+                "type": "Identifier",
+                "name": "x"
+              },
+              {
+                "type": "Identifier",
+                "name": "y"
               }
             ]
           }
@@ -4412,106 +884,5 @@
       ]
     }
   ],
-  "comments": [
-    {
-      "type": "Comment",
-      "value": " default biome functions that get called if we can't find a a specific biome that works for us",
-      "raw": "-- default biome functions that get called if we can't find a a specific biome that works for us"
-    },
-    {
-      "type": "Comment",
-      "value": " The level of action ids that are spawned from the chests",
-      "raw": "-- The level of action ids that are spawned from the chests"
-    },
-    {
-      "type": "Comment",
-      "value": "---------- SMALL ENEMIES --------",
-      "raw": "------------ SMALL ENEMIES --------"
-    },
-    {
-      "type": "Comment",
-      "value": " this is air, so nothing spawns at 0.6",
-      "raw": "-- this is air, so nothing spawns at 0.6"
-    },
-    {
-      "type": "Comment",
-      "value": " add skullflys after this step",
-      "raw": "-- add skullflys after this step"
-    },
-    {
-      "type": "Comment",
-      "value": "---------- BIG ENEMIES ----------",
-      "raw": "------------ BIG ENEMIES ----------"
-    },
-    {
-      "type": "Comment",
-      "value": " this is air, so nothing spawns at 0.6",
-      "raw": "-- this is air, so nothing spawns at 0.6"
-    },
-    {
-      "type": "Comment",
-      "value": " add skullflys after this step",
-      "raw": "-- add skullflys after this step"
-    },
-    {
-      "type": "Comment",
-      "value": "-------- UNIQUE ENCOUNTERS ---------------",
-      "raw": "---------- UNIQUE ENCOUNTERS ---------------"
-    },
-    {
-      "type": "Comment",
-      "value": " this is air, so nothing spawns at 0.6",
-      "raw": "-- this is air, so nothing spawns at 0.6"
-    },
-    {
-      "type": "Comment",
-      "value": " add skullflys after this step",
-      "raw": "-- add skullflys after this step"
-    },
-    {
-      "type": "Comment",
-      "value": " this is air, so nothing spawns at 0.6",
-      "raw": "-- this is air, so nothing spawns at 0.6"
-    },
-    {
-      "type": "Comment",
-      "value": " add skullflys after this step",
-      "raw": "-- add skullflys after this step"
-    },
-    {
-      "type": "Comment",
-      "value": "---------- ITEMS ----------------",
-      "raw": "------------ ITEMS ----------------"
-    },
-    {
-      "type": "Comment",
-      "value": " this is air, so nothing spawns at 0.6",
-      "raw": "-- this is air, so nothing spawns at 0.6"
-    },
-    {
-      "type": "Comment",
-      "value": " add skullflys after this step",
-      "raw": "-- add skullflys after this step"
-    },
-    {
-      "type": "Comment",
-      "value": " debug tests",
-      "raw": "-- debug tests"
-    },
-    {
-      "type": "Comment",
-      "value": " add skullflys after this step",
-      "raw": "-- add skullflys after this step"
-    },
-    {
-      "type": "Comment",
-      "value": " add skullflys after this step",
-      "raw": "-- add skullflys after this step"
-    },
-    {
-      "type": "Comment",
-      "value": " actual functions that get called from the wang generator",
-      "raw": "-- actual functions that get called from the wang generator"
-    }
-  ]
+  "comments": []
 }

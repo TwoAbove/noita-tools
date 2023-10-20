@@ -116,5 +116,6 @@ console-build
 ssl
 
 dataScripts/src/mapsToObj/gen
+dataScripts/src/out
 
 cypress/screenshots/

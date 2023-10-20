@@ -67,7 +67,7 @@ class OCRHandler extends EventTarget {
   }
 
   async startTesseract() {
-    const worker = await Tesseract.createWorker({
+    const worker = await Tesseract.createWorker("eng", Tesseract.OEM.TESSERACT_ONLY, {
       // langPath: 'https://tessdata.projectnaptha.com/4.0.0_fast',
       // langPath: '/ocr/good',
       errorHandler: e => {
@@ -79,10 +79,7 @@ class OCRHandler extends EventTarget {
       cacheMethod: "none",
       // logger: this.canvasRef ? console.log : () => { },
     });
-    await worker.loadLanguage("eng");
-    await worker.initialize("eng");
     await worker.setParameters({
-      tessedit_ocr_engine_mode: Tesseract.OEM.TESSERACT_ONLY,
       tessedit_pageseg_mode: Tesseract.PSM.AUTO_ONLY, // https://github.com/tesseract-ocr/tesseract/blob/4.0.0/src/ccstruct/publictypes.h#L163
       tessjs_create_hocr: "0",
       tessjs_create_tsv: "0",
@@ -200,9 +197,9 @@ class OCRHandler extends EventTarget {
           20,
           displayParams.height - displayParams.height / 8,
           displayParams.width / 2.3,
-          displayParams.height / 8
-        )
-      )
+          displayParams.height / 8,
+        ),
+      ),
     );
 
     if (this.canvasRef) {

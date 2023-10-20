@@ -68,7 +68,7 @@ export const GameInfoContext = createContext<{
 
 export const useGameInfoProvider = (
   seed: string,
-  unlockedSpells: boolean[]
+  unlockedSpells: boolean[],
 ): [GameInfoProvider?, Awaited<ReturnType<GameInfoProvider["provideAll"]>>?] => {
   const [data, setData] = useState<Awaited<ReturnType<GameInfoProvider["provideAll"]>>>();
 
@@ -100,7 +100,7 @@ export const useGameInfoProvider = (
 
 const SeedDataOutput = (props: ISeedDataProps) => {
   const { seed, isDaily } = props;
-  const [unlockedSpells] = useLocalStorage<boolean[]>("unlocked-spells", Array(406).fill(true));
+  const [unlockedSpells] = useLocalStorage<boolean[]>("unlocked-spells", Array(393).fill(true));
   const [gameInfoProvider, data] = useGameInfoProvider(seed, unlockedSpells);
   return (
     <>
