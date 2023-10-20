@@ -24,6 +24,8 @@ const b2 = new B2({
 
 const app = express();
 
+app.set("trust proxy", 2);
+
 app.use(morgan("combined"));
 app.use(cookieParser());
 app.use(
@@ -31,12 +33,12 @@ app.use(
     verify: (req, res, buf) => {
       req.rawBody = buf;
     },
-  })
+  }),
 );
 app.use(
   bodyParser.urlencoded({
     extended: true,
-  })
+  }),
 );
 
 let data = [];
@@ -122,7 +124,7 @@ for (const route of ["/", "/info", "/search", "/live", "/test", "/compute", "/co
     (req, res) => {
       res.setHeader("Cache-Control", "no-store");
       res.sendFile("build/index.html", { root: "." });
-    }
+    },
   );
 }
 
@@ -130,25 +132,25 @@ app.use(
   "/static",
   express.static("build/static", {
     maxAge: "1y",
-  })
+  }),
 );
 app.use(
   "/locales",
   express.static("build/locales", {
     maxAge: "1d",
-  })
+  }),
 );
 app.use(
   "/ocr",
   express.static("build/ocr", {
     maxAge: "1d",
-  })
+  }),
 );
 app.use(
   "/",
   express.static("build/", {
     maxAge: "1d",
-  })
+  }),
 );
 
 app.use((err, req, res, next) => {

@@ -261,7 +261,7 @@ router.get(
     }
 
     res.redirect("/");
-  }
+  },
 );
 
 const authenticated = (req, res, next) => {
@@ -343,7 +343,7 @@ router.get(
   loadPatreonClient,
   async (req, res) => {
     res.send(gatherMeData(req.user, req.patreonUser));
-  }
+  },
 );
 
 // router.get('/me/db/:collection', authenticated, loadUser, async (req, res) => {
@@ -438,7 +438,7 @@ router.post(
     genSessionCookie(res);
 
     res.status(200).send(null);
-  }
+  },
 );
 
 router.post(
@@ -455,7 +455,7 @@ router.post(
     res.status(200).send(null);
     const user = req.user;
     user.sessionToken = randomUUID();
-  }
+  },
 );
 
 // handle patreon webhook
