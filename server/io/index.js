@@ -6,6 +6,7 @@ const { rooms } = require("./rooms");
 
 const corsDomains = [
   "dev.noitool.com",
+  "www.noitool.com",
   "noitool.com",
   "localhost:3000",
   "localhost:3001",
