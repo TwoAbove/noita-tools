@@ -42,6 +42,10 @@ const makeIO = (server, app) => {
     },
   });
 
+  io.engine.on("connection_error", err => {
+    console.log(err);
+  });
+
   io.on("connection", socket => {
     console.log("New connection");
     handleConnection(socket, io);

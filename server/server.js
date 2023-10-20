@@ -112,9 +112,6 @@ app.get("/m/*", async (req, res) => {
 
 const server = require("http").createServer(app);
 const io = require("./io")(server, app);
-io.engine.on("connection_error", err => {
-  console.log(err);
-});
 
 // This is a hack for cleaner routing from the client's React Router.
 // So that 404s still work, but the client can still route only to existing pages.
