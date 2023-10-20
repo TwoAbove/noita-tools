@@ -19,7 +19,7 @@ RUN npm i esbuild
 
 COPY . .
 
-# RUN yarn install
+# RUN npm install
 
 RUN npm run console-build
 
@@ -33,6 +33,6 @@ WORKDIR /app
 
 COPY --from=build-image /app/console-build /app/
 
-RUN yarn install --production=true
+RUN npm install --production=true
 
-ENTRYPOINT ["yarn", "start"]
+ENTRYPOINT ["npm", "run", "start"]
