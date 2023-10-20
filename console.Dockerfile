@@ -1,4 +1,4 @@
-FROM node:18-slim as build-image
+FROM node:20-slim as build-image
 
 RUN apt-get update && \
   apt-get install -y \
@@ -15,17 +15,24 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
+RUN npm i esbuild
+
 COPY . .
 
-RUN yarn install --frozen-lockfile
+# RUN npm install
 
-RUN yarn lambda-build
+RUN npm run console-build
 
-RUN rm -rf node_modules && yarn install --frozen-lockfile --production=true
+FROM node:20-slim
 
-FROM node:18-alpine
+RUN apt-get update && \
+  apt-get install -y \
+  python3 make g++
 
-COPY --from=build-image /app/lambda-build  ./
-COPY --from=build-image /app/node_modules  ./
+WORKDIR /app
 
-ENTRYPOINT ["node", "consoleSearch.js"]
+COPY --from=build-image /app/console-build /app/
+
+RUN npm install --production=true
+
+ENTRYPOINT ["npm", "run", "start"]

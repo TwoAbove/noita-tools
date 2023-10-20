@@ -1,5 +1,5 @@
 build
-lambda-build
+console-build
 ssl
 dataScripts/src/mapsToObj/gen
 public

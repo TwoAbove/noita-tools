@@ -3,7 +3,12 @@ cypress
 node_modules
 build
 dataScripts
-lambda-build
-public
 server
 *.Dockerfile
+
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

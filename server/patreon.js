@@ -113,13 +113,14 @@ const getIdentity = async token => {
   }).then(r => r.json());
 };
 
-const hamisAmount = 1000 * 60 * 60 * 20; // 20 hours
-const hamis2Amount = 1000 * 60 * 60 * 40; // 40 hours
-const hamis3Amount = 1000 * 60 * 60 * 80; // 80 hours
-const hamis4Amount = 1000 * 60 * 60 * 160; // 160 hours
+const nonHamisAmount = 1000 * 60 * 60 * 2; // 2 hours
+const hamisAmount = 1000 * 60 * 60 * 10; // 10 hours
+const hamis2Amount = 1000 * 60 * 60 * 20; // 20 hours
+const hamis3Amount = 1000 * 60 * 60 * 40; // 40 hours
+const hamis4Amount = 1000 * 60 * 60 * 800; // 80 hours
 
 const getComputeAmountForTier = tierId => {
-  let amount = 1000 * 60 * 60 * 5; // 5 hours
+  let amount;
 
   switch (tierId) {
     case "9702578": {
@@ -144,7 +145,7 @@ const getComputeAmountForTier = tierId => {
       break;
     }
     default: {
-      amount = 1000 * 60 * 60 * 5;
+      amount = +nonHamisAmount;
       console.error("Unknown tier", tierId);
       break;
     }
@@ -154,7 +155,7 @@ const getComputeAmountForTier = tierId => {
 };
 
 const getComputeAmountForPledgeAmount = pledgeAmount => {
-  let amount = 1000 * 60 * 60 * 5; // 5 hours
+  let amount;
 
   switch (pledgeAmount) {
     case 400: {
@@ -179,7 +180,7 @@ const getComputeAmountForPledgeAmount = pledgeAmount => {
       break;
     }
     default: {
-      amount = (1000 * 60 * 60 * 20 * 400) / pledgeAmount;
+      amount = (1000 * 60 * 60 * 10 * 400) / pledgeAmount;
       console.error("Unknown pledgeAmount", pledgeAmount);
       if (isNaN(amount)) {
         amount = hamis4Amount;
@@ -233,7 +234,7 @@ router.get(
 
         // handle new user
 
-        let amount = 1000 * 60 * 60 * 5; // 5 hours
+        let amount = +nonHamisAmount;
 
         // Check if user is a patron
         const patron = patronMembersCache.find(m => m.relationships.user.data.id === id);

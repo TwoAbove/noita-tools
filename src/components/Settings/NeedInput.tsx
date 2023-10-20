@@ -18,12 +18,12 @@ const NeedInputAlert = () => {
       <Alert show={show} variant="info" dismissible onClose={handleClose}>
         <div className="mt-2">
           Thank you for using Noitool! <br />
-          I want to improve it further, and need your feedback. <br />
+          I want to continue improving it further, and need your feedback for that. <br />
           Click{" "}
           <a href="https://github.com/TwoAbove/noita-tools/issues" target="_blank" rel="noreferrer">
             here
           </a>{" "}
-          or send me an <a href="mailto:me@noitool.com">email</a> if you have any ideas!
+          to create a ticket or send me an <a href="mailto:me@noitool.com">email</a> if you prefer that!
         </div>
         <div className="mt-2">
           Support me on Patreon: <span className="me-2"></span>

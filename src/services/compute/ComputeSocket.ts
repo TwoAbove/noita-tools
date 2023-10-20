@@ -31,7 +31,7 @@ export class ComputeSocket extends SocketHandler {
 
   running = false;
 
-  onDone?: () => void;
+  onDone: () => void;
 
   constructor(config: ComputeSocketConfig) {
     super(config);
@@ -42,7 +42,7 @@ export class ComputeSocket extends SocketHandler {
     this.userId = config.userId;
     this.seedSolver = config.seedSolver;
     this.isHost = config.isHost || false;
-    this.onDone = config.onDone;
+    this.onDone = config.onDone || (() => {});
   }
 
   configIO(): void {
@@ -106,7 +106,7 @@ export class ComputeSocket extends SocketHandler {
             clearTimeout(t);
             if (!data || data.done) {
               setTimeout(() => res(), 5000);
-              this.onDone?.();
+              this.onDone();
               return;
             }
 

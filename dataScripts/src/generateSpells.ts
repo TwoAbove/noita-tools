@@ -1,17 +1,28 @@
 import fs from "fs";
+import util from "util";
 import path from "path";
 import Jimp from "jimp";
 
-import spells from "./toJs3";
+import { parseAST } from "./ast";
+import parser from "luaparse";
+
+// import spells from "./toJs3";
 
 const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
 
 const noitaData = path.resolve(
   require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 
+const spellTypes = fs.readFileSync(path.resolve(noitaData, "data/scripts/gun/gun_enums.lua")).toString();
+
 const spellPath = path.resolve(noitaData, "data/scripts/gun/gun_actions.lua");
+const spellFile = fs.readFileSync(spellPath).toString();
+const data = parseAST(parser.parse(spellTypes + "\n\n" + spellFile, { wait: false }));
+// console.log(util.inspect(data.actions, false, null, true));
+
+const spells = data.actions;
 
 (async () => {
   const newSpells: any[] = [];
@@ -51,7 +62,7 @@ const spellPath = path.resolve(noitaData, "data/scripts/gun/gun_actions.lua");
     out[d.id] = d;
   }
 
-  fs.writeFileSync(path.resolve(__dirname, "spells.new.json"), JSON.stringify(newSpells, null, 2));
+  fs.writeFileSync(path.resolve(__dirname, "out", "spells.json"), JSON.stringify(newSpells, null, 2));
 
-  fs.writeFileSync(path.resolve(__dirname, "spells.new.obj.json"), JSON.stringify(out, null, 2));
+  fs.writeFileSync(path.resolve(__dirname, "out", "obj", "spells.json"), JSON.stringify(out, null, 2));
 })();

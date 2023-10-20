@@ -5,7 +5,7 @@ import { rgbaToInt, hexTorgba } from "./commonImageActions";
 export * from "./commonImageActions";
 
 const _imageData = (w, h): ImageData => {
-  return new global.ImageData(w, h);
+  return new window.ImageData(w, h);
 };
 
 export const ImageData = _imageData;
@@ -80,7 +80,7 @@ export const imageToBase64 = async (img: ImageData | ImageBitmap): Promise<strin
 export const copyImage = img => {
   const image = createCanvas(img.width, img.height);
   const ctx = getContext(image);
-  if (img instanceof global.ImageData) {
+  if (img instanceof window.ImageData) {
     ctx.putImageData(img, 0, 0);
   } else {
     ctx.drawImage(img, 0, 0, img.width, img.height);
@@ -263,7 +263,7 @@ export const drawImageData = (
   startY: number,
   color_to_material_table?: { [color: string]: string }
 ) => {
-  const img = new global.ImageData(src.data, src.width, src.height);
+  const img = new window.ImageData(src.data, src.width, src.height);
 
   let f = {};
   if (color_to_material_table) {
@@ -414,7 +414,7 @@ export const iteratePixels = (
 
 export const imageFromHexArray = (hexArray: string[], w: number, h: number): ImageData => {
   const arr = hexArray.flatMap(hexTorgba);
-  return new global.ImageData(new Uint8ClampedArray(arr), w, h);
+  return new window.ImageData(new Uint8ClampedArray(arr), w, h);
 };
 
 export const GenerateMap = (
@@ -461,7 +461,7 @@ export const GenerateMap = (
     yOffset
   );
 
-  const resImgData = new global.ImageData(map_w, map_h);
+  const resImgData = new window.ImageData(map_w, map_h);
   resImgData.data.set(result);
   // rgb2rgba(result, resImgData.data);
 
@@ -491,7 +491,7 @@ export const GetPathMap = (
 
   randoms.Module.GeneratePathMap(mapDataPtr, map_w, map_h, resultPtr, xOffset, yOffset);
 
-  const resImgData = new global.ImageData(result, map_w, map_h);
+  const resImgData = new window.ImageData(result, map_w, map_h);
   // resImgData.data.set(result);
   // rgb2rgba(result, resImgData.data);
 

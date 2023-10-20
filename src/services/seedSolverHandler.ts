@@ -31,8 +31,8 @@ export class WorkerHandler extends EventTarget {
     await this.comlinkWorker.ready();
   }
 
-  terminate() {
-    this.worker.terminate();
+  async terminate() {
+    return this.worker.terminate();
   }
 }
 
@@ -57,9 +57,11 @@ export default class SeedSolver {
   }
 
   public destroy() {
+    const promises: Promise<unknown>[] = [];
     for (const worker of this.workerList) {
-      worker.terminate();
+      promises.push(worker.terminate());
     }
+    return Promise.all(promises);
   }
 
   public update(config: seedSearcher.ISeedSearcherConfig) {

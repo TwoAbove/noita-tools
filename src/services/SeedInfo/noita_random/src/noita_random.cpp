@@ -5,13 +5,14 @@
 #include <algorithm>
 #include <math.h>
 #include <vector>
+#include <bit>
 // #include <limits.h>
 #include <iostream>
 #include <iterator>
 #include <cfenv>
 #include <cmath>
 
-#include "spells.cpp"
+#include "spells.h"
 
 typedef int64_t __int64;
 typedef unsigned int uint;
@@ -45,8 +46,7 @@ uint64 SetRandomSeedHelper(double r)
         // should be same as e &= ~(1<<63); which should also just clears the sign bit,
         // or maybe it does nothing,
         // but want to keep it as close to the assembly as possible for now
-        e <<= 1;
-        e >>= 1;
+        e &= 0x7FFFFFFFFFFFFFFF;
         double s = *(double *)&e;
         uint64 i = 0;
         if (s != 0.0)
@@ -99,26 +99,6 @@ public:
         Next();
     }
 
-    uint H2(unsigned int a, unsigned int b, unsigned int ws)
-    {
-        unsigned int v3;
-        unsigned int v4;
-        unsigned int v5;
-        int v6;
-        unsigned int v7;
-        unsigned int v8;
-        int v9;
-
-        v3 = (ws >> 13) ^ (b - a - ws);
-        v4 = (v3 << 8) ^ (a - v3 - ws);
-        v5 = (v4 >> 13) ^ (ws - v3 - v4);
-        v6 = (v5 >> 12) ^ (v3 - v4 - v5);
-        v7 = (v6 << 16) ^ (v4 - v6 - v5);
-        v8 = (v7 >> 5) ^ (v5 - v6 - v7);
-        v9 = (v8 >> 3) ^ (v6 - v7 - v8);
-        return (((v9 << 10) ^ (v7 - v9 - v8)) >> 15) ^ (v8 - v9 - ((v9 << 10) ^ (v7 - v9 - v8)));
-    }
-
     void SetRandomFromWorldSeed(uint s)
     {
         Seed = s;
@@ -135,15 +115,14 @@ public:
         uint c = (a >> 0xc) & 0xfff;
 
         double x_ = x + b;
-
         double y_ = y + c;
 
         double r = x_ * 134217727.0;
-        uint64 e = SetRandomSeedHelper(r);
+        uint e = SetRandomSeedHelper(r);
 
-        uint64 _x = (*(uint64 *)&x_ & 0x7fffffffffffffff);
-        uint64 _y = (*(uint64 *)&y_ & 0x7fffffffffffffff);
-        if (102400.0 <= *((double *)&_y) || *((double *)&_x) <= 1.0)
+        uint64 _x = std::bit_cast<uint64_t>(x_) & 0x7fffffffffffffff;
+        uint64 _y = std::bit_cast<uint64_t>(y_) & 0x7fffffffffffffff;
+        if (102400.0 <= std::bit_cast<double>(_y) || std::bit_cast<double>(_x) <= 1.0)
         {
             r = y_ * 134217727.0;
         }
@@ -156,20 +135,20 @@ public:
             r = y_;
         }
 
-        uint64 f = SetRandomSeedHelper(r);
+        uint f = SetRandomSeedHelper(r);
 
-        uint g = SetRandomSeedHelper2(e, f, ws);
-        double s = g;
-        s /= 4294967295.0;
-        s *= 2147483639.0;
-        s += 1.0;
+        uint g = SetRandomSeedHelper2((uint)e, (uint)f, ws);
 
-        if (2147483647.0 <= s)
-        {
-            s = s * 0.5;
-        }
-
-        Seed = s;
+        // Kaliuresis bithackery!!! Nobody knows how it works. Equivalent to the old FP64 code.
+        constexpr uint diddle_table[17] = {0, 4, 6, 25, 12, 39, 52, 9, 21, 64, 78, 92, 104, 118, 18, 32, 44};
+        constexpr uint magic_number = 252645135; // magic number is 1/(1-2*actual ratio)
+        uint t = g;
+        t = g + (g < 2147483648) + (g == 0);
+        t -= g / magic_number;
+        t += (g % magic_number < diddle_table[g / magic_number]) && (g < 0xc3c3c3c3 + 4 || g >= 0xc3c3c3c3 + 62);
+        t = (t + (g > 0x80000000)) >> 1;
+        t = (int)t + (g == 0xffffffff);
+        Seed = t;
 
         Next();
 
@@ -208,108 +187,20 @@ public:
 
 NollaPrng g_rng = NollaPrng(0);
 
-class MaterialPicker
-{
-public:
-    vector<string> LIQUIDS = {
-        "acid", "alcohol", "blood",
-        "blood_fungi", "blood_worm", "cement",
-        "lava", "magic_liquid_berserk", "magic_liquid_charm",
-        "magic_liquid_faster_levitation", "magic_liquid_faster_levitation_and_movement", "magic_liquid_invisibility",
-        "magic_liquid_mana_regeneration", "magic_liquid_movement_faster", "magic_liquid_protection_all",
-        "magic_liquid_teleportation", "magic_liquid_unstable_polymorph", "magic_liquid_unstable_teleportation",
-        "magic_liquid_worm_attractor", "material_confusion", "mud",
-        "oil", "poison", "radioactive_liquid_yellow",
-        "swamp", "urine", "water",
-        "water_ice", "water_swamp", "magic_liquid_random_polymorph"};
-
-    vector<string> ALCHEMY = {
-        "bone_box2d", "brass", "coal",
-        "copper", "diamond", "fungus_loose",
-        "gold", "grass", "gunpowder",
-        "gunpowder_explosive", "rotten_meat", "sand_petrify",
-        "silver", "slime", "snow_b2",
-        "soil", "wax", "honey"};
-
-    NollaPrng *PRNG;
-
-    vector<string> Materials = {};
-
-    MaterialPicker(NollaPrng *prng, uint worldSeed)
-    {
-        PRNG = prng;
-        PickMaterials(LIQUIDS, 3);
-        PickMaterials(ALCHEMY, 1);
-        ShuffleList(worldSeed);
-        PRNG->Next();
-        PRNG->Next();
-    }
-
-    void PickMaterials(vector<string> source, int count)
-    {
-        int counter = 0;
-        int failed = 0;
-        while (counter < count && failed < 99999)
-        {
-            int rand = (int)(PRNG->Next() * (double)source.size());
-            string picked = source[rand];
-            if (std::find(Materials.begin(), Materials.end(), picked) == Materials.end())
-            {
-                Materials.push_back(picked);
-                counter++;
-            }
-            else
-            {
-                failed++;
-            }
-        }
-        return;
-    }
-
-    void ShuffleList(uint worldSeed)
-    {
-        NollaPrng *prng = new NollaPrng((worldSeed >> 1) + 12534);
-
-        for (int i = Materials.size() - 1; i >= 0; i--)
-        {
-            int rand = prng->Next() * (double)(i + 1);
-            string tmp = Materials[i];
-            Materials[i] = Materials[rand];
-            Materials[rand] = tmp;
-        }
-        delete prng;
-    }
-};
-
-static string PickForSeed()
-{
-    NollaPrng *prng = new NollaPrng((world_seed * 0.17127000) + 1323.59030000);
-    // Preheat random!
-    for (int i = 0; i < 5; i++)
-    {
-        prng->Next();
-    }
-
-    MaterialPicker *lc = new MaterialPicker(prng, world_seed);
-    string slc = "lc:" + lc->Materials[0] + "," + lc->Materials[1] + "," + lc->Materials[2]; // + "," + lc->Materials[3];
-    MaterialPicker *ap = new MaterialPicker(prng, world_seed);
-    string sap = "ap:" + ap->Materials[0] + "," + ap->Materials[1] + "," + ap->Materials[2]; // + "," + ap->Materials[3];
-
-    delete prng;
-    delete lc;
-    delete ap;
-
-    return slc + ";" + sap;
-}
-
 void SetWorldSeed(uint worldseed)
 {
     world_seed = worldseed;
 }
+uint GetWorldSeed()
+{
+    return world_seed;
+}
 
 // This looks like beta distribution?
-float GetDistribution(float mean, float sharpness, float baseline)
+float GetDistribution(float mean, int sharpness, float baseline)
 {
+    const float pi = 3.1415f;
+    const float mean_offset = 0.5f - mean;
     int i = 0;
     do
     {
@@ -322,20 +213,19 @@ float GetDistribution(float mean, float sharpness, float baseline)
         }
         if (div < 0.5)
         {
-            // double v11 = sin(((0.5f - mean) + r1) * M_PI);
-            float v11 = sin(((0.5f - mean) + r1) * 3.1415f);
+            float v11 = sin((mean_offset + r1) * pi);
             float v12 = pow(v11, sharpness);
             if (v12 > r2)
             {
                 return r1;
             }
         }
-        i++;
+        ++i;
     } while (i < 100);
     return g_rng.Next();
 }
 
-int RandomDistribution(int min, int max, int mean, float sharpness)
+int RandomDistribution(int min, int max, int mean, int sharpness)
 {
     if (sharpness == 0)
     {
@@ -348,7 +238,7 @@ int RandomDistribution(int min, int max, int mean, float sharpness)
     return min + d;
 }
 
-float RandomDistributionf(float min, float max, float mean, float sharpness)
+float RandomDistributionf(float min, float max, float mean, int sharpness)
 {
     if (sharpness == 0.0)
     {

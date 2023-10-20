@@ -21,14 +21,14 @@ const questionMark =
 
 interface INormalMapRendererProps {
   material: any;
-  animations: any;
+  image: any;
 }
-const NormalMapRenderer = ({ material, animations, ...rest }: INormalMapRendererProps) => {
+const NormalMapRenderer = ({ material, image, ...rest }: INormalMapRendererProps) => {
   const color = material.graphics.color;
   const [texture, setTexture] = useState<string | null>();
   useEffect(() => {
     (() => {
-      NoitaTexture(color, animations.actions[animations.default].src[0])
+      NoitaTexture(color, image.src)
         .then(texture => {
           setTexture(texture);
         })
@@ -37,7 +37,7 @@ const NormalMapRenderer = ({ material, animations, ...rest }: INormalMapRenderer
         });
       return null;
     })();
-  }, [material, animations, color]);
+  }, [material, image, color]);
 
   if (!texture) {
     return <>loading</>;
@@ -46,7 +46,7 @@ const NormalMapRenderer = ({ material, animations, ...rest }: INormalMapRenderer
 };
 const MemoizedNormalMapRenderer = memo(
   NormalMapRenderer,
-  (p, n) => p.material === n.material && p.animations === n.animations
+  (p, n) => p.material === n.material && p.image.src === n.image.src,
 );
 
 interface IWandModalProps {
@@ -69,10 +69,10 @@ const WandModal: FC<IWandModalProps> = ({ x, y, cost, level, force_unshuffle }) 
 
   const wand = useMemo(
     () => gameInfoProvider!.providers.wand.provide(x, y, cost, level, !!force_unshuffle, !!unshufflePerk),
-    [gameInfoProvider, x, y, cost, level, force_unshuffle, unshufflePerk]
+    [gameInfoProvider, x, y, cost, level, force_unshuffle, unshufflePerk],
   );
   const favoriteSpells = ([wand.cards.permanentCard, ...wand.cards.cards].filter(Boolean) as string[]).filter(id =>
-    isSpellFavorite(id)
+    isSpellFavorite(id),
   );
 
   return (
@@ -168,11 +168,24 @@ const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = fals
     return <PotionRandomMaterial x={x} y={y} />;
   }
 
+  if (id === "data/entities/misc/custom_cards/bomb.xml") {
+    if (!preview) {
+      return <NonPreview id={id} action={action} {...rest} />;
+    }
+    return <Spell id="BOMB" {...rest} />;
+  }
+
+  if (id.includes("goldnugget")) {
+    const entity = entities[id];
+    const material = materials[entity.physicsImage.material];
+    return <MemoizedNormalMapRenderer material={material} image={entity.physicsImage.image} {...rest} />;
+  }
+
   if (id === "data/entities/items/pickup/powder_stash.xml") {
     if (!preview) {
-      const entity = entities[id];
+      const entity = entities[id] as any;
       const name = entity.name;
-      const animations = entity.animations as any;
+      const animations = entity.animations;
       const image = animations.actions[action || animations.default || "default"]?.src[0];
       return <Icon uri={image} title={t(name)} {...rest} />;
     }
@@ -186,20 +199,31 @@ const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = fals
     return <Icon uri={questionMark} title={id} />;
   }
 
-  // TODO: animate
-  const animations = entity.animations;
-  const image = animations.actions[action || animations.default || "default"]?.src[0];
-
-  if (animations?.config?.material) {
-    const material = materials[animations?.config?.material];
-    // if (material.graphics?.normal_mapped) {
-    return <MemoizedNormalMapRenderer material={material} animations={animations} {...rest} />;
-    // }
+  if (entity.itemImage && entity.itemImage.image) {
+    const name = entity.itemImage.item_name;
+    const image = entity.itemImage.image.src;
+    return <Icon uri={image} title={t(name)} {...rest} />;
   }
 
-  const name = entity.ui_name || entity.name;
+  if (entity.animations) {
+    // TODO: animate
+    const animations = entity.animations;
 
-  return <Icon uri={image} title={t(name)} {...rest} />;
+    if (!entity.animations) {
+    }
+
+    const image = animations.actions[action || animations.default || "default"]?.src[0];
+
+    const name = entity.ui_name || entity.name;
+
+    return <Icon uri={image} title={t(name)} {...rest} />;
+  }
+
+  if (entity.physicsImage) {
+    const material = materials[entity.physicsImage.material];
+    return <MemoizedNormalMapRenderer material={material} image={entity.physicsImage.image} {...rest} />;
+  }
+  return <Icon uri={questionMark} title={id} />;
 };
 
 export default Entity;

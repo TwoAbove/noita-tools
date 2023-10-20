@@ -21,10 +21,22 @@ Current features include:
 
 ### Prerequisites
 
-- The machine should have node installed (ideally v18.6+) and yarn.
+- The machine should have node installed (ideally v18.6+) and npm.
 - Follow to <https://www.noitool.com/?profile=true> and link your patreon account. Under your patreon username, there will now be an id like `6456aff2478c4f8f91701018`
 
 ### Installing and connecting
+
+#### Docker
+
+You can use docker to simply spin up a compute node:
+
+```bash
+docker pull ghcr.io/twoabove/noitool-console-search:latest && docker run -it ghcr.io/twoabove/noitool-console-search:latest --userId xxx
+# Or for dev
+docker pull ghcr.io/twoabove/noitool-console-search:latest-dev && docker run -it ghcr.io/twoabove/noitool-console-search:latest-dev --userId xxx --url https://dev.noitool.com/
+```
+
+#### CLI
 
 To connect to noitool as a compute node, follow these steps:
 
@@ -33,17 +45,18 @@ git clone https://github.com/TwoAbove/noita-tools.git
 cd noita-tools
 git checkout master # for https://www.noitool.com
 # git checkout develop # for https://dev.noitool.com
-yarn install --frozen-lockfile
-yarn lambda-build
-yarn console-search --userId 6456aff2478c4f8f91701018
+npm install --frozen-lockfile
+npm run console-build
+npm run console-search --userId 6456aff2478c4f8f91701018
 ```
 
-console-search args:
+console-search args (or env vars):
 
-- `--url`: default <https://www.noitool.com/>. Change to <https://dev.noitool.com/> for the dev build
-- `--cores`: default `os.cpus()`. The amount of threads to use.
-- `--userId`: The user to connect as.
-- `--exit` default `false`. Add if you want the worker to exit if there are no more jobs.
+- `--url` `NOITOOL_URL`: default <https://www.noitool.com/>. Change to <https://dev.noitool.com/> for the dev build
+- `--cores` `NOITOOL_CORES`: default `os.cpus()`. The amount of threads to use.
+- `--userId` `NOITOOL_USER_ID`: The user to connect as.
+- `--exit` `NOITOOL_EXIT` default `false`. Add if you want the worker to exit if there are no more jobs.
+- `--minRunTime` `NOITOOL_MIN_RUN_TIME` default `0`. This minimum amount of time (in seconds) that the worker will run for. If there are no more jobs, it will exit after this time. A value of 0 means that this is disabled.
 
 ## Technical details and implementation details that I found interesting
 
@@ -67,7 +80,6 @@ Prerequisites:
 - [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed
 - `npm i -g google-closure-compiler`
 - Node
-- Yarn
 
 After extracting noita wak, run
 
@@ -78,6 +90,7 @@ find . -type f -not -path '*/\.*' -exec sed -i 's/<!------------ MATERIALS -----
 find . -type f -not -path '*/\.*' -exec sed -i 's/<!-- attack_ranged_min_distance="60" -->//g' {} +;
 find . -type f -not -path '*/\.*' -exec sed -i 's/<!---------------- shield ---------------- -->//g' {} +;
 find . -type f -not -path '*/\.*' -exec sed -i 's/<!-- fuse_tnt durability is 11 so this is capable of destroying it -->//g' {} +;
+tac $NOLLA_PATH/entities/misc/eradicate.xml | sed '0,/<Entity>$/s//<\/Entity>/' | tac >$NOLLA_PATH/entities/misc/eradicate.xml;
 ```
 
 to fix comments for the xml parser
@@ -116,6 +129,6 @@ To get the prefix, run:
 npm config get prefix
 ```
 
-Installation (after emscripten): `yarn`
+Installation (after emscripten): `npm i`
 
-Running: `yarn dev`
+Running: `npm run dev`

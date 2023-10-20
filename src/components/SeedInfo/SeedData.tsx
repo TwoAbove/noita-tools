@@ -114,14 +114,13 @@ const QuirkModal = props => {
         <Part>
           <h4>Perk Rerolls</h4>
           <p>
-            Due to how perks are re-rolled in-game, the only guarantee is the perks that you will get,{" "}
+            Due to how perks are re-rolled in-game, the only guarantee is the <b>perks</b> that you will get,{" "}
             <b>not their position</b>. <br />
             <br />
             When looking at <i>always cast</i> and <i>perk lottery</i> info, note that they are <b>position</b>
-            -dependent, not
-            <b>perk</b>-dependent. That means that if the position of <i>always cast</i> in-tool is different from that
-            in-game, then the value will be different. As a non-perfect solution, please enable "show always-cast for
-            whole row" in the settings (shortcut below).
+            -dependent, not <b>perk</b>-dependent. That means that if the position of <i>always cast</i> in-tool is
+            different from that in-game, then the value will be different. As a non-perfect solution, please enable
+            "show always-cast for whole row" in the settings (shortcut below).
           </p>
           <ListGroup variant="flush" className="mt-0 mb-3 shadow">
             <ListGroup.Item>
@@ -136,7 +135,7 @@ const QuirkModal = props => {
           <h5>Random Material Potion</h5>
           <p>
             The contents of the Random Material Potion is very mod dependent. <br />
-            If the amount of materials in game changes, then the material in this potion will differ. Even changing the
+            If the amount of materials in-game changes, then the material in this potion will differ. Even changing the
             material positions in <code className="mx-1">data/materials.xml</code> will change the generated materials.
           </p>
         </Part>
@@ -243,19 +242,18 @@ const SeedData = () => {
         handleClose={() => setShowHistory(false)}
         onSelectSeed={seed => handleSetSeed(seed)}
       />
-      <Row className="align-items-center">
+      <Row className="align-items-center mt-2">
         <Col lg="8" sm="12">
-          <h4 className="pt-3">Seed info</h4>
           <Row>
             <Col xs={6}>
-              <p>
+              <p className="mb-0">
                 Noitool provides information about perks, fungal shifts, shop items, chests, biome info, LC and AP
                 recipes, weather for the given seed. <br />
               </p>
             </Col>
             <Col>
               <p>
-                Note that Noitool has minor limitations in details of generation: <br />{" "}
+                Note that Noitool has minor limitations in details of generation: <span className="mx-2" />
                 <Button
                   className="align-self-baseline mt-1"
                   variant="outline-primary"

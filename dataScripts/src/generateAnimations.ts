@@ -1,3 +1,5 @@
+// TODO: merge into mapsToObj/generateEntities.ts
+
 import fs from "fs";
 import util from "util";
 import path from "path";
@@ -17,9 +19,11 @@ const makeGif = async (inFrames: GifFrame[]) => {
   return codec.encodeGif(inFrames, { loops: 0 });
 };
 
+const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
+
 const noitaData = path.resolve(
   require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 
 const getJimp = (p: string) => Jimp.read(path.resolve(noitaData, p));
@@ -265,7 +269,7 @@ const parseObj = (obj: any) => {
           config.pos_x + config.frame_width * i,
           config.pos_y,
           config.frame_width,
-          config.frame_height
+          config.frame_height,
         );
         frames.push(f);
       }
@@ -322,7 +326,7 @@ const parseObj = (obj: any) => {
       breakdowns.reduce<string[]>((c, r) => {
         c.push(r.config.default_animation);
         return c;
-      }, [])
+      }, []),
     );
 
     if (default_animations.length > 1) {
@@ -347,12 +351,15 @@ const parseObj = (obj: any) => {
         src: [],
       };
       for (let i = 0; i < frame_count; i++) {
-        const frame = actions.reduce<Jimp>((c, r) => {
-          if (r.frames[i]) {
-            return c.composite(r.frames[i], 0, 0);
-          }
-          return c;
-        }, new Jimp(actions[0].config.frame_width, actions[0].config.frame_height));
+        const frame = actions.reduce<Jimp>(
+          (c, r) => {
+            if (r.frames[i]) {
+              return c.composite(r.frames[i], 0, 0);
+            }
+            return c;
+          },
+          new Jimp(actions[0].config.frame_width, actions[0].config.frame_height),
+        );
         out.actions[actionKey].src.push(await frame.getBase64Async(Jimp.MIME_PNG));
       }
     }
@@ -515,13 +522,33 @@ const parseObj = (obj: any) => {
     return out;
   };
 
+  let i = 0;
+  let total = files.length;
+
   for (let val of files) {
     val = val.substring(noitaData.length + 1);
-    console.log(val);
+    if (val.includes("_debug") || val.includes("debug_")) {
+      // Skip debug entities
+      continue;
+    }
+    if (val.includes("_workdir")) {
+      // Skip debug entities
+      continue;
+    }
+    if (
+      [
+        "data/entities/props/_test_physics_heavy.xml",
+        "data/entities/props/_test_physics_heavy.xml",
+        "data/entities/props/_test_physics_heavy.xml",
+      ].includes(val)
+    ) {
+      continue;
+    }
     if (entities[val]) {
       // Already parsed this entity
-      return;
+      continue;
     }
+    console.log(`${i++}/${total}: ${val}`);
     const entityXMLPath = path.resolve(noitaData, val);
     if (fs.existsSync(entityXMLPath)) {
       const entityData = await entityMemo(val, () => parseStringPromise(tryRead(entityXMLPath, "")));
@@ -542,5 +569,5 @@ const parseObj = (obj: any) => {
     }
   }
   // console.log(entities)
-  fs.writeFileSync(path.resolve(__dirname, "entities.json"), JSON.stringify(entities, null, 2));
+  fs.writeFileSync(path.resolve(__dirname, "out", "obj/entities.json"), JSON.stringify(entities, null, 2));
 })();

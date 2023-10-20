@@ -33,6 +33,46 @@ const unregisterUserSocket = (userId, socketId, type, appetite = 0) => {
   }
 };
 
+const pingLambda = () => {
+  if (!process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT) {
+    return;
+  }
+
+  return fetch(process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT, {
+    method: "POST",
+    body: JSON.stringify({
+      hosts: counts.hosts,
+      cluster: process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER,
+      bearer: process.env.START_SEARCH_CLUSTER_LAMBDA_BEARER,
+    }),
+    headers: { "Content-Type": "application/json" },
+  })
+    .catch(console.error)
+    .then(() => {
+      console.log(
+        "Pinged lambda",
+        process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT,
+        counts.hosts,
+        process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER
+      );
+    });
+};
+
+setInterval(() => {
+  if (counts.hosts > 0) {
+    pingLambda();
+  }
+}, 10000);
+
+// Make a function be called n times with backoff. ex: 0, 10, 100, 1000, 10000 seconds from now
+const echoedCall = (fn, count, backoff) => {
+  if (count === 0) {
+    return;
+  }
+  fn();
+  setTimeout(() => echoedCall(fn, count - 1, backoff * 10), backoff * 1000);
+};
+
 const randomFromArray = arr => arr[Math.floor(Math.random() * arr.length)];
 
 // Track the time it takes to compute a job
@@ -99,6 +139,9 @@ const handleCompute = (socket, io) => {
     computeUserId = user.id;
 
     registerUserSocket(computeUserId, socket.id, type, config.appetite || 0);
+    if (type === "hosts") {
+      echoedCall(pingLambda, 2, 10);
+    }
     cb("ok");
   };
 

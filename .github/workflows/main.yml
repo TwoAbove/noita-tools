@@ -29,7 +29,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          cache: "yarn"
+          cache: "npm"
           node-version: ${{ matrix.node }}
 
       - name: Cache build
@@ -50,8 +50,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Yarn install
-        run: yarn install --immutable
+      - name: npm install
+        run: npm install --immutable
 
   build:
     needs: setup
@@ -78,7 +78,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          cache: "yarn"
+          cache: "npm"
           node-version: ${{ matrix.node }}
 
       - name: Cache build
@@ -105,7 +105,7 @@ jobs:
             false # This is needed because node throws console.warn messages that
             # get treated as errors in CI
         run: |
-          DISABLE_ESLINT_PLUGIN=true yarn build
+          DISABLE_ESLINT_PLUGIN=true npm run build
           if [ -d "./build" ]; then
             echo "Build dir exists"
             exit 0
@@ -138,7 +138,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          cache: "yarn"
+          cache: "npm"
           node-version: ${{ matrix.node }}
 
       - name: Cache build
@@ -160,7 +160,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Test
-        run: yarn test
+        run: npm run test
         env:
           CI: true
 
@@ -189,7 +189,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          cache: "yarn"
+          cache: "npm"
           node-version: ${{ matrix.node }}
 
       - name: Cache build
@@ -211,7 +211,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: e2e
-        run: yarn e2e
+        run: npm run e2e
         env:
           CI:
             false # This is needed because node throws console.warn messages that

@@ -302,6 +302,7 @@ class Liquidcave extends Base {
           "magic_liquid_protection_all",
           "material_confusion",
           "liquid_fire",
+          "magic_liquid_weakness",
         ],
       },
     },

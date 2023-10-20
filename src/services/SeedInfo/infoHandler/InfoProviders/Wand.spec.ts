@@ -200,7 +200,7 @@ describe("WandInfoProvider", () => {
           t.params.cost,
           t.params.level,
           t.params.force_unshuffle,
-          t.params.unshufflePerk
+          t.params.unshufflePerk,
         );
         expect(res.gun).toMatchObject(t.ans.gun);
         expect(res.cards).toEqual(t.ans.cards);

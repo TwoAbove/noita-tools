@@ -4,7 +4,14 @@ const { handleLiveSeed } = require("./liveSeed");
 const { handleCompute, counts } = require("./compute");
 const { rooms } = require("./rooms");
 
-const corsDomains = ["dev.noitool.com", "noitool.com", "localhost:3000", "localhost:3001"];
+const corsDomains = [
+  "dev.noitool.com",
+  "noitool.com",
+  "localhost:3000",
+  "localhost:3001",
+  "127.0.0.1:3000",
+  "127.0.0.1:3001",
+];
 const corsSchemes = ["http://", "https://", "ws://", "wss://", ""];
 const allowedCORS = corsSchemes.flatMap(ext => corsDomains.map(d => ext + d));
 
@@ -17,7 +24,7 @@ const makeIO = (server, app) => {
   app.get("/api/cluster_stats", (req, res) => {
     res.json({
       hosts: counts.hosts,
-      workers: counts.workers,
+      workers: Math.max(counts.workers, 1), // Always at least 1 thanks to ECS
       appetite: counts.appetite,
     });
   });
@@ -35,6 +42,7 @@ const makeIO = (server, app) => {
   });
 
   io.on("connection", socket => {
+    console.log("New connection");
     handleConnection(socket, io);
   });
 

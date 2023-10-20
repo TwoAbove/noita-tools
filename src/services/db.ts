@@ -160,7 +160,7 @@ export class NoitaDB extends Dexie {
                 type: RuleType.AND,
                 rules: [],
                 selectedRule: "search",
-              })
+              }),
             ),
           },
           madeUsingVersion: process.env.REACT_APP_VERSION!,
@@ -306,7 +306,7 @@ async function populate() {
           type: RuleType.AND,
           rules: [],
           selectedRule: "search",
-        })
+        }),
       ),
     },
     madeUsingVersion: process.env.REACT_APP_VERSION!,
@@ -343,7 +343,7 @@ export async function newSearch(): Promise<string> {
           type: RuleType.AND,
           rules: [],
           selectedRule: "search",
-        })
+        }),
       ),
     },
     madeUsingVersion: process.env.REACT_APP_VERSION!,

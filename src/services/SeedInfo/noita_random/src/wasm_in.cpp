@@ -68,7 +68,7 @@ EMSCRIPTEN_BINDINGS(my_module)
     emscripten::function("ProceduralRandomi", &ProceduralRandomi);
     emscripten::function("SetRandomSeed", &SetRandomSeed);
     emscripten::function("SetWorldSeed", &SetWorldSeed);
-    emscripten::function<string>("PickForSeed", &PickForSeed);
+    emscripten::function("GetWorldSeed", &GetWorldSeed);
     emscripten::function("RandomDistributionf", &RandomDistributionf);
     emscripten::function("RandomDistribution", &RandomDistribution);
     emscripten::function<string>("GetRandomActionWithType", &_GetRandomActionWithType);

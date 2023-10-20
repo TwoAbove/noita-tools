@@ -331,7 +331,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({ children }) => 
         console.error(e);
       });
     return () => {
-      newSeedSolver.destroy();
+      newSeedSolver.destroy().catch(e => {});
     };
   }, [useCores]);
 

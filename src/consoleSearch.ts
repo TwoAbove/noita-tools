@@ -2,18 +2,42 @@ import os from "os";
 
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import logUpdate from "log-update";
+
 import { ComputeSocket } from "./services/compute/ComputeSocket";
 import SeedSolver from "./services/seedSolverHandler.node";
 
-const argv = yargs(hideBin(process.argv)).argv as any;
+const argv = require("yargs/yargs")(process.argv.slice(2))
+  .env("NOITOOL")
+  .option("url", {
+    default: "https://www.noitool.com",
+  })
+  .option("cores", {
+    default: 0,
+  })
+  .option("userId", {})
+  .option("exit", {
+    default: false,
+  })
+  .option("minRunTime", {
+    default: 0,
+  }).argv;
 
 var SegfaultHandler = require("segfault-handler");
 SegfaultHandler.registerHandler("crash.log");
 
-console.log(argv, os.cpus().length);
+console.log(`Noitool console search ${process.env.npm_package_version}`, argv, os.cpus().length);
 
 // const seedSolver = new SeedSolver(1, false);
 const seedSolver = new SeedSolver(argv.cores || os.cpus().length, false);
+
+const initTime = new Date().getTime();
+
+const exitHandler = () => {
+  setTimeout(() => {
+    process.exit(0);
+  }, 5000);
+};
 
 const newComputeSocket = new ComputeSocket({
   url: argv.url || "https://www.noitool.com/",
@@ -25,36 +49,63 @@ const newComputeSocket = new ComputeSocket({
     if (!newComputeSocket.jobName) {
       return;
     }
-    console.log({
-      connected: newComputeSocket.connected,
-      running: newComputeSocket.running,
-      info: {
-        jobName: newComputeSocket.jobName,
-        chunkTo: newComputeSocket.chunkTo,
-        chunkFrom: newComputeSocket.chunkFrom,
-      },
-    });
+    logUpdate(
+      JSON.stringify(
+        {
+          connected: newComputeSocket.connected,
+          running: newComputeSocket.running,
+          info: {
+            jobName: newComputeSocket.jobName,
+            chunkTo: newComputeSocket.chunkTo,
+            chunkFrom: newComputeSocket.chunkFrom,
+          },
+        },
+        null,
+        2
+      )
+    );
   },
   onDone: () => {
-    if (argv.exit) {
-      console.log("Done!");
-      newComputeSocket.stop();
-      process.exit(0);
+    if (!argv.exit) {
+      return;
     }
+
+    if (argv.minRunTime) {
+      const timeRunning = new Date().getTime() - initTime;
+      if (timeRunning < argv.minRunTime) {
+        return;
+      }
+    }
+
+    console.log("Done!");
+    newComputeSocket.stop();
+    exitHandler();
   },
 });
 
 newComputeSocket.on("compute:version_mismatch", () => {
   console.log("Version mismatch. Please update your client.");
   newComputeSocket.stop();
+  exitHandler();
 });
 
 newComputeSocket.on("compute:unauthorized", () => {
   console.log("userID or sessionToken is invalid");
   newComputeSocket.stop();
+  exitHandler();
 });
 
 newComputeSocket.start().catch(e => {
   console.error(e);
   newComputeSocket.stop();
+  exitHandler();
+});
+
+process.on("SIGINT", () => {
+  newComputeSocket.stop();
+  exitHandler();
+});
+process.on("SIGTERM", () => {
+  newComputeSocket.stop();
+  exitHandler();
 });

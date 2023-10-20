@@ -207,6 +207,10 @@ export class WandInfoProvider extends InfoProvider {
     }
     let r = new D(this.randoms.Random() * total_prob(gun_probs[what]));
     for (const v of gun_probs[what]) {
+      if (typeof v === "number") {
+        return { prob: v, min: v, max: v, mean: v, sharpness: 0 };
+      }
+
       if (v.prob) {
         if (r.lessThanOrEqualTo(v.prob)) {
           return v;

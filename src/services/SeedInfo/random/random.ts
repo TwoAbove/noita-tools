@@ -84,6 +84,7 @@ export interface IRandomModule {
   SetRandomSeed(arg0: number, arg1: number): void;
 
   SetWorldSeed(arg0: number): void;
+  GetWorldSeed(): number;
 
   PickForSeed(): string;
 
@@ -245,6 +246,7 @@ export const genRandom = async (Module: IRandomModule) => {
     ProceduralRandomi: Module.ProceduralRandomi,
     SetRandomSeed: Module.SetRandomSeed,
     SetWorldSeed: Module.SetWorldSeed,
+    GetWorldSeed: Module.GetWorldSeed,
     PickForSeed: Module.PickForSeed,
     RoundHalfOfEven: Module.RoundHalfOfEven,
     GetRandomAction: Module.GetRandomAction,

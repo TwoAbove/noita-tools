@@ -50,6 +50,12 @@ typings/
 
 # Optional npm cache directory
 .npm
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # Optional eslint cache
 .eslintcache
@@ -105,10 +111,11 @@ dist
 .tern-port
 
 build
-lambda-build
+console-build
 
 ssl
 
 dataScripts/src/mapsToObj/gen
+dataScripts/src/out
 
 cypress/screenshots/

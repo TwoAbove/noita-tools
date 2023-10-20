@@ -78,7 +78,7 @@ export class MapInfoProvider extends InfoProvider {
   wang_maps: { [color: number]: ImageData } = {};
 
   async ready() {
-    return Promise.all([this.loadImageActionsPromise, this.worldMapPromise]);
+    return Promise.all([this.loadImageActionsPromise, this.worldMapPromise]).then(() => {});
   }
 
   async loadImageActions() {
@@ -214,7 +214,7 @@ export class MapInfoProvider extends InfoProvider {
       });
 
       const ctmtptr = this.randoms.objToMapUIntUIntPtr(color_to_material_table);
-      mh.drawImageData(path, impls[path].src, gx, gy, ctmtptr.$$.ptr);
+      mh.drawImageData(path, impls[path].src, gx, gy, ctmtptr.M.P);
       // this.randoms.Module._free(ctmtptr);
       ctmtptr.delete();
 

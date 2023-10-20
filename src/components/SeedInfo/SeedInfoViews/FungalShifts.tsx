@@ -1,5 +1,5 @@
 import { FC, useContext } from "react";
-import { Stack, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Stack, Form, Tooltip, OverlayTrigger, Table } from "react-bootstrap";
 
 import { GameInfoProvider } from "../../../services/SeedInfo/infoHandler";
 import { FungalInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Fungal";
@@ -201,7 +201,7 @@ const FungalShifts = (props: IFungalShiftsProps) => {
   };
 
   return (
-    <table className="table table-sm">
+    <Table striped hover borderless size="sm">
       <tbody>
         {fungalData.map((data, i) => {
           return (
@@ -215,7 +215,7 @@ const FungalShifts = (props: IFungalShiftsProps) => {
           );
         })}
       </tbody>
-    </table>
+    </Table>
   );
 };
 

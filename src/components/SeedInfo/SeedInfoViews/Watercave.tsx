@@ -20,11 +20,11 @@ const Watercave = (props: IWatercaveProps) => {
   const cave = watercaves[waterCave];
 
   return (
-    <div className="d-flex flex-column justify-content-between align-items-center text-center p-3">
+    <div className="d-flex flex-column justify-content-between align-items-center text-center p-1">
       Water Cave Layout:
       <Image
         style={{
-          width: "12rem",
+          width: "10rem",
         }}
         //ImageclassName={}
         src={cave}

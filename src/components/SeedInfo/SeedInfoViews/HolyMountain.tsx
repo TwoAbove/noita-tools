@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { createContext, FC, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, FC, memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Button, Col, Form, Stack, Modal, Row, Table } from "react-bootstrap";
 
 import GameInfoProvider from "../../../services/SeedInfo/infoHandler";
@@ -13,6 +13,7 @@ import {
   IPerkChangeStateType,
   IRerollAction,
   ISelectAction,
+  ISetAction,
   IShiftAction,
   PerkInfoProvider,
 } from "../../../services/SeedInfo/infoHandler/InfoProviders/Perk";
@@ -324,7 +325,7 @@ interface IHolyMountainHeaderProps {
   perkDeck: IPerk[];
   setAdvanced: (boolean) => void;
   handleOffset: (type: "+" | "-") => void;
-  offsetText: () => string;
+  offsetText: () => JSX.Element;
   handleReset: () => void;
   handleBack: () => void;
   isPerkFavorite: (string) => boolean;
@@ -409,7 +410,6 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
             ""
           )}
         </Button>
-        <div className="ms-auto" />
       </Stack>
       <PerkDeckModal
         perkDeck={perkDeck}
@@ -453,6 +453,13 @@ const getRerollPrices = (perkStack: IPerkChangeAction[]): [Map<number, number[]>
       case IPerkChangeStateType.genRow: {
         const nextPrice = getNextPrice();
         rerolls[event.data] = nextPrice;
+        break;
+      }
+      case IPerkChangeStateType.set: {
+        offset = event.data;
+        if (!nextRerollPrices.has(offset)) {
+          nextRerollPrices.set(offset, new Array(6));
+        }
         break;
       }
       case IPerkChangeStateType.shift: {
@@ -557,19 +564,32 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
 
   const worldOffsetSimple = +infoProvider.config.perkWorldOffset;
 
-  const handleOffsetAdvanced = (dir: "+" | "-") => {
-    const action: IShiftAction = {
-      type: IPerkChangeStateType.shift,
-      data: dir === "+" ? 1 : -1,
-    };
+  const handleOffsetAdvanced = (dir: "+" | "-" | number) => {
+    let action: IShiftAction | ISetAction;
+
+    if (typeof dir === "number") {
+      action = {
+        type: IPerkChangeStateType.set,
+        data: dir,
+      };
+    } else {
+      action = {
+        type: IPerkChangeStateType.shift,
+        data: dir === "+" ? 1 : -1,
+      };
+    }
+
     setPerkStacks([...perkStacks, [...perkStack, action]]);
   };
-  const handleOffsetSimple = (dir: "+" | "-") => {
+  const handleOffsetSimple = (dir: "+" | "-" | number) => {
     if (dir === "+") {
       infoProvider.updateConfig({ perkWorldOffset: +worldOffsetSimple + 1 });
     }
     if (dir === "-") {
       infoProvider.updateConfig({ perkWorldOffset: +worldOffsetSimple - 1 });
+    }
+    if (typeof dir === "number") {
+      infoProvider.updateConfig({ perkWorldOffset: dir });
     }
   };
 
@@ -764,9 +784,47 @@ const HolyMountain = (props: IHolyMountainProps) => {
     [infoProvider.providers.pacifistChest]
   );
 
-  const offsetText = () => {
+  const OffsetText = () => {
+    const [clicked, setClicked] = useState(false);
+    const formRef = useRef<HTMLInputElement>(null);
     let direction = worldOffset === 0 ? "Main" : worldOffset < 0 ? "West" : "East";
-    return `${direction} World ${Math.abs(worldOffset) || ""}`;
+
+    useEffect(() => {
+      if (clicked) {
+        formRef.current!.focus();
+      }
+    }, [clicked]);
+
+    return (
+      <div
+        className={classNames(!clicked && "border border-dark rounded px-3 py-1")}
+        onClick={() => {
+          setClicked(true);
+        }}
+      >
+        {!clicked && `${direction} World ${Math.abs(worldOffset) || ""}`}
+        <Form.Control
+          size="sm"
+          style={{ width: "8rem" }}
+          hidden={!clicked}
+          ref={formRef}
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Enter") {
+              e.currentTarget.blur();
+            }
+          }}
+          onBlur={e => {
+            setClicked(false);
+            const value = parseInt(e.target.value);
+            if (isNaN(value)) {
+              return;
+            }
+            handleOffset(value);
+          }}
+          placeholder={worldOffset}
+        />
+      </div>
+    );
   };
 
   return (
@@ -787,7 +845,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
         handleReset={handleReset}
         handleOffset={handleOffset}
         handleBack={handleBack}
-        offsetText={offsetText}
+        offsetText={OffsetText}
         isPerkFavorite={isFavorite}
       />
       <Table borderless responsive="xs" size="sm">

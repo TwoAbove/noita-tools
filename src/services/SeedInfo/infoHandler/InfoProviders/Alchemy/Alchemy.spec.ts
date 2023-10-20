@@ -2,9 +2,9 @@
  * @jest-environment node
  */
 
-import { IRandom } from "../../random";
-import { AlchemyInfoProvider } from "./Alchemy";
-import { loadRandom } from "../../../../testHelpers";
+import { IRandom } from "../../../random";
+import { AlchemyInfoProvider } from "./";
+import { loadRandom } from "../../../../../testHelpers";
 
 describe("AlchemyInfoProvider", () => {
   let randoms: IRandom;
@@ -12,8 +12,9 @@ describe("AlchemyInfoProvider", () => {
     randoms = await loadRandom();
   });
 
-  it("Should generate output", () => {
+  it("Should generate output", async () => {
     const ap = new AlchemyInfoProvider(randoms);
+    await ap.ready();
     randoms.SetWorldSeed(123);
     const res = ap.provide();
     expect(res).toEqual({

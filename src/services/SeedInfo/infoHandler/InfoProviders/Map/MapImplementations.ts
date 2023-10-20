@@ -139,6 +139,7 @@ import Friend4 from "./impl/Friend4";
 import Friend5 from "./impl/Friend5";
 import Friend6 from "./impl/Friend6";
 import Teleroom from "./impl/Teleroom";
+import Meat from "./impl/Meat";
 
 import Base from "./Base";
 
@@ -306,6 +307,7 @@ const MapImplementations: { [color: string]: typeof Base } = {
   "6db55eff": Friend5,
   "6db55fff": Friend6,
   "5f8fabff": Teleroom,
+  "572828ff": Meat,
 };
 
 export default MapImplementations;

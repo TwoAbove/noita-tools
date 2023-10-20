@@ -12,8 +12,6 @@ import { AlchemyConfigProvider } from "./AlchemyConfigContext";
 
 import LoadingComponent from "./LoadingComponent";
 import { db } from "../services/db";
-import classNames from "classnames";
-import SyncHandler from "./Settings/SyncHandler";
 import { BrowserRouter, useLocation, useSearchParams } from "react-router-dom";
 import DBError from "./DBError";
 import Patrons from "./Patrons";
@@ -113,13 +111,13 @@ const LazyProfile = () => {
 };
 
 const Header = () => {
-  // noita-tools.herokuapp.com
+  const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "";
   const host = window.location.host;
-  const notNewUrl = !host.includes("noitool.com");
+  const notNewUrl = !host.includes("noitool.com") && !isLocalhost;
   return (
     <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
-      <div className="text-nowrap">
-        <h3 className="fs-1 fw-bolder mt-2 mb-0 text-center">Noitool</h3>
+      <div className="text-nowrap lh-1">
+        <h3 className="fs-1 fw-bolder mb-0 text-center">Noitool</h3>
         <p className="fs-4 fw-light m-1 mt-0 my-1 text-center">Noita tools and helpers</p>
         {notNewUrl && (
           <p className="mb-2 text-center">
@@ -130,7 +128,7 @@ const Header = () => {
           </p>
         )}
       </div>
-      <div className=" d-flex pt-3 justify-content-end align-items-start">
+      <div className=" d-flex pt-2 justify-content-end align-items-start">
         <div className="mx-2">
           <LazyProfile />
         </div>
@@ -185,7 +183,7 @@ const Footer = () => {
           <div className="pt-2">
             <Donate />
             <small className="text-wrap d-block fw-light lh-1" style={{ width: "12rem" }}>
-              If you want your name below, please reach out!
+              If you want to see your name below, please reach out!
             </small>
           </div>
         </div>
@@ -197,7 +195,7 @@ const Footer = () => {
           </a>
           {/* <br /> */} or DM me on Noita's discord:{" "}
           <a target="_blank" rel="noreferrer" href="https://discord.gg/noita">
-            TwoAbove#0493
+            twoabove
           </a>{" "}
           or send me an email: <a href="mailto:me@noitool.com">me@noitool.com</a>
         </div>

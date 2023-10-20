@@ -23,10 +23,7 @@ const SeedForm = (props: ISeedFormProps) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Label className="label" htmlFor="seedForm.seed">
-        Enter the seed number to get information about it
-      </Form.Label>
+    <Form onSubmit={handleSubmit} className="mt-2">
       <Stack direction="horizontal" gap={5}>
         <Form.Control
           id="seedForm.seed"
@@ -34,9 +31,10 @@ const SeedForm = (props: ISeedFormProps) => {
           type="number"
           value={seed}
           onChange={handleNameChange}
+          size="lg"
           autoFocus
         />
-        <Button className="me-3" type="submit" color="primary">
+        <Button className="" type="submit" size="lg" color="primary">
           Submit
         </Button>
       </Stack>
