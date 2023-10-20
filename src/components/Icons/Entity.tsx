@@ -168,6 +168,19 @@ const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = fals
     return <PotionRandomMaterial x={x} y={y} />;
   }
 
+  if (id === "data/entities/misc/custom_cards/bomb.xml") {
+    if (!preview) {
+      return <NonPreview id={id} action={action} {...rest} />;
+    }
+    return <Spell id="BOMB" {...rest} />;
+  }
+
+  if (id.includes("goldnugget")) {
+    const entity = entities[id];
+    const material = materials[entity.physicsImage.material];
+    return <MemoizedNormalMapRenderer material={material} image={entity.physicsImage.image} {...rest} />;
+  }
+
   if (id === "data/entities/items/pickup/powder_stash.xml") {
     if (!preview) {
       const entity = entities[id] as any;
@@ -186,23 +199,31 @@ const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = fals
     return <Icon uri={questionMark} title={id} />;
   }
 
+  if (entity.itemImage && entity.itemImage.image) {
+    const name = entity.itemImage.item_name;
+    const image = entity.itemImage.image.src;
+    return <Icon uri={image} title={t(name)} {...rest} />;
+  }
+
+  if (entity.animations) {
+    // TODO: animate
+    const animations = entity.animations;
+
+    if (!entity.animations) {
+    }
+
+    const image = animations.actions[action || animations.default || "default"]?.src[0];
+
+    const name = entity.ui_name || entity.name;
+
+    return <Icon uri={image} title={t(name)} {...rest} />;
+  }
+
   if (entity.physicsImage) {
     const material = materials[entity.physicsImage.material];
     return <MemoizedNormalMapRenderer material={material} image={entity.physicsImage.image} {...rest} />;
   }
-
-  // TODO: animate
-  const animations = entity.animations;
-
-  if (!entity.animations) {
-    return <Icon uri={questionMark} title={id} />;
-  }
-
-  const image = animations.actions[action || animations.default || "default"]?.src[0];
-
-  const name = entity.ui_name || entity.name;
-
-  return <Icon uri={image} title={t(name)} {...rest} />;
+  return <Icon uri={questionMark} title={id} />;
 };
 
 export default Entity;
