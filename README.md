@@ -21,7 +21,7 @@ Current features include:
 
 ### Prerequisites
 
-- The machine should have node installed (ideally v18.6+) and yarn.
+- The machine should have node installed (ideally v18.6+) and npm.
 - Follow to <https://www.noitool.com/?profile=true> and link your patreon account. Under your patreon username, there will now be an id like `6456aff2478c4f8f91701018`
 
 ### Installing and connecting
@@ -45,9 +45,9 @@ git clone https://github.com/TwoAbove/noita-tools.git
 cd noita-tools
 git checkout master # for https://www.noitool.com
 # git checkout develop # for https://dev.noitool.com
-yarn install --frozen-lockfile
-yarn console-build
-yarn console-search --userId 6456aff2478c4f8f91701018
+npm install --frozen-lockfile
+npm run console-build
+npm run console-search --userId 6456aff2478c4f8f91701018
 ```
 
 console-search args (or env vars):
@@ -80,7 +80,6 @@ Prerequisites:
 - [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed
 - `npm i -g google-closure-compiler`
 - Node
-- Yarn
 
 After extracting noita wak, run
 
@@ -130,6 +129,6 @@ To get the prefix, run:
 npm config get prefix
 ```
 
-Installation (after emscripten): `yarn`
+Installation (after emscripten): `npm i`
 
-Running: `yarn dev`
+Running: `npm run dev`
