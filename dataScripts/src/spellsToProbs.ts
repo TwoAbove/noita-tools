@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import util from "util";
 
-const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
+const root = path.resolve(__dirname, "out");
 
 const spellRoot = path.resolve(__dirname, "../../src/services/SeedInfo/noita_random/src/");
 

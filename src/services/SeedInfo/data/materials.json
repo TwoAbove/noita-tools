@@ -176,6 +176,20 @@
       "pixel_bottom": "ff321616"
     }
   },
+  "static_magic_material": {
+    "wang_color": "ffD7D684",
+    "color": "d7d684ff",
+    "name": "static_magic_material",
+    "hp": "90000",
+    "tags": ["static", "corrodible", "alchemy", "solid"],
+    "burnable": "0",
+    "density": "10",
+    "ui_name": "$mat_static_magic_material",
+    "graphics": {
+      "texture_file": "data/materials_gfx/static_magic_material.png",
+      "color": "ffD7D684"
+    }
+  },
   "meteorite_static": {
     "wang_color": "ff1D1010",
     "color": "1d1010ff",
@@ -618,6 +632,32 @@
     "density": "2",
     "ui_name": "$mat_magic_gas_hp_regeneration"
   },
+  "magic_gas_midas": {
+    "wang_color": "7FDFDC08",
+    "color": "dfdc087f",
+    "name": "magic_gas_midas",
+    "tags": ["gas", "vapour"],
+    "burnable": "0",
+    "density": "2",
+    "ui_name": "$mat_magic_gas_midas",
+    "graphics": {
+      "texture_file": "data/materials_gfx/honey.png",
+      "color": "efefa101"
+    }
+  },
+  "magic_gas_worm_blood": {
+    "wang_color": "7FC6CF24",
+    "color": "c6cf247f",
+    "name": "magic_gas_worm_blood",
+    "tags": ["gas", "vapour"],
+    "burnable": "0",
+    "density": "2",
+    "ui_name": "$mat_magic_gas_worm_blood",
+    "graphics": {
+      "texture_file": "data/materials_gfx/yellowblood_gas.png",
+      "color": "7FC6CF27"
+    }
+  },
   "rainbow_gas": {
     "wang_color": "7fF2E604",
     "color": "f2e6047f",
@@ -630,6 +670,50 @@
       "texture_file": "data/materials_gfx/rainbow_gas.png",
       "color": "80FFA2CD",
       "fire_colors_index": "2"
+    }
+  },
+  "magic_gas_polymorph": {
+    "wang_color": "80f17beb",
+    "color": "f17beb80",
+    "name": "magic_gas_polymorph",
+    "tags": ["gas", "vapour", "alchemy"],
+    "burnable": "0",
+    "density": "2",
+    "ui_name": "$mat_magic_gas_polymorph"
+  },
+  "magic_gas_weakness": {
+    "wang_color": "B326C523",
+    "color": "26c523b3",
+    "name": "magic_gas_weakness",
+    "tags": ["gas", "vapour", "alchemy"],
+    "burnable": "0",
+    "density": "2",
+    "ui_name": "$mat_magic_gas_weakness",
+    "graphics": {
+      "texture_file": "data/materials_gfx/magic_liquid_weakness.png",
+      "color": "B426C528"
+    }
+  },
+  "magic_gas_teleport": {
+    "wang_color": "817fceed",
+    "color": "7fceed81",
+    "name": "magic_gas_teleport",
+    "tags": ["gas", "vapour", "alchemy"],
+    "burnable": "0",
+    "density": "2",
+    "ui_name": "$mat_magic_gas_teleport"
+  },
+  "magic_gas_fungus": {
+    "wang_color": "813bbb36",
+    "color": "3bbb3681",
+    "name": "magic_gas_fungus",
+    "tags": ["gas", "vapour", "alchemy"],
+    "burnable": "0",
+    "density": "2",
+    "ui_name": "$mat_magic_gas_fungus",
+    "graphics": {
+      "texture_file": "data/materials_gfx/fungi.png",
+      "color": "ffF064AA"
     }
   },
   "water": {
@@ -777,6 +861,19 @@
       "texture_file": "data/materials_gfx/rainbow.png",
       "color": "80FFA2CD",
       "fire_colors_index": "2"
+    }
+  },
+  "magic_liquid_weakness": {
+    "wang_color": "B426C528",
+    "color": "26c528b4",
+    "name": "magic_liquid_weakness",
+    "tags": ["liquid", "water", "magic_liquid", "impure", "magic_faster"],
+    "burnable": "0",
+    "density": "1.872",
+    "ui_name": "$magic_liquid_weakness",
+    "graphics": {
+      "texture_file": "data/materials_gfx/magic_liquid_weakness.png",
+      "color": "B426C528"
     }
   },
   "magic_liquid_movement_faster": {
@@ -2646,6 +2743,20 @@
       "color": "ff36311e"
     }
   },
+  "mammi": {
+    "wang_color": "ff232612",
+    "color": "232612ff",
+    "name": "mammi",
+    "hp": "200",
+    "tags": ["sand_other", "corrodible", "soluble"],
+    "burnable": "0",
+    "density": "6",
+    "ui_name": "$mat_mammi",
+    "graphics": {
+      "texture_file": "data/materials_gfx/soil.png",
+      "color": "ff36311e"
+    }
+  },
   "physics_throw_material_part2": {
     "wang_color": "ffdee1fe",
     "color": "dee1feff",
@@ -3059,6 +3170,20 @@
     "graphics": {
       "texture_file": "data/materials_gfx/earth_bright.png",
       "color": "ffef8F49"
+    }
+  },
+  "meat_static": {
+    "wang_color": "ff9a5149",
+    "color": "9a5149ff",
+    "name": "meat_static",
+    "hp": "10000",
+    "tags": ["static", "corrodible", "meltable_to_blood", "alchemy", "meat", "food", "earth", "solid"],
+    "burnable": "0",
+    "density": "10",
+    "ui_name": "$mat_meat",
+    "graphics": {
+      "texture_file": "data/materials_gfx/meat_static.png",
+      "color": "ff9a5149"
     }
   },
   "sand_static_red": {
@@ -4178,6 +4303,18 @@
       "color": "ff000000"
     }
   },
+  "just_death": {
+    "wang_color": "ffb2332b",
+    "color": "b2332bff",
+    "name": "just_death",
+    "tags": ["liquid", "magic"],
+    "burnable": "0",
+    "density": "4",
+    "ui_name": "$mat_magic_liquid_death",
+    "graphics": {
+      "color": "ff000000"
+    }
+  },
   "liquid_fire": {
     "wang_color": "af3B3B3D",
     "color": "3b3b3daf",
@@ -4224,6 +4361,18 @@
     "graphics": {
       "texture_file": "data/materials_gfx/honey.png",
       "color": "efefa101"
+    }
+  },
+  "pus": {
+    "wang_color": "44695642",
+    "color": "69564244",
+    "name": "pus",
+    "tags": ["liquid", "water", "magic_liquid", "impure"],
+    "density": "1.2434",
+    "ui_name": "$mat_pus",
+    "graphics": {
+      "texture_file": "data/materials_gfx/pus.png",
+      "color": "aa695642"
     }
   },
   "blood_fading_slow": {
@@ -5131,6 +5280,19 @@
     "graphics": {
       "texture_file": "data/materials_gfx/moss.png",
       "color": "ff45FF45"
+    }
+  },
+  "fungi_yellow": {
+    "wang_color": "ffBEC639",
+    "color": "bec639ff",
+    "name": "fungi_yellow",
+    "tags": ["plant", "corrodible", "burnable", "alchemy", "impure", "fungus"],
+    "burnable": "1",
+    "density": "6",
+    "ui_name": "$mat_fungi_green",
+    "graphics": {
+      "texture_file": "data/materials_gfx/yellowblood.png",
+      "color": "ffBEC639"
     }
   },
   "grass_dark": {

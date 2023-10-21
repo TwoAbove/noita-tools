@@ -28,6 +28,8 @@ typedef uint32_t uint32;
 typedef uint64_t uint64;
 typedef uint8 bool8;
 
+#define NOITA_SPELL_COUNT 413
+
 uint world_seed = 0;
 
 using namespace std;
@@ -249,7 +251,7 @@ float RandomDistributionf(float min, float max, float mean, int sharpness)
     return min + (max - min) * GetDistribution(adjMean, sharpness, 0.005f); // Baseline is always this
 }
 
-bool unlockedSpells[393] = {};
+bool unlockedSpells[NOITA_SPELL_COUNT] = {};
 
 void SetUnlockedSpells(int i, int val)
 {
@@ -261,8 +263,8 @@ Spell GetRandomAction(float x, float y, int level, int offset = 0)
     NollaPrng *prng = new NollaPrng(0);
     prng->SetRandomSeed(world_seed + (uint)offset, x, y);
     double sum = 0;
-    // all_spells length is 393
-    for (int i = 0; i < 393; i++)
+    // all_spells length is NOITA_SPELL_COUNT
+    for (int i = 0; i < NOITA_SPELL_COUNT; i++)
     {
         if (!unlockedSpells[i])
         {
@@ -274,7 +276,7 @@ Spell GetRandomAction(float x, float y, int level, int offset = 0)
     double multiplyer = prng->Next();
     double accumulated = sum * multiplyer;
 
-    for (int i = 0; i < 393; i++)
+    for (int i = 0; i < NOITA_SPELL_COUNT; i++)
     {
         if (!unlockedSpells[i])
         {
@@ -303,8 +305,8 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
     prng->SetRandomSeed(world_seed + offset, x, y);
     double sum = 0;
 
-    // all_spells length is 393
-    for (int i = 0; i < 393; i++)
+    // all_spells length is NOITA_SPELL_COUNT
+    for (int i = 0; i < NOITA_SPELL_COUNT; i++)
     {
         if (!unlockedSpells[i])
         {
@@ -319,7 +321,7 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
     double multiplyer = prng->Next();
     double accumulated = sum * multiplyer;
 
-    for (int i = 0; i < 393; i++)
+    for (int i = 0; i < NOITA_SPELL_COUNT; i++)
     {
         if (!unlockedSpells[i])
         {
@@ -338,11 +340,11 @@ Spell GetRandomActionWithType(float x, float y, int level, int type, int offset 
         }
         accumulated -= probability;
     }
-    int rand = prng->Next() * 393;
+    int rand = prng->Next() * NOITA_SPELL_COUNT;
     Spell spell;
-    for (int j = 0; j < 393; j++)
+    for (int j = 0; j < NOITA_SPELL_COUNT; j++)
     {
-        spell = all_spells[(j + rand) % 393];
+        spell = all_spells[(j + rand) % NOITA_SPELL_COUNT];
         if (spell.type == type && spell.spawn_probabilities[level] > 0.0)
         {
             if (!unlockedSpells[j])

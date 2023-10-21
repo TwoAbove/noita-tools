@@ -23,7 +23,7 @@ const argbTorgba = (s: string) =>
 
 const noitaData = path.resolve(
   require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 const defaultColorsPath = path.resolve(noitaData, "data/scripts/wang_scripts.csv");
 const mapPNGPath = path.resolve(noitaData, "data/biome_impl/biome_map.png");
@@ -58,7 +58,7 @@ const getBase64 = (p: string) =>
           height: image.getHeight(),
         });
       });
-    })
+    }),
   );
 
 const parseLua = (script: string) => {
@@ -149,7 +149,7 @@ const addArea = (
   y: number,
   hex: string,
   visited: { [key: string]: boolean },
-  area: { x: number; y: number }[] = []
+  area: { x: number; y: number }[] = [],
 ) => {
   area.push({ x, y });
   visited[`${x} ${y}`] = true;
@@ -265,7 +265,7 @@ const generateMaps = async () => {
     const { biome_filename, height_index, color } = b.$;
     const biome_path = path.resolve(noitaData, biome_filename);
     const name = path.basename(biome_path, ".xml");
-    console.log(name);
+    // console.log(name);
     const Biome = (await parseStringPromise(fs.readFileSync(biome_path))).Biome;
     const { Topology: _T, Materials: _M } = Biome;
     const Topology = _T[0].$;
@@ -309,7 +309,7 @@ const generateMaps = async () => {
         g: {},
       };
       for (const statement of lua_things.body) {
-        fs.writeFileSync("body.json", JSON.stringify(lua_things, null, 2));
+        fs.writeFileSync(".tmp.body.json", JSON.stringify(lua_things, null, 2));
         switch (statement.type) {
           case "AssignmentStatement": {
             if (

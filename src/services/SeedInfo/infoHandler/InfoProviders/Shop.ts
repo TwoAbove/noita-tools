@@ -216,7 +216,7 @@ export class ShopInfoProvider extends InfoProvider {
       config.cost,
       config.level,
       !isShuffle,
-      unshufflePerk
+      unshufflePerk,
     );
     wand.gun.cost = wandcost;
     return wand;
@@ -262,7 +262,7 @@ export class ShopInfoProvider extends InfoProvider {
     pickedPerks: Map<number, string[][]> = new Map(),
     worldOffset: number = 0,
     tx = 0,
-    ty = 0
+    ty = 0,
   ) {
     const temple = this.temples[level];
     // Magic numbers taken from src/services/SeedInfo/infoHandler.check.ts
@@ -320,7 +320,7 @@ export class ShopInfoProvider extends InfoProvider {
                 if (
                   !check(
                     wand.cards.cards.map(i => String(i)),
-                    shop.wand.cards.cards.map(i => String(i))
+                    shop.wand.cards.cards.map(i => String(i)),
                   )
                 ) {
                   return false;
@@ -334,7 +334,7 @@ export class ShopInfoProvider extends InfoProvider {
             if (
               !check(
                 info.items.map(i => String(i.spell.id)),
-                shop.items.map(i => String(i))
+                shop.items.map(i => String(i)),
               )
             ) {
               return false;

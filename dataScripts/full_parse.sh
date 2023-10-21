@@ -22,7 +22,7 @@ read -p "Do you want to copy the files to the data directory? (y/n) " -n 1 -r
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   rm -r ./src/out/gen # Not needed
-  mv -rf ./src/out/spells.h ../src/services/SeedInfo/noita_random/src/spells.h
+  mv ./src/out/spells.h ../src/services/SeedInfo/noita_random/src/spells.h
   cp -rf ./src/out/* ../src/services/SeedInfo/data/
 fi
 

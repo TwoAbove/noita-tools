@@ -145,7 +145,7 @@ var create_Alchemy = (() => {
               z(`wasm streaming compile failed: ${f}`);
               z("falling back to ArrayBuffer instantiation");
               return ua(c, a, b);
-            })
+            }),
           );
     }
     var wa = a => {
@@ -296,7 +296,7 @@ var create_Alchemy = (() => {
           e[a] = function () {
             if (!e[a].v.hasOwnProperty(arguments.length))
               throw new S(
-                `Function '${b}' called with an invalid number of arguments (${arguments.length}) - expects one of (${e[a].v})!`
+                `Function '${b}' called with an invalid number of arguments (${arguments.length}) - expects one of (${e[a].v})!`,
               );
             return e[a].v[arguments.length].apply(this, arguments);
           };
@@ -555,7 +555,7 @@ var create_Alchemy = (() => {
             function () {
               Za(`Cannot call ${a} due to unbound types`, l);
             },
-            b - 1
+            b - 1,
           );
           Da(l, function (k) {
             var m = [k[0], null].concat(k.slice(1)),
