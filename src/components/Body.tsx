@@ -20,7 +20,7 @@ const isLocal = () => {
       // [::1] is the IPv6 localhost address.
       window.location.hostname === "[::1]" ||
       // 127.0.0.1/8 is considered localhost for IPv4.
-      window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
+      window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/),
   );
 };
 
@@ -45,7 +45,7 @@ const Body = () => {
           pathname: "/info",
           search: window.location.search,
         },
-        { replace: true }
+        { replace: true },
       );
     } else {
       navigate("/info", { replace: true });
@@ -59,9 +59,9 @@ const Body = () => {
 
   const isLoggedIn = !!patreonData;
 
-  const showTestBench = isDev();
-  const showClusterCompute = isDev() || isLoggedIn;
-  const showClusterComputeConsole = isLocal();
+  const showTestBench = false; // isDev();
+  const showClusterCompute = isLoggedIn; // || isDev();
+  const showClusterComputeConsole = false; // isLocal();
 
   return (
     <Container fluid="sm" className="mb-5 p-0 rounded shadow-lg">

@@ -113,11 +113,14 @@ const LazyProfile = () => {
 const Header = () => {
   const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "";
   const host = window.location.host;
-  const notNewUrl = !host.includes("noitool.com") && !isLocalhost;
+  const notNewUrl = !["noitool.com", "www.noitool.com"].includes(host) && !isLocalhost;
+  const isDevBranch = host.startsWith("dev.");
   return (
     <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
       <div className="text-nowrap lh-1">
-        <h3 className="fs-1 fw-bolder mb-0 text-center">Noitool</h3>
+        <h3 className="fs-1 fw-bolder mb-0 text-center">
+          Noitool {isDevBranch && <sub className="fs-6 fw mb-0 text-center text-danger">Beta</sub>}
+        </h3>
         <p className="fs-4 fw-light m-1 mt-0 my-1 text-center">Noita tools and helpers</p>
         {notNewUrl && (
           <p className="mb-2 text-center">
