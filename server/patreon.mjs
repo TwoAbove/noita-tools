@@ -1,14 +1,14 @@
-const { Router } = require("express");
-const mongoose = require("mongoose");
-const cron = require("node-cron");
-const { randomUUID, createHmac } = require("crypto");
+import { Router } from "express";
+import { Types } from "mongoose";
+import { schedule } from "node-cron";
+import { randomUUID, createHmac } from "crypto";
 
-const RateLimit = require("express-rate-limit");
+import RateLimit from "express-rate-limit";
 
-const { User } = require("./db");
-const { genSessionCookie } = require("./helpers");
+import { User } from "./db.mjs";
+import { genSessionCookie } from "./helpers.mjs";
 
-const patreon = require("patreon");
+import patreon from "patreon";
 const patreonOAuth = patreon.oauth;
 
 const patreonOAuthClient = patreonOAuth(process.env.PATREON_CLIENT_ID, process.env.PATREON_CLIENT_SECRET);
@@ -88,7 +88,7 @@ const updatePatrons = async () => {
 };
 
 updatePatrons();
-cron.schedule("* * * * *", updatePatrons); // every minute
+schedule("* * * * *", updatePatrons); // every minute
 
 router.get("/patrons", async (req, res) => {
   res.send(patronCache);
@@ -218,7 +218,7 @@ router.get(
 
       if (!user) {
         user = await User.create({
-          _id: new mongoose.Types.ObjectId(),
+          _id: new Types.ObjectId(),
 
           patreonData: tokens,
 
@@ -482,13 +482,13 @@ router.post("/webhook", async (req, res) => {
         patron?.attributes?.currently_entitled_amount_cents ||
         patron?.attributes?.pledge_amount_cents ||
         patron?.will_pay_amount_cents ||
-        patreon?.attributes?.will_pay_amount_cents;
+        patron?.attributes?.will_pay_amount_cents;
       const amount = getComputeAmountForPledgeAmount(pledgeAmount);
 
       let user = await User.findOne({ patreonId });
       if (!user) {
         user = await User.create({
-          _id: new mongoose.Types.ObjectId(),
+          _id: new Types.ObjectId(),
 
           patreonId,
 
@@ -561,6 +561,6 @@ const updatePatreonCompute = async () => {
   }
   console.log(logs.join("\n"));
 };
-cron.schedule("* * * * *", () => updatePatreonCompute());
+schedule("* * * * *", () => updatePatreonCompute());
 
-module.exports = router;
+export default router;

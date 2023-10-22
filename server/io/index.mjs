@@ -1,8 +1,8 @@
-const { Server: SocketIOServer } = require("socket.io");
+import { Server as SocketIOServer } from "socket.io";
 
-const { handleLiveSeed } = require("./liveSeed");
-const { handleCompute, counts } = require("./compute");
-const { rooms } = require("./rooms");
+import { handleLiveSeed } from "./liveSeed.mjs";
+import { handleCompute, counts } from "./compute.mjs";
+import { rooms } from "./rooms.mjs";
 
 const corsDomains = [
   "dev.noitool.com",
@@ -57,4 +57,4 @@ const makeIO = (server, app) => {
   });
 };
 
-module.exports = makeIO;
+export default makeIO;

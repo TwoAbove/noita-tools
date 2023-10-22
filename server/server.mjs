@@ -1,17 +1,19 @@
-const handler = require("serve-handler");
-const express = require("express");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const cron = require("node-cron");
-const multer = require("multer");
-const RateLimit = require("express-rate-limit");
+import handler from "serve-handler";
+import express, { static as expressStatic } from "express";
+import morgan from "morgan";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import { schedule } from "node-cron";
+import multer from "multer";
+import RateLimit from "express-rate-limit";
 
-const B2 = require("backblaze-b2");
-const { randomUUID } = require("crypto");
-B2.prototype.uploadAny = require("@gideo-llc/backblaze-b2-upload-any");
+import B2 from "backblaze-b2";
+import { randomUUID } from "crypto";
+B2.prototype.uploadAny = await import("@gideo-llc/backblaze-b2-upload-any");
 
-const { genSessionCookie } = require("./helpers");
+import { createServer } from "http";
+
+import { genSessionCookie } from "./helpers.mjs";
 
 const PORT = process.env.PORT || 3001;
 
@@ -44,7 +46,7 @@ app.use(
 let data = [];
 let stats = [];
 
-const apiRoutes = require("./routes");
+import apiRoutes from "./routes.mjs";
 
 app.use((req, res, next) => {
   // Set session cookie
@@ -74,7 +76,7 @@ app.post("/api/stats", (req, res) => {
   res.sendStatus(200);
 });
 
-const patreonRouter = require("./patreon");
+import patreonRouter from "./patreon.mjs";
 app.use("/api/patreon", patreonRouter);
 
 let r;
@@ -110,8 +112,10 @@ app.get("/m/*", async (req, res) => {
   res.send({});
 });
 
-const server = require("http").createServer(app);
-const io = require("./io")(server, app);
+import Socket from "./io/index.mjs";
+
+const server = createServer(app);
+const io = Socket(server, app);
 
 // This is a hack for cleaner routing from the client's React Router.
 // So that 404s still work, but the client can still route only to existing pages.
@@ -130,25 +134,25 @@ for (const route of ["/", "/info", "/search", "/live", "/test", "/compute", "/co
 
 app.use(
   "/static",
-  express.static("build/static", {
+  expressStatic("build/static", {
     maxAge: "1y",
   }),
 );
 app.use(
   "/locales",
-  express.static("build/locales", {
+  expressStatic("build/locales", {
     maxAge: "1d",
   }),
 );
 app.use(
   "/ocr",
-  express.static("build/ocr", {
+  expressStatic("build/ocr", {
     maxAge: "1d",
   }),
 );
 app.use(
   "/",
-  express.static("build/", {
+  expressStatic("build/", {
     maxAge: "1d",
   }),
 );
@@ -180,7 +184,7 @@ const upload = async () => {
   }
 };
 
-cron.schedule("0 0 * * *", upload);
+schedule("0 0 * * *", upload);
 
 const shutdown = signal => err => {
   if (err) console.error(err.stack || err);
@@ -202,4 +206,4 @@ process.on("SIGTERM", shutdown("SIGTERM")).on("SIGINT", shutdown("SIGINT"));
 
 process.on("uncaughtException", shutdown("SIGINT"));
 
-require("./jobs");
+import "./jobs/index.mjs";

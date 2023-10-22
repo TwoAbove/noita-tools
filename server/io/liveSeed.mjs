@@ -1,4 +1,4 @@
-const { getRoomNumber, rooms } = require("./rooms");
+import { getRoomNumber, rooms } from "./rooms.mjs";
 
 const handleLiveSeed = socket => {
   let roomNumber;
@@ -29,4 +29,4 @@ const handleLiveSeed = socket => {
   });
 };
 
-module.exports = { handleLiveSeed };
+export { handleLiveSeed };

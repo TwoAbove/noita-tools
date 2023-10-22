@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-
-const { Schema } = mongoose;
+import mongoose, { Schema } from "mongoose";
 
 const { ObjectId } = Schema.Types;
 
@@ -14,7 +12,7 @@ mongoose.connect(
   },
   {
     compressors: ["zlib"],
-  }
+  },
 );
 
 const db = mongoose.connection;
@@ -44,7 +42,7 @@ const UserSchema = new Schema({
     providedComputeLeft: Number,
   },
 });
-const User = mongoose.model("User", UserSchema);
+export const User = mongoose.model("User", UserSchema);
 
 // Handle job queues through MongoDB
 // because I don't want to complicate this project
@@ -61,9 +59,4 @@ const JobSchema = new Schema({
   createdAt: Date,
   updatedAt: Date,
 });
-const Job = mongoose.model("Job", JobSchema);
-
-module.exports = {
-  User,
-  Job,
-};
+export const Job = mongoose.model("Job", JobSchema);

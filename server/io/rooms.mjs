@@ -26,4 +26,4 @@ const getRoomNumber = () => {
   return finalNumber;
 };
 
-module.exports = { getRoomNumber, rooms };
+export { getRoomNumber, rooms };

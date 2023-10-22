@@ -1,4 +1,4 @@
-const { REST, Routes, Client, GatewayIntentBits } = require("discord.js");
+import { REST, Routes, Client, GatewayIntentBits } from "discord.js";
 
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.DISCORD_CLIENT_ID;

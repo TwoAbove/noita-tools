@@ -1,11 +1,11 @@
-const cron = require("node-cron");
+import { schedule } from "node-cron";
 
-const B2 = require("backblaze-b2");
-B2.prototype.uploadAny = require("@gideo-llc/backblaze-b2-upload-any");
+import B2 from "backblaze-b2";
+B2.prototype.uploadAny = await import("@gideo-llc/backblaze-b2-upload-any");
 
-const { User } = require("../db");
+import { User } from "../db.mjs";
 
-const counts = {
+export const counts = {
   hosts: 0,
   workers: 0,
   appetite: 0,
@@ -53,7 +53,7 @@ const pingLambda = () => {
         "Pinged lambda",
         process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT,
         counts.hosts,
-        process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER
+        process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER,
       );
     });
 };
@@ -108,7 +108,7 @@ const transactComputeTime = async (hostId, workerId, hostTime, workerTime) => {
   await workerUser.save();
 };
 
-const handleCompute = (socket, io) => {
+export const handleCompute = (socket, io) => {
   let computeUserId;
   let user;
   let computeAppetite = 0;
@@ -231,12 +231,10 @@ const handleCompute = (socket, io) => {
   });
 };
 
-cron.schedule("*/10 * * * * *", async () => {
+schedule("*/10 * * * * *", async () => {
   const connectedUsers = Object.keys(users);
   const dbUsers = await User.find({ _id: { $in: connectedUsers } });
   dbUsers.forEach(u => {
     users[u.id].computeLeft = u.compute.providedComputeLeft + u.compute.patreonComputeLeft;
   });
 });
-
-module.exports = { handleCompute, counts };

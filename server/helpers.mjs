@@ -1,4 +1,4 @@
-const { randomUUID } = require("crypto");
+import { randomUUID } from "crypto";
 
 const genSessionCookie = res => {
   res.cookie("noitoolSessionToken", randomUUID(), {
@@ -7,6 +7,4 @@ const genSessionCookie = res => {
   });
 };
 
-module.exports = {
-  genSessionCookie,
-};
+export { genSessionCookie };

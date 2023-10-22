@@ -1,6 +1,6 @@
-const cron = require("node-cron");
+import { schedule } from "node-cron";
 
-const { Job } = require("../db");
+import { Job } from "../db.mjs";
 
 const tasks = {};
 
@@ -45,4 +45,4 @@ const handleJobs = async () => {
 };
 
 // Run every minute
-cron.schedule("* * * * *", handleJobs);
+schedule("* * * * *", handleJobs);

@@ -1,5 +1,5 @@
-const { Router } = require("express");
-const multer = require("multer");
+import { Router } from "express";
+import multer from "multer";
 
 const router = Router();
 
@@ -29,7 +29,7 @@ router.get("/api/db_dump/:id", (req, res) => {
 
 const m = multer();
 
-const { getRoomNumber } = require("./io/rooms");
+import { getRoomNumber } from "./io/rooms.mjs";
 
 router.post("/api/db_dump/", m.any(), (req, res) => {
   const id = getRoomNumber();
@@ -40,4 +40,4 @@ router.post("/api/db_dump/", m.any(), (req, res) => {
   }, 900000); // 15 minutes
 });
 
-module.exports = router;
+export default router;
