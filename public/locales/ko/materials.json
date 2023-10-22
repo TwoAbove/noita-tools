@@ -1829,7 +1829,6 @@
   "$perk_no_more_shuffle": "섞기 제거",
   "$perkdesc_no_more_shuffle": "이제 완드가 섞이지 않습니다. 들고 있는 완드도 섞이지 않는 완드로 바뀝니다.",
   "$perk_vampirism": "흡혈",
-  "$perkdesc_vampirism": "최대 체력의 25%를 상실하지만 피를 마셔 체력을 회복할 수 있습니다. 피는 포만감에 영향을 주지 않습니다.",
   "$perk_no_wand_editing": "완드 개조 없음",
   "$perkdesc_no_wand_editing": "완드를 개조할 수 없으며 대신 적들이 피 묻은 돈을 떨어뜨립니다.",
   "$perk_telekinesis": "염력 킥",

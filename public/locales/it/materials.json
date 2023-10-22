@@ -1829,7 +1829,6 @@
   "$perk_no_more_shuffle": "No: ordine casuale",
   "$perkdesc_no_more_shuffle": "La maggior parte delle bacchette non passano più in rassegna gli incantesimi assegnati in ordine casuale. Lo stesso si applica alle bacchette che porti con te.",
   "$perk_vampirism": "Vampirismo",
-  "$perkdesc_vampirism": "Perdi il 25% della salute massima, ma puoi ripristinarne bevendo sangue. Il sangue non influenza il livello di sazietà.",
   "$perk_no_wand_editing": "Nessuna modifica alle bacchette",
   "$perkdesc_no_wand_editing": "Le bacchette non possono essere modificate, ma i nemici potrebbero lasciare oro insanguinato.",
   "$perk_telekinesis": "Calcio telecinetico",

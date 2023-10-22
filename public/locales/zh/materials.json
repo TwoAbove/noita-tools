@@ -1829,7 +1829,6 @@
   "$perk_no_more_shuffle": "不再乱序",
   "$perkdesc_no_more_shuffle": "大多数魔杖为非乱序魔杖。你持有的魔杖也会变成非乱序魔杖。",
   "$perk_vampirism": "吸血术",
-  "$perkdesc_vampirism": "你丧失 25% 最大生命值，但饮用血液可以补充生命值。血液不会影响饱食度。",
   "$perk_no_wand_editing": "魔杖无法修补",
   "$perkdesc_no_wand_editing": "魔杖无法修补，但敌人会掉落抚恤金。",
   "$perk_telekinesis": "念动力踢击",

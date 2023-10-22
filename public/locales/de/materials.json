@@ -1829,7 +1829,6 @@
   "$perk_no_more_shuffle": "Kein Mischen mehr",
   "$perkdesc_no_more_shuffle": "Von nun an gibt es keine Zufallszauberstäbe mehr. Die Zauberstäbe, die du trägst, werden ebenfalls zu Nicht-Zufallszauberstäben.",
   "$perk_vampirism": "Vampirismus",
-  "$perkdesc_vampirism": "Du verlierst 25 % der maximalen Gesundheit, kannst aber die Gesundheit durch das Trinken von Blut wieder auffüllen. Blut beeinflusst den Sättigungsgrad nicht.",
   "$perk_no_wand_editing": "Keine Zauberstab-Bearbeitung",
   "$perkdesc_no_wand_editing": "Zauberstäbe können nicht bearbeitet werden, aber Feinde können Blutgeld fallen lassen.",
   "$perk_telekinesis": "Telekinetischer Kick",
