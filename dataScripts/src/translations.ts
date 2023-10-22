@@ -5,11 +5,11 @@ import { parse } from "csv-parse/sync";
 
 const noitaData = path.resolve(
   require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 const translationFile = path.resolve(
   require("os").homedir(),
-  ".steam/debian-installation/steamapps/common/Noita/data/translations/common.csv"
+  ".steam/debian-installation/steamapps/common/Noita/data/translations/common.csv",
 );
 
 const translationCSV = fs.readFileSync(translationFile).toString();
@@ -54,6 +54,6 @@ for (let i = 1; i < locales.length; i++) {
   fs.writeFileSync(path.resolve(__dirname, `./locales/${locale}/app.json`), JSON.stringify({}, null, 2));
   fs.writeFileSync(
     path.resolve(__dirname, `./locales/${locale}/materials.json`),
-    JSON.stringify(translation[locale], null, 2)
+    JSON.stringify(translation[locale], null, 2),
   );
 }

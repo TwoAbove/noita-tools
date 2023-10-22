@@ -1829,7 +1829,6 @@
   "$perk_no_more_shuffle": "シャッフル無し",
   "$perkdesc_no_more_shuffle": "ほとんどの杖のシャッフルが発生しない。現在所持している杖もシャッフルしなくなる。",
   "$perk_vampirism": "吸血鬼",
-  "$perkdesc_vampirism": "最大HPの25%を失いますが、血を飲むことでHPを補充することができます。血は満腹レベルに影響しません。",
   "$perk_no_wand_editing": "杖工作なし",
   "$perkdesc_no_wand_editing": "杖の工作ができなくなるが、敵が血の金塊を落とすようになる。",
   "$perk_telekinesis": "念動力キック",

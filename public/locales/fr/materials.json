@@ -1829,7 +1829,6 @@
   "$perk_no_more_shuffle": "L'aléatoire, c'est fini",
   "$perkdesc_no_more_shuffle": "La plupart des baguettes ne seront plus aléatoires. Les baguettes que vous transportez deviennent également non aléatoires.",
   "$perk_vampirism": "Vampirisme",
-  "$perkdesc_vampirism": "Vous perdez 25 % de votre santé max., mais vous pouvez restaurer votre santé en buvant du sang. Le sang n'a aucun effet sur la satiété.",
   "$perk_no_wand_editing": "Pas de modification de baguette",
   "$perkdesc_no_wand_editing": "Impossible de modifier les baguettes, mais les ennemis peuvent lâcher des pépites d'or rouges.",
   "$perk_telekinesis": "Coup de pied télékinétique",
