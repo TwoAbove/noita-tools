@@ -20,10 +20,11 @@ for dir in "${directories[@]}"; do
 
   # Compile using emscripten
   em++ --bind -O3 -msse2 -msimd128 \
-    -o $output_file.js \
+    -o $output_file.mjs \
     --std=c++20 \
     --extern-pre-js="$script_dir/pre.js" \
     --closure 1 \
+    --embind-emit-tsd $output_file.d.ts \
     -s WASM=1 \
     -s FILESYSTEM=0 \
     -s ALLOW_MEMORY_GROWTH=1 \
@@ -35,10 +36,11 @@ for dir in "${directories[@]}"; do
     *.cpp
 
   em++ --bind -O3 \
-    -o $output_file-base.js \
+    -o $output_file-base.mjs \
     --std=c++20 \
     --extern-pre-js="$script_dir/pre.js" \
     --closure 1 \
+    --embind-emit-tsd $output_file.d.ts \
     -s WASM=1 \
     -s FILESYSTEM=0 \
     -s ALLOW_MEMORY_GROWTH=1 \

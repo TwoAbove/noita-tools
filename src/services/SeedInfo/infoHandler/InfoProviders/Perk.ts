@@ -1,7 +1,6 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import perksData from "../../data/obj/perks.json";
 import templeData from "../../data/temple-locations.json";
 import { includesAll, includesSome, Objectify } from "../../../helpers";
 import { IRule } from "../IRule";
@@ -42,13 +41,27 @@ export interface IRerollAction {
 
 export type IPerkChangeAction = IShiftAction | ISetAction | IGenRowAction | ISelectAction | IRerollAction;
 
-type IPerkType = Objectify<typeof perksData>;
+type IPerkType = Objectify<typeof import("../../data/obj/perks.json")>;
 
 export type IPerk = IPerkType[string];
 export class PerkInfoProvider extends InfoProvider {
-  perks = perksData;
-  perksArr = Object.values(this.perks) as any[];
+  perksDataPromise = import("../../data/obj/perks.json")
+    .catch(e => {
+      console.error(e);
+      return {};
+    })
+    .then((perksData: any) => {
+      this.perks = perksData.default;
+      this.perksArr = Object.values(this.perks) as any[];
+    });
+
+  perks!: IPerkType;
+  perksArr!: any[];
   temples = templeData;
+
+  async ready(): Promise<void> {
+    await this.perksDataPromise;
+  }
 
   _G = new Global();
 
@@ -293,7 +306,7 @@ export class PerkInfoProvider extends InfoProvider {
     maxLevels?: number,
     returnPerkObjects?: boolean,
     worldOffset?: number,
-    rerolls?: Map<number, number[]>
+    rerolls?: Map<number, number[]>,
   ): IPerk[][] {
     const perkPicks = cloneDeep(_perkPicks) || new Map();
     worldOffset = worldOffset || 0;

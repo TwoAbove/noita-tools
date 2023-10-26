@@ -1,7 +1,6 @@
 import D from "decimal.js";
 
 import { InfoProvider } from "./Base";
-import wandData from "../../data/wands.json";
 import { IRandom } from "../../random";
 
 export enum ACTION_TYPE {
@@ -106,7 +105,7 @@ const WandDiff = (
     deck_capacity: number;
     spread_degrees: number;
     reload_time: number;
-  }
+  },
 ): number => {
   let score = 0;
   score += Math.abs(gun.fire_rate_wait - wand.fire_rate_wait) * 2;
@@ -190,7 +189,20 @@ class Gun implements IGun {
 }
 
 export class WandInfoProvider extends InfoProvider {
-  wands = wandData as unknown as {
+  wandsPromise = import("../../data/wands.json")
+    .catch(e => {
+      console.error(e);
+      return {};
+    })
+    .then((wands: any) => {
+      this.wands = wands.default;
+    });
+
+  async ready(): Promise<void> {
+    await this.wandsPromise;
+  }
+
+  wands!: {
     file: string;
     name: string;
     fire_rate_wait: number;
@@ -362,7 +374,7 @@ export class WandInfoProvider extends InfoProvider {
       t_gun[variable] = clamp(
         this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness),
         min,
-        max
+        max,
       );
       t_gun["cost"] = t_gun["cost"] - (60 - t_gun[variable]) / 5;
       return;
@@ -374,7 +386,7 @@ export class WandInfoProvider extends InfoProvider {
       t_gun[variable] = clamp(
         this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness),
         min,
-        max
+        max,
       );
       t_gun["cost"] = t_gun["cost"] - (16 - t_gun[variable]);
       return;
@@ -386,7 +398,7 @@ export class WandInfoProvider extends InfoProvider {
       t_gun[variable] = clamp(
         this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness),
         min,
-        max
+        max,
       );
       t_gun["cost"] = t_gun["cost"] - (16 - t_gun[variable]);
       return;
@@ -412,7 +424,7 @@ export class WandInfoProvider extends InfoProvider {
       t_gun[variable] = clamp(
         this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness),
         min,
-        max
+        max,
       );
       t_gun["cost"] = t_gun["cost"] - (t_gun[variable] - 6) * 5;
       return;
@@ -453,7 +465,7 @@ export class WandInfoProvider extends InfoProvider {
 
       max = clamp(max, 1, deck_capacity);
       t_gun[variable] = Math.floor(
-        clamp(this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness), min, max)
+        clamp(this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness), min, max),
       );
       let temp_cost = action_costs[clamp(t_gun[variable], 1, action_costs.length) - 1];
       t_gun["cost"] = t_gun["cost"] - temp_cost;

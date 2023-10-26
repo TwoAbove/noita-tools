@@ -19,7 +19,7 @@ import PatreonButton from "./misc/PatreonButton";
 import { ProfileContext, ProfileProvider } from "./Profile/ProfileContext";
 
 const Settings = lazy(() => import("./Settings"));
-const LazySettings = props => {
+const LazySettings = () => {
   const [show, setShow] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -143,7 +143,7 @@ const Header = () => {
   );
 };
 
-const WasmError = props => {
+const WasmError = (props: any) => {
   return (
     <div className="position-absolute top-50 start-50 translate-middle text-center w-75">
       <p>Looks like this browser does not support WebAssembly, which is needed to run the generation code.</p>
@@ -168,7 +168,7 @@ const WasmError = props => {
 };
 
 const Body = lazy(() => import("./Body"));
-const LazyBody = props => {
+const LazyBody = (props: any) => {
   return (
     <Suspense fallback={<LoadingComponent />}>
       <Body {...props} />
@@ -204,7 +204,7 @@ const Footer = () => {
         </div>
         <div className="footer-copyright text-center fw-light py-1">
           <span className="fw-bold">
-            Noitool <code className="ms-1">{process.env.REACT_APP_VERSION} </code>
+            Noitool <code className="ms-1">{APP_VERSION} </code>
           </span>
           © 2023 <a href="https://seva.dev/">Seva Maltsev</a>
         </div>

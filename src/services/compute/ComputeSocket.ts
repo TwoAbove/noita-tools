@@ -1,4 +1,4 @@
-import SeedSolver from "../seedSolverHandler";
+import { SeedSolver } from "../seedSolverHandler";
 import SocketHandler, { SocketHandlerConfig } from "../socketHandler";
 import { Status } from "./ChunkProvider";
 
@@ -72,7 +72,7 @@ export class ComputeSocket extends SocketHandler {
         sessionToken: this.sessionToken,
         appetite: this.seedSolver?.workerList.length,
       },
-      this.onUpdate
+      this.onUpdate,
     );
   }
   unregister() {
@@ -84,7 +84,7 @@ export class ComputeSocket extends SocketHandler {
         sessionToken: this.sessionToken,
         appetite: this.seedSolver?.workerList.length,
       },
-      this.onUpdate
+      this.onUpdate,
     );
   }
 

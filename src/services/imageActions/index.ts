@@ -7,14 +7,17 @@ const isNode = typeof process === "object" && typeof require === "function";
 export const loadImageActions = async (): Promise<IImageActions | any> => {
   // if is node
   if (isNode) {
-    return import("./nodeImageActions");
+    const url = new URL("./nodeImageActions", import.meta.url);
+    return import(url.href);
   } else {
     if (typeof OffscreenCanvas === "undefined") {
       // Old Mobile Safari support
-      return import("./webCanvasImageActions");
+      const url = new URL("./webCanvasImageActions", import.meta.url);
+      return import(url.href);
     }
 
-    return import("./webImageActions");
+    const url = new URL("./webImageActions", import.meta.url);
+    return import(url.href);
   }
 };
 

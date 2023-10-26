@@ -1,12 +1,38 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import biomeModifiersData from "../../data/obj/biome_modifiers.json";
-import { Objectify } from "../../../helpers";
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
 
 export class BiomeModifierInfoProvider extends InfoProvider {
+  biomeModifierPromise = import("../../data/obj/biome_modifiers.json")
+    .catch(e => {
+      console.error(e);
+      return {};
+    })
+    .then((biomeModifiersData: any) => {
+      this.modifiers = biomeModifiersData.default;
+
+      this.availableBiomeModifiers = Object.values<any>(this.modifiers).reduce(
+        (c, bm) => {
+          for (const biome in c) {
+            if (bm.does_not_apply_to_biome && bm.does_not_apply_to_biome.includes(biome)) {
+              continue;
+            }
+            if (bm.apply_only_to_biome && !bm.apply_only_to_biome.includes(biome)) {
+              continue;
+            }
+            c[biome].push(bm.id);
+          }
+          return c;
+        },
+        this.biomes.flat(2).reduce<{ [modifier: string]: string[] }>((c, b) => {
+          c[b] = [];
+          return c;
+        }, {}),
+      );
+    });
+
   biomes = [
     ["coalmine", "mountain_hall"],
     ["coalmine_alt"],
@@ -18,32 +44,15 @@ export class BiomeModifierInfoProvider extends InfoProvider {
     ["vault"],
     ["crypt"],
   ];
-  modifiers = biomeModifiersData as Objectify<typeof biomeModifiersData>;
+
+  modifiers;
+  availableBiomeModifiers;
 
   CHANCE_OF_MODIFIER_PER_BIOME = 0.1;
   CHANCE_OF_MODIFIER_COALMINE = 0.2;
   CHANCE_OF_MODIFIER_EXCAVATIONSITE = 0.15;
   CHANCE_OF_MOIST_FUNGICAVE = 0.5;
   CHANCE_OF_MOIST_LAKE = 0.75;
-
-  availableBiomeModifiers = Object.values(biomeModifiersData as Objectify<typeof biomeModifiersData>).reduce(
-    (c, bm) => {
-      for (const biome in c) {
-        if (bm.does_not_apply_to_biome && bm.does_not_apply_to_biome.includes(biome)) {
-          continue;
-        }
-        if (bm.apply_only_to_biome && !bm.apply_only_to_biome.includes(biome)) {
-          continue;
-        }
-        c[biome].push(bm.id);
-      }
-      return c;
-    },
-    this.biomes.flat(2).reduce<{ [modifier: string]: string[] }>((c, b) => {
-      c[b] = [];
-      return c;
-    }, {})
-  );
 
   HasFlagPersistent(flag: any) {
     // assume everything is unlocked
@@ -60,7 +69,7 @@ export class BiomeModifierInfoProvider extends InfoProvider {
       does_not_apply_to_biome: string | any[];
       apply_only_to_biome: string | any[];
     },
-    biome_name: string
+    biome_name: string,
   ) {
     if (!modifier) {
       return false;
@@ -198,7 +207,7 @@ export class BiomeModifierInfoProvider extends InfoProvider {
   }
 
   get(modifier) {
-    return biomeModifiersData[modifier];
+    return this.modifiers[modifier];
   }
 
   test(rule: IRule): boolean {

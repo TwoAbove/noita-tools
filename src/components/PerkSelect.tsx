@@ -4,8 +4,6 @@ import { Modal, ModalProps, Row, Col, FormControl } from "react-bootstrap";
 import Fuse from "fuse.js";
 import { useTranslation } from "react-i18next";
 
-import Icon from "./Icons/Icon";
-import Clickable from "./Icons/Clickable";
 import Perk from "./Icons/Perk";
 import { PerkInfoProvider } from "../services/SeedInfo/infoHandler/InfoProviders/Perk";
 
@@ -51,8 +49,8 @@ const PerkSelect = (props: IPerkSelectProps) => {
           ui_name: t(p.ui_name),
           ui_description: t(p.ui_description),
         })),
-        options as any
-      )
+        options as any,
+      ),
     );
   }, [t, i18n, i18n.language]);
 
@@ -61,7 +59,7 @@ const PerkSelect = (props: IPerkSelectProps) => {
   };
 
   const perksToShow = (filter ? fuse.search(filter || " ").map(p => p.item) : perkInfoProvider.perksArr).filter(
-    p => !selected.includes(p.id)
+    p => !selected.includes(p.id),
   );
 
   return (

@@ -31,9 +31,14 @@ const path = require("path");
 // 		2
 // 	)
 // );
-if (!fs.existsSync("console-build")) {
-  fs.mkdirSync("console-build");
-}
+
+const mkDir = dir => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+};
+
+["console-build", "console-build/workers", "console-build/noita_random"].forEach(mkDir);
 
 const pkg = require(path.resolve("./package.json"));
 
@@ -45,6 +50,7 @@ require("esbuild")
       "./src/services/SeedInfo/infoHandler/index.ts",
       "./src/consoleSearch.ts",
       "./src/workers/seedSearcher.worker.node.ts",
+      "./src/services/imageActions/nodeImageActions.ts",
     ],
     bundle: true,
     loader: { ".wasm": "file", ".node": "copy", ".json": "copy" },
@@ -64,7 +70,7 @@ require("esbuild")
   .then(() => {
     fs.copyFileSync(
       path.resolve(__dirname, "search.package.json"),
-      path.resolve(__dirname, "console-build", "package.json")
+      path.resolve(__dirname, "console-build", "package.json"),
     );
 
     {
@@ -84,5 +90,26 @@ require("esbuild")
       result = result.replaceAll(`__dirname`, `import.meta.url`);
       result = result.replaceAll(`__dirname`, `import.meta.url`);
       fs.writeFileSync(fixFile, result);
+    }
+
+    {
+      // Need to figure out how to correctly fix URL requires with esbuild
+      const fixFile = path.resolve(__dirname, "console-build", "workers/seedSearcher.worker.node.js");
+      let f = fs.readFileSync(fixFile, "utf8");
+      let result = f.replace("./nodeImageActions", "../services/imageActions/nodeImageActions.js");
+      fs.writeFileSync(fixFile, result);
+    }
+
+    {
+      fs.copyFileSync(
+        path.resolve(__dirname, "src/services/SeedInfo/noita_random/noita_random.wasm"),
+        path.resolve(__dirname, "console-build", "noita_random/noita_random.wasm"),
+      );
+    }
+    {
+      fs.copyFileSync(
+        path.resolve(__dirname, "src/services/SeedInfo/infoHandler/InfoProviders/Alchemy/Alchemy.wasm"),
+        path.resolve(__dirname, "console-build", "workers/Alchemy.wasm"),
+      );
     }
   });

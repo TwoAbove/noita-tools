@@ -1,14 +1,13 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import spellData from "../../data/obj/spells.json";
-import spellArr from "../../data/spells.json";
 import templeData from "../../data/temple-locations.json";
 import { includesAll, includesSome, between } from "../../../helpers";
 import { IRule } from "../IRule";
 import { IRandom } from "../../random";
 import { InfoProvider } from "./Base";
-import { WandInfoProvider } from "./Wand";
+import type { WandInfoProvider } from "./Wand";
+import type { SpellInfoProvider } from "./Spell";
 
 export enum IShopType {
   "wand" = 1,
@@ -26,14 +25,21 @@ export type IWandShop = {
 export type IShopItems = IItemShop | IWandShop;
 
 export class ShopInfoProvider extends InfoProvider {
-  constructor(randoms: IRandom, wandInfoProvider: WandInfoProvider) {
+  constructor(randoms: IRandom, wandInfoProvider: WandInfoProvider, spellInfoProvider: SpellInfoProvider) {
     super(randoms);
     this.wandInfoProvider = wandInfoProvider;
+    this.spells = spellInfoProvider;
   }
+
+  async ready(): Promise<void> {
+    await this.wandInfoProvider.ready();
+    await this.spells.ready();
+    return;
+  }
+
   wandInfoProvider: WandInfoProvider;
   temples = templeData;
-  spells = spellData;
-  spellsArr = spellArr;
+  spells: SpellInfoProvider;
 
   biomes = [
     null, // 0
@@ -150,7 +156,7 @@ export class ShopInfoProvider extends InfoProvider {
 
     const item = this.randoms.GetRandomAction(x, y, level, 0);
 
-    const spell = this.spells[item.toUpperCase()];
+    const spell = this.spells.provide(item.toUpperCase());
     let price = Math.max(Math.floor((spell.price * 0.3 + 70 * biomeid) / 10) * 10, 10);
 
     if (cheap_item) {

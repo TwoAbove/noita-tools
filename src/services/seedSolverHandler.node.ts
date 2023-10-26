@@ -133,7 +133,7 @@ export default class SeedSolver {
           res.push(...r);
           await new Promise(res => setTimeout(res, 0));
         }
-      })
+      }),
     );
 
     return res;

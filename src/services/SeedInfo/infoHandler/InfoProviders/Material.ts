@@ -2,14 +2,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { i18n } from "i18next";
-import materialsData from "../../data/materials.json";
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
 
 // import i18n from '../../../../i18n';
 
 export class MaterialInfoProvider extends InfoProvider {
-  materials = materialsData;
+  materialsPromise = import("../../data/materials.json")
+    .catch(e => {
+      console.error(e);
+      return {};
+    })
+    .then((data: any) => {
+      this.materials = data.default;
+    });
+
+  materials;
+
+  async ready() {
+    await this.materialsPromise;
+    return;
+  }
 
   i18n?: i18n;
 

@@ -7,7 +7,7 @@ import { PerkInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProvid
 import classNames from "classnames";
 import { SpellInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Spell";
 
-const lotteryPerk = new PerkInfoProvider({} as any).getPerk("PERKS_LOTTERY");
+import { PERKS_LOTTERY } from "../../services/SeedInfo/data/obj/perks.json";
 
 interface IPerkProps {
   className?: string | false;
@@ -59,7 +59,7 @@ const Perk = (props: IPerkProps) => {
             }}
             className="position-absolute top-0 translate-middle"
             width="1.5rem"
-            uri={`${lotteryPerk.perk_icon}`}
+            uri={`${PERKS_LOTTERY.perk_icon}`}
           />
         )}
       </Clickable>

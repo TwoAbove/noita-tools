@@ -10,7 +10,7 @@
 # --profiling \
 
 em++ --bind -O3 -msse2 -msimd128 \
-  -o noita_random.js \
+  -o noita_random.mjs \
   --std=c++20 \
   --extern-pre-js="pre.js" \
   --closure 1 \
@@ -26,7 +26,7 @@ em++ --bind -O3 -msse2 -msimd128 \
   src/wasm_in.cpp
 
 em++ --bind -O3 \
-  -o noita_random-base.js \
+  -o noita_random-base.mjs \
   --std=c++20 \
   --extern-pre-js="pre.js" \
   --closure 1 \
@@ -43,5 +43,5 @@ em++ --bind -O3 \
 
 # To see what the size is to sanity-check
 du -sh noita_random.wasm
-du -sh noita_random.js
+du -sh noita_random.mjs
 echo ""

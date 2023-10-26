@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect, FC } from "react";
-import { Row, Col, Container, Stack, Button, Form } from "react-bootstrap";
+import { useState, FC } from "react";
+import { Row, Col, Container, Stack, Button } from "react-bootstrap";
 
-import classNames from "classnames";
-import Clickable from "../../Icons/Clickable";
 import PerkSelect from "../../PerkSelect";
-import Icon from "../../Icons/Icon";
 import { Square } from "../../helpers";
 import { IRule } from "../../../services/SeedInfo/infoHandler/IRule";
 import Perk from "../../Icons/Perk";

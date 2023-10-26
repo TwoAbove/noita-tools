@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import humanize from "humanize-duration";
 import Cookies from "js-cookie";
 
-import SeedSolver from "../../../services/seedSolverHandler";
+import { SeedSolver } from "../../../services/seedSolverHandler";
 import useLocalStorage from "../../../services/useLocalStorage";
 import UseMultithreadingButton from "../../SearchSeeds/UseMultithreading";
 import { ComputeSocket } from "../../../services/compute/ComputeSocket";

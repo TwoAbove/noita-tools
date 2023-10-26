@@ -9,6 +9,8 @@ import { ConfigRow, ConfigTitle, DropZone } from "./helpers";
 
 const spellInfoProvider = new SpellInfoProvider({} as any);
 
+await spellInfoProvider.ready();
+
 const flags = spellInfoProvider.spellsArr.reduce((c, r) => {
   if (!r.spawn_requires_flag) {
     return c;

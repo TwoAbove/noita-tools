@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect, FC } from "react";
+import { useState, FC } from "react";
 import { Row, Col, Container, Stack, Button } from "react-bootstrap";
-
-import WandIcon from "../../Icons/Wand";
-import LightBulletIcon from "../../Icons/LightBullet";
-
-import classNames from "classnames";
-import Clickable from "../../Icons/Clickable";
 
 import { capitalize } from "../../../services/helpers";
 import { Square } from "../../helpers";

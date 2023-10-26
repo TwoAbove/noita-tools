@@ -2,9 +2,9 @@
 /* tslint:disable */
 
 var create_Alchemy = (() => {
-  var _scriptDir = typeof document !== "undefined" && document.currentScript ? document.currentScript.src : undefined;
-  if (typeof __filename !== "undefined") _scriptDir = _scriptDir || __filename;
-  return function (moduleArg = {}) {
+  var _scriptDir = import.meta.url;
+
+  return async function (moduleArg = {}) {
     var e = moduleArg,
       aa,
       t;
@@ -21,17 +21,19 @@ var create_Alchemy = (() => {
       w,
       y;
     if (da) {
-      var fs = require("fs"),
+      const { createRequire: a } = await import("module");
+      var require = a(import.meta.url),
+        fs = require("fs"),
         ea = require("path");
-      v = u ? ea.dirname(v) + "/" : __dirname + "/";
-      w = (a, b) => {
-        a = a.startsWith("file://") ? new URL(a) : ea.normalize(a);
-        return fs.readFileSync(a, b ? void 0 : "utf8");
+      u ? (v = ea.dirname(v) + "/") : (v = require("url").fileURLToPath(new URL("./", import.meta.url)));
+      w = (b, c) => {
+        b = fa(b) ? new URL(b) : ea.normalize(b);
+        return fs.readFileSync(b, c ? void 0 : "utf8");
       };
-      y = a => {
-        a = w(a, !0);
-        a.buffer || (a = new Uint8Array(a));
-        return a;
+      y = b => {
+        b = w(b, !0);
+        b.buffer || (b = new Uint8Array(b));
+        return b;
       };
       process.argv.slice(2);
       e.inspect = () => "[Emscripten Module object]";
@@ -61,74 +63,73 @@ var create_Alchemy = (() => {
     ba = null;
     var B;
     e.wasmBinary && (B = e.wasmBinary);
-    var noExitRuntime = e.noExitRuntime || !0;
     "object" != typeof WebAssembly && C("no native wasm support detected");
     var D,
-      fa = !1,
-      ha,
+      ha = !1,
+      ia,
       E,
-      G,
+      F,
       H,
       I,
       J,
-      ia,
-      ja;
-    function ka() {
+      ja,
+      ka;
+    function la() {
       var a = D.buffer;
-      e.HEAP8 = ha = new Int8Array(a);
-      e.HEAP16 = G = new Int16Array(a);
+      e.HEAP8 = ia = new Int8Array(a);
+      e.HEAP16 = F = new Int16Array(a);
       e.HEAPU8 = E = new Uint8Array(a);
       e.HEAPU16 = H = new Uint16Array(a);
       e.HEAP32 = I = new Int32Array(a);
       e.HEAPU32 = J = new Uint32Array(a);
-      e.HEAPF32 = ia = new Float32Array(a);
-      e.HEAPF64 = ja = new Float64Array(a);
+      e.HEAPF32 = ja = new Float32Array(a);
+      e.HEAPF64 = ka = new Float64Array(a);
     }
-    var la = [],
-      ma = [],
-      na = [];
-    function oa() {
+    var ma = [],
+      na = [],
+      oa = [];
+    function pa() {
       var a = e.preRun.shift();
-      la.unshift(a);
+      ma.unshift(a);
     }
     var L = 0,
-      pa = null,
+      qa = null,
       M = null;
     function C(a) {
       if (e.onAbort) e.onAbort(a);
       a = "Aborted(" + a + ")";
       z(a);
-      fa = !0;
+      ha = !0;
       a = new WebAssembly.RuntimeError(a + ". Build with -sASSERTIONS for more info.");
       t(a);
       throw a;
     }
-    function qa(a) {
-      return a.startsWith("data:application/octet-stream;base64,");
-    }
-    var N;
-    N = "Alchemy-base.wasm";
-    if (!qa(N)) {
-      var ra = N;
-      N = e.locateFile ? e.locateFile(ra, v) : v + ra;
-    }
-    function sa(a) {
+    var ra = a => a.startsWith("data:application/octet-stream;base64,"),
+      fa = a => a.startsWith("file://"),
+      N;
+    if (e.locateFile) {
+      if (((N = "Alchemy.wasm"), !ra(N))) {
+        var sa = N;
+        N = e.locateFile ? e.locateFile(sa, v) : v + sa;
+      }
+    } else N = new URL("Alchemy.wasm", import.meta.url).href;
+    function ta(a) {
       if (a == N && B) return new Uint8Array(B);
       if (y) return y(a);
       throw "both async and sync fetching of the wasm failed";
     }
-    function ta(a) {
+    function ua(a) {
       return B || (!ca && !u) || "function" != typeof fetch
-        ? Promise.resolve().then(() => sa(a))
+        ? Promise.resolve().then(() => ta(a))
         : fetch(a, { credentials: "same-origin" })
             .then(b => {
               if (!b.ok) throw "failed to load wasm binary file at '" + a + "'";
               return b.arrayBuffer();
             })
-            .catch(() => sa(a));
+            .catch(() => ta(a));
     }
-    function ua(a, b, c) {
-      return ta(a)
+    function va(a, b, c) {
+      return ua(a)
         .then(d => WebAssembly.instantiate(d, b))
         .then(d => d)
         .then(c, d => {
@@ -136,22 +137,22 @@ var create_Alchemy = (() => {
           C(d);
         });
     }
-    function va(a, b) {
+    function wa(a, b) {
       var c = N;
-      return B || "function" != typeof WebAssembly.instantiateStreaming || qa(c) || da || "function" != typeof fetch
-        ? ua(c, a, b)
+      return B || "function" != typeof WebAssembly.instantiateStreaming || ra(c) || da || "function" != typeof fetch
+        ? va(c, a, b)
         : fetch(c, { credentials: "same-origin" }).then(d =>
             WebAssembly.instantiateStreaming(d, a).then(b, function (f) {
               z(`wasm streaming compile failed: ${f}`);
               z("falling back to ArrayBuffer instantiation");
-              return ua(c, a, b);
+              return va(c, a, b);
             }),
           );
     }
-    var wa = a => {
+    var xa = a => {
       for (; 0 < a.length; ) a.shift()(e);
     };
-    function xa(a) {
+    function ya(a) {
       this.C = a - 24;
       this.I = function (b) {
         J[(this.C + 4) >> 2] = b;
@@ -168,25 +169,25 @@ var create_Alchemy = (() => {
         J[(this.C + 16) >> 2] = 0;
       };
     }
-    var ya = 0,
-      za = 0,
-      Aa,
+    var za = 0,
+      Aa = 0,
+      Ba,
       O = a => {
-        for (var b = ""; E[a]; ) b += Aa[E[a++]];
+        for (var b = ""; E[a]; ) b += Ba[E[a++]];
         return b;
       },
       P = {},
       Q = {},
       R = {},
       S,
-      Ba = a => {
+      Ca = a => {
         throw new S(a);
       },
-      Ca,
-      Da = (a, b) => {
+      Da,
+      Ea = (a, b) => {
         function c(l) {
           l = b(l);
-          if (l.length !== d.length) throw new Ca("Mismatched type converter count");
+          if (l.length !== d.length) throw new Da("Mismatched type converter count");
           for (var k = 0; k < d.length; ++k) T(d[k], l[k]);
         }
         var d = [];
@@ -209,7 +210,7 @@ var create_Alchemy = (() => {
         });
         0 === g.length && c(f);
       };
-    function Ea(a, b, c = {}) {
+    function Fa(a, b, c = {}) {
       var d = b.name;
       if (!a) throw new S(`type "${d}" must have a positive integer typeid pointer`);
       if (Q.hasOwnProperty(a)) {
@@ -222,14 +223,14 @@ var create_Alchemy = (() => {
     }
     function T(a, b, c = {}) {
       if (!("argPackAdvance" in b)) throw new TypeError("registerType registeredInstance requires argPackAdvance");
-      Ea(a, b, c);
+      Fa(a, b, c);
     }
-    function Fa() {
+    function Ga() {
       this.A = [void 0];
       this.G = [];
     }
-    var U = new Fa(),
-      Ga = a => {
+    var U = new Ga(),
+      Ha = a => {
         switch (a) {
           case void 0:
             return 1;
@@ -243,54 +244,54 @@ var create_Alchemy = (() => {
             return U.D({ L: 1, value: a });
         }
       };
-    function Ha(a) {
+    function Ia(a) {
       return this.fromWireType(I[a >> 2]);
     }
-    var Ia = (a, b) => {
+    var La = (a, b) => {
         switch (b) {
           case 4:
             return function (c) {
-              return this.fromWireType(ia[c >> 2]);
+              return this.fromWireType(ja[c >> 2]);
             };
           case 8:
             return function (c) {
-              return this.fromWireType(ja[c >> 3]);
+              return this.fromWireType(ka[c >> 3]);
             };
           default:
             throw new TypeError(`invalid float width (${b}): ${a}`);
         }
       },
-      La = a => {
+      Ma = a => {
         if (void 0 === a) return "_unknown";
         a = a.replace(/[^a-zA-Z0-9_]/g, "$");
         var b = a.charCodeAt(0);
         return 48 <= b && 57 >= b ? `_${a}` : a;
       },
-      Ma = a => {
+      Na = a => {
         for (; a.length; ) {
           var b = a.pop();
           a.pop()(b);
         }
       };
-    function Na(a, b) {
-      a = La(a);
+    function Oa(a, b) {
+      a = Ma(a);
       return {
         [a]: function () {
           return b.apply(this, arguments);
         },
       }[a];
     }
-    function Oa(a) {
+    function Pa(a) {
       var b = Function;
       if (!(b instanceof Function))
         throw new TypeError(`new_ called with constructor type ${typeof b} which is not a function`);
-      var c = Na(b.name || "unknownFunctionName", function () {});
+      var c = Oa(b.name || "unknownFunctionName", function () {});
       c.prototype = b.prototype;
       c = new c();
       a = b.apply(c, a);
       return a instanceof Object ? a : c;
     }
-    var Pa = (a, b) => {
+    var Qa = (a, b) => {
         if (void 0 === e[a].v) {
           var c = e[a];
           e[a] = function () {
@@ -304,28 +305,28 @@ var create_Alchemy = (() => {
           e[a].v[c.J] = c;
         }
       },
-      Qa = (a, b, c) => {
+      Ra = (a, b, c) => {
         if (e.hasOwnProperty(a)) {
           if (void 0 === c || (void 0 !== e[a].v && void 0 !== e[a].v[c]))
             throw new S(`Cannot register public name '${a}' twice`);
-          Pa(a, a);
+          Qa(a, a);
           if (e.hasOwnProperty(c))
             throw new S(`Cannot register multiple overloads of a function with the same number of arguments (${c})!`);
           e[a].v[c] = b;
         } else (e[a] = b), void 0 !== c && (e[a].N = c);
       },
-      Ra = (a, b) => {
+      Sa = (a, b) => {
         for (var c = [], d = 0; d < a; d++) c.push(J[(b + 4 * d) >> 2]);
         return c;
       },
       V = [],
-      Sa,
-      Ta = a => {
+      Ta,
+      Ua = a => {
         var b = V[a];
-        b || (a >= V.length && (V.length = a + 1), (V[a] = b = Sa.get(a)));
+        b || (a >= V.length && (V.length = a + 1), (V[a] = b = Ta.get(a)));
         return b;
       },
-      Ua = (a, b) => {
+      Va = (a, b) => {
         var c = [];
         return function () {
           c.length = 0;
@@ -333,75 +334,82 @@ var create_Alchemy = (() => {
           if (a.includes("j")) {
             var d = e["dynCall_" + a];
             d = c && c.length ? d.apply(null, [b].concat(c)) : d.call(null, b);
-          } else d = Ta(b).apply(null, c);
+          } else d = Ua(b).apply(null, c);
           return d;
         };
       },
-      Va = (a, b) => {
+      Wa = (a, b) => {
         a = O(a);
-        var c = a.includes("j") ? Ua(a, b) : Ta(b);
+        var c = a.includes("j") ? Va(a, b) : Ua(b);
         if ("function" != typeof c) throw new S(`unknown function pointer with signature ${a}: ${b}`);
         return c;
       },
-      Wa,
-      Ya = a => {
-        a = Xa(a);
+      Xa,
+      Za = a => {
+        a = Ya(a);
         var b = O(a);
         W(a);
         return b;
       },
-      Za = (a, b) => {
+      $a = (a, b) => {
         function c(g) {
           f[g] || Q[g] || (R[g] ? R[g].forEach(c) : (d.push(g), (f[g] = !0)));
         }
         var d = [],
           f = {};
         b.forEach(c);
-        throw new Wa(`${a}: ` + d.map(Ya).join([", "]));
+        throw new Xa(`${a}: ` + d.map(Za).join([", "]));
       },
-      $a = (a, b, c) => {
+      ab = a => {
+        a = a.trim();
+        const b = a.indexOf("(");
+        return -1 !== b
+          ? (")" == a[a.length - 1] || C("Parentheses for argument names should match."), a.substr(0, b))
+          : a;
+      },
+      bb = (a, b, c) => {
         switch (b) {
           case 1:
-            return c ? d => ha[d >> 0] : d => E[d >> 0];
+            return c ? d => ia[d >> 0] : d => E[d >> 0];
           case 2:
-            return c ? d => G[d >> 1] : d => H[d >> 1];
+            return c ? d => F[d >> 1] : d => H[d >> 1];
           case 4:
             return c ? d => I[d >> 2] : d => J[d >> 2];
           default:
             throw new TypeError(`invalid integer width (${b}): ${a}`);
         }
       };
-    function ab(a) {
+    function cb(a) {
       return this.fromWireType(J[a >> 2]);
     }
     for (
-      var bb = "undefined" != typeof TextDecoder ? new TextDecoder("utf8") : void 0,
-        cb = "undefined" != typeof TextDecoder ? new TextDecoder("utf-16le") : void 0,
-        db = (a, b) => {
+      var db = "undefined" != typeof TextDecoder ? new TextDecoder("utf8") : void 0,
+        eb = "undefined" != typeof TextDecoder ? new TextDecoder("utf-16le") : void 0,
+        fb = (a, b) => {
           var c = a >> 1;
           for (var d = c + b / 2; !(c >= d) && H[c]; ) ++c;
           c <<= 1;
-          if (32 < c - a && cb) return cb.decode(E.subarray(a, c));
+          if (32 < c - a && eb) return eb.decode(E.subarray(a, c));
           c = "";
           for (d = 0; !(d >= b / 2); ++d) {
-            var f = G[(a + 2 * d) >> 1];
+            var f = F[(a + 2 * d) >> 1];
             if (0 == f) break;
             c += String.fromCharCode(f);
           }
           return c;
         },
-        eb = (a, b, c) => {
+        gb = (a, b, c) => {
           void 0 === c && (c = 2147483647);
           if (2 > c) return 0;
           c -= 2;
           var d = b;
           c = c < 2 * a.length ? c / 2 : a.length;
-          for (var f = 0; f < c; ++f) (G[b >> 1] = a.charCodeAt(f)), (b += 2);
-          G[b >> 1] = 0;
+          for (var f = 0; f < c; ++f) (F[b >> 1] = a.charCodeAt(f)), (b += 2);
+          F[b >> 1] = 0;
           return b - d;
         },
-        fb = a => 2 * a.length,
-        gb = (a, b) => {
+        hb = a => 2 * a.length,
+        ib = (a, b) => {
           for (var c = 0, d = ""; !(c >= b / 4); ) {
             var f = I[(a + 4 * c) >> 2];
             if (0 == f) break;
@@ -412,7 +420,7 @@ var create_Alchemy = (() => {
           }
           return d;
         },
-        hb = (a, b, c) => {
+        jb = (a, b, c) => {
           void 0 === c && (c = 2147483647);
           if (4 > c) return 0;
           var d = b;
@@ -430,7 +438,7 @@ var create_Alchemy = (() => {
           I[b >> 2] = 0;
           return b - d;
         },
-        ib = a => {
+        kb = a => {
           for (var b = 0, c = 0; c < a.length; ++c) {
             var d = a.charCodeAt(c);
             55296 <= d && 57343 >= d && ++c;
@@ -438,26 +446,26 @@ var create_Alchemy = (() => {
           }
           return b;
         },
-        jb = Array(256),
+        lb = Array(256),
         X = 0;
       256 > X;
       ++X
     )
-      jb[X] = String.fromCharCode(X);
-    Aa = jb;
+      lb[X] = String.fromCharCode(X);
+    Ba = lb;
     S = e.BindingError = class extends Error {
       constructor(a) {
         super(a);
         this.name = "BindingError";
       }
     };
-    Ca = e.InternalError = class extends Error {
+    Da = e.InternalError = class extends Error {
       constructor(a) {
         super(a);
         this.name = "InternalError";
       }
     };
-    Object.assign(Fa.prototype, {
+    Object.assign(Ga.prototype, {
       get(a) {
         return this.A[a];
       },
@@ -480,8 +488,8 @@ var create_Alchemy = (() => {
       for (var a = 0, b = U.C; b < U.A.length; ++b) void 0 !== U.A[b] && ++a;
       return a;
     };
-    Wa = e.UnboundTypeError = ((a, b) => {
-      var c = Na(b, function (d) {
+    Xa = e.UnboundTypeError = ((a, b) => {
+      var c = Oa(b, function (d) {
         this.name = b;
         this.message = d;
         d = Error(d).stack;
@@ -494,12 +502,12 @@ var create_Alchemy = (() => {
       };
       return c;
     })(Error, "UnboundTypeError");
-    var lb = {
+    var nb = {
         g: (a, b, c) => {
-          new xa(a).D(b, c);
-          ya = a;
-          za++;
-          throw ya;
+          new ya(a).D(b, c);
+          za = a;
+          Aa++;
+          throw za;
         },
         k: () => {},
         i: (a, b, c, d) => {
@@ -529,9 +537,9 @@ var create_Alchemy = (() => {
               c >= U.C && 0 === --U.get(c).L && U.F(c);
               return d;
             },
-            toWireType: (c, d) => Ga(d),
+            toWireType: (c, d) => Ha(d),
             argPackAdvance: 8,
-            readValueFromPointer: Ha,
+            readValueFromPointer: Ia,
             B: null,
           });
         },
@@ -542,22 +550,23 @@ var create_Alchemy = (() => {
             fromWireType: d => d,
             toWireType: (d, f) => f,
             argPackAdvance: 8,
-            readValueFromPointer: Ia(b, c),
+            readValueFromPointer: La(b, c),
             B: null,
           });
         },
         f: (a, b, c, d, f, g, h) => {
-          var l = Ra(b, c);
+          var l = Sa(b, c);
           a = O(a);
-          f = Va(d, f);
-          Qa(
+          a = ab(a);
+          f = Wa(d, f);
+          Ra(
             a,
             function () {
-              Za(`Cannot call ${a} due to unbound types`, l);
+              $a(`Cannot call ${a} due to unbound types`, l);
             },
             b - 1,
           );
-          Da(l, function (k) {
+          Ea(l, function (k) {
             var m = [k[0], null].concat(k.slice(1)),
               p = (k = a),
               r = f,
@@ -569,19 +578,19 @@ var create_Alchemy = (() => {
                 break;
               }
             var Ja = "void" !== m[0].name,
-              F = "",
+              G = "",
               K = "";
             for (n = 0; n < q - 2; ++n)
-              (F += (0 !== n ? ", " : "") + "arg" + n), (K += (0 !== n ? ", " : "") + "arg" + n + "Wired");
-            p = `\n        return function ${La(p)}(${F}) {\n        if (arguments.length !== ${
+              (G += (0 !== n ? ", " : "") + "arg" + n), (K += (0 !== n ? ", " : "") + "arg" + n + "Wired");
+            p = `\n        return function ${Ma(p)}(${G}) {\n        if (arguments.length !== ${
               q - 2
             }) {\n          throwBindingError('function ${p} called with ' + arguments.length + ' arguments, expected ${
               q - 2
             }');\n        }`;
             A && (p += "var destructors = [];\n");
             var Ka = A ? "destructors" : "null";
-            F = "throwBindingError invoker fn runDestructors retType classParam".split(" ");
-            r = [Ba, r, g, Ma, m[0], m[1]];
+            G = "throwBindingError invoker fn runDestructors retType classParam".split(" ");
+            r = [Ca, r, g, Na, m[0], m[1]];
             x && (p += "var thisWired = classParam.toWireType(" + Ka + ", this);\n");
             for (n = 0; n < q - 2; ++n)
               (p +=
@@ -596,7 +605,7 @@ var create_Alchemy = (() => {
                 "); // " +
                 m[n + 2].name +
                 "\n"),
-                F.push("argType" + n),
+                G.push("argType" + n),
                 r.push(m[n + 2]);
             x && (K = "thisWired" + (0 < K.length ? ", " : "") + K);
             p += (Ja || h ? "var rv = " : "") + "invoker(fn" + (0 < K.length ? ", " : "") + K + ");\n";
@@ -605,12 +614,12 @@ var create_Alchemy = (() => {
               for (n = x ? 1 : 2; n < m.length; ++n)
                 (q = 1 === n ? "thisWired" : "arg" + (n - 2) + "Wired"),
                   null !== m[n].B &&
-                    ((p += q + "_dtor(" + q + "); // " + m[n].name + "\n"), F.push(q + "_dtor"), r.push(m[n].B));
+                    ((p += q + "_dtor(" + q + "); // " + m[n].name + "\n"), G.push(q + "_dtor"), r.push(m[n].B));
             Ja && (p += "var ret = retType.fromWireType(rv);\nreturn ret;\n");
-            F.push(p + "}\n");
-            m = Oa(F).apply(null, r);
+            G.push(p + "}\n");
+            m = Pa(G).apply(null, r);
             n = b - 1;
-            if (!e.hasOwnProperty(k)) throw new Ca("Replacing nonexistant public symbol");
+            if (!e.hasOwnProperty(k)) throw new Da("Replacing nonexistant public symbol");
             void 0 !== e[k].v && void 0 !== n ? (e[k].v[n] = m) : ((e[k] = m), (e[k].J = n));
             return [];
           });
@@ -635,13 +644,13 @@ var create_Alchemy = (() => {
             fromWireType: f,
             toWireType: h,
             argPackAdvance: 8,
-            readValueFromPointer: $a(b, c, 0 !== d),
+            readValueFromPointer: bb(b, c, 0 !== d),
             B: null,
           });
         },
         a: (a, b, c) => {
           function d(g) {
-            return new f(ha.buffer, J[(g + 4) >> 2], J[g >> 2]);
+            return new f(ia.buffer, J[(g + 4) >> 2], J[g >> 2]);
           }
           var f = [Int8Array, Uint8Array, Int16Array, Uint16Array, Int32Array, Uint32Array, Float32Array, Float64Array][
             b
@@ -666,7 +675,7 @@ var create_Alchemy = (() => {
                       var p = E,
                         r = m + (k - h);
                       for (h = m; p[h] && !(h >= r); ) ++h;
-                      if (16 < h - m && p.buffer && bb) m = bb.decode(p.subarray(m, h));
+                      if (16 < h - m && p.buffer && db) m = db.decode(p.subarray(m, h));
                       else {
                         for (r = ""; m < h; ) {
                           var q = p[m++];
@@ -715,7 +724,7 @@ var create_Alchemy = (() => {
                 }
               else l = f.length;
               g = l;
-              l = kb(4 + g + 1);
+              l = mb(4 + g + 1);
               k = l + 4;
               J[l >> 2] = g;
               if (c && h) {
@@ -761,7 +770,7 @@ var create_Alchemy = (() => {
               return l;
             },
             argPackAdvance: 8,
-            readValueFromPointer: ab,
+            readValueFromPointer: cb,
             B(d) {
               W(d);
             },
@@ -770,12 +779,12 @@ var create_Alchemy = (() => {
         c: (a, b, c) => {
           c = O(c);
           if (2 === b) {
-            var d = db;
-            var f = eb;
-            var g = fb;
+            var d = fb;
+            var f = gb;
+            var g = hb;
             var h = () => H;
             var l = 1;
-          } else 4 === b && ((d = gb), (f = hb), (g = ib), (h = () => J), (l = 2));
+          } else 4 === b && ((d = ib), (f = jb), (g = kb), (h = () => J), (l = 2));
           T(a, {
             name: c,
             fromWireType: k => {
@@ -790,14 +799,14 @@ var create_Alchemy = (() => {
             toWireType: (k, m) => {
               if ("string" != typeof m) throw new S(`Cannot pass non-string to C++ string type ${c}`);
               var p = g(m),
-                r = kb(4 + p + b);
+                r = mb(4 + p + b);
               J[r >> 2] = p >> l;
               f(m, r + 4, p + b);
               null !== k && k.push(W, r);
               return r;
             },
             argPackAdvance: 8,
-            readValueFromPointer: Ha,
+            readValueFromPointer: Ia,
             B(k) {
               W(k);
             },
@@ -825,7 +834,7 @@ var create_Alchemy = (() => {
                 (f.min.call(f, 2147483648, d + ((65536 - (d % 65536)) % 65536)) - D.buffer.byteLength + 65535) / 65536;
               try {
                 D.grow(f);
-                ka();
+                la();
                 var g = 1;
                 break a;
               } catch (h) {}
@@ -840,15 +849,15 @@ var create_Alchemy = (() => {
         function a(c) {
           Y = c.exports;
           D = Y.o;
-          ka();
-          Sa = Y.r;
-          ma.unshift(Y.p);
+          la();
+          Ta = Y.r;
+          na.unshift(Y.p);
           L--;
           e.monitorRunDependencies && e.monitorRunDependencies(L);
-          0 == L && (null !== pa && (clearInterval(pa), (pa = null)), M && ((c = M), (M = null), c()));
+          0 == L && (null !== qa && (clearInterval(qa), (qa = null)), M && ((c = M), (M = null), c()));
           return Y;
         }
-        var b = { a: lb };
+        var b = { a: nb };
         L++;
         e.monitorRunDependencies && e.monitorRunDependencies(L);
         if (e.instantiateWasm)
@@ -857,37 +866,37 @@ var create_Alchemy = (() => {
           } catch (c) {
             z(`Module.instantiateWasm callback failed with error: ${c}`), t(c);
           }
-        va(b, function (c) {
+        wa(b, function (c) {
           a(c.instance);
         }).catch(t);
         return {};
       })(),
-      kb = (e._malloc = a => (kb = e._malloc = Y.q)(a)),
-      Xa = a => (Xa = Y.s)(a);
+      mb = (e._malloc = a => (mb = e._malloc = Y.q)(a)),
+      Ya = a => (Ya = Y.s)(a);
     e.__embind_initialize_bindings = () => (e.__embind_initialize_bindings = Y.t)();
     var W = (e._free = a => (W = e._free = Y.u)(a)),
       Z;
-    M = function mb() {
-      Z || nb();
-      Z || (M = mb);
+    M = function ob() {
+      Z || pb();
+      Z || (M = ob);
     };
-    function nb() {
+    function pb() {
       function a() {
-        if (!Z && ((Z = !0), (e.calledRun = !0), !fa)) {
-          wa(ma);
+        if (!Z && ((Z = !0), (e.calledRun = !0), !ha)) {
+          xa(na);
           aa(e);
           if (e.onRuntimeInitialized) e.onRuntimeInitialized();
           if (e.postRun)
             for ("function" == typeof e.postRun && (e.postRun = [e.postRun]); e.postRun.length; ) {
               var b = e.postRun.shift();
-              na.unshift(b);
+              oa.unshift(b);
             }
-          wa(na);
+          xa(oa);
         }
       }
       if (!(0 < L)) {
-        if (e.preRun) for ("function" == typeof e.preRun && (e.preRun = [e.preRun]); e.preRun.length; ) oa();
-        wa(la);
+        if (e.preRun) for ("function" == typeof e.preRun && (e.preRun = [e.preRun]); e.preRun.length; ) pa();
+        xa(ma);
         0 < L ||
           (e.setStatus
             ? (e.setStatus("Running..."),
@@ -902,10 +911,9 @@ var create_Alchemy = (() => {
     }
     if (e.preInit)
       for ("function" == typeof e.preInit && (e.preInit = [e.preInit]); 0 < e.preInit.length; ) e.preInit.pop()();
-    nb();
+    pb();
 
     return moduleArg.ready;
   };
 })();
-if (typeof exports === "object" && typeof module === "object") module.exports = create_Alchemy;
-else if (typeof define === "function" && define["amd"]) define([], () => create_Alchemy);
+export default create_Alchemy;
