@@ -1,5 +1,5 @@
-// import Tesseract from 'tesseract.js';
-import Tesseract from "../../../../node_modules/tesseract.js/src/index.js";
+import Tesseract from "tesseract.js";
+// import Tesseract from "../../../../node_modules/tesseract.js/src/index.js";
 
 import genCanvases, { IFontCanvases } from "./getFontCanvases";
 import {
