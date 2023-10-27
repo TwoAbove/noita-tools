@@ -1,9 +1,12 @@
-import { uniqueId } from "lodash";
+import { beforeEach, afterEach, describe, it, expect, vi } from "vitest";
+
 import { ChunkProvider, ChunkStatus, IComputeHandlerConfig, Status } from "./ChunkProvider";
 
-jest.mock("lodash");
+vi.mock("lodash", async () => {
+  return { uniqueId: vi.fn() };
+});
 
-const mockUniqueId = jest.mocked(uniqueId);
+import { uniqueId as mockUniqueId } from "lodash";
 
 describe("ChunkProvider", () => {
   let config: IComputeHandlerConfig;
@@ -21,7 +24,7 @@ describe("ChunkProvider", () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should construct with the provided config", () => {
@@ -49,7 +52,7 @@ describe("ChunkProvider", () => {
     });
 
     it("should clear the crashId timeout", () => {
-      const clearTimeoutSpy = jest.spyOn(global, "clearTimeout");
+      const clearTimeoutSpy = vi.spyOn(global, "clearTimeout");
       chunkProvider.commitChunk(chunk.chunkId, []);
       expect(clearTimeoutSpy).toHaveBeenCalledWith(chunk.crashId);
     });
@@ -79,7 +82,7 @@ describe("ChunkProvider", () => {
     });
 
     it("should set a crashId timeout for the chunk", () => {
-      const setTimeoutSpy = jest.spyOn(global, "setTimeout").mockImplementation(() => 123 as unknown as NodeJS.Timeout);
+      const setTimeoutSpy = vi.spyOn(global, "setTimeout").mockImplementation(() => 123 as unknown as NodeJS.Timeout);
       chunkProvider.registerChunk(chunk);
       expect(setTimeoutSpy).toHaveBeenCalled();
       expect(chunk.crashId).toBe(123);
@@ -156,7 +159,7 @@ describe("ChunkProvider", () => {
         appetite: 1,
       };
       chunkProvider.orphanChunks = [orphanChunk];
-      const registerChunkSpy = jest.spyOn(chunkProvider, "registerChunk");
+      const registerChunkSpy = vi.spyOn(chunkProvider, "registerChunk");
       chunkProvider.getNextChunk(1);
       expect(registerChunkSpy).toHaveBeenCalledWith(orphanChunk);
     });
@@ -171,7 +174,7 @@ describe("ChunkProvider", () => {
       });
 
       it("should get next chunk with modified chunk size based on appetite and confidence", () => {
-        jest.useFakeTimers();
+        vi.useFakeTimers();
         const chunkProvider = new ChunkProvider({
           searchFrom: 0,
           searchTo: 100000,
@@ -182,10 +185,10 @@ describe("ChunkProvider", () => {
         const processingRate = 50; // 50/s
         for (let i = 0; i <= 50; i++) {
           const chunk = chunkProvider.getNextChunk(1);
-          jest.advanceTimersByTime(((chunk!.to - chunk!.from) / processingRate) * 1000);
+          vi.advanceTimersByTime(((chunk!.to - chunk!.from) / processingRate) * 1000);
           chunkProvider.commitChunk(chunk!.chunkId, []);
         }
-        jest.advanceTimersByTime(config.etaHistoryTimeConstant * 2);
+        vi.advanceTimersByTime(config.etaHistoryTimeConstant * 2);
 
         const idealChunkSize = processingRate * chunkProvider.config.chunkProcessingTimeTarget;
         const chunk = chunkProvider.getNextChunk(1);
@@ -193,11 +196,11 @@ describe("ChunkProvider", () => {
         expect(chunk!.to - chunk!.from).toBe(idealChunkSize);
         expect(chunk!.status).toBe("pending");
 
-        jest.useRealTimers();
+        vi.useRealTimers();
       });
 
       it("should get next chunk with modified chunk size based on appetite and confidence", () => {
-        jest.useFakeTimers();
+        vi.useFakeTimers();
         const chunkProvider = new ChunkProvider({
           searchFrom: 0,
           searchTo: 100000,
@@ -208,10 +211,10 @@ describe("ChunkProvider", () => {
         const processingRate = 100; // 50/s
         for (let i = 0; i <= 50; i++) {
           const chunk = chunkProvider.getNextChunk(1);
-          jest.advanceTimersByTime(((chunk!.to - chunk!.from) / processingRate) * 1000);
+          vi.advanceTimersByTime(((chunk!.to - chunk!.from) / processingRate) * 1000);
           chunkProvider.commitChunk(chunk!.chunkId, []);
         }
-        jest.advanceTimersByTime(config.etaHistoryTimeConstant * 2);
+        vi.advanceTimersByTime(config.etaHistoryTimeConstant * 2);
 
         const idealChunkSize = processingRate * chunkProvider.config.chunkProcessingTimeTarget;
         const chunk = chunkProvider.getNextChunk(1);
@@ -219,11 +222,11 @@ describe("ChunkProvider", () => {
         expect(chunk!.to - chunk!.from).toBe(idealChunkSize);
         expect(chunk!.status).toBe("pending");
 
-        jest.useRealTimers();
+        vi.useRealTimers();
       });
 
       it("should get next chunk with min chunk size", () => {
-        jest.useFakeTimers();
+        vi.useFakeTimers();
         const chunkProvider = new ChunkProvider({
           searchFrom: 0,
           searchTo: 100000,
@@ -234,10 +237,10 @@ describe("ChunkProvider", () => {
         const processingRate = 1; // 1/s
         for (let i = 0; i <= 50; i++) {
           const chunk = chunkProvider.getNextChunk(1);
-          jest.advanceTimersByTime(((chunk!.to - chunk!.from) / processingRate) * 1000);
+          vi.advanceTimersByTime(((chunk!.to - chunk!.from) / processingRate) * 1000);
           chunkProvider.commitChunk(chunk!.chunkId, []);
         }
-        jest.advanceTimersByTime(config.etaHistoryTimeConstant * 2);
+        vi.advanceTimersByTime(config.etaHistoryTimeConstant * 2);
 
         const idealChunkSize = processingRate * chunkProvider.config.chunkProcessingTimeTarget;
         const chunk = chunkProvider.getNextChunk(1);
@@ -245,7 +248,7 @@ describe("ChunkProvider", () => {
         expect(chunk!.to - chunk!.from).toBe(10);
         expect(chunk!.status).toBe("pending");
 
-        jest.useRealTimers();
+        vi.useRealTimers();
       });
     });
   });
@@ -254,7 +257,7 @@ describe("ChunkProvider", () => {
     let chunk: ChunkStatus;
 
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
       chunk = {
         chunkId: "chunk_1",
         from: 0,
@@ -266,14 +269,14 @@ describe("ChunkProvider", () => {
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it("should move the chunk to the orphanChunks array after the timeout", () => {
       expect(chunkProvider.unCommittedChunks).toEqual([chunk]);
       expect(chunkProvider.orphanChunks).toEqual([]);
 
-      jest.advanceTimersByTime(1000 * 60 * 6);
+      vi.advanceTimersByTime(1000 * 60 * 6);
 
       expect(chunkProvider.unCommittedChunks).toEqual([]);
       expect(chunkProvider.orphanChunks).toEqual([chunk]);
@@ -282,7 +285,7 @@ describe("ChunkProvider", () => {
     it("should set the chunk status to waiting after the timeout", () => {
       expect(chunk.status).toBe("pending");
 
-      jest.advanceTimersByTime(1000 * 60 * 6);
+      vi.advanceTimersByTime(1000 * 60 * 6);
 
       expect(chunk.status).toBe("waiting");
     });

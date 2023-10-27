@@ -110,7 +110,7 @@ Verify that this is there:
 
 ```py
 def get_closure_compiler():
-  # First check if the user configured a specific CLOSURE_COMPILER in thier settings
+  # First check if the user configured a specific CLOSURE_COMPILER in their settings
   if config.CLOSURE_COMPILER:
     return config.CLOSURE_COMPILER
 ```

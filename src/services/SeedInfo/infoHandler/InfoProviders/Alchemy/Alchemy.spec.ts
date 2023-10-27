@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { beforeAll, describe, it, expect } from "vitest";
 import { IRandom } from "../../../random";
 import { AlchemyInfoProvider } from "./";
 import { loadRandom } from "../../../../../testHelpers";

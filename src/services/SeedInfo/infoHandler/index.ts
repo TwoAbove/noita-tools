@@ -221,11 +221,10 @@ export class GameInfoProvider extends EventTarget {
       potionSecret: new potionSecret.PotionSecretInfoProvider(this.randoms),
       potionRandomMaterial: new potionRandomMaterial.PotionRandomMaterialInfoProvider(this.randoms),
       powderStash: new powderStash.PowderStashInfoProvider(this.randoms),
-
-      pacifistChest: new pacifistChest.PacifistChestProvider(this.randoms, this.unlockedSpells),
     };
 
     providers.chestRandom = new chestRandom.ChestRandomProvider(this.randoms, this.unlockedSpells, providers.spells);
+    providers.pacifistChest = new pacifistChest.PacifistChestProvider(this.randoms, providers.chestRandom);
     // shop needs the wand info provider to generate wands
     providers.shop = new shop.ShopInfoProvider(this.randoms, providers.wand, providers.spells);
 

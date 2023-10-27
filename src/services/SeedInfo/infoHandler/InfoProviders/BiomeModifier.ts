@@ -33,6 +33,10 @@ export class BiomeModifierInfoProvider extends InfoProvider {
       );
     });
 
+  async ready(): Promise<void> {
+    await this.biomeModifierPromise;
+  }
+
   biomes = [
     ["coalmine", "mountain_hall"],
     ["coalmine_alt"],

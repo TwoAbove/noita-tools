@@ -111,6 +111,7 @@
     "tslib": "^2.6.0",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
+    "vitest": "^0.34.6",
     "web-vitals": "^3.3.2",
     "webpack": "5",
     "webpack-bundle-analyzer": "^4.9.0",
@@ -129,7 +130,7 @@
     "e2e": "npm run build && concurrently -k  -s first 'cypress run' 'PORT=3000 npm run start'",
     "prepare": "husky install",
     "start": "node --experimental-modules ./server/index.mjs",
-    "test": "vite test"
+    "test": "vitest"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -146,7 +147,7 @@
   },
   "browserslist": {
     "production": [
-      "supports wasm",
+      "",
       "not dead"
     ],
     "development": [

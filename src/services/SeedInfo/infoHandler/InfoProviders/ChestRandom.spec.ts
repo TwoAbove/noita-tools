@@ -1,9 +1,9 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { ChestRandomProvider } from "./ChestRandom";
 import { loadRandom, getUnlockedSpells } from "../../../../testHelpers";
+import { SpellInfoProvider } from "./Spell";
+
+const spellInfoProvider = new SpellInfoProvider({} as any);
 
 describe("ChestRandomProvider", () => {
   const tests = [
@@ -64,7 +64,7 @@ describe("ChestRandomProvider", () => {
     tests.forEach((t, i) => {
       it(`Should generate correct output #${i}`, async () => {
         const randoms = await loadRandom();
-        const ap = new ChestRandomProvider(randoms, getUnlockedSpells());
+        const ap = new ChestRandomProvider(randoms, getUnlockedSpells(), spellInfoProvider);
         randoms.SetWorldSeed(t.seed);
         const res = ap.provide(t.params.x, t.params.y);
         expect(res).toEqual(t.ans);
@@ -74,7 +74,7 @@ describe("ChestRandomProvider", () => {
 
   it("Should correctly handle PW >27", async () => {
     const randoms = await loadRandom();
-    const ap = new ChestRandomProvider(randoms, getUnlockedSpells());
+    const ap = new ChestRandomProvider(randoms, getUnlockedSpells(), spellInfoProvider);
     randoms.SetWorldSeed(1151);
     // assuming regular rounding
     const x1 = 1003442;

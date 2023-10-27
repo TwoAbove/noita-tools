@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { IPerkChangeStateType, PerkInfoProvider } from "./Perk";
 import { loadRandom } from "../../../../testHelpers";
 
@@ -54,6 +51,7 @@ describe("PerkInfoProvider", () => {
       it(`Should generate correct output #${i}`, async () => {
         const randoms = await loadRandom();
         const ap = new PerkInfoProvider(randoms);
+        await ap.ready();
         randoms.SetWorldSeed(t.seed);
         const { perk_picks, maxLevels, returnPerkObjects, worldOffset, rerolls } = t.params;
         const res = ap.provide(perk_picks, maxLevels, returnPerkObjects, worldOffset, rerolls);
@@ -111,6 +109,7 @@ describe("PerkInfoProvider", () => {
       it(`Should generate correct output #${i}`, async () => {
         const randoms = await loadRandom();
         const ap = new PerkInfoProvider(randoms);
+        await ap.ready();
         randoms.SetWorldSeed(t.seed);
         const { state } = t.params;
         const res = ap.provideStateless(state);

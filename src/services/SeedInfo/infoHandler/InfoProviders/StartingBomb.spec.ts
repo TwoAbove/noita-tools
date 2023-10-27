@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { StartingBombSpellInfoProvider } from "./StartingBomb";
 import { loadRandom } from "../../../../testHelpers";
 

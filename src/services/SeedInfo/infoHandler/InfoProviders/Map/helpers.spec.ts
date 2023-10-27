@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { beforeAll, describe, it, expect } from "vitest";
 import { loadRandom } from "../../../../../testHelpers";
 import {
   hexRGBAtoIntRGB,

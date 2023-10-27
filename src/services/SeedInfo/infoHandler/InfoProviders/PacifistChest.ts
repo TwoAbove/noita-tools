@@ -54,9 +54,9 @@ export class PacifistChestProvider extends InfoProvider {
 
   chestProvider: ChestRandomProvider;
 
-  constructor(randoms: IRandom, unlockedSpells: boolean[]) {
+  constructor(randoms: IRandom, chestProvider: ChestRandomProvider) {
     super(randoms);
-    this.chestProvider = new ChestRandomProvider(randoms, unlockedSpells);
+    this.chestProvider = chestProvider;
   }
 
   offsets = [

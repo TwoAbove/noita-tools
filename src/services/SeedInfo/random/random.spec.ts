@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { beforeEach, afterEach, describe, it, expect, vi } from "vitest";
 import { loadRandom } from "../../../testHelpers";
 
 describe("Randoms", () => {

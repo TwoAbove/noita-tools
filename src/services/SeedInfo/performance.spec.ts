@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { loadRandom, getUnlockedSpells } from "../../testHelpers";
 import GameInfoProvider from "./infoHandler";
 import { performance } from "perf_hooks";
@@ -76,7 +73,7 @@ const getStats = (timings: IPerf["allTimings"]): IPerf["stats"] => {
         c.avg = c.avg + r.time;
         return c;
       },
-      { min: Infinity, max: -Infinity, avg: 0, median: 0 }
+      { min: Infinity, max: -Infinity, avg: 0, median: 0 },
     );
 
   stats.avg = stats.avg / timings.length;
