@@ -1,6 +1,6 @@
 {
   "name": "noitool",
-  "version": "2.28.6",
+  "version": "2.28.7",
   "private": true,
   "type": "module",
   "homepage": "https://www.noitool.com/",
@@ -121,7 +121,7 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build-noita_random": "pwsh -nol -noni -nop -f src/services/SeedInfo/noita_random/build.ps1",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "console-build": "npx rimraf console-build/* console-build/* && node consoleBuild.js",
     "console-search": "node --no-warnings=ExperimentalWarning console-build/consoleSearch.js",
     "cy": "cypress open --e2e",

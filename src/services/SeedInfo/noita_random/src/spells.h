@@ -1,10 +1,9 @@
 
 #pragma once
-#include <string>
 
 struct Spell
 {
-  std::string id;
+  char const *id;
   int type;
   double spawn_probabilities[11];
 };

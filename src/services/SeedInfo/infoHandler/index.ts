@@ -40,7 +40,7 @@ interface IProviders {
   perk: PerkInfoProvider;
   weather: WeatherInfoProvider;
   shop: ShopInfoProvider;
-  spell: SpellInfoProvider;
+  spells: SpellInfoProvider;
   startingBombSpell: StartingBombSpellInfoProvider;
   startingFlask: StartingFlaskInfoProvider;
   startingSpell: StartingSpellInfoProvider;

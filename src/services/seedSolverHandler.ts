@@ -10,7 +10,9 @@ export class WorkerHandler extends EventTarget {
 
   constructor(offset: number, step: number) {
     super();
-    this.worker = new Worker(new URL("../workers/seedSearcher.worker.ts", import.meta.url));
+    this.worker = new Worker(new URL("../workers/seedSearcher.worker.ts?worker", import.meta.url), {
+      type: "module",
+    });
     this.comlinkWorker = wrap(this.worker);
     this.worker.postMessage({ type: "init", offset, step });
   }

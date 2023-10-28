@@ -8,7 +8,7 @@ import GameInfoProvider from "../../services/SeedInfo/infoHandler";
 import { SpellInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Spell";
 import { RuleType } from "../../services/SeedInfo/infoHandler/IRule";
 import { SeedSearcher } from "../../services/seedSearcher";
-import SeedSolver from "../../services/seedSolverHandler";
+import { SeedSolver } from "../../services/seedSolverHandler";
 import useLocalStorage from "../../services/useLocalStorage";
 import Icon from "../Icons/Icon";
 import Spell from "../Icons/Spell";
@@ -75,8 +75,7 @@ const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 const TestBench = () => {
   // const seed = '1674055821';
   const seed = "299840293";
-  const [unlockedSpells] = useLocalStorage("unlocked-spells", Array(413).fill(true));
-  const [gameInfoProvider] = useGameInfoProvider(seed, unlockedSpells);
+  const [gameInfoProvider] = useGameInfoProvider(seed);
 
   return (
     <Container>

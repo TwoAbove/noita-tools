@@ -2,13 +2,9 @@
 // Thanks to kaliuresis!
 // Check out his orb atlas repository: https://github.com/kaliuresis/noa
 // #include <stdint.h>
-#include <algorithm>
-#include <math.h>
-#include <vector>
 #include <bit>
 // #include <limits.h>
 #include <iostream>
-#include <iterator>
 #include <cfenv>
 #include <cmath>
 
