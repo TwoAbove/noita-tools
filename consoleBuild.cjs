@@ -53,7 +53,7 @@ require("esbuild")
       "./src/services/imageActions/nodeImageActions.ts",
     ],
     bundle: true,
-    loader: { ".wasm": "file", ".node": "copy", ".json": "copy" },
+    loader: { ".wasm": "file", ".node": "copy" },
     platform: "node",
     metafile: true,
     sourcemap: true,

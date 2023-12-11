@@ -122,7 +122,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build-noita_random": "pwsh -nol -noni -nop -f src/services/SeedInfo/noita_random/build.ps1",
     "build": "tsc && vite build",
-    "console-build": "npx rimraf console-build/* console-build/* && node consoleBuild.js",
+    "console-build": "npx rimraf console-build/* console-build/* && node consoleBuild.cjs",
     "console-search": "node --no-warnings=ExperimentalWarning console-build/consoleSearch.js",
     "cy": "cypress open --e2e",
     "dev-win": "concurrently --restart-tries -1 \"nodemon --experimental-modules ./server/index.mjs\" \"vite\"",
