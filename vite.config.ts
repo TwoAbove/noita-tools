@@ -10,12 +10,22 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:3001",
+        changeOrigin: false,
+        secure: false,
+        ws: true,
+      },
+    },
   },
   worker: {
     format: "es",
   },
   build: {
+    manifest: true,
     rollupOptions: {
+      external: ["src/services/imageActions/nodeImageActions.ts", "@napi-rs/canvas"],
       plugins: [],
     },
     outDir: "./build",

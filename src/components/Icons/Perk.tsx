@@ -7,7 +7,8 @@ import { PerkInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProvid
 import classNames from "classnames";
 import { SpellInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Spell";
 
-import { PERKS_LOTTERY } from "../../services/SeedInfo/data/obj/perks.json";
+const PERKS_LOTTERY_ICON =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABe0lEQVR4AY3BMWsaUQDA8f/dPbV6RGiWlDqFUq4lFEpBsRwc7hksWTKZD+A3CF0kkK+QXXFxKQ2S8cCKhnC3dAnJW3qgCA1uMVqUlquP5sERAs3vZ7BWr5Tjye2cpyjkbU56F4ZRr5Tjr9+v2drYQEnnMjxmtVii3MxmfHr/Buvl5vPGn98x6VwGKyXQal2fZ6/fMvnmo1gpgZUSZE0LU1gIHqh1fTSnWMLp+sgwIDg6JMmofngX/5z/otb1SfrS+Iyy1zhGk2FAcHTICzuL4J4MAxSnWELZaxyTNGg3SRIkXJ6dojnFEsqg3USRwz6O66GZJOzsVtFkGDBoN5HDPorjeiSZ/Ifjeihy2CfJ5N5UXqFdnp2iyWEfxXE9puMRmmBttVgSdVpEwPb+ATu7VTTH9ZiOR9yd91BWiyXYWQQPRJ0WEbC9f8B0POLuvMdjRCFvE/4Ys8U/6VwGJeq0SFotlig3sxkfXxUwWKtXyvHkds5TFPI2J70L4y9nDYAGbLbEVwAAAABJRU5ErkJggg==";
 
 interface IPerkProps {
   className?: string | false;
@@ -59,7 +60,7 @@ const Perk = (props: IPerkProps) => {
             }}
             className="position-absolute top-0 translate-middle"
             width="1.5rem"
-            uri={`${PERKS_LOTTERY.perk_icon}`}
+            uri={PERKS_LOTTERY_ICON}
           />
         )}
       </Clickable>

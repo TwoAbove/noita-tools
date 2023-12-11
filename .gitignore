@@ -119,3 +119,5 @@ dataScripts/src/mapsToObj/gen
 dataScripts/src/out
 
 cypress/screenshots/
+
+.DS_Store

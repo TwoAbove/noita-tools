@@ -87,7 +87,7 @@
     "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
-    "react-dark-mode-toggle": "^0.2.0",
+    "react-dark-mode-toggle-2": "^2.0.8",
     "react-dev-utils": "^12.0.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
