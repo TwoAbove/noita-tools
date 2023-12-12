@@ -14,8 +14,8 @@ const oauthLink = () => {
 
   const patreonLink = new URL("https://www.patreon.com/oauth2/authorize");
   patreonLink.searchParams.append("response_type", "code");
-  patreonLink.searchParams.append("client_id", process.env.REACT_APP_PATREON_ID!);
-  patreonLink.searchParams.append("redirect_uri", process.env.REACT_APP_PATREON_REDIRECT_URL!);
+  patreonLink.searchParams.append("client_id", import.meta.env.VITE_PATREON_ID!);
+  patreonLink.searchParams.append("redirect_uri", import.meta.env.VITE_PATREON_REDIRECT_URL!);
   // patreonLink.searchParams.append('scope', 'identity, identity[email], identity.memberships, campaigns');
   patreonLink.searchParams.append("state", noitoolSessionToken!);
 
