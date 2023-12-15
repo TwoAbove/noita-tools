@@ -6,15 +6,12 @@ import { IRule } from "../../IRule";
 import { InfoProvider } from "../Base";
 
 import createModule from "./Alchemy.mjs";
-
-interface IAlchemyModule {
-  PickForSeed(seed: number): string;
-}
+import type { MainModule } from "./Alchemy.d";
 
 export class AlchemyInfoProvider extends InfoProvider {
   readyPromise: Promise<void>;
 
-  alchemy!: IAlchemyModule;
+  alchemy!: MainModule;
 
   constructor(randoms: InfoProvider["randoms"]) {
     super(randoms);
@@ -59,7 +56,7 @@ export class AlchemyInfoProvider extends InfoProvider {
   provide() {
     const worldSeed = this.randoms.GetWorldSeed();
     const res = this.alchemy.PickForSeed(worldSeed);
-    const [LC, AP] = res.split(";");
+    const [LC, AP] = (res as string).split(";");
     return {
       LC: LC.split(":")[1].split(","),
       AP: AP.split(":")[1].split(","),

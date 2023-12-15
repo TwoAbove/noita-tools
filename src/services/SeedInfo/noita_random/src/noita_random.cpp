@@ -86,6 +86,23 @@ uint SetRandomSeedHelper2(const uint a, const uint b, const uint ws)
     return (uVar3 - uVar2) - uVar1 ^ uVar1 >> 0xf;
 }
 
+struct random_pos
+{
+    int x;
+    int y;
+};
+
+template <typename T>
+struct WeightedItem
+{
+    T data;
+    double weight_min;
+    double weight_max;
+
+    WeightedItem(const T &data, double weight_min, double weight_max)
+        : data(data), weight_min(weight_min), weight_max(weight_max) {}
+};
+
 class NollaPrng
 {
 public:
@@ -182,6 +199,50 @@ public:
         return a + (int)((double)(b + 1 - a) * Next());
     }
 };
+
+double random_next(uint ws, random_pos &random_pos, double a, double b)
+{
+    NollaPrng rng = NollaPrng(0);
+    rng.SetRandomSeed(ws, random_pos.x, random_pos.y);
+    double result = a + ((b - a) * rng.Next());
+    random_pos.y += 1;
+    return result;
+}
+
+int random_next(uint ws, random_pos &random_pos, int a, int b)
+{
+    NollaPrng rng = NollaPrng(0);
+    rng.SetRandomSeed(ws, random_pos.x, random_pos.y);
+    int result = rng.Random((int)RoundHalfOfEven(a), (int)RoundHalfOfEven(b));
+    random_pos.y += 1;
+    return result;
+}
+
+template <typename T>
+T pick_random_from_table_weighted(uint ws, random_pos &rnd, std::vector<T> &t)
+{
+
+    std::vector<WeightedItem<T>> table;
+    double weight_sum = 0.0;
+
+    for (auto item : t)
+    {
+        double new_weight_max = weight_sum + item.probability;
+        table.emplace_back(item, weight_sum, new_weight_max);
+        weight_sum = new_weight_max;
+    }
+
+    double val = random_next(ws, rnd, 0.0, weight_sum);
+    for (auto &it : table)
+    {
+        if (val >= it.weight_min && val <= it.weight_max)
+        {
+            return it.data;
+        }
+    }
+
+    return t[0];
+}
 
 NollaPrng g_rng = NollaPrng(0);
 

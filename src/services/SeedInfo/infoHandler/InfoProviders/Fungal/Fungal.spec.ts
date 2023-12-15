@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { FungalInfoProvider } from "./Fungal";
-import { loadRandom } from "../../../../testHelpers";
+import { FungalInfoProvider } from "./";
+import { loadRandom } from "../../../../../testHelpers";
 
 describe("FungalInfoProvider", () => {
   const tests = [
@@ -275,6 +275,7 @@ describe("FungalInfoProvider", () => {
       it(`Should generate correct output #${i}`, async () => {
         const randoms = await loadRandom();
         const ap = new FungalInfoProvider(randoms);
+        await ap.ready();
         randoms.SetWorldSeed(t.seed);
         const res = ap.provide();
         expect(res).toEqual(t.ans);
