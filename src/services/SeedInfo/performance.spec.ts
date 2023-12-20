@@ -99,8 +99,7 @@ const printStats = (info: { [provider: string]: IPerf }) => {
   console.table(data);
 };
 
-describe.skip("Performance", () => {
-  // describe.only("Performance", () => {
+describe("Performance", () => {
   const box = 20;
   const seedBox = 20;
 

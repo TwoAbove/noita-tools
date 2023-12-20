@@ -238,7 +238,7 @@ export class GameInfoProvider extends EventTarget {
     return {
       alchemy: this.providers.alchemy.provide(),
       biomeModifiers: this.providers.biomeModifier.provide(),
-      fungalShifts: this.providers.fungalShift.provide(undefined),
+      fungalShifts: this.providers.fungalShift.provide(),
       perkDeck: this.providers.perk.getPerkDeck(true),
       perks: this.providers.perk.provide(
         this.config.pickedPerks,

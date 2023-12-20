@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { IPerkChangeStateType, PerkInfoProvider } from "./Perk";
-import { loadRandom } from "../../../../testHelpers";
+import { IPerkChangeStateType, PerkInfoProvider } from "./";
+import { loadRandom } from "../../../../../testHelpers";
 
 describe("PerkInfoProvider", () => {
   describe("#provide", () => {

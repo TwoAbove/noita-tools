@@ -1,11 +1,11 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import templeData from "../../data/temple-locations.json";
-import { includesAll, includesSome, Objectify } from "../../../helpers";
-import { IRule } from "../IRule";
-import { InfoProvider } from "./Base";
-import { Global } from "./Global";
+import templeData from "../../../data/temple-locations.json";
+import { includesAll, includesSome, Objectify } from "../../../../helpers";
+import { IRule } from "../../IRule";
+import { InfoProvider } from "../Base";
+import { Global } from "../Global";
 import cloneDeep from "lodash/cloneDeep.js";
 
 export enum IPerkChangeStateType {
@@ -41,11 +41,23 @@ export interface IRerollAction {
 
 export type IPerkChangeAction = IShiftAction | ISetAction | IGenRowAction | ISelectAction | IRerollAction;
 
-type IPerkType = Objectify<typeof import("../../data/obj/perks.json")>;
+type IPerkType = Objectify<typeof import("../../../data/obj/perks.json")>;
+
+// The perk deck is generated in perk_get_spawn_order from the world seed, so we can cache the initial
+// generation of the perk deck and reuse it for all perk info providers
+let lestMemoizedPerkDeckSeed: number | null = null;
+let cachedPerkDeck: unknown = [];
+const memoizedPerkDeck = <T>(seed: number, fn: () => T): T => {
+  if (seed !== lestMemoizedPerkDeckSeed) {
+    lestMemoizedPerkDeckSeed = seed;
+    cachedPerkDeck = fn();
+  }
+  return cachedPerkDeck as T;
+};
 
 export type IPerk = IPerkType[string];
 export class PerkInfoProvider extends InfoProvider {
-  perksDataPromise = import("../../data/obj/perks.json")
+  perksDataPromise = import("../../../data/obj/perks.json")
     .catch(e => {
       console.error(e);
       return {};
@@ -162,98 +174,103 @@ export class PerkInfoProvider extends InfoProvider {
   };
   // this generates global perk spawn order for current world seed
   perk_get_spawn_order = (ignore_these_?: any) => {
-    // this function should return the same list in the same order no matter when or where during a run it is called.
-    // the expection is that some of the elements in the list can be set to "" to indicate that they're used
+    const worldSeed = this.randoms.GetWorldSeed();
+    const [perk_deck, stackable_count] = memoizedPerkDeck(worldSeed, () => {
+      // this function should return the same list in the same order no matter when or where during a run it is called.
+      // the expection is that some of the elements in the list can be set to "" to indicate that they're used
 
-    // 1) Create a Deck from all the perks, add multiple of stackable
-    // 2) Shuffle the Deck
-    // 3) Remove duplicate perks that are too close to each other
+      // 1) Create a Deck from all the perks, add multiple of stackable
+      // 2) Shuffle the Deck
+      // 3) Remove duplicate perks that are too close to each other
 
-    // NON DETERMISTIC THINGS ARE ALLOWED TO HAPPEN
-    // 4) Go through the perk list and "" the perks we've picked up
-    const hasFilter = ignore_these_ ? true : false;
-    const ignore_these = ignore_these_ || {};
+      // NON DETERMISTIC THINGS ARE ALLOWED TO HAPPEN
+      // 4) Go through the perk list and "" the perks we've picked up
+      const hasFilter = ignore_these_ ? true : false;
+      const ignore_these = ignore_these_ || {};
 
-    const MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS = 4;
-    const DEFAULT_MAX_STACKABLE_PERK_COUNT = 128;
+      const MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS = 4;
+      const DEFAULT_MAX_STACKABLE_PERK_COUNT = 128;
 
-    this.randoms.SetRandomSeed(1, 2);
+      this.randoms.SetRandomSeed(1, 2);
 
-    // 1) Create a Deck from all the perks, add multiple of stackable
-    // create the perk pool
-    // let perk_pool = {}
-    const perk_deck: any[] = [];
-    const stackable_distances = {};
-    const stackable_count = {}; // -1 = NON_STACKABLE otherwise the result is how many times can be stacked
+      // 1) Create a Deck from all the perks, add multiple of stackable
+      // create the perk pool
+      // let perk_pool = {}
+      const perk_deck: any[] = [];
+      const stackable_distances = {};
+      const stackable_count = {}; // -1 = NON_STACKABLE otherwise the result is how many times can be stacked
 
-    // function create_perk_pool
-    for (const perk_data of this.perksArr) {
-      if (hasFilter) {
-        if (this.table_contains(ignore_these, perk_data.id)) {
-          continue;
-        }
-      }
-      if (perk_data.not_in_default_perk_pool) {
-        continue;
-      }
-
-      const perk_name = perk_data.id;
-      let how_many_times = 1;
-      stackable_distances[perk_name] = -1;
-      stackable_count[perk_name] = -1;
-
-      if (perk_data.stackable) {
-        let max_perks = this.randoms.Random(1, 2);
-        // TODO( Petri ): We need a new variable that indicates how many times they can appear in the pool
-        if (perk_data.max_in_perk_pool) {
-          max_perks = this.randoms.Random(1, perk_data.max_in_perk_pool);
-        }
-
-        if (perk_data.stackable_maximum) {
-          stackable_count[perk_name] = perk_data.stackable_maximum;
-        } else {
-          stackable_count[perk_name] = DEFAULT_MAX_STACKABLE_PERK_COUNT;
-        }
-
-        if (perk_data.stackable_is_rare) {
-          max_perks = 1;
-        }
-
-        stackable_distances[perk_name] =
-          perk_data.stackable_how_often_reappears || MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS;
-
-        how_many_times = this.randoms.Random(1, max_perks);
-      }
-
-      for (let j = 1; j <= how_many_times; j++) {
-        perk_deck.push(perk_name);
-      }
-    }
-
-    // 2) Shuffle the Deck
-    this.shuffle_table(perk_deck);
-
-    // 3) Remove duplicate perks that are too close to each other
-    // we need to do this in reverse, since otherwise table.remove might cause the iterator to bug out
-    for (let i = perk_deck.length - 1; i >= 0; i--) {
-      const perk = perk_deck[i];
-      if (stackable_distances[perk] !== -1) {
-        const min_distance = stackable_distances[perk];
-        let remove_me = false;
-
-        //  ensure stackable perks are not spawned too close to each other
-        for (let ri = i - min_distance; ri < i; ri++) {
-          if (ri >= 0 && perk_deck[ri] === perk) {
-            remove_me = true;
-            break;
+      // function create_perk_pool
+      for (const perk_data of this.perksArr) {
+        if (hasFilter) {
+          if (this.table_contains(ignore_these, perk_data.id)) {
+            continue;
           }
         }
+        if (perk_data.not_in_default_perk_pool) {
+          continue;
+        }
 
-        if (remove_me) {
-          perk_deck.splice(i, 1);
+        const perk_name = perk_data.id;
+        let how_many_times = 1;
+        stackable_distances[perk_name] = -1;
+        stackable_count[perk_name] = -1;
+
+        if (perk_data.stackable) {
+          let max_perks = this.randoms.Random(1, 2);
+          // TODO( Petri ): We need a new variable that indicates how many times they can appear in the pool
+          if (perk_data.max_in_perk_pool) {
+            max_perks = this.randoms.Random(1, perk_data.max_in_perk_pool);
+          }
+
+          if (perk_data.stackable_maximum) {
+            stackable_count[perk_name] = perk_data.stackable_maximum;
+          } else {
+            stackable_count[perk_name] = DEFAULT_MAX_STACKABLE_PERK_COUNT;
+          }
+
+          if (perk_data.stackable_is_rare) {
+            max_perks = 1;
+          }
+
+          stackable_distances[perk_name] =
+            perk_data.stackable_how_often_reappears || MIN_DISTANCE_BETWEEN_DUPLICATE_PERKS;
+
+          how_many_times = this.randoms.Random(1, max_perks);
+        }
+
+        for (let j = 1; j <= how_many_times; j++) {
+          perk_deck.push(perk_name);
         }
       }
-    }
+
+      // 2) Shuffle the Deck
+      this.shuffle_table(perk_deck);
+
+      // 3) Remove duplicate perks that are too close to each other
+      // we need to do this in reverse, since otherwise table.remove might cause the iterator to bug out
+      for (let i = perk_deck.length - 1; i >= 0; i--) {
+        const perk = perk_deck[i];
+        if (stackable_distances[perk] !== -1) {
+          const min_distance = stackable_distances[perk];
+          let remove_me = false;
+
+          //  ensure stackable perks are not spawned too close to each other
+          for (let ri = i - min_distance; ri < i; ri++) {
+            if (ri >= 0 && perk_deck[ri] === perk) {
+              remove_me = true;
+              break;
+            }
+          }
+
+          if (remove_me) {
+            perk_deck.splice(i, 1);
+          }
+        }
+      }
+
+      return [perk_deck, stackable_count];
+    });
 
     // NON DETERMINISTIC THINGS ARE ALLOWED TO HAPPEN
     // 4) Go through the perk list and "" the perks we've picked up
