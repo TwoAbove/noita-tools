@@ -54,8 +54,6 @@ const LazySettings = () => {
 
 const Profile = lazy(() => import("./Profile"));
 const LazyProfile = () => {
-  const [profileEnabled, setProfileEnabled] = useState(false);
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [filterParams, setFilterParams] = useSearchParamsState({
@@ -66,16 +64,6 @@ const LazyProfile = () => {
   });
 
   const profileOpen = filterParams.profile;
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const profileEnabled = await fetch("/api/profile_enabled").then(res => res.json());
-      if (profileEnabled.enabled) {
-        setProfileEnabled(true);
-      }
-    })();
-  }, []);
 
   const { patreonData } = useContext(ProfileContext);
 
@@ -88,8 +76,6 @@ const LazyProfile = () => {
       setSearchParams(searchParams);
     }
   };
-
-  if (!profileEnabled) return null;
 
   return (
     <Suspense fallback={<LoadingComponent />}>

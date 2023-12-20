@@ -123,6 +123,7 @@ for (const route of ["/", "/info", "/search", "/live", "/test", "/compute", "/co
   app.get(
     route,
     RateLimit({
+      windowMs: 1 * 60 * 1000, // 1 minute
       max: 600, // to prevent ddos but allow a lot of refreshing
     }),
     (req, res) => {

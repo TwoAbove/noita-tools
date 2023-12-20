@@ -196,7 +196,7 @@ router.get(
   "/redirect",
   RateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 10,
+    max: 60,
   }),
   async (req, res) => {
     // Login flow
@@ -336,12 +336,13 @@ router.get(
   "/me",
   RateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 40,
+    max: 600,
   }),
   authenticated,
   loadUser,
   loadPatreonClient,
   async (req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=60");
     res.send(gatherMeData(req.user, req.patreonUser));
   },
 );
