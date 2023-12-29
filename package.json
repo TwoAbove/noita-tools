@@ -85,6 +85,7 @@
     "lua-json": "^1.0.1",
     "lua2js": "^0.0.11",
     "luaparse": "^0.3.1",
+    "nodemon": "^3.0.2",
     "pixelmatch": "^5.3.0",
     "prettier": "^3.1.1",
     "react": "^18.2.0",

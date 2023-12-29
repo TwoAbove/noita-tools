@@ -45,14 +45,14 @@ type IPerkType = Objectify<typeof import("../../../data/obj/perks.json")>;
 
 // The perk deck is generated in perk_get_spawn_order from the world seed, so we can cache the initial
 // generation of the perk deck and reuse it for all perk info providers
-let lestMemoizedPerkDeckSeed: number | null = null;
+let lastMemoizedPerkDeckSeed: number | null = null;
 let cachedPerkDeck: unknown = [];
 const memoizedPerkDeck = <T>(seed: number, fn: () => T): T => {
-  if (seed !== lestMemoizedPerkDeckSeed) {
-    lestMemoizedPerkDeckSeed = seed;
+  if (seed !== lastMemoizedPerkDeckSeed) {
+    lastMemoizedPerkDeckSeed = seed;
     cachedPerkDeck = fn();
   }
-  return cachedPerkDeck as T;
+  return structuredClone(cachedPerkDeck) as T;
 };
 
 export type IPerk = IPerkType[string];

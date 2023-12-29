@@ -52,6 +52,11 @@ const getPatreonPatronsData = async () => {
   // TODO: Handler pagination
   const data = await membersQuery();
 
+  if (data.errors) {
+    console.error("Patreon API error", data.errors);
+    return {};
+  }
+
   const tiers = data.included
     .filter(i => i.type === "tier" && i.attributes.published)
     .reduce((acc, tier) => {
