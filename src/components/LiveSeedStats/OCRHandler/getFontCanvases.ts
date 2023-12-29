@@ -20,8 +20,8 @@ const genCanvases = async (): Promise<IFontCanvases> => {
             fontCanvases[c] = invert(unAlpha(canvas));
             res();
           };
-        })
-    )
+        }),
+    ),
   );
   return fontCanvases;
 };

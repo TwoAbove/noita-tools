@@ -7,7 +7,7 @@ import glob from "glob";
 
 const noitaData = path.resolve(
   require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 // Add to these when transferring map impl from Noita.
 

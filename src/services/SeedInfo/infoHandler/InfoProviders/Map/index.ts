@@ -1,6 +1,3 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { loadImageActions } from "../../../../imageActions";
 
 import { IRule } from "../../IRule";
@@ -47,13 +44,13 @@ const mapDataPromise = import("../../../data/obj/maps.json")
     }, new Map<number, any>());
   });
 
-const implPromise = import("../../../data/obj/impl.json").then(i => i.default);
+const biomeImplPromise = import("../../../data/obj/biome_impl.json").then(i => i.default);
 
 const isPurple = (c: number) => c === 0x7f007fff;
 
 export class MapInfoProvider extends InfoProvider {
   maps;
-  impls;
+  biomeImpls;
 
   mapHandlerCache = new Map<string, MapHandler>();
   imageCache = new Map<string, ImageData>();
@@ -81,8 +78,8 @@ export class MapInfoProvider extends InfoProvider {
       this.maps = _maps;
     });
 
-    implPromise.then(_impls => {
-      this.impls = _impls;
+    biomeImplPromise.then(_biomeImpls => {
+      this.biomeImpls = _biomeImpls;
     });
   }
 
@@ -197,9 +194,11 @@ export class MapInfoProvider extends InfoProvider {
       color_to_material_table = {},
       background_z_index = 50,
     ) => {
-      const impl = this.impls[path];
+      const impl = this.biomeImpls[path];
       if (!impl) {
-        console.error(`${path} not in impls! Please add it to dataScripts/src/pixelScenes.ts and re-run generation.`);
+        console.error(
+          `${path} not in biomeImpls! Please add it to dataScripts/src/pixelScenes.ts and re-run generation.`,
+        );
         return;
       }
 
@@ -225,7 +224,7 @@ export class MapInfoProvider extends InfoProvider {
       });
 
       const ctmtptr = this.randoms.objToMapUIntUIntPtr(color_to_material_table);
-      mh.drawImageData(path, this.impls[path].src, gx, gy, ctmtptr);
+      mh.drawImageData(path, this.biomeImpls[path].src, gx, gy, ctmtptr);
       // this.randoms.Module._free(ctmtptr);
       ctmtptr.delete();
 
@@ -237,7 +236,7 @@ export class MapInfoProvider extends InfoProvider {
       // 	color_to_material_table
       // );
 
-      this.impls[path].f.forEach(({ x: dx, y: dy, c }) => {
+      this.biomeImpls[path].f.forEach(({ x: dx, y: dy, c }) => {
         const funcName = mapData.config!.spawnFunctions.get(c);
         if (!funcName) {
           return;
