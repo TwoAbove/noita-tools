@@ -199,6 +199,44 @@ const Footer = () => {
   );
 };
 
+interface IOutdatedVersionHandlerProps {
+  children?: React.ReactNode;
+}
+const OutdatedVersionHandler: FC<IOutdatedVersionHandlerProps> = props => {
+  const [outdated, setOutdated] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/version")
+      .then(r => r.json())
+      .then(r => {
+        if (r.outdated) {
+          setOutdated(true);
+        }
+      });
+  }, []);
+
+  let toShow = <>{props.children}</>;
+
+  if (outdated) {
+    toShow = (
+      <div className="position-absolute top-50 start-50 translate-middle text-center w-75 fs-4 fw-light">
+        <p>
+          Noita has received an update, and Noitool is not yet compatible with it. <br />
+        </p>
+        <p>
+          For <code>noitool.com</code>, this is usually fixed within a few hours. For <code>dev.noitool.com</code>, it
+          might take a day or two. <br />
+          Thank you for your patience!
+        </p>
+        <p>If you want to proceed, click the button below.</p>
+        <Button onClick={() => setOutdated(false)}>Continue</Button>
+      </div>
+    );
+  }
+
+  return toShow;
+};
+
 interface IDBErrorHandlerProps {
   children?: React.ReactNode;
 }
@@ -252,23 +290,25 @@ const App: FC = () => {
   }
 
   return (
-    <DBErrorHandler>
-      <BrowserRouter>
-        <ProfileProvider>
-          <div className="App bg-gradient">
-            <div className="content bg-body rounded" style={{ minHeight: "85vh" }}>
-              <ThemeProvider>
-                <AlchemyConfigProvider>
-                  <Header />
-                  {toShow}
-                </AlchemyConfigProvider>
-              </ThemeProvider>
+    <OutdatedVersionHandler>
+      <DBErrorHandler>
+        <BrowserRouter>
+          <ProfileProvider>
+            <div className="App bg-gradient">
+              <div className="content bg-body rounded" style={{ minHeight: "85vh" }}>
+                <ThemeProvider>
+                  <AlchemyConfigProvider>
+                    <Header />
+                    {toShow}
+                  </AlchemyConfigProvider>
+                </ThemeProvider>
+              </div>
+              <Footer />
             </div>
-            <Footer />
-          </div>
-        </ProfileProvider>
-      </BrowserRouter>
-    </DBErrorHandler>
+          </ProfileProvider>
+        </BrowserRouter>
+      </DBErrorHandler>
+    </OutdatedVersionHandler>
   );
 };
 

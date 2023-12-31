@@ -61,7 +61,10 @@ app.use("/api/session", (req, res) => {
 });
 
 app.use("/api/version", (req, res) => {
-  res.send(process.env.npm_package_version);
+  res.send({
+    outdated: process.env.SHOW_OUTDATED === "true",
+    version: process.env.npm_package_version,
+  });
 });
 
 app.use("/api", apiRoutes);
