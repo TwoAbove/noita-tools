@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { PotionSecretInfoProvider } from "./PotionSecret";
 import { loadRandom } from "../../../../testHelpers";
 

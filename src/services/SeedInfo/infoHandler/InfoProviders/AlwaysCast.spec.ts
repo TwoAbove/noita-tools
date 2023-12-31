@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { beforeAll, describe, it, expect } from "vitest";
 import { AlwaysCastInfoProvider } from "./AlwaysCast";
 import { loadRandom } from "../../../../testHelpers";
 

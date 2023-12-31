@@ -13,7 +13,7 @@ type TLoadPixelScene = (
   skip_biome_checks?: boolean,
   skip_edge_textures?: boolean,
   color_to_material_table?: {},
-  background_z_index?: number
+  background_z_index?: number,
 ) => void;
 
 type THandleInterest = (item: string, x: number, y: number, extra?: any) => void;
@@ -127,7 +127,7 @@ export default class Base {
             const entity_id = this.EntityLoad(
               "data/entities/items/pickup/runestones/runestone_" + opt + ".xml",
               x + ox,
-              y + oy
+              y + oy,
             );
             rnd = this.randoms.Random(1, 10);
             let active = false;
@@ -442,7 +442,7 @@ export default class Base {
         false,
         false,
         color_material_table,
-        z_index
+        z_index,
       );
       if (v.is_unique) {
         what[i].prob = 0;
@@ -576,7 +576,7 @@ export default class Base {
       y - 23,
       "",
       true,
-      true
+      true,
     );
   }
 
@@ -629,7 +629,7 @@ export default class Base {
     public HandleInterest: THandleInterest,
     public BiomeMapGetVerticalPositionInsideBiome: TBiomeMapGetVerticalPositionInsideBiome,
     public RaytracePlatforms: TRaytracePlatforms,
-    public config: IConfig
+    public config: IConfig,
   ) {}
 
   spawn_from_list(list: any, x: number, y: number) {

@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { WandInfoProvider } from "./Wand";
 import { loadRandom } from "../../../../testHelpers";
 
@@ -193,6 +190,7 @@ describe("WandInfoProvider", () => {
       it(`Should generate correct output #${i}`, async () => {
         const randoms = await loadRandom();
         const ap = new WandInfoProvider(randoms);
+        await ap.ready();
         randoms.SetWorldSeed(t.seed);
         const res = ap.provide(
           t.params.x,

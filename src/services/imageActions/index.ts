@@ -7,7 +7,10 @@ const isNode = typeof process === "object" && typeof require === "function";
 export const loadImageActions = async (): Promise<IImageActions | any> => {
   // if is node
   if (isNode) {
-    return import("./nodeImageActions");
+    // We don't use vite in node, so this is an escape hatch
+    // to not attempt to bundle nodeImageActions
+    const url = new URL("./nodeImageActions", import.meta.url);
+    return import(url.href);
   } else {
     if (typeof OffscreenCanvas === "undefined") {
       // Old Mobile Safari support

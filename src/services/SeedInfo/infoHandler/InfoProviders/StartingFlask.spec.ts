@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { StartingFlaskInfoProvider } from "./StartingFlask";
 import { loadRandom } from "../../../../testHelpers";
 

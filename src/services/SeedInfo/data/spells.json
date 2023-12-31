@@ -363,6 +363,29 @@
     }
   },
   {
+    "id": "WHITE_HOLE",
+    "name": "$action_white_hole",
+    "description": "$actiondesc_white_hole",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABdUlEQVR4Ac3BsWqDQAAG4N84BrJJBsngLIIUXFwKDh3KLR1Khw5yFN/DvEKnwiHSsUuHRArtYOji0CxXRAhZHIoh5KgUCqWbVTAgJcmc78PxIJS5aBHKXLQUzakUzamwh4QaocyNQu8eNUKZG4XevaI5FWq2aqCRFCkaIo8ldEjoIJQFUejdKJpT2aqBXZIihchjCS0ZLUJZEIXejaI5la0aaJi6hbVYoWs0GKKU+/7PVz5GrYc9TN2Cf3cNU7dwiIwaoewlCr1LRXMqWzXQWIsVFm+f4NkcXeenV/gtBUq57/985eMeDuDZHP89vT6gq4daFHpnhLJA5LGUFCkapm6hy9QtbCVFCpHHEmo97MGzObZM3YJ/dw1Tt/CfjNaSTyeEsoDPbk9Kue+PBkNsrcUKi7dP8GyOpEgh8lhCS0aNUOYu+fR9yacTQpnLZ7cXpdz3P743GA2GaDzyZ3x8byDyWMIuhDIXLUKZi5aiOZWiORWO1h/2spP+Y0Lx+AAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/white_hole.xml"],
+    "type": 0,
+    "spawn_level": "0,2,4,6,10",
+    "spawn_probability": "0.05,0.05,0.1,0.2,0.5",
+    "price": 200,
+    "mana": 180,
+    "max_uses": 3,
+    "never_unlimited": true,
+    "custom_xml_file": "data/entities/misc/custom_cards/white_hole.xml",
+    "spawn_probabilities": {
+      "0": 0.05,
+      "2": 0.05,
+      "4": 0.1,
+      "6": 0.2,
+      "10": 0.5
+    }
+  },
+  {
     "id": "BLACK_HOLE_BIG",
     "name": "$action_black_hole_big",
     "description": "$actiondesc_black_hole_big",
@@ -393,14 +416,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/white_hole_big.xml"],
     "type": 1,
     "spawn_level": "1,3,5,6,10",
-    "spawn_probability": "0.1,0.1,0.1,0.4,0.2",
+    "spawn_probability": "0.05,0.05,0.1,0.4,0.2",
     "price": 320,
     "mana": 240,
     "max_uses": 6,
     "custom_xml_file": "data/entities/misc/custom_cards/white_hole_big.xml",
     "spawn_probabilities": {
-      "1": 0.1,
-      "3": 0.1,
+      "1": 0.05,
+      "3": 0.05,
       "5": 0.1,
       "6": 0.4,
       "10": 0.2
@@ -422,6 +445,26 @@
     "max_uses": 6,
     "never_unlimited": true,
     "custom_xml_file": "data/entities/misc/custom_cards/black_hole_giga.xml",
+    "spawn_probabilities": {
+      "10": 1
+    }
+  },
+  {
+    "id": "WHITE_HOLE_GIGA",
+    "name": "$action_white_hole_giga",
+    "description": "$actiondesc_white_hole_giga",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABEElEQVR4AaXBsUrDQACA4T+nIFSS5QgdisJNEcJBlgPpeK/hCzgV+gCFSB+g0MkX8DU6OClZbsncTYQiCIKOZ8VU4plK0O/jv6JUWU+HzXoV0cPheKRpe3rhk8KztVmvIn4h2JpNJ+zIGGQM45EmSzSpsj5V1rPHwdnpeXl7d89OkRseNw98GBzBSTJkEA15GxyXr8/rKwKCgKsrQjKGLNGkynoCgp5kDFmiSZX1tAj2mE0nhGTMD4JGkRva5oslXbJEkyrraQgarq7oQ8Z8I/iDLNGkynq2BD0UuWEfQYciN7S5uqJNxnwRBIrcUF5fUOSGPkSRG9pcXVFe3uDqitBsOiEkXF0RcnVFl/liSegdQLJA7w7bspcAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_big_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/white_hole_giga.xml"],
+    "spawn_requires_flag": "card_unlocked_black_hole",
+    "type": 1,
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "price": 600,
+    "mana": 500,
+    "max_uses": 6,
+    "never_unlimited": true,
+    "custom_xml_file": "data/entities/misc/custom_cards/white_hole_giga.xml",
     "spawn_probabilities": {
       "10": 1
     }
@@ -1458,6 +1501,25 @@
       "2": 1,
       "3": 1,
       "4": 0.6
+    }
+  },
+  {
+    "id": "ANTIHEAL",
+    "name": "$action_antiheal",
+    "description": "$actiondesc_antiheal",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjklEQVR4AaXBMWvUUADA8X9ycVAXSc+lRYhikptKwcE9DiLkjS5Kv8ENgqvDO3AQwUUDTo7tF0ig4CDF5dYb7+WJBHEz8ZzsEvt8gctSc4XD34//5bBBLYTJlOJZmtJqzTjPHQaMGCCjyPw59tk93OHb/YbvjwzxiSNPm2bGBS6XSIOCNCjoTOOYIR4DpnHMKtinNwkO8MIzhnisySgy0zgmU4pNaiEMVqYUsiwdLA+rFsLM354z55ynwWNW/OvHm6vAPstqwT1CuF3SGWFdA7l7uEMaFPgk+CT4JPR8EnwSfBKiG08ofx3z7utEvi7LmYs1jWO25YUhHQ/LC0NAUVQpk+CA3l1e0vnCC3rLakGn1ZrOCOvVfD57PxJy72jFB/mZB9Udfj+8gk9C5yefuPn8jOsfW/aOVtw6cciU4rRpZi5rrdaM89yRZem0WjOk1ZpxnjtYsiwdLJcNltWC3rJa0GpNphQXuaxlStHLlKJTVClFldIZ57nDNmohDFYthKmFMFgyigzbqoUwXOIvLAqVOkXvko0AAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bullet_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/healhurt.xml"],
+    "type": 0,
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "0.4,0.3,0.3,0.3",
+    "price": 200,
+    "mana": 20,
+    "spawn_probabilities": {
+      "2": 0.4,
+      "3": 0.3,
+      "4": 0.3,
+      "5": 0.3
     }
   },
   {
@@ -3097,6 +3159,22 @@
     }
   },
   {
+    "id": "TOUCH_PISS",
+    "name": "$action_touch_piss",
+    "description": "$actiondesc_touch_piss",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAq0lEQVR4AbXBsW3DMAAEwKeyCls2mekrF5khWkGNG86k5tvf5aNChUDIlgEhd7ir4IWYwkGpveETMRVTGMRUTOGdmMKFmMKZmMIgpmIKg5jCbsJNX9jEVKm94SCmsPv9+X7My/rEbl7WZ0zNy/qccNOEEzGFQUzhxISbJmxK7S2m8KGYKrU3bCacKLU3DErtDVdiChdiCu/EVExhEFMxhUHBCzGFg1J7w3/4A8wRXEjX/x3YAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/touch_piss.xml"],
+    "spawn_requires_flag": "card_unlocked_piss",
+    "type": 4,
+    "spawn_level": "10",
+    "spawn_probability": "0",
+    "price": 360,
+    "mana": 190,
+    "max_uses": 4,
+    "spawn_probabilities": {}
+  },
+  {
     "id": "TOUCH_BLOOD",
     "name": "$action_touch_blood",
     "description": "$actiondesc_touch_blood",
@@ -3148,8 +3226,27 @@
     "spawn_level": "10",
     "spawn_probability": "1",
     "price": 600,
-    "mana": 600,
+    "mana": 240,
     "max_uses": 5,
+    "ai_never_uses": true,
+    "spawn_probabilities": {
+      "10": 1
+    }
+  },
+  {
+    "id": "MASS_POLYMORPH",
+    "name": "$action_mass_polymorph",
+    "description": "$actiondesc_mass_polymorph",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA6UlEQVR4Ad3BsU3DQBSA4f+dXKZw4Q3s2yEFAzBCBkiTzhIewyOkZAOEROGSwg0T+N0GKVxQ38MnnSULYYl0iO/j7zOLZhaNHY5vzKKZRWMxTZORmUXjB8KGWTQy1UDT1OwRccJCyMyicScRJwV3mp8vlOWBlWMxTZPxS9frO0nfv5E4MtVAohpQDew5nx9Iuu6RxLHw3gsL1UDSNDUr1YBqIFENJPP8yaogq8ae27EjUQ0kTVOzUg0kt2OH917IHBvV2OO9FzLVQDX2VGOP916G9sTQntgqyMrywGpoTySX1w+xlyfjf/sC9NhgHSTYZ8UAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/mass_polymorph.xml"],
+    "spawn_requires_flag": "card_unlocked_polymorph",
+    "type": 1,
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "price": 600,
+    "mana": 220,
+    "max_uses": 3,
     "ai_never_uses": true,
     "spawn_probabilities": {
       "10": 1
@@ -4771,6 +4868,24 @@
       "2": 1,
       "3": 1,
       "4": 0.8
+    }
+  },
+  {
+    "id": "CLUSTERMOD",
+    "name": "$action_clustermod",
+    "description": "$actiondesc_clustermod",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABsklEQVR4AY3BsWrbQACA4V+ylvai0qFTCCWDMBkLyeBBBbd4CCSQJZTSqfQpLChIgsD5DbJ66At402BDTDRo0NAH0KBBGFIImB4igw3Xc3GKMG7i77PYQkkRYrhBHbN2fXask7ykaXR3b7XYoKQIHb8X2R+/dPtvMuRkMcU4b+9HxWxO09Hey8hmG68DRcYuHNaUFCGGG9Sx4ooVN6hjntHCUFKEQOT4vW6/XeEGdSwniymGkkLLySI+b+9H3v5ritmcJps1x++xTMdscoPawvjaPyDJS05PDjk9OeRRC0NOFtN+u8K4cYM6Zovv346iy09veee/4mf6m2I2Z8ViBw+3Fxqvwz9FxufLlBUbQxsY2sDQBoY2eIbFDh5uLzReh7+KjOGgIslLVmz+Q0mhaSoyKDKGg4okL3lkYygpQiVFiKGk0BhuUFsYSgr94v3IwhgOKpK8pKmlpAiByPF73X67wg3qD6wpKULgRk4W04Nfe1GSl2xyMBy/xzId06SkCB2/F+F1UFzxI2Ur2w3qeJmOIyBygzqmyetAkfEUiycoKUIMN6jj67NjneQlTaO7e+sPzqO0tRtwa8MAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "type": 2,
+    "spawn_level": "1,2,3",
+    "spawn_probability": "0.5,1,0.6",
+    "price": 160,
+    "mana": 30,
+    "custom_xml_file": "data/entities/misc/custom_cards/clusterbomb.xml",
+    "spawn_probabilities": {
+      "1": 0.5,
+      "2": 1,
+      "3": 0.6
     }
   },
   {

@@ -14,6 +14,11 @@ import parser, {
 import { parse } from "csv-parse/sync";
 import { AsyncResource } from "async_hooks";
 
+import { homedir } from "os";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const argbTorgba = (s: string) =>
   s
     .replace("0x", "")
@@ -21,8 +26,8 @@ const argbTorgba = (s: string) =>
     .toLowerCase();
 
 const noitaData = path.resolve(
-  require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  homedir(),
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 const defaultColorsPath = path.resolve(noitaData, "data/scripts/wang_scripts.csv");
 
@@ -46,7 +51,7 @@ const getBase64 = (p: string) =>
       }
 
       return res(image);
-    })
+    }),
   );
 
 const xOffset = 35;

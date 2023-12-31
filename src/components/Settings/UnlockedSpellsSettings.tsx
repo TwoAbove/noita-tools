@@ -6,8 +6,11 @@ import useLocalStorage from "../../services/useLocalStorage";
 import Icon from "../Icons/Icon";
 
 import { ConfigRow, ConfigTitle, DropZone } from "./helpers";
+import { NOITA_SPELL_COUNT } from "../../static";
 
 const spellInfoProvider = new SpellInfoProvider({} as any);
+
+await spellInfoProvider.ready();
 
 const flags = spellInfoProvider.spellsArr.reduce((c, r) => {
   if (!r.spawn_requires_flag) {
@@ -34,7 +37,7 @@ const setFlagArr = (spells: (typeof spellInfoProvider)["spellsArr"], unlockedSpe
 const FlagToggle = (props: { flag: string }) => {
   const { flag } = props;
 
-  const [unlockedSpells, setUnlockedSpells] = useLocalStorage("unlocked-spells", Array(413).fill(true));
+  const [unlockedSpells, setUnlockedSpells] = useLocalStorage("unlocked-spells", Array(NOITA_SPELL_COUNT).fill(true));
   const { t } = useTranslation("materials");
 
   const spells = flags[flag];
@@ -77,9 +80,9 @@ const FlagToggle = (props: { flag: string }) => {
 };
 
 const UnlockedSpellsSettings = () => {
-  const [, setUnlockedSpells] = useLocalStorage("unlocked-spells", Array(413).fill(true));
+  const [, setUnlockedSpells] = useLocalStorage("unlocked-spells", Array(NOITA_SPELL_COUNT).fill(true));
   const onDrop = (acceptedFiles: File[]) => {
-    let newUnlockedSpells = Array(413).fill(true);
+    let newUnlockedSpells = Array(NOITA_SPELL_COUNT).fill(true);
     const notFoundFlags = flagNames.filter(f => -1 === acceptedFiles.findIndex(file => file.name === f));
     for (const flag of notFoundFlags) {
       const spells = spellInfoProvider.spellsArr.filter(s => s.spawn_requires_flag === flag);

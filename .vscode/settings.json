@@ -4,6 +4,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "files.associations": {
+    "*.mdx": "mdx",
     "iostream": "cpp",
     "__locale": "cpp",
     "functional": "cpp",
@@ -86,7 +87,10 @@
     "variant": "cpp",
     "fstream": "cpp",
     "span": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "charconv": "cpp",
+    "iomanip": "cpp",
+    "format": "cpp"
   },
   "terminal.integrated.env.windows": {
     "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${env:LOCALAPPDATA}\\Programs\\emsdk\\upstream\\emscripten"

@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { getUnlockedSpells, loadRandom } from "../testHelpers";
 import GameInfoProvider from "./SeedInfo/infoHandler";
 import { RuleType } from "./SeedInfo/infoHandler/IRule";
@@ -105,7 +102,7 @@ describe("SeedSearcher", () => {
       const randoms = await loadRandom();
 
       const infoProvider = new GameInfoProvider({ seed: 1 }, getUnlockedSpells(), undefined, randoms, false);
-
+      await infoProvider.ready();
       const solver = new SeedSearcher(infoProvider);
       solver.update(t.config as any);
       await solver.work();
@@ -230,6 +227,7 @@ describe("SeedSearcher", () => {
     const randoms = await loadRandom();
 
     const infoProvider = new GameInfoProvider({ seed: 1 }, getUnlockedSpells(), undefined, randoms, false);
+    await infoProvider.ready();
 
     const solver = new SeedSearcher(infoProvider);
     solver.update(config as any);
@@ -364,6 +362,7 @@ describe("SeedSearcher", () => {
     const randoms = await loadRandom();
 
     const infoProvider = new GameInfoProvider({ seed: 1 }, getUnlockedSpells(), undefined, randoms, false);
+    await infoProvider.ready();
 
     const solver = new SeedSearcher(infoProvider);
     solver.update(config as any);

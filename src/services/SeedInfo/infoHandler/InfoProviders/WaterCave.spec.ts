@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { WaterCaveInfoProvider } from "./WaterCave";
 import { loadRandom } from "../../../../testHelpers";
 

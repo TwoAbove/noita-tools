@@ -1,9 +1,10 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { PacifistChestProvider } from "./PacifistChest";
 import { loadRandom, getUnlockedSpells } from "../../../../testHelpers";
+import { ChestRandomProvider } from "./ChestRandom";
+import { SpellInfoProvider } from "./Spell";
+
+const spellInfoProvider = new SpellInfoProvider({} as any);
 
 describe("PacifistChestProvider", () => {
   const tests = [
@@ -262,7 +263,9 @@ describe("PacifistChestProvider", () => {
     tests.forEach((t, i) => {
       it(`Should generate correct output #${i}`, async () => {
         const randoms = await loadRandom();
-        const ap = new PacifistChestProvider(randoms, getUnlockedSpells());
+        const chestProvider = new ChestRandomProvider(randoms, getUnlockedSpells(), spellInfoProvider);
+        await chestProvider.ready();
+        const ap = new PacifistChestProvider(randoms, chestProvider);
         randoms.SetWorldSeed(t.seed);
         const res = ap.provide(t.params.level, t.params.worldOffset, t.params.fallback, t.params.greed);
         expect(res).toEqual(t.ans);

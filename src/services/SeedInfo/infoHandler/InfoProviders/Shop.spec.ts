@@ -1,10 +1,10 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { ShopInfoProvider, IShopType } from "./Shop";
 import { WandInfoProvider } from "./Wand";
 import { loadRandom } from "../../../../testHelpers";
+import { SpellInfoProvider } from "./Spell";
+
+const spellInfoProvider = new SpellInfoProvider({} as any);
 
 describe("ShopInfoProvider", () => {
   describe("#provide", () => {
@@ -36,7 +36,9 @@ describe("ShopInfoProvider", () => {
       tests.forEach((t, i) => {
         it(`Should generate correct output #${i}`, async () => {
           const randoms = await loadRandom();
-          const ap = new ShopInfoProvider(randoms, new WandInfoProvider(randoms));
+          const wandInfoProvider = new WandInfoProvider(randoms);
+          await wandInfoProvider.ready();
+          const ap = new ShopInfoProvider(randoms, wandInfoProvider, spellInfoProvider);
           randoms.SetWorldSeed(t.seed);
           const r = ap.provide();
           const res = r[t.ans.row];
@@ -56,12 +58,12 @@ describe("ShopInfoProvider", () => {
               "CLOUD_ACID",
               "TELEPORT_PROJECTILE_CLOSER",
               "MANA_REDUCE",
-              "RECHARGE",
+              "EXPLOSION_TINY",
               "ROCKET_OCTAGON",
               "PROPANE_TANK",
-              "GRENADE",
+              "GRENADE_TRIGGER",
               "BULLET_TIMER",
-              "LASER",
+              "LIGHTNING",
             ],
           },
         },
@@ -70,7 +72,9 @@ describe("ShopInfoProvider", () => {
       tests.forEach((t, i) => {
         it(`Should generate correct output #${i}`, async () => {
           const randoms = await loadRandom();
-          const ap = new ShopInfoProvider(randoms, new WandInfoProvider(randoms));
+          const wandInfoProvider = new WandInfoProvider(randoms);
+          await wandInfoProvider.ready();
+          const ap = new ShopInfoProvider(randoms, wandInfoProvider, spellInfoProvider);
           randoms.SetWorldSeed(t.seed);
           const r = ap.provide();
           const res = r[t.ans.row];

@@ -1,12 +1,13 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Stack } from "react-bootstrap";
 
-import GameInfoProvider from "../../services/SeedInfo/infoHandler";
+import type { GameInfoProvider } from "../../services/SeedInfo/infoHandler";
 import SeedInfo from "./SeedInfo";
 
 import i18n from "../../i18n";
 import { db } from "../../services/db";
 import useLocalStorage from "../../services/useLocalStorage";
+import { NOITA_SPELL_COUNT } from "../../static.ts";
 
 interface ISeedDataProps {
   isDaily?: boolean;
@@ -22,7 +23,19 @@ const waitToLoad = (gameInfoProvider?: GameInfoProvider): Promise<void> =>
     return res();
   });
 
-export const createGameInfoProvider = (seed: string, unlockedSpells: boolean[], setData) => {
+const importMain = async () => {
+  const GameInfoProvider = (await import("../../services/SeedInfo/infoHandler/index.ts")).default;
+  return GameInfoProvider;
+};
+
+// Maybe something like this in the future?
+// const importBeta = async () => {
+//   const GameInfoProvider = (await import("../../services/SeedInfo/infoHandlerBeta/index.ts")).default;
+//   return GameInfoProvider;
+// };
+
+export const createGameInfoProvider = async (branch, seed: string, unlockedSpells: boolean[], setData) => {
+  const GameInfoProvider = await importMain(); // TODO: handle beta
   const gameInfoProvider = new GameInfoProvider({ seed: parseInt(seed, 10) }, unlockedSpells, i18n);
   gameInfoProvider
     .onRandomLoad(() => {
@@ -68,9 +81,10 @@ export const GameInfoContext = createContext<{
 
 export const useGameInfoProvider = (
   seed: string,
-  unlockedSpells: boolean[],
 ): [GameInfoProvider?, Awaited<ReturnType<GameInfoProvider["provideAll"]>>?] => {
   const [data, setData] = useState<Awaited<ReturnType<GameInfoProvider["provideAll"]>>>();
+  const [unlockedSpells] = useLocalStorage<boolean[]>("unlocked-spells", Array(NOITA_SPELL_COUNT).fill(true));
+  const [branch] = useLocalStorage<string>("noita-branch", "main");
 
   const [gameInfoProvider, setGameInfoProvider] = useState<GameInfoProvider | undefined>();
 
@@ -80,7 +94,7 @@ export const useGameInfoProvider = (
       setData(undefined);
       setGameInfoProvider(undefined);
       const config = await db.getSeedInfo(seed);
-      const newGameInfoProvider = createGameInfoProvider(seed, unlockedSpells, setData);
+      const newGameInfoProvider = await createGameInfoProvider(branch, seed, unlockedSpells, setData);
       waitToLoad(newGameInfoProvider)
         .then(() => {
           newGameInfoProvider.resetConfig({
@@ -100,8 +114,7 @@ export const useGameInfoProvider = (
 
 const SeedDataOutput = (props: ISeedDataProps) => {
   const { seed, isDaily } = props;
-  const [unlockedSpells] = useLocalStorage<boolean[]>("unlocked-spells", Array(413).fill(true));
-  const [gameInfoProvider, data] = useGameInfoProvider(seed, unlockedSpells);
+  const [gameInfoProvider, data] = useGameInfoProvider(seed);
   return (
     <>
       {gameInfoProvider && data ? (

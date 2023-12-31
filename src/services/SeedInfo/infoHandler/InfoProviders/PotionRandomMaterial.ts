@@ -1,9 +1,5 @@
-import { IRandom } from "../../random";
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
-import { GameGetDateAndTimeLocal } from "./helpers";
-
-import materials from "../../data/materials.json";
 
 // Hack - this list was generated with the following LUA script
 /*

@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { beforeAll, describe, it, expect } from "vitest";
 import { BiomeModifierInfoProvider } from "./BiomeModifier";
 import { loadRandom } from "../../../../testHelpers";
 
@@ -29,6 +26,7 @@ describe("BiomeModifierInfoProvider", () => {
       it(`Should generate correct output #${i}`, async () => {
         const randoms = await loadRandom();
         const ap = new BiomeModifierInfoProvider(randoms);
+        await ap.ready();
         randoms.SetWorldSeed(t.seed);
         const res = ap.provide();
         // get keys that have vals

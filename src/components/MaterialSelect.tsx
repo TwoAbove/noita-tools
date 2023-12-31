@@ -13,12 +13,12 @@ interface IMaterialSelectProps {
 }
 interface IFlaskMaterialSelectProps extends IMaterialSelectProps {
   useFlask: boolean;
-  handleFlask: (val: boolean) => void;
+  handleHeldMaterial: (val: boolean) => void;
   handleOnUpdate?: (list: string[]) => void;
 }
 
 const FlaskMaterialSelect = (props: IFlaskMaterialSelectProps) => {
-  const { show, handleClose, handleOnUpdate, selected, list, useFlask, handleFlask } = props;
+  const { show, handleClose, handleOnUpdate, selected, list, useFlask, handleHeldMaterial } = props;
   const onDeselectAll = () => {
     handleOnUpdate && handleOnUpdate([]);
   };
@@ -48,7 +48,7 @@ const FlaskMaterialSelect = (props: IFlaskMaterialSelectProps) => {
             <Form.Switch
               checked={useFlask}
               onChange={e => {
-                handleFlask(e.target.checked);
+                handleHeldMaterial(e.target.checked);
               }}
               id="custom-switch"
               label="Flask"

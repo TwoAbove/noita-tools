@@ -25,3 +25,16 @@ export const isChristmas = () => {
     return false;
   }
 };
+
+export const memoize = <T extends (...args: any[]) => any>(fn: T) => {
+  const cache = new Map();
+  return (...args: Parameters<T>): ReturnType<T> => {
+    const key = args.join(",");
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    const result = fn(...args);
+    cache.set(key, result);
+    return result;
+  };
+};

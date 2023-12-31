@@ -1,4 +1,5 @@
-import { capitalize, camelCase } from "lodash";
+import capitalize from "lodash/capitalize";
+import camelCase from "lodash/camelCase";
 
 const MI = (maps: any[], luas: Map<string, string>) => {
   let res = "/* This file is auto-generated from dataScripts/mapsToObj. Do not modify it! */\n";

@@ -11,7 +11,7 @@ import { ProfileContext } from "./Profile/ProfileContext";
 
 const isDev = () => {
   const host = window.location.host;
-  return process.env.NODE_ENV === "development" || host === "dev.noitool.com";
+  return import.meta.env.MODE === "development" || host === "dev.noitool.com";
 };
 
 const isLocal = () => {

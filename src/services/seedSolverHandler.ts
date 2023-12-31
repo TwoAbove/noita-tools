@@ -1,16 +1,18 @@
 import { Remote, wrap, releaseProxy, proxy } from "comlink";
 import { getTreeTools } from "../components/SearchSeeds/node";
 import { ILogicRules, IRules } from "./SeedInfo/infoHandler/IRule";
-import * as seedSearcher from "./seedSearcher";
+import { SeedSearcher, ISeedSearcherConfig } from "./seedSearcher";
 
 export class WorkerHandler extends EventTarget {
-  latestData?: ReturnType<seedSearcher.SeedSearcher["getInfo"]>;
+  latestData?: ReturnType<SeedSearcher["getInfo"]>;
   worker: Worker;
-  comlinkWorker: Remote<seedSearcher.SeedSearcher>;
+  comlinkWorker: Remote<SeedSearcher>;
 
   constructor(offset: number, step: number) {
     super();
-    this.worker = new Worker(new URL("../workers/seedSearcher.worker.ts", import.meta.url));
+    this.worker = new Worker(new URL("../workers/seedSearcher.worker.ts?worker", import.meta.url), {
+      type: "module",
+    });
     this.comlinkWorker = wrap(this.worker);
     this.worker.postMessage({ type: "init", offset, step });
   }
@@ -36,7 +38,7 @@ export class WorkerHandler extends EventTarget {
   }
 }
 
-export default class SeedSolver {
+export class SeedSolver {
   public workerList: WorkerHandler[] = [];
   startTime!: number;
 
@@ -64,7 +66,7 @@ export default class SeedSolver {
     return Promise.all(promises);
   }
 
-  public update(config: seedSearcher.ISeedSearcherConfig) {
+  public update(config: ISeedSearcherConfig) {
     for (const worker of this.workerList) {
       worker.worker.postMessage({ type: "update", config });
     }
@@ -129,7 +131,7 @@ export default class SeedSolver {
           res.push(...r);
           await new Promise(res => setTimeout(res, 0));
         }
-      })
+      }),
     );
 
     return res;

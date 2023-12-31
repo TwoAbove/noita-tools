@@ -1,13 +1,8 @@
-/**
- * @jest-environment node
- */
-
+import { beforeAll, beforeEach, describe, it, expect } from "vitest";
 import fs from "fs";
 import path from "path";
 
 import dirTree from "directory-tree";
-
-import comlilnk from "comlink/dist/esm/node-adapter";
 
 import { loadImage as skiaLoadImage, Canvas, Image, ImageData } from "@napi-rs/canvas";
 
@@ -314,7 +309,7 @@ describe("#getMap", () => {
         expect(res);
         const neededItems = points.reduce((c, r) => c.add(r.item), new Set());
         expect(res!.interestPoints!.points!.filter(p => neededItems.has(p.item)).sort((a, b) => a.gx - b.gx)).toEqual(
-          expect.arrayContaining(points)
+          expect.arrayContaining(points),
         );
       });
     });
@@ -443,7 +438,7 @@ describe("#getMap", () => {
         expect(res);
         const neededItems = points.reduce((c, r) => c.add(r.item), new Set());
         expect(res!.interestPoints!.points!.filter(p => neededItems.has(p.item)).sort((a, b) => a.gx - b.gx)).toEqual(
-          expect.arrayContaining(points)
+          expect.arrayContaining(points),
         );
       });
     });

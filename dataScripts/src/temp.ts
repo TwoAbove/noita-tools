@@ -2,8 +2,13 @@ import fs from "fs";
 import path from "path";
 import Jimp from "jimp";
 
-const { resolve } = require("path");
+import { resolve } from "path";
 const { readdir } = require("fs").promises;
+
+import { homedir } from "os";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function* getFiles(dir) {
   const dirents = await readdir(dir, { withFileTypes: true });
@@ -21,8 +26,8 @@ async function* getFiles(dir) {
 
 // iterate over all the images in the images folder
 const noitaData = path.resolve(
-  require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/data"
+  homedir(),
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/data",
 );
 
 (async () => {
@@ -40,8 +45,8 @@ const noitaData = path.resolve(
           console.log(
             f.replace(
               "/home/twoabove/.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
-              ""
-            )
+              "",
+            ),
           );
           return;
         }

@@ -1,4 +1,3 @@
-import { IRandom } from "../../random";
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
 import { GameGetDateAndTimeLocal } from "./helpers";

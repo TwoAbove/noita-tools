@@ -28,6 +28,16 @@ SegfaultHandler.registerHandler("crash.log");
 
 console.log(`Noitool console search ${process.env.npm_package_version}`, argv, os.cpus().length);
 
+const missingArgs: string[] = [];
+if (!argv.userId) {
+  missingArgs.push("--userId (or env NOITOOL_USER_ID)");
+}
+
+if (missingArgs.length) {
+  console.log("Missing required arguments:", missingArgs.join(", "));
+  process.exit(1);
+}
+
 // const seedSolver = new SeedSolver(1, false);
 const seedSolver = new SeedSolver(argv.cores || os.cpus().length, false);
 
@@ -61,8 +71,8 @@ const newComputeSocket = new ComputeSocket({
           },
         },
         null,
-        2
-      )
+        2,
+      ),
     );
   },
   onDone: () => {
@@ -101,11 +111,21 @@ newComputeSocket.start().catch(e => {
   exitHandler();
 });
 
+let terminations = 0;
+
 process.on("SIGINT", () => {
+  if (terminations > 0) {
+    process.exit(1);
+  }
+  terminations++;
   newComputeSocket.stop();
   exitHandler();
 });
 process.on("SIGTERM", () => {
+  if (terminations > 0) {
+    process.exit(1);
+  }
+  terminations++;
   newComputeSocket.stop();
   exitHandler();
 });

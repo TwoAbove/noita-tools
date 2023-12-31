@@ -5,6 +5,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import uniqueId from "lodash/uniqueId.js";
 import { ILogicRules, RuleType } from "./SeedInfo/infoHandler/IRule";
 import { randomUUID } from "./helpers";
+import { NOITA_SPELL_COUNT } from "../static";
 
 (Dexie as any).debug = "dexie";
 
@@ -119,7 +120,7 @@ export class NoitaDB extends Dexie {
         await ((t as any).db.configItems as NoitaDB["configItems"])
           .add({
             key: "unlocked-spells",
-            val: Array(413).fill(true),
+            val: Array(NOITA_SPELL_COUNT).fill(true),
           })
           .catch(e => {
             console.error(e);
@@ -270,7 +271,7 @@ async function populate() {
     },
     {
       key: "unlocked-spells",
-      val: Array(413).fill(true),
+      val: Array(NOITA_SPELL_COUNT).fill(true),
     },
     {
       key: "useCores",

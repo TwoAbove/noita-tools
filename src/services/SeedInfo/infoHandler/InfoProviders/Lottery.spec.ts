@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { LotteryInfoProvider } from "./Lottery";
 import { loadRandom } from "../../../../testHelpers";
 

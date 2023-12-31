@@ -5,12 +5,17 @@ import { parseStringPromise } from "xml2js";
 
 import data from "./gunFile";
 
+import { homedir } from "os";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
 
 const dest = path.resolve(root, "gunfile.json");
 const noitaData = path.resolve(
-  require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  homedir(),
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 
 (async () => {

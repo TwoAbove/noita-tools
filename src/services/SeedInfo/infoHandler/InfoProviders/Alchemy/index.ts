@@ -5,18 +5,15 @@ import { includesAll, isNode, simd } from "../../../../helpers";
 import { IRule } from "../../IRule";
 import { InfoProvider } from "../Base";
 
-import createModule from "./Alchemy.js";
-
-interface IAlchemyModule {
-  PickForSeed(seed: number): string;
-}
+import createModule from "./Alchemy.mjs";
+import type { MainModule } from "./Alchemy.d";
 
 export class AlchemyInfoProvider extends InfoProvider {
   readyPromise: Promise<void>;
 
-  alchemy!: IAlchemyModule;
+  alchemy!: MainModule;
 
-  constructor(randoms) {
+  constructor(randoms: InfoProvider["randoms"]) {
     super(randoms);
 
     this.readyPromise = this.loadWasm();
@@ -32,21 +29,21 @@ export class AlchemyInfoProvider extends InfoProvider {
     // and using a CRA template from 5 years ago.
     // So in all info providers, I have to import the wasm module like this
     // with the path hardcoded and lots of duplicate code :(
-    let noitaRandomModule;
+    let noitaRandomModule: string;
     if (isNode) {
       // Must be in the same folder as this file
       // or else esbuild will not bundle it with the correct path
-      const wasmPath = (await import("./Alchemy.wasm")).default;
+      const wasmPath = new URL("./Alchemy.wasm", import.meta.url).href;
       noitaRandomModule = new URL(wasmPath, import.meta.url).href;
     } else {
       const hasSIMD = await simd();
       noitaRandomModule = hasSIMD
-        ? (await import("./Alchemy.wasm")).default
-        : (await import("./Alchemy-base.wasm")).default;
+        ? new URL("./Alchemy.wasm", import.meta.url).href
+        : new URL("./Alchemy-base.wasm", import.meta.url).href;
     }
 
     const Module = await createModule({
-      locateFile(path) {
+      locateFile(path: string) {
         if (path.endsWith(".wasm")) {
           return noitaRandomModule;
         }
@@ -59,7 +56,7 @@ export class AlchemyInfoProvider extends InfoProvider {
   provide() {
     const worldSeed = this.randoms.GetWorldSeed();
     const res = this.alchemy.PickForSeed(worldSeed);
-    const [LC, AP] = res.split(";");
+    const [LC, AP] = (res as string).split(";");
     return {
       LC: LC.split(":")[1].split(","),
       AP: AP.split(":")[1].split(","),

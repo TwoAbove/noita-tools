@@ -1,5 +1,5 @@
-// import Tesseract from 'tesseract.js';
-import Tesseract from "../../../../node_modules/tesseract.js/src/index.js";
+import Tesseract from "tesseract.js";
+// import Tesseract from "../../../../node_modules/tesseract.js/src/index.js";
 
 import genCanvases, { IFontCanvases } from "./getFontCanvases";
 import {
@@ -53,8 +53,7 @@ class OCRHandler extends EventTarget {
       this.onUpdate = () => {};
     }
     const init = async () => {
-      await this.startTesseract();
-      await this.genCanvases();
+      await Promise.all([this.startTesseract(), this.genCanvases()]);
 
       this.ready = true;
       this.onUpdate();
@@ -67,13 +66,12 @@ class OCRHandler extends EventTarget {
   }
 
   async startTesseract() {
-    const worker = await Tesseract.createWorker("eng", Tesseract.OEM.TESSERACT_ONLY, {
+    const worker = await Tesseract.createWorker("eng", undefined, {
       errorHandler: e => {
         console.error(e);
         this.startTesseract().catch(e => console.error(e));
       },
       // logger: console.log,
-      cacheMethod: "none",
       // logger: this.canvasRef ? console.log : () => { },
     });
     await worker.setParameters({

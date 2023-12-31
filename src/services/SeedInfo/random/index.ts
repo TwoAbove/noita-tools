@@ -1,14 +1,14 @@
 import { isNode, simd } from "../../helpers";
-import createModule from "../noita_random/noita_random.js";
+import createModule from "../noita_random/noita_random.mjs";
 // import noitaRandomModule from '../noita_random/noita_random.wasm';
 import { IRandomModule, genRandom } from "./random";
 
 const loadNodeWasm = async () => {
-  let wasmPath = (await import("../noita_random/noita_random.wasm")).default;
+  let wasmPath = new URL("../noita_random/noita_random.wasm", import.meta.url).href;
   const Module: IRandomModule = await createModule({
     locateFile(path) {
       if (path.endsWith(".wasm")) {
-        return new URL(wasmPath as any, import.meta.url).href;
+        return wasmPath;
       }
       return path;
     },
@@ -24,8 +24,8 @@ const loadWasm = async () => {
   const hasSIMD = await simd();
 
   const noitaRandomModule = hasSIMD
-    ? (await import("../noita_random/noita_random.wasm")).default
-    : (await import("../noita_random/noita_random-base.wasm")).default;
+    ? new URL("../noita_random/noita_random.wasm", import.meta.url).href
+    : new URL("../noita_random/noita_random-base.wasm", import.meta.url).href;
 
   const Module: IRandomModule = await createModule({
     locateFile(path) {

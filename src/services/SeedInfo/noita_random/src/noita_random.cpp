@@ -2,13 +2,9 @@
 // Thanks to kaliuresis!
 // Check out his orb atlas repository: https://github.com/kaliuresis/noa
 // #include <stdint.h>
-#include <algorithm>
-#include <math.h>
-#include <vector>
 #include <bit>
 // #include <limits.h>
 #include <iostream>
-#include <iterator>
 #include <cfenv>
 #include <cmath>
 
@@ -28,7 +24,7 @@ typedef uint32_t uint32;
 typedef uint64_t uint64;
 typedef uint8 bool8;
 
-#define NOITA_SPELL_COUNT 413
+#define NOITA_SPELL_COUNT 419
 
 uint world_seed = 0;
 
@@ -89,6 +85,23 @@ uint SetRandomSeedHelper2(const uint a, const uint b, const uint ws)
     uVar1 = (uVar1 - uVar2) - uVar3 ^ uVar2 << 10;
     return (uVar3 - uVar2) - uVar1 ^ uVar1 >> 0xf;
 }
+
+struct random_pos
+{
+    int x;
+    int y;
+};
+
+template <typename T>
+struct WeightedItem
+{
+    T data;
+    double weight_min;
+    double weight_max;
+
+    WeightedItem(const T &data, double weight_min, double weight_max)
+        : data(data), weight_min(weight_min), weight_max(weight_max) {}
+};
 
 class NollaPrng
 {
@@ -185,7 +198,57 @@ public:
     {
         return a + (int)((double)(b + 1 - a) * Next());
     }
+
+    template <typename T>
+    T random_from_array(std::vector<T> &t)
+    {
+        return t[Random(0, t.size() - 1)];
+    }
 };
+
+double random_next(uint ws, random_pos &random_pos, double a, double b)
+{
+    NollaPrng rng = NollaPrng(0);
+    rng.SetRandomSeed(ws, random_pos.x, random_pos.y);
+    double result = a + ((b - a) * rng.Next());
+    random_pos.y += 1;
+    return result;
+}
+
+int random_next(uint ws, random_pos &random_pos, int a, int b)
+{
+    NollaPrng rng = NollaPrng(0);
+    rng.SetRandomSeed(ws, random_pos.x, random_pos.y);
+    int result = rng.Random((int)RoundHalfOfEven(a), (int)RoundHalfOfEven(b));
+    random_pos.y += 1;
+    return result;
+}
+
+template <typename T>
+T pick_random_from_table_weighted(uint ws, random_pos &rnd, std::vector<T> &t)
+{
+
+    std::vector<WeightedItem<T>> table;
+    double weight_sum = 0.0;
+
+    for (auto item : t)
+    {
+        double new_weight_max = weight_sum + item.probability;
+        table.emplace_back(item, weight_sum, new_weight_max);
+        weight_sum = new_weight_max;
+    }
+
+    double val = random_next(ws, rnd, 0.0, weight_sum);
+    for (auto &it : table)
+    {
+        if (val >= it.weight_min && val <= it.weight_max)
+        {
+            return it.data;
+        }
+    }
+
+    return t[0];
+}
 
 NollaPrng g_rng = NollaPrng(0);
 

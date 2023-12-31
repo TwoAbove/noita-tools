@@ -19,7 +19,7 @@ import PatreonButton from "./misc/PatreonButton";
 import { ProfileContext, ProfileProvider } from "./Profile/ProfileContext";
 
 const Settings = lazy(() => import("./Settings"));
-const LazySettings = props => {
+const LazySettings = () => {
   const [show, setShow] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,8 +54,6 @@ const LazySettings = props => {
 
 const Profile = lazy(() => import("./Profile"));
 const LazyProfile = () => {
-  const [profileEnabled, setProfileEnabled] = useState(false);
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [filterParams, setFilterParams] = useSearchParamsState({
@@ -66,16 +64,6 @@ const LazyProfile = () => {
   });
 
   const profileOpen = filterParams.profile;
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const profileEnabled = await fetch("/api/profile_enabled").then(res => res.json());
-      if (profileEnabled.enabled) {
-        setProfileEnabled(true);
-      }
-    })();
-  }, []);
 
   const { patreonData } = useContext(ProfileContext);
 
@@ -88,8 +76,6 @@ const LazyProfile = () => {
       setSearchParams(searchParams);
     }
   };
-
-  if (!profileEnabled) return null;
 
   return (
     <Suspense fallback={<LoadingComponent />}>
@@ -143,7 +129,7 @@ const Header = () => {
   );
 };
 
-const WasmError = props => {
+const WasmError = (props: any) => {
   return (
     <div className="position-absolute top-50 start-50 translate-middle text-center w-75">
       <p>Looks like this browser does not support WebAssembly, which is needed to run the generation code.</p>
@@ -168,7 +154,7 @@ const WasmError = props => {
 };
 
 const Body = lazy(() => import("./Body"));
-const LazyBody = props => {
+const LazyBody = (props: any) => {
   return (
     <Suspense fallback={<LoadingComponent />}>
       <Body {...props} />
@@ -204,13 +190,51 @@ const Footer = () => {
         </div>
         <div className="footer-copyright text-center fw-light py-1">
           <span className="fw-bold">
-            Noitool <code className="ms-1">{process.env.REACT_APP_VERSION} </code>
+            Noitool <code className="ms-1">{APP_VERSION} </code>
           </span>
           © 2023 <a href="https://seva.dev/">Seva Maltsev</a>
         </div>
       </Stack>
     </footer>
   );
+};
+
+interface IOutdatedVersionHandlerProps {
+  children?: React.ReactNode;
+}
+const OutdatedVersionHandler: FC<IOutdatedVersionHandlerProps> = props => {
+  const [outdated, setOutdated] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/version")
+      .then(r => r.json())
+      .then(r => {
+        if (r.outdated) {
+          setOutdated(true);
+        }
+      });
+  }, []);
+
+  let toShow = <>{props.children}</>;
+
+  if (outdated) {
+    toShow = (
+      <div className="position-absolute top-50 start-50 translate-middle text-center w-75 fs-4 fw-light">
+        <p>
+          Noita has received an update, and Noitool is not yet compatible with it. <br />
+        </p>
+        <p>
+          For <code>noitool.com</code>, this is usually fixed within a few hours. For <code>dev.noitool.com</code>, it
+          might take a day or two. <br />
+          Thank you for your patience!
+        </p>
+        <p>If you want to proceed, click the button below.</p>
+        <Button onClick={() => setOutdated(false)}>Continue</Button>
+      </div>
+    );
+  }
+
+  return toShow;
 };
 
 interface IDBErrorHandlerProps {
@@ -266,23 +290,25 @@ const App: FC = () => {
   }
 
   return (
-    <DBErrorHandler>
-      <BrowserRouter>
-        <ProfileProvider>
-          <div className="App bg-gradient">
-            <div className="content bg-body rounded" style={{ minHeight: "85vh" }}>
-              <ThemeProvider>
-                <AlchemyConfigProvider>
-                  <Header />
-                  {toShow}
-                </AlchemyConfigProvider>
-              </ThemeProvider>
+    <OutdatedVersionHandler>
+      <DBErrorHandler>
+        <BrowserRouter>
+          <ProfileProvider>
+            <div className="App bg-gradient">
+              <div className="content bg-body rounded" style={{ minHeight: "85vh" }}>
+                <ThemeProvider>
+                  <AlchemyConfigProvider>
+                    <Header />
+                    {toShow}
+                  </AlchemyConfigProvider>
+                </ThemeProvider>
+              </div>
+              <Footer />
             </div>
-            <Footer />
-          </div>
-        </ProfileProvider>
-      </BrowserRouter>
-    </DBErrorHandler>
+          </ProfileProvider>
+        </BrowserRouter>
+      </DBErrorHandler>
+    </OutdatedVersionHandler>
   );
 };
 

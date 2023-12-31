@@ -2,9 +2,13 @@ import path from "path";
 import fs from "fs";
 import generateMaps from "./generateMaps";
 import generateMapImpls from "./generateMapImpls";
-import generateImpl from "./generateImpl";
+import generateBiomeImpl from "./generateBiomeImpl";
 import generateEntities from "./generateEntities";
 import { exec, execSync } from "child_process";
+
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function d() {
   // try {
@@ -38,8 +42,8 @@ async function d() {
   execSync(`npx prettier --write ${genPath}/`);
 
   console.log("Generating map assets...");
-  const impl = await generateImpl(maps);
-  fs.writeFileSync(path.resolve(__dirname, "../out/obj", "impl.json"), JSON.stringify(impl, null, 2));
+  const impl = await generateBiomeImpl(maps);
+  fs.writeFileSync(path.resolve(__dirname, "../out/obj", "biome_impl.json"), JSON.stringify(impl, null, 2));
 
   console.log("Generating entities...");
   const entities = await generateEntities();

@@ -3,16 +3,15 @@ import path from "path";
 import Jimp from "jimp";
 import { parseStringPromise } from "xml2js";
 
-const imageFile = path.resolve(
-  require("os").homedir(),
-  ".steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.png"
-);
+import { homedir } from "os";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const imageFile = path.resolve(homedir(), ".steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.png");
 
 // id is acii code, rect_[h|w] rect_[x|y] is position
-const fontDataFile = path.resolve(
-  require("os").homedir(),
-  ".steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.xml"
-);
+const fontDataFile = path.resolve(homedir(), ".steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.xml");
 
 const getChar = (n: number) => {
   return String.fromCharCode(n);
@@ -59,7 +58,7 @@ interface IQuadChar {
       fs.writeFileSync(
         path.resolve(__dirname, "text", `${getChar(+c.$.id)}.png`),
         await i.getBufferAsync(Jimp.MIME_PNG),
-        { flag: "w+" }
+        { flag: "w+" },
       );
     } catch (e) {
       console.error(e);

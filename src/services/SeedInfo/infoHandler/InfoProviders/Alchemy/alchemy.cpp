@@ -1,5 +1,7 @@
 #include "../../../noita_random/src/noita_random.cpp"
 
+#include <vector>
+
 class MaterialPicker
 {
 public:
