@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { IRandomModule, genRandom } from "./services/SeedInfo/random/random";
+import { NOITA_SPELL_COUNT } from "./static";
 
 export const loadRandom = async (flags?: string[]): Promise<Awaited<ReturnType<typeof genRandom>>> => {
   // With jest, import returns a string
@@ -19,7 +20,7 @@ export const loadRandom = async (flags?: string[]): Promise<Awaited<ReturnType<t
 
 export const getUnlockedSpells = (flags?: string[]) => {
   // This should be configurable with persistence flags
-  return Array(413)
+  return Array(NOITA_SPELL_COUNT)
     .fill("")
     .map(s => true);
 };

@@ -32,7 +32,7 @@ const AlchemyCard: FC<{ materials: string[]; Title: JSX.Element }> = ({ material
               className={classNames(isFavorite(l) && "text-info", "text-start m-0 p-0 fs-6")}
             >
               <div className="mt-2">
-                <FungalMaterial id={l} />
+                <FungalMaterial id={l} className="ms-3" />
               </div>
             </ListGroupItem>
           ))}

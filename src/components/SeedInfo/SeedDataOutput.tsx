@@ -7,6 +7,7 @@ import SeedInfo from "./SeedInfo";
 import i18n from "../../i18n";
 import { db } from "../../services/db";
 import useLocalStorage from "../../services/useLocalStorage";
+import { NOITA_SPELL_COUNT } from "../../static.ts";
 
 interface ISeedDataProps {
   isDaily?: boolean;
@@ -82,7 +83,7 @@ export const useGameInfoProvider = (
   seed: string,
 ): [GameInfoProvider?, Awaited<ReturnType<GameInfoProvider["provideAll"]>>?] => {
   const [data, setData] = useState<Awaited<ReturnType<GameInfoProvider["provideAll"]>>>();
-  const [unlockedSpells] = useLocalStorage<boolean[]>("unlocked-spells", Array(413).fill(true));
+  const [unlockedSpells] = useLocalStorage<boolean[]>("unlocked-spells", Array(NOITA_SPELL_COUNT).fill(true));
   const [branch] = useLocalStorage<string>("noita-branch", "main");
 
   const [gameInfoProvider, setGameInfoProvider] = useState<GameInfoProvider | undefined>();

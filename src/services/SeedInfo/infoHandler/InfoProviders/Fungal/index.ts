@@ -71,6 +71,7 @@ export class FungalInfoProvider extends InfoProvider {
         flaskFrom: item.flaskFrom,
         from: from,
         to: item.to,
+        gold_to_x: item.gold_to_x,
       });
     }
     return fungalData;

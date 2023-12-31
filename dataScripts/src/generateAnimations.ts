@@ -8,6 +8,11 @@ import sharp from "sharp";
 import _ from "lodash";
 import { parseStringPromise } from "xml2js";
 
+import { homedir } from "os";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const recursiveReaddir = require("recursive-readdir");
 const DOMParser = require("xmldom").DOMParser;
 
@@ -22,7 +27,7 @@ const makeGif = async (inFrames: GifFrame[]) => {
 const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
 
 const noitaData = path.resolve(
-  require("os").homedir(),
+  homedir(),
   ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 

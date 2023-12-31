@@ -6,6 +6,10 @@ import generateBiomeImpl from "./generateBiomeImpl";
 import generateEntities from "./generateEntities";
 import { exec, execSync } from "child_process";
 
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 async function d() {
   // try {
   //   fs.unlinkSync(path.resolve(__dirname, "maps.json"));

@@ -180,15 +180,11 @@ var create_noita_random = (() => {
     var dependenciesFulfilled = null;
     function addRunDependency(id) {
       runDependencies++;
-      if (Module["monitorRunDependencies"]) {
-        Module["monitorRunDependencies"](runDependencies);
-      }
+      Module["monitorRunDependencies"]?.(runDependencies);
     }
     function removeRunDependency(id) {
       runDependencies--;
-      if (Module["monitorRunDependencies"]) {
-        Module["monitorRunDependencies"](runDependencies);
-      }
+      Module["monitorRunDependencies"]?.(runDependencies);
       if (runDependencies == 0) {
         if (runDependencyWatcher !== null) {
           clearInterval(runDependencyWatcher);
@@ -202,9 +198,7 @@ var create_noita_random = (() => {
       }
     }
     function abort(what) {
-      if (Module["onAbort"]) {
-        Module["onAbort"](what);
-      }
+      Module["onAbort"]?.(what);
       what = "Aborted(" + what + ")";
       err(what);
       ABORT = true;
@@ -625,7 +619,7 @@ var create_noita_random = (() => {
         throwInternalError("Both smartPtrType and smartPtr must be specified");
       }
       record.count = { value: 1 };
-      return attachFinalizer(Object.create(prototype, { $$: { value: record } }));
+      return attachFinalizer(Object.create(prototype, { $$: { value: record, writable: true } }));
     };
     function RegisteredPointer_fromWireType(ptr) {
       var rawPointer = this.getPointee(ptr);
@@ -891,7 +885,7 @@ var create_noita_random = (() => {
           return 0;
         }
       }
-      if (!handle.$$) {
+      if (!handle || !handle.$$) {
         throwBindingError(`Cannot pass "${embindRepr(handle)}" as a ${this.name}`);
       }
       if (!handle.$$.ptr) {
@@ -977,9 +971,7 @@ var create_noita_random = (() => {
           return ptr;
         },
         destructor(ptr) {
-          if (this.rawDestructor) {
-            this.rawDestructor(ptr);
-          }
+          this.rawDestructor?.(ptr);
         },
         argPackAdvance: GenericWireTypeSize,
         readValueFromPointer: readPointer,
@@ -1145,12 +1137,8 @@ var create_noita_random = (() => {
     ) => {
       name = readLatin1String(name);
       getActualType = embind__requireFunction(getActualTypeSignature, getActualType);
-      if (upcast) {
-        upcast = embind__requireFunction(upcastSignature, upcast);
-      }
-      if (downcast) {
-        downcast = embind__requireFunction(downcastSignature, downcast);
-      }
+      upcast &&= embind__requireFunction(upcastSignature, upcast);
+      downcast &&= embind__requireFunction(downcastSignature, downcast);
       rawDestructor = embind__requireFunction(destructorSignature, rawDestructor);
       var legalFunctionName = makeLegalFunctionName(name);
       exposePublicSymbol(legalFunctionName, function () {
@@ -1199,9 +1187,7 @@ var create_noita_random = (() => {
             downcast,
           );
           if (registeredClass.baseClass) {
-            if (registeredClass.baseClass.__derivedClasses === undefined) {
-              registeredClass.baseClass.__derivedClasses = [];
-            }
+            registeredClass.baseClass.__derivedClasses ??= [];
             registeredClass.baseClass.__derivedClasses.push(registeredClass);
           }
           var referenceConverter = new RegisteredPointer(name, registeredClass, true, false, false);
@@ -1227,6 +1213,14 @@ var create_noita_random = (() => {
         del(ptr);
       }
     };
+    function usesDestructorStack(argTypes) {
+      for (var i = 1; i < argTypes.length; ++i) {
+        if (argTypes[i] !== null && argTypes[i].destructorFunction === undefined) {
+          return true;
+        }
+      }
+      return false;
+    }
     function newFunc(constructor, argumentList) {
       if (!(constructor instanceof Function)) {
         throw new TypeError(`new_ called with constructor type ${typeof constructor} which is not a function`);
@@ -1237,20 +1231,9 @@ var create_noita_random = (() => {
       var r = constructor.apply(obj, argumentList);
       return r instanceof Object ? r : obj;
     }
-    function craftInvokerFunction(humanName, argTypes, classType, cppInvokerFunc, cppTargetFunc, isAsync) {
+    function createJsInvoker(humanName, argTypes, isClassMethodFunc, returns, isAsync) {
+      var needsDestructorStack = usesDestructorStack(argTypes);
       var argCount = argTypes.length;
-      if (argCount < 2) {
-        throwBindingError("argTypes array size mismatch! Must at least get return value and 'this' types!");
-      }
-      var isClassMethodFunc = argTypes[1] !== null && classType !== null;
-      var needsDestructorStack = false;
-      for (var i = 1; i < argTypes.length; ++i) {
-        if (argTypes[i] !== null && argTypes[i].destructorFunction === undefined) {
-          needsDestructorStack = true;
-          break;
-        }
-      }
-      var returns = argTypes[0].name !== "void";
       var argsList = "";
       var argsListWired = "";
       for (var i = 0; i < argCount - 2; ++i) {
@@ -1267,9 +1250,8 @@ var create_noita_random = (() => {
       }
       var dtorStack = needsDestructorStack ? "destructors" : "null";
       var args1 = ["throwBindingError", "invoker", "fn", "runDestructors", "retType", "classParam"];
-      var args2 = [throwBindingError, cppInvokerFunc, cppTargetFunc, runDestructors, argTypes[0], argTypes[1]];
       if (isClassMethodFunc) {
-        invokerFnBody += "var thisWired = classParam.toWireType(" + dtorStack + ", this);\n";
+        invokerFnBody += "var thisWired = classParam['toWireType'](" + dtorStack + ", this);\n";
       }
       for (var i = 0; i < argCount - 2; ++i) {
         invokerFnBody +=
@@ -1277,7 +1259,7 @@ var create_noita_random = (() => {
           i +
           "Wired = argType" +
           i +
-          ".toWireType(" +
+          "['toWireType'](" +
           dtorStack +
           ", arg" +
           i +
@@ -1285,7 +1267,6 @@ var create_noita_random = (() => {
           argTypes[i + 2].name +
           "\n";
         args1.push("argType" + i);
-        args2.push(argTypes[i + 2]);
       }
       if (isClassMethodFunc) {
         argsListWired = "thisWired" + (argsListWired.length > 0 ? ", " : "") + argsListWired;
@@ -1304,17 +1285,38 @@ var create_noita_random = (() => {
           if (argTypes[i].destructorFunction !== null) {
             invokerFnBody += paramName + "_dtor(" + paramName + "); // " + argTypes[i].name + "\n";
             args1.push(paramName + "_dtor");
-            args2.push(argTypes[i].destructorFunction);
           }
         }
       }
       if (returns) {
-        invokerFnBody += "var ret = retType.fromWireType(rv);\n" + "return ret;\n";
+        invokerFnBody += "var ret = retType['fromWireType'](rv);\n" + "return ret;\n";
       } else {
       }
       invokerFnBody += "}\n";
-      args1.push(invokerFnBody);
-      var invokerFn = newFunc(Function, args1).apply(null, args2);
+      return [args1, invokerFnBody];
+    }
+    function craftInvokerFunction(humanName, argTypes, classType, cppInvokerFunc, cppTargetFunc, isAsync) {
+      var argCount = argTypes.length;
+      if (argCount < 2) {
+        throwBindingError("argTypes array size mismatch! Must at least get return value and 'this' types!");
+      }
+      var isClassMethodFunc = argTypes[1] !== null && classType !== null;
+      var needsDestructorStack = usesDestructorStack(argTypes);
+      var returns = argTypes[0].name !== "void";
+      var closureArgs = [throwBindingError, cppInvokerFunc, cppTargetFunc, runDestructors, argTypes[0], argTypes[1]];
+      for (var i = 0; i < argCount - 2; ++i) {
+        closureArgs.push(argTypes[i + 2]);
+      }
+      if (!needsDestructorStack) {
+        for (var i = isClassMethodFunc ? 1 : 2; i < argTypes.length; ++i) {
+          if (argTypes[i].destructorFunction !== null) {
+            closureArgs.push(argTypes[i].destructorFunction);
+          }
+        }
+      }
+      let [args, invokerFnBody] = createJsInvoker(humanName, argTypes, isClassMethodFunc, returns, isAsync);
+      args.push(invokerFnBody);
+      var invokerFn = newFunc(Function, args).apply(null, closureArgs);
       return createNamedFunction(humanName, invokerFn);
     }
     var __embind_register_class_constructor = (
@@ -1872,9 +1874,7 @@ var create_noita_random = (() => {
       return str;
     };
     var stringToUTF16 = (str, outPtr, maxBytesToWrite) => {
-      if (maxBytesToWrite === undefined) {
-        maxBytesToWrite = 2147483647;
-      }
+      maxBytesToWrite ??= 2147483647;
       if (maxBytesToWrite < 2) return 0;
       maxBytesToWrite -= 2;
       var startPtr = outPtr;
@@ -1905,9 +1905,7 @@ var create_noita_random = (() => {
       return str;
     };
     var stringToUTF32 = (str, outPtr, maxBytesToWrite) => {
-      if (maxBytesToWrite === undefined) {
-        maxBytesToWrite = 2147483647;
-      }
+      maxBytesToWrite ??= 2147483647;
       if (maxBytesToWrite < 4) return 0;
       var startPtr = outPtr;
       var endPtr = startPtr + maxBytesToWrite - 4;

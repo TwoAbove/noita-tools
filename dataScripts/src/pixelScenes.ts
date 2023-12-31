@@ -2,9 +2,14 @@ import fs from "fs";
 import path from "path";
 import Jimp from "jimp";
 
+import { homedir } from "os";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const noitaData = path.resolve(
-  require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
+  homedir(),
+  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 // Add to these when transferring map impl from Noita.
 const scenes = [
@@ -36,6 +41,6 @@ const scenes = [
   }
   fs.writeFileSync(
     path.resolve(__dirname, "../../src/services/SeedInfo/data/obj", "impl.json"),
-    JSON.stringify(impls, null, 2)
+    JSON.stringify(impls, null, 2),
   );
 })();

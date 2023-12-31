@@ -5,8 +5,15 @@ import Jimp from "jimp";
 import _ from "lodash";
 import { parseStringPromise } from "xml2js";
 
-const recursiveReaddir = require("recursive-readdir");
-const DOMParser = require("xmldom").DOMParser;
+import cliProgress from "cli-progress";
+
+import recursiveReaddir from "recursive-readdir";
+import { DOMParser } from "xmldom";
+
+import { homedir } from "os";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // https://github.com/Dadido3/noita-mapcap
 
@@ -17,7 +24,7 @@ const argbTorgba = (s: string) =>
     .toLowerCase();
 
 const noitaData = path.resolve(
-  require("os").homedir(),
+  homedir(),
   ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 
@@ -468,7 +475,7 @@ const generateEntities = async () => {
 
     if (entityData.Base) {
       for (const B of entityData.Base) {
-        console.log(`	${B.$.file}`);
+        // console.log(`	${B.$.file}`);
         const seb = (
           await entityMemo(B.$.file, () => parseStringPromise(tryRead(path.resolve(noitaData, B.$.file), "")))
         ).Entity;
@@ -579,6 +586,9 @@ const generateEntities = async () => {
   let i = 0;
   let total = files.length;
 
+  const progress = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+  progress.start(total, 0);
+
   for (let val of files) {
     val = val.substring(noitaData.length + 1);
     if (val.includes("_debug") || val.includes("debug_")) {
@@ -602,7 +612,8 @@ const generateEntities = async () => {
       // Already parsed this entity
       continue;
     }
-    console.log(`${i++}/${total}: ${val}`);
+    progress.update(i++);
+    // console.log(`${i++}/${total}: ${val}`);
     const entityXMLPath = path.resolve(noitaData, val);
     if (fs.existsSync(entityXMLPath)) {
       const entityData = await entityMemo(val, () => parseStringPromise(tryRead(entityXMLPath, "")));

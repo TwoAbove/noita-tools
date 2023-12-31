@@ -212,5 +212,16 @@
       "probability": 0.01,
       "material": "cheese_static"
     }
+  ],
+  "greedy_materials": [
+    "brass",
+    "silver",
+    "radioactive_liquid",
+    "pea_soup",
+    "acid_gas",
+    "poo",
+    "mammi",
+    "rotten_meat_radioactive",
+    "vomit"
   ]
 }

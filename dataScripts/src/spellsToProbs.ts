@@ -2,6 +2,10 @@ import fs from "fs";
 import path from "path";
 import util from "util";
 
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const root = path.resolve(__dirname, "out");
 
 const spellRoot = path.resolve(__dirname, "../../src/services/SeedInfo/noita_random/src/");

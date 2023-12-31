@@ -24,7 +24,7 @@ typedef uint32_t uint32;
 typedef uint64_t uint64;
 typedef uint8 bool8;
 
-#define NOITA_SPELL_COUNT 413
+#define NOITA_SPELL_COUNT 419
 
 uint world_seed = 0;
 
@@ -197,6 +197,12 @@ public:
     int Random(int a, int b)
     {
         return a + (int)((double)(b + 1 - a) * Next());
+    }
+
+    template <typename T>
+    T random_from_array(std::vector<T> &t)
+    {
+        return t[Random(0, t.size() - 1)];
     }
 };
 

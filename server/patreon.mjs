@@ -42,7 +42,7 @@ const membersQuery = () => {
   }).then(r => r.json());
 };
 
-let patronMembersCache = {};
+let patronMembersCache = [];
 
 const getPatreonPatronsData = async () => {
   if (!process.env.PATREON_CREATORS_ACCESS_TOKEN) {

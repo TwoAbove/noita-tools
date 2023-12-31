@@ -11,6 +11,11 @@ import parser, {
 } from "luaparse";
 import { parse } from "csv-parse/sync";
 
+import { homedir } from "os";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const argbTorgba = (s: string) =>
   s
     .replace("0x", "")
@@ -18,7 +23,7 @@ const argbTorgba = (s: string) =>
     .toLowerCase();
 
 const noitaData = path.resolve(
-  require("os").homedir(),
+  homedir(),
   ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
 

@@ -155,43 +155,39 @@ const QuirkModal = props => {
         </Part>
         <Part>
           <h4>Fungal Shifts</h4>
-          <p>Not all Fungal Shifts are created equal. Sometimes, you can get shifts that look like this:</p>
+          <p>Fungal Shifts will shift one material to another.</p>
+          <p>
+            When shifting to a held material, and if you're holding Gold, then you only have a <b>1/1000</b> chance of
+            shifting the material to Gold.
+          </p>
           <FungalShifts
             fungalData={[
               {
-                flaskTo: false,
+                flaskTo: true,
                 flaskFrom: false,
-                from: ["sand"],
-                to: "sand",
+                from: ["water"],
+                to: "lava",
+                gold_to_x: "gold",
               },
               {
                 flaskTo: true,
                 flaskFrom: false,
                 from: ["water"],
-                to: "water",
-              },
-              {
-                flaskTo: false,
-                flaskFrom: true,
-                from: ["lava"],
                 to: "lava",
+                gold_to_x: "pea_soup",
               },
             ]}
             infoProvider={
               {
                 // stub for this example
                 updateConfig: () => {},
-                config: { fungalShifts: [false, true, true] },
+                config: { fungalShifts: [true, false] },
                 providers: {
                   material: materialProvider,
                 },
               } as any
             }
           />
-          <p>
-            These shifts will not shift anything unless you are holding a flask and there is the flask indicator. In the
-            examples above, only the second and third row will be a successful shift, if you have a flask equipped.
-          </p>
         </Part>
       </Modal.Body>
     </Modal>

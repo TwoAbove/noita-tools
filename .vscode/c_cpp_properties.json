@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "~/p/build/emsdk/upstream/emscripten/cache/**"
+                "~/builds/emsdk/upstream/emscripten/cache/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

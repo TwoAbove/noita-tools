@@ -23,7 +23,7 @@ Current features include:
 
 - The machine should have node installed (ideally v18.6+) and npm.
 - Follow to <https://www.noitool.com/?profile=true> and link your patreon account. Under your patreon username, there will now be an id like `6456aff2478c4f8f91701018`
-- Install `fswatch` (on mac: `brew install fswatch`)
+- Install `chokidar` (`npm install -g chokidar-cli`)
 
 ### Installing and connecting
 

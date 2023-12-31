@@ -4,6 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <map>
+#include <optional>
 
 struct FungalTransformation
 {
@@ -11,6 +12,7 @@ struct FungalTransformation
   bool flaskFrom;
   std::vector<std::string> from;
   std::string to;
+  std::string gold_to_x;
 };
 
 struct MaterialItemFrom
@@ -164,49 +166,21 @@ vector<MaterialItemTo> materials_to = {
      "cheese_static"},
 };
 
-FungalTransformation fungal_shift(bool debug_no_limits, uint ws, int iter, NollaPrng &randoms)
-{
-  if (iter > 20 && !debug_no_limits)
-  {
-    return {false, false, {}, ""};
-  }
-
-  // randoms.SetRandomSeed(ws, 89346, 42345 + iter);
-
-  random_pos rnd{9123, 58925 + iter};
-  MaterialItemFrom from = pick_random_from_table_weighted<MaterialItemFrom>(ws, rnd, materials_from);
-  MaterialItemTo to = pick_random_from_table_weighted<MaterialItemTo>(ws, rnd, materials_to);
-
-  bool flaskFrom = false;
-  bool flaskTo = false;
-  if (random_next(ws, rnd, 1, 100) <= 75)
-  {
-    if (random_next(ws, rnd, 1, 100) <= 50)
+std::vector<std::string> greedy_materials =
     {
-      flaskFrom = true;
-    }
-    else
-    {
-      flaskTo = true;
-    }
-  }
+        "brass",
+        "silver",
+        "radioactive_liquid",
+        "pea_soup",
+        "acid_gas",
+        "poo",
+        "mammi",
+        "rotten_meat_radioactive",
+        "vomit",
+};
 
-  std::vector<std::string> from_materials;
-  std::string to_material = to.material;
-  for (const auto &it : from.materials)
-  {
-    from_materials.push_back(it);
-  }
-
-  if (from.materials.size() > 1)
-  {
-    from_materials.erase(std::remove(from_materials.begin(), from_materials.end(), to_material), from_materials.end());
-  }
-
-  return {flaskTo, flaskFrom, from_materials, to_material};
-}
-
-std::vector<FungalTransformation> PickForSeed(uint ws, int maxShifts = 20)
+std::vector<FungalTransformation>
+PickForSeed(uint ws, int maxShifts = 20)
 {
   const bool debug_no_limits = false;
 
@@ -218,9 +192,55 @@ std::vector<FungalTransformation> PickForSeed(uint ws, int maxShifts = 20)
   }
 
   NollaPrng randoms = NollaPrng(0);
-  for (int i = 0; i < maxShifts; i++)
+
+  for (int iter = 0; iter < maxShifts; iter++)
   {
-    shifts.push_back(fungal_shift(debug_no_limits, ws, i, randoms));
+    int convert_tries = 0;
+    bool converted_any = false;
+
+    while (converted_any == false && convert_tries < 20)
+    {
+      int seed2 = 42345 + iter + 1000 * convert_tries;
+      random_pos rnd{9123, seed2};
+      randoms.SetRandomSeed(ws, 89346, seed2);
+
+      MaterialItemFrom from = pick_random_from_table_weighted<MaterialItemFrom>(ws, rnd, materials_from);
+      MaterialItemTo to = pick_random_from_table_weighted<MaterialItemTo>(ws, rnd, materials_to);
+
+      bool flaskFrom = false;
+      bool flaskTo = false;
+      std::string gold_to_x = "gold";
+      if (random_next(ws, rnd, 1, 100) <= 75)
+      {
+        if (random_next(ws, rnd, 1, 100) <= 50)
+        {
+          flaskFrom = true;
+        }
+        else
+        {
+          flaskTo = true;
+          if (random_next(ws, rnd, 1, 1000) != 1)
+          {
+            gold_to_x = randoms.random_from_array(greedy_materials);
+          }
+        }
+      }
+
+      std::vector<std::string> from_materials;
+      std::string to_material = to.material;
+      for (const auto &it : from.materials)
+      {
+        if (it != to_material)
+        {
+          converted_any = true;
+          from_materials.push_back(it);
+        }
+      }
+
+      shifts.push_back({flaskTo, flaskFrom, from_materials, to_material, gold_to_x});
+
+      convert_tries++;
+    }
   }
 
   return shifts;
@@ -237,7 +257,8 @@ EMSCRIPTEN_BINDINGS(noitool_fungal)
       .field("flaskTo", &FungalTransformation::flaskTo)
       .field("flaskFrom", &FungalTransformation::flaskFrom)
       .field("from", &FungalTransformation::from)
-      .field("to", &FungalTransformation::to);
+      .field("to", &FungalTransformation::to)
+      .field("gold_to_x", &FungalTransformation::gold_to_x);
   register_vector<FungalTransformation>("VectorFungalTransformation");
   emscripten::function("PickForSeed", &PickForSeed);
 }

@@ -1,8 +1,8 @@
 export interface VectorString {
   size(): number;
-  push_back(_0: ArrayBuffer | Uint8Array | Uint8ClampedArray | Int8Array | string): void;
-  resize(_0: number, _1: ArrayBuffer | Uint8Array | Uint8ClampedArray | Int8Array | string): void;
-  set(_0: number, _1: ArrayBuffer | Uint8Array | Uint8ClampedArray | Int8Array | string): boolean;
+  push_back(_0: ArrayBuffer|Uint8Array|Uint8ClampedArray|Int8Array|string): void;
+  resize(_0: number, _1: ArrayBuffer|Uint8Array|Uint8ClampedArray|Int8Array|string): void;
+  set(_0: number, _1: ArrayBuffer|Uint8Array|Uint8ClampedArray|Int8Array|string): boolean;
   get(_0: number): any;
   delete(): void;
 }
@@ -17,14 +17,15 @@ export interface VectorFungalTransformation {
 }
 
 export type FungalTransformation = {
-  flaskTo: boolean;
-  flaskFrom: boolean;
-  from: VectorString;
-  to: ArrayBuffer | Uint8Array | Uint8ClampedArray | Int8Array | string;
+  flaskTo: boolean,
+  flaskFrom: boolean,
+  from: VectorString,
+  to: ArrayBuffer|Uint8Array|Uint8ClampedArray|Int8Array|string,
+  gold_to_x: ArrayBuffer|Uint8Array|Uint8ClampedArray|Int8Array|string
 };
 
 export interface MainModule {
-  VectorString: { new (): VectorString };
-  VectorFungalTransformation: { new (): VectorFungalTransformation };
+  VectorString: {new(): VectorString};
+  VectorFungalTransformation: {new(): VectorFungalTransformation};
   PickForSeed(_0: number, _1: number): VectorFungalTransformation;
 }

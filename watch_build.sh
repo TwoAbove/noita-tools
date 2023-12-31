@@ -7,11 +7,7 @@ watch_and_build() {
   local build_script=$3
 
   (
-    cd "$dir"
-    fswatch $pattern | while read -r file; do
-      # echo "Script triggered for file: $dir $file"
-      bash $build_script $file
-    done
+    cd "$dir" && chokidar "$pattern" -c "bash $build_script \"{path}\""
   ) &
 }
 
