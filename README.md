@@ -23,7 +23,6 @@ Current features include:
 
 - The machine should have node installed (ideally v18.6+) and npm.
 - Follow to <https://www.noitool.com/?profile=true> and link your patreon account. Under your patreon username, there will now be an id like `6456aff2478c4f8f91701018`
-- Install `chokidar` (`npm install -g chokidar-cli`)
 
 ### Installing and connecting
 
@@ -86,7 +85,7 @@ Prerequisites:
 
 - Docker (for compose)
 - Node
-- fswatch
+- `chokidar` (`npm install -g chokidar-cli`)
 - [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed if you want to work with the c++ code
 - [Nota data](https://noita.wiki.gg/wiki/Modding#Extracting_data_files) if you want to modify the data files
 
