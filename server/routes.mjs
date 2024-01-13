@@ -3,10 +3,6 @@ import multer from "multer";
 
 const router = Router();
 
-router.get("/profile_enabled", (req, res) => {
-  res.send({ enabled: process.env.PROFILE_ENABLED === "true" });
-});
-
 router.get("/daily-seed", async (req, res) => {
   // get the seed from http://takapuoli.noitagame.com/callback/
   // and send it to the client

@@ -36,8 +36,9 @@ docker pull ghcr.io/twoabove/noitool-console-search:latest && docker run -it -e 
 ```
 
 Or for dev
+
 ```bash
-docker pull ghcr.io/twoabove/noitool-console-search:latest-dev && docker run -it -e NOITOOL_USER_ID=xxx -e NOITOOL_URL=https://dev.noitool.com/ ghcr.io/twoabove/noitool-console-search:latest-dev 
+docker pull ghcr.io/twoabove/noitool-console-search:latest-dev && docker run -it -e NOITOOL_USER_ID=xxx -e NOITOOL_URL=https://dev.noitool.com/ ghcr.io/twoabove/noitool-console-search:latest-dev
 ```
 
 #### CLI
@@ -79,12 +80,23 @@ Also, I took inspiration from [cr4xy](https://cr4xy.dev/noita/) for extra featur
 
 ## Development
 
+I use linux or mac for development, so I can't guarantee that everything works on windows. On windows, you can use WSL2 to run the dev environment.
+
 Prerequisites:
 
-- [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed
+- Docker (for compose)
 - Node
+- fswatch
+- [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed if you want to work with the c++ code
+- [Nota data](https://noita.wiki.gg/wiki/Modding#Extracting_data_files) if you want to modify the data files
 
-After extracting noita wak, run
+Before running `npm run dev`, please copy the `.env.example` file to `.env.local` and fill in the values. For non-patreon and discord features, you can leave the file as-is.
+
+Also, run `docker compose up -d` to easily spin up a local db instance.
+
+### Noita data
+
+You need to clean the Noita data a bit before running dataScripts. After extracting noita wak, in the noita data directory, run
 
 ```sh
 find . -type f -not -path '*/\.*' -exec sed -i 's/----------------------//g' {} +;

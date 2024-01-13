@@ -1,4 +1,7 @@
 import "dotenv-flow/config";
 
-import "./discord.mjs";
+if (process.env.DISCORD_TOKEN && process.env.DISCORD_CLIENT_ID) {
+  import("./discord.mjs");
+}
+
 import "./server.mjs";
