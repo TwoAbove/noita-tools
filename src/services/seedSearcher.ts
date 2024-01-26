@@ -146,6 +146,15 @@ export class SeedSearcher {
   async work() {
     this.running = true;
     this.shouldCancel = false;
+
+    // we need a failsafe for too-long loops, so we'll just stop after 5 minutes
+    setTimeout(
+      () => {
+        this.shouldCancel = true;
+      },
+      1000 * 60 * 5,
+    );
+
     // console.profile();
     while (!this.shouldCancel && this.currentSeed <= (this.seedEnd || 2_147_483_645)) {
       if (this.count && this.count % this.gcEvery === 0) {
@@ -237,7 +246,6 @@ export class SeedSearcher {
 
   async stop() {
     this.shouldCancel = true;
-    this.running = false;
   }
 
   onInfo(cb: (info: ReturnType<SeedSearcher["getInfo"]>) => void) {
@@ -265,7 +273,7 @@ export class SeedSearcher {
         currentSeed: this.currentSeed,
         foundSeed: this.foundSeed,
         running: this.running,
-      }
+      },
     );
   }
 
