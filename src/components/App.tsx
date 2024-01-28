@@ -97,9 +97,7 @@ const LazyProfile = () => {
 };
 
 const Header = () => {
-  const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "";
   const host = window.location.host;
-  const notNewUrl = !["noitool.com", "www.noitool.com"].includes(host) && !isLocalhost;
   const isDevBranch = host.startsWith("dev.");
   return (
     <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
@@ -108,14 +106,6 @@ const Header = () => {
           Noitool {isDevBranch && <sub className="fs-6 fw mb-0 text-center text-danger">Beta</sub>}
         </h3>
         <p className="fs-4 fw-light m-1 mt-0 my-1 text-center">Noita tools and helpers</p>
-        {notNewUrl && (
-          <p className="mb-2 text-center">
-            Use the new url!{" "}
-            <a className="link-primary" href="https://www.noitool.com/">
-              https://www.noitool.com/
-            </a>{" "}
-          </p>
-        )}
       </div>
       <div className=" d-flex pt-2 justify-content-end align-items-start">
         <div className="mx-2">
