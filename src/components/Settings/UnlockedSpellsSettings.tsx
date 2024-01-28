@@ -100,7 +100,8 @@ const UnlockedSpellsSettings = () => {
             Set which spells you have unlocked. This will make spells generated everywhere accurate.
             <br />
             It's possible to automatically import this if you have access to you save folder. To do this, select the
-            following folder from your computer: <code>..\LocalLow\Nolla_Games_Noita\save00\persistent\flags</code>
+            following folder from your computer:&nbsp;
+            <code>%appdata%\..\LocalLow\Nolla_Games_Noita\save00\persistent\flags</code>
             <br />
             <br />
             <DropZone onDrop={onDrop}>
