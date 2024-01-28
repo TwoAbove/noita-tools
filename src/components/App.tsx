@@ -167,6 +167,10 @@ const Footer = () => {
     <footer className="footer font-small p-1 pt-3">
       <Stack>
         <div className="d-flex justify-content-center align-items-center text-center">
+          For a version of Noitool that follows <b>Noita beta</b>, check out&nbsp;
+          <a href="https://dev.noitool.com/">dev.noitool.com</a>
+        </div>
+        <div className="d-flex justify-content-center align-items-center text-center">
           <PatreonButton />
           <div className="mx-2">or</div>
           <div className="pt-2">
