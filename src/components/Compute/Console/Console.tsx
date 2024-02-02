@@ -106,7 +106,7 @@ const ComputeConsole = () => {
     const newComputeSocket = new ComputeSocket({
       url: computeUrl,
       sessionToken: noitoolSessionToken,
-      version: process.env.REACT_APP_VERSION!,
+      version: APP_VERSION,
       onUpdate: () => {
         setConnected(newComputeSocket.connected);
       },
