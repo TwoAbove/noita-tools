@@ -164,7 +164,7 @@ export class NoitaDB extends Dexie {
               }),
             ),
           },
-          madeUsingVersion: process.env.REACT_APP_VERSION!,
+          madeUsingVersion: APP_VERSION,
           createdAt: new Date(),
           updatedAt: new Date(),
         });
@@ -310,7 +310,7 @@ async function populate() {
         }),
       ),
     },
-    madeUsingVersion: process.env.REACT_APP_VERSION!,
+    madeUsingVersion: APP_VERSION,
     createdAt: new Date(),
     updatedAt: new Date(),
   });
@@ -347,7 +347,7 @@ export async function newSearch(): Promise<string> {
         }),
       ),
     },
-    madeUsingVersion: process.env.REACT_APP_VERSION!,
+    madeUsingVersion: APP_VERSION,
     createdAt: new Date(),
     updatedAt: new Date(),
   });

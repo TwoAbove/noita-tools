@@ -36,7 +36,7 @@ const Compute = () => {
     const newComputeSocket = new ComputeSocket({
       url: computeUrl,
       sessionToken: noitoolSessionToken,
-      version: process.env.REACT_APP_VERSION!,
+      version: APP_VERSION,
       seedSolver,
       onUpdate: () => {
         setConnected(newComputeSocket.connected);

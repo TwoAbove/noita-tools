@@ -431,7 +431,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({ children }) => 
     const newComputeSocket = new ComputeSocket({
       url: window.location.host,
       sessionToken: Cookies.get("noitoolSessionToken"),
-      version: process.env.REACT_APP_VERSION!,
+      version: APP_VERSION,
       onUpdate: () => {
         setClusterConnected(newComputeSocket.connected);
       },

@@ -83,7 +83,7 @@ const SpellSelect: FC<ISpellSelectProps> = ({
           selected.length > 0 && (
             <Row sm={8} className="p-3 justify-content-start align-items-center row-cols-auto">
               {selected.map(s => {
-                const spell = gameInfoProvider!.providers.spells[s];
+                const spell = gameInfoProvider!.providers.spells.spells[s];
                 return (
                   <Col className="p-0 m-1" key={spell.id}>
                     <Clickable useHover onClick={() => handleSelectedClicked(spell.id)}>
