@@ -1,7 +1,7 @@
 export const GameGetDateAndTimeLocal = () => {
   const now = new Date();
   const year = now.getFullYear();
-  const month = now.getMonth();
+  const month = now.getMonth() + 1;
   const date = now.getDate();
   const h = now.getHours();
   const m = now.getMinutes();
