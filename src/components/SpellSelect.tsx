@@ -60,7 +60,7 @@ const SpellSelect: FC<ISpellSelectProps> = ({
 
   const spellsToShow = (filter ? fuse.search(filter).map(s => s.item) : gameInfoProvider!.providers.spells.spellsArr)
     .filter(s =>
-      level && level >= 0
+      level !== undefined && level >= 0
         ? Object.keys(s.spawn_probabilities).includes(String(gameInfoProvider!.providers.shop.getShopLevel(level)))
         : true,
     )
