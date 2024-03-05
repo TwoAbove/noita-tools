@@ -1,8 +1,10 @@
 #!/bin/bash
-set -e
+# Author: Charles Bock
+# Email: Charles@CharlesBock.com
+# Date: 2024-02-27
+# Tested on a bare install of Ubuntu 22.04.3 LTS
 
-# Tested on a bare install of Ubuntu 22.04.3 LTS - 02/27/2024
-# Author: Charles@CharlesBock.com - github.com/Penguin2600
+set -e
 
 # Color Stuff
 BGreen='\033[1;32m'
