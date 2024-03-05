@@ -198,11 +198,10 @@ class OCRHandler extends EventTarget {
     );
 
     if (this.canvasRef) {
-      // to debug
+      this.canvasRef.current!.width = img.width;
+      this.canvasRef.current!.height = img.height;
       const ctx = this.canvasRef.current!.getContext("2d")!;
-      // ctx.fillStyle = "#000000";
-      // ctx.fillRect(0, 0, 1000, 1000);
-      ctx.drawImage(img, 40, 0);
+      ctx.drawImage(img, 0, 0);
     }
 
     const res = await this.tesseractWorker.recognize(img as any);
