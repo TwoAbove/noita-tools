@@ -1,10 +1,10 @@
-#include "../../../noita_random/src/noita_random.cpp"
-
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <map>
 #include <optional>
+
+#include "../../../noita_random/src/noita_random.cpp"
 
 struct FungalTransformation
 {
@@ -13,6 +13,7 @@ struct FungalTransformation
   std::vector<std::string> from;
   std::string to;
   std::string gold_to_x;
+  std::string grass_to_x;
 };
 
 struct MaterialItemFrom
@@ -210,6 +211,7 @@ PickForSeed(uint ws, int maxShifts = 20)
       bool flaskFrom = false;
       bool flaskTo = false;
       std::string gold_to_x = "gold";
+      std::string grass_to_x = "grass_holy";
       if (random_next(ws, rnd, 1, 100) <= 75)
       {
         if (random_next(ws, rnd, 1, 100) <= 50)
@@ -222,6 +224,7 @@ PickForSeed(uint ws, int maxShifts = 20)
           if (random_next(ws, rnd, 1, 1000) != 1)
           {
             gold_to_x = randoms.random_from_array(greedy_materials);
+            grass_to_x = "grass";
           }
         }
       }
@@ -237,7 +240,7 @@ PickForSeed(uint ws, int maxShifts = 20)
         }
       }
 
-      shifts.push_back({flaskTo, flaskFrom, from_materials, to_material, gold_to_x});
+      shifts.push_back({flaskTo, flaskFrom, from_materials, to_material, gold_to_x, grass_to_x});
 
       convert_tries++;
     }
@@ -258,7 +261,8 @@ EMSCRIPTEN_BINDINGS(noitool_fungal)
       .field("flaskFrom", &FungalTransformation::flaskFrom)
       .field("from", &FungalTransformation::from)
       .field("to", &FungalTransformation::to)
-      .field("gold_to_x", &FungalTransformation::gold_to_x);
+      .field("gold_to_x", &FungalTransformation::gold_to_x)
+      .field("grass_to_x", &FungalTransformation::grass_to_x);
   register_vector<FungalTransformation>("VectorFungalTransformation");
   emscripten::function("PickForSeed", &PickForSeed);
 }

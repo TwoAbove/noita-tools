@@ -37,7 +37,6 @@ const importMain = async () => {
 export const createGameInfoProvider = async (branch, seed: string, unlockedSpells: boolean[], setData) => {
   const GameInfoProvider = await importMain(); // TODO: handle beta
   const gameInfoProvider = new GameInfoProvider({ seed: parseInt(seed, 10) }, unlockedSpells, i18n);
-  console.log(unlockedSpells);
   gameInfoProvider
     .onRandomLoad(() => {
       gameInfoProvider.randoms.SetWorldSeed(parseInt(seed, 10));
@@ -95,7 +94,6 @@ export const useGameInfoProvider = (
       setData(undefined);
       setGameInfoProvider(undefined);
       const config = await db.getSeedInfo(seed);
-      console.log(branch, seed, unlockedSpells);
       const newGameInfoProvider = await createGameInfoProvider(branch, seed, unlockedSpells, setData);
       waitToLoad(newGameInfoProvider)
         .then(() => {
@@ -116,7 +114,6 @@ export const useGameInfoProvider = (
 
 const SeedDataOutput = (props: ISeedDataProps) => {
   const { seed, isDaily } = props;
-  console.log(seed, isDaily);
   const [gameInfoProvider, data] = useGameInfoProvider(seed);
   return (
     <>

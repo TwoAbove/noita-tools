@@ -49,16 +49,16 @@ records.forEach((row, i) => {
   }
 });
 
-fs.mkdirSync(path.resolve(__dirname, `./locales`));
+fs.mkdirSync(path.resolve(__dirname, `./out/locales`));
 for (let i = 1; i < locales.length; i++) {
   const locale = locales[i];
   if (!locale) {
     continue;
   }
-  fs.mkdirSync(path.resolve(__dirname, `./locales/${locale}`));
-  fs.writeFileSync(path.resolve(__dirname, `./locales/${locale}/app.json`), JSON.stringify({}, null, 2));
+  fs.mkdirSync(path.resolve(__dirname, `./out/locales/${locale}`));
+  fs.writeFileSync(path.resolve(__dirname, `./out/locales/${locale}/app.json`), JSON.stringify({}, null, 2));
   fs.writeFileSync(
-    path.resolve(__dirname, `./locales/${locale}/materials.json`),
+    path.resolve(__dirname, `./out/locales/${locale}/materials.json`),
     JSON.stringify(translation[locale], null, 2),
   );
 }

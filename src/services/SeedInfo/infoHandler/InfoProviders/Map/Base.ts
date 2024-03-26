@@ -696,7 +696,13 @@ export default class Base {
   }
 
   spawn_potions(x: number, y: number) {
-    this.spawn_from_list("potion_spawnlist", x, y);
+    this.randoms.SetRandomSeed(x, y);
+    const r = this.randoms.Random(1, 1000);
+    if (r <= 995 || y < 512 * 3) {
+      this.spawn_from_list("potion_spawnlist", x, y);
+    } else {
+      this.EntityLoad("data/entities/items/pickup/potion_mimic.xml", x, y);
+    }
   }
 
   spawn_potion_altar(x: number, y: number) {

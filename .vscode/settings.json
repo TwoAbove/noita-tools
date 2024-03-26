@@ -90,7 +90,8 @@
     "sstream": "cpp",
     "charconv": "cpp",
     "iomanip": "cpp",
-    "format": "cpp"
+    "format": "cpp",
+    "__verbose_abort": "cpp"
   },
   "terminal.integrated.env.windows": {
     "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${env:LOCALAPPDATA}\\Programs\\emsdk\\upstream\\emscripten"

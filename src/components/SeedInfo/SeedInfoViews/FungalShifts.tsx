@@ -19,8 +19,12 @@ enum Direction {
   To,
 }
 
-const HeldMaterial = ({ warning }: { warning: boolean }) => {
-  return <b className={classNames(warning ? "text-warning" : "text-info")}>Held Material</b>;
+const HeldMaterial = ({ warning, ...rest }: { warning: boolean; [key: string]: any }) => {
+  return (
+    <b {...rest} className={classNames(warning ? "text-warning" : "text-info")}>
+      Held Material
+    </b>
+  );
 };
 
 interface IFungalMaterialProps {
@@ -71,12 +75,14 @@ interface IFungalMaterialListProps {
   getColor: (id: string) => string;
   showId: boolean;
   gold_to_x?: string;
+  grass_to_x?: string;
 }
 
 export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
   materials,
   direction,
   gold_to_x,
+  grass_to_x,
   heldMaterial,
   isFavorite,
   getColor,
@@ -105,26 +111,40 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
 
   return (
     <Stack>
-      {heldMaterial && direction === Direction.To && gold_to_x && (
-        <div
-          className="d-flex flex-nowrap text-nowrap text-muted"
-          style={{
-            marginBottom: "-8px",
-          }}
-        >
-          <FungalMaterial size="0.75" id="gold" />{" "}
-          <span
-            style={{
-              fontSize: "0.75rem",
-            }}
-            className="mx-2"
-          >
-            &rarr;
-          </span>{" "}
-          <FungalMaterial size="0.75" id={gold_to_x} />
+      {heldMaterial && direction === Direction.From && <HeldMaterial warning={false} />}
+      {heldMaterial && direction === Direction.To && (
+        <div className="lh-1 mb-1">
+          <HeldMaterial warning={gold_to_x !== "gold"} />
+          {gold_to_x && (
+            <div className="d-flex flex-nowrap text-nowrap text-muted">
+              <FungalMaterial size="0.75" id="gold" />{" "}
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                }}
+                className="mx-2"
+              >
+                &rarr;
+              </span>{" "}
+              <FungalMaterial size="0.75" id={gold_to_x} />
+            </div>
+          )}
+          {grass_to_x && (
+            <div className="d-flex flex-nowrap text-nowrap text-muted">
+              <FungalMaterial size="0.75" id="grass_holy" />{" "}
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                }}
+                className="mx-2"
+              >
+                &rarr;
+              </span>{" "}
+              <FungalMaterial size="0.75" id={grass_to_x} />
+            </div>
+          )}
         </div>
       )}
-      {heldMaterial && <HeldMaterial warning={gold_to_x !== "gold" && direction === Direction.To} />}
       {materialsByNameArray.map(([name, ids]) => (
         <FungalMaterial key={name} id={ids} />
       ))}
@@ -160,6 +180,7 @@ export const Shift: FC<IShiftProps> = props => {
   );
 
   const gold_to_x = data.gold_to_x;
+  const grass_to_x = data.grass_to_x;
 
   return (
     <tr className="align-middle">
@@ -183,6 +204,7 @@ export const Shift: FC<IShiftProps> = props => {
           getColor={(id: string) => materialProvider.provide(id).color}
           showId={showId}
           gold_to_x={gold_to_x}
+          grass_to_x={grass_to_x}
         />
       </td>
       <td>

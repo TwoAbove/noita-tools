@@ -64,7 +64,7 @@ export class FungalInfoProvider extends InfoProvider {
       const item = res.get(i) as FungalTransformation;
       const from: string[] = [];
       for (let j = 0; j < item.from.size(); j++) {
-        from.push(item.from.get(j));
+        from.push(item.from.get(j)?.toString() ?? "");
       }
       fungalData.push({
         flaskTo: item.flaskTo,
@@ -72,6 +72,7 @@ export class FungalInfoProvider extends InfoProvider {
         from: from,
         to: item.to,
         gold_to_x: item.gold_to_x,
+        grass_to_x: item.grass_to_x,
       });
     }
     return fungalData;

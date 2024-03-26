@@ -319,7 +319,7 @@ const generateMaps = async () => {
         g: {},
       };
       for (const statement of lua_things.body) {
-        fs.writeFileSync(".tmp.body.json", JSON.stringify(lua_things, null, 2));
+        // fs.writeFileSync(".tmp.body.json", JSON.stringify(lua_things, null, 2));
         switch (statement.type) {
           case "AssignmentStatement": {
             if (

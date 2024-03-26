@@ -636,7 +636,7 @@ const generateEntities = async () => {
     }
     // console.log(`${i++}/${total}: ${val}`);
     const entityXMLPath = path.resolve(noitaData, val);
-    console.log(entityXMLPath);
+    // console.log(entityXMLPath);
     if (fs.existsSync(entityXMLPath)) {
       const entityData = await entityMemo(val, () => tryGetXML(tryRead(entityXMLPath, "")));
       if (!entityData) {
