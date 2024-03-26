@@ -68,10 +68,7 @@ require("esbuild")
     external,
   })
   .then(() => {
-    fs.copyFileSync(
-      path.resolve(__dirname, "search.package.json"),
-      path.resolve(__dirname, "console-build", "package.json"),
-    );
+    fs.copyFileSync(path.resolve(__dirname, "package.json"), path.resolve(__dirname, "console-build", "package.json"));
 
     {
       // Need to figure out how to correctly fix URL requires with esbuild

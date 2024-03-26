@@ -31,13 +31,13 @@ Current features include:
 You can use docker to simply spin up a compute node:
 
 ```bash
-docker pull ghcr.io/twoabove/noitool-console-search:latest && docker run -it -e NOITOOL_USER_ID=xxx ghcr.io/twoabove/noitool-console-search:latest
+docker run -it -e NOITOOL_USER_ID=xxx ghcr.io/twoabove/noitool-console-search:latest
 ```
 
 Or for dev
 
 ```bash
-docker pull ghcr.io/twoabove/noitool-console-search:latest-dev && docker run -it -e NOITOOL_USER_ID=xxx -e NOITOOL_URL=https://dev.noitool.com/ ghcr.io/twoabove/noitool-console-search:latest-dev
+docker run -it -e NOITOOL_USER_ID=xxx -e NOITOOL_URL=https://dev.noitool.com/ ghcr.io/twoabove/noitool-console-search:latest-dev
 ```
 
 #### CLI
