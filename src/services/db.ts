@@ -174,6 +174,21 @@ export class NoitaDB extends Dexie {
         });
       });
 
+    // Upgrade to version 9 to update the spell unlock array
+    this.version(9)
+      .stores({
+        configItems: "++id, &key",
+      })
+      .upgrade(async t => {
+        await ((t as any).db.configItems as NoitaDB["configItems"])
+          .where("key")
+          .equals("unlocked-spells")
+          .modify({ val: Array(NOITA_SPELL_COUNT).fill(true) })
+          .catch(e => {
+            console.error(e);
+          });
+      });
+
     this.errorOnOpen = this.open()
       .then(() => null)
       .catch(e => {

@@ -1515,6 +1515,8 @@
     "spawn_probability": "0.4,0.3,0.3,0.3",
     "price": 200,
     "mana": 20,
+    "max_uses": 20,
+    "never_unlimited": true,
     "spawn_probabilities": {
       "2": 0.4,
       "3": 0.3,
@@ -3173,6 +3175,28 @@
     "mana": 190,
     "max_uses": 4,
     "spawn_probabilities": {}
+  },
+  {
+    "id": "TOUCH_GRASS",
+    "name": "$action_touch_grass",
+    "description": "$actiondesc_touch_grass",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAk0lEQVR4AaXBQWrCUAAFwHnhn89F6THFRS/4KvxAjIlV6Eza+o/h7uvn24naiye3y9VwVFPs1RQPhr0izsVUxGqxKeK9oFbDUf0tHgxTEZs4V1NQZHEU1FERT4a92tRRTbEa9mJTxFTEicUU1OeKuBteC2qKFxaboN4rYjXsBTUFsakpHgxHMdVenBjubperE/GBX0V9IeHKQqJ8AAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/touch_grass.xml"],
+    "spawn_requires_flag": "card_unlocked_touch_grass",
+    "type": 4,
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.2",
+    "price": 360,
+    "mana": 190,
+    "max_uses": 4,
+    "custom_xml_file": "data/entities/misc/custom_cards/touch_grass.xml",
+    "spawn_probabilities": {
+      "5": 0.1,
+      "6": 0.1,
+      "7": 0.1,
+      "10": 0.2
+    }
   },
   {
     "id": "TOUCH_BLOOD",
@@ -5658,6 +5682,28 @@
       "4": 0.4,
       "5": 0.4,
       "6": 0.3
+    }
+  },
+  {
+    "id": "SEA_MIMIC",
+    "name": "$action_sea_mimic",
+    "description": "$actiondesc_sea_mimic",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB20lEQVR4AaXBX0tTYQDA4d97PJurUEphRUsS2592Mlmis7CaaWVFhMiksqhustt9hLNv01Xg9Ri0i8DaIFtzoDPbGlsXiheVLdzJt/OSg0PY1Z5HSClph0abNNqkYZubmZVzM7O0PH1xUwohcEpMXpJCCFoWbl2T2DpM0yT9ecds1NbM+w8fJPP5j3Js4TLH3Zo5e+9J0jRNEvNRGQ8M0u3pNG8/e56sL2Xk9FQUY/xGUmdfz9hd4rqUsdg4TXaJPJrEJhPzUeLXw7AC8QsGP90eOT0VpUXHIRa7gpPv8TB3Sl9xmp6K4qTj4A+HWSutUtMEfx3jQ6+G8uN8DWPgIrwt46Rh62r+4mqoj+Vyhf6zg+xYsGOB0WPgCk3QUtxYwgoKrKDACgoUjX3vCyWMM36Kn9ZRRr0Gxe0izdXXuEIT/I+Ozb+7jfJurQp00re1R++hPXyWmy/1U0SOCDY3R1F8ES/leh5X00LRcBjyD9CyUi0S8oaIBAIsl0oo58JByvU8/SeHaHw/jKJj070NlEyuCrjo9hxFKWQruN785gTQNfKNrXqOoDHMeqFAi4Ytncnyr5HTPg6yUS6gLKayKBq2l69SIp3J4pSr1DjIdoeLxVQWm8AmpJS04w+y9J8JdY+/igAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_acid_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/sea_mimic.xml"],
+    "type": 4,
+    "spawn_level": "0,4,5,6,10",
+    "spawn_probability": "0.05,0.05,0.1,0.1,0.2",
+    "spawn_requires_flag": "card_unlocked_sea_mimic",
+    "price": 350,
+    "mana": 140,
+    "max_uses": 3,
+    "spawn_probabilities": {
+      "0": 0.05,
+      "4": 0.05,
+      "5": 0.1,
+      "6": 0.1,
+      "10": 0.2
     }
   },
   {
@@ -8223,5 +8269,23 @@
     "mana": 0,
     "custom_xml_file": "data/entities/misc/custom_cards/rainbow_trail.xml",
     "spawn_probabilities": {}
+  },
+  {
+    "id": "CESSATION",
+    "name": "$action_cessation",
+    "description": "$actiondesc_cessation",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmUlEQVR4AaXBIQ6DMBSA4b/kiRoEthIcN+lx3kl6HO4xkrkhsYgZXFfBkobAQsf3mRgjdwibEIZIAVVvSIQkhCGO44MSIRBVvREy0/Tkirbt+RJ25vnFL8515IQDyzJzpGkce8KJdX2Ts7bmSMVNFTdV3CScsLbmCuFA0ziuEnac6yghZNq2p5SQqHoTApECqt6QCBtVb/jDBy2iIokjf8bpAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/cessation_unidentified.png",
+    "type": 5,
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.2,1",
+    "spawn_requires_flag": "card_unlocked_cessation",
+    "price": 10,
+    "mana": 0,
+    "spawn_probabilities": {
+      "5": 0.1,
+      "6": 0.2,
+      "10": 1
+    }
   }
 ]

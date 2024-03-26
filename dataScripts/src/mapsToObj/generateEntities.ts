@@ -50,9 +50,32 @@ const getBase64 = (p: string) =>
     }),
   );
 
+const tryGetXML = async (xml: string | Buffer) => {
+  try {
+    return parseStringPromise(xml);
+  } catch (e) {
+    console.error(`Could not parse XML:`, e);
+    return {};
+  }
+};
+
+const fixes = {
+  "data/entities/misc/eradicate.xml": (xml: string) => {
+    // Need to close the root tag by replacing the last <Entity> with </Entity>
+    const nonRoot = xml.replaceAll("<Entity>", "");
+    return `<Entity>${nonRoot}</Entity>`;
+  },
+};
+
 const tryRead = (path: string, fallback?: string) => {
   try {
-    return fs.readFileSync(path);
+    const data = fs.readFileSync(path);
+    const xml = data.toString();
+    const fixPath = Object.keys(fixes).find(k => path.endsWith(k));
+    if (fixPath) {
+      return fixes[fixPath](xml);
+    }
+    return xml;
   } catch (e) {
     console.error(`Could not read ${path}:`, e);
     if (fallback || fallback === "") {
@@ -286,7 +309,7 @@ const generateEntities = async () => {
         // TODO: Handle mixed content
         continue;
       }
-      const spriteData = await parseStringPromise(tryRead(path.resolve(noitaData, Sprite.$.image_file), ""));
+      const spriteData = await tryGetXML(tryRead(path.resolve(noitaData, Sprite.$.image_file), ""));
       if (!spriteData) {
         continue;
       }
@@ -442,8 +465,7 @@ const generateEntities = async () => {
       return;
     }
     try {
-      const spriteData = (await spriteMemo(p, () => parseStringPromise(tryRead(path.resolve(noitaData, p), ""))))
-        .Sprite;
+      const spriteData = (await spriteMemo(p, () => tryGetXML(tryRead(path.resolve(noitaData, p), "")))).Sprite;
 
       const sprite = parseObj(spriteData.$);
       if (spriteData.RectAnimation) {
@@ -476,9 +498,8 @@ const generateEntities = async () => {
     if (entityData.Base) {
       for (const B of entityData.Base) {
         // console.log(`	${B.$.file}`);
-        const seb = (
-          await entityMemo(B.$.file, () => parseStringPromise(tryRead(path.resolve(noitaData, B.$.file), "")))
-        ).Entity;
+        const seb = (await entityMemo(B.$.file, () => tryGetXML(tryRead(path.resolve(noitaData, B.$.file), ""))))
+          .Entity;
         const subEntityBase = await parseEntity(seb);
         const subEntityChildren = await parseEntity(B);
         baseEntity = _.assign(baseEntity, subEntityBase, subEntityChildren);
@@ -581,7 +602,7 @@ const generateEntities = async () => {
 
   const entities: any = {};
 
-  const files = await recursiveReaddir(path.resolve(noitaData, "data/entities"), ["*.png", "*.lua", "*.txt"]);
+  const files = await recursiveReaddir(path.resolve(noitaData, "data/entities"), ["*.png", "*.lua", "*.txt", "*.psd"]);
 
   let i = 0;
   let total = files.length;
@@ -590,6 +611,7 @@ const generateEntities = async () => {
   progress.start(total, 0);
 
   for (let val of files) {
+    progress.update(i++);
     val = val.substring(noitaData.length + 1);
     if (val.includes("_debug") || val.includes("debug_")) {
       // Skip debug entities
@@ -612,11 +634,11 @@ const generateEntities = async () => {
       // Already parsed this entity
       continue;
     }
-    progress.update(i++);
     // console.log(`${i++}/${total}: ${val}`);
     const entityXMLPath = path.resolve(noitaData, val);
+    console.log(entityXMLPath);
     if (fs.existsSync(entityXMLPath)) {
-      const entityData = await entityMemo(val, () => parseStringPromise(tryRead(entityXMLPath, "")));
+      const entityData = await entityMemo(val, () => tryGetXML(tryRead(entityXMLPath, "")));
       if (!entityData) {
         continue;
       }
@@ -625,6 +647,7 @@ const generateEntities = async () => {
       entities[val] = entity;
     }
   }
+  progress.stop();
   return entities;
 };
 

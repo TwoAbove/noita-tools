@@ -1,1 +1,1 @@
-export const NOITA_SPELL_COUNT = 419;
+export const NOITA_SPELL_COUNT = 422;

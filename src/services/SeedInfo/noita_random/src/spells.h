@@ -180,6 +180,7 @@ const static Spell all_spells[] =
   {"TOUCH_OIL", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.4}},
   {"TOUCH_ALCOHOL", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.4}},
   {"TOUCH_PISS", MATERIAL, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+  {"TOUCH_GRASS", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.2}},
   {"TOUCH_BLOOD", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.5}},
   {"TOUCH_SMOKE", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.4}},
   {"DESTRUCTION", STATIC_PROJECTILE, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}},
@@ -307,6 +308,7 @@ const static Spell all_spells[] =
   {"SEA_SWAMP", MATERIAL, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
   {"SEA_ACID", MATERIAL, {0.2, 0, 0, 0, 0.2, 0.4, 0.5, 0, 0, 0, 0}},
   {"SEA_ACID_GAS", MATERIAL, {0.3, 0, 0, 0, 0.4, 0.4, 0.3, 0, 0, 0, 0}},
+  {"SEA_MIMIC", MATERIAL, {0.05, 0, 0, 0, 0.05, 0.1, 0.1, 0, 0, 0, 0.2}},
   {"CLOUD_WATER", STATIC_PROJECTILE, {0.2, 0.3, 0.4, 0.4, 0.3, 0.2, 0, 0, 0, 0, 0}},
   {"CLOUD_OIL", STATIC_PROJECTILE, {0.2, 0.3, 0.4, 0.4, 0.3, 0.2, 0, 0, 0, 0, 0}},
   {"CLOUD_BLOOD", STATIC_PROJECTILE, {0.2, 0.3, 0.3, 0.4, 0.3, 0.2, 0, 0, 0, 0, 0}},
@@ -442,4 +444,5 @@ const static Spell all_spells[] =
   {"COLOUR_RAINBOW", MODIFIER, {0, 0, 0.1, 0.1, 0.1, 0, 0, 0, 0, 0, 0.2}},
   {"COLOUR_INVIS", MODIFIER, {0, 0, 0.1, 0.1, 0.1, 0, 0, 0, 0, 0, 0.1}},
   {"RAINBOW_TRAIL", MODIFIER, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+  {"CESSATION", OTHER, {0, 0, 0, 0, 0, 0.1, 0.2, 0, 0, 0, 1}},
 };

@@ -14,17 +14,6 @@ const noitaData = path.resolve(
   homedir(),
   ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
 );
-// Add to these when transferring map impl from Noita.
-
-const additional = [
-  "data/biome_impl/wand_altar.png",
-  "data/biome_impl/potion_altar.png",
-  "data/biome_impl/mimic_sign.png",
-  "data/biome_impl/snowcastle/chamfer_top_r.png",
-  "data/biome_impl/snowcastle/chamfer_inner_bottom_r.png",
-  "data/biome_impl/wand_altar_vault.png",
-  "data/biome_impl/snowcastle/pillar_filler_01.png",
-];
 
 const exportImpl = async maps => {
   const functionColors = new Set<number>();

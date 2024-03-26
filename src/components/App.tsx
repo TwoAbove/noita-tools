@@ -98,12 +98,25 @@ const LazyProfile = () => {
 
 const Header = () => {
   const host = window.location.host;
-  const isDevBranch = host.startsWith("dev.");
+  // const isDevBranch = host.startsWith("dev.");
+  const isDevBranch = true;
   return (
     <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between px-2">
       <div className="text-nowrap lh-1">
-        <h3 className="fs-1 fw-bolder mb-0 text-center">
-          Noitool {isDevBranch && <sub className="fs-6 fw mb-0 text-center text-danger">Beta</sub>}
+        <h3 className="fs-1 fw-bolder mb-0 text-center position-relative pb-2">
+          Noitool
+          {isDevBranch && <sub className="fs-6 fw mb-0 text-center text-danger">Beta</sub>}
+          {isDevBranch && (
+            <code
+              className="fs-6 fw mb-0 position-absolute start-50 translate-middle-x"
+              style={{
+                bottom: "-0.25rem",
+              }}
+            >
+              Build Mar 25 2024
+            </code>
+          )}
+          {isDevBranch && <div />}
         </h3>
         <p className="fs-4 fw-light m-1 mt-0 my-1 text-center">Noita tools and helpers</p>
       </div>

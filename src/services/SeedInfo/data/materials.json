@@ -789,6 +789,39 @@
       "color": "4FEA7207"
     }
   },
+  "beer": {
+    "wang_color": "90d0ffe6",
+    "color": "d0ffe690",
+    "name": "beer",
+    "tags": ["liquid", "water", "impure", "liquid_common"],
+    "density": "3.5",
+    "ui_name": "$mat_beer",
+    "graphics": {
+      "color": "4Fbd7e05"
+    }
+  },
+  "milk": {
+    "wang_color": "90d0ffe5",
+    "color": "d0ffe590",
+    "name": "milk",
+    "tags": ["liquid", "water", "impure", "liquid_common"],
+    "density": "3.5",
+    "ui_name": "$mat_milk",
+    "graphics": {
+      "color": "fffff6e5"
+    }
+  },
+  "molut": {
+    "wang_color": "90d0ffe4",
+    "color": "d0ffe490",
+    "name": "molut",
+    "tags": ["liquid", "water", "impure", "liquid_common"],
+    "density": "3.5",
+    "ui_name": "$mat_molut",
+    "graphics": {
+      "color": "ffb4a485"
+    }
+  },
   "sima": {
     "wang_color": "90d0ffe9",
     "color": "d0ffe990",
@@ -1970,6 +2003,38 @@
       "color": "ff33b828"
     }
   },
+  "grass_holy": {
+    "wang_color": "ff3abb40",
+    "color": "3abb40ff",
+    "name": "grass_holy",
+    "hp": "200",
+    "tags": ["plant", "requires_air", "corrodible", "burnable", "alchemy"],
+    "burnable": "1",
+    "density": "6",
+    "ui_name": "$mat_grass_holy",
+    "graphics": {
+      "texture_file": "data/materials_gfx/grass.png",
+      "is_grass": "1",
+      "is_grass_hashed": "1",
+      "color": "ff33b828"
+    }
+  },
+  "grass_darker": {
+    "wang_color": "ff3abb41",
+    "color": "3abb41ff",
+    "name": "grass_darker",
+    "hp": "200",
+    "tags": ["plant", "requires_air", "corrodible", "burnable", "alchemy", "impure"],
+    "burnable": "1",
+    "density": "6",
+    "ui_name": "$mat_grass",
+    "graphics": {
+      "texture_file": "data/materials_gfx/grass_dark.png",
+      "is_grass": "1",
+      "is_grass_hashed": "1",
+      "color": "ff33b828"
+    }
+  },
   "grass_ice": {
     "wang_color": "ff3abb31",
     "color": "3abb31ff",
@@ -2066,6 +2131,20 @@
     "graphics": {
       "texture_file": "data/materials_gfx/lavarock.png",
       "color": "ffaa2818"
+    }
+  },
+  "plant_material_dark": {
+    "wang_color": "ff33b839",
+    "color": "33b839ff",
+    "name": "plant_material_dark",
+    "hp": "200",
+    "tags": ["plant", "requires_air", "corrodible", "burnable"],
+    "burnable": "1",
+    "density": "6",
+    "ui_name": "$mat_plant_material",
+    "graphics": {
+      "texture_file": "data/materials_gfx/grass_dark.png",
+      "color": "ff33b828"
     }
   },
   "ceiling_plant_material": {
@@ -4332,6 +4411,20 @@
       "color": "ff000000"
     }
   },
+  "mimic_liquid": {
+    "wang_color": "ffa2332b",
+    "color": "a2332bff",
+    "name": "mimic_liquid",
+    "tags": ["liquid", "mimic_liquid"],
+    "burnable": "0",
+    "density": "6",
+    "ui_name": "$mat_mimic_liquid",
+    "graphics": {
+      "texture_file": "data/materials_gfx/mimic_liquid.png",
+      "color": "88E8BD5C",
+      "fire_colors_index": "2"
+    }
+  },
   "just_death": {
     "wang_color": "ffb2332b",
     "color": "b2332bff",
@@ -5823,6 +5916,20 @@
     "wang_color": "ff2d2dbc",
     "color": "2d2dbcff",
     "name": "rock_box2d_nohit",
+    "hp": "1000",
+    "tags": ["box2d", "solid", "earth"],
+    "burnable": "0",
+    "density": "8",
+    "ui_name": "$mat_rock_box2d_nohit",
+    "graphics": {
+      "texture_file": "data/materials_gfx/rock.png",
+      "color": "ff2d2dac"
+    }
+  },
+  "rock_box2d_nohit_heavy": {
+    "wang_color": "ff2d2dbd",
+    "color": "2d2dbdff",
+    "name": "rock_box2d_nohit_heavy",
     "hp": "1000",
     "tags": ["box2d", "solid", "earth"],
     "burnable": "0",

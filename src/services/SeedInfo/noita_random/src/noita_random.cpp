@@ -24,7 +24,7 @@ typedef uint32_t uint32;
 typedef uint64_t uint64;
 typedef uint8 bool8;
 
-#define NOITA_SPELL_COUNT 419
+#define NOITA_SPELL_COUNT 422
 
 uint world_seed = 0;
 

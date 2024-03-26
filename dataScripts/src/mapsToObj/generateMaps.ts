@@ -297,9 +297,14 @@ const generateMaps = async () => {
       res.randomMaterials = randomMaterials;
     }
     if (res.type === "BIOME_WANG_TILE" && Topology.wang_template_file) {
-      const data = Topology.wang_template_file
-        ? await getBase64(path.resolve(noitaData, Topology.wang_template_file))
-        : null;
+      let data: Awaited<ReturnType<typeof getBase64>> | undefined;
+      if (Topology.wang_template_file) {
+        try {
+          data = await getBase64(path.resolve(noitaData, Topology.wang_template_file));
+        } catch (e) {
+          console.error("Error: ", e);
+        }
+      }
       res.wang = {
         template_file: data?.src,
         map_width: data?.width,

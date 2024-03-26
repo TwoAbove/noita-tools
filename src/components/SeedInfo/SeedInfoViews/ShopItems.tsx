@@ -37,7 +37,6 @@ const ItemShop = (props: { shop: IItemShop; isFavorite: (id: string) => boolean 
   const { shop, isFavorite } = props;
   return (
     <div>
-      <Row className="p-3">These assume that you have all spells unlocked. Configuration coming soon!</Row>
       <Row className="align-items-end" xs={shop.items.length / 2}>
         {shop.items.map((item, i) => {
           const highlight = isFavorite(item.spell.id);
@@ -72,7 +71,7 @@ export const Wand = (props: { item: IWandShop["items"][number]; isFavorite: (id:
     ...item.cards.cards,
     ...Array(
       // Empty spell slots
-      Math.floor(item.gun.deck_capacity) - item.cards.cards.length
+      Math.floor(item.gun.deck_capacity) - item.cards.cards.length,
     ).fill(""),
   ];
   const hasFavorite = cards.some(isFavorite);

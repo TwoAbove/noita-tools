@@ -67,6 +67,25 @@ describe("ShopInfoProvider", () => {
             ],
           },
         },
+
+        {
+          seed: 123,
+          ans: {
+            row: 6,
+            items: [
+              "RANDOM_EXPLOSION",
+              "ROCKET_TIER_3",
+              "HOMING_CURSOR",
+              "CURSE_WITHER_MELEE",
+              "RECHARGE",
+              "RECOIL_DAMPER",
+              "BLACK_HOLE_BIG",
+              "HEAVY_SPREAD",
+              "BULLET_TIMER",
+              "MINE",
+            ],
+          },
+        },
       ];
 
       tests.forEach((t, i) => {
