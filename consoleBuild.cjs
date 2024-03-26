@@ -112,4 +112,10 @@ require("esbuild")
         path.resolve(__dirname, "console-build", "workers/Alchemy.wasm"),
       );
     }
+    {
+      fs.copyFileSync(
+        path.resolve(__dirname, "src/services/SeedInfo/infoHandler/InfoProviders/Fungal/Fungal.wasm"),
+        path.resolve(__dirname, "console-build", "workers/Fungal.wasm"),
+      );
+    }
   });
