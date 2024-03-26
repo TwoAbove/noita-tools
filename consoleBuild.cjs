@@ -68,9 +68,14 @@ require("esbuild")
     external,
   })
   .then(() => {
-    fs.copyFileSync(
-      path.resolve(__dirname, "search.package.json"),
+    const mainPackageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "package.json")));
+    const searchPackageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "search.package.json")));
+
+    searchPackageJson.version = mainPackageJson.version;
+
+    fs.writeFileSync(
       path.resolve(__dirname, "console-build", "package.json"),
+      JSON.stringify(searchPackageJson, null, 2),
     );
 
     {
