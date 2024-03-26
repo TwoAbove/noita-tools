@@ -1,0 +1,26 @@
+{
+  "name": "noitool-console-search",
+  "type": "module",
+  "module": "consoleSearch.js",
+  "private": true,
+  "homepage": "https://www.noitool.com/",
+  "scripts": {
+    "start": "node --no-warnings=ExperimentalWarning consoleSearch.js"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.51",
+    "@types/yargs": "^17.0.24",
+    "comlink": "^4.4.1",
+    "decimal.js": "^10.4.3",
+    "dotenv-flow": "^4.1.0",
+    "react-use-search-params-state": "^1.0.2",
+    "log-update": "^6.0.0",
+    "lodash": "^4.17.21",
+    "segfault-handler": "^1.3.0",
+    "socket.io-client": "4.7.5",
+    "yargs": "^17.7.2"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8"
+  }
+}

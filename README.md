@@ -34,6 +34,8 @@ You can use docker to simply spin up a compute node:
 docker run -it -e NOITOOL_USER_ID=xxx ghcr.io/twoabove/noitool-console-search:latest
 ```
 
+<!-- docker run -it --restart=always --pull=always -e NOITOOL_USER_ID=6456aff2478c4f8f91701018 ghcr.io/twoabove/noitool-console-search:latest-dev -->
+
 Or for dev
 
 ```bash

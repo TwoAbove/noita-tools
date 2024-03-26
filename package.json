@@ -7,7 +7,7 @@
   "dependencies": {
     "@gideo-llc/backblaze-b2-upload-any": "^0.1.4",
     "@napi-rs/canvas": "^0.1.51",
-    "@types/yargs": "^17.0.32",
+    "@types/yargs": "^17.0.24",
     "backblaze-b2": "^1.7.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
