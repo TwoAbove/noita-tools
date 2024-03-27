@@ -3190,6 +3190,7 @@
     "price": 360,
     "mana": 190,
     "max_uses": 4,
+    "never_unlimited": true,
     "custom_xml_file": "data/entities/misc/custom_cards/touch_grass.xml",
     "spawn_probabilities": {
       "5": 0.1,
@@ -5697,7 +5698,8 @@
     "spawn_requires_flag": "card_unlocked_sea_mimic",
     "price": 350,
     "mana": 140,
-    "max_uses": 3,
+    "max_uses": 2,
+    "never_unlimited": true,
     "spawn_probabilities": {
       "0": 0.05,
       "4": 0.05,
@@ -8282,6 +8284,7 @@
     "spawn_requires_flag": "card_unlocked_cessation",
     "price": 10,
     "mana": 0,
+    "max_uses": 25,
     "spawn_probabilities": {
       "5": 0.1,
       "6": 0.2,

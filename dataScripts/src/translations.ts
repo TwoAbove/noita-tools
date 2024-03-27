@@ -8,14 +8,9 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const noitaData = path.resolve(
-  homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
-);
-const translationFile = path.resolve(
-  homedir(),
-  ".steam/debian-installation/steamapps/common/Noita/data/translations/common.csv",
-);
+const noitaData = path.resolve(__dirname, "../../noita-data/");
+
+const translationFile = path.resolve(__dirname, "../noita-data/translations/common.csv");
 
 const translationCSV = fs.readFileSync(translationFile).toString();
 

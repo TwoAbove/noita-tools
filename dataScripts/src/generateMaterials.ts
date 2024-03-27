@@ -22,10 +22,7 @@ const argbTorgba = (s: string) =>
     .replace(/(..)(......)/, "$2$1")
     .toLowerCase();
 
-const noitaData = path.resolve(
-  homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
-);
+const noitaData = path.resolve(__dirname, "../noita-data/");
 
 const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
 

@@ -672,7 +672,7 @@ export default class Base {
       this.err(`g_items needs to exist on class ${this.constructor.name}`);
       return;
     }
-    this.spawn(this.g_items, x, y, 0, 0);
+    this.spawn(this.g_items, x - 5, y, 0, 0);
   }
 
   spawn_shopitem(x, y) {
@@ -684,7 +684,7 @@ export default class Base {
       this.err(`g_candles needs to exist on class ${this.constructor.name}`);
       return;
     }
-    this.spawn(this.g_candles, x - 5, y, 0, 0);
+    this.spawn(this.g_candles, x, y, 0, 0);
   }
 
   spawn_ghostlamp(x: number, y: number) {

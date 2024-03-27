@@ -97,19 +97,19 @@ Also, run `docker compose up -d` to easily spin up a local db instance.
 
 ### Noita data
 
-You need to clean the Noita data a bit before running dataScripts. After extracting noita wak, in the noita data directory, run
+You will need to unpack Noita wak data (see [here](https://noita.wiki.gg/wiki/Modding#Extracting_data_files)) and copy/link several things into the `dataScripts/noita-data` folder. Note that `translations` and `fonts` are in the main Noita folder, not in the `Nolla_Games_Noita` folder.
+Here is the list: `data`, `translations`, `fonts`.
+
+To create a symlink, run `ln -s <path to noita data> dataScripts/noita-data/data`.
+For debian, that would be
 
 ```sh
-find . -type f -not -path '*/\.*' -exec sed -i 's/----------------------//g' {} +;
-find . -type f -not -path '*/\.*' -exec sed -i 's/<!------------ MATERIALS -------------------->/<!-- MATERIALS -->/g' {} +;
-find . -type f -not -path '*/\.*' -exec sed -i 's/<!------------ MATERIALS ------------------ -->/<!-- MATERIALS -->/g' {} +;
-find . -type f -not -path '*/\.*' -exec sed -i 's/<!-- attack_ranged_min_distance="60" -->//g' {} +;
-find . -type f -not -path '*/\.*' -exec sed -i 's/<!---------------- shield ---------------- -->//g' {} +;
-find . -type f -not -path '*/\.*' -exec sed -i 's/<!-- fuse_tnt durability is 11 so this is capable of destroying it -->//g' {} +;
-tac $NOLLA_PATH/entities/misc/eradicate.xml | sed '0,/<Entity>$/s//<\/Entity>/' | tac >$NOLLA_PATH/entities/misc/eradicate.xml;
+ln -s ~/.steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/data dataScripts/noita-data/data
+ln -s ~/.steam/debian-installation/steamapps/common/Noita/data/translations dataScripts/noita-data/translations
+ln -s ~/.steam/debian-installation/steamapps/common/Noita/data/fonts dataScripts/noita-data/fonts
 ```
 
-to fix comments for the xml parser
+Use the ./dataScripts/full_parse.sh script to clean and parse the data files.
 
 For emscripten, some edits need to be done to enable the closure compiler:
 

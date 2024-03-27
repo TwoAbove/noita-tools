@@ -8,10 +8,11 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const imageFile = path.resolve(homedir(), ".steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.png");
+const noitaData = path.resolve(__dirname, "../noita-data/fonts");
+const imageFile = path.resolve(noitaData, "font_pixel_big.png");
 
 // id is acii code, rect_[h|w] rect_[x|y] is position
-const fontDataFile = path.resolve(homedir(), ".steam/steam/steamapps/common/Noita/data/fonts/font_pixel_big.xml");
+const fontDataFile = path.resolve(noitaData, "font_pixel_big.xml");
 
 const getChar = (n: number) => {
   return String.fromCharCode(n);

@@ -10,15 +10,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// const { parse: parseLua } = require('luaparse')
-
-import { format, parse } from "lua-json";
-const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
-
-const noitaData = path.resolve(
-  homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
-);
+const noitaData = path.resolve(__dirname, "../noita-data/");
 
 const perkPath = path.resolve(noitaData, "data/scripts/perks/perk_list.lua");
 

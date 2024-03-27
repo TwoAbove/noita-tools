@@ -13,6 +13,7 @@ describe("FungalInfoProvider", () => {
           from: ["lava"],
           to: "sand",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -20,6 +21,7 @@ describe("FungalInfoProvider", () => {
           from: ["magic_liquid_polymorph", "magic_liquid_unstable_polymorph"],
           to: "blood",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -27,6 +29,7 @@ describe("FungalInfoProvider", () => {
           from: ["radioactive_liquid", "poison", "material_darkness"],
           to: "water",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -34,6 +37,7 @@ describe("FungalInfoProvider", () => {
           from: ["water", "water_static", "water_salt", "water_ice"],
           to: "radioactive_liquid",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -41,6 +45,7 @@ describe("FungalInfoProvider", () => {
           from: ["lava"],
           to: "blood",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: true,
@@ -48,6 +53,7 @@ describe("FungalInfoProvider", () => {
           from: ["radioactive_liquid", "poison", "material_darkness"],
           to: "acid",
           gold_to_x: "mammi",
+          grass_to_x: "grass",
         },
         {
           flaskTo: false,
@@ -55,6 +61,7 @@ describe("FungalInfoProvider", () => {
           from: ["oil", "swamp", "peat"],
           to: "water",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -62,6 +69,7 @@ describe("FungalInfoProvider", () => {
           from: ["water", "water_static", "water_salt", "water_ice"],
           to: "pea_soup",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -69,6 +77,7 @@ describe("FungalInfoProvider", () => {
           from: ["acid"],
           to: "lava",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: true,
@@ -76,6 +85,7 @@ describe("FungalInfoProvider", () => {
           from: ["water", "water_static", "water_salt", "water_ice"],
           to: "blood_fungi",
           gold_to_x: "mammi",
+          grass_to_x: "grass",
         },
         {
           flaskTo: true,
@@ -83,6 +93,7 @@ describe("FungalInfoProvider", () => {
           from: ["oil", "swamp", "peat"],
           to: "acid",
           gold_to_x: "mammi",
+          grass_to_x: "grass",
         },
         {
           flaskTo: true,
@@ -90,6 +101,7 @@ describe("FungalInfoProvider", () => {
           from: ["oil", "swamp", "peat"],
           to: "vomit",
           gold_to_x: "acid_gas",
+          grass_to_x: "grass",
         },
         {
           flaskTo: false,
@@ -97,6 +109,7 @@ describe("FungalInfoProvider", () => {
           from: ["acid"],
           to: "fungi",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: true,
@@ -111,6 +124,7 @@ describe("FungalInfoProvider", () => {
           ],
           to: "gunpowder",
           gold_to_x: "brass",
+          grass_to_x: "grass",
         },
         {
           flaskTo: false,
@@ -118,6 +132,7 @@ describe("FungalInfoProvider", () => {
           from: ["silver", "brass", "copper"],
           to: "acid",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -125,6 +140,7 @@ describe("FungalInfoProvider", () => {
           from: ["oil", "swamp", "peat"],
           to: "silver",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -132,6 +148,7 @@ describe("FungalInfoProvider", () => {
           from: ["diamond"],
           to: "silver",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -139,6 +156,7 @@ describe("FungalInfoProvider", () => {
           from: ["diamond"],
           to: "radioactive_liquid",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: true,
@@ -146,6 +164,7 @@ describe("FungalInfoProvider", () => {
           from: ["lava"],
           to: "radioactive_liquid",
           gold_to_x: "acid_gas",
+          grass_to_x: "grass",
         },
         {
           flaskTo: false,
@@ -153,6 +172,7 @@ describe("FungalInfoProvider", () => {
           from: ["lava"],
           to: "water",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
       ],
     },
@@ -165,6 +185,7 @@ describe("FungalInfoProvider", () => {
           from: ["oil", "swamp", "peat"],
           to: "steam",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -172,6 +193,7 @@ describe("FungalInfoProvider", () => {
           from: ["diamond"],
           to: "silver",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -179,6 +201,7 @@ describe("FungalInfoProvider", () => {
           from: ["diamond"],
           to: "silver",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -186,6 +209,7 @@ describe("FungalInfoProvider", () => {
           from: ["diamond"],
           to: "magic_liquid_teleportation",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: true,
@@ -193,6 +217,7 @@ describe("FungalInfoProvider", () => {
           from: ["snow_sticky"],
           to: "poison",
           gold_to_x: "vomit",
+          grass_to_x: "grass",
         },
         {
           flaskTo: true,
@@ -200,6 +225,7 @@ describe("FungalInfoProvider", () => {
           from: ["blood_cold", "blood_worm"],
           to: "alcohol",
           gold_to_x: "pea_soup",
+          grass_to_x: "grass",
         },
         {
           flaskTo: false,
@@ -207,6 +233,7 @@ describe("FungalInfoProvider", () => {
           from: ["blood"],
           to: "fungi",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -214,6 +241,7 @@ describe("FungalInfoProvider", () => {
           from: ["acid"],
           to: "sand",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -221,6 +249,7 @@ describe("FungalInfoProvider", () => {
           from: ["magic_liquid_polymorph", "magic_liquid_unstable_polymorph"],
           to: "water",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -228,6 +257,7 @@ describe("FungalInfoProvider", () => {
           from: ["water", "water_static", "water_salt", "water_ice"],
           to: "lava",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -235,11 +265,13 @@ describe("FungalInfoProvider", () => {
           from: ["lava"],
           to: "oil",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: true,
           flaskFrom: false,
           from: ["lava"],
+          grass_to_x: "grass",
           to: "water_swamp",
           gold_to_x: "silver",
         },
@@ -249,6 +281,7 @@ describe("FungalInfoProvider", () => {
           from: ["blood"],
           to: "water",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -256,12 +289,14 @@ describe("FungalInfoProvider", () => {
           from: ["water", "water_static", "water_salt", "water_ice"],
           to: "gunpowder",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: true,
           flaskFrom: false,
           from: ["steam", "smoke"],
           to: "blood_fungi",
+          grass_to_x: "grass",
           gold_to_x: "radioactive_liquid",
         },
         {
@@ -270,6 +305,7 @@ describe("FungalInfoProvider", () => {
           from: ["oil", "swamp", "peat"],
           to: "blood_fungi",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: false,
@@ -277,12 +313,14 @@ describe("FungalInfoProvider", () => {
           from: ["radioactive_liquid", "poison", "material_darkness"],
           to: "steam",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: true,
           flaskFrom: false,
           from: ["diamond"],
           to: "radioactive_liquid",
+          grass_to_x: "grass",
           gold_to_x: "radioactive_liquid",
         },
         {
@@ -291,6 +329,7 @@ describe("FungalInfoProvider", () => {
           from: ["lava"],
           to: "radioactive_liquid",
           gold_to_x: "gold",
+          grass_to_x: "grass_holy",
         },
         {
           flaskTo: true,
@@ -298,6 +337,7 @@ describe("FungalInfoProvider", () => {
           from: ["lava"],
           to: "poison",
           gold_to_x: "radioactive_liquid",
+          grass_to_x: "grass",
         },
       ],
     },

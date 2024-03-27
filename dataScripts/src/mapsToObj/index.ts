@@ -48,6 +48,8 @@ async function d() {
   console.log("Generating entities...");
   const entities = await generateEntities();
   fs.writeFileSync(path.resolve(__dirname, "../out/obj", "entities.json"), JSON.stringify(entities, null, 2));
+
+  console.log("Done!");
 }
 
 d().catch(e => console.log(e));

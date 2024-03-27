@@ -13,8 +13,8 @@ import parser, {
 } from "luaparse";
 import { parse } from "csv-parse/sync";
 
-import { homedir } from "os";
 import { fileURLToPath } from "url";
+import { getCleanedFile } from "../helpers/cleanFiles";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -26,15 +26,13 @@ const argbTorgba = (s: string) =>
     .replace(/(..)(......)/, "$2$1")
     .toLowerCase();
 
-const noitaData = path.resolve(
-  homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
-);
+const noitaData = path.resolve(__dirname, "../../noita-data/");
+
 const defaultColorsPath = path.resolve(noitaData, "data/scripts/wang_scripts.csv");
 const mapPNGPath = path.resolve(noitaData, "data/biome_impl/biome_map.png");
 const extraLayersPath = path.resolve(noitaData, "data/wang_tiles/extra_layers");
 
-const defaultColorArray: any[] = parse(fs.readFileSync(defaultColorsPath), {
+const defaultColorArray: any[] = parse(getCleanedFile(defaultColorsPath), {
   columns: true,
   skip_empty_lines: true,
 });
@@ -258,10 +256,10 @@ const generateMaps = async () => {
       h: y2 - y1 + 1,
     });
   }
-  // const allBiomeData = await cheerio.load(fs.readFileSync(biomeDataXMLPath), {
+  // const allBiomeData = await cheerio.load(getCleanedFile(biomeDataXMLPath), {
   // 	xmlMode: true
   // });
-  const BiomeDataXML = await parseStringPromise(fs.readFileSync(biomeDataXMLPath));
+  const BiomeDataXML = await parseStringPromise(getCleanedFile(biomeDataXMLPath));
   const allBiomeData = BiomeDataXML.BiomesToLoad;
 
   const maps: any = {};
@@ -271,7 +269,7 @@ const generateMaps = async () => {
     const biome_path = path.resolve(noitaData, biome_filename);
     const name = path.basename(biome_path, ".xml");
     // console.log(name);
-    const Biome = (await parseStringPromise(fs.readFileSync(biome_path))).Biome;
+    const Biome = (await parseStringPromise(getCleanedFile(biome_path))).Biome;
     const { Topology: _T, Materials: _M } = Biome;
     const Topology = _T[0].$;
     const RandomMaterials = _T[0]?.RandomMaterials?.[0];
@@ -312,7 +310,7 @@ const generateMaps = async () => {
       };
     }
     if (res.lua_script) {
-      const lua_things = parseLua(fs.readFileSync(path.resolve(noitaData, res.lua_script)).toString());
+      const lua_things = parseLua(getCleanedFile(path.resolve(noitaData, res.lua_script)).toString());
       const o: any = {
         include: [],
         spawnFunctions: {},
