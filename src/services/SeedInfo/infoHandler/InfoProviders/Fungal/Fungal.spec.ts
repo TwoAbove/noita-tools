@@ -207,7 +207,7 @@ describe("FungalInfoProvider", () => {
           flaskTo: false,
           flaskFrom: true,
           from: ["diamond"],
-          to: "magic_liquid_teleportation",
+          to: "mimic_liquid",
           gold_to_x: "gold",
           grass_to_x: "grass_holy",
         },

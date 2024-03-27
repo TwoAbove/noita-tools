@@ -104,9 +104,13 @@ export class GameInfoProvider extends EventTarget {
 
   async ready() {
     await this.loadPromise;
-    return Promise.allSettled(Object.values(this.providers).map(p => p.ready())).catch(e => {
-      console.error(e);
-    });
+    return Promise.allSettled(
+      Object.entries(this.providers).map(([k, p]) =>
+        p.ready().catch(e => {
+          console.error(k, e);
+        }),
+      ),
+    );
   }
 
   onRandomLoad(cb?) {
@@ -146,32 +150,7 @@ export class GameInfoProvider extends EventTarget {
   }
 
   async buildInfoProviders(): Promise<IProviders> {
-    const [
-      alchemy,
-      alwaysCast,
-      biome,
-      biomeModifier,
-      fungalShift,
-      lottery,
-      map,
-      material,
-      perk,
-      weather,
-      spells,
-      startingBombSpell,
-      startingFlask,
-      startingSpell,
-      statelessPerk,
-      wand,
-      waterCave,
-      potion,
-      potionSecret,
-      potionRandomMaterial,
-      powderStash,
-      chestRandom,
-      pacifistChest,
-      shop,
-    ] = await Promise.all([
+    const imports = await Promise.allSettled([
       import("./InfoProviders/Alchemy"),
       import("./InfoProviders/AlwaysCast"),
       import("./InfoProviders/Biome"),
@@ -198,35 +177,77 @@ export class GameInfoProvider extends EventTarget {
       import("./InfoProviders/Shop"),
     ]);
 
-    const providers: any = {
-      alchemy: new alchemy.AlchemyInfoProvider(this.randoms),
-      alwaysCast: new alwaysCast.AlwaysCastInfoProvider(this.randoms),
-      biome: new biome.BiomeInfoProvider(this.randoms),
-      biomeModifier: new biomeModifier.BiomeModifierInfoProvider(this.randoms),
-      fungalShift: new fungalShift.FungalInfoProvider(this.randoms),
-      lottery: new lottery.LotteryInfoProvider(this.randoms),
-      map: new map.MapInfoProvider(this.randoms),
-      material: new material.MaterialInfoProvider(this.i18n),
-      perk: new perk.PerkInfoProvider(this.randoms),
-      weather: new weather.WeatherInfoProvider(this.randoms),
-      spells: new spells.SpellInfoProvider(this.randoms),
-      startingBombSpell: new startingBombSpell.StartingBombSpellInfoProvider(this.randoms),
-      startingFlask: new startingFlask.StartingFlaskInfoProvider(this.randoms),
-      startingSpell: new startingSpell.StartingSpellInfoProvider(this.randoms),
-      statelessPerk: new statelessPerk.PerkInfoProvider(this.randoms),
-      wand: new wand.WandInfoProvider(this.randoms),
-      waterCave: new waterCave.WaterCaveInfoProvider(this.randoms),
+    const [
+      alchemy,
+      alwaysCast,
+      biome,
+      biomeModifier,
+      fungalShift,
+      lottery,
+      map,
+      material,
+      perk,
+      weather,
+      spells,
+      startingBombSpell,
+      startingFlask,
+      startingSpell,
+      statelessPerk,
+      wand,
+      waterCave,
+      potion,
+      potionSecret,
+      potionRandomMaterial,
+      powderStash,
+      chestRandom,
+      pacifistChest,
+      shop,
+    ] = imports;
 
-      potion: new potion.PotionInfoProvider(this.randoms),
-      potionSecret: new potionSecret.PotionSecretInfoProvider(this.randoms),
-      potionRandomMaterial: new potionRandomMaterial.PotionRandomMaterialInfoProvider(this.randoms),
-      powderStash: new powderStash.PowderStashInfoProvider(this.randoms),
-    };
+    const providers: any = {};
 
-    providers.chestRandom = new chestRandom.ChestRandomProvider(this.randoms, this.unlockedSpells, providers.spells);
-    providers.pacifistChest = new pacifistChest.PacifistChestProvider(this.randoms, providers.chestRandom);
-    // shop needs the wand info provider to generate wands
-    providers.shop = new shop.ShopInfoProvider(this.randoms, providers.wand, providers.spells);
+    if (alchemy && "value" in alchemy) providers.alchemy = new alchemy.value.AlchemyInfoProvider(this.randoms);
+    if (alwaysCast && "value" in alwaysCast)
+      providers.alwaysCast = new alwaysCast.value.AlwaysCastInfoProvider(this.randoms);
+    if (biome && "value" in biome) providers.biome = new biome.value.BiomeInfoProvider(this.randoms);
+    if (biomeModifier && "value" in biomeModifier)
+      providers.biomeModifier = new biomeModifier.value.BiomeModifierInfoProvider(this.randoms);
+    if (fungalShift && "value" in fungalShift)
+      providers.fungalShift = new fungalShift.value.FungalInfoProvider(this.randoms);
+    if (lottery && "value" in lottery) providers.lottery = new lottery.value.LotteryInfoProvider(this.randoms);
+    if (map && "value" in map) providers.map = new map.value.MapInfoProvider(this.randoms);
+    if (material && "value" in material) providers.material = new material.value.MaterialInfoProvider(this.i18n);
+    if (perk && "value" in perk) providers.perk = new perk.value.PerkInfoProvider(this.randoms);
+    if (weather && "value" in weather) providers.weather = new weather.value.WeatherInfoProvider(this.randoms);
+    if (spells && "value" in spells) providers.spells = new spells.value.SpellInfoProvider(this.randoms);
+    if (startingBombSpell && "value" in startingBombSpell)
+      providers.startingBombSpell = new startingBombSpell.value.StartingBombSpellInfoProvider(this.randoms);
+    if (startingFlask && "value" in startingFlask)
+      providers.startingFlask = new startingFlask.value.StartingFlaskInfoProvider(this.randoms);
+    if (startingSpell && "value" in startingSpell)
+      providers.startingSpell = new startingSpell.value.StartingSpellInfoProvider(this.randoms);
+    if (statelessPerk && "value" in statelessPerk)
+      providers.statelessPerk = new statelessPerk.value.PerkInfoProvider(this.randoms);
+    if (wand && "value" in wand) providers.wand = new wand.value.WandInfoProvider(this.randoms);
+    if (waterCave && "value" in waterCave)
+      providers.waterCave = new waterCave.value.WaterCaveInfoProvider(this.randoms);
+    if (potion && "value" in potion) providers.potion = new potion.value.PotionInfoProvider(this.randoms);
+    if (potionSecret && "value" in potionSecret)
+      providers.potionSecret = new potionSecret.value.PotionSecretInfoProvider(this.randoms);
+    if (potionRandomMaterial && "value" in potionRandomMaterial)
+      providers.potionRandomMaterial = new potionRandomMaterial.value.PotionRandomMaterialInfoProvider(this.randoms);
+    if (powderStash && "value" in powderStash)
+      providers.powderStash = new powderStash.value.PowderStashInfoProvider(this.randoms);
+    if (chestRandom && "value" in chestRandom)
+      providers.chestRandom = new chestRandom.value.ChestRandomProvider(
+        this.randoms,
+        this.unlockedSpells,
+        providers.spells,
+      );
+    if (pacifistChest && "value" in pacifistChest)
+      providers.pacifistChest = new pacifistChest.value.PacifistChestProvider(this.randoms, providers.chestRandom);
+    if (shop && "value" in shop)
+      providers.shop = new shop.value.ShopInfoProvider(this.randoms, providers.wand, providers.spells);
 
     return providers as IProviders;
   }

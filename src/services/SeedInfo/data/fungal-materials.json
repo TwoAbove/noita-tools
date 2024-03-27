@@ -197,6 +197,10 @@
       "material": "magic_liquid_teleportation"
     },
     {
+      "probability": 0.1,
+      "material": "mimic_liquid"
+    },
+    {
       "probability": 0.01,
       "material": "urine"
     },

@@ -157,6 +157,8 @@ vector<MaterialItemTo> materials_to = {
      "magic_liquid_random_polymorph"},
     {0.15,
      "magic_liquid_teleportation"},
+    {0.15,
+     "mimic_liquid"},
     {0.01,
      "urine"},
     {0.01,
