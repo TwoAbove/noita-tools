@@ -59,7 +59,7 @@ const Body = () => {
 
   const isLoggedIn = !!patreonData;
 
-  const showTestBench = false; // isDev();
+  const showTestBench = isDev() && isLocal();
   const showClusterCompute = isLoggedIn; // || isDev();
   const showClusterComputeConsole = false; // isLocal();
 

@@ -63,9 +63,13 @@ function splitIntoChunk<T>(arr: T[], size: number, pad?: boolean, padWith?) {
   return res;
 }
 
-export const Wand = (props: { item: IWandShop["items"][number]; isFavorite: (id: string) => boolean }) => {
+export const Wand = (props: {
+  title?: string;
+  item: IWandShop["items"][number];
+  isFavorite: (id: string) => boolean;
+}) => {
   const { t } = useTranslation("materials");
-  const { item, isFavorite } = props;
+  const { title, item, isFavorite } = props;
   const spellsPerRow = 10;
   const cards = [
     ...item.cards.cards,
@@ -76,8 +80,12 @@ export const Wand = (props: { item: IWandShop["items"][number]; isFavorite: (id:
   ];
   const hasFavorite = cards.some(isFavorite);
   const cardsToShow = splitIntoChunk(cards, spellsPerRow, true, null);
+
+  const wandName = title; // || item.ui.name; // This is in the code, but not used in Noita.
+
   return (
-    <div className={classNames(hasFavorite && "border-info", "p-3 card mb-4 shadow-lg")}>
+    <div className={classNames(hasFavorite && "border-info", "p-3 card mb-4", wandName && "pt-2")}>
+      {wandName && <h5 className="text-center">{wandName}</h5>}
       <Row>
         <Col>
           <table className="table table-sm table-borderless">

@@ -96,26 +96,31 @@ int GetWidthFromPix(const int a, const int b)
 
 std::vector<int> GetTilePos(const int gx, const int gy)
 {
-   int x = (int)round(((gx + 5) / 512.0));
-   int y = (int)round(((gy + 13) / 512.0));
+   int x = (int)floor(gx / 512.0) + WORLD_OFFSET_X;
+   int y = (int)floor(gy / 512.0) + WORLD_OFFSET_Y;
    return {x, y};
 }
 
 std::vector<int> GetGlobalPos(const int x, const int y)
 {
-   int gx = ((512 * x) / 10 - (512 * WORLD_OFFSET_X) / 10) * 10 - 5;
-   int gy = ((512 * y) / 10 - (512 * WORLD_OFFSET_Y) / 10) * 10 - 13;
+   int gx = 512 * (x - WORLD_OFFSET_X);
+   int gy = 512 * (y - WORLD_OFFSET_Y);
 
    return {gx, gy};
+
+   // int gx = ((512 * x) / 10 - (512 * WORLD_OFFSET_X) / 10) * 10 - 5;
+   // int gy = ((512 * y) / 10 - (512 * WORLD_OFFSET_Y) / 10) * 10 - 13;
+
+   // return {gx, gy};
 }
 
-// Get the delta position from the global position
-std::vector<int> GetDeltaPos(const int x1, const int y1, const int x0, const int y0)
-{
-   int dx = ((int)((x1 * 512) / 10) * 10 - (int)((x0 * 512) / 10) * 10) - 5;
-   int dy = ((int)((y1 * 512) / 10) * 10 - (int)((y0 * 512) / 10) * 10) - 3;
-   return {dx, dy};
-}
+// // Get the delta position from the global position
+// std::vector<int> GetDeltaPos(const int x1, const int y1, const int x0, const int y0)
+// {
+//    int dx = ((int)((x1 * 512) / 10) * 10 - (int)((x0 * 512) / 10) * 10);
+//    int dy = ((int)((y1 * 512) / 10) * 10 - (int)((y0 * 512) / 10) * 10);
+//    return {dx, dy};
+// }
 
 double GetBiomeOffsetX()
 {
@@ -767,11 +772,13 @@ public:
       // This is the way it is because 512 doesn't divide by 10 evenly
       // and so the chunks from WANG are not always square, and start from (gx,gy 0,0)
       // (top left corner of the map)
-      int gx = ((512 * x) / 10 - (512 * WORLD_OFFSET_X) / 10) * 10 - 5;
+      auto g = GetGlobalPos(x, y);
+      int gx = g[0];
+      int gy = g[1];
+
       int cw = GetWidthFromPix(x, x + 1);
       int dw = GetWidthFromPix(worldX + WORLD_OFFSET_X, x);
 
-      int gy = ((512 * y) / 10 - (512 * WORLD_OFFSET_Y) / 10) * 10 - 13;
       int ch = GetWidthFromPix(y, y + 1);
       int dh = GetWidthFromPix(worldY + WORLD_OFFSET_Y, y);
 
@@ -786,7 +793,8 @@ public:
             {
                continue;
             }
-            cb.call<void>("call", 0, gx + px * 10, gy + py * 10, color);
+            // floodFill(bigMap, width * 10, height * 10, gx + px * 10, gy + py * 10, color, COLOR_BLACK);
+            int lll = cb.call<int>("call", 0, gx + px * 10, gy + py * 10, color);
          }
       }
    }
@@ -837,24 +845,42 @@ public:
          img = _i;
       }
 
+      // int tx = (gx) / 512;
       int tx = (gx + 5) / 512;
+      // int rx = (gx) % 512;
       int rx = (gx + 5) % 512;
 
+      // int ty = (gy) / 512;
       int ty = (gy + 13) / 512;
+      // int ry = (gy) % 512;
       int ry = (gy + 13) % 512;
 
-      int px = (tx - worldX) * 512 + rx;
-      int py = (ty - worldY) * 512 + ry;
+      int old_px = (tx - worldX) * 512 + rx;
+      int old_py = (ty - worldY) * 512 + ry;
+
+      int px = gx - worldX * 512;
+      int py = gy - worldY * 512;
+
+      // printf("drawImageData path: %s, gx: %i, gy: %i, px: %i, py: %i, old_px: %i, old_py: %i\n", path.c_str(), gx, gy, px, py, old_px, old_py);
 
       const std::map<unsigned long, unsigned long> &colorToMaterialTable = *reinterpret_cast<std::map<unsigned long, unsigned long> *>(_colorToMaterialTable);
-      for (int y = 0; y < img.height && (py + y) < height * 10; y++)
+
+      // Check that the image won't go out of bounds
+      if (px + img.width > width * 10 || py + img.height > height * 10)
       {
-         for (int x = 0; x < img.width && (px + x) < width * 10; x++)
+         // printf("drawImageData out of bounds %i %i %i %i\n", px, py, img.width, img.height);
+         return;
+      }
+      if (px < 0 || py < 0)
+      {
+         // printf("drawImageData out of bounds %i %i %i %i\n", px, py, img.width, img.height);
+         return;
+      }
+
+      for (int y = 0; y < img.height; y++)
+      {
+         for (int x = 0; x < img.width; x++)
          {
-            if ((px + x) < 0 || (py + y) < 0)
-            {
-               continue;
-            }
             unsigned long offset = getPos(img.width, img.channels, x, y);
             unsigned long pixel = getRGBAPixelColor(img.image, offset);
             bool isTransparent = isRGBATransparent(pixel);
@@ -864,15 +890,12 @@ public:
             }
 
             auto it = colorToMaterialTable.find(pixel);
+            auto toColor = pixel;
             if (it != colorToMaterialTable.end())
             {
-               auto toColor = it->second;
-               setRGBAPixelColor(bigMap, width * 10, px + x, py + y, toColor);
+               toColor = it->second;
             }
-            else
-            {
-               setRGBAPixelColor(bigMap, width * 10, px + x, py + y, pixel);
-            }
+            setRGBAPixelColor(bigMap, width * 10, px + x, py + y, toColor);
          }
       }
    }

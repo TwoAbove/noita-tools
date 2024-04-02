@@ -18,6 +18,7 @@ import HolyMountain from "./SeedInfoViews/HolyMountain";
 import { db } from "../../services/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import MapComponent from "./SeedInfoViews/Map";
+import ExcavationsiteCubeChamber from "./SeedInfoViews/ExcavationsiteCubeChamber";
 
 const WithShow = (props: { id: string; children: React.ReactNode }): JSX.Element => {
   const config = useLiveQuery(() => db.configItems.get({ key: `panel-${props.id}-config` }));
@@ -55,7 +56,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
             </WithShow>
           </Col>
           <Row xs="auto" className="gap-2 justify-content-center flex-wrap">
-            <Col className="my-auto">
+            <Col className="p-0 m-2">
               {!isDaily && (
                 <WithShow id="start">
                   <Start
@@ -66,22 +67,27 @@ const SeedInfo = (props: ISeedInfoProps) => {
                 </WithShow>
               )}
             </Col>
-            <Col className="my-auto">
+            <Col className="p-0 m-2">
               <WithShow id="weather">
                 <Weather infoProvider={infoProvider} weather={data.weather} />
               </WithShow>
             </Col>
-            <Col className="my-auto">
+            <Col className="p-0 m-2">
               <WithShow id="watercave">
                 <Watercave infoProvider={infoProvider} waterCave={data.waterCave} />
               </WithShow>
             </Col>
-            <Col className="my-auto">
+            <Col className="p-0 m-2">
               <WithShow id="alchemy">
                 <Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
               </WithShow>
             </Col>
-            <Col className="my-auto">
+            <Col className="p-0 m-2">
+              <WithShow id="excavationsite-cube">
+                <ExcavationsiteCubeChamber />
+              </WithShow>
+            </Col>
+            <Col className="p-0 m-2">
               <WithShow id="biome">
                 <Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
               </WithShow>
