@@ -629,7 +629,7 @@ export default class Base {
     public HandleInterest: THandleInterest,
     public BiomeMapGetVerticalPositionInsideBiome: TBiomeMapGetVerticalPositionInsideBiome,
     public RaytracePlatforms: TRaytracePlatforms,
-    public config: IConfig,
+    public config: IConfig = {},
   ) {}
 
   spawn_from_list(list: any, x: number, y: number) {

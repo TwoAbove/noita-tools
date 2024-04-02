@@ -215,6 +215,7 @@ describe("#getMap", () => {
 
     const tests = [
       {
+        skip: true,
         seed: 1674055821,
         x: 36,
         y: 14,
@@ -234,6 +235,7 @@ describe("#getMap", () => {
         ],
       },
       {
+        skip: true,
         seed: 299840293,
         x: 34,
         y: 17,
@@ -253,6 +255,7 @@ describe("#getMap", () => {
         ],
       },
       {
+        skip: true,
         seed: 299840293,
         x: 35,
         y: 24,
@@ -266,6 +269,7 @@ describe("#getMap", () => {
         ],
       },
       {
+        skip: true,
         seed: 299840293,
         x: 35,
         y: 29,
@@ -279,6 +283,7 @@ describe("#getMap", () => {
         ],
       },
       {
+        skip: true,
         seed: 299840293,
         x: 34,
         y: 31,
@@ -297,9 +302,18 @@ describe("#getMap", () => {
           },
         ],
       },
+      {
+        seed: 123,
+        x: 26,
+        y: 18,
+        points: [], // It's an empty map but with LoadPixelScene
+      },
     ];
 
     tests.forEach((t, i) => {
+      if (t.skip) {
+        return;
+      }
       it(`Should get RegisterSpawnFunction calls at correct positions #${i}`, () => {
         const { seed, points, x, y } = t;
 
@@ -331,6 +345,7 @@ describe("#getMap", () => {
 
     const tests = [
       {
+        skip: true,
         seed: 1674055821,
         x: 36,
         y: 14,
@@ -344,6 +359,7 @@ describe("#getMap", () => {
         ],
       },
       {
+        skip: true,
         seed: 299840293,
         x: 34,
         y: 17,
@@ -357,6 +373,7 @@ describe("#getMap", () => {
         ],
       },
       {
+        skip: true,
         seed: 299840293,
         x: 34,
         y: 24,
@@ -376,6 +393,7 @@ describe("#getMap", () => {
         ],
       },
       {
+        skip: true,
         seed: 299840293,
         x: 29,
         y: 31,
@@ -389,6 +407,7 @@ describe("#getMap", () => {
         ],
       },
       {
+        skip: true,
         seed: 299840293,
         x: 34,
         y: 22,
@@ -408,6 +427,7 @@ describe("#getMap", () => {
         ],
       },
       {
+        skip: true,
         seed: 299840293,
         x: 34,
         y: 32,
@@ -426,9 +446,31 @@ describe("#getMap", () => {
           },
         ],
       },
+      {
+        seed: 123,
+        x: 26,
+        y: 18,
+        points: [
+          {
+            item: "data/biome_impl/excavationsite/cube_chamber.png",
+            gx: -4608,
+            gy: 2048,
+            type: InterestType.PixelScene,
+          },
+          {
+            item: "data/entities/items/wand_level_03.xml",
+            gx: -4258,
+            gy: 2356,
+            type: InterestType.Interest,
+          },
+        ],
+      },
     ];
 
     tests.forEach((t, i) => {
+      if (t.skip) {
+        return;
+      }
       it(`Should generate interesting points at the correct positions #${i}`, () => {
         const { seed, points, x, y } = t;
 

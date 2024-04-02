@@ -91,7 +91,9 @@
     "charconv": "cpp",
     "iomanip": "cpp",
     "format": "cpp",
-    "__verbose_abort": "cpp"
+    "__verbose_abort": "cpp",
+    "complex": "cpp",
+    "execution": "cpp"
   },
   "terminal.integrated.env.windows": {
     "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${env:LOCALAPPDATA}\\Programs\\emsdk\\upstream\\emscripten"
@@ -99,5 +101,6 @@
   "typescript.tsdk": "./node_modules/typescript/lib",
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "search.useIgnoreFiles": false
 }

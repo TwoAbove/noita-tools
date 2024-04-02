@@ -20,6 +20,9 @@ import type { WaterCaveInfoProvider } from "./InfoProviders/WaterCave";
 import type { ChestRandomProvider } from "./InfoProviders/ChestRandom";
 import type { PacifistChestProvider } from "./InfoProviders/PacifistChest";
 
+// Special biomes
+import type { ExcavationsiteCubeChamberInfoProvider } from "./InfoProviders/ExcavationsiteCubeChamber";
+
 import loadRandom, { IRandom } from "../random";
 import type { WandInfoProvider } from "./InfoProviders/Wand";
 import type { i18n } from "i18next";
@@ -55,6 +58,8 @@ interface IProviders {
 
   chestRandom: ChestRandomProvider;
   pacifistChest: PacifistChestProvider;
+
+  excavationSiteCubeChamber: ExcavationsiteCubeChamberInfoProvider;
 
   [key: string]: InfoProvider;
 }
@@ -175,6 +180,7 @@ export class GameInfoProvider extends EventTarget {
       import("./InfoProviders/ChestRandom"),
       import("./InfoProviders/PacifistChest"),
       import("./InfoProviders/Shop"),
+      import("./InfoProviders/ExcavationsiteCubeChamber"),
     ]);
 
     const [
@@ -202,6 +208,7 @@ export class GameInfoProvider extends EventTarget {
       chestRandom,
       pacifistChest,
       shop,
+      excavationSiteCubeChamber,
     ] = imports;
 
     const providers: any = {};
@@ -248,6 +255,12 @@ export class GameInfoProvider extends EventTarget {
       providers.pacifistChest = new pacifistChest.value.PacifistChestProvider(this.randoms, providers.chestRandom);
     if (shop && "value" in shop)
       providers.shop = new shop.value.ShopInfoProvider(this.randoms, providers.wand, providers.spells);
+    if (excavationSiteCubeChamber && "value" in excavationSiteCubeChamber)
+      providers.excavationSiteCubeChamber = new excavationSiteCubeChamber.value.ExcavationsiteCubeChamberInfoProvider(
+        this.randoms,
+        providers.wand,
+        providers.map,
+      );
 
     return providers as IProviders;
   }

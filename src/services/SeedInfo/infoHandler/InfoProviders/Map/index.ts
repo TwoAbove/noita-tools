@@ -65,6 +65,7 @@ export class MapInfoProvider extends InfoProvider {
   worldMap!: ImageData;
 
   worldMapPromise: Promise<any>;
+  biomeImplPromise: Promise<any>;
   loadImageActionsPromise: Promise<any>;
 
   constructor(randoms: IRandom) {
@@ -78,7 +79,7 @@ export class MapInfoProvider extends InfoProvider {
       this.maps = _maps;
     });
 
-    biomeImplPromise.then(_biomeImpls => {
+    this.biomeImplPromise = biomeImplPromise.then(_biomeImpls => {
       this.biomeImpls = _biomeImpls;
     });
   }
@@ -86,7 +87,12 @@ export class MapInfoProvider extends InfoProvider {
   wang_maps: { [color: number]: ImageData } = {};
 
   async ready() {
-    return Promise.all([this.loadImageActionsPromise, this.worldMapPromise, mapDataPromise]).then(() => {});
+    return Promise.allSettled([
+      this.loadImageActionsPromise,
+      this.worldMapPromise,
+      this.biomeImplPromise,
+      mapDataPromise,
+    ]).then(() => {});
   }
 
   async loadImageActions() {
@@ -120,8 +126,10 @@ export class MapInfoProvider extends InfoProvider {
   };
 
   inOtherBiome = (color: number, gx: number, gy: number): boolean => {
-    const { x, y } = this.imageActions.getTilePos(gx, gy);
-    const mapColor = this.imageActions.getColor(this.worldMap, x, y);
+    const res = this.randoms.GetTilePos(gx, gy);
+    const px = res.get(0);
+    const py = res.get(1);
+    const mapColor = this.imageActions.getColor(this.worldMap, px, py);
     return color !== mapColor;
   };
 
@@ -203,8 +211,8 @@ export class MapInfoProvider extends InfoProvider {
       }
 
       // if fits and doesn't encroach onto other biomes
-      const r = gx + impl.w;
-      const b = gy + impl.h;
+      const r = gx + Math.floor(impl.w / 10) * 10;
+      const b = gy + Math.floor(impl.h / 10) * 10;
       // TODO: handle LoadPixelScene where it draws outside of the chunks
       // ex: Holy Mountains and spawn_altar_top
       if (
@@ -227,14 +235,6 @@ export class MapInfoProvider extends InfoProvider {
       mh.drawImageData(path, this.biomeImpls[path].src, gx, gy, ctmtptr);
       // this.randoms.Module._free(ctmtptr);
       ctmtptr.delete();
-
-      // this.imageActions.drawImageData(
-      // 	impl,
-      // 	areaMap,
-      // 	px,
-      // 	py,
-      // 	color_to_material_table
-      // );
 
       this.biomeImpls[path].f.forEach(({ x: dx, y: dy, c }) => {
         const funcName = mapData.config!.spawnFunctions.get(c);
@@ -297,12 +297,11 @@ export class MapInfoProvider extends InfoProvider {
     );
     try {
       const g = this.randoms.GetGlobalPos(x, y);
-      mapImplementation.init(g.get(0), g.get(1), 10, 10);
+      mapImplementation.init(g.get(0), g.get(1), 512, 512);
       mh.iterateMap(x, y, (gx, gy, c) => {
-        // this.imageActions.drawImageData(new ImageData(new Uint8ClampedArray([0xff, 0x00, 0x00, 0x00]), 1, 1), areaMap, px, py);
         const funcName = mapData.config!.spawnFunctions.get(c);
         if (!funcName) {
-          return;
+          return 0;
         }
         // const { px, py } = this.imageActions.getLocalPos(x, y, gx, gy);
         // is_open_path is only used in the coalmine biome:
@@ -316,6 +315,7 @@ export class MapInfoProvider extends InfoProvider {
           type: InterestType.Wang,
         });
         mapImplementation.handle(funcName, gx, gy, 10, 10, false);
+        return 1;
       });
     } catch (e) {
       console.error("Iteration error: ");
@@ -406,10 +406,6 @@ export class MapInfoProvider extends InfoProvider {
     }
 
     const mapData = this.maps.get(color)!;
-
-    if (mapData.type !== "BIOME_WANG_TILE") {
-      return;
-    }
 
     const mh = this.getMapHandler(tx, ty);
 

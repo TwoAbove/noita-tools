@@ -75,9 +75,12 @@ export const createGameInfoProvider = async (branch, seed: string, unlockedSpell
 };
 
 export const GameInfoContext = createContext<{
-  gameInfoProvider?: GameInfoProvider;
-  data?: Awaited<ReturnType<GameInfoProvider["provideAll"]>>;
-}>({});
+  gameInfoProvider: GameInfoProvider;
+  data: Awaited<ReturnType<GameInfoProvider["provideAll"]>>;
+}>({} as any);
+// This is a hacky way to get around the default value
+// We always set the value in the provider so this should never be used
+// TODO: find a better way to handle this
 
 export const useGameInfoProvider = (
   seed: string,
