@@ -1,5 +1,6 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import { Stack, Form, Tooltip, OverlayTrigger, Table } from "react-bootstrap";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 import { GameInfoProvider } from "../../../services/SeedInfo/infoHandler";
 import { FungalInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Fungal";
@@ -182,6 +183,21 @@ export const Shift: FC<IShiftProps> = props => {
   const gold_to_x = data.gold_to_x;
   const grass_to_x = data.grass_to_x;
 
+  const [showTimer, setShowTimer] = useState(false);
+
+  // Called when the timer expires
+  const handleTimerExpire = () => {
+    const audio = new Audio("assets/notification-sound-7062.mp3"); // change to appropriate sound \ and path
+    audio.play();
+    alert("Timer expired");
+    setShowTimer(false);
+  };
+
+  const handleSetShiftedClicked = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShifted(e.target.checked);
+    setShowTimer(e.target.checked);
+  };
+
   return (
     <tr className="align-middle">
       <td>
@@ -208,18 +224,46 @@ export const Shift: FC<IShiftProps> = props => {
         />
       </td>
       <td>
-        <OverlayTrigger placement="right" key="right" overlay={<Tooltip id={`tooltip-right`}>Shifted</Tooltip>}>
-          <Form.Check
-            checked={shifted}
-            onChange={e => {
-              setShifted(e.target.checked);
-            }}
-            type="checkbox"
-            id={`shifted`}
-            // label={`shifted`}
-            enterKeyHint="done"
-          />
-        </OverlayTrigger>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <OverlayTrigger placement="right" key="right" overlay={<Tooltip id={`tooltip-right`}>Shifted</Tooltip>}>
+            <Form.Check
+              checked={shifted}
+              onChange={handleSetShiftedClicked}
+              type="checkbox"
+              id={`shifted`}
+              // label={`shifted`}
+              enterKeyHint="done"
+            />
+          </OverlayTrigger>
+          {shifted && showTimer && (
+            <div
+              style={{
+                fontSize: "0.75rem",
+              }}
+            >
+              <CountdownCircleTimer
+                isPlaying
+                size={40}
+                strokeWidth={5}
+                duration={60}
+                colors={"#004777"}
+                onComplete={() => {
+                  handleTimerExpire();
+                  //  [true, 1000];
+                }}
+              >
+                {({ remainingTime }) => remainingTime}
+              </CountdownCircleTimer>
+            </div>
+          )}
+        </div>
       </td>
     </tr>
   );
