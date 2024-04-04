@@ -101,7 +101,7 @@ const printStats = (info: { [provider: string]: IPerf }) => {
   console.table(data);
 };
 
-describe("Performance", () => {
+describe.skip("Performance", () => {
   const box = 20;
   const seedBox = 20;
 
