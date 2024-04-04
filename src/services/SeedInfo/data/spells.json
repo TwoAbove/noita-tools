@@ -3169,12 +3169,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/touch_piss.xml"],
     "spawn_requires_flag": "card_unlocked_piss",
     "type": 4,
-    "spawn_level": "10",
-    "spawn_probability": "0",
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "spawn_probability": "0,0,0,0,0.01,0.01,0.01,0.04",
     "price": 360,
     "mana": 190,
     "max_uses": 4,
-    "spawn_probabilities": {}
+    "spawn_probabilities": {
+      "5": 0.01,
+      "6": 0.01,
+      "7": 0.01,
+      "10": 0.04
+    }
   },
   {
     "id": "TOUCH_GRASS",

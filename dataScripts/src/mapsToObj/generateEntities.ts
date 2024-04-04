@@ -286,6 +286,9 @@ const generateEntities = async () => {
       if (!spriteData) {
         continue;
       }
+      if (!spriteData.Sprite) {
+        continue;
+      }
       breakdowns.push(await makeBreakdown(spriteData));
     }
     if (breakdowns.length === 1) {
@@ -344,6 +347,10 @@ const generateEntities = async () => {
     };
   }
   const makeBreakdown = async (spriteData: any): Promise<FrameBreakdown> => {
+    if (!spriteData.Sprite) {
+      console.log("No Sprite data", util.inspect(spriteData, undefined, 4, true));
+    }
+
     const out: FrameBreakdown = {
       config: parseObj(spriteData.Sprite.$),
       actions: {},
