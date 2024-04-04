@@ -12,21 +12,34 @@ import { GameInfoContext } from "../SeedDataOutput";
 import { set } from "mongoose";
 import { useSpellFavorite } from "./helpers";
 
-const ExcavationsiteCubeChamber = () => {
+const SnowcaveSecretChamber = () => {
   const { gameInfoProvider } = useContext(GameInfoContext);
 
-  const [wand, setWand] = React.useState(() =>
-    gameInfoProvider.providers.excavationSiteCubeChamber.provide(gameInfoProvider.config.seed),
+  const [wands, setWandData] = React.useState(() =>
+    gameInfoProvider.providers.snowcaveSecretChamber.provide(gameInfoProvider.config.seed),
   );
 
   useEffect(() => {
-    const wand = gameInfoProvider.providers.excavationSiteCubeChamber.provide(gameInfoProvider.config.seed);
-    setWand(wand);
+    const wands = gameInfoProvider.providers.snowcaveSecretChamber.provide(gameInfoProvider.config.seed);
+    setWandData(wands);
   }, [gameInfoProvider]);
 
   const { isFavorite } = useSpellFavorite();
 
-  return <Wand title="Excavation Site Cube Chamber Wand" item={wand} isFavorite={isFavorite} />;
+  return (
+    <>
+      {wands.map((wand, i) => {
+        return (
+          <Wand
+            key={wand.ui.name + i}
+            title={`Snowcave Secret Chamber Wand ${i + 1}`}
+            item={wand}
+            isFavorite={isFavorite}
+          />
+        );
+      })}
+    </>
+  );
 };
 
-export default ExcavationsiteCubeChamber;
+export default SnowcaveSecretChamber;
