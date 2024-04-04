@@ -263,11 +263,13 @@ export class GameInfoProvider extends EventTarget {
       providers.excavationSiteCubeChamber = new excavationSiteCubeChamber.value.ExcavationsiteCubeChamberInfoProvider(
         this.randoms,
         providers.map,
+        providers.wand,
       );
     if (snowcaveSecretChamber && "value" in snowcaveSecretChamber)
       providers.snowcaveSecretChamber = new snowcaveSecretChamber.value.SnowcaveSecretChamberProvider(
         this.randoms,
         providers.map,
+        providers.wand,
       );
 
     return providers as IProviders;
