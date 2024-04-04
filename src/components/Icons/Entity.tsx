@@ -4,7 +4,7 @@ import Icon from "./Icon";
 import NoitaTexture from "./normals/noitaTexture";
 import Spell from "./Spell";
 import { GameInfoContext } from "../SeedInfo/SeedDataOutput";
-import { Wand } from "../SeedInfo/SeedInfoViews/ShopItems";
+import { Wand } from "../SeedInfo/SeedInfoViews/Wand";
 import { Button, Modal } from "react-bootstrap";
 import { Square } from "../helpers";
 import { useSpellFavorite } from "../SeedInfo/SeedInfoViews/helpers";
@@ -99,7 +99,7 @@ const WandModal: FC<IWandModalProps> = ({ x, y, cost, level, force_unshuffle }) 
         <Modal.Header closeButton>
           <Modal.Title>Wand</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="d-flex flex-wrap justify-content-around gap-3">
           <Wand item={wand} isFavorite={() => false} />
         </Modal.Body>
       </Modal>

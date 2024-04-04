@@ -99,7 +99,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
                 <Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
               </WithShow>
             </Col>
-            <div className="d-flex flex-wrap align-content-stretch gap-3">
+            <div className="d-flex flex-wrap justify-content-center gap-3">
               <WithShow id="secret-wands">
                 <ExcavationsiteCubeChamber />
                 <SnowcaveSecretChamber />

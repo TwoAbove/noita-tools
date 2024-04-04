@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { IRule } from "../IRule";
-import { mapHandlerStub } from "../helpers";
 import { InfoProvider } from "./Base";
 import { MapInfoProvider } from "./Map";
 import { WandInfoProvider } from "./Wand";
