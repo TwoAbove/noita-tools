@@ -8,11 +8,9 @@ import { MapInfoProvider } from "./Map";
 import { WandInfoProvider } from "./Wand";
 
 export class ExcavationsiteCubeChamberInfoProvider extends InfoProvider {
-  wandInfoProvider: WandInfoProvider;
   mapInfoProvider: MapInfoProvider;
-  constructor(randoms, wandInfoProvider: WandInfoProvider, mapInfoProvider: MapInfoProvider) {
+  constructor(randoms, mapInfoProvider: MapInfoProvider) {
     super(randoms);
-    this.wandInfoProvider = wandInfoProvider;
     this.mapInfoProvider = mapInfoProvider;
   }
 

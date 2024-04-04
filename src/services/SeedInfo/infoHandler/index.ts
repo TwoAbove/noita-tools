@@ -30,6 +30,7 @@ import type { PotionInfoProvider } from "./InfoProviders/Potion";
 import type { PotionSecretInfoProvider } from "./InfoProviders/PotionSecret";
 import type { PotionRandomMaterialInfoProvider } from "./InfoProviders/PotionRandomMaterial";
 import type { PowderStashInfoProvider } from "./InfoProviders/PowderStash";
+import type { SnowcaveSecretChamberProvider } from "./InfoProviders/SnowcaveSecretChamber";
 
 interface IProviders {
   alchemy: AlchemyInfoProvider;
@@ -60,6 +61,7 @@ interface IProviders {
   pacifistChest: PacifistChestProvider;
 
   excavationSiteCubeChamber: ExcavationsiteCubeChamberInfoProvider;
+  snowcaveSecretChamber: SnowcaveSecretChamberProvider;
 
   [key: string]: InfoProvider;
 }
@@ -181,6 +183,7 @@ export class GameInfoProvider extends EventTarget {
       import("./InfoProviders/PacifistChest"),
       import("./InfoProviders/Shop"),
       import("./InfoProviders/ExcavationsiteCubeChamber"),
+      import("./InfoProviders/SnowcaveSecretChamber"),
     ]);
 
     const [
@@ -209,6 +212,7 @@ export class GameInfoProvider extends EventTarget {
       pacifistChest,
       shop,
       excavationSiteCubeChamber,
+      snowcaveSecretChamber,
     ] = imports;
 
     const providers: any = {};
@@ -258,7 +262,11 @@ export class GameInfoProvider extends EventTarget {
     if (excavationSiteCubeChamber && "value" in excavationSiteCubeChamber)
       providers.excavationSiteCubeChamber = new excavationSiteCubeChamber.value.ExcavationsiteCubeChamberInfoProvider(
         this.randoms,
-        providers.wand,
+        providers.map,
+      );
+    if (snowcaveSecretChamber && "value" in snowcaveSecretChamber)
+      providers.snowcaveSecretChamber = new snowcaveSecretChamber.value.SnowcaveSecretChamberProvider(
+        this.randoms,
         providers.map,
       );
 

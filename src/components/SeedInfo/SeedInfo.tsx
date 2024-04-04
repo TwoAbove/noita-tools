@@ -19,6 +19,7 @@ import { db } from "../../services/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import MapComponent from "./SeedInfoViews/Map";
 import ExcavationsiteCubeChamber from "./SeedInfoViews/ExcavationsiteCubeChamber";
+import SnowcaveSecretChamber from "./SeedInfoViews/SnowcaveSecretChamber";
 
 const WithShow = (props: { id: string; children: React.ReactNode }): JSX.Element => {
   const config = useLiveQuery(() => db.configItems.get({ key: `panel-${props.id}-config` }));
@@ -29,6 +30,17 @@ const WithShow = (props: { id: string; children: React.ReactNode }): JSX.Element
   }
 
   return props.children as any;
+};
+
+// Function to add <Col> to all children. Some children return <><> which have several elements
+const WithCols = (props: { children: React.ReactNode }): JSX.Element => {
+  return (
+    <>
+      {React.Children.map(props.children, child => {
+        return <Col>{child}</Col>;
+      })}
+    </>
+  );
 };
 
 interface ISeedInfoProps {
@@ -83,15 +95,16 @@ const SeedInfo = (props: ISeedInfoProps) => {
               </WithShow>
             </Col>
             <Col className="p-0 m-2">
-              <WithShow id="excavationsite-cube">
-                <ExcavationsiteCubeChamber />
-              </WithShow>
-            </Col>
-            <Col className="p-0 m-2">
               <WithShow id="biome">
                 <Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
               </WithShow>
             </Col>
+            <div className="d-flex flex-wrap align-content-stretch gap-3">
+              <WithShow id="secret-wands">
+                <ExcavationsiteCubeChamber />
+                <SnowcaveSecretChamber />
+              </WithShow>
+            </div>
           </Row>
         </Row>
       </Col>

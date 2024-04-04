@@ -12,10 +12,6 @@ import { GameInfoContext } from "../SeedDataOutput";
 import { set } from "mongoose";
 import { useSpellFavorite } from "./helpers";
 
-interface IExcavationsiteCubeChamberProps {
-  mapData: ReturnType<GameInfoProvider["providers"]["map"]["provide"]>;
-}
-
 const getWandArgs = (wand: string): [number, number, boolean] => {
   switch (wand) {
     case "data/entities/items/wand_level_03.xml":
@@ -26,34 +22,53 @@ const getWandArgs = (wand: string): [number, number, boolean] => {
   return [0, 0, false];
 };
 
-const ExcavationsiteCubeChamber = () => {
+const SnowcaveSecretChamber = () => {
   const { gameInfoProvider } = useContext(GameInfoContext);
 
   const [mapData, setMapData] = React.useState<ReturnType<GameInfoProvider["providers"]["map"]["provide"]>>(() =>
-    gameInfoProvider.providers.excavationSiteCubeChamber.provide(gameInfoProvider.config.seed),
+    gameInfoProvider.providers.snowcaveSecretChamber.provide(gameInfoProvider.config.seed),
   );
 
   useEffect(() => {
-    const mapData = gameInfoProvider.providers.excavationSiteCubeChamber.provide(gameInfoProvider.config.seed);
+    const mapData = gameInfoProvider.providers.snowcaveSecretChamber.provide(gameInfoProvider.config.seed);
     setMapData(mapData);
   }, [gameInfoProvider]);
 
-  const wandPoint = mapData.interestPoints.points!.find(p => p.item.startsWith("data/entities/items/wand_"))!;
+  const wandPoints = mapData.interestPoints.points!.filter(p => p.item.startsWith("data/entities/items/wand_"))!;
 
-  if (!wandPoint) {
+  if (!wandPoints.length) {
     return <div>Wand not found</div>;
   }
 
-  const wand = gameInfoProvider!.providers.wand.provide(
-    wandPoint.gx,
-    wandPoint.gy,
-    ...getWandArgs(wandPoint.item),
-    false,
-  );
+  const wands = wandPoints.map(wandPoint => {
+    const wand = gameInfoProvider!.providers.wand.provide(
+      wandPoint.gx,
+      wandPoint.gy,
+      ...getWandArgs(wandPoint.item),
+      false,
+    );
+
+    return wand;
+  });
 
   const { isFavorite } = useSpellFavorite();
+
+  return (
+    <>
+      {wands.map((wand, i) => {
+        return (
+          <Wand
+            key={wand.ui.name + i}
+            title={`Snowcave Secret Chamber Wand ${i + 1}`}
+            item={wand}
+            isFavorite={isFavorite}
+          />
+        );
+      })}
+    </>
+  );
 
   return <Wand title="Excavation Site Cube Chamber Wand" item={wand} isFavorite={isFavorite} />;
 };
 
-export default ExcavationsiteCubeChamber;
+export default SnowcaveSecretChamber;

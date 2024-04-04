@@ -84,7 +84,7 @@ export const Wand = (props: {
   const wandName = title; // || item.ui.name; // This is in the code, but not used in Noita.
 
   return (
-    <div className={classNames(hasFavorite && "border-info", "p-3 card mb-4", wandName && "pt-2")}>
+    <div className={classNames(hasFavorite && "border-info", "p-3 card ", wandName && "pt-2")}>
       {wandName && <h5 className="text-center">{wandName}</h5>}
       <Row>
         <Col>
