@@ -3170,15 +3170,15 @@
     "spawn_requires_flag": "card_unlocked_piss",
     "type": 4,
     "spawn_level": "1,2,3,4,5,6,7,10",
-    "spawn_probability": "0,0,0,0,0.01,0.01,0.01,0.04",
+    "spawn_probability": "0,0,0,0,0.035,0.035,0.035,0.1",
     "price": 360,
     "mana": 190,
     "max_uses": 4,
     "spawn_probabilities": {
-      "5": 0.01,
-      "6": 0.01,
-      "7": 0.01,
-      "10": 0.04
+      "5": 0.035,
+      "6": 0.035,
+      "7": 0.035,
+      "10": 0.1
     }
   },
   {
