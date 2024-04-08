@@ -6,14 +6,11 @@ import Jimp from "jimp";
 import { parseAST } from "./ast";
 import parser from "luaparse";
 
-// import spells from "./toJs3";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const root = path.resolve(__dirname, "../../src/services/SeedInfo/data");
-
-const noitaData = path.resolve(
-  require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/",
-);
+const noitaData = path.resolve(__dirname, "../noita-data/");
 
 const spellTypes = fs.readFileSync(path.resolve(noitaData, "data/scripts/gun/gun_enums.lua")).toString();
 

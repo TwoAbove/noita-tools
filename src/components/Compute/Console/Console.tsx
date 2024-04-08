@@ -1,18 +1,13 @@
-import classNames from "classnames";
-import { useState, useEffect, FC, useRef } from "react";
-import { Button, Col, Collapse, Container, Form, FormGroup, ListGroup, ProgressBar, Row, Stack } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
+import { Button, Col, Container, Form, FormGroup, ListGroup, ProgressBar, Row, Stack } from "react-bootstrap";
 import humanize from "humanize-duration";
 import copy from "copy-to-clipboard";
 import Cookies from "js-cookie";
 
 import { localizeNumber } from "../../../services/helpers";
 import { ILogicRules } from "../../../services/SeedInfo/infoHandler/IRule";
-import SeedSolver from "../../../services/seedSolverHandler";
 import { Import } from "../../SearchSeeds/RuleList";
 import { ComputeSocket } from "../../../services/compute/ComputeSocket";
-import useLocalStorage from "../../../services/useLocalStorage";
-import SocketHandler from "../../../services/socketHandler";
 import { ChunkProvider, Status } from "../../../services/compute/ChunkProvider";
 import { SocketComputeProvider } from "../../../services/compute/SocketComputeProvider";
 
@@ -111,7 +106,7 @@ const ComputeConsole = () => {
     const newComputeSocket = new ComputeSocket({
       url: computeUrl,
       sessionToken: noitoolSessionToken,
-      version: process.env.REACT_APP_VERSION!,
+      version: APP_VERSION,
       onUpdate: () => {
         setConnected(newComputeSocket.connected);
       },

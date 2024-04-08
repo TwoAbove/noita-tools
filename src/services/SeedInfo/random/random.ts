@@ -32,7 +32,7 @@ export class MapHandler {
     public shouldBlockOutRooms: boolean,
     public randomMaterials: number,
     public worldX: number,
-    public worldY: number
+    public worldY: number,
   ) {}
 
   delete() {}
@@ -43,7 +43,7 @@ export class MapHandler {
     width: number,
     height: number,
     stet: number,
-    cb: (x: number, y: number, color: number) => boolean
+    cb: (x: number, y: number, color: number) => boolean,
   ) {
     return Boolean();
   }
@@ -109,7 +109,7 @@ export interface IRandomModule {
     shouldBlockOutRooms: boolean,
     randomMaterials: number,
     xOffset: number,
-    yOffset: number
+    yOffset: number,
   ): void;
 
   GetGlobalPos(x: number, y: number): { get: (number) => number };

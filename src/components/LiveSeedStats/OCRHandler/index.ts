@@ -1,5 +1,5 @@
-// import Tesseract from 'tesseract.js';
-import Tesseract from "../../../../node_modules/tesseract.js/src/index.js";
+import Tesseract from "tesseract.js";
+// import Tesseract from "../../../../node_modules/tesseract.js/src/index.js";
 
 import genCanvases, { IFontCanvases } from "./getFontCanvases";
 import {
@@ -53,8 +53,7 @@ class OCRHandler extends EventTarget {
       this.onUpdate = () => {};
     }
     const init = async () => {
-      await this.startTesseract();
-      await this.genCanvases();
+      await Promise.all([this.startTesseract(), this.genCanvases()]);
 
       this.ready = true;
       this.onUpdate();
@@ -67,13 +66,12 @@ class OCRHandler extends EventTarget {
   }
 
   async startTesseract() {
-    const worker = await Tesseract.createWorker("eng", Tesseract.OEM.TESSERACT_ONLY, {
+    const worker = await Tesseract.createWorker("eng", undefined, {
       errorHandler: e => {
         console.error(e);
         this.startTesseract().catch(e => console.error(e));
       },
       // logger: console.log,
-      cacheMethod: "none",
       // logger: this.canvasRef ? console.log : () => { },
     });
     await worker.setParameters({
@@ -200,11 +198,10 @@ class OCRHandler extends EventTarget {
     );
 
     if (this.canvasRef) {
-      // to debug
+      this.canvasRef.current!.width = img.width;
+      this.canvasRef.current!.height = img.height;
       const ctx = this.canvasRef.current!.getContext("2d")!;
-      // ctx.fillStyle = "#000000";
-      // ctx.fillRect(0, 0, 1000, 1000);
-      ctx.drawImage(img, 40, 0);
+      ctx.drawImage(img, 0, 0);
     }
 
     const res = await this.tesseractWorker.recognize(img as any);

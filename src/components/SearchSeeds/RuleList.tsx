@@ -39,10 +39,11 @@ interface IRuleProps extends IIDRule {
   deletable?: boolean;
   draggable?: boolean;
   titleProps?: any;
+  highlight?: boolean;
   onClick?: () => void;
   onDelete?: () => void;
 }
-const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable, titleProps }) => {
+const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable, titleProps, highlight }) => {
   const rc = RuleConstructors[type] || {};
   const { ruleDispatch, ruleTree } = useContext(SearchContext);
   const [collected, drag, dragPreview] = useDrag(
@@ -50,7 +51,7 @@ const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable, titleProps }) =>
       type: "rule",
       item: { id },
     }),
-    [id, type, deletable, draggable]
+    [id, type, deletable, draggable],
   );
 
   const active = ruleTree.selectedRule === id;
@@ -65,8 +66,13 @@ const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable, titleProps }) =>
   return (
     <Stack direction="horizontal" gap={2} className="align-items-center" ref={dragPreview} {...(collected as any)}>
       {draggable && <i className="bi bi-grip-vertical" ref={drag}></i>}
-      <ListGroup.Item active={active} action onClick={handleClick} className="rounded">
-        <div>{rc.Title(titleProps || {})}</div>
+      <ListGroup.Item
+        active={active}
+        action
+        onClick={handleClick}
+        className={classNames(["rounded", highlight && "border-primary"])}
+      >
+        <div className={classNames(highlight && "text-center")}>{rc.Title(titleProps || {})}</div>
       </ListGroup.Item>
       {deletable && (
         <Button onClick={handleDelete} size="sm" variant="outline-warning">
@@ -94,7 +100,7 @@ const LogicRule: FC<ILogicRuleProps> = ({ type, id, rules, deletable, draggable 
         isDragging: monitor.isDragging(),
       }),
     }),
-    [id, type, rules, deletable, draggable]
+    [id, type, rules, deletable, draggable],
   );
 
   const [dropProps, dropRef] = useDrop(
@@ -133,7 +139,7 @@ const LogicRule: FC<ILogicRuleProps> = ({ type, id, rules, deletable, draggable 
         canDrop: monitor.canDrop() && monitor.isOver({ shallow: true }),
       }),
     }),
-    [id, type, rules, deletable, draggable]
+    [id, type, rules, deletable, draggable],
   );
   const rule = RuleConstructors[type];
   return (
@@ -142,7 +148,7 @@ const LogicRule: FC<ILogicRuleProps> = ({ type, id, rules, deletable, draggable 
       className={classNames(
         "p-3 pe-2 shadow-sm",
         dropProps.canDrop && "bg-info",
-        dragProps.isDragging && "bg-secondary"
+        dragProps.isDragging && "bg-secondary",
       )}
       ref={mergeRefs([dropRef, dragPreviewRef])}
     >
@@ -174,7 +180,7 @@ interface IAddProps {
 }
 const Add: FC<IAddProps> = ({ onAdd }) => {
   const rules = Object.keys(RuleConstructors).filter(
-    k => !["search", RuleType.AND, RuleType.OR, RuleType.NOT].includes(k)
+    k => !["search", RuleType.AND, RuleType.OR, RuleType.NOT].includes(k),
   );
 
   return (
@@ -574,6 +580,7 @@ const RuleList: FC<IRuleListProps> = () => {
           onClick={() => ruleDispatch({ action: "select", data: "search" })}
           id="search"
           type="search"
+          highlight
           titleProps={{ name: computeJobName }} // TODO: Handle multiple searches
         />
         <hr />

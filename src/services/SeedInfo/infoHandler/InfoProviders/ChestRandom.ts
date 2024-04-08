@@ -5,8 +5,8 @@ import D from "decimal.js";
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
 
-import spells from "../../data/spells.json";
 import { IRandom } from "../../random";
+import type { SpellInfoProvider } from "./Spell";
 
 // TODO: There are many places where we will deal with items
 // We should ideally standardize this.
@@ -23,18 +23,21 @@ export interface IItem {
 export class ChestRandomProvider extends InfoProvider {
   unlockedSpells: boolean[];
 
-  constructor(randoms: IRandom, unlockedSpells: boolean[]) {
+  constructor(randoms: IRandom, unlockedSpells: boolean[], spellInfoProvider: SpellInfoProvider) {
     super(randoms);
     this.unlockedSpells = unlockedSpells;
+    this.spells = spellInfoProvider;
   }
+
+  spells: SpellInfoProvider;
 
   make_random_card(x: number, y: number) {
     let id = "";
     let valid = false;
 
     while (!valid) {
-      let i = this.randoms.Random(0, spells.length - 1);
-      let item = spells[i];
+      let i = this.randoms.Random(0, this.spells.spellsArr.length - 1);
+      let item = this.spells.spellsArr[i];
       id = item.id;
 
       if (item.spawn_requires_flag) {

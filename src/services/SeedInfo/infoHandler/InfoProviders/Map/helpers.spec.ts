@@ -1,18 +1,11 @@
-/**
- * @jest-environment node
- */
-
+import { beforeAll, describe, it, expect } from "vitest";
 import { loadRandom } from "../../../../../testHelpers";
 import {
-  hexRGBAtoIntRGB,
   iteratePixels,
   hexTorgba,
   rgbaToInt,
   getColor,
   imageFromHexArray,
-  getGlobalPos,
-  getLocalPos,
-  getTilePos,
 } from "../../../../imageActions/nodeImageActions";
 
 const blackSquare = {
@@ -178,6 +171,44 @@ describe("helpers", () => {
         const w = randoms.GetWidthFromPixWithOffset(test.x0, test.x1, 0);
         const h = randoms.GetWidthFromPixWithOffset(test.y0, test.y1, 0);
         expect({ w, h }).toEqual({ w: test.w, h: test.h });
+      });
+    });
+  });
+
+  describe("GetGlobalPos", () => {
+    const tests = [
+      {
+        px: 26,
+        py: 18,
+        gx: -4608,
+        gy: 2048,
+      },
+      {
+        px: 26,
+        py: 19,
+        gx: -4608,
+        gy: 2560,
+      },
+      {
+        px: 26,
+        py: 20,
+        gx: -4608,
+        gy: 3072,
+      },
+      {
+        px: 25,
+        py: 18,
+        gx: -5120,
+        gy: 2048,
+      },
+    ];
+
+    tests.forEach(test => {
+      it("Should handle converting tile coords to global coods correctly", () => {
+        const r = randoms.GetGlobalPos(test.px, test.py);
+        const gx = r.get(0);
+        const gy = r.get(1);
+        expect({ gx, gy }).toEqual({ gx: test.gx, gy: test.gy });
       });
     });
   });

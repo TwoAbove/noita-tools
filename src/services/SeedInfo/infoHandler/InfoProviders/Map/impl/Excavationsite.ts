@@ -60,6 +60,12 @@ class Excavationsite extends Base {
       entity: "data/entities/animals/wizard_hearty.xml",
       ngpluslevel: 2,
     },
+    {
+      prob: 0.01,
+      min_count: 1,
+      max_count: 1,
+      entity: "data/entities/animals/slimespirit.xml",
+    },
   ];
   g_big_enemies = [
     { prob: 0.98, min_count: 0, max_count: 0, entity: "" },
@@ -728,7 +734,7 @@ class Excavationsite extends Base {
         x - 10,
         y - 17,
         "",
-        true
+        true,
       );
     }
   }
@@ -858,7 +864,7 @@ class Excavationsite extends Base {
         x - 20,
         y - 29,
         "",
-        true
+        true,
       );
       this.EntityLoad("data/entities/buildings/teleport_meditation_cube.xml", x, y - 70);
     }

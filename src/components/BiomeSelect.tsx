@@ -1,17 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
-import { Modal, Row, Col, FormControl, Stack, ListGroup, Collapse } from "react-bootstrap";
-import Fuse from "fuse.js";
+import { Modal, ListGroup, Collapse } from "react-bootstrap";
 
-import { capitalize, Objectify } from "../services/helpers";
+import { capitalize } from "../services/helpers";
 import BiomeModifier from "./SeedInfo/SeedInfoViews/BiomeMod";
 import { BiomeModifierInfoProvider } from "../services/SeedInfo/infoHandler/InfoProviders/BiomeModifier";
 import { BiomeInfoProvider } from "../services/SeedInfo/infoHandler/InfoProviders/Biome";
-
-const options = {
-  shouldSort: false,
-  keys: ["id", "ui_name"],
-};
 
 const biomeModifierInfoProvider = new BiomeModifierInfoProvider({} as any);
 const biomeInfoProvider = new BiomeInfoProvider({} as any);
@@ -38,7 +32,7 @@ const BiomeSelect = (props: IBiomeSelectProps) => {
   }, biomeModifierInfoProvider.availableBiomeModifiers);
 
   const biomesToShow = Object.keys(availableFilteredBiomeModifiers).filter(
-    b => biomeInfoProvider.provide(b).translated_name
+    b => biomeInfoProvider.provide(b).translated_name,
   );
 
   const handleSubmit = (biome: string, modifier: string) => {

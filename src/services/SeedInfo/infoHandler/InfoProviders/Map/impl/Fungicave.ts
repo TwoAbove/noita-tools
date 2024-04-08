@@ -197,6 +197,18 @@ class Fungicave extends Base {
       entity: "data/entities/animals/drone_shield.xml",
       ngpluslevel: 2,
     },
+    {
+      prob: 0.01,
+      min_count: 1,
+      max_count: 1,
+      entity: "data/entities/animals/slimespirit.xml",
+    },
+    {
+      prob: 0.01,
+      min_count: 1,
+      max_count: 1,
+      entity: "data/entities/animals/confusespirit.xml",
+    },
   ];
   g_items = [
     { prob: 0, min_count: 0, max_count: 0, entity: "" },
@@ -348,7 +360,7 @@ class Fungicave extends Base {
         x - 10,
         y - 17,
         "",
-        true
+        true,
       );
     }
   }
@@ -368,7 +380,7 @@ class Fungicave extends Base {
       x - 10,
       y - 17,
       "",
-      true
+      true,
     );
   }
   spawn_physics_fungus(x: number, y: number) {

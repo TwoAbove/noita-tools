@@ -106,7 +106,7 @@ const FungalShifts: FC<IFungalShiftsProps> = ({ onUpdateConfig, config }) => {
     setFungalShifts([...fungalShifts]);
   };
 
-  const handleFlask = (row?: number, type?: string, val?: boolean) => {
+  const handleHeldMaterial = (row?: number, type?: string, val?: boolean) => {
     if (typeof row === "undefined") {
       return;
     }
@@ -178,7 +178,7 @@ const FungalShifts: FC<IFungalShiftsProps> = ({ onUpdateConfig, config }) => {
         useFlask={getFlask(selectOpen.row, selectOpen.type)}
         list={getList(selectOpen.type)}
         handleClose={() => handleClose()}
-        handleFlask={val => handleFlask(selectOpen.row, selectOpen.type, val)}
+        handleHeldMaterial={val => handleHeldMaterial(selectOpen.row, selectOpen.type, val)}
         handleOnUpdate={list => handleSelect(list, selectOpen.row, selectOpen.type)}
       />
     </Container>

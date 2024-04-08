@@ -16,7 +16,7 @@ const DBError = props => {
     setUploaded(true);
   };
   return (
-    <div className="position-absolute top-50 start-50 translate-middle">
+    <div className="position-absolute top-50 start-50 translate-middle fs-4 fw-light">
       <p>
         There was an error loading the database: <br />
         <code>Error: {props.error.message}</code>

@@ -14,9 +14,9 @@ import * as serviceWorker from "./serviceWorker";
 
 // import reportWebVitals from './reportWebVitals';
 
-console.log(`v${process.env.REACT_APP_VERSION}`);
+console.log(`v${APP_VERSION}`);
 
-function sendToAnalytics(metric) {
+function sendToAnalytics(metric: any) {
   const body = JSON.stringify(metric);
   // Use `navigator.sendBeacon()` if available, falling back to `fetch()`.
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -28,7 +28,7 @@ function sendToAnalytics(metric) {
 const root = createRoot(document.getElementById("root")!);
 root.render(
   // <React.StrictMode>
-  <App />
+  <App />,
   // </React.StrictMode>
 );
 

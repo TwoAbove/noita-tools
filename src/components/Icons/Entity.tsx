@@ -1,12 +1,10 @@
 import { FC, useContext, useEffect, useMemo, useState, memo } from "react";
 
-import entities from "../../services/SeedInfo/data/obj/entities.json";
-import materials from "../../services/SeedInfo/data/materials.json";
 import Icon from "./Icon";
 import NoitaTexture from "./normals/noitaTexture";
 import Spell from "./Spell";
 import { GameInfoContext } from "../SeedInfo/SeedDataOutput";
-import { Wand } from "../SeedInfo/SeedInfoViews/ShopItems";
+import { Wand } from "../SeedInfo/SeedInfoViews/Wand";
 import { Button, Modal } from "react-bootstrap";
 import { Square } from "../helpers";
 import { useSpellFavorite } from "../SeedInfo/SeedInfoViews/helpers";
@@ -15,6 +13,16 @@ import PotionSecret from "../SeedInfo/SeedInfoViews/PotionSecret";
 import PotionRandomMaterial from "../SeedInfo/SeedInfoViews/PotionRandomMaterial";
 import PowderStash from "../SeedInfo/SeedInfoViews/PowderStash";
 import { useTranslation } from "react-i18next";
+import { MaterialInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Material";
+import { EntityInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Entity";
+
+const materials = new MaterialInfoProvider({} as any);
+const entities = new EntityInfoProvider({} as any);
+
+let entitiesLoaded = false;
+Promise.all([materials.ready(), entities.ready()]).then(() => {
+  entitiesLoaded = true;
+});
 
 const questionMark =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAIAAABvrngfAAAABnRSTlMAAAAAAABupgeRAAAAJ0lEQVR4nGNkYGB4O+EhAwMDAwODcIE8AzIfjY1N6O2Eh1iU4NMCAGxKETbGzzNZAAAAAElFTkSuQmCC";
@@ -91,7 +99,7 @@ const WandModal: FC<IWandModalProps> = ({ x, y, cost, level, force_unshuffle }) 
         <Modal.Header closeButton>
           <Modal.Title>Wand</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="d-flex flex-wrap justify-content-around gap-3">
           <Wand item={wand} isFavorite={() => false} />
         </Modal.Body>
       </Modal>
@@ -101,7 +109,7 @@ const WandModal: FC<IWandModalProps> = ({ x, y, cost, level, force_unshuffle }) 
 
 const NonPreview = ({ id, action, ...rest }) => {
   const [t] = useTranslation("materials");
-  const entity = entities[id];
+  const entity = entities.provide(id);
   const name = entity.name;
   const animations = entity.animations as any;
   const image = animations.actions[action || animations.default || "default"]?.src[0];
@@ -121,7 +129,7 @@ interface EntityProps {
   onClick?: () => unknown;
 }
 
-const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = false, ...rest }) => {
+export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = false, ...rest }) => {
   const [t] = useTranslation("materials");
 
   // TODO: maybe ENUM is better?
@@ -175,15 +183,19 @@ const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = fals
     return <Spell id="BOMB" {...rest} />;
   }
 
+  const entity = entities.provide(id);
+
+  if (!entity) {
+    return <Icon uri={questionMark} title={id} />;
+  }
+
   if (id.includes("goldnugget")) {
-    const entity = entities[id];
-    const material = materials[entity.physicsImage.material];
+    const material = materials.provide(entity.physicsImage.material);
     return <MemoizedNormalMapRenderer material={material} image={entity.physicsImage.image} {...rest} />;
   }
 
   if (id === "data/entities/items/pickup/powder_stash.xml") {
     if (!preview) {
-      const entity = entities[id] as any;
       const name = entity.name;
       const animations = entity.animations;
       const image = animations.actions[action || animations.default || "default"]?.src[0];
@@ -191,12 +203,6 @@ const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = fals
     }
     const { x, y } = entityParams;
     return <PowderStash x={x} y={y} />;
-  }
-
-  const entity = entities[id];
-
-  if (!entity) {
-    return <Icon uri={questionMark} title={id} />;
   }
 
   if (entity.itemImage && entity.itemImage.image) {
@@ -220,7 +226,7 @@ const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = fals
   }
 
   if (entity.physicsImage) {
-    const material = materials[entity.physicsImage.material];
+    const material = materials.provide(entity.physicsImage.material);
     return <MemoizedNormalMapRenderer material={material} image={entity.physicsImage.image} {...rest} />;
   }
   return <Icon uri={questionMark} title={id} />;

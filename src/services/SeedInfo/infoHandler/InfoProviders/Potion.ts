@@ -1,4 +1,3 @@
-import { IRandom } from "../../random";
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
 import { GameGetDateAndTimeLocal } from "./helpers";
@@ -113,6 +112,8 @@ export class PotionInfoProvider extends InfoProvider {
         potion_material = "magic_liquid_hp_regeneration";
       } else if (this.randoms.Random(200, 100000) <= 250) {
         potion_material = "purifying_powder";
+      } else if (this.randoms.Random(250, 100000) <= 500) {
+        potion_material = "magic_liquid_weakness";
       } else {
         const p = this.randoms.randomFromArray(materials_magic);
         potion_material = p.material;
@@ -122,14 +123,26 @@ export class PotionInfoProvider extends InfoProvider {
       potion_material = p.material;
     }
 
-    const [year, month, day, h, m, s, jussi] = GameGetDateAndTimeLocal();
+    const [year, month, day, h, m, s, jussi, mammi] = GameGetDateAndTimeLocal();
 
     if (((month === 5 && day === 1) || (month === 4 && day === 30)) && this.randoms.Random(0, 100) <= 20) {
-      potion_material = "sima";
+      if (this.randoms.Random(0, 5) <= 4) {
+        potion_material = "sima";
+      } else {
+        potion_material = "beer";
+      }
     }
 
     if (jussi && this.randoms.Random(0, 100) <= 9) {
-      potion_material = "juhannussima";
+      if (this.randoms.Random(0, 3) <= 2) {
+        potion_material = "juhannussima";
+      } else {
+        potion_material = "beer";
+      }
+    }
+
+    if (mammi && this.randoms.Random(0, 100) <= 10) {
+      potion_material = "mammi";
     }
 
     if (month === 2 && day === 14 && this.randoms.Random(0, 100) <= 8) {

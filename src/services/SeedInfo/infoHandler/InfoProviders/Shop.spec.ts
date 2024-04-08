@@ -1,10 +1,10 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { ShopInfoProvider, IShopType } from "./Shop";
 import { WandInfoProvider } from "./Wand";
 import { loadRandom } from "../../../../testHelpers";
+import { SpellInfoProvider } from "./Spell";
+
+const spellInfoProvider = new SpellInfoProvider({} as any);
 
 describe("ShopInfoProvider", () => {
   describe("#provide", () => {
@@ -36,7 +36,9 @@ describe("ShopInfoProvider", () => {
       tests.forEach((t, i) => {
         it(`Should generate correct output #${i}`, async () => {
           const randoms = await loadRandom();
-          const ap = new ShopInfoProvider(randoms, new WandInfoProvider(randoms));
+          const wandInfoProvider = new WandInfoProvider(randoms);
+          await wandInfoProvider.ready();
+          const ap = new ShopInfoProvider(randoms, wandInfoProvider, spellInfoProvider);
           randoms.SetWorldSeed(t.seed);
           const r = ap.provide();
           const res = r[t.ans.row];
@@ -52,16 +54,35 @@ describe("ShopInfoProvider", () => {
           ans: {
             row: 2,
             items: [
-              "EXPLOSION_REMOVE",
-              "MATTER_EATER",
+              "RECHARGE",
+              "CLOUD_ACID",
               "TELEPORT_PROJECTILE_CLOSER",
-              "QUANTUM_SPLIT",
-              "LASER_EMITTER_WIDER",
-              "BOUNCE_SPARK",
-              "BOMB_HOLY",
-              "GRENADE_TIER_2",
+              "MANA_REDUCE",
+              "EXPLOSION_TINY",
+              "ROCKET_OCTAGON",
+              "PROPANE_TANK",
+              "GRENADE_TRIGGER",
               "BULLET_TIMER",
               "LIGHTNING",
+            ],
+          },
+        },
+
+        {
+          seed: 123,
+          ans: {
+            row: 6,
+            items: [
+              "RANDOM_EXPLOSION",
+              "ROCKET_TIER_3",
+              "HOMING_CURSOR",
+              "CURSE_WITHER_MELEE",
+              "RECHARGE",
+              "RECOIL_DAMPER",
+              "BLACK_HOLE_BIG",
+              "HEAVY_SPREAD",
+              "BULLET_TIMER",
+              "MINE",
             ],
           },
         },
@@ -70,7 +91,9 @@ describe("ShopInfoProvider", () => {
       tests.forEach((t, i) => {
         it(`Should generate correct output #${i}`, async () => {
           const randoms = await loadRandom();
-          const ap = new ShopInfoProvider(randoms, new WandInfoProvider(randoms));
+          const wandInfoProvider = new WandInfoProvider(randoms);
+          await wandInfoProvider.ready();
+          const ap = new ShopInfoProvider(randoms, wandInfoProvider, spellInfoProvider);
           randoms.SetWorldSeed(t.seed);
           const r = ap.provide();
           const res = r[t.ans.row];

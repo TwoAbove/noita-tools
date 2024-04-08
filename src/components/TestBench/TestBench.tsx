@@ -8,7 +8,7 @@ import GameInfoProvider from "../../services/SeedInfo/infoHandler";
 import { SpellInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Spell";
 import { RuleType } from "../../services/SeedInfo/infoHandler/IRule";
 import { SeedSearcher } from "../../services/seedSearcher";
-import SeedSolver from "../../services/seedSolverHandler";
+import { SeedSolver } from "../../services/seedSolverHandler";
 import useLocalStorage from "../../services/useLocalStorage";
 import Icon from "../Icons/Icon";
 import Spell from "../Icons/Spell";
@@ -16,13 +16,14 @@ import { useGameInfoProvider } from "../SeedInfo/SeedDataOutput";
 import MapComponent from "../SeedInfo/SeedInfoViews/Map";
 
 const perf = async (infoProvider: GameInfoProvider) => {
-  infoProvider.randoms.SetWorldSeed(299840293);
+  const seed = 299840293;
+  infoProvider.randoms.SetWorldSeed(seed);
   const ans = {
-    coalmine: infoProvider.providers.map.provide(34, 15, 299840293)!.interestPoints,
-    excavationSite: infoProvider.providers.map.provide(34, 17, 299840293)!.interestPoints,
-    snowCave: infoProvider.providers.map.provide(34, 20, 299840293)!.interestPoints,
-    snowcastle: infoProvider.providers.map.provide(34, 24, 299840293)!.interestPoints,
-    vault: infoProvider.providers.map.provide(34, 31, 299840293)!.interestPoints,
+    coalmine: infoProvider.providers.map.provide(34, 15, seed)!.interestPoints,
+    excavationSite: infoProvider.providers.map.provide(34, 17, seed)!.interestPoints,
+    snowCave: infoProvider.providers.map.provide(34, 20, seed)!.interestPoints,
+    snowcastle: infoProvider.providers.map.provide(34, 24, seed)!.interestPoints,
+    vault: infoProvider.providers.map.provide(34, 31, seed)!.interestPoints,
   };
   console.log(ans);
 };
@@ -67,7 +68,7 @@ const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
         placeholder="iter"
       />
       <Button onClick={() => perf(infoProvider)}>Test</Button>
-      <MapComponent mapPart="MainPath" worldOffset={worldOffset} infoProvider={infoProvider} />
+      <MapComponent mapPart="coalmines" worldOffset={worldOffset} infoProvider={infoProvider} />
     </div>
   );
 };
@@ -75,8 +76,7 @@ const GameInfoProviderView = (props: { infoProvider: GameInfoProvider }) => {
 const TestBench = () => {
   // const seed = '1674055821';
   const seed = "299840293";
-  const [unlockedSpells] = useLocalStorage("unlocked-spells", Array(393).fill(true));
-  const [gameInfoProvider] = useGameInfoProvider(seed, unlockedSpells);
+  const [gameInfoProvider] = useGameInfoProvider(seed);
 
   return (
     <Container>

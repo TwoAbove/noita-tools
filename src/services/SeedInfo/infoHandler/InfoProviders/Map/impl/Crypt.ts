@@ -90,6 +90,12 @@ class Crypt extends Base {
       entity: "data/entities/animals/wizard_weaken.xml",
       ngpluslevel: 1,
     },
+    {
+      prob: 0.01,
+      min_count: 1,
+      max_count: 1,
+      entity: "data/entities/animals/weakspirit.xml",
+    },
   ];
   g_big_enemies = [
     { prob: 0.4, min_count: 0, max_count: 0, entity: "" },
@@ -873,7 +879,7 @@ class Crypt extends Base {
         x - 10,
         y - 17,
         "",
-        true
+        true,
       );
     }
   }

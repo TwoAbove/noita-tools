@@ -1,14 +1,14 @@
 import { BaseComputeProvider } from "./BaseComputeProvider";
 import { ChunkProvider, Status } from "./ChunkProvider";
 import { ILogicRules } from "../../services/SeedInfo/infoHandler/IRule";
-import SeedSolver from "../seedSolverHandler";
+import { SeedSolver } from "../seedSolverHandler";
 
 export class CallbackComputeHandler extends BaseComputeProvider {
   constructor(
     public onUpdate: (status: Status) => void,
     public chunkProvider: ChunkProvider,
     public rules: ILogicRules,
-    public seedSolver: SeedSolver
+    public seedSolver: SeedSolver,
   ) {
     super(onUpdate, chunkProvider, rules);
   }

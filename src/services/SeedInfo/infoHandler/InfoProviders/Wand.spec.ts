@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { WandInfoProvider } from "./Wand";
 import { loadRandom } from "../../../../testHelpers";
 
@@ -79,8 +76,8 @@ describe("WandInfoProvider", () => {
             "GRENADE_TRIGGER",
             "GRENADE_TRIGGER",
             "HITFX_CRITICAL_BLOOD",
-            "EXPLOSION_TINY",
-            "FIREWORK",
+            "EXPLOSION_REMOVE",
+            "NUKE",
             "SUMMON_ROCK",
             "TNTBOX_BIG",
             "METEOR",
@@ -128,8 +125,8 @@ describe("WandInfoProvider", () => {
             "GRENADE_TRIGGER",
             "GRENADE_TRIGGER",
             "HITFX_CRITICAL_BLOOD",
-            "EXPLOSION_TINY",
-            "FIREWORK",
+            "EXPLOSION_REMOVE",
+            "NUKE",
             "SUMMON_ROCK",
             "TNTBOX_BIG",
             "METEOR",
@@ -177,8 +174,8 @@ describe("WandInfoProvider", () => {
             "GRENADE_TRIGGER",
             "GRENADE_TRIGGER",
             "HITFX_CRITICAL_BLOOD",
-            "EXPLOSION_TINY",
-            "FIREWORK",
+            "EXPLOSION_REMOVE",
+            "NUKE",
             "SUMMON_ROCK",
             "TNTBOX_BIG",
             "METEOR",
@@ -193,6 +190,7 @@ describe("WandInfoProvider", () => {
       it(`Should generate correct output #${i}`, async () => {
         const randoms = await loadRandom();
         const ap = new WandInfoProvider(randoms);
+        await ap.ready();
         randoms.SetWorldSeed(t.seed);
         const res = ap.provide(
           t.params.x,

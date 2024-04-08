@@ -8,7 +8,7 @@
     "related_projectiles": ["data/entities/projectiles/bomb.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3,4,5,6",
-    "spawn_probability": "1,1,1,1,1,1,1",
+    "spawn_probability": "1,1,1,1,0.5,0.5,0.1",
     "price": 200,
     "mana": 25,
     "max_uses": 3,
@@ -18,9 +18,9 @@
       "1": 1,
       "2": 1,
       "3": 1,
-      "4": 1,
-      "5": 1,
-      "6": 1
+      "4": 0.5,
+      "5": 0.5,
+      "6": 0.1
     }
   },
   {
@@ -88,13 +88,13 @@
     "related_projectiles": ["data/entities/projectiles/deck/light_bullet.xml"],
     "type": 0,
     "spawn_level": "1,2,3",
-    "spawn_probability": "0.5,0.5,0.5",
+    "spawn_probability": "0.5,0.5,0.75",
     "price": 140,
     "mana": 10,
     "spawn_probabilities": {
       "1": 0.5,
       "2": 0.5,
-      "3": 0.5
+      "3": 0.75
     }
   },
   {
@@ -106,15 +106,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/bullet.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "1,1,1,1,1",
+    "spawn_probability": "1,1,1,0.8,0.5",
     "price": 150,
     "mana": 20,
     "spawn_probabilities": {
       "1": 1,
       "2": 1,
       "3": 1,
-      "4": 1,
-      "5": 1
+      "4": 0.8,
+      "5": 0.5
     }
   },
   {
@@ -126,14 +126,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/bullet.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "spawn_probability": "0.5,0.5,0.5,0.6,0.5",
     "price": 190,
     "mana": 35,
     "spawn_probabilities": {
       "1": 0.5,
       "2": 0.5,
       "3": 0.5,
-      "4": 0.5,
+      "4": 0.6,
       "5": 0.5
     }
   },
@@ -146,7 +146,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/bullet.xml"],
     "type": 0,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.6",
     "price": 190,
     "mana": 35,
     "spawn_probabilities": {
@@ -154,7 +154,7 @@
       "3": 0.5,
       "4": 0.5,
       "5": 0.5,
-      "6": 0.5
+      "6": 0.6
     }
   },
   {
@@ -187,14 +187,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/bullet_heavy.xml"],
     "type": 0,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "spawn_probability": "0.5,0.5,0.5,0.7,0.5",
     "price": 240,
     "mana": 40,
     "spawn_probabilities": {
       "2": 0.5,
       "3": 0.5,
       "4": 0.5,
-      "5": 0.5,
+      "5": 0.7,
       "6": 0.5
     }
   },
@@ -207,7 +207,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/bullet_heavy.xml"],
     "type": 0,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "spawn_probability": "0.5,0.5,0.5,0.5,0.7",
     "price": 240,
     "mana": 40,
     "spawn_probabilities": {
@@ -215,7 +215,7 @@
       "3": 0.5,
       "4": 0.5,
       "5": 0.5,
-      "6": 0.5
+      "6": 0.7
     }
   },
   {
@@ -299,6 +299,26 @@
     }
   },
   {
+    "id": "HOOK",
+    "name": "$action_hook",
+    "description": "$actiondesc_hook",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAjklEQVR4AcXBMQ7CIBSA4f+5suBt8AY9As505yzuOHMUehu6OD9pUpMOxmBr4vfxd0KnmI36wbO4nO/CN2I2yoY2rE50uF0fwsY0j+xWalD20oY9Sg264A1hFbNRP3icTUzziLOJT6ShV6lBFxylDUeVGpSjSg3K6kSHmI2y4WziRegUs1E/eJxNSMOvPAHsITuMQKoKPQAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bullet_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/hook.xml"],
+    "type": 0,
+    "spawn_level": "1,2,3,4,5",
+    "spawn_probability": "0.1,0.3,0.4,0.2,0.1",
+    "price": 120,
+    "mana": 30,
+    "spawn_probabilities": {
+      "1": 0.1,
+      "2": 0.3,
+      "3": 0.4,
+      "4": 0.2,
+      "5": 0.1
+    }
+  },
+  {
     "id": "BLACK_HOLE",
     "name": "$action_black_hole",
     "description": "$actiondesc_black_hole",
@@ -343,6 +363,29 @@
     }
   },
   {
+    "id": "WHITE_HOLE",
+    "name": "$action_white_hole",
+    "description": "$actiondesc_white_hole",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABdUlEQVR4Ac3BsWqDQAAG4N84BrJJBsngLIIUXFwKDh3KLR1Khw5yFN/DvEKnwiHSsUuHRArtYOji0CxXRAhZHIoh5KgUCqWbVTAgJcmc78PxIJS5aBHKXLQUzakUzamwh4QaocyNQu8eNUKZG4XevaI5FWq2aqCRFCkaIo8ldEjoIJQFUejdKJpT2aqBXZIihchjCS0ZLUJZEIXejaI5la0aaJi6hbVYoWs0GKKU+/7PVz5GrYc9TN2Cf3cNU7dwiIwaoewlCr1LRXMqWzXQWIsVFm+f4NkcXeenV/gtBUq57/985eMeDuDZHP89vT6gq4daFHpnhLJA5LGUFCkapm6hy9QtbCVFCpHHEmo97MGzObZM3YJ/dw1Tt/CfjNaSTyeEsoDPbk9Kue+PBkNsrcUKi7dP8GyOpEgh8lhCS0aNUOYu+fR9yacTQpnLZ7cXpdz3P743GA2GaDzyZ3x8byDyWMIuhDIXLUKZi5aiOZWiORWO1h/2spP+Y0Lx+AAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/white_hole.xml"],
+    "type": 0,
+    "spawn_level": "0,2,4,6,10",
+    "spawn_probability": "0.05,0.05,0.1,0.2,0.5",
+    "price": 200,
+    "mana": 180,
+    "max_uses": 3,
+    "never_unlimited": true,
+    "custom_xml_file": "data/entities/misc/custom_cards/white_hole.xml",
+    "spawn_probabilities": {
+      "0": 0.05,
+      "2": 0.05,
+      "4": 0.1,
+      "6": 0.2,
+      "10": 0.5
+    }
+  },
+  {
     "id": "BLACK_HOLE_BIG",
     "name": "$action_black_hole_big",
     "description": "$actiondesc_black_hole_big",
@@ -362,6 +405,28 @@
       "5": 0.8,
       "6": 0.8,
       "10": 0.5
+    }
+  },
+  {
+    "id": "WHITE_HOLE_BIG",
+    "name": "$action_white_hole_big",
+    "description": "$actiondesc_white_hole_big",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABU0lEQVR4AaXBsUrkQACA4X8SrJYEjhAsxCLVFkNgmmks8xq+g+ADCJF7gIOrfJoUFqK3zUJYuFRTHIbgEJEE5IqDXLLswigRF/w+wYw4yQZmWFMI3hE44iQbGC3DlCjgjbaHqiuZWFMIdgQ7cZINZycpEyU1682Kj9w9llhTCEY+ozjJhrOTlL3G1sxRUtPYmtPwmGd/kb++mGuPAympyW/OUVLjEnGSDcswJQr4lJKa9WbFpO2h6ko8RlHA1tXlBS4lNa71ZsVESU0UsOUvviX5aXjM5Pb+AVdja+Y0tmbyp3/C44s8DnR1ecEcj1Hb86nvP37ianu2PGsKUXUle0pqDlF1JdYUwsOhpCa/OUdJzaF8Rq8v5vrZX+RHf//x+1fLerPCpaSmsTV7d48l1hSCkcARJ9nAaBmmRAFvtD1UXcnEmkKwI5gRJ9nADGsKwTv/Ae8sdhLyIaX8AAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_big_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/white_hole_big.xml"],
+    "type": 1,
+    "spawn_level": "1,3,5,6,10",
+    "spawn_probability": "0.05,0.05,0.1,0.4,0.2",
+    "price": 320,
+    "mana": 240,
+    "max_uses": 6,
+    "custom_xml_file": "data/entities/misc/custom_cards/white_hole_big.xml",
+    "spawn_probabilities": {
+      "1": 0.05,
+      "3": 0.05,
+      "5": 0.1,
+      "6": 0.4,
+      "10": 0.2
     }
   },
   {
@@ -385,6 +450,26 @@
     }
   },
   {
+    "id": "WHITE_HOLE_GIGA",
+    "name": "$action_white_hole_giga",
+    "description": "$actiondesc_white_hole_giga",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABEElEQVR4AaXBsUrDQACA4T+nIFSS5QgdisJNEcJBlgPpeK/hCzgV+gCFSB+g0MkX8DU6OClZbsncTYQiCIKOZ8VU4plK0O/jv6JUWU+HzXoV0cPheKRpe3rhk8KztVmvIn4h2JpNJ+zIGGQM45EmSzSpsj5V1rPHwdnpeXl7d89OkRseNw98GBzBSTJkEA15GxyXr8/rKwKCgKsrQjKGLNGkynoCgp5kDFmiSZX1tAj2mE0nhGTMD4JGkRva5oslXbJEkyrraQgarq7oQ8Z8I/iDLNGkynq2BD0UuWEfQYciN7S5uqJNxnwRBIrcUF5fUOSGPkSRG9pcXVFe3uDqitBsOiEkXF0RcnVFl/liSegdQLJA7w7bspcAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/black_hole_big_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/white_hole_giga.xml"],
+    "spawn_requires_flag": "card_unlocked_black_hole",
+    "type": 1,
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "price": 600,
+    "mana": 500,
+    "max_uses": 6,
+    "never_unlimited": true,
+    "custom_xml_file": "data/entities/misc/custom_cards/white_hole_giga.xml",
+    "spawn_probabilities": {
+      "10": 1
+    }
+  },
+  {
     "id": "TENTACLE_PORTAL",
     "name": "$action_tentacle_portal",
     "description": "$actiondesc_tentacle_portal",
@@ -393,7 +478,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/tentacle_portal.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4,10",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.2",
+    "spawn_probability": "0.4,0.4,0.4,0.5,0.2",
     "price": 220,
     "mana": 140,
     "max_uses": 5,
@@ -401,7 +486,7 @@
       "1": 0.4,
       "2": 0.4,
       "3": 0.4,
-      "4": 0.4,
+      "4": 0.5,
       "10": 0.2
     }
   },
@@ -509,12 +594,12 @@
     "related_projectiles": ["data/entities/projectiles/deck/spitter_tier_3.xml"],
     "type": 0,
     "spawn_level": "4,5,6",
-    "spawn_probability": "0.5,0.5,0.5",
+    "spawn_probability": "0.5,0.65,0.5",
     "price": 260,
     "mana": 45,
     "spawn_probabilities": {
       "4": 0.5,
-      "5": 0.5,
+      "5": 0.65,
       "6": 0.5
     }
   },
@@ -527,12 +612,12 @@
     "related_projectiles": ["data/entities/projectiles/deck/bubbleshot.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3",
-    "spawn_probability": "1,1,1,0.5",
+    "spawn_probability": "1,0.6,1,0.5",
     "price": 100,
     "mana": 5,
     "spawn_probabilities": {
       "0": 1,
-      "1": 1,
+      "1": 0.6,
       "2": 1,
       "3": 0.5
     }
@@ -564,13 +649,13 @@
     "related_projectiles": ["data/entities/projectiles/deck/disc_bullet.xml"],
     "type": 0,
     "spawn_level": "0,2,4",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "1,1,0.6",
     "price": 120,
     "mana": 20,
     "spawn_probabilities": {
       "0": 1,
       "2": 1,
-      "4": 1
+      "4": 0.6
     }
   },
   {
@@ -581,15 +666,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/disc_bullet_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/disc_bullet_big.xml"],
     "type": 0,
-    "spawn_level": "0,2,4,10",
-    "spawn_probability": "0.6,0.6,0.6,0.1",
+    "spawn_level": "0,2,4",
+    "spawn_probability": "0.6,0.7,0.8",
     "price": 180,
     "mana": 38,
     "spawn_probabilities": {
       "0": 0.6,
-      "2": 0.6,
-      "4": 0.6,
-      "10": 0.1
+      "2": 0.7,
+      "4": 0.8
     }
   },
   {
@@ -602,14 +686,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/disc_bullet_bigger.xml"],
     "type": 0,
     "spawn_level": "2,3,5,10",
-    "spawn_probability": "0.1,0.6,1.0,0.1",
+    "spawn_probability": "0.1,0.6,1,0.4",
     "price": 270,
     "mana": 70,
     "spawn_probabilities": {
       "2": 0.1,
       "3": 0.6,
       "5": 1,
-      "10": 0.1
+      "10": 0.4
     }
   },
   {
@@ -657,13 +741,13 @@
     "related_projectiles": ["data/entities/projectiles/deck/rubber_ball.xml"],
     "type": 0,
     "spawn_level": "0,1,6",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "1,1,0.2",
     "price": 60,
     "mana": 5,
     "spawn_probabilities": {
       "0": 1,
       "1": 1,
-      "6": 1
+      "6": 0.2
     }
   },
   {
@@ -675,14 +759,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/arrow.xml"],
     "type": 0,
     "spawn_level": "1,2,4,5",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "1,1,0.6,0.3",
     "price": 140,
     "mana": 15,
     "spawn_probabilities": {
       "1": 1,
       "2": 1,
-      "4": 1,
-      "5": 1
+      "4": 0.6,
+      "5": 0.3
     }
   },
   {
@@ -694,14 +778,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/pollen.xml"],
     "type": 0,
     "spawn_level": "0,1,3,4",
-    "spawn_probability": "0.6,1,1,0.8",
+    "spawn_probability": "0.6,1,1,0.6",
     "price": 110,
     "mana": 10,
     "spawn_probabilities": {
       "0": 0.6,
       "1": 1,
       "3": 1,
-      "4": 0.8
+      "4": 0.6
     }
   },
   {
@@ -713,14 +797,33 @@
     "related_projectiles": ["data/entities/projectiles/deck/lance.xml"],
     "type": 0,
     "spawn_level": "1,2,5,6",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "0.9,1,0.8,1",
     "price": 180,
     "mana": 30,
     "custom_xml_file": "data/entities/misc/custom_cards/lance.xml",
     "spawn_probabilities": {
-      "1": 1,
+      "1": 0.9,
       "2": 1,
-      "5": 1,
+      "5": 0.8,
+      "6": 1
+    }
+  },
+  {
+    "id": "LANCE_HOLY",
+    "name": "$action_holy",
+    "description": "$actiondesc_holy",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAeklEQVR4Ae3BsQ2DMBCG0f9WwAPReyVcnkei90LHCh+2hBCKIpIU6XhPjz+gZQZdMISjXxCOOlpGB8LRC9MNwrFUjJbRvOq0VVkqps7UEY6mRdqqNC36lg26QTiWitEymledtipLxXSHcNTRMjoQjj6hZQZdMISjx1s7LehKrlePregAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/lance_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/lance_holy.xml"],
+    "type": 0,
+    "spawn_level": "3,5,6",
+    "spawn_probability": "0.5,0.8,1",
+    "price": 250,
+    "mana": 120,
+    "custom_xml_file": "data/entities/misc/custom_cards/lance_holy.xml",
+    "spawn_probabilities": {
+      "3": 0.5,
+      "5": 0.8,
       "6": 1
     }
   },
@@ -733,7 +836,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/rocket.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "1,1,1,0.5,0.5",
+    "spawn_probability": "1,1,1,0.5,0.3",
     "price": 220,
     "mana": 70,
     "max_uses": 10,
@@ -743,7 +846,7 @@
       "2": 1,
       "3": 1,
       "4": 0.5,
-      "5": 0.5
+      "5": 0.3
     }
   },
   {
@@ -755,7 +858,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/rocket_tier_2.xml"],
     "type": 0,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.5,1,1,1,1",
+    "spawn_probability": "0.5,1,1,0.8,0.5",
     "price": 240,
     "mana": 90,
     "max_uses": 8,
@@ -764,8 +867,8 @@
       "2": 0.5,
       "3": 1,
       "4": 1,
-      "5": 1,
-      "6": 1
+      "5": 0.8,
+      "6": 0.5
     }
   },
   {
@@ -799,7 +902,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/grenade.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3,4",
-    "spawn_probability": "1,1,0.5,0.25,0.25",
+    "spawn_probability": "1,1,0.5,0.25,0.2",
     "price": 170,
     "mana": 50,
     "max_uses": 25,
@@ -809,7 +912,7 @@
       "1": 1,
       "2": 0.5,
       "3": 0.25,
-      "4": 0.25
+      "4": 0.2
     }
   },
   {
@@ -821,7 +924,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/grenade.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3,4,5",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.5,1",
+    "spawn_probability": "0.5,0.5,0.2,0.5,0.5,1",
     "price": 210,
     "max_uses": 25,
     "custom_xml_file": "data/entities/misc/custom_cards/grenade_trigger.xml",
@@ -829,7 +932,7 @@
     "spawn_probabilities": {
       "0": 0.5,
       "1": 0.5,
-      "2": 0.5,
+      "2": 0.2,
       "3": 0.5,
       "4": 0.5,
       "5": 1
@@ -844,7 +947,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/grenade_tier_2.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.5,1,1,1,1",
+    "spawn_probability": "0.5,1,1,1,0.5",
     "price": 220,
     "mana": 90,
     "max_uses": 20,
@@ -854,7 +957,7 @@
       "2": 1,
       "3": 1,
       "4": 1,
-      "5": 1
+      "5": 0.5
     }
   },
   {
@@ -888,7 +991,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/grenade_anti.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3,4,5",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.4,0.7,0.4,0.4,0.4",
     "price": 170,
     "mana": 50,
     "max_uses": 25,
@@ -896,7 +999,7 @@
     "spawn_probabilities": {
       "0": 0.4,
       "1": 0.4,
-      "2": 0.4,
+      "2": 0.7,
       "3": 0.4,
       "4": 0.4,
       "5": 0.4
@@ -934,15 +1037,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/mine.xml"],
     "type": 0,
     "spawn_level": "1,3,4,6",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "1,0.75,1,0.5",
     "price": 200,
     "mana": 20,
     "max_uses": 15,
     "spawn_probabilities": {
       "1": 1,
-      "3": 1,
+      "3": 0.75,
       "4": 1,
-      "6": 1
+      "6": 0.5
     }
   },
   {
@@ -972,14 +1075,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/pipe_bomb.xml"],
     "type": 0,
     "spawn_level": "2,3,4",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "1,1,0.6",
     "price": 200,
     "mana": 20,
     "max_uses": 20,
     "spawn_probabilities": {
       "2": 1,
       "3": 1,
-      "4": 1
+      "4": 0.6
     }
   },
   {
@@ -991,15 +1094,35 @@
     "related_projectiles": ["data/entities/projectiles/deck/pipe_bomb.xml"],
     "type": 0,
     "spawn_level": "2,3,4,5",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "0.6,0.8,1,0.8",
     "price": 230,
     "mana": 20,
     "max_uses": 20,
     "spawn_probabilities": {
-      "2": 1,
-      "3": 1,
+      "2": 0.6,
+      "3": 0.8,
       "4": 1,
-      "5": 1
+      "5": 0.8
+    }
+  },
+  {
+    "id": "FISH",
+    "name": "$action_fish",
+    "description": "$actiondesc_fish",
+    "spawn_requires_flag": "card_unlocked_fish",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmUlEQVR4AaXBsQ2CQBSA4f+9WFq4ERV7XO8AN8MtYKhuA2obQ8ICFFdADIWNCzjBUxNNiEGa931iZngoToqT4qQ4KU6Kk7KhislCLsYGZUXIxXjpU5Tb9UzIxfhDzIw1VUx2uO9ZOlUX6ubBOHTCh7JhnlrmqeWrbh6MQycs7FgRcrE+RSFF3qqYrE9R4MgvMTM8FCfFSXF6AnYtM95hII+kAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/fish_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/fish.xml"],
+    "type": 0,
+    "spawn_level": "3,4,5",
+    "spawn_probability": "0.01,0.01,0.01",
+    "price": 250,
+    "mana": 90,
+    "max_uses": 20,
+    "spawn_probabilities": {
+      "3": 0.01,
+      "4": 0.01,
+      "5": 0.01
     }
   },
   {
@@ -1032,13 +1155,13 @@
     "related_projectiles": ["data/entities/projectiles/deck/duck.xml"],
     "type": 0,
     "spawn_level": "3,4,5",
-    "spawn_probability": "0.6,0.8,0.6",
+    "spawn_probability": "0.8,0.5,0.6",
     "price": 200,
     "mana": 100,
     "max_uses": 20,
     "spawn_probabilities": {
-      "3": 0.6,
-      "4": 0.8,
+      "3": 0.8,
+      "4": 0.5,
       "5": 0.6
     }
   },
@@ -1051,8 +1174,8 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/exploding_deer_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/worm_shot.xml"],
     "type": 0,
-    "spawn_level": "3,4,5",
-    "spawn_probability": "0.6,0.8,0.6",
+    "spawn_level": "3,4,5,6,10",
+    "spawn_probability": "0.6,0.8,0.6,0.4,0.6",
     "price": 200,
     "mana": 150,
     "max_uses": 10,
@@ -1060,7 +1183,9 @@
     "spawn_probabilities": {
       "3": 0.6,
       "4": 0.8,
-      "5": 0.6
+      "5": 0.6,
+      "6": 0.4,
+      "10": 0.6
     }
   },
   {
@@ -1072,14 +1197,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/bomb_detonator.xml"],
     "type": 1,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "1,1,1,1,1",
+    "spawn_probability": "0.5,1,0.4,0.5,1",
     "price": 120,
     "mana": 50,
     "spawn_probabilities": {
-      "2": 1,
+      "2": 0.5,
       "3": 1,
-      "4": 1,
-      "5": 1,
+      "4": 0.4,
+      "5": 0.5,
       "6": 1
     }
   },
@@ -1111,15 +1236,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/megalaser.xml"],
     "type": 0,
     "spawn_level": "3,4,5,6,10",
-    "spawn_probability": "0.6,0.6,0.6,0.6,0.1",
+    "spawn_probability": "0.6,0.6,0.8,0.6,0.3",
     "price": 300,
     "mana": 110,
     "spawn_probabilities": {
       "3": 0.6,
       "4": 0.6,
-      "5": 0.6,
+      "5": 0.8,
       "6": 0.6,
-      "10": 0.1
+      "10": 0.3
     }
   },
   {
@@ -1131,14 +1256,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/lightning.xml"],
     "type": 0,
     "spawn_level": "1,2,5,6",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "1,0.9,0.7,1",
     "price": 250,
     "mana": 70,
     "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
     "spawn_probabilities": {
       "1": 1,
-      "2": 1,
-      "5": 1,
+      "2": 0.9,
+      "5": 0.7,
       "6": 1
     }
   },
@@ -1151,13 +1276,13 @@
     "related_projectiles": ["data/entities/projectiles/deck/ball_lightning.xml"],
     "type": 0,
     "spawn_level": "1,2,4,5",
-    "spawn_probability": "0.2,0.2,1,1",
+    "spawn_probability": "0.2,0.4,1,1",
     "price": 250,
     "mana": 70,
     "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
     "spawn_probabilities": {
       "1": 0.2,
-      "2": 0.2,
+      "2": 0.4,
       "4": 1,
       "5": 1
     }
@@ -1171,12 +1296,12 @@
     "related_projectiles": ["data/entities/projectiles/deck/orb_laseremitter.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4",
-    "spawn_probability": "0.2,1,1,0.5",
+    "spawn_probability": "0.2,0.8,1,0.5",
     "price": 180,
     "mana": 60,
     "spawn_probabilities": {
       "1": 0.2,
-      "2": 1,
+      "2": 0.8,
       "3": 1,
       "4": 0.5
     }
@@ -1190,13 +1315,13 @@
     "related_projectiles": ["data/entities/projectiles/deck/orb_laseremitter.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.2,1,0.2,0.5,1",
+    "spawn_probability": "0.2,0.9,0.3,0.5,1",
     "price": 200,
     "mana": 80,
     "spawn_probabilities": {
       "1": 0.2,
-      "2": 1,
-      "3": 0.2,
+      "2": 0.9,
+      "3": 0.3,
       "4": 0.5,
       "5": 1
     }
@@ -1248,14 +1373,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/powerdigger.xml"],
     "type": 0,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.5,1,1",
+    "spawn_probability": "0.5,1,0.8",
     "price": 110,
     "mana": 0,
     "sound_loop_tag": "sound_digger",
     "spawn_probabilities": {
       "2": 0.5,
       "3": 1,
-      "4": 1
+      "4": 0.8
     }
   },
   {
@@ -1284,14 +1409,15 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/chainsaw_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/luminous_drill.xml"],
     "type": 0,
-    "spawn_level": "0,2",
-    "spawn_probability": "1,1",
+    "spawn_level": "0,2,10",
+    "spawn_probability": "1,1,0.1",
     "price": 150,
     "mana": 10,
     "sound_loop_tag": "sound_digger",
     "spawn_probabilities": {
       "0": 1,
-      "2": 1
+      "2": 1,
+      "10": 0.1
     }
   },
   {
@@ -1302,14 +1428,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/chainsaw_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/luminous_drill.xml"],
     "type": 0,
-    "spawn_level": "0,2",
-    "spawn_probability": "1,1",
+    "spawn_level": "0,2,6,10",
+    "spawn_probability": "1,1,0.2,0.1",
     "price": 220,
     "mana": 30,
     "sound_loop_tag": "sound_digger",
     "spawn_probabilities": {
       "0": 1,
-      "2": 1
+      "2": 1,
+      "6": 0.2,
+      "10": 0.1
     }
   },
   {
@@ -1322,15 +1450,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/tentacle.xml"],
     "type": 0,
     "spawn_level": "3,4,5,6",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "1,0.5,1,0.8",
     "price": 200,
     "mana": 20,
     "custom_xml_file": "data/entities/misc/custom_cards/tentacle.xml",
     "spawn_probabilities": {
       "3": 1,
-      "4": 1,
+      "4": 0.5,
       "5": 1,
-      "6": 1
+      "6": 0.8
     }
   },
   {
@@ -1343,15 +1471,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/tentacle.xml"],
     "type": 0,
     "spawn_level": "3,4,5,6",
-    "spawn_probability": "0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.6,0.8,0.6,0.7",
     "price": 250,
     "mana": 20,
     "custom_xml_file": "data/entities/misc/custom_cards/tentacle_timer.xml",
     "spawn_probabilities": {
       "3": 0.6,
-      "4": 0.6,
+      "4": 0.8,
       "5": 0.6,
-      "6": 0.6
+      "6": 0.7
     }
   },
   {
@@ -1363,7 +1491,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/heal_bullet.xml"],
     "type": 0,
     "spawn_level": "2,3,4",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "1,1,0.6",
     "price": 60,
     "mana": 15,
     "max_uses": 20,
@@ -1372,7 +1500,28 @@
     "spawn_probabilities": {
       "2": 1,
       "3": 1,
-      "4": 1
+      "4": 0.6
+    }
+  },
+  {
+    "id": "ANTIHEAL",
+    "name": "$action_antiheal",
+    "description": "$actiondesc_antiheal",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjklEQVR4AaXBMWvUUADA8X9ycVAXSc+lRYhikptKwcE9DiLkjS5Kv8ENgqvDO3AQwUUDTo7tF0ig4CDF5dYb7+WJBHEz8ZzsEvt8gctSc4XD34//5bBBLYTJlOJZmtJqzTjPHQaMGCCjyPw59tk93OHb/YbvjwzxiSNPm2bGBS6XSIOCNCjoTOOYIR4DpnHMKtinNwkO8MIzhnisySgy0zgmU4pNaiEMVqYUsiwdLA+rFsLM354z55ynwWNW/OvHm6vAPstqwT1CuF3SGWFdA7l7uEMaFPgk+CT4JPR8EnwSfBKiG08ofx3z7utEvi7LmYs1jWO25YUhHQ/LC0NAUVQpk+CA3l1e0vnCC3rLakGn1ZrOCOvVfD57PxJy72jFB/mZB9Udfj+8gk9C5yefuPn8jOsfW/aOVtw6cciU4rRpZi5rrdaM89yRZem0WjOk1ZpxnjtYsiwdLJcNltWC3rJa0GpNphQXuaxlStHLlKJTVClFldIZ57nDNmohDFYthKmFMFgyigzbqoUwXOIvLAqVOkXvko0AAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/bullet_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/healhurt.xml"],
+    "type": 0,
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "0.4,0.3,0.3,0.3",
+    "price": 200,
+    "mana": 20,
+    "max_uses": 20,
+    "never_unlimited": true,
+    "spawn_probabilities": {
+      "2": 0.4,
+      "3": 0.3,
+      "4": 0.3,
+      "5": 0.3
     }
   },
   {
@@ -1385,15 +1534,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/spiral_shot.xml"],
     "type": 0,
     "spawn_level": "4,5,6",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "0.7,0.8,0.7",
     "price": 190,
     "mana": 50,
     "max_uses": 15,
     "custom_xml_file": "data/entities/misc/custom_cards/spiral_shot.xml",
     "spawn_probabilities": {
-      "4": 1,
-      "5": 1,
-      "6": 1
+      "4": 0.7,
+      "5": 0.8,
+      "6": 0.7
     }
   },
   {
@@ -1405,13 +1554,13 @@
     "related_projectiles": ["data/entities/projectiles/deck/magic_shield_start.xml"],
     "type": 0,
     "spawn_level": "2,4,5,6",
-    "spawn_probability": "0.5,0.5,1,1",
+    "spawn_probability": "0.5,0.6,0.7,1",
     "price": 100,
     "mana": 40,
     "spawn_probabilities": {
       "2": 0.5,
-      "4": 0.5,
-      "5": 1,
+      "4": 0.6,
+      "5": 0.7,
       "6": 1
     }
   },
@@ -1424,15 +1573,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/big_magic_shield_start.xml"],
     "type": 0,
     "spawn_level": "2,4,5,6,10",
-    "spawn_probability": "0.2,0.2,0.5,0.5,0.1",
+    "spawn_probability": "0.2,0.4,0.5,0.6,0.2",
     "price": 120,
     "mana": 60,
     "spawn_probabilities": {
       "2": 0.2,
-      "4": 0.2,
+      "4": 0.4,
       "5": 0.5,
-      "6": 0.5,
-      "10": 0.1
+      "6": 0.6,
+      "10": 0.2
     }
   },
   {
@@ -1443,14 +1592,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/chain_bolt.xml"],
     "type": 0,
     "spawn_level": "0,4,5,6",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "0.75,1,0.8,0.6",
     "price": 240,
     "mana": 80,
     "spawn_probabilities": {
-      "0": 1,
+      "0": 0.75,
       "4": 1,
-      "5": 1,
-      "6": 1
+      "5": 0.8,
+      "6": 0.6
     }
   },
   {
@@ -1462,16 +1611,16 @@
     "related_projectiles": ["data/entities/projectiles/deck/fireball.xml"],
     "type": 0,
     "spawn_level": "0,3,4,6",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "1,0.7,1,0.5",
     "price": 220,
     "mana": 70,
     "max_uses": 15,
     "custom_xml_file": "data/entities/misc/custom_cards/fireball.xml",
     "spawn_probabilities": {
       "0": 1,
-      "3": 1,
+      "3": 0.7,
       "4": 1,
-      "6": 1
+      "6": 0.5
     }
   },
   {
@@ -1483,14 +1632,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/meteor.xml"],
     "type": 0,
     "spawn_level": "4,5,6,10",
-    "spawn_probability": "0.6,0.6,0.6,0.5",
+    "spawn_probability": "0.6,0.6,0.7,0.5",
     "price": 280,
     "mana": 150,
     "max_uses": 10,
     "spawn_probabilities": {
       "4": 0.6,
       "5": 0.6,
-      "6": 0.6,
+      "6": 0.7,
       "10": 0.5
     }
   },
@@ -1502,16 +1651,17 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/flamethrower_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/flamethrower.xml"],
     "type": 0,
-    "spawn_level": "2,3,6",
-    "spawn_probability": "1,1,1",
+    "spawn_level": "2,3,4,6",
+    "spawn_probability": "0.8,0.9,0.9,0.6",
     "price": 220,
     "mana": 20,
     "max_uses": 60,
     "custom_xml_file": "data/entities/misc/custom_cards/flamethrower.xml",
     "spawn_probabilities": {
-      "2": 1,
-      "3": 1,
-      "6": 1
+      "2": 0.8,
+      "3": 0.9,
+      "4": 0.9,
+      "6": 0.6
     }
   },
   {
@@ -1523,16 +1673,16 @@
     "related_projectiles": ["data/entities/projectiles/deck/iceball.xml"],
     "type": 0,
     "spawn_level": "2,3,4,6",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "0.8,0.9,0.9,0.6",
     "price": 260,
     "mana": 90,
     "max_uses": 15,
     "custom_xml_file": "data/entities/misc/custom_cards/iceball.xml",
     "spawn_probabilities": {
-      "2": 1,
-      "3": 1,
-      "4": 1,
-      "6": 1
+      "2": 0.8,
+      "3": 0.9,
+      "4": 0.9,
+      "6": 0.6
     }
   },
   {
@@ -1544,14 +1694,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/slime.xml"],
     "type": 0,
     "spawn_level": "0,3,4",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "1,1,0.7",
     "price": 130,
     "mana": 20,
     "custom_xml_file": "data/entities/misc/custom_cards/slimeball.xml",
     "spawn_probabilities": {
       "0": 1,
       "3": 1,
-      "4": 1
+      "4": 0.7
     }
   },
   {
@@ -1560,18 +1710,18 @@
     "description": "$actiondesc_darkflame",
     "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA6ElEQVR4AbXBsW3DMBBA0U/BS3AD1+5d3ArcgQVLTnIli9uBK3AcjnFRAAkQBMtxgOQ9/pyJOj8wUecTJuqcmKg/7k83UefIRJ0DE/XH/ekm6qxM1NmYqLNZWJmot9kxUWdlop5HDSUmXsmjBjYLqzxqKDGRRw2ctNkxUW+zY6LOycImjxpYmai32TFRb7NzxUSdVeDERL3NzpUSE3nUwGbhwES9zc5v3HijxMSuzc4rCxdKTHxi4SCPGkpMfGuzs2uzc+XGG212jkpM5FEDB4EXTNRZtdnZlZjIowZOAm+YqLPJowb+wxfNIWjs8QnO1AAAAABJRU5ErkJggg==",
     "sprite_unidentified": "data/ui_gfx/gun_actions/darkflame_unidentified.png",
-    "related_projectiles": ["data/entities/projectiles/deck/darkflame.xml"],
+    "related_projectiles": ["data/entities/projectiles/darkflame.xml"],
     "type": 0,
     "spawn_level": "3,5,6",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "1,0.9,0.8",
     "price": 180,
     "mana": 90,
     "custom_xml_file": "data/entities/misc/custom_cards/darkflame.xml",
     "max_uses": 60,
     "spawn_probabilities": {
       "3": 1,
-      "5": 1,
-      "6": 1
+      "5": 0.9,
+      "6": 0.8
     }
   },
   {
@@ -1579,6 +1729,7 @@
     "name": "$action_missile",
     "description": "$actiondesc_missile",
     "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAs0lEQVR4Ae3BIQ7CMABA0V9QczNIkomRLE1QzQznmKngClM7AFMzXABdPcFJ5poJPAhEHbiCKEkztQS791j8TxAMSnm+EikpjBHMtGLiZS3j8eiZSRDpus4TybKMn+J8ZmwatNaCyJpgUMrn1pJbyx54lyWxrXM8djuqqjr1fd8SrAku93ub1fXpJiXjZoNzjjRN+UmvV56HA1prQUQQDEp5gkRKCmMEM6yYSKSkMEawmO0DOXoyGOecCDoAAAAASUVORK5CYII=",
+    "related_projectiles": ["data/entities/projectiles/deck/rocket_player.xml"],
     "type": 0,
     "spawn_level": "1,2,3,5",
     "spawn_probability": "0.5,0.5,1,1",
@@ -1619,15 +1770,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/pebble_player.xml"],
     "type": 0,
     "spawn_level": "1,2,4,6",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "0.9,1,0.9,0.6",
     "price": 200,
     "mana": 120,
     "max_uses": 10,
     "spawn_probabilities": {
-      "1": 1,
+      "1": 0.9,
       "2": 1,
-      "4": 1,
-      "6": 1
+      "4": 0.9,
+      "6": 0.6
     }
   },
   {
@@ -1639,17 +1790,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/tnt.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3,4",
-    "spawn_probability": "1,1,1,1,1",
+    "spawn_probability": "1,0.9,0.8,0.7,0.6",
     "price": 160,
     "mana": 50,
     "max_uses": 16,
     "custom_xml_file": "data/entities/misc/custom_cards/tnt.xml",
     "spawn_probabilities": {
       "0": 1,
-      "1": 1,
-      "2": 1,
-      "3": 1,
-      "4": 1
+      "1": 0.9,
+      "2": 0.8,
+      "3": 0.7,
+      "4": 0.6
     }
   },
   {
@@ -1661,17 +1812,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/glitter_bomb.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3,4",
-    "spawn_probability": "0.8,0.8,0.8,0.8,0.8",
+    "spawn_probability": "0.8,0.9,0.8,0.7,0.6",
     "price": 200,
     "mana": 70,
     "max_uses": 16,
     "custom_xml_file": "data/entities/misc/custom_cards/glitter_bomb.xml",
     "spawn_probabilities": {
       "0": 0.8,
-      "1": 0.8,
+      "1": 0.9,
       "2": 0.8,
-      "3": 0.8,
-      "4": 0.8
+      "3": 0.7,
+      "4": 0.6
     }
   },
   {
@@ -1683,15 +1834,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/buckshot_player.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3,4",
-    "spawn_probability": "1,1,1,1,1",
+    "spawn_probability": "1,1,0.9,0.9,0.6",
     "price": 160,
     "mana": 25,
     "spawn_probabilities": {
       "0": 1,
       "1": 1,
-      "2": 1,
-      "3": 1,
-      "4": 1
+      "2": 0.9,
+      "3": 0.9,
+      "4": 0.6
     }
   },
   {
@@ -1703,12 +1854,12 @@
     "related_projectiles": ["data/entities/projectiles/deck/freezing_gaze_beam.xml"],
     "type": 0,
     "spawn_level": "2,3,4",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "0.9,1,1",
     "price": 180,
     "mana": 45,
     "max_uses": 20,
     "spawn_probabilities": {
-      "2": 1,
+      "2": 0.9,
       "3": 1,
       "4": 1
     }
@@ -1722,12 +1873,12 @@
     "related_projectiles": ["data/entities/projectiles/deck/glowing_bolt.xml"],
     "type": 0,
     "spawn_level": "3,4,5,10",
-    "spawn_probability": "1,1,1,0.1",
+    "spawn_probability": "0.8,0.9,1,0.1",
     "price": 220,
     "mana": 65,
     "spawn_probabilities": {
-      "3": 1,
-      "4": 1,
+      "3": 0.8,
+      "4": 0.9,
       "5": 1,
       "10": 0.1
     }
@@ -1741,15 +1892,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/spore_pod.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.8,0.8,0.8,0.8,0.8",
+    "spawn_probability": "0.7,0.8,0.9,0.8,0.6",
     "price": 200,
     "mana": 20,
     "spawn_probabilities": {
-      "1": 0.8,
+      "1": 0.7,
       "2": 0.8,
-      "3": 0.8,
+      "3": 0.9,
       "4": 0.8,
-      "5": 0.8
+      "5": 0.6
     }
   },
   {
@@ -1761,14 +1912,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/glue_shot.xml"],
     "type": 0,
     "spawn_level": "2,3,4,5",
-    "spawn_probability": "0.6,0.2,0.2,0.6",
+    "spawn_probability": "0.7,0.4,0.2,0.5",
     "price": 140,
     "mana": 25,
     "spawn_probabilities": {
-      "2": 0.6,
-      "3": 0.2,
+      "2": 0.7,
+      "3": 0.4,
       "4": 0.2,
-      "5": 0.6
+      "5": 0.5
     }
   },
   {
@@ -1823,8 +1974,8 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/propane_tank.xml"],
     "type": 0,
-    "spawn_level": "0,1,2,3,4,5,6",
-    "spawn_probability": "0,0,1,1,1,1,1",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "1,1,0.8,0.8,0.7",
     "price": 200,
     "mana": 75,
     "max_uses": 10,
@@ -1832,9 +1983,9 @@
     "spawn_probabilities": {
       "2": 1,
       "3": 1,
-      "4": 1,
-      "5": 1,
-      "6": 1
+      "4": 0.8,
+      "5": 0.8,
+      "6": 0.7
     }
   },
   {
@@ -1845,16 +1996,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/bomb_cart.xml"],
     "type": 0,
-    "spawn_level": "0,1,2,3,4,5,6",
-    "spawn_probability": "0,0,0.6,0.6,0.6,0.6,0.6",
+    "spawn_level": "2,3,4,5,6",
+    "spawn_probability": "0.6,0.6,0.5,0.8,0.6",
     "price": 200,
     "mana": 75,
     "max_uses": 6,
     "spawn_probabilities": {
       "2": 0.6,
       "3": 0.6,
-      "4": 0.6,
-      "5": 0.6,
+      "4": 0.5,
+      "5": 0.8,
       "6": 0.6
     }
   },
@@ -1885,7 +2036,7 @@
     "related_projectiles": ["data/entities/projectiles/orb_expanding.xml"],
     "type": 0,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.5,0.5,1.0,1.0,1.0",
+    "spawn_probability": "0.5,0.5,1,1,0.5",
     "price": 200,
     "mana": 70,
     "spawn_probabilities": {
@@ -1893,7 +2044,7 @@
       "3": 0.5,
       "4": 1,
       "5": 1,
-      "6": 1
+      "6": 0.5
     }
   },
   {
@@ -1906,16 +2057,16 @@
     "related_projectiles": ["data/entities/projectiles/deck/crumbling_earth.xml"],
     "type": 0,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.4,0.3,0.5,0.6,0.9",
     "price": 300,
     "mana": 240,
     "max_uses": 3,
     "spawn_probabilities": {
-      "2": 0.6,
-      "3": 0.6,
-      "4": 0.6,
+      "2": 0.4,
+      "3": 0.3,
+      "4": 0.5,
       "5": 0.6,
-      "6": 0.6
+      "6": 0.9
     }
   },
   {
@@ -1927,7 +2078,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/rock.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3,4,5,6",
-    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8,0.8",
+    "spawn_probability": "0.8,0.8,0.6,0.6,0.3,0.7,0.7",
     "price": 160,
     "mana": 100,
     "max_uses": 3,
@@ -1935,11 +2086,11 @@
     "spawn_probabilities": {
       "0": 0.8,
       "1": 0.8,
-      "2": 0.8,
-      "3": 0.8,
-      "4": 0.8,
-      "5": 0.8,
-      "6": 0.8
+      "2": 0.6,
+      "3": 0.6,
+      "4": 0.3,
+      "5": 0.7,
+      "6": 0.7
     }
   },
   {
@@ -1951,18 +2102,18 @@
     "related_projectiles": ["data/entities/items/pickup/egg_monster.xml"],
     "type": 0,
     "spawn_level": "0,1,2,3,4,5,6",
-    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8,0.8",
+    "spawn_probability": "0.7,0.8,0.8,0.7,0.6,0.6,0.5",
     "price": 220,
     "mana": 100,
     "max_uses": 2,
     "spawn_probabilities": {
-      "0": 0.8,
+      "0": 0.7,
       "1": 0.8,
       "2": 0.8,
-      "3": 0.8,
-      "4": 0.8,
-      "5": 0.8,
-      "6": 0.8
+      "3": 0.7,
+      "4": 0.6,
+      "5": 0.6,
+      "6": 0.5
     }
   },
   {
@@ -1973,18 +2124,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png",
     "related_projectiles": ["data/entities/items/pickup/egg_hollow.xml"],
     "type": 0,
-    "spawn_level": "0,1,2,3,4,5,6",
-    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8,0.8",
+    "spawn_level": "0,1,2,5,6",
+    "spawn_probability": "0.6,0.8,0.7,0.8,0.3",
     "price": 140,
     "mana": 30,
     "spawn_probabilities": {
-      "0": 0.8,
+      "0": 0.6,
       "1": 0.8,
-      "2": 0.8,
-      "3": 0.8,
-      "4": 0.8,
+      "2": 0.7,
       "5": 0.8,
-      "6": 0.8
+      "6": 0.3
     }
   },
   {
@@ -1995,17 +2144,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/tntbox.xml"],
     "type": 0,
-    "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.8,0.8,0.8,0.8,0.8",
+    "spawn_level": "1,2,3,5",
+    "spawn_probability": "0.8,0.9,0.5,0.4",
     "price": 150,
     "mana": 40,
     "max_uses": 15,
     "spawn_probabilities": {
       "1": 0.8,
-      "2": 0.8,
-      "3": 0.8,
-      "4": 0.8,
-      "5": 0.8
+      "2": 0.9,
+      "3": 0.5,
+      "5": 0.4
     }
   },
   {
@@ -2016,17 +2164,15 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/bomb_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/tntbox_big.xml"],
     "type": 0,
-    "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.8,0.8,0.8,0.8,0.8",
+    "spawn_level": "2,4,5",
+    "spawn_probability": "0.8,1,0.7",
     "price": 170,
     "mana": 40,
     "max_uses": 15,
     "spawn_probabilities": {
-      "1": 0.8,
       "2": 0.8,
-      "3": 0.8,
-      "4": 0.8,
-      "5": 0.8
+      "4": 1,
+      "5": 0.7
     }
   },
   {
@@ -2037,15 +2183,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/swarm_fly.xml"],
     "type": 1,
-    "spawn_level": "2,4,5,6",
-    "spawn_probability": "0.2,0.2,0.5,0.5",
+    "spawn_level": "2,4,5",
+    "spawn_probability": "0.3,0.4,0.5",
     "price": 90,
-    "mana": 70,
+    "mana": 60,
     "spawn_probabilities": {
-      "2": 0.2,
-      "4": 0.2,
-      "5": 0.5,
-      "6": 0.5
+      "2": 0.3,
+      "4": 0.4,
+      "5": 0.5
     }
   },
   {
@@ -2056,14 +2201,13 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/swarm_firebug.xml"],
     "type": 1,
-    "spawn_level": "2,4,5,6",
-    "spawn_probability": "0.2,0.2,0.5,0.5",
+    "spawn_level": "2,5,6",
+    "spawn_probability": "0.2,0.4,0.5",
     "price": 100,
-    "mana": 80,
+    "mana": 70,
     "spawn_probabilities": {
       "2": 0.2,
-      "4": 0.2,
-      "5": 0.5,
+      "5": 0.4,
       "6": 0.5
     }
   },
@@ -2075,15 +2219,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/spiral_shot_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/swarm_wasp.xml"],
     "type": 1,
-    "spawn_level": "2,4,5,6",
-    "spawn_probability": "0.2,0.2,0.5,0.5",
+    "spawn_level": "4,5,6",
+    "spawn_probability": "0.2,0.5,0.6",
     "price": 120,
-    "mana": 90,
+    "mana": 80,
     "spawn_probabilities": {
-      "2": 0.2,
       "4": 0.2,
       "5": 0.5,
-      "6": 0.5
+      "6": 0.6
     }
   },
   {
@@ -2095,12 +2238,12 @@
     "related_projectiles": ["data/entities/projectiles/deck/friend_fly.xml"],
     "type": 1,
     "spawn_level": "4,5,6",
-    "spawn_probability": "0.2,0.5,0.5",
+    "spawn_probability": "0.2,0.6,0.5",
     "price": 160,
     "mana": 120,
     "spawn_probabilities": {
       "4": 0.2,
-      "5": 0.5,
+      "5": 0.6,
       "6": 0.5
     }
   },
@@ -2113,7 +2256,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/acidshot.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "1,1,0.9,0.6",
     "price": 180,
     "mana": 20,
     "max_uses": 20,
@@ -2121,8 +2264,8 @@
     "spawn_probabilities": {
       "1": 1,
       "2": 1,
-      "3": 1,
-      "4": 1
+      "3": 0.9,
+      "4": 0.6
     }
   },
   {
@@ -2134,15 +2277,15 @@
     "related_projectiles": ["data/entities/projectiles/thunderball.xml"],
     "type": 0,
     "spawn_level": "2,4,6,10",
-    "spawn_probability": "1,1,1,0.2",
+    "spawn_probability": "0.9,1,0.7,0.2",
     "price": 300,
     "mana": 120,
     "max_uses": 3,
     "custom_xml_file": "data/entities/misc/custom_cards/thunderball.xml",
     "spawn_probabilities": {
-      "2": 1,
+      "2": 0.9,
       "4": 1,
-      "6": 1,
+      "6": 0.7,
       "10": 0.2
     }
   },
@@ -2155,14 +2298,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/firebomb.xml"],
     "type": 0,
     "spawn_level": "1,2,3",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "1,0.9,0.7",
     "price": 90,
     "mana": 10,
     "custom_xml_file": "data/entities/misc/custom_cards/firebomb.xml",
     "spawn_probabilities": {
       "1": 1,
-      "2": 1,
-      "3": 1
+      "2": 0.9,
+      "3": 0.7
     }
   },
   {
@@ -2174,14 +2317,14 @@
     "related_projectiles": ["data/entities/projectiles/chunk_of_soil.xml"],
     "type": 4,
     "spawn_level": "1,2,3,5",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "0.8,0.8,1,0.75",
     "price": 10,
     "mana": 5,
     "spawn_probabilities": {
-      "1": 1,
-      "2": 1,
+      "1": 0.8,
+      "2": 0.8,
       "3": 1,
-      "5": 1
+      "5": 0.75
     }
   },
   {
@@ -2193,17 +2336,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/death_cross.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "1,0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "1,0.8,0.6,0.5,0.5,0.3",
     "price": 210,
     "mana": 80,
     "custom_xml_file": "data/entities/misc/custom_cards/death_cross.xml",
     "spawn_probabilities": {
       "1": 1,
-      "2": 0.6,
+      "2": 0.8,
       "3": 0.6,
-      "4": 0.6,
-      "5": 0.6,
-      "6": 0.6
+      "4": 0.5,
+      "5": 0.5,
+      "6": 0.3
     }
   },
   {
@@ -2215,16 +2358,16 @@
     "related_projectiles": ["data/entities/projectiles/deck/death_cross_big.xml"],
     "type": 0,
     "spawn_level": "2,3,4,5,6,10",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.2",
+    "spawn_probability": "0.4,0.5,0.55,0.3,0.4,0.2",
     "price": 310,
     "mana": 150,
     "max_uses": 8,
     "custom_xml_file": "data/entities/misc/custom_cards/death_cross.xml",
     "spawn_probabilities": {
       "2": 0.4,
-      "3": 0.4,
-      "4": 0.4,
-      "5": 0.4,
+      "3": 0.5,
+      "4": 0.55,
+      "5": 0.3,
       "6": 0.4,
       "10": 0.2
     }
@@ -2238,13 +2381,13 @@
     "related_projectiles": ["data/entities/projectiles/deck/infestation.xml"],
     "type": 0,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.1,0.3,0.3",
+    "spawn_probability": "0.1,0.3,0.4",
     "price": 160,
     "mana": 40,
     "spawn_probabilities": {
       "2": 0.1,
       "3": 0.3,
-      "4": 0.3
+      "4": 0.4
     }
   },
   {
@@ -2255,17 +2398,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/wall_horizontal.xml"],
     "type": 1,
-    "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "spawn_level": "0,1,2,4,5",
+    "spawn_probability": "0.4,0.4,0.6,0.5,0.2",
     "price": 160,
     "mana": 70,
     "spawn_probabilities": {
       "0": 0.4,
       "1": 0.4,
-      "2": 0.4,
-      "4": 0.4,
-      "5": 0.4,
-      "6": 0.4
+      "2": 0.6,
+      "4": 0.5,
+      "5": 0.2
     }
   },
   {
@@ -2276,17 +2418,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/wall_vertical.xml"],
     "type": 1,
-    "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "spawn_level": "0,1,2,4,5",
+    "spawn_probability": "0.4,0.4,0.6,0.5,0.2",
     "price": 160,
     "mana": 70,
     "spawn_probabilities": {
       "0": 0.4,
       "1": 0.4,
-      "2": 0.4,
-      "4": 0.4,
-      "5": 0.4,
-      "6": 0.4
+      "2": 0.6,
+      "4": 0.5,
+      "5": 0.2
     }
   },
   {
@@ -2298,15 +2439,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/wall_square.xml"],
     "type": 1,
     "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.3,0.2,0.6,0.5,0.4,0.4",
     "price": 160,
     "mana": 70,
     "max_uses": 20,
     "spawn_probabilities": {
-      "0": 0.4,
-      "1": 0.4,
-      "2": 0.4,
-      "4": 0.4,
+      "0": 0.3,
+      "1": 0.2,
+      "2": 0.6,
+      "4": 0.5,
       "5": 0.4,
       "6": 0.4
     }
@@ -2319,8 +2460,8 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/temporary_wall.xml"],
     "type": 6,
-    "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.1,0.1,0.3,0.4,0.2,0.1",
+    "spawn_level": "0,1,2,4,5",
+    "spawn_probability": "0.1,0.1,0.3,0.4,0.2",
     "price": 100,
     "mana": 40,
     "max_uses": 20,
@@ -2329,8 +2470,7 @@
       "1": 0.1,
       "2": 0.3,
       "4": 0.4,
-      "5": 0.2,
-      "6": 0.1
+      "5": 0.2
     }
   },
   {
@@ -2341,8 +2481,8 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/temporary_platform.xml"],
     "type": 6,
-    "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.1,0.1,0.3,0.4,0.2,0.1",
+    "spawn_level": "0,1,2,4,5",
+    "spawn_probability": "0.1,0.1,0.3,0.4,0.2",
     "price": 90,
     "mana": 30,
     "max_uses": 20,
@@ -2351,8 +2491,7 @@
       "1": 0.1,
       "2": 0.3,
       "4": 0.4,
-      "5": 0.2,
-      "6": 0.1
+      "5": 0.2
     }
   },
   {
@@ -2364,17 +2503,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/purple_explosion_field.xml"],
     "type": 1,
     "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "1,1,1,1,1,1",
+    "spawn_probability": "0.7,1,0.7,0.5,0.5,0.3",
     "price": 160,
     "mana": 90,
     "max_uses": 20,
     "spawn_probabilities": {
-      "0": 1,
+      "0": 0.7,
       "1": 1,
-      "2": 1,
-      "4": 1,
-      "5": 1,
-      "6": 1
+      "2": 0.7,
+      "4": 0.5,
+      "5": 0.5,
+      "6": 0.3
     }
   },
   {
@@ -2386,16 +2525,16 @@
     "related_projectiles": ["data/entities/projectiles/deck/delayed_spell.xml"],
     "type": 1,
     "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "1,1,1,1,1,1",
+    "spawn_probability": "0.8,0.8,1,0.7,0.5,0.4",
     "price": 240,
     "mana": 20,
     "spawn_probabilities": {
-      "0": 1,
-      "1": 1,
+      "0": 0.8,
+      "1": 0.8,
       "2": 1,
-      "4": 1,
-      "5": 1,
-      "6": 1
+      "4": 0.7,
+      "5": 0.5,
+      "6": 0.4
     }
   },
   {
@@ -2407,16 +2546,16 @@
     "related_projectiles": ["data/entities/projectiles/deck/long_distance_cast.xml"],
     "type": 6,
     "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.6,0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.6,0.7,0.8,0.6,0.3,0.4",
     "price": 90,
     "mana": 0,
     "spawn_probabilities": {
       "0": 0.6,
-      "1": 0.6,
-      "2": 0.6,
+      "1": 0.7,
+      "2": 0.8,
       "4": 0.6,
-      "5": 0.6,
-      "6": 0.6
+      "5": 0.3,
+      "6": 0.4
     }
   },
   {
@@ -2427,17 +2566,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/teleport_cast.xml"],
     "type": 6,
-    "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.6,0.6,0.6,0.6,0.6,0.6",
+    "spawn_level": "1,2,4,5,6",
+    "spawn_probability": "0.6,0.6,0.6,0.8,1",
     "price": 190,
     "mana": 100,
     "spawn_probabilities": {
-      "0": 0.6,
       "1": 0.6,
       "2": 0.6,
       "4": 0.6,
-      "5": 0.6,
-      "6": 0.6
+      "5": 0.8,
+      "6": 1
     }
   },
   {
@@ -2448,17 +2586,35 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/super_teleport_cast.xml"],
     "type": 6,
-    "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.2,0.2,0.2,0.6,0.6,0.6",
+    "spawn_level": "2,4,5,6",
+    "spawn_probability": "0.2,0.6,0.8,0.8",
     "price": 160,
     "mana": 20,
     "spawn_probabilities": {
-      "0": 0.2,
-      "1": 0.2,
       "2": 0.2,
       "4": 0.6,
-      "5": 0.6,
-      "6": 0.6
+      "5": 0.8,
+      "6": 0.8
+    }
+  },
+  {
+    "id": "CASTER_CAST",
+    "name": "$action_caster_cast",
+    "description": "$actiondesc_caster_cast",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAeklEQVR4AbXBsQ3CQBREwbcnQnfmNhA5lZAj2nBnzpcNfnBCZ8uWxQx/5cIOURwUBQMOioKeg4MclMZFYsO62HSmWWJADKyL/X596D2ed6ZZ4kcjHJzkIBoXNULBSQpCbFgXm840S+xxcJCD0rjoRsdBKBhwcIYL//QFR41G7xzTYC8AAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/caster_cast.xml"],
+    "type": 6,
+    "spawn_level": "2,4,5,6,10",
+    "spawn_probability": "0.2,0.2,0.4,0.4,0.2",
+    "price": 70,
+    "mana": 10,
+    "spawn_probabilities": {
+      "2": 0.2,
+      "4": 0.2,
+      "5": 0.4,
+      "6": 0.4,
+      "10": 0.2
     }
   },
   {
@@ -2800,16 +2956,16 @@
     "related_projectiles": ["data/entities/projectiles/deck/swapper.xml"],
     "type": 0,
     "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.05,0.05,0.05,0.05,0.05,0.05",
+    "spawn_probability": "0.05,0.05,0.1,0.4,0.4,0.1",
     "price": 100,
     "mana": 5,
     "spawn_probabilities": {
       "0": 0.05,
       "1": 0.05,
-      "2": 0.05,
-      "4": 0.05,
-      "5": 0.05,
-      "6": 0.05
+      "2": 0.1,
+      "4": 0.4,
+      "5": 0.4,
+      "6": 0.1
     }
   },
   {
@@ -2821,14 +2977,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/teleport_projectile_closer.xml"],
     "type": 0,
     "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.6,0.6,0.6,0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.6,0.6,0.7,0.4,0.4",
     "price": 130,
     "mana": 20,
     "spawn_probabilities": {
-      "0": 0.6,
+      "0": 0.4,
       "1": 0.6,
       "2": 0.6,
-      "4": 0.4,
+      "4": 0.7,
       "5": 0.4,
       "6": 0.4
     }
@@ -2888,17 +3044,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/fireworks/firework_pink.xml"],
     "type": 0,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "1,1,1,1,1,1",
+    "spawn_probability": "1,0.8,1,1,0.5,0.3",
     "price": 220,
     "mana": 70,
     "max_uses": 25,
     "spawn_probabilities": {
       "1": 1,
-      "2": 1,
+      "2": 0.8,
       "3": 1,
       "4": 1,
-      "5": 1,
-      "6": 1
+      "5": 0.5,
+      "6": 0.3
     }
   },
   {
@@ -2910,7 +3066,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/wand_ghost_player.xml"],
     "type": 6,
     "spawn_level": "2,4,5,6,10",
-    "spawn_probability": "0.08,0.1,0.1,0.1,0.1",
+    "spawn_probability": "0.08,0.1,0.3,0.3,0.1",
     "price": 420,
     "mana": 300,
     "max_uses": 1,
@@ -2918,8 +3074,8 @@
     "spawn_probabilities": {
       "2": 0.08,
       "4": 0.1,
-      "5": 0.1,
-      "6": 0.1,
+      "5": 0.3,
+      "6": 0.3,
       "10": 0.1
     }
   },
@@ -2953,7 +3109,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/touch_water.xml"],
     "type": 4,
     "spawn_level": "1,2,3,4,5,6,7,10",
-    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.1",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.4",
     "price": 420,
     "mana": 280,
     "max_uses": 5,
@@ -2961,7 +3117,7 @@
       "5": 0.1,
       "6": 0.1,
       "7": 0.1,
-      "10": 0.1
+      "10": 0.4
     }
   },
   {
@@ -2973,7 +3129,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/touch_oil.xml"],
     "type": 4,
     "spawn_level": "1,2,3,4,5,6,7,10",
-    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.1",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.4",
     "price": 380,
     "mana": 260,
     "max_uses": 5,
@@ -2981,7 +3137,7 @@
       "5": 0.1,
       "6": 0.1,
       "7": 0.1,
-      "10": 0.1
+      "10": 0.4
     }
   },
   {
@@ -2993,7 +3149,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/touch_alcohol.xml"],
     "type": 4,
     "spawn_level": "1,2,3,4,5,6,7,10",
-    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.1",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.4",
     "price": 360,
     "mana": 240,
     "max_uses": 5,
@@ -3001,7 +3157,51 @@
       "5": 0.1,
       "6": 0.1,
       "7": 0.1,
+      "10": 0.4
+    }
+  },
+  {
+    "id": "TOUCH_PISS",
+    "name": "$action_touch_piss",
+    "description": "$actiondesc_touch_piss",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAq0lEQVR4AbXBsW3DMAAEwKeyCls2mekrF5khWkGNG86k5tvf5aNChUDIlgEhd7ir4IWYwkGpveETMRVTGMRUTOGdmMKFmMKZmMIgpmIKg5jCbsJNX9jEVKm94SCmsPv9+X7My/rEbl7WZ0zNy/qccNOEEzGFQUzhxISbJmxK7S2m8KGYKrU3bCacKLU3DErtDVdiChdiCu/EVExhEFMxhUHBCzGFg1J7w3/4A8wRXEjX/x3YAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/touch_piss.xml"],
+    "spawn_requires_flag": "card_unlocked_piss",
+    "type": 4,
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "spawn_probability": "0,0,0,0,0.035,0.035,0.035,0.1",
+    "price": 360,
+    "mana": 190,
+    "max_uses": 4,
+    "spawn_probabilities": {
+      "5": 0.035,
+      "6": 0.035,
+      "7": 0.035,
       "10": 0.1
+    }
+  },
+  {
+    "id": "TOUCH_GRASS",
+    "name": "$action_touch_grass",
+    "description": "$actiondesc_touch_grass",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAk0lEQVR4AaXBQWrCUAAFwHnhn89F6THFRS/4KvxAjIlV6Eza+o/h7uvn24naiye3y9VwVFPs1RQPhr0izsVUxGqxKeK9oFbDUf0tHgxTEZs4V1NQZHEU1FERT4a92tRRTbEa9mJTxFTEicUU1OeKuBteC2qKFxaboN4rYjXsBTUFsakpHgxHMdVenBjubperE/GBX0V9IeHKQqJ8AAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/touch_grass.xml"],
+    "spawn_requires_flag": "card_unlocked_touch_grass",
+    "type": 4,
+    "spawn_level": "1,2,3,4,5,6,7,10",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.2",
+    "price": 360,
+    "mana": 190,
+    "max_uses": 4,
+    "never_unlimited": true,
+    "custom_xml_file": "data/entities/misc/custom_cards/touch_grass.xml",
+    "spawn_probabilities": {
+      "5": 0.1,
+      "6": 0.1,
+      "7": 0.1,
+      "10": 0.2
     }
   },
   {
@@ -3033,7 +3233,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/touch_smoke.xml"],
     "type": 4,
     "spawn_level": "1,2,3,4,5,6,7,10",
-    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.1",
+    "spawn_probability": "0,0,0,0,0.1,0.1,0.1,0.4",
     "price": 350,
     "mana": 230,
     "max_uses": 5,
@@ -3041,7 +3241,7 @@
       "5": 0.1,
       "6": 0.1,
       "7": 0.1,
-      "10": 0.1
+      "10": 0.4
     }
   },
   {
@@ -3056,8 +3256,27 @@
     "spawn_level": "10",
     "spawn_probability": "1",
     "price": 600,
-    "mana": 600,
+    "mana": 240,
     "max_uses": 5,
+    "ai_never_uses": true,
+    "spawn_probabilities": {
+      "10": 1
+    }
+  },
+  {
+    "id": "MASS_POLYMORPH",
+    "name": "$action_mass_polymorph",
+    "description": "$actiondesc_mass_polymorph",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA6UlEQVR4Ad3BsU3DQBSA4f+dXKZw4Q3s2yEFAzBCBkiTzhIewyOkZAOEROGSwg0T+N0GKVxQ38MnnSULYYl0iO/j7zOLZhaNHY5vzKKZRWMxTZORmUXjB8KGWTQy1UDT1OwRccJCyMyicScRJwV3mp8vlOWBlWMxTZPxS9frO0nfv5E4MtVAohpQDew5nx9Iuu6RxLHw3gsL1UDSNDUr1YBqIFENJPP8yaogq8ae27EjUQ0kTVOzUg0kt2OH917IHBvV2OO9FzLVQDX2VGOP916G9sTQntgqyMrywGpoTySX1w+xlyfjf/sC9NhgHSTYZ8UAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/rocket_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/mass_polymorph.xml"],
+    "spawn_requires_flag": "card_unlocked_polymorph",
+    "type": 1,
+    "spawn_level": "10",
+    "spawn_probability": "1",
+    "price": 600,
+    "mana": 220,
+    "max_uses": 3,
     "ai_never_uses": true,
     "spawn_probabilities": {
       "10": 1
@@ -3112,12 +3331,12 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/burst_4_unidentified.png",
     "type": 3,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.4,0.5,0.6,0.6,0.6",
     "price": 180,
     "mana": 5,
     "spawn_probabilities": {
-      "2": 0.6,
-      "3": 0.6,
+      "2": 0.4,
+      "3": 0.5,
       "4": 0.6,
       "5": 0.6,
       "6": 0.6
@@ -3168,13 +3387,13 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/scatter_2_unidentified.png",
     "type": 3,
     "spawn_level": "0,1,2",
-    "spawn_probability": "0.8,0.8,0.8",
+    "spawn_probability": "0.8,0.8,0.7",
     "price": 100,
     "mana": 0,
     "spawn_probabilities": {
       "0": 0.8,
       "1": 0.8,
-      "2": 0.8
+      "2": 0.7
     }
   },
   {
@@ -3185,11 +3404,11 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/scatter_3_unidentified.png",
     "type": 3,
     "spawn_level": "0,1,2,3",
-    "spawn_probability": "0.7,0.7,0.7,0.8",
+    "spawn_probability": "0.6,0.7,0.7,0.8",
     "price": 120,
     "mana": 1,
     "spawn_probabilities": {
-      "0": 0.7,
+      "0": 0.6,
       "1": 0.7,
       "2": 0.7,
       "3": 0.8
@@ -3203,16 +3422,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/scatter_4_unidentified.png",
     "type": 3,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "0.6,0.6,0.7,0.8,0.8,0.8",
+    "spawn_probability": "0.5,0.6,0.7,0.8,0.8,0.6",
     "price": 140,
     "mana": 2,
     "spawn_probabilities": {
-      "1": 0.6,
+      "1": 0.5,
       "2": 0.6,
       "3": 0.7,
       "4": 0.8,
       "5": 0.8,
-      "6": 0.8
+      "6": 0.6
     }
   },
   {
@@ -3222,15 +3441,14 @@
     "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAALUlEQVR4Ae3BsQ0AMAgEsUv23/lzBUXECAibNUYKn4gmQino0kToiBKhI9ZED+ASH+u3iibpAAAAAElFTkSuQmCC",
     "sprite_unidentified": "data/ui_gfx/gun_actions/i_shape_unidentified.png",
     "type": 3,
-    "spawn_level": "1,2,3,4",
-    "spawn_probability": "0.4,0.4,0.4,0.4",
-    "price": 80,
+    "spawn_level": "1,2,3",
+    "spawn_probability": "0.4,0.5,0.3",
+    "price": 30,
     "mana": 0,
     "spawn_probabilities": {
       "1": 0.4,
-      "2": 0.4,
-      "3": 0.4,
-      "4": 0.4
+      "2": 0.5,
+      "3": 0.3
     }
   },
   {
@@ -3240,16 +3458,15 @@
     "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAPElEQVR4AdXBwQ0AIQwEsYH+ex72kQJQFE46m89ZKJtLBh0GHQYdBh0G/2YwwWCCwQSDCQZhoWwureCFAxjTN9HC7A7eAAAAAElFTkSuQmCC",
     "sprite_unidentified": "data/ui_gfx/gun_actions/y_shape_unidentified.png",
     "type": 3,
-    "spawn_level": "0,1,2,3,4",
-    "spawn_probability": "0.8,0.4,0.4,0.4,0.4",
-    "price": 100,
+    "spawn_level": "0,1,2,3",
+    "spawn_probability": "0.8,0.5,0.4,0.3",
+    "price": 30,
     "mana": 2,
     "spawn_probabilities": {
       "0": 0.8,
-      "1": 0.4,
+      "1": 0.5,
       "2": 0.4,
-      "3": 0.4,
-      "4": 0.4
+      "3": 0.3
     }
   },
   {
@@ -3259,16 +3476,15 @@
     "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAOElEQVR4Ad3BMQrAIAAEwcX//3lzxRUiaYSAkhk+Y7FpcA2DfzGYGJTFG4OJwcLiLgZHWWwanPYA9pU3zYb1btsAAAAASUVORK5CYII=",
     "sprite_unidentified": "data/ui_gfx/gun_actions/t_shape_unidentified.png",
     "type": 3,
-    "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
-    "price": 120,
+    "spawn_level": "1,2,3,4",
+    "spawn_probability": "0.4,0.5,0.4,0.3",
+    "price": 30,
     "mana": 3,
     "spawn_probabilities": {
       "1": 0.4,
-      "2": 0.4,
+      "2": 0.5,
       "3": 0.4,
-      "4": 0.4,
-      "5": 0.4
+      "4": 0.3
     }
   },
   {
@@ -3279,13 +3495,13 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/w_shape_unidentified.png",
     "type": 3,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.4,0.3,0.3,0.3,0.3",
-    "price": 160,
+    "spawn_probability": "0.4,0.3,0.5,0.3,0.3",
+    "price": 50,
     "mana": 3,
     "spawn_probabilities": {
       "2": 0.4,
       "3": 0.3,
-      "4": 0.3,
+      "4": 0.5,
       "5": 0.3,
       "6": 0.3
     }
@@ -3299,7 +3515,7 @@
     "type": 3,
     "spawn_level": "1,2,3,4,5,6",
     "spawn_probability": "0.1,0.2,0.3,0.3,0.3,0.3",
-    "price": 150,
+    "price": 50,
     "mana": 6,
     "spawn_probabilities": {
       "1": 0.1,
@@ -3319,7 +3535,7 @@
     "type": 3,
     "spawn_level": "1,2,3,4,5",
     "spawn_probability": "0.4,0.4,0.3,0.2,0.1",
-    "price": 150,
+    "price": 50,
     "mana": 5,
     "spawn_probabilities": {
       "1": 0.4,
@@ -3330,6 +3546,137 @@
     }
   },
   {
+    "id": "I_SHOT",
+    "name": "$action_i_shot",
+    "description": "$actiondesc_i_shot",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhElEQVR4Ae3BQRGDMBQE0P1SUNBWADPJ/NhAQDX0XA0IwEaYzQwC2ipAyjaJAo4ceA+Xs6BTdAoH0Sk6hcroVMgBTUkFcY22v3ahWuYF42NEXKOh0ldCc0NXUoHRqZADuh86u5uholPbZ8P0nNAM78HoVMgBTUkFHZ2iUziITtEpXE7iD2/EO4O5w9ywAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/i_shape_unidentified.png",
+    "type": 6,
+    "spawn_level": "1,2,3",
+    "spawn_probability": "0.1,0.2,0.5",
+    "price": 130,
+    "mana": 40,
+    "max_uses": 30,
+    "spawn_probabilities": {
+      "1": 0.1,
+      "2": 0.2,
+      "3": 0.5
+    }
+  },
+  {
+    "id": "Y_SHOT",
+    "name": "$action_y_shot",
+    "description": "$actiondesc_y_shot",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAoUlEQVR4AdXBQRHCMBQE0A2goAI6dQAS2vnowATHXCBOaiAKYDYHBODgS1kGJndacuI9rEWjaBSqLVagUeNtxHAaMD7Gy+zzdYeF9JTwC48ujy5UNIpG4RsaRaOwVu6zcp+FtVKXlLok/K/UJaUuCa1yn5X7LLSiUTQKrTy6PLpQ0SgahSpgIT0lvO3xUY4F030KGywUDiGUc0EzGkWjUL0AkSVWFs7hwc0AAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/i_shape_unidentified.png",
+    "type": 6,
+    "spawn_level": "1,2,3",
+    "spawn_probability": "0.1,0.2,0.5",
+    "price": 135,
+    "mana": 40,
+    "max_uses": 30,
+    "spawn_probabilities": {
+      "1": 0.1,
+      "2": 0.2,
+      "3": 0.5
+    }
+  },
+  {
+    "id": "T_SHOT",
+    "name": "$action_t_shot",
+    "description": "$actiondesc_t_shot",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA20lEQVR4Aa3BsW3CQBgF4OczfaQMEB2LRGf9G9DQeQaqNG58SBmAEVzS0LgFvQIP4A1OygapUr5ckUiIIrIdvg+/aBSNwkwlMhoVzgG+9ghDaLvURUzk8CgaJRqFmRxuVJeqwH+kJgkzOSxAo2gUshI/aFTf9+AX4+nlpO3Ttj1+HiOy1CTtXnft4XqINCqcA3ztEYbQrnBn/7zX5mNTIKNRyNbv6wKZRgl/SU0SJqBRNArZCgtUl6rAPY0SFnC4QaMwU4mMRvk3D197hCG0XeoiJnJ4FBpFozDTN6/3ZHTbqIsAAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/i_shape_unidentified.png",
+    "type": 6,
+    "spawn_level": "2,3,5",
+    "spawn_probability": "0.1,0.2,0.5",
+    "price": 160,
+    "mana": 60,
+    "max_uses": 25,
+    "spawn_probabilities": {
+      "2": 0.1,
+      "3": 0.2,
+      "5": 0.5
+    }
+  },
+  {
+    "id": "W_SHOT",
+    "name": "$action_w_shot",
+    "description": "$actiondesc_w_shot",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA4ElEQVR4AaXBwU3DQBQE0FlIBS7AiiuAEjb6qcAF0ARHX2ClFJIGtoKg2QMFuIMvpZFhg3zgEMQav4e1aBSNwuIRK9CoeInYv+wRP+Pb2c/vOzTSLOE/fHL55MKCRtEo/IVG0Sislfus3GdhrdQlpS4JDWgUjUIVcEfus1CN1zGg8smFajgNgUbFS8RNORbs8EPqklCN1zGgolGohtMQUGmW8JvUJaUuCQ1oFI3CPbnPyn0WtqJRNApb+eTyyYUFjaJRWAQ00izh5gnfyrHg8HEID2gUnkMorwWb0SgahcUX7K15zOHK6nIAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/i_shape_unidentified.png",
+    "type": 6,
+    "spawn_level": "2,3,5,6",
+    "spawn_probability": "0.1,0.2,0.5,0.4",
+    "price": 180,
+    "mana": 70,
+    "max_uses": 20,
+    "spawn_probabilities": {
+      "2": 0.1,
+      "3": 0.2,
+      "5": 0.5,
+      "6": 0.4
+    }
+  },
+  {
+    "id": "QUAD_SHOT",
+    "name": "$action_quad_shot",
+    "description": "$actiondesc_quad_shot",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA9klEQVR4AbXBMW7CQBAF0J8lJ0iV0jeI3KWxNGK4xqb3GZAlwHVqasvXsPiWloLOucH6JhNMlViwrngPKVQalYaEFR6g0qQTZF8Z5Cy7JjZ73OHwTPZjRqUhwWFBGAJSHBLqdQ1feqQ4XFFpVBpmfOkxXkbMUWlUGq5eqDTpBJN+0yMMAb70GC8jwhBQ5AWyzwztsUV1qnDzgZt+0+MVf8i3QCCo1zV86TEJQ8DElx71ukaRF5BO8A+VRqVhhkqL22iYodKoNCyJ22iHt4MhwSGhPbaoThVSHBKKvMCSFR6g0qQT4B2Qs+ya2Oxxh8MzUWlUGhJ+AdyncHCVs/toAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/i_shape_unidentified.png",
+    "type": 6,
+    "spawn_level": "1,2,4",
+    "spawn_probability": "0.1,0.2,0.5",
+    "price": 200,
+    "mana": 90,
+    "max_uses": 20,
+    "spawn_probabilities": {
+      "1": 0.1,
+      "2": 0.2,
+      "4": 0.5
+    }
+  },
+  {
+    "id": "PENTA_SHOT",
+    "name": "$action_penta_shot",
+    "description": "$actiondesc_penta_shot",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABG0lEQVR4AbXBsU3DUBQF0PvMBFkAOQU9Zcr39ZjAA7BEyjRQUGYIFsgEtu4vKCjdU3yUBRjh8i25iCInCAnOwTUMikHhihtcwKC8d7SPLfzNn17L6zMWNPhPGiUGhSsaVAyKQWFBGpLhDINiUKiMQXnvmOSHjDQkw4myK1q/rA0zBuW9Y5IfMhqc8L1Do4TZ4fYgnNAo+d5xylAxKFRpSIaq7IpQfb5/YtJuWkzWL2tDxaBQpSGZ4YLD7UGruxUmXx9f6I6dYUGDC7pjZ+2mRbtp0R07w2+VXRFmZVeE39Ao4YxGCQsMMwaFyvcOuzfDAo1S3mZM0pAMVYOKQXnv8N6RtxmX5G2G9w7vHQwKVYO/wqAYFH7AoBgUZt/AbYqsXD8zpQAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/i_shape_unidentified.png",
+    "type": 6,
+    "spawn_level": "3,4,5,6,10",
+    "spawn_probability": "0.1,0.2,0.5,0.5,0.2",
+    "price": 250,
+    "mana": 110,
+    "max_uses": 20,
+    "spawn_probabilities": {
+      "3": 0.1,
+      "4": 0.2,
+      "5": 0.5,
+      "6": 0.5,
+      "10": 0.2
+    }
+  },
+  {
+    "id": "HEXA_SHOT",
+    "name": "$action_hexa_shot",
+    "description": "$actiondesc_hexa_shot",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABSElEQVR4Aa3BMWobQRgF4PevXaZx58qsi3SGaG8ww68TuJcuYXCzjVTkDKkX9zqBljeFDrACdy4GfAE37p/XYgPLEEFM8n0o0Sk6hQKdolMoXGCGToV9QL2uEQ5h0+VuixGdCvuAel0jHMKmy90Wkwr/qMJM7KOlZQKOQOyjYRL7aDgCaZnwVzRIKGiQ8BW5zcIkt1k44xIjOoVR7KNhZnez0/P7M0p0CqPYRzM6FfYBJ0ec2MJsd7PT1fcrfHp7ecP9671pkPDpB07SMqHCTHpIsIVZbrOaVYPfmlWD3GbZwiw9JMwZRnQKo9hHwyS3WU+/nnD37Q7NqsHtz1vDhE5hFPtoOCe3WZjkNgtfoUFCQYOEP6hQoFM4g06hcIEZOhX2AbgGwiFsutxtMaJT9WONel0jHMKmy90Wkwr/G52iUyjQKTqFwgfyrZ2Y7qgtXQAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/i_shape_unidentified.png",
+    "type": 6,
+    "spawn_level": "3,4,5,6,10",
+    "spawn_probability": "0.1,0.2,0.5,0.5,0.2",
+    "price": 280,
+    "mana": 130,
+    "max_uses": 20,
+    "spawn_probabilities": {
+      "3": 0.1,
+      "4": 0.2,
+      "5": 0.5,
+      "6": 0.5,
+      "10": 0.2
+    }
+  },
+  {
     "id": "SPREAD_REDUCE",
     "name": "$action_spread_reduce",
     "description": "$actiondesc_spread_reduce",
@@ -3337,7 +3684,7 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
     "type": 2,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8",
+    "spawn_probability": "0.8,0.8,0.8,0.8,0.7,0.6",
     "price": 100,
     "mana": 1,
     "spawn_probabilities": {
@@ -3345,8 +3692,8 @@
       "2": 0.8,
       "3": 0.8,
       "4": 0.8,
-      "5": 0.8,
-      "6": 0.8
+      "5": 0.7,
+      "6": 0.6
     }
   },
   {
@@ -3357,16 +3704,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png",
     "type": 2,
     "spawn_level": "0,1,2,4,5,6",
-    "spawn_probability": "0.8,0.8,0.8,0.8,0.8,0.8",
+    "spawn_probability": "0.6,0.7,0.8,0.8,0.8,0.6",
     "price": 100,
     "mana": 2,
     "spawn_probabilities": {
-      "0": 0.8,
-      "1": 0.8,
+      "0": 0.6,
+      "1": 0.7,
       "2": 0.8,
       "4": 0.8,
       "5": 0.8,
-      "6": 0.8
+      "6": 0.6
     }
   },
   {
@@ -3377,15 +3724,15 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
     "type": 2,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "1,1,1,1,1,1",
+    "spawn_probability": "0.8,0.9,1,0.8,0.9,1",
     "price": 200,
     "mana": 12,
     "spawn_probabilities": {
-      "1": 1,
-      "2": 1,
+      "1": 0.8,
+      "2": 0.9,
       "3": 1,
-      "4": 1,
-      "5": 1,
+      "4": 0.8,
+      "5": 0.9,
       "6": 1
     }
   },
@@ -3397,7 +3744,7 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
     "type": 2,
     "spawn_level": "3,4,5,6,10",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.1",
+    "spawn_probability": "0.5,0.5,0.5,0.75,0.1",
     "price": 250,
     "mana": 40,
     "custom_xml_file": "data/entities/misc/custom_cards/lifetime.xml",
@@ -3405,7 +3752,7 @@
       "3": 0.5,
       "4": 0.5,
       "5": 0.5,
-      "6": 0.5,
+      "6": 0.75,
       "10": 0.1
     }
   },
@@ -3417,14 +3764,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
     "type": 2,
     "spawn_level": "3,4,5,6,10",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.1",
+    "spawn_probability": "0.5,0.5,0.75,0.5,0.1",
     "price": 90,
     "mana": 10,
     "custom_xml_file": "data/entities/misc/custom_cards/lifetime_down.xml",
     "spawn_probabilities": {
       "3": 0.5,
       "4": 0.5,
-      "5": 0.5,
+      "5": 0.75,
       "6": 0.5,
       "10": 0.1
     }
@@ -3459,14 +3806,14 @@
     "spawn_requires_flag": "card_unlocked_maths",
     "type": 2,
     "spawn_level": "3,4,5,6,10",
-    "spawn_probability": "0.1,0.2,0.3,0.4,0.4",
+    "spawn_probability": "0.1,0.2,0.6,0.6,0.4",
     "price": 50,
     "mana": 0,
     "spawn_probabilities": {
       "3": 0.1,
       "4": 0.2,
-      "5": 0.3,
-      "6": 0.4,
+      "5": 0.6,
+      "6": 0.6,
       "10": 0.4
     }
   },
@@ -3517,13 +3864,13 @@
     "related_extra_entities": ["data/entities/misc/laser_emitter_wider.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.3,0.4",
     "price": 40,
     "mana": 10,
     "spawn_probabilities": {
       "2": 0.3,
       "3": 0.3,
-      "4": 0.3
+      "4": 0.4
     }
   },
   {
@@ -3534,13 +3881,13 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/spread_reduce_unidentified.png",
     "type": 2,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "1,1,1,1,1,1",
+    "spawn_probability": "0.7,0.9,1,1,1,1",
     "price": 250,
     "mana": -30,
     "custom_xml_file": "data/entities/misc/custom_cards/mana_reduce.xml",
     "spawn_probabilities": {
-      "1": 1,
-      "2": 1,
+      "1": 0.7,
+      "2": 0.9,
       "3": 1,
       "4": 1,
       "5": 1,
@@ -3556,12 +3903,12 @@
     "related_extra_entities": ["data/entities/particles/blood_sparks.xml"],
     "type": 6,
     "spawn_level": "5,6,10",
-    "spawn_probability": "0.1,0.7,0.5",
+    "spawn_probability": "0.3,0.7,0.5",
     "price": 150,
     "mana": -100,
     "custom_xml_file": "data/entities/misc/custom_cards/blood_magic.xml",
     "spawn_probabilities": {
-      "5": 0.1,
+      "5": 0.3,
       "6": 0.7,
       "10": 0.5
     }
@@ -3575,14 +3922,14 @@
     "related_extra_entities": ["data/entities/particles/gold_sparks.xml"],
     "type": 6,
     "spawn_level": "3,5,6,10",
-    "spawn_probability": "0.2,0.8,0.1,0.5",
+    "spawn_probability": "0.2,0.8,0.3,0.5",
     "price": 200,
     "mana": 30,
     "custom_xml_file": "data/entities/misc/custom_cards/money_magic.xml",
     "spawn_probabilities": {
       "3": 0.2,
       "5": 0.8,
-      "6": 0.1,
+      "6": 0.3,
       "10": 0.5
     }
   },
@@ -3595,14 +3942,14 @@
     "related_extra_entities": ["data/entities/particles/blood_sparks.xml"],
     "type": 6,
     "spawn_level": "2,5,6,10",
-    "spawn_probability": "0.2,0.8,0.1,0.5",
+    "spawn_probability": "0.2,0.8,0.2,0.5",
     "price": 150,
     "mana": 20,
     "custom_xml_file": "data/entities/misc/custom_cards/blood_to_power.xml",
     "spawn_probabilities": {
       "2": 0.2,
       "5": 0.8,
-      "6": 0.1,
+      "6": 0.2,
       "10": 0.5
     }
   },
@@ -3616,12 +3963,12 @@
     "type": 5,
     "recursive": true,
     "spawn_level": "5,6,10",
-    "spawn_probability": "0.1,0.1,1",
+    "spawn_probability": "0.1,0.2,1",
     "price": 250,
     "mana": 250,
     "spawn_probabilities": {
       "5": 0.1,
-      "6": 0.1,
+      "6": 0.2,
       "10": 1
     }
   },
@@ -3634,12 +3981,12 @@
     "related_extra_entities": ["data/entities/misc/quantum_split.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.5,0.5,0.5,0.5,1",
+    "spawn_probability": "0.5,0.6,0.5,0.5,1",
     "price": 200,
     "mana": 10,
     "spawn_probabilities": {
       "2": 0.5,
-      "3": 0.5,
+      "3": 0.6,
       "4": 0.5,
       "5": 0.5,
       "6": 1
@@ -3653,15 +4000,15 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/w_shape_unidentified.png",
     "type": 2,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "spawn_probability": "0.5,0.4,0.4,0.3,0.3",
     "price": 50,
     "mana": 1,
     "spawn_probabilities": {
       "2": 0.5,
-      "3": 0.5,
-      "4": 0.5,
-      "5": 0.5,
-      "6": 0.5
+      "3": 0.4,
+      "4": 0.4,
+      "5": 0.3,
+      "6": 0.3
     }
   },
   {
@@ -3672,15 +4019,15 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/w_shape_unidentified.png",
     "type": 2,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "spawn_probability": "0.5,0.4,0.4,0.3,0.3",
     "price": 50,
     "mana": 1,
     "spawn_probabilities": {
       "2": 0.5,
-      "3": 0.5,
-      "4": 0.5,
-      "5": 0.5,
-      "6": 0.5
+      "3": 0.4,
+      "4": 0.4,
+      "5": 0.3,
+      "6": 0.3
     }
   },
   {
@@ -3692,12 +4039,12 @@
     "related_extra_entities": ["data/entities/misc/sinewave.xml"],
     "type": 2,
     "spawn_level": "2,4,6",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.55,0.4",
     "price": 10,
     "mana": 0,
     "spawn_probabilities": {
       "2": 0.4,
-      "4": 0.4,
+      "4": 0.55,
       "6": 0.4
     }
   },
@@ -3710,12 +4057,12 @@
     "related_extra_entities": ["data/entities/misc/chaotic_arc.xml"],
     "type": 2,
     "spawn_level": "1,3,5",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.55,0.4",
     "price": 10,
     "mana": 0,
     "spawn_probabilities": {
       "1": 0.4,
-      "3": 0.4,
+      "3": 0.55,
       "5": 0.4
     }
   },
@@ -3728,12 +4075,12 @@
     "related_extra_entities": ["data/entities/misc/pingpong_path.xml"],
     "type": 2,
     "spawn_level": "1,3,5",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.5,0.4",
     "price": 20,
     "mana": 0,
     "spawn_probabilities": {
       "1": 0.4,
-      "3": 0.4,
+      "3": 0.5,
       "5": 0.4
     }
   },
@@ -3746,11 +4093,11 @@
     "related_extra_entities": ["data/entities/misc/avoiding_arc.xml"],
     "type": 2,
     "spawn_level": "2,4,6",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.5,0.4,0.4",
     "price": 30,
     "mana": 0,
     "spawn_probabilities": {
-      "2": 0.4,
+      "2": 0.5,
       "4": 0.4,
       "6": 0.4
     }
@@ -3764,13 +4111,13 @@
     "related_extra_entities": ["data/entities/misc/floating_arc.xml"],
     "type": 2,
     "spawn_level": "1,3,5",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.4,0.5",
     "price": 30,
     "mana": 0,
     "spawn_probabilities": {
       "1": 0.4,
       "3": 0.4,
-      "5": 0.4
+      "5": 0.5
     }
   },
   {
@@ -3782,13 +4129,13 @@
     "related_extra_entities": ["data/entities/misc/fly_downwards.xml"],
     "type": 2,
     "spawn_level": "1,3,5",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.3,0.45,0.3",
     "price": 30,
     "mana": 0,
     "spawn_probabilities": {
-      "1": 0.4,
-      "3": 0.4,
-      "5": 0.4
+      "1": 0.3,
+      "3": 0.45,
+      "5": 0.3
     }
   },
   {
@@ -3800,13 +4147,13 @@
     "related_extra_entities": ["data/entities/misc/fly_upwards.xml"],
     "type": 2,
     "spawn_level": "2,4,6",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.3,0.45,0.3",
     "price": 20,
     "mana": 0,
     "spawn_probabilities": {
-      "2": 0.4,
-      "4": 0.4,
-      "6": 0.4
+      "2": 0.3,
+      "4": 0.45,
+      "6": 0.3
     }
   },
   {
@@ -3836,13 +4183,13 @@
     "related_extra_entities": ["data/entities/misc/line_arc.xml"],
     "type": 2,
     "spawn_level": "1,3,5",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.3,0.4,0.5",
     "price": 30,
     "mana": 0,
     "spawn_probabilities": {
-      "1": 0.4,
+      "1": 0.3,
       "3": 0.4,
-      "5": 0.4
+      "5": 0.5
     }
   },
   {
@@ -3854,14 +4201,14 @@
     "related_extra_entities": ["data/entities/misc/spiraling_shot.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4",
-    "spawn_probability": "0.2,0.3,0.4,0.1",
+    "spawn_probability": "0.2,0.4,0.4,0.3",
     "price": 30,
     "mana": 0,
     "spawn_probabilities": {
       "1": 0.2,
-      "2": 0.3,
+      "2": 0.4,
       "3": 0.4,
-      "4": 0.1
+      "4": 0.3
     }
   },
   {
@@ -3873,14 +4220,14 @@
     "related_extra_entities": ["data/entities/misc/orbit_shot.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4",
-    "spawn_probability": "0.2,0.3,0.4,0.1",
+    "spawn_probability": "0.2,0.3,0.4,0.5",
     "price": 30,
     "mana": 0,
     "spawn_probabilities": {
       "1": 0.2,
       "2": 0.3,
       "3": 0.4,
-      "4": 0.1
+      "4": 0.5
     }
   },
   {
@@ -3903,21 +4250,38 @@
     }
   },
   {
+    "id": "TRUE_ORBIT",
+    "name": "$action_true_orbit",
+    "description": "$actiondesc_true_orbit",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAArElEQVR4Aa3BMUoDURSF4f8+sgi1TS1YBrMhS5cye3AJWcOIjRBInXYS0D2cHOEGHpM3Q2D8PpYKGvpB+vj+ZX8887J+YH888+fr/TmYI+sHiQmb7iCm9IPEnWSkQnp95IYSFRkm40pGgxIjMlJhgowkoxJGWjEio0GGhVFZMRKGyaiE0VBYqDAjEjMKFiZjCRl32nQH0aLEhH6Q3nY/ohI0yBj5PMH2KYL/dgE4h3JsWSupcAAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": ["data/entities/misc/true_orbit.xml"],
+    "type": 2,
+    "spawn_level": "2,3,4",
+    "spawn_probability": "0.2,0.3,0.4",
+    "price": 40,
+    "mana": 2,
+    "spawn_probabilities": {
+      "2": 0.2,
+      "3": 0.3,
+      "4": 0.4
+    }
+  },
+  {
     "id": "BOUNCE",
     "name": "$action_bounce",
     "description": "$actiondesc_bounce",
     "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUElEQVR4Ae3BsRGAIBBE0Q9jZxRFdXRAT+sGFxg4Kt6Y+R6/dQqESlAgS8YJGU/JOJCxSobJuFD5kowblaTSexcJ25yTjEpSwVpr4oUxRtkBoO00qy0tGvEAAAAASUVORK5CYII=",
     "sprite_unidentified": "data/ui_gfx/gun_actions/bounce_unidentified.png",
     "type": 2,
-    "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "1,1,0.4,0.2,0.2",
+    "spawn_level": "2,3,4,6",
+    "spawn_probability": "1,1,0.4,0.2",
     "price": 50,
     "mana": 0,
     "spawn_probabilities": {
       "2": 1,
       "3": 1,
       "4": 0.4,
-      "5": 0.2,
       "6": 0.2
     }
   },
@@ -3928,16 +4292,15 @@
     "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAbklEQVR4AbXBwRHDIBAEwYFyCEpuI1FIJEMol8P6Hjx4qGwhSt28wlIwsRSsshQkS8FTloKnLAXJUrDKUjCxFAweGCqDB1Jp7WBSWju4y4kLTtzlxMSJVU4kJ36ovMmJPyqbynmeZsOn986OyqYvZ6NK9RTcCmgAAAAASUVORK5CYII=",
     "sprite_unidentified": "data/ui_gfx/gun_actions/bounce_unidentified.png",
     "type": 2,
-    "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.2,0.2,1,1,1",
+    "spawn_level": "2,3,4,5",
+    "spawn_probability": "0.2,0.2,1,1",
     "price": 50,
     "mana": 0,
     "spawn_probabilities": {
       "2": 0.2,
       "3": 0.2,
       "4": 1,
-      "5": 1,
-      "6": 1
+      "5": 1
     }
   },
   {
@@ -3962,6 +4325,49 @@
     }
   },
   {
+    "id": "ANTI_HOMING",
+    "name": "$action_anti_homing",
+    "description": "$actiondesc_anti_homing",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABTklEQVR4AaXBsUsbYRwG4Pf9dHTpdqObnxA6lCySyeFcpYJkkhTSxc2DCkIGkyEgOPzGLC30EAqh4D9wg4u3ZQqB5k/4tizuby9yF2KQaPB5KAmVaZLImxEb2EZhFMdCYadWwyiOhUI9y4h3cCjVs4wo1LOM2AD/XVwIJW/GaZIIJW9GvMF5Mz5NJvBmnCaJvBmfJhN4M+IdHEqjOBYKozgWNkBJqEyTRN6M2MA2lngzYkECSCxpNSKhlOaBKGx1u128jj0saTUi9e6HOGyeYv9oD53j4+7X9o+ew1oSCq1GpN79EJXo02ec/+qg1YjksBaJFd++nyHMxri6vMWcw1oSVvz+eYc/f1Pc3F5izmEtEoU0D7w+aSLMxpj7crCLisOChBckLEnzwEG7jzAb4+H6ERWHBRLPJDwjsSLNAwftPtI8cNDuI80DKQkf8R9WrnstAf0GuwAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/anti_homing_unidentified.png",
+    "related_extra_entities": ["data/entities/misc/anti_homing.xml", "data/entities/particles/tinyspark_white.xml"],
+    "type": 2,
+    "spawn_level": "1,2,3,4,5,6",
+    "spawn_probability": "0.05,0.3,0.3,0.1,0.1,0.01",
+    "price": 110,
+    "mana": 1,
+    "spawn_probabilities": {
+      "1": 0.05,
+      "2": 0.3,
+      "3": 0.3,
+      "4": 0.1,
+      "5": 0.1,
+      "6": 0.01
+    }
+  },
+  {
+    "id": "HOMING_WAND",
+    "name": "$action_homing_wand",
+    "description": "$actiondesc_homing_wand",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA/ElEQVR4AaXBQUrDQACF4f+NvUMhLoVu4ymE7rxKvID0ApkzeADBXcF995k71AGXInQnz2nIItbYBvw+2Wbs9uHaXfsmZlpQSOKobip37Z7bh2unmEVhm3MCg7qp3LV7jrp2T91UZobAIMWsuDtwFHcHUsxihsDI0/OKuDvw9LxirsBIilkfnzekmMVMgZG6qUxRN5WZZHMiUNRNZYoUsyhSzKKom8r8INGzGSwoUsyqm8r3d19s1u963C798npFilm0TJAYLChsU6jgcbv0Zv0uLrJBkm3+I/CLzUU2g8AvEhdJDAKTbCbZnAhMkujZ9Gx6EicCZ0n0JP7wDRaDZETb4ip0AAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
+    "spawn_requires_flag": "card_unlocked_homing_wand",
+    "related_extra_entities": ["data/entities/misc/homing_wand.xml", "data/entities/particles/tinyspark_white.xml"],
+    "type": 2,
+    "spawn_level": "1,2,4,5,6,10",
+    "spawn_probability": "0.00001,0.08,0.08,0.25,0.25,0.2",
+    "price": 500,
+    "mana": 200,
+    "spawn_probabilities": {
+      "1": 0.00001,
+      "2": 0.08,
+      "4": 0.08,
+      "5": 0.25,
+      "6": 0.25,
+      "10": 0.2
+    }
+  },
+  {
     "id": "HOMING_SHORT",
     "name": "$action_homing_short",
     "description": "$actiondesc_homing_short",
@@ -3973,7 +4379,7 @@
     ],
     "type": 2,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "0.4,0.8,1,0.4,0.1,0.1",
+    "spawn_probability": "0.4,0.8,1,0.4,0.3,0.1",
     "price": 160,
     "mana": 40,
     "spawn_probabilities": {
@@ -3981,7 +4387,7 @@
       "2": 0.8,
       "3": 1,
       "4": 0.4,
-      "5": 0.1,
+      "5": 0.3,
       "6": 0.1
     }
   },
@@ -3994,13 +4400,13 @@
     "related_extra_entities": ["data/entities/misc/homing_rotate.xml", "data/entities/particles/tinyspark_white.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.2,0.4,0.6,0.4,0.4",
     "price": 175,
     "mana": 40,
     "spawn_probabilities": {
-      "2": 0.4,
+      "2": 0.2,
       "3": 0.4,
-      "4": 0.4,
+      "4": 0.6,
       "5": 0.4,
       "6": 0.4
     }
@@ -4013,15 +4419,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
     "related_extra_entities": ["data/entities/misc/homing_shooter.xml", "data/entities/particles/tinyspark_white.xml"],
     "type": 2,
-    "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.2,0.2,0.2,0.2,0.2",
+    "spawn_level": "2,3,4,6",
+    "spawn_probability": "0.2,0.3,0.2,0.2",
     "price": 100,
     "mana": 10,
     "spawn_probabilities": {
       "2": 0.2,
-      "3": 0.2,
+      "3": 0.3,
       "4": 0.2,
-      "5": 0.2,
       "6": 0.2
     }
   },
@@ -4076,7 +4481,7 @@
     "related_extra_entities": ["data/entities/misc/homing_cursor.xml", "data/entities/particles/tinyspark_white.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.7,0.7,0.4,0.4,1.0",
+    "spawn_probability": "0.7,0.7,0.4,0.4,1",
     "price": 175,
     "mana": 30,
     "spawn_probabilities": {
@@ -4116,15 +4521,15 @@
     "related_extra_entities": ["data/entities/misc/piercing_shot.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.4,0.5,0.6,0.6,0.4",
     "price": 190,
     "mana": 140,
     "spawn_probabilities": {
-      "2": 0.6,
-      "3": 0.6,
+      "2": 0.4,
+      "3": 0.5,
       "4": 0.6,
       "5": 0.6,
-      "6": 0.6
+      "6": 0.4
     }
   },
   {
@@ -4136,14 +4541,14 @@
     "related_extra_entities": ["data/entities/misc/clipping_shot.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.2,0.3,0.6,0.4,0.6",
     "price": 200,
     "mana": 160,
     "spawn_probabilities": {
-      "2": 0.6,
-      "3": 0.6,
+      "2": 0.2,
+      "3": 0.3,
       "4": 0.6,
-      "5": 0.6,
+      "5": 0.4,
       "6": 0.6
     }
   },
@@ -4156,14 +4561,14 @@
     "related_extra_entities": ["data/entities/particles/tinyspark_yellow.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.6,0.6,0.8,0.6,0.6",
     "price": 140,
     "mana": 5,
     "custom_xml_file": "data/entities/misc/custom_cards/damage.xml",
     "spawn_probabilities": {
       "1": 0.6,
       "2": 0.6,
-      "3": 0.6,
+      "3": 0.8,
       "4": 0.6,
       "5": 0.6
     }
@@ -4178,12 +4583,12 @@
     "related_extra_entities": ["data/entities/particles/tinyspark_yellow.xml"],
     "type": 2,
     "spawn_level": "3,4,5",
-    "spawn_probability": "0.6,0.6,0.6",
+    "spawn_probability": "0.7,0.6,0.6",
     "price": 200,
     "mana": 15,
     "custom_xml_file": "data/entities/misc/custom_cards/damage_random.xml",
     "spawn_probabilities": {
-      "3": 0.6,
+      "3": 0.7,
       "4": 0.6,
       "5": 0.6
     }
@@ -4197,14 +4602,14 @@
     "related_extra_entities": ["data/entities/particles/tinyspark_red.xml"],
     "type": 2,
     "spawn_level": "1,3,4,5,6",
-    "spawn_probability": "0.2,0.3,0.6,0.6,0.3",
+    "spawn_probability": "0.2,0.3,0.6,0.7,0.3",
     "price": 160,
     "mana": 2,
     "spawn_probabilities": {
       "1": 0.2,
       "3": 0.3,
       "4": 0.6,
-      "5": 0.6,
+      "5": 0.7,
       "6": 0.3
     }
   },
@@ -4216,8 +4621,8 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png",
     "related_extra_entities": ["data/entities/particles/tinyspark_red.xml"],
     "type": 2,
-    "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.2,0.4,0.6,0.4,0.2",
+    "spawn_level": "2,3,4,5,6,10",
+    "spawn_probability": "0.2,0.3,0.6,0.5,0.2,0.2",
     "price": 240,
     "mana": 0,
     "max_uses": 20,
@@ -4225,10 +4630,11 @@
     "custom_xml_file": "data/entities/misc/custom_cards/damage_forever.xml",
     "spawn_probabilities": {
       "2": 0.2,
-      "3": 0.4,
+      "3": 0.3,
       "4": 0.6,
-      "5": 0.4,
-      "6": 0.2
+      "5": 0.5,
+      "6": 0.2,
+      "10": 0.2
     }
   },
   {
@@ -4239,15 +4645,15 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png",
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.5,0.6,0.6,0.7,0.6",
     "price": 140,
     "mana": 5,
     "custom_xml_file": "data/entities/misc/custom_cards/critical_hit.xml",
     "spawn_probabilities": {
-      "1": 0.6,
+      "1": 0.5,
       "2": 0.6,
       "3": 0.6,
-      "4": 0.6,
+      "4": 0.7,
       "5": 0.6
     }
   },
@@ -4260,15 +4666,15 @@
     "related_extra_entities": ["data/entities/misc/area_damage.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.5",
+    "spawn_probability": "0.4,0.5,0.5,0.5,0.6",
     "price": 140,
     "mana": 30,
     "spawn_probabilities": {
-      "2": 0.5,
+      "2": 0.4,
       "3": 0.5,
       "4": 0.5,
       "5": 0.5,
-      "6": 0.5
+      "6": 0.6
     }
   },
   {
@@ -4280,12 +4686,12 @@
     "related_extra_entities": ["data/entities/misc/spells_to_power.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,6,10",
-    "spawn_probability": "0.5,0.5,0.5,0.5,0.5,0.1",
+    "spawn_probability": "0.3,0.3,0.5,0.5,0.5,0.1",
     "price": 140,
     "mana": 110,
     "spawn_probabilities": {
-      "2": 0.5,
-      "3": 0.5,
+      "2": 0.3,
+      "3": 0.3,
       "4": 0.5,
       "5": 0.5,
       "6": 0.5,
@@ -4300,15 +4706,38 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
     "related_extra_entities": ["data/entities/misc/essence_to_power.xml"],
     "type": 2,
-    "spawn_level": "1,2,3,10",
-    "spawn_probability": "0.2,0.5,0.5,0.1",
+    "spawn_level": "1,2,3,6,10",
+    "spawn_probability": "0.2,0.5,0.5,0.5,0.1",
     "price": 120,
     "mana": 110,
     "spawn_probabilities": {
       "1": 0.2,
       "2": 0.5,
       "3": 0.5,
+      "6": 0.5,
       "10": 0.1
+    }
+  },
+  {
+    "id": "ZERO_DAMAGE",
+    "name": "$action_zero_damage",
+    "description": "$actiondesc_zero_damage",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABg0lEQVR4Aa3BMYubYACA4VdN4Ai0SwY5CKI49qBjIma4saNj8iM6uTgV3bII+SmON2YRXdtCcZHIR44sHZIQXIT7quAQQq5X6D0P76JcLqVnGpJ/5JmGLJdLSUul5WcpsePimYbkDZ5pyNhx8bOUjkarOBwjcT6FseMizqewOBwjbvBMQ8aOi5+lJJVQaGn0isMxEudTGFg2DxM9fBLP0Xo+lV+MSfgknqP1fCoXY51vP7+TVEKhp3GhOByjh4kezoYjfvMSmh8/0LlTtXAx1smbmvWPXwoXBlzZ7PZsgMCyWW1LOoFlkzc1twy4sJ5PJb28qQksm85qW/I4uecWlf+kcsNmt2c2HLHaluRNTWDZvEblhsCyyZuax8k9nbypmQ1HbHZ7rmlcuFO1cDHWyZuaa7uXhq+fPiPOp7A4HCN6Kj3PNGTsuKy2Ja/xs5TYcfFMQ9Ib0PJMQ8aOi5+lJJVQkkrwFzJ2XFoyqYSi0oodFz9LSSqh8IakEoqfpcSOy7v4A8nyoMFdwZTyAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/damage_unidentified.png",
+    "related_extra_entities": [
+      "data/entities/particles/tinyspark_white_small.xml",
+      "data/entities/misc/zero_damage.xml"
+    ],
+    "type": 2,
+    "spawn_level": "3,4,5,10",
+    "spawn_probability": "0.3,0.3,0.6,0.3",
+    "price": 50,
+    "mana": 5,
+    "spawn_probabilities": {
+      "3": 0.3,
+      "4": 0.3,
+      "5": 0.6,
+      "10": 0.3
     }
   },
   {
@@ -4320,14 +4749,14 @@
     "related_extra_entities": ["data/entities/particles/heavy_shot.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.4,0.5",
     "price": 150,
     "mana": 7,
     "custom_xml_file": "data/entities/misc/custom_cards/heavy_shot.xml",
     "spawn_probabilities": {
       "2": 0.4,
       "3": 0.4,
-      "4": 0.4
+      "4": 0.5
     }
   },
   {
@@ -4339,13 +4768,13 @@
     "related_extra_entities": ["data/entities/particles/light_shot.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.4,0.4,0.4",
+    "spawn_probability": "0.3,0.5,0.4",
     "price": 60,
     "mana": 5,
     "custom_xml_file": "data/entities/misc/custom_cards/light_shot.xml",
     "spawn_probabilities": {
-      "2": 0.4,
-      "3": 0.4,
+      "2": 0.3,
+      "3": 0.5,
       "4": 0.4
     }
   },
@@ -4357,11 +4786,11 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/knockback_unidentified.png",
     "type": 2,
     "spawn_level": "3,5",
-    "spawn_probability": "0.6,0.6",
+    "spawn_probability": "0.7,0.6",
     "price": 100,
     "mana": 5,
     "spawn_probabilities": {
-      "3": 0.6,
+      "3": 0.7,
       "5": 0.6
     }
   },
@@ -4373,12 +4802,12 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/recoil_unidentified.png",
     "type": 2,
     "spawn_level": "2,4",
-    "spawn_probability": "0.6,0.6",
+    "spawn_probability": "0.6,0.7",
     "price": 100,
     "mana": 5,
     "spawn_probabilities": {
       "2": 0.6,
-      "4": 0.6
+      "4": 0.7
     }
   },
   {
@@ -4389,12 +4818,12 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/recoil_damper_unidentified.png",
     "type": 2,
     "spawn_level": "3,6",
-    "spawn_probability": "0.6,0.6",
+    "spawn_probability": "0.6,0.7",
     "price": 100,
     "mana": 5,
     "spawn_probabilities": {
       "3": 0.6,
-      "6": 0.6
+      "6": 0.7
     }
   },
   {
@@ -4424,13 +4853,13 @@
     "related_extra_entities": ["data/entities/misc/accelerating_shot.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.5,0.5,1",
+    "spawn_probability": "0.5,0.4,1",
     "price": 190,
     "mana": 20,
     "custom_xml_file": "data/entities/misc/custom_cards/accelerating_shot.xml",
     "spawn_probabilities": {
       "2": 0.5,
-      "3": 0.5,
+      "3": 0.4,
       "4": 1
     }
   },
@@ -4443,14 +4872,14 @@
     "related_extra_entities": ["data/entities/misc/decelerating_shot.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.3,0.3,0.5",
+    "spawn_probability": "0.4,0.1,0.7",
     "price": 80,
     "mana": 10,
     "custom_xml_file": "data/entities/misc/custom_cards/decelerating_shot.xml",
     "spawn_probabilities": {
-      "2": 0.3,
-      "3": 0.3,
-      "4": 0.5
+      "2": 0.4,
+      "3": 0.1,
+      "4": 0.7
     }
   },
   {
@@ -4461,14 +4890,32 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "1,1,0.8",
     "price": 120,
     "mana": 30,
     "custom_xml_file": "data/entities/misc/custom_cards/explosive_projectile.xml",
     "spawn_probabilities": {
       "2": 1,
       "3": 1,
-      "4": 1
+      "4": 0.8
+    }
+  },
+  {
+    "id": "CLUSTERMOD",
+    "name": "$action_clustermod",
+    "description": "$actiondesc_clustermod",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABsklEQVR4AY3BsWrbQACA4V+ylvai0qFTCCWDMBkLyeBBBbd4CCSQJZTSqfQpLChIgsD5DbJ66At402BDTDRo0NAH0KBBGFIImB4igw3Xc3GKMG7i77PYQkkRYrhBHbN2fXask7ykaXR3b7XYoKQIHb8X2R+/dPtvMuRkMcU4b+9HxWxO09Hey8hmG68DRcYuHNaUFCGGG9Sx4ooVN6hjntHCUFKEQOT4vW6/XeEGdSwniymGkkLLySI+b+9H3v5ritmcJps1x++xTMdscoPawvjaPyDJS05PDjk9OeRRC0NOFtN+u8K4cYM6Zovv346iy09veee/4mf6m2I2Z8ViBw+3Fxqvwz9FxufLlBUbQxsY2sDQBoY2eIbFDh5uLzReh7+KjOGgIslLVmz+Q0mhaSoyKDKGg4okL3lkYygpQiVFiKGk0BhuUFsYSgr94v3IwhgOKpK8pKmlpAiByPF73X67wg3qD6wpKULgRk4W04Nfe1GSl2xyMBy/xzId06SkCB2/F+F1UFzxI2Ur2w3qeJmOIyBygzqmyetAkfEUiycoKUIMN6jj67NjneQlTaO7e+sPzqO0tRtwa8MAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
+    "type": 2,
+    "spawn_level": "1,2,3",
+    "spawn_probability": "0.5,1,0.6",
+    "price": 160,
+    "mana": 30,
+    "custom_xml_file": "data/entities/misc/custom_cards/clusterbomb.xml",
+    "spawn_probabilities": {
+      "1": 0.5,
+      "2": 1,
+      "3": 0.6
     }
   },
   {
@@ -4575,15 +5022,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
     "related_extra_entities": ["data/entities/misc/static_to_sand.xml", "data/entities/particles/tinyspark_yellow.xml"],
     "type": 2,
-    "spawn_level": "2,3,4",
-    "spawn_probability": "0.3,0.3,0.3",
+    "spawn_level": "2,3,4,10",
+    "spawn_probability": "0.3,0.3,0.3,0.2",
     "price": 140,
     "mana": 70,
     "max_uses": 8,
     "spawn_probabilities": {
       "2": 0.3,
       "3": 0.3,
-      "4": 0.3
+      "4": 0.3,
+      "10": 0.2
     }
   },
   {
@@ -4642,14 +5090,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
     "type": 2,
     "spawn_level": "2,3,4,5",
-    "spawn_probability": "0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.4,0.6,0.6,0.3",
     "price": 80,
     "mana": 20,
     "spawn_probabilities": {
-      "2": 0.6,
+      "2": 0.4,
       "3": 0.6,
       "4": 0.6,
-      "5": 0.6
+      "5": 0.3
     }
   },
   {
@@ -4680,7 +5128,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/explosion.xml"],
     "type": 1,
     "spawn_level": "0,2,4,5",
-    "spawn_probability": "0.5,1,1,1",
+    "spawn_probability": "0.5,1,1,0.7",
     "price": 160,
     "mana": 80,
     "custom_xml_file": "data/entities/misc/custom_cards/explosion.xml",
@@ -4689,7 +5137,7 @@
       "0": 0.5,
       "2": 1,
       "4": 1,
-      "5": 1
+      "5": 0.7
     }
   },
   {
@@ -4701,7 +5149,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/explosion_light.xml"],
     "type": 1,
     "spawn_level": "2,3,5,6",
-    "spawn_probability": "0.5,1,1,1",
+    "spawn_probability": "0.5,1,0.7,0.5",
     "price": 160,
     "mana": 80,
     "custom_xml_file": "data/entities/misc/custom_cards/explosion_light.xml",
@@ -4709,8 +5157,8 @@
     "spawn_probabilities": {
       "2": 0.5,
       "3": 1,
-      "5": 1,
-      "6": 1
+      "5": 0.7,
+      "6": 0.5
     }
   },
   {
@@ -4722,16 +5170,16 @@
     "related_projectiles": ["data/entities/projectiles/deck/fireblast.xml"],
     "type": 1,
     "spawn_level": "0,1,3,5",
-    "spawn_probability": "0.5,0.5,0.6,0.6",
+    "spawn_probability": "0.5,0.7,0.6,0.4",
     "price": 120,
     "mana": 10,
     "custom_xml_file": "data/entities/misc/custom_cards/fire_blast.xml",
     "is_dangerous_blast": true,
     "spawn_probabilities": {
       "0": 0.5,
-      "1": 0.5,
+      "1": 0.7,
       "3": 0.6,
-      "5": 0.6
+      "5": 0.4
     }
   },
   {
@@ -4743,16 +5191,16 @@
     "related_projectiles": ["data/entities/projectiles/deck/poison_blast.xml"],
     "type": 1,
     "spawn_level": "1,2,4,6",
-    "spawn_probability": "0.5,0.6,0.6,0.5",
+    "spawn_probability": "0.5,0.8,0.4,0.3",
     "price": 140,
     "mana": 30,
     "custom_xml_file": "data/entities/misc/custom_cards/poison_blast.xml",
     "is_dangerous_blast": true,
     "spawn_probabilities": {
       "1": 0.5,
-      "2": 0.6,
-      "4": 0.6,
-      "6": 0.5
+      "2": 0.8,
+      "4": 0.4,
+      "6": 0.3
     }
   },
   {
@@ -4764,7 +5212,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/alcohol_blast.xml"],
     "type": 1,
     "spawn_level": "1,2,4,6",
-    "spawn_probability": "0.5,0.6,0.6,0.5",
+    "spawn_probability": "0.5,0.6,0.65,0.3",
     "price": 140,
     "mana": 30,
     "custom_xml_file": "data/entities/misc/custom_cards/alcohol_blast.xml",
@@ -4772,8 +5220,8 @@
     "spawn_probabilities": {
       "1": 0.5,
       "2": 0.6,
-      "4": 0.6,
-      "6": 0.5
+      "4": 0.65,
+      "6": 0.3
     }
   },
   {
@@ -4785,7 +5233,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/thunder_blast.xml"],
     "type": 1,
     "spawn_level": "1,3,5,6,10",
-    "spawn_probability": "0.5,0.6,0.6,0.5,0.1",
+    "spawn_probability": "0.5,0.6,0.7,0.5,0.1",
     "price": 180,
     "mana": 110,
     "custom_xml_file": "data/entities/misc/custom_cards/thunder_blast.xml",
@@ -4793,7 +5241,7 @@
     "spawn_probabilities": {
       "1": 0.5,
       "3": 0.6,
-      "5": 0.6,
+      "5": 0.7,
       "6": 0.5,
       "10": 0.1
     }
@@ -4911,7 +5359,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/regeneration_field.xml"],
     "type": 1,
     "spawn_level": "1,2,3,4",
-    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.3,0.4,0.3",
     "price": 250,
     "mana": 80,
     "max_uses": 2,
@@ -4919,7 +5367,7 @@
     "spawn_probabilities": {
       "1": 0.3,
       "2": 0.3,
-      "3": 0.3,
+      "3": 0.4,
       "4": 0.3
     }
   },
@@ -4974,15 +5422,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/shield_field.xml"],
     "type": 1,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.3,0.4,0.5,0.3",
     "price": 160,
     "mana": 20,
     "max_uses": 10,
     "spawn_probabilities": {
       "2": 0.3,
       "3": 0.3,
-      "4": 0.3,
-      "5": 0.3,
+      "4": 0.4,
+      "5": 0.5,
       "6": 0.3
     }
   },
@@ -4995,14 +5443,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/projectile_transmutation_field.xml"],
     "type": 1,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.4,0.4,0.3,0.3",
     "price": 250,
     "mana": 120,
     "max_uses": 6,
     "spawn_probabilities": {
       "2": 0.3,
-      "3": 0.3,
-      "4": 0.3,
+      "3": 0.4,
+      "4": 0.4,
       "5": 0.3,
       "6": 0.3
     }
@@ -5016,14 +5464,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/projectile_thunder_field.xml"],
     "type": 1,
     "spawn_level": "3,4,5,6",
-    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.3,0.5,0.3",
     "price": 300,
     "mana": 140,
     "max_uses": 6,
     "spawn_probabilities": {
       "3": 0.3,
       "4": 0.3,
-      "5": 0.3,
+      "5": 0.5,
       "6": 0.3
     }
   },
@@ -5036,12 +5484,12 @@
     "related_projectiles": ["data/entities/projectiles/deck/projectile_gravity_field.xml"],
     "type": 1,
     "spawn_level": "2,5,6",
-    "spawn_probability": "0.3,0.3,0.3",
+    "spawn_probability": "0.6,0.3,0.3",
     "price": 250,
     "mana": 120,
     "max_uses": 6,
     "spawn_probabilities": {
-      "2": 0.3,
+      "2": 0.6,
       "5": 0.3,
       "6": 0.3
     }
@@ -5055,15 +5503,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/vacuum_powder.xml"],
     "type": 1,
     "spawn_level": "2,3,5,6",
-    "spawn_probability": "0.3,1,0.3,0.3",
+    "spawn_probability": "0.3,0.7,0.3,0.4",
     "price": 150,
     "mana": 40,
     "max_uses": 20,
     "spawn_probabilities": {
       "2": 0.3,
-      "3": 1,
+      "3": 0.7,
       "5": 0.3,
-      "6": 0.3
+      "6": 0.4
     }
   },
   {
@@ -5074,15 +5522,15 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/chaos_polymorph_field_unidentified.png",
     "related_projectiles": ["data/entities/projectiles/deck/vacuum_liquid.xml"],
     "type": 1,
-    "spawn_level": "2,3,5,6",
-    "spawn_probability": "0.3,1,0.3,0.3",
+    "spawn_level": "2,4,5,6",
+    "spawn_probability": "0.3,0.7,0.4,0.3",
     "price": 150,
     "mana": 40,
     "max_uses": 20,
     "spawn_probabilities": {
       "2": 0.3,
-      "3": 1,
-      "5": 0.3,
+      "4": 0.7,
+      "5": 0.4,
       "6": 0.3
     }
   },
@@ -5092,18 +5540,18 @@
     "description": "$actiondesc_vacuum_entities",
     "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABv0lEQVR4Aa3BsYvTUAAH4N9LFiFdhAMFMQglkMEenFCJ9Opy2/sPclAw4JDhjk4BbxHaReG6hDpkEKoEzFC6lcctpSAUArYUkht6ZLtb2lsyZWgzxARyEEp00e/DvyIo0WoPEkmhCFwGSaEIXAZJofioPiHYQ7Cn62yS5aRvoURFqOq2qREU8ChotQfJ7c2VhT/YxeH81BiOp6NeBzmCXNfZJMtJ30JOFVY15JxI9lFQEaq6bWoEKR6pVnuQ3N5cWcipwqpWvzhrPGu+FvmXj0TRW2yv44N75HZxOD81huPpqNfhkJIUigeqsKrVL84ayD19fIjn+tuGKqxqKAhchgyHVOAylHn3voV16OGDcYl9kkKR4ZCSFIoy377a+DH8js+XBvYFLkOGQypwGR44kez/+vRltg49ZF69eYEykkKR4ZCSFIoiJ5L9O+vnbB16EMZkhhKBy5DhkZqOep16Uxvv4nCO3HV8cC96i60Tyb7oLbZOJPvIHZ2c66ZxTJAiKOg6m2Q56Vv4i4pQ1W1TI8jxKJiOep16Uxvv4nCOEkcn57ppHBMUEJToOpskcBkkhSJwGSSFInAZbFMj+N9+AxlCqykEXH21AAAAAElFTkSuQmCC",
     "sprite_unidentified": "data/ui_gfx/gun_actions/chaos_polymorph_field_unidentified.png",
-    "related_projectiles": ["data/entities/projectiles/deck/vacuum_liquid.xml"],
+    "related_projectiles": ["data/entities/projectiles/deck/vacuum_entities.xml"],
     "type": 1,
     "spawn_level": "2,3,5,6",
-    "spawn_probability": "0.3,1,0.3,0.3",
+    "spawn_probability": "0.3,0.7,0.3,0.4",
     "price": 200,
     "mana": 50,
     "max_uses": 20,
     "spawn_probabilities": {
       "2": 0.3,
-      "3": 1,
+      "3": 0.7,
       "5": 0.3,
-      "6": 0.3
+      "6": 0.4
     }
   },
   {
@@ -5116,15 +5564,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/sea_lava.xml"],
     "type": 4,
     "spawn_level": "0,4,5,6",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.2,0.5,0.6",
     "price": 350,
     "mana": 140,
     "max_uses": 3,
     "spawn_probabilities": {
       "0": 0.2,
       "4": 0.2,
-      "5": 0.2,
-      "6": 0.2
+      "5": 0.5,
+      "6": 0.6
     }
   },
   {
@@ -5136,14 +5584,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/sea_alcohol.xml"],
     "type": 4,
     "spawn_level": "0,4,5,6",
-    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.5,0.6,0.3",
     "price": 350,
     "mana": 140,
     "max_uses": 3,
     "spawn_probabilities": {
       "0": 0.3,
-      "4": 0.3,
-      "5": 0.3,
+      "4": 0.5,
+      "5": 0.6,
       "6": 0.3
     }
   },
@@ -5156,14 +5604,14 @@
     "related_projectiles": ["data/entities/projectiles/deck/sea_oil.xml"],
     "type": 4,
     "spawn_level": "0,4,5,6",
-    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.5,0.6,0.3",
     "price": 350,
     "mana": 140,
     "max_uses": 3,
     "spawn_probabilities": {
       "0": 0.3,
-      "4": 0.3,
-      "5": 0.3,
+      "4": 0.5,
+      "5": 0.6,
       "6": 0.3
     }
   },
@@ -5176,16 +5624,31 @@
     "related_projectiles": ["data/entities/projectiles/deck/sea_water.xml"],
     "type": 4,
     "spawn_level": "0,4,5,6",
-    "spawn_probability": "0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.5,0.4,0.3,0.2",
     "price": 350,
     "mana": 140,
     "max_uses": 3,
     "spawn_probabilities": {
-      "0": 0.4,
+      "0": 0.5,
       "4": 0.4,
-      "5": 0.4,
-      "6": 0.4
+      "5": 0.3,
+      "6": 0.2
     }
+  },
+  {
+    "id": "SEA_SWAMP",
+    "name": "$action_sea_swamp",
+    "description": "$actiondesc_sea_swamp",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABAUlEQVR4AaXBsWnEQBCG0e80F0xR28wWsg0pVBFKBAsO3Yj5HQxjLZxgEcYO7r1HZvKOhTctvCszqa0kk9pKclNbSSa1lTyxcNrXg9pKcqqt5L4e1FaSl9pK7utBbSU51Vayb53hycu+HtRWsm8dd6NvndpKctrXg6FvndpK7uuBuzE8mfStM+tbZ3A3pGDY14NBCoaFGymQgosUSIG7cXE3Lgt/kIKZFAxScHkykQJ34+Ju/Gfhxd24SMEgBXfuxmzhRgrcDSlwN6RgkILfLJzcjTt3Y3A3pGDmblyevEjB4G7MpGAmBbOF08fH18PdmEmBFMzcjcvn5/eD0yMzeccPMdCLyKgFj5QAAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_swamp_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/sea_swamp.xml"],
+    "type": 4,
+    "spawn_level": "0",
+    "spawn_probability": "0",
+    "price": 350,
+    "mana": 140,
+    "max_uses": 3,
+    "spawn_probabilities": {}
   },
   {
     "id": "SEA_ACID",
@@ -5196,15 +5659,15 @@
     "related_projectiles": ["data/entities/projectiles/deck/sea_acid.xml"],
     "type": 4,
     "spawn_level": "0,4,5,6",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.2,0.4,0.5",
     "price": 350,
     "mana": 140,
     "max_uses": 3,
     "spawn_probabilities": {
       "0": 0.2,
       "4": 0.2,
-      "5": 0.2,
-      "6": 0.2
+      "5": 0.4,
+      "6": 0.5
     }
   },
   {
@@ -5216,15 +5679,38 @@
     "related_projectiles": ["data/entities/projectiles/deck/sea_acid_gas.xml"],
     "type": 4,
     "spawn_level": "0,4,5,6",
-    "spawn_probability": "0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.4,0.4,0.3",
     "price": 200,
     "mana": 140,
     "max_uses": 3,
     "spawn_probabilities": {
       "0": 0.3,
-      "4": 0.3,
-      "5": 0.3,
+      "4": 0.4,
+      "5": 0.4,
       "6": 0.3
+    }
+  },
+  {
+    "id": "SEA_MIMIC",
+    "name": "$action_sea_mimic",
+    "description": "$actiondesc_sea_mimic",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB20lEQVR4AaXBX0tTYQDA4d97PJurUEphRUsS2592Mlmis7CaaWVFhMiksqhustt9hLNv01Xg9Ri0i8DaIFtzoDPbGlsXiheVLdzJt/OSg0PY1Z5HSClph0abNNqkYZubmZVzM7O0PH1xUwohcEpMXpJCCFoWbl2T2DpM0yT9ecds1NbM+w8fJPP5j3Js4TLH3Zo5e+9J0jRNEvNRGQ8M0u3pNG8/e56sL2Xk9FQUY/xGUmdfz9hd4rqUsdg4TXaJPJrEJhPzUeLXw7AC8QsGP90eOT0VpUXHIRa7gpPv8TB3Sl9xmp6K4qTj4A+HWSutUtMEfx3jQ6+G8uN8DWPgIrwt46Rh62r+4mqoj+Vyhf6zg+xYsGOB0WPgCk3QUtxYwgoKrKDACgoUjX3vCyWMM36Kn9ZRRr0Gxe0izdXXuEIT/I+Ozb+7jfJurQp00re1R++hPXyWmy/1U0SOCDY3R1F8ES/leh5X00LRcBjyD9CyUi0S8oaIBAIsl0oo58JByvU8/SeHaHw/jKJj070NlEyuCrjo9hxFKWQruN785gTQNfKNrXqOoDHMeqFAi4Ytncnyr5HTPg6yUS6gLKayKBq2l69SIp3J4pSr1DjIdoeLxVQWm8AmpJS04w+y9J8JdY+/igAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sea_acid_unidentified.png",
+    "related_projectiles": ["data/entities/projectiles/deck/sea_mimic.xml"],
+    "type": 4,
+    "spawn_level": "0,4,5,6,10",
+    "spawn_probability": "0.05,0.05,0.1,0.1,0.2",
+    "spawn_requires_flag": "card_unlocked_sea_mimic",
+    "price": 350,
+    "mana": 140,
+    "max_uses": 2,
+    "never_unlimited": true,
+    "spawn_probabilities": {
+      "0": 0.05,
+      "4": 0.05,
+      "5": 0.1,
+      "6": 0.1,
+      "10": 0.2
     }
   },
   {
@@ -5236,17 +5722,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/cloud_water.xml"],
     "type": 1,
     "spawn_level": "0,1,2,3,4,5",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.2,0.3,0.4,0.4,0.3,0.2",
     "price": 140,
     "mana": 30,
     "max_uses": 10,
     "spawn_probabilities": {
-      "0": 0.4,
-      "1": 0.4,
+      "0": 0.2,
+      "1": 0.3,
       "2": 0.4,
       "3": 0.4,
-      "4": 0.4,
-      "5": 0.4
+      "4": 0.3,
+      "5": 0.2
     }
   },
   {
@@ -5258,17 +5744,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/cloud_oil.xml"],
     "type": 1,
     "spawn_level": "0,1,2,3,4,5",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.2,0.3,0.4,0.4,0.3,0.2",
     "price": 100,
     "mana": 20,
     "max_uses": 15,
     "spawn_probabilities": {
-      "0": 0.4,
-      "1": 0.4,
+      "0": 0.2,
+      "1": 0.3,
       "2": 0.4,
       "3": 0.4,
-      "4": 0.4,
-      "5": 0.4
+      "4": 0.3,
+      "5": 0.2
     }
   },
   {
@@ -5280,17 +5766,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/cloud_blood.xml"],
     "type": 1,
     "spawn_level": "0,1,2,3,4,5",
-    "spawn_probability": "0.3,0.3,0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.2,0.3,0.3,0.4,0.3,0.2",
     "price": 200,
     "mana": 60,
     "max_uses": 3,
     "spawn_probabilities": {
-      "0": 0.3,
+      "0": 0.2,
       "1": 0.3,
       "2": 0.3,
-      "3": 0.3,
+      "3": 0.4,
       "4": 0.3,
-      "5": 0.3
+      "5": 0.2
     }
   },
   {
@@ -5302,17 +5788,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/cloud_acid.xml"],
     "type": 1,
     "spawn_level": "0,1,2,3,4,5",
-    "spawn_probability": "0.2,0.2,0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.2,0.4,0.2,0.2,0.5",
     "price": 180,
     "mana": 90,
     "max_uses": 8,
     "spawn_probabilities": {
       "0": 0.2,
       "1": 0.2,
-      "2": 0.2,
+      "2": 0.4,
       "3": 0.2,
       "4": 0.2,
-      "5": 0.2
+      "5": 0.5
     }
   },
   {
@@ -5325,17 +5811,17 @@
     "related_projectiles": ["data/entities/projectiles/deck/cloud_thunder.xml"],
     "type": 1,
     "spawn_level": "0,1,2,3,4,5",
-    "spawn_probability": "0.3,0.3,0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.3,0.2,0.3,0.4,0.5",
     "price": 190,
     "mana": 90,
     "max_uses": 5,
     "spawn_probabilities": {
       "0": 0.3,
       "1": 0.3,
-      "2": 0.3,
+      "2": 0.2,
       "3": 0.3,
-      "4": 0.3,
-      "5": 0.3
+      "4": 0.4,
+      "5": 0.5
     }
   },
   {
@@ -5347,15 +5833,15 @@
     "related_extra_entities": ["data/entities/particles/electricity.xml"],
     "type": 2,
     "spawn_level": "1,2,4,5",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "1,1,0.8,0.7",
     "price": 150,
     "mana": 8,
     "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
     "spawn_probabilities": {
       "1": 1,
       "2": 1,
-      "4": 1,
-      "5": 1
+      "4": 0.8,
+      "5": 0.7
     }
   },
   {
@@ -5367,16 +5853,16 @@
     "related_extra_entities": ["data/entities/misc/matter_eater.xml"],
     "type": 2,
     "spawn_level": "1,2,4,5,10",
-    "spawn_probability": "0.1,1,0.1,0.1,0.2",
+    "spawn_probability": "0.1,0.9,0.1,0.2,0.2",
     "price": 280,
     "mana": 120,
     "max_uses": 10,
     "never_unlimited": true,
     "spawn_probabilities": {
       "1": 0.1,
-      "2": 1,
+      "2": 0.9,
       "4": 0.1,
-      "5": 0.1,
+      "5": 0.2,
       "10": 0.2
     }
   },
@@ -5389,15 +5875,15 @@
     "related_extra_entities": ["data/entities/particles/freeze_charge.xml"],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "1,1,1,1",
+    "spawn_probability": "1,1,0.9,0.8",
     "price": 140,
     "mana": 10,
     "custom_xml_file": "data/entities/misc/custom_cards/freeze.xml",
     "spawn_probabilities": {
       "1": 1,
       "3": 1,
-      "4": 1,
-      "5": 1
+      "4": 0.9,
+      "5": 0.8
     }
   },
   {
@@ -5409,12 +5895,12 @@
     "related_extra_entities": ["data/entities/particles/freeze_charge.xml"],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.4,0.2,0.2",
     "price": 70,
     "mana": 10,
     "spawn_probabilities": {
       "1": 0.2,
-      "3": 0.2,
+      "3": 0.4,
       "4": 0.2,
       "5": 0.2
     }
@@ -5428,13 +5914,13 @@
     "related_extra_entities": ["data/entities/misc/hitfx_critical_water.xml"],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.2,0.4,0.2",
     "price": 70,
     "mana": 10,
     "spawn_probabilities": {
       "1": 0.2,
       "3": 0.2,
-      "4": 0.2,
+      "4": 0.4,
       "5": 0.2
     }
   },
@@ -5447,12 +5933,12 @@
     "related_extra_entities": ["data/entities/misc/hitfx_critical_oil.xml"],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.4,0.2,0.2",
     "price": 70,
     "mana": 10,
     "spawn_probabilities": {
       "1": 0.2,
-      "3": 0.2,
+      "3": 0.4,
       "4": 0.2,
       "5": 0.2
     }
@@ -5466,14 +5952,14 @@
     "related_extra_entities": ["data/entities/misc/hitfx_critical_blood.xml"],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.2,0.2,0.4",
     "price": 70,
     "mana": 10,
     "spawn_probabilities": {
       "1": 0.2,
       "3": 0.2,
       "4": 0.2,
-      "5": 0.2
+      "5": 0.4
     }
   },
   {
@@ -5485,13 +5971,13 @@
     "related_extra_entities": ["data/entities/misc/hitfx_toxic_charm.xml"],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.2,0.3,0.2",
     "price": 150,
     "mana": 70,
     "spawn_probabilities": {
       "1": 0.2,
       "3": 0.2,
-      "4": 0.2,
+      "4": 0.3,
       "5": 0.2
     }
   },
@@ -5504,12 +5990,12 @@
     "related_extra_entities": ["data/entities/misc/hitfx_explode_slime.xml"],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.3,0.2,0.2",
     "price": 140,
     "mana": 20,
     "spawn_probabilities": {
       "1": 0.2,
-      "3": 0.2,
+      "3": 0.3,
       "4": 0.2,
       "5": 0.2
     }
@@ -5526,14 +6012,14 @@
     ],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "0.1,0.1,0.1,0.1",
+    "spawn_probability": "0.1,0.1,0.3,0.1",
     "price": 300,
     "mana": 200,
     "max_uses": 20,
     "spawn_probabilities": {
       "1": 0.1,
       "3": 0.1,
-      "4": 0.1,
+      "4": 0.3,
       "5": 0.1
     }
   },
@@ -5546,11 +6032,11 @@
     "related_extra_entities": ["data/entities/misc/hitfx_explode_alcohol.xml"],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.3,0.2,0.2,0.2",
     "price": 140,
     "mana": 20,
     "spawn_probabilities": {
-      "1": 0.2,
+      "1": 0.3,
       "3": 0.2,
       "4": 0.2,
       "5": 0.2
@@ -5568,7 +6054,7 @@
     ],
     "type": 2,
     "spawn_level": "1,3,4,5",
-    "spawn_probability": "0.1,0.1,0.1,0.1",
+    "spawn_probability": "0.1,0.1,0.1,0.3",
     "price": 300,
     "mana": 200,
     "max_uses": 20,
@@ -5576,7 +6062,7 @@
       "1": 0.1,
       "3": 0.1,
       "4": 0.1,
-      "5": 0.1
+      "5": 0.3
     }
   },
   {
@@ -5587,14 +6073,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/explosive_projectile_unidentified.png",
     "type": 2,
     "spawn_level": "2,3,5,6",
-    "spawn_probability": "0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.3,0.2,0.3",
     "price": 140,
     "mana": 10,
     "spawn_probabilities": {
       "2": 0.2,
-      "3": 0.2,
+      "3": 0.3,
       "5": 0.2,
-      "6": 0.2
+      "6": 0.3
     }
   },
   {
@@ -5606,14 +6092,14 @@
     "related_extra_entities": ["data/entities/misc/rocket_downwards.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4",
-    "spawn_probability": "0.2,1,1,1",
+    "spawn_probability": "0.2,0.5,0.7,0.7",
     "price": 200,
     "mana": 90,
     "spawn_probabilities": {
       "1": 0.2,
-      "2": 1,
-      "3": 1,
-      "4": 1
+      "2": 0.5,
+      "3": 0.7,
+      "4": 0.7
     }
   },
   {
@@ -5625,13 +6111,13 @@
     "related_extra_entities": ["data/entities/misc/rocket_octagon.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.5,0.5,0.5",
+    "spawn_probability": "0.5,0.6,0.3",
     "price": 200,
     "mana": 100,
     "spawn_probabilities": {
       "2": 0.5,
-      "3": 0.5,
-      "4": 0.5
+      "3": 0.6,
+      "4": 0.3
     }
   },
   {
@@ -5643,12 +6129,12 @@
     "related_extra_entities": ["data/entities/misc/fizzle.xml"],
     "type": 2,
     "spawn_level": "3,4,5",
-    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_probability": "0.4,0.3,0.1",
     "price": 0,
     "mana": 0,
     "spawn_probabilities": {
-      "3": 0.1,
-      "4": 0.1,
+      "3": 0.4,
+      "4": 0.3,
       "5": 0.1
     }
   },
@@ -5745,6 +6231,63 @@
     }
   },
   {
+    "id": "BOUNCE_SMALL_EXPLOSION",
+    "name": "$action_bounce_small_explosion",
+    "description": "$actiondesc_bounce_small_explosion",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA8klEQVR4Ac3BMUoDQRiG4XfCNjJewD7FHiBFCkvLsLmCtwiCxXZzn2CZVAm4xX8Ai/S2wqykCXyOMsgybDBi4/Pwv/UNoqCMbEKmjIHrNY7fUsIIJVxKCQNKyGLwIonBi6EYvBhQQqKEwvE1iGxCEoNXdf9IDF78IAavq5sHF4MXQzF4UVBCctwtxTl9gyjE4NU36FPfILLjbikG+gY5CjF4Vbd3fJnO4dBx2m9wz+9cr3EU3Gq1EoV28QLTOd8OHe1TzZjKzCi1zGgXHUzncOg47TdAjZlRqhhhZrTMgDegBmrMjDEVZ5gZl5jwB9vt1n0AYEKF7QwGS54AAAAASUVORK5CYII=",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": ["data/entities/misc/bounce_small_explosion.xml"],
+    "type": 2,
+    "spawn_level": "0,1,2",
+    "spawn_probability": "0.5,0.3,0.3",
+    "price": 100,
+    "mana": 10,
+    "spawn_probabilities": {
+      "0": 0.5,
+      "1": 0.3,
+      "2": 0.3
+    }
+  },
+  {
+    "id": "BOUNCE_LIGHTNING",
+    "name": "$action_bounce_lightning",
+    "description": "$actiondesc_bounce_lightning",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABCUlEQVR4AdXBsW3CQBSA4f8sWhApM0JMSxdxDWUU1gEPYNlreIWTUlIEK921Z49Ae7IHeHlIJrIskyZVvo//RwYMEgYy4K9EMUMUjxRNJ4yIYkQUI6KsC8KUdUEYiEKJYqRoOmEkYeTzPcW6IPwiS1dGlHVBuCuaTm6YEMWEdUFuGCysC5KlK5MBosq2J0tXhhHrglwOG1M0nZxelpRtz411QQwTolB1hN0a6gj2yRhRKKNQ1gW5HDbGHI9HYeLtVLJb86Nse2KVM2fhvWdqfe3ZrZfcvT4v+QC890wlzIhVTtn23H1dex5JmOG9J1Y5dYQ6QqxyvPfMMaj9fi/M2G63eO955Hw+m2+DZqhoySJgcAAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": ["data/entities/misc/bounce_lightning.xml"],
+    "type": 2,
+    "spawn_level": "1,3,5",
+    "spawn_probability": "0.1,0.3,0.6",
+    "price": 180,
+    "mana": 40,
+    "spawn_probabilities": {
+      "1": 0.1,
+      "3": 0.3,
+      "5": 0.6
+    }
+  },
+  {
+    "id": "BOUNCE_HOLE",
+    "name": "$action_bounce_hole",
+    "description": "$actiondesc_bounce_hole",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAc0lEQVR4AdXByw0DIRBEwQdySGSwQU0MG9Rm0Dm154AlhPBPyAdX8X/c0VU6d+xyYsGJTzkxcOJbTiQnXqj8khNvVDZVNpWIMJPzPAuTiDALN0mMWms8I4lZZVNlIomIMIOIsCRWynEcZqG1xoMkVq7rKndZQUg/Bo5qhwAAAABJRU5ErkJggg==",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/sinewave_unidentified.png",
+    "related_extra_entities": ["data/entities/misc/bounce_hole.xml"],
+    "type": 2,
+    "spawn_level": "2,4,6,10",
+    "spawn_probability": "0.1,0.4,0.4,0.1",
+    "price": 220,
+    "mana": 60,
+    "max_uses": 20,
+    "never_unlimited": true,
+    "spawn_probabilities": {
+      "2": 0.1,
+      "4": 0.4,
+      "6": 0.4,
+      "10": 0.1
+    }
+  },
+  {
     "id": "FIREBALL_RAY",
     "name": "$action_fireball_ray",
     "description": "$actiondesc_fireball_ray",
@@ -5773,12 +6316,13 @@
     "related_extra_entities": ["data/entities/misc/lightning_ray.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "spawn_probability": "0,0.2,0.4,0.4,0.4",
     "price": 180,
     "mana": 110,
     "max_uses": 16,
     "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
     "spawn_probabilities": {
+      "2": 0.2,
       "3": 0.4,
       "4": 0.4,
       "5": 0.4
@@ -5793,11 +6337,12 @@
     "related_extra_entities": ["data/entities/misc/tentacle_ray.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "spawn_probability": "0.1,0,0.4,0.4,0.4",
     "price": 150,
     "mana": 110,
     "max_uses": 16,
     "spawn_probabilities": {
+      "1": 0.1,
       "3": 0.4,
       "4": 0.4,
       "5": 0.4
@@ -5812,11 +6357,12 @@
     "related_extra_entities": ["data/entities/misc/laser_emitter_ray.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "spawn_probability": "0,0.1,0.4,0.4,0.4",
     "price": 150,
     "mana": 110,
     "max_uses": 16,
     "spawn_probabilities": {
+      "2": 0.1,
       "3": 0.4,
       "4": 0.4,
       "5": 0.4
@@ -5852,15 +6398,15 @@
     "related_extra_entities": ["data/entities/misc/hitfx_fireball_ray_enemy.xml"],
     "type": 2,
     "spawn_level": "1,2,4,5",
-    "spawn_probability": "0.6,0.6,0.4,0.4",
+    "spawn_probability": "0.5,0.6,0.4,0.3",
     "price": 100,
     "mana": 90,
     "max_uses": 20,
     "spawn_probabilities": {
-      "1": 0.6,
+      "1": 0.5,
       "2": 0.6,
       "4": 0.4,
-      "5": 0.4
+      "5": 0.3
     }
   },
   {
@@ -5872,15 +6418,16 @@
     "related_extra_entities": ["data/entities/misc/hitfx_lightning_ray_enemy.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "spawn_probability": "0,0.2,0.4,0.4,0.5",
     "price": 150,
     "mana": 90,
     "max_uses": 20,
     "custom_xml_file": "data/entities/misc/custom_cards/electric_charge.xml",
     "spawn_probabilities": {
+      "2": 0.2,
       "3": 0.4,
       "4": 0.4,
-      "5": 0.4
+      "5": 0.5
     }
   },
   {
@@ -5892,13 +6439,14 @@
     "related_extra_entities": ["data/entities/misc/hitfx_tentacle_ray_enemy.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0,0,0.4,0.4,0.4",
+    "spawn_probability": "0,0.1,0.4,0.5,0.4",
     "price": 150,
     "mana": 90,
     "max_uses": 20,
     "spawn_probabilities": {
+      "2": 0.1,
       "3": 0.4,
-      "4": 0.4,
+      "4": 0.5,
       "5": 0.4
     }
   },
@@ -5911,12 +6459,12 @@
     "related_extra_entities": ["data/entities/misc/hitfx_gravity_field_enemy.xml"],
     "type": 2,
     "spawn_level": "1,2,4,5",
-    "spawn_probability": "0.6,0.6,0.4,0.4",
+    "spawn_probability": "0.5,0.6,0.4,0.4",
     "price": 250,
     "mana": 110,
     "max_uses": 20,
     "spawn_probabilities": {
-      "1": 0.6,
+      "1": 0.5,
       "2": 0.6,
       "4": 0.4,
       "5": 0.4
@@ -5930,14 +6478,15 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
     "related_extra_entities": ["data/entities/misc/hitfx_curse.xml"],
     "type": 2,
-    "spawn_level": "2,3,5",
-    "spawn_probability": "0.6,0.8,0.4",
+    "spawn_level": "2,3,5,10",
+    "spawn_probability": "0.6,0.7,0.4,0.1",
     "price": 140,
     "mana": 30,
     "spawn_probabilities": {
       "2": 0.6,
-      "3": 0.8,
-      "5": 0.4
+      "3": 0.7,
+      "5": 0.4,
+      "10": 0.1
     }
   },
   {
@@ -5948,15 +6497,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
     "related_extra_entities": ["data/entities/misc/hitfx_curse_wither_projectile.xml"],
     "type": 2,
-    "spawn_level": "3,4,5,6",
-    "spawn_probability": "0.2,0.4,0.9,0.9",
+    "spawn_level": "3,4,5,6,10",
+    "spawn_probability": "0.2,0.4,0.7,0.7,0.1",
     "price": 100,
     "mana": 50,
     "spawn_probabilities": {
       "3": 0.2,
       "4": 0.4,
-      "5": 0.9,
-      "6": 0.9
+      "5": 0.7,
+      "6": 0.7,
+      "10": 0.1
     }
   },
   {
@@ -5967,15 +6517,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
     "related_extra_entities": ["data/entities/misc/hitfx_curse_wither_explosion.xml"],
     "type": 2,
-    "spawn_level": "2,3,4,5",
-    "spawn_probability": "0.2,0.4,0.9,0.9",
+    "spawn_level": "2,3,4,5,10",
+    "spawn_probability": "0.2,0.4,0.7,0.7,0.1",
     "price": 100,
     "mana": 50,
     "spawn_probabilities": {
       "2": 0.2,
       "3": 0.4,
-      "4": 0.9,
-      "5": 0.9
+      "4": 0.7,
+      "5": 0.7,
+      "10": 0.1
     }
   },
   {
@@ -5986,15 +6537,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
     "related_extra_entities": ["data/entities/misc/hitfx_curse_wither_melee.xml"],
     "type": 2,
-    "spawn_level": "3,4,5,6",
-    "spawn_probability": "0.2,0.4,0.9,0.9",
+    "spawn_level": "3,4,5,6,10",
+    "spawn_probability": "0.2,0.4,0.7,0.7,0.1",
     "price": 100,
     "mana": 50,
     "spawn_probabilities": {
       "3": 0.2,
       "4": 0.4,
-      "5": 0.9,
-      "6": 0.9
+      "5": 0.7,
+      "6": 0.7,
+      "10": 0.1
     }
   },
   {
@@ -6005,15 +6557,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/electric_charge_unidentified.png",
     "related_extra_entities": ["data/entities/misc/hitfx_curse_wither_electricity.xml"],
     "type": 2,
-    "spawn_level": "1,4,5,6",
-    "spawn_probability": "0.2,0.4,0.9,0.9",
+    "spawn_level": "1,4,5,6,10",
+    "spawn_probability": "0.2,0.4,0.7,0.7,0.1",
     "price": 100,
     "mana": 50,
     "spawn_probabilities": {
       "1": 0.2,
       "4": 0.4,
-      "5": 0.9,
-      "6": 0.9
+      "5": 0.7,
+      "6": 0.7,
+      "10": 0.1
     }
   },
   {
@@ -6026,14 +6579,14 @@
     "spawn_requires_flag": "card_unlocked_dragon",
     "type": 2,
     "spawn_level": "1,2,4,5",
-    "spawn_probability": "0.2,0.8,0.4,0.2",
+    "spawn_probability": "0.3,0.65,0.4,0.3",
     "price": 200,
     "mana": 70,
     "spawn_probabilities": {
-      "1": 0.2,
-      "2": 0.8,
+      "1": 0.3,
+      "2": 0.65,
       "4": 0.4,
-      "5": 0.2
+      "5": 0.3
     }
   },
   {
@@ -6046,13 +6599,13 @@
     "spawn_requires_flag": "card_unlocked_dragon",
     "type": 2,
     "spawn_level": "0,1,2,4,5",
-    "spawn_probability": "0.5,0.2,0.8,0.4,0.2",
+    "spawn_probability": "0.2,0.3,0.7,0.4,0.2",
     "price": 140,
     "mana": 40,
     "spawn_probabilities": {
-      "0": 0.5,
-      "1": 0.2,
-      "2": 0.8,
+      "0": 0.2,
+      "1": 0.3,
+      "2": 0.7,
       "4": 0.4,
       "5": 0.2
     }
@@ -6068,13 +6621,13 @@
     "type": 2,
     "ai_never_uses": true,
     "spawn_level": "2,4,5,6,10",
-    "spawn_probability": "0.1,0.1,0.1,0.2,1",
+    "spawn_probability": "0.1,0.2,0.1,0.2,1",
     "price": 400,
     "mana": 250,
     "max_uses": 3,
     "spawn_probabilities": {
       "2": 0.1,
-      "4": 0.1,
+      "4": 0.2,
       "5": 0.1,
       "6": 0.2,
       "10": 1
@@ -6090,14 +6643,14 @@
     "spawn_requires_flag": "card_unlocked_dragon",
     "type": 2,
     "spawn_level": "1,2,4,5,10",
-    "spawn_probability": "0.2,0.8,0.4,0.2,0.2",
+    "spawn_probability": "0.2,0.7,0.4,0.3,0.2",
     "price": 200,
     "mana": 100,
     "spawn_probabilities": {
       "1": 0.2,
-      "2": 0.8,
+      "2": 0.7,
       "4": 0.4,
-      "5": 0.2,
+      "5": 0.3,
       "10": 0.2
     }
   },
@@ -6111,14 +6664,14 @@
     "spawn_requires_flag": "card_unlocked_dragon",
     "type": 2,
     "spawn_level": "3,4,6,10",
-    "spawn_probability": "0.2,0.2,0.8,0.1",
+    "spawn_probability": "0.2,0.2,0.8,0.2",
     "price": 240,
     "mana": 90,
     "spawn_probabilities": {
       "3": 0.2,
       "4": 0.2,
       "6": 0.8,
-      "10": 0.1
+      "10": 0.2
     }
   },
   {
@@ -6169,16 +6722,16 @@
     "related_extra_entities": ["data/entities/misc/arc_fire.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.2,0.2,0.5,0.2",
     "price": 160,
     "mana": 15,
     "custom_xml_file": "data/entities/misc/custom_cards/arc_fire.xml",
     "spawn_probabilities": {
       "1": 0.4,
-      "2": 0.4,
-      "3": 0.4,
-      "4": 0.4,
-      "5": 0.4
+      "2": 0.2,
+      "3": 0.2,
+      "4": 0.5,
+      "5": 0.2
     }
   },
   {
@@ -6190,15 +6743,15 @@
     "related_extra_entities": ["data/entities/misc/arc_gunpowder.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.4,0.2,0.4,0.2",
     "price": 160,
     "mana": 15,
     "spawn_probabilities": {
       "1": 0.4,
       "2": 0.4,
-      "3": 0.4,
+      "3": 0.2,
       "4": 0.4,
-      "5": 0.4
+      "5": 0.2
     }
   },
   {
@@ -6210,14 +6763,14 @@
     "related_extra_entities": ["data/entities/misc/arc_poison.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.4,0.2,0.4,0.2,0.4",
     "price": 160,
     "mana": 15,
     "spawn_probabilities": {
       "1": 0.4,
-      "2": 0.4,
+      "2": 0.2,
       "3": 0.4,
-      "4": 0.4,
+      "4": 0.2,
       "5": 0.4
     }
   },
@@ -6230,16 +6783,16 @@
     "related_extra_entities": ["data/entities/misc/crumbling_earth_projectile.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.4,0.4,0.4,0.4,0.4",
+    "spawn_probability": "0.2,0.3,0.4,0.4,0.3",
     "price": 200,
     "max_uses": 15,
     "mana": 45,
     "spawn_probabilities": {
-      "1": 0.4,
-      "2": 0.4,
+      "1": 0.2,
+      "2": 0.3,
       "3": 0.4,
       "4": 0.4,
-      "5": 0.4
+      "5": 0.3
     }
   },
   {
@@ -6251,7 +6804,7 @@
     "related_projectiles": ["data/entities/projectiles/deck/xray.xml"],
     "type": 6,
     "spawn_level": "0,1,2,3,4,5,6",
-    "spawn_probability": "0.8,1,1,0.8,0.6,0.4,0.2",
+    "spawn_probability": "0.8,1,1,0.7,0.5,0.3,0.2",
     "price": 230,
     "max_uses": 10,
     "mana": 100,
@@ -6260,9 +6813,9 @@
       "0": 0.8,
       "1": 1,
       "2": 1,
-      "3": 0.8,
-      "4": 0.6,
-      "5": 0.4,
+      "3": 0.7,
+      "4": 0.5,
+      "5": 0.3,
       "6": 0.2
     }
   },
@@ -6274,14 +6827,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/unstable_gunpowder_unidentified.png",
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.4,0.4",
     "price": 140,
     "mana": 15,
     "custom_xml_file": "data/entities/misc/custom_cards/unstable_gunpowder.xml",
     "spawn_probabilities": {
       "2": 0.3,
-      "3": 0.3,
-      "4": 0.3
+      "3": 0.4,
+      "4": 0.4
     }
   },
   {
@@ -6292,16 +6845,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/acid_trail_unidentified.png",
     "type": 2,
     "spawn_level": "1,2,3,4,5",
-    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.2,0.3,0.3,0.4",
     "price": 160,
     "mana": 15,
     "custom_xml_file": "data/entities/misc/custom_cards/acid_trail.xml",
     "spawn_probabilities": {
       "1": 0.3,
-      "2": 0.3,
+      "2": 0.2,
       "3": 0.3,
       "4": 0.3,
-      "5": 0.3
+      "5": 0.4
     }
   },
   {
@@ -6385,16 +6938,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/fire_trail_unidentified.png",
     "type": 2,
     "spawn_level": "0,1,2,3,4",
-    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.4,0.5,0.3,0.3,0.2",
     "price": 130,
     "mana": 10,
     "custom_xml_file": "data/entities/misc/custom_cards/fire_trail.xml",
     "spawn_probabilities": {
-      "0": 0.3,
-      "1": 0.3,
+      "0": 0.4,
+      "1": 0.5,
       "2": 0.3,
       "3": 0.3,
-      "4": 0.3
+      "4": 0.2
     }
   },
   {
@@ -6406,12 +6959,12 @@
     "related_extra_entities": ["data/entities/misc/burn.xml"],
     "type": 2,
     "spawn_level": "0,1,2",
-    "spawn_probability": "0.3,0.3,0.3",
+    "spawn_probability": "0.4,0.3,0.3",
     "price": 100,
     "mana": 5,
     "custom_xml_file": "data/entities/misc/custom_cards/burn_trail.xml",
     "spawn_probabilities": {
-      "0": 0.3,
+      "0": 0.4,
       "1": 0.3,
       "2": 0.3
     }
@@ -6424,14 +6977,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/torch_unidentified.png",
     "type": 7,
     "spawn_level": "0,1,2",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "1,0.6,0.5",
     "price": 100,
     "mana": 0,
     "custom_xml_file": "data/entities/misc/custom_cards/torch.xml",
     "spawn_probabilities": {
       "0": 1,
-      "1": 1,
-      "2": 1
+      "1": 0.6,
+      "2": 0.5
     }
   },
   {
@@ -6442,14 +6995,14 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/torch_unidentified.png",
     "type": 7,
     "spawn_level": "0,1,2",
-    "spawn_probability": "1,1,1",
+    "spawn_probability": "0.8,0.6,0.4",
     "price": 150,
     "mana": 0,
     "custom_xml_file": "data/entities/misc/custom_cards/torch_electric.xml",
     "spawn_probabilities": {
-      "0": 1,
-      "1": 1,
-      "2": 1
+      "0": 0.8,
+      "1": 0.6,
+      "2": 0.4
     }
   },
   {
@@ -6460,15 +7013,15 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/energy_shield_unidentified.png",
     "type": 7,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "0.05,0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.05,0.4,0.8,0.4,0.4,0.6",
     "price": 220,
     "custom_xml_file": "data/entities/misc/custom_cards/energy_shield.xml",
     "spawn_probabilities": {
       "1": 0.05,
-      "2": 0.6,
-      "3": 0.6,
-      "4": 0.6,
-      "5": 0.6,
+      "2": 0.4,
+      "3": 0.8,
+      "4": 0.4,
+      "5": 0.4,
       "6": 0.6
     }
   },
@@ -6480,16 +7033,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/energy_shield_sector_unidentified.png",
     "type": 7,
     "spawn_level": "0,1,2,3,4,5",
-    "spawn_probability": "0.05,0.6,0.6,0.6,0.6,0.6",
+    "spawn_probability": "0.1,0.5,0.6,0.8,0.5,0.4",
     "price": 160,
     "custom_xml_file": "data/entities/misc/custom_cards/energy_shield_sector.xml",
     "spawn_probabilities": {
-      "0": 0.05,
-      "1": 0.6,
+      "0": 0.1,
+      "1": 0.5,
       "2": 0.6,
-      "3": 0.6,
-      "4": 0.6,
-      "5": 0.6
+      "3": 0.8,
+      "4": 0.5,
+      "5": 0.4
     }
   },
   {
@@ -6501,14 +7054,14 @@
     "related_extra_entities": ["data/entities/misc/energy_shield_shot.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,6",
-    "spawn_probability": "0.3,0.3,0.3,0.3,0.3",
+    "spawn_probability": "0.3,0.3,0.5,0.4,0.3",
     "price": 180,
     "mana": 5,
     "spawn_probabilities": {
       "2": 0.3,
       "3": 0.3,
-      "4": 0.3,
-      "5": 0.3,
+      "4": 0.5,
+      "5": 0.4,
       "6": 0.3
     }
   },
@@ -6520,7 +7073,7 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/torch_unidentified.png",
     "type": 7,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "0.1,0.5,1,1,1,1",
+    "spawn_probability": "0.1,0.5,1,0.8,0.7,0.5",
     "price": 160,
     "mana": 0,
     "custom_xml_file": "data/entities/misc/custom_cards/tiny_ghost.xml",
@@ -6528,9 +7081,9 @@
       "1": 0.1,
       "2": 0.5,
       "3": 1,
-      "4": 1,
-      "5": 1,
-      "6": 1
+      "4": 0.8,
+      "5": 0.7,
+      "6": 0.5
     }
   },
   {
@@ -6725,13 +7278,13 @@
     "type": 5,
     "recursive": true,
     "spawn_level": "3,4,5,6,10",
-    "spawn_probability": "0.2,0.3,0.1,0.1,0.5",
+    "spawn_probability": "0.2,0.3,0.2,0.1,0.5",
     "price": 100,
     "mana": 5,
     "spawn_probabilities": {
       "3": 0.2,
       "4": 0.3,
-      "5": 0.1,
+      "5": 0.2,
       "6": 0.1,
       "10": 0.5
     }
@@ -6746,14 +7299,14 @@
     "type": 0,
     "recursive": true,
     "spawn_level": "2,4,5,6,10",
-    "spawn_probability": "0.2,0.4,0.1,0.1,0.5",
+    "spawn_probability": "0.2,0.4,0.1,0.2,0.5",
     "price": 150,
     "mana": 20,
     "spawn_probabilities": {
       "2": 0.2,
       "4": 0.4,
       "5": 0.1,
-      "6": 0.1,
+      "6": 0.2,
       "10": 0.5
     }
   },
@@ -6767,12 +7320,12 @@
     "type": 2,
     "recursive": true,
     "spawn_level": "4,5,6,10",
-    "spawn_probability": "0.3,0.1,0.1,0.5",
+    "spawn_probability": "0.3,0.2,0.1,0.5",
     "price": 120,
     "mana": 20,
     "spawn_probabilities": {
       "4": 0.3,
-      "5": 0.1,
+      "5": 0.2,
       "6": 0.1,
       "10": 0.5
     }
@@ -6787,13 +7340,13 @@
     "type": 1,
     "recursive": true,
     "spawn_level": "3,5,6,10",
-    "spawn_probability": "0.2,0.1,0.1,0.5",
+    "spawn_probability": "0.2,0.1,0.2,0.5",
     "price": 160,
     "mana": 20,
     "spawn_probabilities": {
       "3": 0.2,
       "5": 0.1,
-      "6": 0.1,
+      "6": 0.2,
       "10": 0.5
     }
   },
@@ -7099,13 +7652,13 @@
     "related_extra_entities": ["data/entities/misc/larpa_downwards.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,10",
-    "spawn_probability": "0.1,0.3,0.2,0.2,0.2",
+    "spawn_probability": "0.1,0.3,0.4,0.2,0.2",
     "price": 290,
     "mana": 120,
     "spawn_probabilities": {
       "2": 0.1,
       "3": 0.3,
-      "4": 0.2,
+      "4": 0.4,
       "5": 0.2,
       "10": 0.2
     }
@@ -7158,7 +7711,7 @@
     "related_extra_entities": ["data/entities/misc/larpa_death.xml"],
     "type": 2,
     "spawn_level": "2,3,4,5,10",
-    "spawn_probability": "0.1,0.1,0.3,0.2,0.2",
+    "spawn_probability": "0.1,0.1,0.3,0.4,0.2",
     "price": 150,
     "mana": 90,
     "max_uses": 30,
@@ -7166,7 +7719,7 @@
       "2": 0.1,
       "3": 0.1,
       "4": 0.3,
-      "5": 0.2,
+      "5": 0.4,
       "10": 0.2
     }
   },
@@ -7180,12 +7733,12 @@
     "type": 5,
     "recursive": true,
     "spawn_level": "5,6,10",
-    "spawn_probability": "0.1,0.1,1",
+    "spawn_probability": "0.1,0.2,1",
     "price": 200,
-    "mana": 30,
+    "mana": 40,
     "spawn_probabilities": {
       "5": 0.1,
-      "6": 0.1,
+      "6": 0.2,
       "10": 1
     }
   },
@@ -7199,12 +7752,12 @@
     "type": 5,
     "recursive": true,
     "spawn_level": "5,6,10",
-    "spawn_probability": "0.1,0.1,1",
+    "spawn_probability": "0.1,0.2,1",
     "price": 200,
-    "mana": 30,
+    "mana": 40,
     "spawn_probabilities": {
       "5": 0.1,
-      "6": 0.1,
+      "6": 0.2,
       "10": 1
     }
   },
@@ -7218,12 +7771,12 @@
     "type": 5,
     "recursive": true,
     "spawn_level": "5,6,10",
-    "spawn_probability": "0.1,0.1,1",
+    "spawn_probability": "0.1,0.2,1",
     "price": 200,
-    "mana": 80,
+    "mana": 90,
     "spawn_probabilities": {
       "5": 0.1,
-      "6": 0.1,
+      "6": 0.2,
       "10": 1
     }
   },
@@ -7239,7 +7792,7 @@
     "spawn_level": "5,6,10",
     "spawn_probability": "0.1,0.1,1",
     "price": 600,
-    "mana": 300,
+    "mana": 320,
     "spawn_probabilities": {
       "5": 0.1,
       "6": 0.1,
@@ -7256,12 +7809,12 @@
     "type": 5,
     "recursive": true,
     "spawn_level": "5,6,10",
-    "spawn_probability": "0.1,0.1,1",
+    "spawn_probability": "0.1,0.2,1",
     "price": 500,
     "mana": 120,
     "spawn_probabilities": {
       "5": 0.1,
-      "6": 0.1,
+      "6": 0.2,
       "10": 1
     }
   },
@@ -7275,12 +7828,12 @@
     "type": 5,
     "recursive": true,
     "spawn_level": "5,6,10",
-    "spawn_probability": "0.1,0.1,1",
+    "spawn_probability": "0.1,0.2,1",
     "price": 500,
     "mana": 120,
     "spawn_probabilities": {
       "5": 0.1,
-      "6": 0.1,
+      "6": 0.2,
       "10": 1
     }
   },
@@ -7294,12 +7847,12 @@
     "type": 5,
     "recursive": true,
     "spawn_level": "4,5,10",
-    "spawn_probability": "0.1,0.1,1",
+    "spawn_probability": "0.1,0.2,1",
     "price": 500,
     "mana": 120,
     "spawn_probabilities": {
       "4": 0.1,
-      "5": 0.1,
+      "5": 0.2,
       "10": 1
     }
   },
@@ -7313,15 +7866,14 @@
     "type": 5,
     "spawn_manual_unlock": true,
     "recursive": true,
-    "spawn_level": "1,2,3,10",
-    "spawn_probability": "0.2,0.8,0.6,0.1",
+    "spawn_level": "2,5,10",
+    "spawn_probability": "0.2,0.4,0.5",
     "price": 200,
     "mana": 10,
     "spawn_probabilities": {
-      "1": 0.2,
-      "2": 0.8,
-      "3": 0.6,
-      "10": 0.1
+      "2": 0.2,
+      "5": 0.4,
+      "10": 0.5
     }
   },
   {
@@ -7562,14 +8114,14 @@
     "related_extra_entities": ["data/entities/particles/tinyspark_red.xml", "data/entities/misc/colour_red.xml"],
     "type": 2,
     "spawn_level": "1,2,3,4,5,6",
-    "spawn_probability": "0.2,0.2,0.2,0.2,0.2,0.2",
+    "spawn_probability": "0.2,0.2,0.4,0.2,0.2,0.2",
     "spawn_requires_flag": "card_unlocked_paint",
     "price": 40,
     "mana": 0,
     "spawn_probabilities": {
       "1": 0.2,
       "2": 0.2,
-      "3": 0.2,
+      "3": 0.4,
       "4": 0.2,
       "5": 0.2,
       "6": 0.2
@@ -7584,14 +8136,14 @@
     "related_extra_entities": ["data/entities/particles/tinyspark_red.xml", "data/entities/misc/colour_orange.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_probability": "0.1,0.1,0.4",
     "spawn_requires_flag": "card_unlocked_paint",
     "price": 40,
     "mana": 0,
     "spawn_probabilities": {
       "2": 0.1,
       "3": 0.1,
-      "4": 0.1
+      "4": 0.4
     }
   },
   {
@@ -7603,12 +8155,12 @@
     "related_extra_entities": ["data/entities/particles/tinyspark_red.xml", "data/entities/misc/colour_green.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_probability": "0.4,0.1,0.1",
     "spawn_requires_flag": "card_unlocked_paint",
     "price": 40,
     "mana": 0,
     "spawn_probabilities": {
-      "2": 0.1,
+      "2": 0.4,
       "3": 0.1,
       "4": 0.1
     }
@@ -7622,13 +8174,13 @@
     "related_extra_entities": ["data/entities/particles/tinyspark_red.xml", "data/entities/misc/colour_yellow.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_probability": "0.1,0.4,0.1",
     "spawn_requires_flag": "card_unlocked_paint",
     "price": 40,
     "mana": 0,
     "spawn_probabilities": {
       "2": 0.1,
-      "3": 0.1,
+      "3": 0.4,
       "4": 0.1
     }
   },
@@ -7641,14 +8193,14 @@
     "related_extra_entities": ["data/entities/particles/tinyspark_red.xml", "data/entities/misc/colour_purple.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_probability": "0.1,0.1,0.4",
     "spawn_requires_flag": "card_unlocked_paint",
     "price": 40,
     "mana": 0,
     "spawn_probabilities": {
       "2": 0.1,
       "3": 0.1,
-      "4": 0.1
+      "4": 0.4
     }
   },
   {
@@ -7660,12 +8212,12 @@
     "related_extra_entities": ["data/entities/particles/tinyspark_red.xml", "data/entities/misc/colour_blue.xml"],
     "type": 2,
     "spawn_level": "2,3,4",
-    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_probability": "0.4,0.1,0.1",
     "spawn_requires_flag": "card_unlocked_paint",
     "price": 40,
     "mana": 0,
     "spawn_probabilities": {
-      "2": 0.1,
+      "2": 0.4,
       "3": 0.1,
       "4": 0.1
     }
@@ -7678,15 +8230,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
     "related_extra_entities": ["data/entities/particles/tinyspark_red.xml", "data/entities/misc/colour_rainbow.xml"],
     "type": 2,
-    "spawn_level": "2,3,4",
-    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_level": "2,3,4,10",
+    "spawn_probability": "0.1,0.1,0.1,0.2",
     "spawn_requires_flag": "card_unlocked_paint",
     "price": 40,
     "mana": 0,
     "spawn_probabilities": {
       "2": 0.1,
       "3": 0.1,
-      "4": 0.1
+      "4": 0.1,
+      "10": 0.2
     }
   },
   {
@@ -7697,15 +8250,16 @@
     "sprite_unidentified": "data/ui_gfx/gun_actions/homing_unidentified.png",
     "related_extra_entities": ["data/entities/misc/colour_invis.xml"],
     "type": 2,
-    "spawn_level": "2,3,4",
-    "spawn_probability": "0.1,0.1,0.1",
+    "spawn_level": "2,3,4,10",
+    "spawn_probability": "0.1,0.1,0.1,0.1",
     "spawn_requires_flag": "card_unlocked_paint",
     "price": 40,
     "mana": 0,
     "spawn_probabilities": {
       "2": 0.1,
       "3": 0.1,
-      "4": 0.1
+      "4": 0.1,
+      "10": 0.1
     }
   },
   {
@@ -7722,5 +8276,24 @@
     "mana": 0,
     "custom_xml_file": "data/entities/misc/custom_cards/rainbow_trail.xml",
     "spawn_probabilities": {}
+  },
+  {
+    "id": "CESSATION",
+    "name": "$action_cessation",
+    "description": "$actiondesc_cessation",
+    "sprite": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmUlEQVR4AaXBIQ6DMBSA4b/kiRoEthIcN+lx3kl6HO4xkrkhsYgZXFfBkobAQsf3mRgjdwibEIZIAVVvSIQkhCGO44MSIRBVvREy0/Tkirbt+RJ25vnFL8515IQDyzJzpGkce8KJdX2Ts7bmSMVNFTdV3CScsLbmCuFA0ziuEnac6yghZNq2p5SQqHoTApECqt6QCBtVb/jDBy2iIokjf8bpAAAAAElFTkSuQmCC",
+    "sprite_unidentified": "data/ui_gfx/gun_actions/cessation_unidentified.png",
+    "type": 5,
+    "spawn_level": "5,6,10",
+    "spawn_probability": "0.1,0.2,1",
+    "spawn_requires_flag": "card_unlocked_cessation",
+    "price": 10,
+    "mana": 0,
+    "max_uses": 25,
+    "spawn_probabilities": {
+      "5": 0.1,
+      "6": 0.2,
+      "10": 1
+    }
   }
 ]

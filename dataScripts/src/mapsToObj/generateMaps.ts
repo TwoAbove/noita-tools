@@ -13,6 +13,11 @@ import parser, {
 } from "luaparse";
 import { parse } from "csv-parse/sync";
 
+import { fileURLToPath } from "url";
+import { getCleanedFile } from "../helpers/cleanFiles";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // https://github.com/Dadido3/noita-mapcap
 
 const argbTorgba = (s: string) =>
@@ -21,15 +26,13 @@ const argbTorgba = (s: string) =>
     .replace(/(..)(......)/, "$2$1")
     .toLowerCase();
 
-const noitaData = path.resolve(
-  require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
-);
+const noitaData = path.resolve(__dirname, "../../noita-data/");
+
 const defaultColorsPath = path.resolve(noitaData, "data/scripts/wang_scripts.csv");
 const mapPNGPath = path.resolve(noitaData, "data/biome_impl/biome_map.png");
 const extraLayersPath = path.resolve(noitaData, "data/wang_tiles/extra_layers");
 
-const defaultColorArray: any[] = parse(fs.readFileSync(defaultColorsPath), {
+const defaultColorArray: any[] = parse(getCleanedFile(defaultColorsPath), {
   columns: true,
   skip_empty_lines: true,
 });
@@ -58,7 +61,7 @@ const getBase64 = (p: string) =>
           height: image.getHeight(),
         });
       });
-    })
+    }),
   );
 
 const parseLua = (script: string) => {
@@ -149,7 +152,7 @@ const addArea = (
   y: number,
   hex: string,
   visited: { [key: string]: boolean },
-  area: { x: number; y: number }[] = []
+  area: { x: number; y: number }[] = [],
 ) => {
   area.push({ x, y });
   visited[`${x} ${y}`] = true;
@@ -253,10 +256,10 @@ const generateMaps = async () => {
       h: y2 - y1 + 1,
     });
   }
-  // const allBiomeData = await cheerio.load(fs.readFileSync(biomeDataXMLPath), {
+  // const allBiomeData = await cheerio.load(getCleanedFile(biomeDataXMLPath), {
   // 	xmlMode: true
   // });
-  const BiomeDataXML = await parseStringPromise(fs.readFileSync(biomeDataXMLPath));
+  const BiomeDataXML = await parseStringPromise(getCleanedFile(biomeDataXMLPath));
   const allBiomeData = BiomeDataXML.BiomesToLoad;
 
   const maps: any = {};
@@ -265,8 +268,8 @@ const generateMaps = async () => {
     const { biome_filename, height_index, color } = b.$;
     const biome_path = path.resolve(noitaData, biome_filename);
     const name = path.basename(biome_path, ".xml");
-    console.log(name);
-    const Biome = (await parseStringPromise(fs.readFileSync(biome_path))).Biome;
+    // console.log(name);
+    const Biome = (await parseStringPromise(getCleanedFile(biome_path))).Biome;
     const { Topology: _T, Materials: _M } = Biome;
     const Topology = _T[0].$;
     const RandomMaterials = _T[0]?.RandomMaterials?.[0];
@@ -292,9 +295,14 @@ const generateMaps = async () => {
       res.randomMaterials = randomMaterials;
     }
     if (res.type === "BIOME_WANG_TILE" && Topology.wang_template_file) {
-      const data = Topology.wang_template_file
-        ? await getBase64(path.resolve(noitaData, Topology.wang_template_file))
-        : null;
+      let data: Awaited<ReturnType<typeof getBase64>> | undefined;
+      if (Topology.wang_template_file) {
+        try {
+          data = await getBase64(path.resolve(noitaData, Topology.wang_template_file));
+        } catch (e) {
+          console.error("Error: ", e);
+        }
+      }
       res.wang = {
         template_file: data?.src,
         map_width: data?.width,
@@ -302,14 +310,14 @@ const generateMaps = async () => {
       };
     }
     if (res.lua_script) {
-      const lua_things = parseLua(fs.readFileSync(path.resolve(noitaData, res.lua_script)).toString());
+      const lua_things = parseLua(getCleanedFile(path.resolve(noitaData, res.lua_script)).toString());
       const o: any = {
         include: [],
         spawnFunctions: {},
         g: {},
       };
       for (const statement of lua_things.body) {
-        fs.writeFileSync("body.json", JSON.stringify(lua_things, null, 2));
+        // fs.writeFileSync(".tmp.body.json", JSON.stringify(lua_things, null, 2));
         switch (statement.type) {
           case "AssignmentStatement": {
             if (

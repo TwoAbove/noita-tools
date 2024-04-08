@@ -5,6 +5,7 @@ import { useSearchParamsState } from "react-use-search-params-state";
 import Cookies from "js-cookie";
 
 import Donate from "./Donate";
+import { isDev, isLocal } from "./utils";
 
 import "./App.css";
 import { ThemeProvider } from "./ThemeContext";
@@ -19,7 +20,7 @@ import PatreonButton from "./misc/PatreonButton";
 import { ProfileContext, ProfileProvider } from "./Profile/ProfileContext";
 
 const Settings = lazy(() => import("./Settings"));
-const LazySettings = props => {
+const LazySettings = () => {
   const [show, setShow] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,8 +55,6 @@ const LazySettings = props => {
 
 const Profile = lazy(() => import("./Profile"));
 const LazyProfile = () => {
-  const [profileEnabled, setProfileEnabled] = useState(false);
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [filterParams, setFilterParams] = useSearchParamsState({
@@ -66,16 +65,6 @@ const LazyProfile = () => {
   });
 
   const profileOpen = filterParams.profile;
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      const profileEnabled = await fetch("/api/profile_enabled").then(res => res.json());
-      if (profileEnabled.enabled) {
-        setProfileEnabled(true);
-      }
-    })();
-  }, []);
 
   const { patreonData } = useContext(ProfileContext);
 
@@ -88,8 +77,6 @@ const LazyProfile = () => {
       setSearchParams(searchParams);
     }
   };
-
-  if (!profileEnabled) return null;
 
   return (
     <Suspense fallback={<LoadingComponent />}>
@@ -111,22 +98,27 @@ const LazyProfile = () => {
 };
 
 const Header = () => {
-  const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "";
-  const host = window.location.host;
-  const notNewUrl = !host.includes("noitool.com") && !isLocalhost;
+  const isDevBranch = isDev() || isLocal();
+
   return (
-    <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between">
+    <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between px-2">
       <div className="text-nowrap lh-1">
-        <h3 className="fs-1 fw-bolder mb-0 text-center">Noitool</h3>
+        <h3 className="fs-1 fw-bolder mb-0 text-center position-relative pb-2">
+          Noitool
+          {isDevBranch && <sub className="fs-6 fw mb-0 text-center text-danger">Beta</sub>}
+          {isDevBranch && (
+            <code
+              className="fs-6 fw mb-0 position-absolute start-50 translate-middle-x"
+              style={{
+                bottom: "-0.25rem",
+              }}
+            >
+              Build April 5 2024
+            </code>
+          )}
+          {isDevBranch && <div />}
+        </h3>
         <p className="fs-4 fw-light m-1 mt-0 my-1 text-center">Noita tools and helpers</p>
-        {notNewUrl && (
-          <p className="mb-2 text-center">
-            Use the new url!{" "}
-            <a className="link-primary" href="https://www.noitool.com/">
-              https://www.noitool.com/
-            </a>{" "}
-          </p>
-        )}
       </div>
       <div className=" d-flex pt-2 justify-content-end align-items-start">
         <div className="mx-2">
@@ -140,7 +132,7 @@ const Header = () => {
   );
 };
 
-const WasmError = props => {
+const WasmError = (props: any) => {
   return (
     <div className="position-absolute top-50 start-50 translate-middle text-center w-75">
       <p>Looks like this browser does not support WebAssembly, which is needed to run the generation code.</p>
@@ -165,7 +157,7 @@ const WasmError = props => {
 };
 
 const Body = lazy(() => import("./Body"));
-const LazyBody = props => {
+const LazyBody = (props: any) => {
   return (
     <Suspense fallback={<LoadingComponent />}>
       <Body {...props} />
@@ -178,7 +170,7 @@ const Footer = () => {
     <footer className="footer font-small p-1 pt-3">
       <Stack>
         <div className="d-flex justify-content-center align-items-center text-center">
-          For a version of Noitool that follows <b>Noita beta</b>, check out&nbsp;
+          For a version of Noitool that follows&nbsp; <b>Noita beta</b>, check out&nbsp;
           <a href="https://dev.noitool.com/">dev.noitool.com</a>
         </div>
         <div className="d-flex justify-content-center align-items-center text-center">
@@ -205,13 +197,51 @@ const Footer = () => {
         </div>
         <div className="footer-copyright text-center fw-light py-1">
           <span className="fw-bold">
-            Noitool <code className="ms-1">{process.env.REACT_APP_VERSION} </code>
+            Noitool <code className="ms-1">{APP_VERSION} </code>
           </span>
           © 2023 <a href="https://seva.dev/">Seva Maltsev</a>
         </div>
       </Stack>
     </footer>
   );
+};
+
+interface IOutdatedVersionHandlerProps {
+  children?: React.ReactNode;
+}
+const OutdatedVersionHandler: FC<IOutdatedVersionHandlerProps> = props => {
+  const [outdated, setOutdated] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/version")
+      .then(r => r.json())
+      .then(r => {
+        if (r.outdated) {
+          setOutdated(true);
+        }
+      });
+  }, []);
+
+  let toShow = <>{props.children}</>;
+
+  if (outdated) {
+    toShow = (
+      <div className="position-absolute top-50 start-50 translate-middle text-center w-75 fs-4 fw-light">
+        <p>
+          Noita has received an update, and Noitool is not yet compatible with it. <br />
+        </p>
+        <p>
+          For <code>noitool.com</code>, this is usually fixed within a few hours. For <code>dev.noitool.com</code>, it
+          might take a day or two. <br />
+          Thank you for your patience!
+        </p>
+        <p>If you want to proceed, click the button below.</p>
+        <Button onClick={() => setOutdated(false)}>Continue</Button>
+      </div>
+    );
+  }
+
+  return toShow;
 };
 
 interface IDBErrorHandlerProps {
@@ -267,23 +297,25 @@ const App: FC = () => {
   }
 
   return (
-    <DBErrorHandler>
-      <BrowserRouter>
-        <ProfileProvider>
-          <div className="App bg-gradient">
-            <div className="content bg-body rounded" style={{ minHeight: "85vh" }}>
-              <ThemeProvider>
-                <AlchemyConfigProvider>
-                  <Header />
-                  {toShow}
-                </AlchemyConfigProvider>
-              </ThemeProvider>
+    <OutdatedVersionHandler>
+      <DBErrorHandler>
+        <BrowserRouter>
+          <ProfileProvider>
+            <div className="App bg-gradient">
+              <div className="content bg-body rounded" style={{ minHeight: "85vh" }}>
+                <ThemeProvider>
+                  <AlchemyConfigProvider>
+                    <Header />
+                    {toShow}
+                  </AlchemyConfigProvider>
+                </ThemeProvider>
+              </div>
+              <Footer />
             </div>
-            <Footer />
-          </div>
-        </ProfileProvider>
-      </BrowserRouter>
-    </DBErrorHandler>
+          </ProfileProvider>
+        </BrowserRouter>
+      </DBErrorHandler>
+    </OutdatedVersionHandler>
   );
 };
 

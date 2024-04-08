@@ -1,7 +1,4 @@
-/**
- * @jest-environment node
- */
-
+import { describe, it, expect } from "vitest";
 import { loadRandom, getUnlockedSpells } from "../../testHelpers";
 import GameInfoProvider from "./infoHandler";
 import { performance } from "perf_hooks";
@@ -55,6 +52,8 @@ const params = {
   startingSpell: (x, y) => [],
   wand: (x, y) => [x, y, 60, 3, false, false],
   waterCave: (x, y) => [],
+  excavationSiteCubeChamber: (x, y) => [x, y],
+  snowcaveSecretChamber: (x, y) => [x, y],
 };
 
 const getParams = (provider: string, x: any, y: any, seed): any[] => {
@@ -76,7 +75,7 @@ const getStats = (timings: IPerf["allTimings"]): IPerf["stats"] => {
         c.avg = c.avg + r.time;
         return c;
       },
-      { min: Infinity, max: -Infinity, avg: 0, median: 0 }
+      { min: Infinity, max: -Infinity, avg: 0, median: 0 },
     );
 
   stats.avg = stats.avg / timings.length;
@@ -103,7 +102,6 @@ const printStats = (info: { [provider: string]: IPerf }) => {
 };
 
 describe.skip("Performance", () => {
-  // describe.only("Performance", () => {
   const box = 20;
   const seedBox = 20;
 

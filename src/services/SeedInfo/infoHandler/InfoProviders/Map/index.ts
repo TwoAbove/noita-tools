@@ -1,15 +1,7 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-// import { ImageData } from '@napi-rs/canvas';
-
 import { loadImageActions } from "../../../../imageActions";
 
-import mapData from "../../../data/obj/maps.json";
 import { IRule } from "../../IRule";
 import { InfoProvider } from "../Base";
-
-import impls from "../../../data/obj/impl.json";
 
 import MapImplementations from "./MapImplementations";
 import { IRandom } from "../../../random";
@@ -34,24 +26,32 @@ export enum InterestType {
   Interest,
 }
 
-const maps = Object.values(mapData).reduce((c, v: any) => {
-  const color = parseInt(v.color, 16);
-  if (v.config && v.config.spawnFunctions) {
-    const sf = Object.entries<string>(v.config.spawnFunctions).reduce((cc, [kk, vv]) => {
-      const color = parseInt(kk, 16);
-      cc.set(color, vv);
-      return cc;
-    }, new Map<number, string>());
-    v.config.spawnFunctions = sf;
-  }
-  c.set(color, v);
-  return c;
-}, new Map<number, any>());
+const mapDataPromise = import("../../../data/obj/maps.json")
+  .then(m => m.default)
+  .then(mapData => {
+    return Object.values(mapData).reduce((c, v: any) => {
+      const color = parseInt(v.color, 16);
+      if (v.config && v.config.spawnFunctions) {
+        const sf = Object.entries<string>(v.config.spawnFunctions).reduce((cc, [kk, vv]) => {
+          const color = parseInt(kk, 16);
+          cc.set(color, vv);
+          return cc;
+        }, new Map<number, string>());
+        v.config.spawnFunctions = sf;
+      }
+      c.set(color, v);
+      return c;
+    }, new Map<number, any>());
+  });
 
-const isPurple = c => c === 0x7f007fff;
+const biomeImplPromise = import("../../../data/obj/biome_impl.json").then(i => i.default);
+
+const isPurple = (c: number) => c === 0x7f007fff;
 
 export class MapInfoProvider extends InfoProvider {
-  maps = maps;
+  maps;
+  biomeImpls;
+
   mapHandlerCache = new Map<string, MapHandler>();
   imageCache = new Map<string, ImageData>();
   rawMapCache = new Map<string, ImageData>();
@@ -65,6 +65,7 @@ export class MapInfoProvider extends InfoProvider {
   worldMap!: ImageData;
 
   worldMapPromise: Promise<any>;
+  biomeImplPromise: Promise<any>;
   loadImageActionsPromise: Promise<any>;
 
   constructor(randoms: IRandom) {
@@ -73,12 +74,25 @@ export class MapInfoProvider extends InfoProvider {
     this.loadImageActionsPromise = this.loadImageActions();
 
     this.worldMapPromise = this.loadWorldMap();
+
+    mapDataPromise.then(_maps => {
+      this.maps = _maps;
+    });
+
+    this.biomeImplPromise = biomeImplPromise.then(_biomeImpls => {
+      this.biomeImpls = _biomeImpls;
+    });
   }
 
   wang_maps: { [color: number]: ImageData } = {};
 
   async ready() {
-    return Promise.all([this.loadImageActionsPromise, this.worldMapPromise]).then(() => {});
+    return Promise.allSettled([
+      this.loadImageActionsPromise,
+      this.worldMapPromise,
+      this.biomeImplPromise,
+      mapDataPromise,
+    ]).then(() => {});
   }
 
   async loadImageActions() {
@@ -93,7 +107,7 @@ export class MapInfoProvider extends InfoProvider {
     await this.loadImageActionsPromise;
     return this.imageActions
       .imageFromBase64(
-        "data:image/png;base64,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"
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAAAwCAIAAAAjN5sPAAAHkUlEQVRogdVae1BUVRz+dlugJB9YTCKji7YgIq8ZjFDcSzNY6KjTWKNTK+Ur3MWwfDSKWQ5TaZsN2gMMMktnyJqYqSl0kBRHdsUQBtuMimA1FkepHMfVghFEtj/O3bN37/sy66NvdnZ+53e+8zvn43fOueeeRZdjZobgAwCgre8gBGj8/Bq110em7uw9I+RwcXPUSHkCFyuvTCHG7hMpiuR1Vf39FR1StRG2BAB66AzUdTW/LH5Wu5C67GbAntRTj1EKHd9z7R9O2+mKAx0Gbo4a8PcVLqzVU2t0VZFirKsxuaEa1q2DQabujy+uTHo26rYNRRSrZ22jdkTVKxG2BJm5R6CXqbvjenhYll+mhiaXpbsN+6qK4N8GZBAkqfP5RCEjaMcLxcg0YfeJLYFCfgS3al1Vv2gTuYl3S9EwsDEkcRwOJ89zxySFCgxj5nn+95KEuLXbw7n7jwOY/O9jtyL4Ls7Smnu+KLGhlNi3I0vf+40d1S8Oo/lgX6wih+rB7ZH0RMAc0tq2uS/2tPe75r6n1DfRJqngU40j4uDv6sJlx7tGVBeqb9J8MbbECwDwbuGqMt5/VKaV2FpaG8ka7/XyavaswE6+Lwg1TTZi1L2lvxHjRdXHpJhUXfhZ/0eYAfQjsrpw8aKP5KIAAJr7YoHvSmjZu6UZ2zJHfA3A8+9smYY6NS8XSV82Cv3m+vKZNrbHkxUlAF5fde+PN4OOxl8c2Pi5cTEAPBjU1uYJnAAcm5qZosxdgsdoleAPCiB/bSSPSfnECHq5AIB4IRnWAgtyVS3rNz++DlznekbitYpVUQmIB3yAvgP+E+d6YAKxxjJFmWqCi8LddMSU9TjPGZpNfKathCSKoNpUQ4yk84t+2TyBo5PVMS1YuSYQGe6mI9wilxDiHa9n3gIAi9wLlKnnYThWObxeqB7RorYs+RZadN8ckCHEHGLzQ1Qt2XkJgH/ijerAaVLrWh8NYDDeCoxV7HSi4Uz3YKr6QaqSZK4vJwZTn21GuSK/d+q4yN/+7Miq6PhKgpGFF16aRUyHJZkNPrjMYdhHKfl048UMxR5jcjb0+J+2IT4QOcqadHvMwGWkhT0kz/QrCXg4egj00HGLdGcWoodzetAgKb04zmXvqtzDTjxrgUXIYYqyzLhB7I4s5ZidKyvj91plCEM6PaADfHqf2pOHBkkuexe3SB9KSzMSAJwE0ouNLruHEhYvfpoYwrUEwNUUDUBeDwDAB4nkzCjK+KGsVejXPPGsBRaaKCIG/owRPZ2VlfFWK4ARH9S885dJGGHTQ+6TXStUd8jXQ5TQb+IsDyw87ZJm2kr2t7JPTGo8YppLjBZ3LdED4GTXCtznEEagetKLJ7js55U6pJIC64oooXp40CaJTjYeWty1A0Zndtj2AaMz3BN4zVyzbSoCE489PZAdHIAKPRCVJI+Q7XjhHnMLamEMeHJznTgEAJfBXuI+wPrb6+v5b9fSkNzlpBD696UBo5N84gwAQL5tHi+14wzoH9NDyJOfekkpnk9yh/hWvIG2LC3NSKDrh+4NAJbuOWAtsAwYA5c14R4zEgOqDj88Jg6sDSDCG0No577+QKlP8SyRB3FUW9KHW1p4VZonHlFChUkhrGdMax57Kyiyidep75Avac22RwBERQcVgV8pQZskrhJ5Vcfya44doiX+DyJ/mposzuduxHhV9HkXrKVwj5m76YlinHGMOj2AL5z9qEYoJREljrJTmlqlF0+UqdVDRz4AnE6RpxzB4OqHqR3iY2u4x8wUAcCaeYHrdZG3WsBV7zfs3VLReOdUs5mRYhp2nw3YmkbM3eUI9rd20DMegPacVxMbtgOI3D+eci6AvUWIxHhO0xvcOOTywJkWxo5eegyW0RUHrtoAPPnor9+eSgKwNe/suqoAQa2k9OJJLvsfQj08z0rvu809qtZJriG5ZNrvPOf63tkAdkYedaaFUZv6AWRiMyUTPUIoSEq+MJ8YPD2iTye21zm9QJh8WACl1nRzeRvfK3LKDUIz3s7EZpooAFvzzvI4QZKSL8xviz3ILYrGldHT+BM7nbLTJFV98kY5gAjgtycYAFOfXEWrSE64oPnhwTK6Qng3RMDPElXF1dM9NOWZ1c9CMNNokVwPpRdPdtnPsU2SLkpJkkHOT4PUbsVhAA1pBj7BFDT9hAi6mqRoz9mc2PA2zyl1DIdfEoFjtcLBgiA67ziAS3WPkSKzW+TnSj10GaY5XE+r+zCAQlMDL0Xcq0lxSVIQVRWkJ0XkXnYYYH7OhrQkgtL8wPNX+rZVHezJ84vb2CUn1ENGoxWOlMa6HDZReQ2Sec4wzWlx10Jw08KFNklEAIPpQIlwTJ/9juXs/8/Ad0bkVoALXarIO2nF49/YjiyUb9g9FD9R3ylDMBxPOSEfQj2WT9GcovF737+48mVaVNTT4q6dqHSG468lR0ojHRbXVg/R/DgdQ2YmaCy61AzCdC4Rvx9nfs4msyvDNKd07Y4N723kLiRIr6UgSXQxOBxOhjFrWhvtOcVTPlykhsmVRPXwehneXxPsMRcAEBWdxA1NfnnXFDSxwa5LzRBdIaIgKWK7G9bopfAfMGa6x3gqXW4AAAAASUVORK5CYII=",
       )
       .then(map => {
         this.worldMap = map;
@@ -112,8 +126,10 @@ export class MapInfoProvider extends InfoProvider {
   };
 
   inOtherBiome = (color: number, gx: number, gy: number): boolean => {
-    const { x, y } = this.imageActions.getTilePos(gx, gy);
-    const mapColor = this.imageActions.getColor(this.worldMap, x, y);
+    const res = this.randoms.GetTilePos(gx, gy);
+    const px = res.get(0);
+    const py = res.get(1);
+    const mapColor = this.imageActions.getColor(this.worldMap, px, py);
     return color !== mapColor;
   };
 
@@ -184,17 +200,19 @@ export class MapInfoProvider extends InfoProvider {
       skip_biome_checks = false,
       skip_edge_textures = false,
       color_to_material_table = {},
-      background_z_index = 50
+      background_z_index = 50,
     ) => {
-      const impl = impls[path];
+      const impl = this.biomeImpls[path];
       if (!impl) {
-        console.error(`${path} not in impls! Please add it to dataScripts/src/pixelScenes.ts and re-run generation.`);
+        console.error(
+          `${path} not in biomeImpls! Please add it to dataScripts/src/pixelScenes.ts and re-run generation.`,
+        );
         return;
       }
 
       // if fits and doesn't encroach onto other biomes
-      const r = gx + impl.w;
-      const b = gy + impl.h;
+      const r = gx + Math.floor(impl.w / 10) * 10;
+      const b = gy + Math.floor(impl.h / 10) * 10;
       // TODO: handle LoadPixelScene where it draws outside of the chunks
       // ex: Holy Mountains and spawn_altar_top
       if (
@@ -214,19 +232,11 @@ export class MapInfoProvider extends InfoProvider {
       });
 
       const ctmtptr = this.randoms.objToMapUIntUIntPtr(color_to_material_table);
-      mh.drawImageData(path, impls[path].src, gx, gy, ctmtptr.M.P);
+      mh.drawImageData(path, this.biomeImpls[path].src, gx, gy, ctmtptr);
       // this.randoms.Module._free(ctmtptr);
       ctmtptr.delete();
 
-      // this.imageActions.drawImageData(
-      // 	impl,
-      // 	areaMap,
-      // 	px,
-      // 	py,
-      // 	color_to_material_table
-      // );
-
-      impls[path].f.forEach(({ x: dx, y: dy, c }) => {
+      this.biomeImpls[path].f.forEach(({ x: dx, y: dy, c }) => {
         const funcName = mapData.config!.spawnFunctions.get(c);
         if (!funcName) {
           return;
@@ -283,16 +293,15 @@ export class MapInfoProvider extends InfoProvider {
       RaytracePlatforms,
       {
         funcs,
-      }
+      },
     );
     try {
       const g = this.randoms.GetGlobalPos(x, y);
-      mapImplementation.init(g.get(0), g.get(1), 10, 10);
+      mapImplementation.init(g.get(0), g.get(1), 512, 512);
       mh.iterateMap(x, y, (gx, gy, c) => {
-        // this.imageActions.drawImageData(new ImageData(new Uint8ClampedArray([0xff, 0x00, 0x00, 0x00]), 1, 1), areaMap, px, py);
         const funcName = mapData.config!.spawnFunctions.get(c);
         if (!funcName) {
-          return;
+          return 0;
         }
         // const { px, py } = this.imageActions.getLocalPos(x, y, gx, gy);
         // is_open_path is only used in the coalmine biome:
@@ -306,6 +315,7 @@ export class MapInfoProvider extends InfoProvider {
           type: InterestType.Wang,
         });
         mapImplementation.handle(funcName, gx, gy, 10, 10, false);
+        return 1;
       });
     } catch (e) {
       console.error("Iteration error: ");
@@ -335,7 +345,7 @@ export class MapInfoProvider extends InfoProvider {
     const randomMatData = new Uint32Array(
       this.randoms.Module.HEAPU32.buffer,
       randomMaterialsPtr,
-      flatRandomMaterials.length * 4
+      flatRandomMaterials.length * 4,
     );
     randomMatData.set(flatRandomMaterials);
 
@@ -350,7 +360,7 @@ export class MapInfoProvider extends InfoProvider {
       ["solid_wall_tower_1", "solid_wall_tower_2", "coalmine", "excavationsite"].includes(mapData.name),
       randomMaterialsPtr,
       area.x1,
-      area.y1
+      area.y1,
     );
 
     const self = this;
@@ -368,7 +378,7 @@ export class MapInfoProvider extends InfoProvider {
       getBigMapImageData: function () {
         const areaMapToScaleID = self.imageActions.ImageData(w * 10, h * 10);
         areaMapToScaleID.data.set(
-          new Uint8ClampedArray(self.randoms.Module.HEAPU8.buffer, mh.bigMap, 4 * w * h * 10 * 10)
+          new Uint8ClampedArray(self.randoms.Module.HEAPU8.buffer, mh.bigMap, 4 * w * h * 10 * 10),
         );
         return areaMapToScaleID;
       },
@@ -396,10 +406,6 @@ export class MapInfoProvider extends InfoProvider {
     }
 
     const mapData = this.maps.get(color)!;
-
-    if (mapData.type !== "BIOME_WANG_TILE") {
-      return;
-    }
 
     const mh = this.getMapHandler(tx, ty);
 
@@ -492,7 +498,7 @@ export class MapInfoProvider extends InfoProvider {
         const points = new Set(interestPoints.map(p => p.item));
         const check = (config.search as string[])[method](
           // These might be equal string values, but not equal "Strings"
-          s => points.has(String(s))
+          s => points.has(String(s)),
         );
         if (!check) {
           return false;

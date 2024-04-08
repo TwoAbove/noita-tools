@@ -13,7 +13,7 @@ type TLoadPixelScene = (
   skip_biome_checks?: boolean,
   skip_edge_textures?: boolean,
   color_to_material_table?: {},
-  background_z_index?: number
+  background_z_index?: number,
 ) => void;
 
 type THandleInterest = (item: string, x: number, y: number, extra?: any) => void;
@@ -127,7 +127,7 @@ export default class Base {
             const entity_id = this.EntityLoad(
               "data/entities/items/pickup/runestones/runestone_" + opt + ".xml",
               x + ox,
-              y + oy
+              y + oy,
             );
             rnd = this.randoms.Random(1, 10);
             let active = false;
@@ -442,7 +442,7 @@ export default class Base {
         false,
         false,
         color_material_table,
-        z_index
+        z_index,
       );
       if (v.is_unique) {
         what[i].prob = 0;
@@ -576,7 +576,7 @@ export default class Base {
       y - 23,
       "",
       true,
-      true
+      true,
     );
   }
 
@@ -629,7 +629,7 @@ export default class Base {
     public HandleInterest: THandleInterest,
     public BiomeMapGetVerticalPositionInsideBiome: TBiomeMapGetVerticalPositionInsideBiome,
     public RaytracePlatforms: TRaytracePlatforms,
-    public config: IConfig
+    public config: IConfig = {},
   ) {}
 
   spawn_from_list(list: any, x: number, y: number) {
@@ -672,7 +672,7 @@ export default class Base {
       this.err(`g_items needs to exist on class ${this.constructor.name}`);
       return;
     }
-    this.spawn(this.g_items, x, y, 0, 0);
+    this.spawn(this.g_items, x - 5, y, 0, 0);
   }
 
   spawn_shopitem(x, y) {
@@ -684,7 +684,7 @@ export default class Base {
       this.err(`g_candles needs to exist on class ${this.constructor.name}`);
       return;
     }
-    this.spawn(this.g_candles, x - 5, y, 0, 0);
+    this.spawn(this.g_candles, x, y, 0, 0);
   }
 
   spawn_ghostlamp(x: number, y: number) {
@@ -696,7 +696,13 @@ export default class Base {
   }
 
   spawn_potions(x: number, y: number) {
-    this.spawn_from_list("potion_spawnlist", x, y);
+    this.randoms.SetRandomSeed(x, y);
+    const r = this.randoms.Random(1, 1000);
+    if (r <= 995 || y < 512 * 3) {
+      this.spawn_from_list("potion_spawnlist", x, y);
+    } else {
+      this.EntityLoad("data/entities/items/pickup/potion_mimic.xml", x, y);
+    }
   }
 
   spawn_potion_altar(x: number, y: number) {

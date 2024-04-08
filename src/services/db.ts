@@ -5,6 +5,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import uniqueId from "lodash/uniqueId.js";
 import { ILogicRules, RuleType } from "./SeedInfo/infoHandler/IRule";
 import { randomUUID } from "./helpers";
+import { NOITA_SPELL_COUNT } from "../static";
 
 (Dexie as any).debug = "dexie";
 
@@ -119,7 +120,7 @@ export class NoitaDB extends Dexie {
         await ((t as any).db.configItems as NoitaDB["configItems"])
           .add({
             key: "unlocked-spells",
-            val: Array(393).fill(true),
+            val: Array(NOITA_SPELL_COUNT).fill(true),
           })
           .catch(e => {
             console.error(e);
@@ -163,7 +164,7 @@ export class NoitaDB extends Dexie {
               }),
             ),
           },
-          madeUsingVersion: process.env.REACT_APP_VERSION!,
+          madeUsingVersion: APP_VERSION,
           createdAt: new Date(),
           updatedAt: new Date(),
         });
@@ -171,6 +172,21 @@ export class NoitaDB extends Dexie {
           key: "search-current-search-uuid",
           val: uuid,
         });
+      });
+
+    // Upgrade to version 9 to update the spell unlock array
+    this.version(9)
+      .stores({
+        configItems: "++id, &key",
+      })
+      .upgrade(async t => {
+        await ((t as any).db.configItems as NoitaDB["configItems"])
+          .where("key")
+          .equals("unlocked-spells")
+          .modify({ val: Array(NOITA_SPELL_COUNT).fill(true) })
+          .catch(e => {
+            console.error(e);
+          });
       });
 
     this.errorOnOpen = this.open()
@@ -270,7 +286,7 @@ async function populate() {
     },
     {
       key: "unlocked-spells",
-      val: Array(393).fill(true),
+      val: Array(NOITA_SPELL_COUNT).fill(true),
     },
     {
       key: "useCores",
@@ -309,7 +325,7 @@ async function populate() {
         }),
       ),
     },
-    madeUsingVersion: process.env.REACT_APP_VERSION!,
+    madeUsingVersion: APP_VERSION,
     createdAt: new Date(),
     updatedAt: new Date(),
   });
@@ -346,7 +362,7 @@ export async function newSearch(): Promise<string> {
         }),
       ),
     },
-    madeUsingVersion: process.env.REACT_APP_VERSION!,
+    madeUsingVersion: APP_VERSION,
     createdAt: new Date(),
     updatedAt: new Date(),
   });

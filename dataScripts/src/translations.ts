@@ -3,14 +3,12 @@ import path from "path";
 import Jimp from "jimp";
 import { parse } from "csv-parse/sync";
 
-const noitaData = path.resolve(
-  require("os").homedir(),
-  ".steam/debian-installation/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/"
-);
-const translationFile = path.resolve(
-  require("os").homedir(),
-  ".steam/debian-installation/steamapps/common/Noita/data/translations/common.csv"
-);
+import { homedir } from "os";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const translationFile = path.resolve(__dirname, "../noita-data/translations/common.csv");
 
 const translationCSV = fs.readFileSync(translationFile).toString();
 
@@ -19,9 +17,21 @@ const translation: { [locale: string]: { [id: string]: string } } = {};
 // first col is id
 // eslint-disable-next-line no-sparse-arrays
 const locales = [, "en", "ru", "pt-br", "es-es", "de", "fr-fr", "it", "pl", "zh-cn", "jp", "ko"];
-
+const localeMap = {
+  en: "en",
+  ru: "ru",
+  "pt-br": "pt",
+  "es-es": "es",
+  de: "de",
+  "fr-fr": "fr",
+  it: "it",
+  pl: "pl",
+  "zh-cn": "zh",
+  jp: "jp",
+  ko: "ko",
+};
 const records: any[] = parse(translationCSV, {
-  columns: true,
+  // columns: true,
   skip_empty_lines: true,
 });
 
@@ -40,20 +50,21 @@ records.forEach((row, i) => {
     if (!translation[locale]) {
       translation[locale] = {};
     }
-    translation[locale]["$" + row.id] = row[locale];
+    translation[locale]["$" + row[0]] = row[i];
   }
 });
 
-fs.mkdirSync(path.resolve(__dirname, `./locales`));
+fs.mkdirSync(path.resolve(__dirname, `./out/locales`));
 for (let i = 1; i < locales.length; i++) {
   const locale = locales[i];
   if (!locale) {
     continue;
   }
-  fs.mkdirSync(path.resolve(__dirname, `./locales/${locale}`));
-  fs.writeFileSync(path.resolve(__dirname, `./locales/${locale}/app.json`), JSON.stringify({}, null, 2));
+  const localeName = localeMap[locale];
+  fs.mkdirSync(path.resolve(__dirname, `./out/locales/${localeName}`), { recursive: true });
+  fs.writeFileSync(path.resolve(__dirname, `./out/locales/${localeName}/app.json`), JSON.stringify({}, null, 2));
   fs.writeFileSync(
-    path.resolve(__dirname, `./locales/${locale}/materials.json`),
-    JSON.stringify(translation[locale], null, 2)
+    path.resolve(__dirname, `./out/locales/${localeName}/materials.json`),
+    JSON.stringify(translation[locale], null, 2),
   );
 }

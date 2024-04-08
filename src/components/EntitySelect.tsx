@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FC, useEffect, useState } from "react";
-import { Modal, ModalProps, Row, Col, FormControl } from "react-bootstrap";
+import { FC } from "react";
+import { Modal, ModalProps, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-import Icon from "./Icons/Icon";
-import Clickable from "./Icons/Clickable";
-import Perk from "./Icons/Perk";
-import { PerkInfoProvider } from "../services/SeedInfo/infoHandler/InfoProviders/Perk";
 import Entity from "./Icons/Entity";
 
-import entities from "../services/SeedInfo/data/obj/entities.json";
+import { EntityInfoProvider } from "../services/SeedInfo/infoHandler/InfoProviders/Entity";
 
-const perkInfoProvider = new PerkInfoProvider({} as any);
+let entitiesLoaded = false;
+const entities = new EntityInfoProvider({} as any);
+entities.ready().then(() => {
+  entitiesLoaded = true;
+});
 
 const subtextMap = {
   Spell: ({ t }) => <div>Spell</div>,
@@ -57,7 +57,10 @@ interface IEntityViewProps {
   onClick: () => void;
 }
 const EntityView: FC<IEntityViewProps> = ({ id, onClick }) => {
-  const entity = entities[id];
+  if (!entitiesLoaded) {
+    return <>...</>;
+  }
+  const entity = entities.provide(id);
   const name = entity?.name;
   const Subtext = subtextMap[id];
   const [t] = useTranslation("materials");

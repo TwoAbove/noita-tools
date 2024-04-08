@@ -1,6 +1,4 @@
 // data/scripts/biomes/vault.lua
-import { ShopInfoProvider } from "../../Shop";
-import { WandInfoProvider } from "../../Wand";
 import Base from "../Base";
 
 const lab_liquids = {
@@ -882,7 +880,7 @@ class Vault extends Base {
         x - 5,
         y - 10,
         "",
-        true
+        true,
       );
     }
   }
@@ -927,7 +925,7 @@ class Vault extends Base {
         x - 3,
         y - 10,
         "",
-        true
+        true,
       );
     }
   }

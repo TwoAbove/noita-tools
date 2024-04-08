@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useReducer, useState } from "react";
 
-import SeedSolver from "../../services/seedSolverHandler";
+import { SeedSolver } from "../../services/seedSolverHandler";
 import { ILogicRules, RuleType } from "../../services/SeedInfo/infoHandler/IRule";
 import useLocalStorage from "../../services/useLocalStorage";
 import copy from "copy-to-clipboard";
@@ -357,7 +357,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({ children }) => 
       },
       chunkProvider,
       ruleTree,
-      seedSolver
+      seedSolver,
     );
     setCallbackComputeHandler(newCallbackComputeProvider);
   }, [seedSolver, ruleTree, chunkProvider]);
@@ -431,7 +431,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({ children }) => 
     const newComputeSocket = new ComputeSocket({
       url: window.location.host,
       sessionToken: Cookies.get("noitoolSessionToken"),
-      version: process.env.REACT_APP_VERSION!,
+      version: APP_VERSION,
       onUpdate: () => {
         setClusterConnected(newComputeSocket.connected);
       },
@@ -449,7 +449,7 @@ const SearchContextProvider: FC<SearchContextProviderProps> = ({ children }) => 
       },
       chunkProvider,
       ruleTree,
-      newComputeSocket
+      newComputeSocket,
     );
     setSocketComputeProvider(newSocketComputeProvider);
     return () => {

@@ -202,7 +202,9 @@ export class SeedSearcher {
   }
 
   async ready() {
-    await this.gameInfoProvider.ready();
+    return this.gameInfoProvider.ready().catch(e => {
+      console.log(e);
+    });
   }
 
   async start() {
@@ -239,6 +241,9 @@ export class SeedSearcher {
       await this.gameInfoProvider
         .onRandomLoad(() => {
           this.gameInfoProvider.randoms.SetUnlockedSpells(config.unlockedSpells!);
+        })
+        .catch(e => {
+          console.log(e);
         })
         .finally(() => {});
     }

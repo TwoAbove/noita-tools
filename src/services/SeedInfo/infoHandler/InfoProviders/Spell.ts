@@ -1,14 +1,27 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import spellData from "../../data/spells.json";
-import spellObjData from "../../data/obj/spells.json";
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
 
 export class SpellInfoProvider extends InfoProvider {
-  spells = spellObjData;
-  spellsArr = spellData;
+  spellsPromise = import("../../data/obj/spells.json")
+    .catch(e => {
+      console.error(e);
+      return {};
+    })
+    .then((spellData: any) => {
+      this.spells = spellData.default;
+      this.spellsArr = Object.values(spellData.default);
+    });
+
+  spells;
+  spellsArr;
+
+  async ready() {
+    await this.spellsPromise;
+    return;
+  }
 
   provide(spellName: string) {
     let found = this.spells[spellName];

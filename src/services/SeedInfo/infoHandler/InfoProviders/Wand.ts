@@ -1,8 +1,9 @@
 import D from "decimal.js";
 
+import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
-import wandData from "../../data/wands.json";
 import { IRandom } from "../../random";
+import { between } from "../../../helpers";
 
 export enum ACTION_TYPE {
   PROJECTILE = 0,
@@ -106,7 +107,7 @@ const WandDiff = (
     deck_capacity: number;
     spread_degrees: number;
     reload_time: number;
-  }
+  },
 ): number => {
   let score = 0;
   score += Math.abs(gun.fire_rate_wait - wand.fire_rate_wait) * 2;
@@ -190,7 +191,20 @@ class Gun implements IGun {
 }
 
 export class WandInfoProvider extends InfoProvider {
-  wands = wandData as unknown as {
+  wandsPromise = import("../../data/wands.json")
+    .catch(e => {
+      console.error(e);
+      return {};
+    })
+    .then((wands: any) => {
+      this.wands = wands.default;
+    });
+
+  async ready(): Promise<void> {
+    await this.wandsPromise;
+  }
+
+  wands!: {
     file: string;
     name: string;
     fire_rate_wait: number;
@@ -362,7 +376,7 @@ export class WandInfoProvider extends InfoProvider {
       t_gun[variable] = clamp(
         this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness),
         min,
-        max
+        max,
       );
       t_gun["cost"] = t_gun["cost"] - (60 - t_gun[variable]) / 5;
       return;
@@ -374,7 +388,7 @@ export class WandInfoProvider extends InfoProvider {
       t_gun[variable] = clamp(
         this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness),
         min,
-        max
+        max,
       );
       t_gun["cost"] = t_gun["cost"] - (16 - t_gun[variable]);
       return;
@@ -386,7 +400,7 @@ export class WandInfoProvider extends InfoProvider {
       t_gun[variable] = clamp(
         this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness),
         min,
-        max
+        max,
       );
       t_gun["cost"] = t_gun["cost"] - (16 - t_gun[variable]);
       return;
@@ -412,7 +426,7 @@ export class WandInfoProvider extends InfoProvider {
       t_gun[variable] = clamp(
         this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness),
         min,
-        max
+        max,
       );
       t_gun["cost"] = t_gun["cost"] - (t_gun[variable] - 6) * 5;
       return;
@@ -453,7 +467,7 @@ export class WandInfoProvider extends InfoProvider {
 
       max = clamp(max, 1, deck_capacity);
       t_gun[variable] = Math.floor(
-        clamp(this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness), min, max)
+        clamp(this.randoms.RandomDistribution(probs.min, probs.max, probs.mean, probs.sharpness), min, max),
       );
       let temp_cost = action_costs[clamp(t_gun[variable], 1, action_costs.length) - 1];
       t_gun["cost"] = t_gun["cost"] - temp_cost;
@@ -601,7 +615,66 @@ export class WandInfoProvider extends InfoProvider {
     };
   }
 
-  test() {
+  test(rule: IRule<IWandRule>): boolean {
+    if (!rule.val) {
+      return true;
+    }
+
+    const generatedWand = this.provide(
+      rule.params.x,
+      rule.params.y,
+      rule.params.cost,
+      rule.params.level,
+      rule.params.force_unshuffle,
+      rule.params.unshufflePerk,
+    );
+
+    for (const [k, v] of Object.entries(rule.val.gun)) {
+      if (!between(generatedWand.gun[k], v[0], v[1])) {
+        return false;
+      }
+    }
+
+    if (rule.val.cards && rule.val.cards.length) {
+      for (const card of rule.val.cards) {
+        if (!generatedWand.cards.cards.includes(card)) {
+          return false;
+        }
+      }
+    }
+
+    if (rule.val.permanentCard && rule.val.permanentCard !== generatedWand.cards.permanentCard) {
+      return false;
+    }
+
     return true;
   }
+}
+
+export interface IWandRule {
+  params: {
+    x: number;
+    y: number;
+    cost: number;
+    level: number;
+    force_unshuffle: boolean;
+    unshufflePerk: boolean;
+  };
+  gun: {
+    cost?: [number, number];
+    deck_capacity?: [number, number];
+    actions_per_round?: [number, number];
+    reload_time?: [number, number];
+    shuffle_deck_when_empty?: [number, number];
+    fire_rate_wait?: [number, number];
+    spread_degrees?: [number, number];
+    speed_multiplier?: [number, number];
+    prob_unshuffle?: [number, number];
+    prob_draw_many?: [number, number];
+    mana_charge_speed?: [number, number];
+    mana_max?: [number, number];
+    force_unshuffle?: [number, number];
+  };
+  cards?: string[];
+  permanentCard?: string;
 }

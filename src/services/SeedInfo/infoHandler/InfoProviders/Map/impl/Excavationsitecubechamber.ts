@@ -130,104 +130,33 @@ class Excavationsitecubechamber extends Base {
     },
   ];
 
-  spawn_small_enemies(x: number, y: number) {
+  spawn_small_enemies(x: number, y: number) {}
+  spawn_big_enemies(x: number, y: number) {}
+  spawn_shopitem(x: number, y: number) {
     this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
   }
-  spawn_big_enemies(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_items(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_props(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_props2(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_props3(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
+  spawn_props(x: number, y: number) {}
   spawn_lamp(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
+    this.spawn(this.g_lamp, x, y, 0, 20);
   }
-  load_pixel_scene(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  load_pixel_scene2(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_unique_enemy(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_unique_enemy2(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_unique_enemy3(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_ghostlamp(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_candles(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_potion_altar(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_potions(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_apparition(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_heart(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_wands(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_portal(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_end_portal(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_orb(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_perk(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_all_perks(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_wand_trap(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_wand_trap_ignite(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_wand_trap_electricity_source(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_wand_trap_electricity(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_moon(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
-  spawn_collapse(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
-  }
+  load_pixel_scene(x: number, y: number) {}
+  load_pixel_scene2(x: number, y: number) {}
+  spawn_unique_enemy(x: number, y: number) {}
   spawn_skulls(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
+    this.spawn(this.g_skulls, x, y, 0, 0);
   }
   init(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
+    this.LoadPixelScene(
+      "data/biome_impl/excavationsite/cube_chamber.png",
+      "data/biome_impl/excavationsite/cube_chamber_visual.png",
+      x,
+      y,
+      "data/biome_impl/excavationsite/cube_chamber_background.png",
+      true,
+    );
   }
   spawn_teleporter(x: number, y: number) {
-    this.warn(`$ TODO: AUTO_GEN not implemented for ${this.constructor.name}`);
+    this.EntityLoad("data/entities/buildings/teleport_meditation_cube_return.xml", x, y);
   }
 }
 export default Excavationsitecubechamber;

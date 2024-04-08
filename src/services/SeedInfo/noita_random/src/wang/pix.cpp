@@ -76,7 +76,7 @@ void setPixelColor(unsigned char *map, unsigned long pos, unsigned long color)
 {
    unsigned char r = ((color >> 16) & 0xff);
    unsigned char g = ((color >> 8) & 0xff);
-   unsigned char b = ((color)&0xff);
+   unsigned char b = ((color) & 0xff);
    map[pos] = r;
    map[pos + 1] = g;
    map[pos + 2] = b;
@@ -86,7 +86,7 @@ void setRGBAPixelColor(unsigned char *map, unsigned long pos, unsigned long colo
    unsigned char r = ((color >> 24) & 0xff);
    unsigned char g = ((color >> 16) & 0xff);
    unsigned char b = ((color >> 8) & 0xff);
-   unsigned char a = ((color)&0xff);
+   unsigned char a = ((color) & 0xff);
    map[pos] = r;
    map[pos + 1] = g;
    map[pos + 2] = b;
