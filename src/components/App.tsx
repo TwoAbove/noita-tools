@@ -5,6 +5,7 @@ import { useSearchParamsState } from "react-use-search-params-state";
 import Cookies from "js-cookie";
 
 import Donate from "./Donate";
+import { isDev, isLocal } from "./utils";
 
 import "./App.css";
 import { ThemeProvider } from "./ThemeContext";
@@ -97,9 +98,8 @@ const LazyProfile = () => {
 };
 
 const Header = () => {
-  const host = window.location.host;
-  // const isDevBranch = host.startsWith("dev.");
-  const isDevBranch = true;
+  const isDevBranch = isDev() || isLocal();
+
   return (
     <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between px-2">
       <div className="text-nowrap lh-1">
