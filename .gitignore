@@ -121,3 +121,5 @@ dataScripts/src/out
 cypress/screenshots/
 
 .DS_Store
+
+.servers
