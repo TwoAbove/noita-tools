@@ -383,6 +383,15 @@ export class PerkInfoProvider extends InfoProvider {
         perkPicks.set(world, picksForWorld);
         const picked_perks = perkPicks.get(world)?.[i];
         if (picked_perks) {
+          for (const picked_perk of picked_perks || []) {
+            if ("remove_other_perks" in this.perks[picked_perk]) {
+              for (const perk of this.perks[picked_perk].remove_other_perks!) {
+                const flag_name = this.get_perk_picked_flag_name(perk);
+                const pickup_count = this._G.GetValue(flag_name + "_PICKUP_COUNT", 0);
+                this._G.SetValue(flag_name + "_PICKUP_COUNT", pickup_count + 1);
+              }
+            }
+          }
           for (const picked_perk of picked_perks) {
             this.flag_pickup(picked_perk);
             if (picked_perk === "EXTRA_PERK") {
@@ -477,7 +486,18 @@ export class PerkInfoProvider extends InfoProvider {
           const perk = perks[row][pos];
           selected[row][pos] = perk;
 
+          const handlePerkPickup = (perk: string) => {
+            if ("remove_other_perks" in this.perks[perk]) {
+              for (const p of this.perks[perk].remove_other_perks!) {
+                const flag_name = this.get_perk_picked_flag_name(p);
+                const pickup_count = this._G.GetValue(flag_name + "_PICKUP_COUNT", 0);
+                this._G.SetValue(flag_name + "_PICKUP_COUNT", pickup_count + 1);
+              }
+            }
+          };
+
           this.flag_pickup(perk);
+          handlePerkPickup(perk);
 
           if (perk === "GAMBLE") {
             const perkDeck = this.getPerkDeck();
@@ -490,7 +510,9 @@ export class PerkInfoProvider extends InfoProvider {
               this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1);
             }
             this.flag_pickup(p1);
+            handlePerkPickup(p1);
             this.flag_pickup(p2);
+            handlePerkPickup(p2);
           }
 
           if (perk === "EXTRA_PERK") {
