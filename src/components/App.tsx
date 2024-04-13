@@ -104,8 +104,10 @@ const Header = () => {
     <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between px-2">
       <div className="text-nowrap lh-1">
         <h3 className="fs-1 fw-bolder mb-0 text-center position-relative pb-2">
-          Noitool
-          {isDevBranch && <sub className="fs-6 fw mb-0 text-center text-danger">Beta</sub>}
+          <a href="/" className="text-decoration-none text-reset">
+            Noitool
+            {isDevBranch && <sub className="fs-6 fw mb-0 text-center text-danger">Beta</sub>}
+          </a>
           {isDevBranch && (
             <code
               className="fs-6 fw mb-0 position-absolute start-50 translate-middle-x"
