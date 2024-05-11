@@ -11,7 +11,7 @@
     "backblaze-b2": "^1.7.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.15.2",
     "dotenv-flow": "^4.1.0",
     "express": "^4.19.2",
     "express-rate-limit": "^7.2.0",
