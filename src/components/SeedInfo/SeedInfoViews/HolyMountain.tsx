@@ -496,7 +496,7 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
 
   const favorites = useFavoritePerks(
     advanced ? infoProvider.providers.statelessPerk : infoProvider.providers.perk,
-    perkDeck
+    perkDeck,
   );
   const getPerkData = () => {
     const perk = infoProvider.providers.statelessPerk;
@@ -781,7 +781,7 @@ const HolyMountain = (props: IHolyMountainProps) => {
 
   const pacifistChestItems = useCallback(
     (l, w) => infoProvider.providers.pacifistChest.provide(l, w),
-    [infoProvider.providers.pacifistChest]
+    [infoProvider.providers.pacifistChest],
   );
 
   const OffsetText = () => {

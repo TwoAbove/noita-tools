@@ -279,6 +279,20 @@ export class GameInfoProvider extends EventTarget {
     // I think the c++ code should be immutable. Idea for next refactor.
     const worldSeed = Number(this.config.seed);
     this.randoms!.SetWorldSeed(worldSeed);
+
+    // Hack - we have 2 ways of handling perks (stateful and stateless),
+    // and we need to provide the picked perks to the shop provider,
+    // so we need to get the picked perks from the correct config
+    // depending whether "advanced perks" are enabled or not.
+    // I think this is a good candidate for a refactor.
+    // So this provideAll call should be considered "legacy" and we
+    // just use the stateful perks here.
+    // And we should `provide` in the UI and only when the UI is actually showing the
+    // holy mountain data (so we don't need to provide all the data all the time).
+
+    const extraShopItems = [...this.config.pickedPerks.values()].flat(2).filter(p => p === "EXTRA_SHOP_ITEM").length;
+    const noMoreShuffle = !![...this.config.pickedPerks.values()].flat(2).filter(p => p === "NO_MORE_SHUFFLE").length;
+
     return {
       alchemy: this.providers.alchemy.provide(),
       biomeModifiers: this.providers.biomeModifier.provide(),
@@ -296,7 +310,7 @@ export class GameInfoProvider extends EventTarget {
         true,
       ),
       weather: this.providers.weather.provide(),
-      shop: this.providers.shop.provide(this.config.pickedPerks, this.config.perkWorldOffset),
+      shop: this.providers.shop.provide(extraShopItems, noMoreShuffle, this.config.perkWorldOffset),
       startingBombSpell: this.providers.startingBombSpell.provide(),
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),

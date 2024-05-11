@@ -228,11 +228,11 @@ export class ShopInfoProvider extends InfoProvider {
     return wand;
   }
 
-  spawn_all_shop_items(x: number, y: number, pickedPerks: Map<number, string[][]>): IShopItems {
+  spawn_all_shop_items(x: number, y: number, extraShopItems: number, noMoreShuffle: boolean): IShopItems {
     this.randoms.SetRandomSeed(x, y);
 
-    const numberOfExtraItems = [...pickedPerks.values()].flat(2).filter(p => p === "EXTRA_SHOP_ITEM").length;
-    const unshufflePerk = !![...pickedPerks.values()].flat(2).filter(p => p === "NO_MORE_SHUFFLE").length;
+    const numberOfExtraItems = extraShopItems;
+    const unshufflePerk = noMoreShuffle;
     const count = 5 + numberOfExtraItems; // GlobalsGetValue( "TEMPLE_SHOP_ITEM_COUNT", "5" );
 
     const width = 132;
@@ -255,26 +255,25 @@ export class ShopInfoProvider extends InfoProvider {
     };
   }
 
-  provide(pickedPerks: Map<number, string[][]> = new Map(), worldOffset: number = 0, tx = 0, ty = 0) {
+  provide(extraShopItems: number, noMoreShuffle: boolean, worldOffset: number = 0, tx = 0, ty = 0) {
     const res: ReturnType<ShopInfoProvider["spawn_all_shop_items"]>[] = [];
     for (let i = 0; i < this.temples.length; i++) {
-      res.push(this.provideLevel(i, pickedPerks, worldOffset, tx, ty));
+      res.push(this.provideLevel(i, extraShopItems, noMoreShuffle, worldOffset, tx, ty));
     }
     return res;
   }
 
-  provideLevel(
-    level: number,
-    pickedPerks: Map<number, string[][]> = new Map(),
-    worldOffset: number = 0,
-    tx = 0,
-    ty = 0,
-  ) {
+  provideLevel(level: number, extraShopItems: number, noMoreShuffle: boolean, worldOffset: number = 0, tx = 0, ty = 0) {
     const temple = this.temples[level];
     // Magic numbers taken from src/services/SeedInfo/infoHandler.check.ts
     let offsetX = 0 - 299,
       offsetY = 0 - 15;
-    return this.spawn_all_shop_items(temple.x + offsetX + worldOffset * 35840, temple.y + offsetY, pickedPerks);
+    return this.spawn_all_shop_items(
+      temple.x + offsetX + worldOffset * 35840,
+      temple.y + offsetY,
+      extraShopItems,
+      noMoreShuffle,
+    );
   }
 
   getShopLevel(shopNumber: number) {
@@ -302,7 +301,7 @@ export class ShopInfoProvider extends InfoProvider {
       }
       try {
         if (shop.type) {
-          const info = this.provideLevel(j);
+          const info = this.provideLevel(j, 0, false);
           if (shop.type !== info.type) {
             return false;
           }
