@@ -235,10 +235,11 @@ PickForSeed(uint ws, int maxShifts = 20)
       std::string to_material = to.material;
       for (const auto &it : from.materials)
       {
-        if (it != to_material)
+        auto from_len = from_materials.size();
+        if (from_len == 0 || it != to_material)
         {
-          converted_any = true;
           from_materials.push_back(it);
+          converted_any = true;
         }
       }
 

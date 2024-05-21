@@ -6,82 +6,58 @@ import _ from "lodash";
 describe("PotionRandomMaterialInfoProvider", () => {
   const tests = [
     {
-      seed: 17172,
+      seed: 40309,
       params: {
-        x: -78,
-        y: 1373,
+        x: 432,
+        y: 2056,
       },
-      ans: "burning_powder",
+      ans: "ceiling_plant_material",
     },
     {
-      seed: 25784,
+      seed: 60408,
       params: {
-        x: -78,
-        y: 1373,
+        x: 432,
+        y: 2056,
       },
-      ans: "radioactive_liquid_yellow",
+      ans: "meat_slime_sand",
     },
     {
-      seed: 29664,
+      seed: 77657,
       params: {
-        x: -78,
-        y: 1373,
-      },
-      ans: "urine",
-    },
-    {
-      seed: 67686,
-      params: {
-        x: -78,
-        y: 1373,
+        x: 432,
+        y: 2056,
       },
       ans: "plasma_fading_green",
     },
     {
-      seed: 81151,
+      seed: 90921,
       params: {
-        x: -78,
-        y: 1373,
+        x: 432,
+        y: 2056,
       },
-      ans: "bush_seed",
+      ans: "sandstone_surface",
     },
     {
-      seed: 102316,
+      seed: 171952,
       params: {
-        x: -78,
-        y: 1373,
+        x: 432,
+        y: 2056,
       },
-      ans: "steel_sand",
+      ans: "fungus_powder",
     },
     {
-      seed: 114713,
+      seed: 193007,
       params: {
-        x: -78,
-        y: 1373,
+        x: 432,
+        y: 2056,
       },
-      ans: "material_darkness",
-    },
-    {
-      seed: 124650,
-      params: {
-        x: -78,
-        y: 1373,
-      },
-      ans: "spore",
-    },
-    {
-      seed: 127104,
-      params: {
-        x: -78,
-        y: 1373,
-      },
-      ans: "slush",
+      ans: "juhannussima",
     },
   ];
 
   describe("#provide", () => {
     tests.forEach((t, i) => {
-      it(`Should generate correct output #${i}`, async () => {
+      it(`Should generate correct output #${i} (seed ${t.seed})`, async () => {
         const randoms = await loadRandom();
         const potion = new PotionRandomMaterialInfoProvider(randoms);
         randoms.SetWorldSeed(t.seed);
