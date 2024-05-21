@@ -1,8 +1,4 @@
 import { schedule } from "node-cron";
-
-import B2 from "backblaze-b2";
-B2.prototype.uploadAny = await import("@gideo-llc/backblaze-b2-upload-any");
-
 import { User } from "../db.mjs";
 
 export const counts = {
