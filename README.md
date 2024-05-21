@@ -68,12 +68,14 @@ console-search args (or env vars):
 
 You can use the `deploy_to_servers.sh` script to deploy to several machines. You need to create `.servers` file with the following format:
 
-```txt
+```csv
 user@server1,,main_user_id
 user@server2,dev_user_id,
 ```
 
-This way you can choose which user to connect as on which server and which Noitool instance to connect to. Note the missing entry for the dev user id on server1 and the missing entry for the main user id on server2. That means that server 1 will connect to the main instance and server 2 will connect to the dev instance without both searchers competing for CPU time.
+This is a headerless csv file with the following columns: `ssh,main_user_id,dev_user_id`.
+
+Note the missing entry for the dev user id on server1 and the missing entry for the main user id on server2. That means that server 1 will connect to the main instance and server 2 will connect to the dev instance without both searchers competing for CPU time.
 
 Then run `./deploy_to_servers.sh` to deploy to all servers.
 
