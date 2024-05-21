@@ -170,7 +170,6 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
   }
   if (id === "data/entities/items/pickup/potion_random_material.xml") {
     const { x, y } = entityParams;
-    console.log("PotionRandomMaterial", entityParams);
     if (!preview) {
       return <NonPreview id={id} action={action} {...rest} />;
     }
