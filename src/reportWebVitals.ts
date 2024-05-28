@@ -1,14 +1,36 @@
-import { ReportHandler } from "web-vitals";
+import { get } from "lodash";
+import { onCLS, onFCP, onINP, onLCP, onTTFB } from "web-vitals/attribution";
 
-const reportWebVitals = (onPerfEntry?: ReportHandler) => {
-  if (onPerfEntry && onPerfEntry instanceof Function) {
-    import("web-vitals").then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-      getCLS(onPerfEntry);
-      getFID(onPerfEntry);
-      getFCP(onPerfEntry);
-      getLCP(onPerfEntry);
-      getTTFB(onPerfEntry);
+const waitForResponse = (fn: Function, cb: Function) => {
+  return new Promise(resolve => {
+    fn(data => {
+      cb(data);
+      resolve(data);
     });
+  });
+};
+
+const reportWebVitals = async (onPerfEntry?: any) => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    const out = {};
+    await Promise.allSettled([
+      waitForResponse(onCLS, data => {
+        out["CLS"] = data;
+      }),
+      waitForResponse(onFCP, data => {
+        out["FCP"] = data;
+      }),
+      waitForResponse(onLCP, data => {
+        out["LCP"] = data;
+      }),
+      waitForResponse(onTTFB, data => {
+        out["TTFB"] = data;
+      }),
+      waitForResponse(onINP, data => {
+        out["INP"] = data;
+      }),
+    ]);
+    return out;
   }
 };
 
