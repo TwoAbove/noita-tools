@@ -40,7 +40,7 @@ export class MaterialInfoProvider extends InfoProvider {
     }
     let found = this.materials[materialName];
     if (found) return found;
-    console.warn("Could not find material: " + materialName);
+
     return {
       ui_name: materialName,
     };

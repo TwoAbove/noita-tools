@@ -24,6 +24,7 @@ const NoitaTexture = async (color: string, texture: string) => {
       }
     }
   }
+
   const image = await imageToBase64(imageData);
   const tx = new Texture(image, {
     normal: texture,

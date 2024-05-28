@@ -19,11 +19,21 @@ enum Direction {
   To,
 }
 
-const HeldMaterial = ({ warning, ...rest }: { warning: boolean; [key: string]: any }) => {
+const HeldMaterial = ({
+  warning,
+  className,
+  ...rest
+}: {
+  warning: boolean;
+  className?: string;
+  [key: string]: any;
+}) => {
   return (
-    <b {...rest} className={classNames(warning ? "text-warning" : "text-info")}>
-      Held Material
-    </b>
+    <FungalMaterial
+      id="held material"
+      // className={classNames(warning ? "text-warning" : "text-info", className)}
+      {...rest}
+    />
   );
 };
 
@@ -34,34 +44,36 @@ interface IFungalMaterialProps {
   className?: string;
 }
 
-export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor = true, className, size }) => {
+export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor = true, className, size = 1 }) => {
   const ids = [id].flat();
   const [showId] = useContext(AlchemyConfigContext);
   const { isFavorite } = useMaterialFavorite();
   const name = materialProvider.translate(ids[0]);
+  const material = materialProvider.provide(ids[0]);
 
-  const calculatedSize = size ? `calc(1rem * ${size})` : "1rem";
+  const calculatedSize = `calc(1rem * ${size})`;
+  const fontSize = `calc(0.75rem * ${size})`;
 
   return (
     <div
-      className={classNames(ids.some(isFavorite) && "text-info", className)}
+      className={classNames(ids.some(isFavorite) && "text-info", "d-flex align-items-center text-center", className)}
       style={{
-        fontSize: calculatedSize,
+        fontSize,
       }}
     >
       {showColor && (
         <div
-          className={"d-inline-block align-sub rounded-3 me-1 border border-light"}
+          className={"d-flex align-sub rounded-3 me-1 border border-light align-items-center justify-content-center"}
           style={{
             marginBottom: "-2px",
             width: calculatedSize,
             height: calculatedSize,
-            backgroundColor: "#" + materialProvider.provide(ids[0]).color,
+            backgroundColor: "#" + (material.color || "00000000"),
           }}
         >
-          {" "}
+          <span>{material.color ? "" : "?"}</span>
         </div>
-      )}{" "}
+      )}
       {capitalize(name)} {showId && <span className="text-muted fw-light">{`(${ids.join(", ")})`}</span>}
     </div>
   );
@@ -114,9 +126,9 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
       {heldMaterial && direction === Direction.From && <HeldMaterial warning={false} />}
       {heldMaterial && direction === Direction.To && (
         <div className="lh-1 mb-1">
-          <HeldMaterial warning={gold_to_x !== "gold"} />
+          <HeldMaterial size="0.75" warning={gold_to_x !== "gold"} className="mb-1" />
           {gold_to_x && (
-            <div className="d-flex flex-nowrap text-nowrap text-muted">
+            <div style={{ marginBottom: "1px" }} className="d-flex flex-nowrap text-nowrap text-muted">
               <FungalMaterial size="0.75" id="gold" />{" "}
               <span
                 style={{
@@ -130,7 +142,7 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
             </div>
           )}
           {grass_to_x && (
-            <div className="d-flex flex-nowrap text-nowrap text-muted">
+            <div style={{ marginBottom: "1px" }} className="d-flex flex-nowrap text-nowrap text-muted">
               <FungalMaterial size="0.75" id="grass_holy" />{" "}
               <span
                 style={{

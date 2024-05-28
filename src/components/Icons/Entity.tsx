@@ -16,6 +16,9 @@ import { useTranslation } from "react-i18next";
 import { MaterialInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Material";
 import { EntityInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Entity";
 
+import { MeditationCube, HourGlass } from "./EntityIcons";
+import MemoizedNormalMapRenderer from "./normals/NormalMapRender";
+
 const materials = new MaterialInfoProvider({} as any);
 const entities = new EntityInfoProvider({} as any);
 
@@ -26,36 +29,6 @@ Promise.all([materials.ready(), entities.ready()]).then(() => {
 
 const questionMark =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAIAAABvrngfAAAABnRSTlMAAAAAAABupgeRAAAAJ0lEQVR4nGNkYGB4O+EhAwMDAwODcIE8AzIfjY1N6O2Eh1iU4NMCAGxKETbGzzNZAAAAAElFTkSuQmCC";
-
-interface INormalMapRendererProps {
-  material: any;
-  image: any;
-}
-const NormalMapRenderer = ({ material, image, ...rest }: INormalMapRendererProps) => {
-  const color = material.graphics.color;
-  const [texture, setTexture] = useState<string | null>();
-  useEffect(() => {
-    (() => {
-      NoitaTexture(color, image.src)
-        .then(texture => {
-          setTexture(texture);
-        })
-        .catch(e => {
-          console.error(e);
-        });
-      return null;
-    })();
-  }, [material, image, color]);
-
-  if (!texture) {
-    return <>loading</>;
-  }
-  return <Icon uri={texture} {...rest} />;
-};
-const MemoizedNormalMapRenderer = memo(
-  NormalMapRenderer,
-  (p, n) => p.material === n.material && p.image.src === n.image.src,
-);
 
 interface IWandModalProps {
   x: number;
@@ -183,6 +156,14 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
     return <Spell id="BOMB" {...rest} />;
   }
 
+  if (id === "data/biome_impl/excavationsite/meditation_cube_visual.png") {
+    return <MeditationCube />;
+  }
+
+  if (id === "data/particles/image_emitters/hourglass.png") {
+    return <HourGlass />;
+  }
+
   const entity = entities.provide(id);
 
   if (!entity) {
@@ -191,7 +172,13 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
 
   if (id.includes("goldnugget")) {
     const material = materials.provide(entity.physicsImage.material);
-    return <MemoizedNormalMapRenderer material={material} image={entity.physicsImage.image} {...rest} />;
+    return (
+      <MemoizedNormalMapRenderer
+        materialColor={material.graphics.color}
+        imageSrc={entity.physicsImage.image.src}
+        {...rest}
+      />
+    );
   }
 
   if (id === "data/entities/items/pickup/powder_stash.xml") {
@@ -227,7 +214,13 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
 
   if (entity.physicsImage) {
     const material = materials.provide(entity.physicsImage.material);
-    return <MemoizedNormalMapRenderer material={material} image={entity.physicsImage.image} {...rest} />;
+    return (
+      <MemoizedNormalMapRenderer
+        materialColor={material.graphics.color}
+        imageSrc={entity.physicsImage.image.src}
+        {...rest}
+      />
+    );
   }
   return <Icon uri={questionMark} title={id} />;
 };
