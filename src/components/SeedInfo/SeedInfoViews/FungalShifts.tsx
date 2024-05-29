@@ -20,20 +20,16 @@ enum Direction {
 }
 
 const HeldMaterial = ({
-  warning,
+  highlight,
   className,
   ...rest
 }: {
-  warning: boolean;
+  highlight: boolean;
   className?: string;
   [key: string]: any;
 }) => {
   return (
-    <FungalMaterial
-      id="held material"
-      // className={classNames(warning ? "text-warning" : "text-info", className)}
-      {...rest}
-    />
+    <FungalMaterial id="held material" className={classNames(highlight ? "text-info" : "", className)} {...rest} />
   );
 };
 
@@ -52,7 +48,8 @@ export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor =
   const material = materialProvider.provide(ids[0]);
 
   const calculatedSize = `calc(1rem * ${size})`;
-  const fontSize = `calc(0.75rem * ${size})`;
+  const fontSize = `calc(0.85rem * ${size})`;
+  const questionSize = `calc(0.75rem * ${size})`;
 
   return (
     <div
@@ -63,18 +60,34 @@ export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor =
     >
       {showColor && (
         <div
-          className={"d-flex align-sub rounded-3 me-1 border border-light align-items-center justify-content-center"}
+          className={"d-flex align-center rounded-3 me-1 border border-light align-items-center justify-content-center"}
           style={{
-            marginBottom: "-2px",
             width: calculatedSize,
             height: calculatedSize,
             backgroundColor: "#" + (material.color || "00000000"),
           }}
         >
-          <span>{material.color ? "" : "?"}</span>
+          <span style={{ fontSize: questionSize }}>{material.color ? "" : "?"}</span>
         </div>
       )}
       {capitalize(name)} {showId && <span className="text-muted fw-light">{`(${ids.join(", ")})`}</span>}
+    </div>
+  );
+};
+
+const DirectionalMaterial: React.FC<{ id: string; toId: string }> = ({ id, toId }) => {
+  return (
+    <div style={{ marginBottom: "1px" }} className="d-flex flex-nowrap text-nowrap text-muted">
+      <FungalMaterial size="0.75" id={id} />{" "}
+      <span
+        style={{
+          fontSize: "0.75rem",
+        }}
+        className="mx-2"
+      >
+        &rarr;
+      </span>{" "}
+      <FungalMaterial size="0.75" id={toId} />
     </div>
   );
 };
@@ -123,38 +136,14 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
 
   return (
     <Stack>
-      {heldMaterial && direction === Direction.From && <HeldMaterial warning={false} />}
+      {heldMaterial && direction === Direction.From && <HeldMaterial highlight={false} />}
       {heldMaterial && direction === Direction.To && (
         <div className="lh-1 mb-1">
-          <HeldMaterial size="0.75" warning={gold_to_x !== "gold"} className="mb-1" />
-          {gold_to_x && (
-            <div style={{ marginBottom: "1px" }} className="d-flex flex-nowrap text-nowrap text-muted">
-              <FungalMaterial size="0.75" id="gold" />{" "}
-              <span
-                style={{
-                  fontSize: "0.75rem",
-                }}
-                className="mx-2"
-              >
-                &rarr;
-              </span>{" "}
-              <FungalMaterial size="0.75" id={gold_to_x} />
-            </div>
-          )}
-          {grass_to_x && (
-            <div style={{ marginBottom: "1px" }} className="d-flex flex-nowrap text-nowrap text-muted">
-              <FungalMaterial size="0.75" id="grass_holy" />{" "}
-              <span
-                style={{
-                  fontSize: "0.75rem",
-                }}
-                className="mx-2"
-              >
-                &rarr;
-              </span>{" "}
-              <FungalMaterial size="0.75" id={grass_to_x} />
-            </div>
-          )}
+          <div style={{ marginBottom: "2px" }}>
+            <HeldMaterial highlight={gold_to_x === "gold" || grass_to_x === "grass_holy"} className="mb-1" />
+          </div>
+          {gold_to_x && <DirectionalMaterial id="gold" toId={gold_to_x} />}
+          {grass_to_x && <DirectionalMaterial id="grass_holy" toId={grass_to_x} />}
         </div>
       )}
       {materialsByNameArray.map(([name, ids]) => (
@@ -228,7 +217,6 @@ export const Shift: FC<IShiftProps> = props => {
             }}
             type="checkbox"
             id={`shifted`}
-            // label={`shifted`}
             enterKeyHint="done"
           />
         </OverlayTrigger>
