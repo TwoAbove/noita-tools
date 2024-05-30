@@ -8,7 +8,6 @@ import { AlchemyConfigContext } from "../../AlchemyConfigContext";
 import { capitalize } from "../../../services/helpers";
 import { useTranslation } from "react-i18next";
 import { useMaterialFavorite } from "./helpers";
-import { GameInfoContext } from "../SeedDataOutput";
 import classNames from "classnames";
 import i18n from "../../../i18n";
 
@@ -96,9 +95,6 @@ interface IFungalMaterialListProps {
   materials: Map<string, string>;
   direction?: Direction;
   heldMaterial?: boolean;
-  isFavorite: (id: string) => boolean;
-  getColor: (id: string) => string;
-  showId: boolean;
   gold_to_x?: string;
   grass_to_x?: string;
 }
@@ -109,9 +105,6 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
   gold_to_x,
   grass_to_x,
   heldMaterial,
-  isFavorite,
-  getColor,
-  showId,
 }) => {
   /*
 	Var 'materials' may contain multiple materials with the same display name.
@@ -186,14 +179,7 @@ export const Shift: FC<IShiftProps> = props => {
   return (
     <tr className="align-middle">
       <td>
-        <FungalMaterialList
-          materials={fromMaterials}
-          direction={Direction.From}
-          heldMaterial={data.flaskFrom}
-          isFavorite={isFavorite}
-          getColor={(id: string) => materialProvider.provide(id).color}
-          showId={showId}
-        />
+        <FungalMaterialList materials={fromMaterials} direction={Direction.From} heldMaterial={data.flaskFrom} />
       </td>
       <td>&rarr;</td>
       <td>
@@ -201,9 +187,6 @@ export const Shift: FC<IShiftProps> = props => {
           materials={toMaterials}
           direction={Direction.To}
           heldMaterial={data.flaskTo}
-          isFavorite={isFavorite}
-          getColor={(id: string) => materialProvider.provide(id).color}
-          showId={showId}
           gold_to_x={gold_to_x}
           grass_to_x={grass_to_x}
         />

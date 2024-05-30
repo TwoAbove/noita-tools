@@ -1,4 +1,3 @@
-import Icon from "../Icon";
 import { NormalMapRenderer } from "../normals/NormalMapRender";
 
 const hourglassNormal =
@@ -6,5 +5,4 @@ const hourglassNormal =
 
 export const HourGlass = ({ ...rest }) => {
   return <NormalMapRenderer materialColor="ffaeddee" imageSrc={hourglassNormal} {...rest} />;
-  // return <Icon uri={meditationCubeUri} title={"Meditation Cube"} />;
 };

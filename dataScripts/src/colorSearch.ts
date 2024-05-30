@@ -20,8 +20,8 @@ const defaultColorArray: any[] = parse(getCleanedFile(defaultColorsPath), {
 });
 
 defaultColorArray.push({
-  "#COLOR": "ff18a0d6",
-  "#FUNCTION_NAME": "data/biome/snowcave_secret_chamber.xml",
+  "#COLOR": "ff18d6d6",
+  "#FUNCTION_NAME": "data/biome/snowcastle_hourglass_chamber.xml",
 });
 
 const argbTorgba = (s: string) =>

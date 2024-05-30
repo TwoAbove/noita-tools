@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { MaterialInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Material";
 import { EntityInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Entity";
 
-import { MeditationCube, HourGlass } from "./EntityIcons";
+import { MeditationCube, HourGlass, BuriedEye } from "./EntityIcons";
 import MemoizedNormalMapRenderer from "./normals/NormalMapRender";
 
 const materials = new MaterialInfoProvider({} as any);
@@ -162,6 +162,10 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
 
   if (id === "data/particles/image_emitters/hourglass.png") {
     return <HourGlass />;
+  }
+
+  if (id === "data/biome_impl/snowcave/buried_eye_visual.png") {
+    return <BuriedEye />;
   }
 
   const entity = entities.provide(id);
