@@ -15,6 +15,8 @@ interface ILightPosition {
   z: number;
 }
 
+// TODO: This can be re-written to use WebGL for performance
+// TODO: This can be re-written to be synchronous
 class Texture {
   renderElement: HTMLCanvasElement;
   renderContext: CanvasRenderingContext2D;

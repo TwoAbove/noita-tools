@@ -20,6 +20,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import MapComponent from "./SeedInfoViews/Map";
 import ExcavationsiteCubeChamber from "./SeedInfoViews/ExcavationsiteCubeChamber";
 import SnowcaveSecretChamber from "./SeedInfoViews/SnowcaveSecretChamber";
+import SnowcastleSecretChamber from "./SeedInfoViews/SnowcastleSecretChamber";
 
 const WithShow = (props: { id: string; children: React.ReactNode }): JSX.Element => {
   const config = useLiveQuery(() => db.configItems.get({ key: `panel-${props.id}-config` }));
@@ -103,6 +104,7 @@ const SeedInfo = (props: ISeedInfoProps) => {
               <WithShow id="secret-wands">
                 <ExcavationsiteCubeChamber />
                 <SnowcaveSecretChamber />
+                {/* <SnowcastleSecretChamber /> not ready yet */}
               </WithShow>
             </div>
           </Row>

@@ -7,16 +7,16 @@ import { Wand } from "./Wand";
 import { Button, Modal } from "react-bootstrap";
 import Entity from "../../Icons/Entity";
 
-const SnowcaveSecretChamber = () => {
+const SnowcastleSecretChamber = () => {
   const { gameInfoProvider } = useContext(GameInfoContext);
 
-  const [wands, setWandData] = useState(() =>
-    gameInfoProvider.providers.snowcaveSecretChamber.provide(gameInfoProvider.config.seed),
+  const [spells, setSpellData] = useState(() =>
+    gameInfoProvider.providers.snowcastleSecretChamber.provide(gameInfoProvider.config.seed),
   );
 
   useEffect(() => {
-    const wands = gameInfoProvider.providers.snowcaveSecretChamber.provide(gameInfoProvider.config.seed);
-    setWandData(wands);
+    const spells = gameInfoProvider.providers.snowcastleSecretChamber.provide(gameInfoProvider.config.seed);
+    setSpellData(spells);
   }, [gameInfoProvider]);
 
   const { isFavorite } = useSpellFavorite();
@@ -27,7 +27,7 @@ const SnowcaveSecretChamber = () => {
     <>
       <Button className="position-relative" onClick={() => setModalOpen(true)} variant="outline-info" size="sm">
         <Square>
-          <Entity id="data/biome_impl/snowcave/buried_eye_visual.png" />
+          <Entity id="data/particles/image_emitters/hourglass.png" />
         </Square>
       </Button>
       <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
@@ -35,15 +35,8 @@ const SnowcaveSecretChamber = () => {
           <Modal.Title>Snowy Depths Secret Chamber</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {wands.map((wand, i) => {
-            return (
-              <Wand
-                key={wand.ui.name + i}
-                title={`Snowy Depths Secret Wand ${i + 1}`}
-                item={wand}
-                isFavorite={isFavorite}
-              />
-            );
+          {spells.map((spell, i) => {
+            return <Entity id="Spell" key={`${spell} ${i}`} entityParams={{ extra: spell }} />;
           })}
         </Modal.Body>
       </Modal>
@@ -51,4 +44,4 @@ const SnowcaveSecretChamber = () => {
   );
 };
 
-export default SnowcaveSecretChamber;
+export default SnowcastleSecretChamber;
