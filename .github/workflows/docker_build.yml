@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set image tag based on branch
-        run: echo "IMAGE_TAG=$(if [ "${{ github.ref }}" = "refs/heads/master" ]; then echo 'latest'; else echo 'latest-dev'; fi)" >> $GITHUB_ENV
+        run: echo "IMAGE_TAG=$(if [ '${{ github.ref }}' = "refs/heads/master" ]; then echo 'latest'; else echo 'latest-dev'; fi)" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
