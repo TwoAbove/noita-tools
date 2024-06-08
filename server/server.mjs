@@ -209,7 +209,7 @@ const shutdown = signal => err => {
     console.error("Waited 10s, exiting non-gracefully");
     process.exit(1);
   }, 10000).unref();
-  Promise.allSettled([upload(), new Promise(res => server.close(res))]).then(() => {
+  Promise.allSettled([uploadStats(), new Promise(res => server.close(res))]).then(() => {
     console.log("Gracefully shut down");
     process.exit(0);
   });
