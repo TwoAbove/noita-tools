@@ -122,14 +122,15 @@ export const handleCompute = (socket, io) => {
       return;
     }
 
-    user = (await User.findOne({ sessionToken: config.sessionToken })) || (await User.findOne({ _id: config.userId }));
+    user =
+      (await User.findOne({ sessionToken: config.sessionToken })) || (await User.findOne({ patreonId: config.userId }));
     if (!user) {
       socket.emit("compute:unauthorized");
       return;
     }
 
     computeAppetite = config.appetite || 0;
-    computeUserId = user.id;
+    computeUserId = user._id;
 
     registerUserSocket(computeUserId, socket.id, type, config.appetite || 0);
     if (type === "hosts") {
