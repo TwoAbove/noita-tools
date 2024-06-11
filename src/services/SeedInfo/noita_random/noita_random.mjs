@@ -7,7 +7,7 @@ var create_noita_random = (() => {
   return async function (moduleArg = {}) {
     var moduleRtn;
 
-    var Module = Object.assign({}, moduleArg);
+    var Module = moduleArg;
     var readyPromiseResolve, readyPromiseReject;
     var readyPromise = new Promise((resolve, reject) => {
       readyPromiseResolve = resolve;
@@ -96,18 +96,14 @@ var create_noita_random = (() => {
           };
         }
         readAsync = (url, onload, onerror) => {
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", url, true);
-          xhr.responseType = "arraybuffer";
-          xhr.onload = () => {
-            if (xhr.status == 200 || (xhr.status == 0 && xhr.response)) {
-              onload(xhr.response);
-              return;
-            }
-            onerror();
-          };
-          xhr.onerror = onerror;
-          xhr.send(null);
+          fetch(url, { credentials: "same-origin" })
+            .then(response => {
+              if (response.ok) {
+                return response.arrayBuffer();
+              }
+              return Promise.reject(new Error(response.status + " : " + response.url));
+            })
+            .then(onload, onerror);
         };
       }
     } else {
@@ -228,17 +224,20 @@ var create_noita_random = (() => {
       throw "both async and sync fetching of the wasm failed";
     }
     function getBinaryPromise(binaryFile) {
-      if (!wasmBinary && (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER)) {
-        if (typeof fetch == "function") {
-          return fetch(binaryFile, { credentials: "same-origin" })
-            .then(response => {
-              if (!response["ok"]) {
-                throw `failed to load wasm binary file at '${binaryFile}'`;
+      if (!wasmBinary) {
+        return new Promise((resolve, reject) => {
+          readAsync(
+            binaryFile,
+            response => resolve(new Uint8Array(response)),
+            error => {
+              try {
+                resolve(getBinarySync(binaryFile));
+              } catch (e) {
+                reject(e);
               }
-              return response["arrayBuffer"]();
-            })
-            .catch(() => getBinarySync(binaryFile));
-        }
+            },
+          );
+        });
       }
       return Promise.resolve().then(() => getBinarySync(binaryFile));
     }
