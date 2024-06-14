@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import React, { useContext } from "react";
-import { Col, Container, Row } from "react-bootstrap";
 
 import Alchemy from "./SeedInfoViews/Alchemy";
 
@@ -30,18 +29,7 @@ const WithShow = (props: { id: string; children: React.ReactNode }): JSX.Element
     return <div></div>;
   }
 
-  return props.children as any;
-};
-
-// Function to add <Col> to all children. Some children return <><> which have several elements
-const WithCols = (props: { children: React.ReactNode }): JSX.Element => {
-  return (
-    <>
-      {React.Children.map(props.children, child => {
-        return <Col>{child}</Col>;
-      })}
-    </>
-  );
+  return <div>{props.children}</div>;
 };
 
 interface ISeedInfoProps {
@@ -57,70 +45,78 @@ const SeedInfo = (props: ISeedInfoProps) => {
   const showMap = !!searchParams.get("map");
 
   return (
-    <Row className="m-0">
-      <Col className="px-2" lg={8} md={12}>
-        {/* <Row xs="auto">
-						<Map seed={seed} infoProvider={infoProvider} />
-				</Row> */}
-        <Row xs="auto" className="gap-2 justify-content-center">
-          <Col className="col-12">
-            <WithShow id="holy-mountain">
-              <HolyMountain infoProvider={infoProvider} shop={data.shop} perks={data.perks} perkDeck={data.perkDeck} />
-            </WithShow>
-          </Col>
-          <Row xs="auto" className="gap-2 justify-content-center flex-wrap">
-            <Col className="p-0 m-2">
-              {!isDaily && (
-                <WithShow id="start">
-                  <Start
-                    startingFlask={data.startingFlask}
-                    startingSpell={data.startingSpell}
-                    startingBombSpell={data.startingBombSpell}
-                  />
-                </WithShow>
-              )}
-            </Col>
-            <Col className="p-0 m-2">
-              <WithShow id="weather">
-                <Weather infoProvider={infoProvider} weather={data.weather} />
-              </WithShow>
-            </Col>
-            <Col className="p-0 m-2">
-              <WithShow id="watercave">
-                <Watercave infoProvider={infoProvider} waterCave={data.waterCave} />
-              </WithShow>
-            </Col>
-            <Col className="p-0 m-2">
-              <WithShow id="alchemy">
-                <Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
-              </WithShow>
-            </Col>
-            <Col className="p-0 m-2">
-              <WithShow id="biome">
-                <Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
-              </WithShow>
-            </Col>
-            <div className="d-flex flex-wrap justify-content-center gap-3">
-              <WithShow id="secret-wands">
-                <ExcavationsiteCubeChamber />
-                <SnowcaveSecretChamber />
-                {/* <SnowcastleSecretChamber /> not ready yet */}
-              </WithShow>
-            </div>
-          </Row>
-        </Row>
-      </Col>
-      <Col className="px-2" lg={4}>
-        <WithShow id="fungal">
-          <FungalShifts infoProvider={infoProvider} fungalData={data.fungalShifts} />
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        flexDirection: "row",
+
+        gap: "1rem",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          flexDirection: "column",
+          gap: "1rem",
+          flexGrow: 1,
+          width: "min-content",
+        }}
+      >
+        <WithShow id="holy-mountain">
+          <HolyMountain infoProvider={infoProvider} shop={data.shop} perks={data.perks} perkDeck={data.perkDeck} />
         </WithShow>
-      </Col>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "1rem",
+            justifyContent: "space-around",
+          }}
+        >
+          {!isDaily && (
+            <WithShow id="start">
+              <Start
+                startingFlask={data.startingFlask}
+                startingSpell={data.startingSpell}
+                startingBombSpell={data.startingBombSpell}
+              />
+            </WithShow>
+          )}
+          <WithShow id="weather">
+            <Weather infoProvider={infoProvider} weather={data.weather} />
+          </WithShow>
+          <WithShow id="watercave">
+            <Watercave infoProvider={infoProvider} waterCave={data.waterCave} />
+          </WithShow>
+          <WithShow id="alchemy">
+            <Alchemy infoProvider={infoProvider} alchemy={data.alchemy} />
+          </WithShow>
+          <WithShow id="biome">
+            <Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
+          </WithShow>
+          <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+            <WithShow id="secret-wands">
+              <ExcavationsiteCubeChamber />
+              <SnowcaveSecretChamber />
+              {/* <SnowcastleSecretChamber /> not ready yet */}
+            </WithShow>
+          </div>
+        </div>
+      </div>
+
+      <WithShow id="fungal">
+        <FungalShifts infoProvider={infoProvider} fungalData={data.fungalShifts} />
+      </WithShow>
+
       {showMap && (
         <WithShow id="map">
           <MapComponent infoProvider={infoProvider} worldOffset={0} mapPart="MainPath" />
         </WithShow>
       )}
-    </Row>
+    </div>
   );
 };
 
