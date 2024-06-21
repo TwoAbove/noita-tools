@@ -44,6 +44,7 @@ app.use(
 
 let data = [];
 let stats = [];
+let daily = [];
 
 import apiRoutes from "./routes.mjs";
 
@@ -67,6 +68,29 @@ app.use("/api/version", (req, res) => {
 });
 
 app.use("/api", apiRoutes);
+
+const getSecondsTillUtcMidnight = () => {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setUTCHours(24, 0, 0, 0);
+  return Math.floor((midnight - now) / 1000);
+};
+
+const getDailySeed = async () => {
+  const ans = await fetch("http://takapuoli.noitagame.com/callback/").then(r => r.text());
+  daily.push(ans);
+  const [versionHash, dailySeed, practiceSeed, x] = ans.split(";");
+  return dailySeed;
+};
+
+app.get("/api/daily-seed", async (req, res) => {
+  const dailySeed = await getDailySeed();
+
+  // We can cache this till 00:00 UTC - changes daily
+  res.append("Cache-Control", `max-age=${getSecondsTillUtcMidnight()}`);
+
+  res.send({ seed: dailySeed });
+});
 
 app.post("/api/data", (req, res) => {
   data.push(req.body);
@@ -185,8 +209,8 @@ const uploadStats = async () => {
     return;
   }
   try {
-    const upload = uploadToB2(
-      Buffer.from(JSON.stringify({ data, stats })),
+    const upload = await uploadToB2(
+      Buffer.from(JSON.stringify({ data, stats, daily })),
       "93c80a630c6d59a37add0615",
       `${new Date().toISOString()}.json`,
     );

@@ -48,6 +48,7 @@
     "@types/xml2js": "^0.4.14",
     "@types/xmldom": "^0.1.34",
     "@vitejs/plugin-react-swc": "^3.7.0",
+    "axios": "^1.7.2",
     "browserslist-to-esbuild": "^2.1.1",
     "canvaskit-wasm": "^0.39.1",
     "classnames": "^2.5.1",
