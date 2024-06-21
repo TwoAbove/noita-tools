@@ -83,7 +83,7 @@ const getDailySeed = async () => {
   return dailySeed;
 };
 
-app.get("/daily-seed", async (req, res) => {
+app.get("/api/daily-seed", async (req, res) => {
   const dailySeed = await getDailySeed();
 
   // We can cache this till 00:00 UTC - changes daily
