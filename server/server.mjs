@@ -78,7 +78,7 @@ const getSecondsTillUtcMidnight = () => {
 
 const getDailySeed = async () => {
   const ans = await fetch("http://takapuoli.noitagame.com/callback/").then(r => r.text());
-  daily.push(ans);
+  daily.push([new Date().toISOString(), ans]);
   const [versionHash, dailySeed, practiceSeed, x] = ans.split(";");
   return dailySeed;
 };
