@@ -108,15 +108,15 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
   heldMaterial,
 }) => {
   /*
-	Var 'materials' may contain multiple materials with the same display name.
-	This is because some materials like 'Flammable Gas' have static variants that are
-	pre-rendered in a scene. Static materials have their own material ID.
+  Var 'materials' may contain multiple materials with the same display name.
+  This is because some materials like 'Flammable Gas' have static variants that are
+  pre-rendered in a scene. Static materials have their own material ID.
 
-	These materials should not be displayed twice.
+  These materials should not be displayed twice.
 
-	To solve this, materials will be sorted in a new `Map` where the key is the material
-	name acts as the key and the material ids are stored in the value as an array.
-	*/
+  To solve this, materials will be sorted in a new `Map` where the key is the material
+  name acts as the key and the material ids are stored in the value as an array.
+  */
 
   const materialsByName = new Map();
   materials.forEach((name, id) => {
@@ -179,9 +179,8 @@ export const Shift: FC<IShiftProps> = props => {
 
   const [showTimer, setShowTimer] = useState(false);
 
-  // Called when the timer expires
   const handleTimerExpire = () => {
-    const audio = new Audio("assets/notification-sound-7062.mp3"); // change to appropriate sound \ and path
+    const audio = new Audio("assets/notification-sound-7062.mp3");
     audio.play();
     alert("Timer expired");
     setShowTimer(false);
@@ -222,7 +221,7 @@ export const Shift: FC<IShiftProps> = props => {
               onChange={handleSetShiftedClicked}
               type="checkbox"
               id={`shifted`}
-                enterKeyHint="done"
+              enterKeyHint="done"
             />
           </OverlayTrigger>
           {shifted && showTimer && (
@@ -235,11 +234,10 @@ export const Shift: FC<IShiftProps> = props => {
                 isPlaying
                 size={40}
                 strokeWidth={5}
-                duration={60}
+                duration={300}
                 colors={"#004777"}
                 onComplete={() => {
                   handleTimerExpire();
-                  //  [true, 1000];
                 }}
               >
                 {({ remainingTime }) => remainingTime}
