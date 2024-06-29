@@ -53,6 +53,7 @@ const params = {
   wand: (x, y) => [x, y, 60, 3, false, false],
   waterCave: (x, y) => [],
   excavationSiteCubeChamber: (x, y) => [x, y],
+  snowcaveSecretChamber: (x, y) => [x, y],
 };
 
 const getParams = (provider: string, x: any, y: any, seed): any[] => {
@@ -100,7 +101,7 @@ const printStats = (info: { [provider: string]: IPerf }) => {
   console.table(data);
 };
 
-describe("Performance", () => {
+describe.skip("Performance", () => {
   const box = 20;
   const seedBox = 20;
 

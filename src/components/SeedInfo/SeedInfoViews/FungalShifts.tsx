@@ -9,7 +9,6 @@ import { AlchemyConfigContext } from "../../AlchemyConfigContext";
 import { capitalize } from "../../../services/helpers";
 import { useTranslation } from "react-i18next";
 import { useMaterialFavorite } from "./helpers";
-import { GameInfoContext } from "../SeedDataOutput";
 import classNames from "classnames";
 import i18n from "../../../i18n";
 
@@ -20,11 +19,17 @@ enum Direction {
   To,
 }
 
-const HeldMaterial = ({ warning, ...rest }: { warning: boolean; [key: string]: any }) => {
+const HeldMaterial = ({
+  highlight,
+  className,
+  ...rest
+}: {
+  highlight: boolean;
+  className?: string;
+  [key: string]: any;
+}) => {
   return (
-    <b {...rest} className={classNames(warning ? "text-warning" : "text-info")}>
-      Held Material
-    </b>
+    <FungalMaterial id="held material" className={classNames(highlight ? "text-info" : "", className)} {...rest} />
   );
 };
 
@@ -35,35 +40,54 @@ interface IFungalMaterialProps {
   className?: string;
 }
 
-export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor = true, className, size }) => {
+export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor = true, className, size = 1 }) => {
   const ids = [id].flat();
   const [showId] = useContext(AlchemyConfigContext);
   const { isFavorite } = useMaterialFavorite();
   const name = materialProvider.translate(ids[0]);
+  const material = materialProvider.provide(ids[0]);
 
-  const calculatedSize = size ? `calc(1rem * ${size})` : "1rem";
+  const calculatedSize = `calc(1rem * ${size})`;
+  const fontSize = `calc(0.85rem * ${size})`;
+  const questionSize = `calc(0.75rem * ${size})`;
 
   return (
     <div
-      className={classNames(ids.some(isFavorite) && "text-info", className)}
+      className={classNames(ids.some(isFavorite) && "text-info", "d-flex align-items-center text-center", className)}
       style={{
-        fontSize: calculatedSize,
+        fontSize,
       }}
     >
       {showColor && (
         <div
-          className={"d-inline-block align-sub rounded-3 me-1 border border-light"}
+          className={"d-flex align-center rounded-3 me-1 border border-light align-items-center justify-content-center"}
           style={{
-            marginBottom: "-2px",
             width: calculatedSize,
             height: calculatedSize,
-            backgroundColor: "#" + materialProvider.provide(ids[0]).color,
+            backgroundColor: "#" + (material.color || "00000000"),
           }}
         >
-          {" "}
+          <span style={{ fontSize: questionSize }}>{material.color ? "" : "?"}</span>
         </div>
-      )}{" "}
+      )}
       {capitalize(name)} {showId && <span className="text-muted fw-light">{`(${ids.join(", ")})`}</span>}
+    </div>
+  );
+};
+
+const DirectionalMaterial: React.FC<{ id: string; toId: string }> = ({ id, toId }) => {
+  return (
+    <div style={{ marginBottom: "1px" }} className="d-flex flex-nowrap text-nowrap text-muted">
+      <FungalMaterial size="0.75" id={id} />{" "}
+      <span
+        style={{
+          fontSize: "0.75rem",
+        }}
+        className="mx-2"
+      >
+        &rarr;
+      </span>{" "}
+      <FungalMaterial size="0.75" id={toId} />
     </div>
   );
 };
@@ -72,9 +96,6 @@ interface IFungalMaterialListProps {
   materials: Map<string, string>;
   direction?: Direction;
   heldMaterial?: boolean;
-  isFavorite: (id: string) => boolean;
-  getColor: (id: string) => string;
-  showId: boolean;
   gold_to_x?: string;
   grass_to_x?: string;
 }
@@ -85,9 +106,6 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
   gold_to_x,
   grass_to_x,
   heldMaterial,
-  isFavorite,
-  getColor,
-  showId,
 }) => {
   /*
 	Var 'materials' may contain multiple materials with the same display name.
@@ -112,38 +130,14 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
 
   return (
     <Stack>
-      {heldMaterial && direction === Direction.From && <HeldMaterial warning={false} />}
+      {heldMaterial && direction === Direction.From && <HeldMaterial highlight={false} />}
       {heldMaterial && direction === Direction.To && (
         <div className="lh-1 mb-1">
-          <HeldMaterial warning={gold_to_x !== "gold"} />
-          {gold_to_x && (
-            <div className="d-flex flex-nowrap text-nowrap text-muted">
-              <FungalMaterial size="0.75" id="gold" />{" "}
-              <span
-                style={{
-                  fontSize: "0.75rem",
-                }}
-                className="mx-2"
-              >
-                &rarr;
-              </span>{" "}
-              <FungalMaterial size="0.75" id={gold_to_x} />
-            </div>
-          )}
-          {grass_to_x && (
-            <div className="d-flex flex-nowrap text-nowrap text-muted">
-              <FungalMaterial size="0.75" id="grass_holy" />{" "}
-              <span
-                style={{
-                  fontSize: "0.75rem",
-                }}
-                className="mx-2"
-              >
-                &rarr;
-              </span>{" "}
-              <FungalMaterial size="0.75" id={grass_to_x} />
-            </div>
-          )}
+          <div style={{ marginBottom: "2px" }}>
+            <HeldMaterial highlight={gold_to_x === "gold" || grass_to_x === "grass_holy"} className="mb-1" />
+          </div>
+          {gold_to_x && <DirectionalMaterial id="gold" toId={gold_to_x} />}
+          {grass_to_x && <DirectionalMaterial id="grass_holy" toId={grass_to_x} />}
         </div>
       )}
       {materialsByNameArray.map(([name, ids]) => (
@@ -201,14 +195,7 @@ export const Shift: FC<IShiftProps> = props => {
   return (
     <tr className="align-middle">
       <td>
-        <FungalMaterialList
-          materials={fromMaterials}
-          direction={Direction.From}
-          heldMaterial={data.flaskFrom}
-          isFavorite={isFavorite}
-          getColor={(id: string) => materialProvider.provide(id).color}
-          showId={showId}
-        />
+        <FungalMaterialList materials={fromMaterials} direction={Direction.From} heldMaterial={data.flaskFrom} />
       </td>
       <td>&rarr;</td>
       <td>
@@ -216,9 +203,6 @@ export const Shift: FC<IShiftProps> = props => {
           materials={toMaterials}
           direction={Direction.To}
           heldMaterial={data.flaskTo}
-          isFavorite={isFavorite}
-          getColor={(id: string) => materialProvider.provide(id).color}
-          showId={showId}
           gold_to_x={gold_to_x}
           grass_to_x={grass_to_x}
         />
@@ -238,8 +222,7 @@ export const Shift: FC<IShiftProps> = props => {
               onChange={handleSetShiftedClicked}
               type="checkbox"
               id={`shifted`}
-              // label={`shifted`}
-              enterKeyHint="done"
+                enterKeyHint="done"
             />
           </OverlayTrigger>
           {shifted && showTimer && (

@@ -21,9 +21,9 @@ echo "Done!"
 read -p "Do you want to copy the files to the data directory? (y/N) " -n 1 -r
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
+  mv ./src/out/locales ../public/
   rm -r ./src/out/gen # Not needed - need manual updates since these are templates
   mv -f ./src/out/spells.h ../src/services/SeedInfo/noita_random/src/spells.h
-  mv ./src/out/locales ../public/locales
 
   cp -rf ./src/out/* ../src/services/SeedInfo/data/
 fi

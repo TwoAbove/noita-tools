@@ -179,7 +179,7 @@ const static Spell all_spells[] =
   {"TOUCH_WATER", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.4}},
   {"TOUCH_OIL", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.4}},
   {"TOUCH_ALCOHOL", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.4}},
-  {"TOUCH_PISS", MATERIAL, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+  {"TOUCH_PISS", MATERIAL, {0, 0, 0, 0, 0, 0.035, 0.035, 0.035, 0, 0, 0.1}},
   {"TOUCH_GRASS", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.2}},
   {"TOUCH_BLOOD", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.5}},
   {"TOUCH_SMOKE", MATERIAL, {0, 0, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0.4}},

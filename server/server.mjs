@@ -9,7 +9,6 @@ import RateLimit from "express-rate-limit";
 
 import B2 from "backblaze-b2";
 import { randomUUID } from "crypto";
-B2.prototype.uploadAny = await import("@gideo-llc/backblaze-b2-upload-any");
 
 import { createServer } from "http";
 
@@ -45,6 +44,7 @@ app.use(
 
 let data = [];
 let stats = [];
+let daily = [];
 
 import apiRoutes from "./routes.mjs";
 
@@ -69,6 +69,29 @@ app.use("/api/version", (req, res) => {
 
 app.use("/api", apiRoutes);
 
+const getSecondsTillUtcMidnight = () => {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setUTCHours(24, 0, 0, 0);
+  return Math.floor((midnight - now) / 1000);
+};
+
+const getDailySeed = async () => {
+  const ans = await fetch("http://takapuoli.noitagame.com/callback/").then(r => r.text());
+  daily.push([new Date().toISOString(), ans]);
+  const [versionHash, dailySeed, practiceSeed, x] = ans.split(";");
+  return dailySeed;
+};
+
+app.get("/api/daily-seed", async (req, res) => {
+  const dailySeed = await getDailySeed();
+
+  // We can cache this till 00:00 UTC - changes daily
+  res.append("Cache-Control", `max-age=${getSecondsTillUtcMidnight()}`);
+
+  res.send({ seed: dailySeed });
+});
+
 app.post("/api/data", (req, res) => {
   data.push(req.body);
   res.sendStatus(200);
@@ -92,25 +115,36 @@ if (hasB2) {
   setInterval(authorize, 1000 * 60 * 60 * 23); // 23h
 }
 
+const uploadToB2 = async (data, bucketId, fileName) => {
+  if (!hasB2) {
+    return;
+  }
+  const uploadUrl = await b2.getUploadUrl({
+    bucketId,
+  });
+
+  const upload = await b2.uploadFile({
+    uploadUrl,
+    uploadAuthToken: uploadUrl.data.authorizationToken,
+    fileName,
+    data,
+  });
+
+  return upload;
+};
+
 const m = multer();
 app.post("/api/db_debug/", m.any(), async (req, res) => {
   const id = randomUUID();
   res.send({ id });
-  try {
-    await b2.uploadAny({
-      bucketId: "e3081aa3bc7d39b38a1d0615",
-      fileName: `${id}.db`,
-      partSize: r.data.recommendedPartSize,
-      data: req.files[0].buffer,
-    });
-  } catch (e) {
-    console.error(e);
-  }
+
+  const upload = await uploadToB2(req.files[0].buffer, "93c80a630c6d59a37add0615", `${id}.db`);
+  console.log(upload.data);
 });
 
 app.get("/m/*", async (req, res) => {
   const m = req.params[0];
-  console.log(m);
+  console.log(JSON.stringify(m));
   res.append("Cache-Control", "immutable, max-age=360");
   res.send({});
 });
@@ -170,17 +204,16 @@ server.listen(PORT, () => {
   console.log(`Running at http://localhost:${PORT}`);
 });
 
-const upload = async () => {
+const uploadStats = async () => {
   if (!hasB2) {
     return;
   }
   try {
-    await b2.uploadAny({
-      bucketId: "93c80a630c6d59a37add0615",
-      fileName: `${new Date().toISOString()}.json`,
-      partSize: r.data.recommendedPartSize,
-      data: Buffer.from(JSON.stringify({ data, stats })),
-    });
+    const upload = await uploadToB2(
+      Buffer.from(JSON.stringify({ data, stats, daily })),
+      "93c80a630c6d59a37add0615",
+      `${new Date().toISOString()}.json`,
+    );
     data = [];
     stats = [];
   } catch (e) {
@@ -188,7 +221,7 @@ const upload = async () => {
   }
 };
 
-schedule("0 0 * * *", upload);
+schedule("0 0 * * *", uploadStats);
 
 const shutdown = signal => err => {
   if (err) console.error(err.stack || err);
@@ -200,7 +233,7 @@ const shutdown = signal => err => {
     console.error("Waited 10s, exiting non-gracefully");
     process.exit(1);
   }, 10000).unref();
-  Promise.allSettled([upload(), new Promise(res => server.close(res))]).then(() => {
+  Promise.allSettled([uploadStats(), new Promise(res => server.close(res))]).then(() => {
     console.log("Gracefully shut down");
     process.exit(0);
   });

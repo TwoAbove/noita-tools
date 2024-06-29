@@ -5,6 +5,7 @@ import { useSearchParamsState } from "react-use-search-params-state";
 import Cookies from "js-cookie";
 
 import Donate from "./Donate";
+import { isDev, isLocal } from "./utils";
 
 import "./App.css";
 import { ThemeProvider } from "./ThemeContext";
@@ -97,15 +98,16 @@ const LazyProfile = () => {
 };
 
 const Header = () => {
-  const host = window.location.host;
-  // const isDevBranch = host.startsWith("dev.");
-  const isDevBranch = true;
+  const isDevBranch = isDev() || isLocal();
+
   return (
     <Container fluid="sm" className="mb-2 p-0 d-flex justify-content-between px-2">
       <div className="text-nowrap lh-1">
         <h3 className="fs-1 fw-bolder mb-0 text-center position-relative pb-2">
-          Noitool
-          {isDevBranch && <sub className="fs-6 fw mb-0 text-center text-danger">Beta</sub>}
+          <a href="/" className="text-decoration-none text-reset">
+            Noitool
+            {isDevBranch && <sub className="fs-6 fw mb-0 text-center text-danger">Beta</sub>}
+          </a>
           {isDevBranch && (
             <code
               className="fs-6 fw mb-0 position-absolute start-50 translate-middle-x"
@@ -113,7 +115,7 @@ const Header = () => {
                 bottom: "-0.25rem",
               }}
             >
-              Build Mar 27 2024
+              Build April 30 2024
             </code>
           )}
           {isDevBranch && <div />}
@@ -170,7 +172,7 @@ const Footer = () => {
     <footer className="footer font-small p-1 pt-3">
       <Stack>
         <div className="d-flex justify-content-center align-items-center text-center">
-          For a version of Noitool that follows <b>Noita beta</b>, check out&nbsp;
+          For a version of Noitool that follows&nbsp; <b>Noita beta</b>, check out&nbsp;
           <a href="https://dev.noitool.com/">dev.noitool.com</a>
         </div>
         <div className="d-flex justify-content-center align-items-center text-center">

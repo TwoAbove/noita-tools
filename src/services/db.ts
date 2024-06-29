@@ -136,7 +136,7 @@ export class NoitaDB extends Dexie {
           .toCollection()
           .modify(s => {
             if (typeof s.config === "string" || s.config instanceof String) {
-              return s;
+              return;
             }
             s.config = JSON.stringify(s.config, replacer);
           })

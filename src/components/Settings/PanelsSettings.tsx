@@ -31,7 +31,7 @@ const PanelsSettings = () => {
           <PanelToggle key="watercave" id="watercave" title="Water Cave" />
         </ListGroup.Item>
         <ListGroup.Item>
-          <PanelToggle key="excavationsite-cube" id="excavationsite-cube" title="Excavation Site Cube" />
+          <PanelToggle key="secret-wands" id="secret-wands" title="Secret Wands" />
         </ListGroup.Item>
         {/* <ListGroup.Item>
           <PanelToggle key="map" id="map" title="Map" />

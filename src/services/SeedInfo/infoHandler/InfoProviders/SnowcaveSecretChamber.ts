@@ -2,56 +2,39 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { IRule } from "../IRule";
-import { mapHandlerStub } from "../helpers";
 import { InfoProvider } from "./Base";
-import Snowcavesecretchamber from "./Map/impl/Snowcavesecretchamber";
+import { MapInfoProvider } from "./Map";
 import { WandInfoProvider } from "./Wand";
 
-/*
-Generated from printing the gen function from data/scripts/biomes/snowcave_secret_chamber.lua
-Math for wand position:
-cube chunk - x: 42, y: 36
-position in chunk - x: 350, y: 303
-*/
+const getWandArgs = (wand: string): [number, number, boolean] => {
+  switch (wand) {
+    case "data/entities/items/wand_level_03.xml":
+      return [60, 3, false];
+    case "data/entities/items/wand_unshuffle_02.xml":
+      return [40, 2, true];
+  }
+  return [0, 0, false];
+};
 
-const wandPositions = [
-  {
-    x: 42 * 512 + 333,
-    y: 36 * 512 + 297,
-  },
-  {
-    x: 42 * 512 + 439,
-    y: 36 * 512 + 324,
-  },
-];
-
-export class EyeChamberInfoProvider extends InfoProvider {
+export class SnowcaveSecretChamberProvider extends InfoProvider {
   wandInfoProvider: WandInfoProvider;
-  snowcavesecretchamber: Snowcavesecretchamber;
-  constructor(randoms, wandInfoProvider: WandInfoProvider) {
+  mapInfoProvider: MapInfoProvider;
+  constructor(randoms, mapInfoProvider: MapInfoProvider, wandInfoProvider: WandInfoProvider) {
     super(randoms);
+    this.mapInfoProvider = mapInfoProvider;
     this.wandInfoProvider = wandInfoProvider;
-    this.snowcavesecretchamber = new Snowcavesecretchamber(
-      randoms,
-      mapHandlerStub,
-      mapHandlerStub,
-      mapHandlerStub,
-      mapHandlerStub,
-    );
   }
 
-  provide(): ReturnType<WandInfoProvider["provide"]> {
-    this.snowcavesecretchamber.HandleInterest = (item, x, y) => {
-      console.log(item, x, y);
-    };
+  provide(seed: number) {
+    const points = this.mapInfoProvider.provide(42, 22, seed);
 
-    const [wand1, wand2] = wandPositions.map(pos => this.snowcavesecretchamber.spawn_wands(pos.x, pos.y));
+    const wandPoints = points.interestPoints.points!.filter(p => p.item.startsWith("data/entities/items/wand_"))!;
+    const wands = wandPoints.map(wandPoint => {
+      const wand = this.wandInfoProvider.provide(wandPoint.gx, wandPoint.gy, ...getWandArgs(wandPoint.item), false);
+      return wand;
+    });
 
-    return {} as any;
-    // const wand = this.wandInfoProvider.provide();
-    // wand.gun.cost = 0;
-
-    // return wand;
+    return wands;
   }
 
   test(rule: IRule): boolean {

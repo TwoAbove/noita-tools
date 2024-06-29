@@ -64,6 +64,21 @@ console-search args (or env vars):
 - `--exit` `NOITOOL_EXIT` default `false`. Add if you want the worker to exit if there are no more jobs.
 - `--minRunTime` `NOITOOL_MIN_RUN_TIME` default `0`. This minimum amount of time (in seconds) that the worker will run for. If there are no more jobs, it will exit after this time. A value of 0 means that this is disabled.
 
+#### Automating deployment of Noitool to several machines
+
+You can use the `deploy_to_servers.sh` script to deploy to several machines. You need to create `.servers` file with the following format:
+
+```csv
+user@server1,,main_user_id
+user@server2,dev_user_id,
+```
+
+This is a headerless csv file with the following columns: `ssh,main_user_id,dev_user_id`.
+
+Note the missing entry for the dev user id on server1 and the missing entry for the main user id on server2. That means that server 1 will connect to the main instance and server 2 will connect to the dev instance without both searchers competing for CPU time.
+
+Then run `./deploy_to_servers.sh` to deploy to all servers.
+
 ## Technical details and implementation details that I found interesting
 
 WASM is shaping up to be a very interesting technology. In our use-case, the communication overhead of JS <-> WASM is usually worth it,

@@ -15,6 +15,11 @@ import type { StartingFlaskInfoProvider } from "./InfoProviders/StartingFlask";
 import type { StartingSpellInfoProvider } from "./InfoProviders/StartingSpell";
 import type { AlwaysCastInfoProvider } from "./InfoProviders/AlwaysCast";
 import type { WaterCaveInfoProvider } from "./InfoProviders/WaterCave";
+import type { PowderStashInfoProvider } from "./InfoProviders/PowderStash";
+import type { PotionInfoProvider } from "./InfoProviders/Potion";
+import type { PotionSecretInfoProvider } from "./InfoProviders/PotionSecret";
+import type { PotionRandomMaterialInfoProvider } from "./InfoProviders/PotionRandomMaterial";
+import type { WandInfoProvider } from "./InfoProviders/Wand";
 
 // Chests
 import type { ChestRandomProvider } from "./InfoProviders/ChestRandom";
@@ -22,14 +27,11 @@ import type { PacifistChestProvider } from "./InfoProviders/PacifistChest";
 
 // Special biomes
 import type { ExcavationsiteCubeChamberInfoProvider } from "./InfoProviders/ExcavationsiteCubeChamber";
+import type { SnowcaveSecretChamberProvider } from "./InfoProviders/SnowcaveSecretChamber";
+import type { SnowcastleSecretChamberProvider } from "./InfoProviders/SnowcastleSecretChamber";
 
 import loadRandom, { IRandom } from "../random";
-import type { WandInfoProvider } from "./InfoProviders/Wand";
 import type { i18n } from "i18next";
-import type { PotionInfoProvider } from "./InfoProviders/Potion";
-import type { PotionSecretInfoProvider } from "./InfoProviders/PotionSecret";
-import type { PotionRandomMaterialInfoProvider } from "./InfoProviders/PotionRandomMaterial";
-import type { PowderStashInfoProvider } from "./InfoProviders/PowderStash";
 
 interface IProviders {
   alchemy: AlchemyInfoProvider;
@@ -60,6 +62,8 @@ interface IProviders {
   pacifistChest: PacifistChestProvider;
 
   excavationSiteCubeChamber: ExcavationsiteCubeChamberInfoProvider;
+  snowcaveSecretChamber: SnowcaveSecretChamberProvider;
+  snowcastleSecretChamber: SnowcastleSecretChamberProvider;
 
   [key: string]: InfoProvider;
 }
@@ -181,6 +185,8 @@ export class GameInfoProvider extends EventTarget {
       import("./InfoProviders/PacifistChest"),
       import("./InfoProviders/Shop"),
       import("./InfoProviders/ExcavationsiteCubeChamber"),
+      import("./InfoProviders/SnowcaveSecretChamber"),
+      import("./InfoProviders/SnowcastleSecretChamber"),
     ]);
 
     const [
@@ -209,6 +215,8 @@ export class GameInfoProvider extends EventTarget {
       pacifistChest,
       shop,
       excavationSiteCubeChamber,
+      snowcaveSecretChamber,
+      snowcastleSecretChamber,
     ] = imports;
 
     const providers: any = {};
@@ -258,7 +266,18 @@ export class GameInfoProvider extends EventTarget {
     if (excavationSiteCubeChamber && "value" in excavationSiteCubeChamber)
       providers.excavationSiteCubeChamber = new excavationSiteCubeChamber.value.ExcavationsiteCubeChamberInfoProvider(
         this.randoms,
+        providers.map,
         providers.wand,
+      );
+    if (snowcaveSecretChamber && "value" in snowcaveSecretChamber)
+      providers.snowcaveSecretChamber = new snowcaveSecretChamber.value.SnowcaveSecretChamberProvider(
+        this.randoms,
+        providers.map,
+        providers.wand,
+      );
+    if (snowcastleSecretChamber && "value" in snowcastleSecretChamber)
+      providers.snowcastleSecretChamber = new snowcastleSecretChamber.value.SnowcastleSecretChamberProvider(
+        this.randoms,
         providers.map,
       );
 

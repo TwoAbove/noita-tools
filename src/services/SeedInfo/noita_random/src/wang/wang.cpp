@@ -866,16 +866,16 @@ public:
       const std::map<unsigned long, unsigned long> &colorToMaterialTable = *reinterpret_cast<std::map<unsigned long, unsigned long> *>(_colorToMaterialTable);
 
       // Check that the image won't go out of bounds
-      if (px + img.width > width * 10 || py + img.height > height * 10)
-      {
-         // printf("drawImageData out of bounds %i %i %i %i\n", px, py, img.width, img.height);
-         return;
-      }
-      if (px < 0 || py < 0)
-      {
-         // printf("drawImageData out of bounds %i %i %i %i\n", px, py, img.width, img.height);
-         return;
-      }
+      // if (px + img.width > width * 10 || py + img.height > height * 10)
+      // {
+      //    printf("drawImageData out of bounds %i %i %i %i\n", px, py, img.width, img.height);
+      //    return;
+      // }
+      // if (px < 0 || py < 0)
+      // {
+      //    printf("drawImageData out of bounds %i %i %i %i\n", px, py, img.width, img.height);
+      //    return;
+      // }
 
       for (int y = 0; y < img.height; y++)
       {

@@ -46,6 +46,30 @@ describe("PerkInfoProvider", () => {
           ["GLASS_CANNON", "REVENGE_TENTACLE", "HOMUNCULUS", "ELECTRICITY"],
         ],
       },
+      {
+        seed: 806,
+        params: {
+          maxLevels: 2,
+          perk_picks: new Map([[0, [[]]]]),
+          worldOffset: 0,
+        },
+        ans: [
+          ["BLEED_GAS", "PROTECTION_ELECTRICITY", "VAMPIRISM"],
+          ["BLEED_OIL", "EXTRA_PERK", "PROTECTION_RADIOACTIVITY"],
+        ],
+      },
+      {
+        seed: 806,
+        params: {
+          maxLevels: 2,
+          perk_picks: new Map([[0, [["BLEED_GAS"]]]]),
+          worldOffset: 0,
+        },
+        ans: [
+          ["BLEED_GAS", "PROTECTION_ELECTRICITY", "VAMPIRISM"],
+          ["BLEED_OIL", "EXTRA_PERK", "TELEPORTITIS"],
+        ],
+      },
     ];
     tests.forEach((t, i) => {
       it(`Should generate correct output #${i}`, async () => {
@@ -103,6 +127,46 @@ describe("PerkInfoProvider", () => {
           worldOffset: 0,
         },
       },
+      {
+        seed: 806,
+        params: {
+          state: [
+            { type: IPerkChangeStateType.genRow, data: 0 },
+            { type: IPerkChangeStateType.genRow, data: 1 },
+          ],
+        },
+        ans: {
+          lotteries: 0,
+          perkRerolls: [],
+          perks: [
+            ["BLEED_GAS", "PROTECTION_ELECTRICITY", "VAMPIRISM"],
+            ["BLEED_OIL", "EXTRA_PERK", "PROTECTION_RADIOACTIVITY"],
+          ],
+          pickedPerks: [],
+          worldOffset: 0,
+        },
+      },
+      {
+        seed: 806,
+        params: {
+          state: [
+            { type: IPerkChangeStateType.genRow, data: 0 },
+            { type: IPerkChangeStateType.select, data: { row: 0, pos: 0 } },
+            { type: IPerkChangeStateType.genRow, data: 1 },
+          ],
+        },
+        ans: {
+          lotteries: 0,
+          perkRerolls: [],
+          perks: [
+            ["BLEED_GAS", "PROTECTION_ELECTRICITY", "VAMPIRISM"],
+            ["BLEED_OIL", "EXTRA_PERK", "TELEPORTITIS"],
+          ],
+          pickedPerks: [["BLEED_GAS"]],
+          worldOffset: 0,
+        },
+      },
+
       // TODO: This should be better tested
     ];
     tests.forEach((t, i) => {

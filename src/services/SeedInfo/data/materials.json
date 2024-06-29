@@ -1946,6 +1946,7 @@
     "color": "f7f3eeff",
     "name": "orb_powder",
     "hp": "1000",
+    "tags": ["NO_FUNGAL_SHIFT"],
     "burnable": "1",
     "density": "7",
     "ui_name": "$mat_orb_powder",
@@ -1978,6 +1979,13 @@
     "density": "6",
     "ui_name": "$mat_plastic_red"
   },
+  "plastic_grey": {
+    "wang_color": "ff707271",
+    "color": "707271ff",
+    "name": "plastic_grey",
+    "tags": ["corrodible", "meltable", "alchemy"],
+    "ui_name": "$mat_plastic_red"
+  },
   "plastic_red_molten": {
     "wang_color": "ff9000ab",
     "color": "9000abff",
@@ -1986,6 +1994,13 @@
     "tags": ["liquid", "corrodible", "molten", "meltable_to_lava", "alchemy", "liquid_common"],
     "burnable": "0",
     "density": "5.1",
+    "ui_name": "$mat_plastic_red_molten"
+  },
+  "plastic_grey_molten": {
+    "wang_color": "ff707273",
+    "color": "707273ff",
+    "name": "plastic_grey_molten",
+    "tags": ["liquid", "corrodible", "molten", "meltable_to_lava", "alchemy", "liquid_common"],
     "ui_name": "$mat_plastic_red_molten"
   },
   "grass": {
@@ -2672,7 +2687,7 @@
     "color": "3b5d3bff",
     "name": "plastic",
     "hp": "4000",
-    "tags": ["box2d", "corrodible", "meltable", "alchemy", "solid", "earth"],
+    "tags": ["box2d", "corrodible", "meltable_plastic", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_plastic",
@@ -5777,7 +5792,7 @@
     "color": "3b6d4bff",
     "name": "plastic_prop",
     "hp": "4000",
-    "tags": ["box2d", "corrodible", "meltable", "alchemy", "solid", "earth"],
+    "tags": ["box2d", "corrodible", "meltable_plastic", "alchemy", "solid", "earth"],
     "burnable": "0",
     "density": "8",
     "ui_name": "$mat_plastic",
