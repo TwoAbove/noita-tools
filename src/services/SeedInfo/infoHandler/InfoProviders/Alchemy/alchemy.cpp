@@ -12,7 +12,7 @@ public:
       "magic_liquid_faster_levitation", "magic_liquid_faster_levitation_and_movement", "magic_liquid_invisibility",
       "magic_liquid_mana_regeneration", "magic_liquid_movement_faster", "magic_liquid_protection_all",
       "magic_liquid_teleportation", "magic_liquid_unstable_polymorph", "magic_liquid_unstable_teleportation",
-      "magic_liquid_worm_attractor", "confusion", "mud",
+      "magic_liquid_worm_attractor", "material_confusion", "mud",
       "oil", "poison", "radioactive_liquid",
       "swamp", "urine", "water",
       "water_ice", "water_swamp", "magic_liquid_random_polymorph"};
