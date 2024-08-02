@@ -65,7 +65,7 @@ export const createGameInfoProvider = async (
   return gameInfoProvider;
 };
 
-export const GameInfoContext = createContext<GameInfoContextType | null>(null);
+export const GameInfoContext = createContext<GameInfoContextType>(null!);
 
 export const useGameInfoProvider = (
   seed: string,
