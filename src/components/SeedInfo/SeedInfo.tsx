@@ -21,26 +21,18 @@ import ExcavationsiteCubeChamber from "./SeedInfoViews/ExcavationsiteCubeChamber
 import SnowcaveSecretChamber from "./SeedInfoViews/SnowcaveSecretChamber";
 import SnowcastleSecretChamber from "./SeedInfoViews/SnowcastleSecretChamber";
 
-const WithShow = (props: { id: string; children: React.ReactNode }): JSX.Element => {
-  const config = useLiveQuery(() => db.configItems.get({ key: `panel-${props.id}-config` }));
+const WithShow = ({ id, children }) => {
+  const config = useLiveQuery(() => db.configItems.get({ key: `panel-${id}-config` }));
   const hasConfig = !!config;
 
   if (hasConfig && !config.val) {
     return <div></div>;
   }
 
-  return <div>{props.children}</div>;
+  return <div>{children}</div>;
 };
 
-interface ISeedInfoProps {
-  seed: string;
-  data: Awaited<ReturnType<GameInfoProvider["provideAll"]>>;
-  infoProvider: GameInfoProvider; // This should be a context in the future
-  isDaily: boolean;
-}
-
-const SeedInfo = (props: ISeedInfoProps) => {
-  const { data, infoProvider, seed, isDaily } = props;
+const SeedInfo = ({ data, infoProvider, seed, isDaily }) => {
   const searchParams = new URLSearchParams(document.location.search);
   const showMap = !!searchParams.get("map");
 

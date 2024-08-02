@@ -1,6 +1,6 @@
 {
   "name": "noitool",
-  "version": "2.32.0",
+  "version": "2.32.1",
   "private": true,
   "type": "module",
   "homepage": "https://www.noitool.com/",
@@ -86,6 +86,7 @@
     "lua2js": "^0.0.11",
     "luaparse": "^0.3.1",
     "nodemon": "^3.1.1",
+    "p-limit": "^5.0.0",
     "pixelmatch": "^5.3.0",
     "prettier": "^3.2.5",
     "react": "^18.3.1",

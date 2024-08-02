@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState, useCallback } from "react";
 import { Stack } from "react-bootstrap";
 
 import type { GameInfoProvider } from "../../services/SeedInfo/infoHandler";
@@ -7,134 +7,112 @@ import SeedInfo from "./SeedInfo";
 import i18n from "../../i18n";
 import { db } from "../../services/db";
 import useLocalStorage from "../../services/useLocalStorage";
-import { NOITA_SPELL_COUNT } from "../../static.ts";
+import { NOITA_SPELL_COUNT } from "../../static";
 
 interface ISeedDataProps {
   isDaily?: boolean;
   seed: string;
 }
 
-const waitToLoad = (gameInfoProvider?: GameInfoProvider): Promise<void> =>
-  new Promise(async res => {
-    if (!gameInfoProvider) {
-      return res();
-    }
-    await gameInfoProvider.ready();
-    return res();
-  });
+interface GameInfoContextType {
+  gameInfoProvider: GameInfoProvider;
+  data: Awaited<ReturnType<GameInfoProvider["provideAll"]>>;
+}
 
-const importMain = async () => {
-  const GameInfoProvider = (await import("../../services/SeedInfo/infoHandler/index.ts")).default;
-  return GameInfoProvider;
+const waitToLoad = async (gameInfoProvider?: GameInfoProvider): Promise<void> => {
+  if (gameInfoProvider) {
+    await gameInfoProvider.ready();
+  }
 };
 
-// Maybe something like this in the future?
-// const importBeta = async () => {
-//   const GameInfoProvider = (await import("../../services/SeedInfo/infoHandlerBeta/index.ts")).default;
-//   return GameInfoProvider;
-// };
+const importGameInfoProvider = async (branch: string) => {
+  // TODO: handle beta branch
+  return (await import("../../services/SeedInfo/infoHandler/index.ts")).default;
+};
 
-export const createGameInfoProvider = async (branch, seed: string, unlockedSpells: boolean[], setData) => {
-  const GameInfoProvider = await importMain(); // TODO: handle beta
+export const createGameInfoProvider = async (
+  branch: string,
+  seed: string,
+  unlockedSpells: boolean[],
+  setData: (data: Awaited<ReturnType<GameInfoProvider["provideAll"]>>) => void,
+): Promise<GameInfoProvider> => {
+  const GameInfoProvider = await importGameInfoProvider(branch);
   const gameInfoProvider = new GameInfoProvider({ seed: parseInt(seed, 10) }, unlockedSpells, i18n);
-  gameInfoProvider
-    .onRandomLoad(() => {
-      gameInfoProvider.randoms.SetWorldSeed(parseInt(seed, 10));
-      gameInfoProvider.randoms.SetUnlockedSpells(unlockedSpells);
-      gameInfoProvider
-        .provideAll()
-        .then(data => {
-          setData(data);
-        })
-        .catch(() => {
-          // handle this?
-        });
-      gameInfoProvider.addEventListener("update", async event => {
-        // Save config for resetting
-        const config = gameInfoProvider.config;
-        await db.setSeedInfo("" + config.seed, config);
-        await gameInfoProvider.provideAll().then(data => {
-          setData(data);
-        });
-      });
-      gameInfoProvider.addEventListener("reset", event => {
-        gameInfoProvider
-          .provideAll()
-          .then(data => {
-            setData(data);
-          })
-          .catch(e => {
-            console.error(e);
-          });
-      });
-    })
-    .catch(e => {
-      console.error(e);
+
+  const handleProvideAll = async () => {
+    try {
+      const data = await gameInfoProvider.provideAll();
+      setData(data);
+    } catch (error) {
+      console.error("Error providing data:", error);
+    }
+  };
+
+  gameInfoProvider.onRandomLoad(() => {
+    gameInfoProvider.randoms.SetWorldSeed(parseInt(seed, 10));
+    gameInfoProvider.randoms.SetUnlockedSpells(unlockedSpells);
+    handleProvideAll();
+
+    gameInfoProvider.addEventListener("update", async () => {
+      const config = gameInfoProvider.config;
+      await db.setSeedInfo("" + config.seed, config);
+      await handleProvideAll();
     });
+
+    gameInfoProvider.addEventListener("reset", handleProvideAll);
+  });
+
   return gameInfoProvider;
 };
 
-export const GameInfoContext = createContext<{
-  gameInfoProvider: GameInfoProvider;
-  data: Awaited<ReturnType<GameInfoProvider["provideAll"]>>;
-}>({} as any);
-// This is a hacky way to get around the default value
-// We always set the value in the provider so this should never be used
-// TODO: find a better way to handle this
+export const GameInfoContext = createContext<GameInfoContextType>(null!);
 
 export const useGameInfoProvider = (
   seed: string,
-): [GameInfoProvider?, Awaited<ReturnType<GameInfoProvider["provideAll"]>>?] => {
+): [GameInfoProvider | undefined, Awaited<ReturnType<GameInfoProvider["provideAll"]>> | undefined] => {
   const [data, setData] = useState<Awaited<ReturnType<GameInfoProvider["provideAll"]>>>();
   const [unlockedSpells] = useLocalStorage<boolean[]>("unlocked-spells", Array(NOITA_SPELL_COUNT).fill(true));
   const [branch] = useLocalStorage<string>("noita-branch", "main");
+  const [gameInfoProvider, setGameInfoProvider] = useState<GameInfoProvider>();
 
-  const [gameInfoProvider, setGameInfoProvider] = useState<GameInfoProvider | undefined>();
+  const initializeGameInfoProvider = useCallback(async () => {
+    setData(undefined);
+    setGameInfoProvider(undefined);
+    const config = await db.getSeedInfo(seed);
+    const newGameInfoProvider = await createGameInfoProvider(branch, seed, unlockedSpells, setData);
+
+    await waitToLoad(newGameInfoProvider);
+
+    newGameInfoProvider.resetConfig({
+      ...config?.config,
+      seed: parseInt(seed, 10),
+    });
+    setGameInfoProvider(newGameInfoProvider);
+  }, [seed, unlockedSpells, branch]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async () => {
-      setData(undefined);
-      setGameInfoProvider(undefined);
-      const config = await db.getSeedInfo(seed);
-      const newGameInfoProvider = await createGameInfoProvider(branch, seed, unlockedSpells, setData);
-      waitToLoad(newGameInfoProvider)
-        .then(() => {
-          newGameInfoProvider.resetConfig({
-            ...config?.config,
-            seed: parseInt(seed, 10),
-          });
-          setGameInfoProvider(newGameInfoProvider);
-        })
-        .catch(() => {
-          // handle this?
-        });
-    })();
-  }, [seed, unlockedSpells]);
+    initializeGameInfoProvider();
+  }, [initializeGameInfoProvider]);
 
   return [gameInfoProvider, data];
 };
 
-const SeedDataOutput = (props: ISeedDataProps) => {
-  const { seed, isDaily } = props;
+const SeedDataOutput: React.FC<ISeedDataProps> = ({ seed, isDaily = false }) => {
   const [gameInfoProvider, data] = useGameInfoProvider(seed);
+
+  if (!gameInfoProvider || !data) {
+    return <p>Loading</p>;
+  }
+
   return (
-    <>
-      {gameInfoProvider && data ? (
-        <GameInfoContext.Provider value={{ gameInfoProvider, data }}>
-          <Stack className="seed-info">
-            {data && (
-              <p className="my-2">
-                Seed: {seed} {isDaily && ` (Daily)`}
-              </p>
-            )}
-            {data && <SeedInfo isDaily={isDaily || false} seed={seed} infoProvider={gameInfoProvider} data={data} />}
-          </Stack>
-        </GameInfoContext.Provider>
-      ) : (
-        <p>Loading</p>
-      )}
-    </>
+    <GameInfoContext.Provider value={{ gameInfoProvider, data }}>
+      <Stack className="seed-info">
+        <p className="my-2">
+          Seed: {seed} {isDaily && ` (Daily)`}
+        </p>
+        <SeedInfo isDaily={isDaily} seed={seed} infoProvider={gameInfoProvider} data={data} />
+      </Stack>
+    </GameInfoContext.Provider>
   );
 };
 

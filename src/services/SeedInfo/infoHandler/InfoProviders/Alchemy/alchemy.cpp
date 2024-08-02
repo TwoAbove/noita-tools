@@ -13,16 +13,16 @@ public:
       "magic_liquid_mana_regeneration", "magic_liquid_movement_faster", "magic_liquid_protection_all",
       "magic_liquid_teleportation", "magic_liquid_unstable_polymorph", "magic_liquid_unstable_teleportation",
       "magic_liquid_worm_attractor", "material_confusion", "mud",
-      "oil", "poison", "radioactive_liquid_yellow",
+      "oil", "poison", "radioactive_liquid",
       "swamp", "urine", "water",
       "water_ice", "water_swamp", "magic_liquid_random_polymorph"};
 
   vector<string> ALCHEMY = {
-      "bone_box2d", "brass", "coal",
+      "bone", "brass", "coal",
       "copper", "diamond", "fungi",
       "gold", "grass", "gunpowder",
-      "gunpowder_explosive", "rotten_meat", "sand_petrify",
-      "silver", "slime", "snow_b2",
+      "gunpowder_explosive", "rotten_meat", "sand",
+      "silver", "slime", "snow",
       "soil", "wax", "honey"};
 
   NollaPrng *PRNG;
