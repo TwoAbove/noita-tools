@@ -25,7 +25,7 @@ import { IRule, ILogicRules, RuleType } from "../../services/SeedInfo/infoHandle
 import SeedDataOutput from "../SeedInfo/SeedDataOutput";
 import { getTreeTools } from "./node";
 import classNames from "classnames";
-import SearchContextProvider, { SearchContext } from "./SearchContext";
+import SearchContextProvider, { useSearchContext } from "./SearchContext";
 import RuleConstructor, { RuleConstructors } from "./RuleConstructor";
 import { useLiveQuery } from "dexie-react-hooks";
 import { SearchesItem, db, deleteSearch, getExportableSearch, newSearch } from "../../services/db";
@@ -45,7 +45,7 @@ interface IRuleProps extends IIDRule {
 }
 const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable, titleProps, highlight }) => {
   const rc = RuleConstructors[type] || {};
-  const { ruleDispatch, ruleTree } = useContext(SearchContext);
+  const { ruleDispatch, ruleTree } = useSearchContext();
   const [collected, drag, dragPreview] = useDrag(
     () => ({
       type: "rule",
@@ -88,7 +88,7 @@ interface ILogicRuleProps extends ILogicRules {
   draggable?: boolean;
 }
 const LogicRule: FC<ILogicRuleProps> = ({ type, id, rules, deletable, draggable }) => {
-  const { ruleDispatch } = useContext(SearchContext);
+  const { ruleDispatch } = useSearchContext();
   const handleDelete = () => {
     ruleDispatch({ action: "delete", data: id });
   };
@@ -443,7 +443,7 @@ interface ISearchSelectProps {
   onClose: () => any;
 }
 const SearchSelect: FC<ISearchSelectProps> = ({ open, onClose }) => {
-  const { currentSearchUUID, handleImportSearch } = useContext(SearchContext);
+  const { currentSearchUUID, handleImportSearch } = useSearchContext();
   const query = useLiveQuery(() => db.searches.toArray());
   const searches = query ? query : [];
 
@@ -539,7 +539,7 @@ const Logic: FC<ILogicProps> = ({ onLogic }) => {
 // I think DND should be replaced with https://github.com/atlassian/react-beautiful-dnd
 interface IRuleListProps {}
 const RuleList: FC<IRuleListProps> = () => {
-  const { ruleTree, computeJobName, ruleDispatch, uuid } = useContext(SearchContext);
+  const { ruleTree, computeJobName, ruleDispatch, uuid } = useSearchContext();
 
   return (
     <DndProvider

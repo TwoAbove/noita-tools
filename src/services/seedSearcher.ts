@@ -239,7 +239,8 @@ export class SeedSearcher {
     if (config.unlockedSpells) {
       this.gameInfoProvider.unlockedSpells = config.unlockedSpells;
       await this.gameInfoProvider
-        .onRandomLoad(() => {
+        .ready()
+        .then(() => {
           this.gameInfoProvider.randoms.SetUnlockedSpells(config.unlockedSpells!);
         })
         .catch(e => {

@@ -15,7 +15,7 @@ import humanize from "humanize-duration";
 
 import { localizeNumber } from "../../../../services/helpers";
 import SeedDataOutput from "../../../SeedInfo/SeedDataOutput";
-import { SearchContext } from "../../SearchContext";
+import { useSearchContext } from "../../SearchContext";
 import UseMultithreadingButton from "../../UseMultithreading";
 import { Status } from "../../../../services/compute/ChunkProvider";
 import useLocalStorage from "../../../../services/useLocalStorage";
@@ -49,7 +49,6 @@ const Description = () => {
 const Search = () => {
   // TODO: Spilt Search Context into something more manageable
   const {
-    seedSolver,
     solverStatus,
     solverReady,
     chunkProvider,
@@ -60,10 +59,9 @@ const Search = () => {
     stopCalculation,
     computeJobName,
     handleComputeJobNameChange,
-    handleSeedStartChange,
     handleSeedEndChange,
     handleCustomSeedListChange,
-    setFindAll,
+    updateSearchConfig,
     findAll,
     running,
     seed,
@@ -73,7 +71,7 @@ const Search = () => {
     totalSeeds,
     percentChecked,
     seedsPerSecond,
-  } = useContext(SearchContext);
+  } = useSearchContext();
 
   const [clearClicked, setClearClicked] = React.useState(false);
 
@@ -112,7 +110,7 @@ const Search = () => {
                     id="SearchSeeds.name"
                     disabled={running || !solverReady}
                     value={computeJobName}
-                    onChange={handleComputeJobNameChange}
+                    onChange={e => handleComputeJobNameChange(e.target.value)}
                   />
                 </Form.Group>
               </Col>
@@ -124,7 +122,7 @@ const Search = () => {
                     type="number"
                     disabled={running || !solverReady}
                     value={seed}
-                    onChange={handleSeedStartChange}
+                    onChange={e => updateSearchConfig({ from: parseInt(e.target.value, 10) })}
                   />
                 </Form.Group>
               </Col>
@@ -137,7 +135,7 @@ const Search = () => {
                     placeholder="Optional"
                     disabled={running || !solverReady}
                     value={seedEnd}
-                    onChange={handleSeedEndChange}
+                    onChange={e => handleSeedEndChange(parseInt(e.target.value, 10))}
                   />
                 </Form.Group>
               </Col>
@@ -152,7 +150,7 @@ const Search = () => {
                     placeholder="Optional"
                     disabled={running || !solverReady}
                     value={customSeedList}
-                    onChange={handleCustomSeedListChange}
+                    onChange={e => handleCustomSeedListChange(e)}
                   />
                   {customSeedList && (
                     <Form.Text className="text-muted">{chunkProvider.customSeeds?.length} seeds left</Form.Text>
@@ -164,9 +162,7 @@ const Search = () => {
                   <Form.Check
                     checked={findAll}
                     disabled={!solverReady}
-                    onChange={e => {
-                      setFindAll(e.target.checked);
-                    }}
+                    onChange={e => updateSearchConfig({ findAll: e.target.checked })}
                     id={`find-all-switch`}
                     label="Don't stop searching when a seed is found"
                   />

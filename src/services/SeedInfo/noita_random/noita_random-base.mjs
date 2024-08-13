@@ -34,27 +34,23 @@ var create_noita_random = (() => {
       }
       return scriptDirectory + path;
     }
-    var read_, readAsync, readBinary;
+    var readAsync, readBinary;
     if (ENVIRONMENT_IS_NODE) {
       var fs = require("fs");
       var nodePath = require("path");
       scriptDirectory = require("url").fileURLToPath(new URL("./", import.meta.url));
-      read_ = (filename, binary) => {
-        filename = isFileURI(filename) ? new URL(filename) : nodePath.normalize(filename);
-        return fs.readFileSync(filename, binary ? undefined : "utf8");
-      };
       readBinary = filename => {
-        var ret = read_(filename, true);
-        if (!ret.buffer) {
-          ret = new Uint8Array(ret);
-        }
+        filename = isFileURI(filename) ? new URL(filename) : nodePath.normalize(filename);
+        var ret = fs.readFileSync(filename);
         return ret;
       };
-      readAsync = (filename, onload, onerror, binary = true) => {
+      readAsync = (filename, binary = true) => {
         filename = isFileURI(filename) ? new URL(filename) : nodePath.normalize(filename);
-        fs.readFile(filename, binary ? undefined : "utf8", (err, data) => {
-          if (err) onerror(err);
-          else onload(binary ? data.buffer : data);
+        return new Promise((resolve, reject) => {
+          fs.readFile(filename, binary ? undefined : "utf8", (err, data) => {
+            if (err) reject(err);
+            else resolve(binary ? data.buffer : data);
+          });
         });
       };
       if (!Module["thisProgram"] && process.argv.length > 1) {
@@ -80,12 +76,6 @@ var create_noita_random = (() => {
         scriptDirectory = scriptDirectory.substr(0, scriptDirectory.replace(/[?#].*/, "").lastIndexOf("/") + 1);
       }
       {
-        read_ = url => {
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", url, false);
-          xhr.send(null);
-          return xhr.responseText;
-        };
         if (ENVIRONMENT_IS_WORKER) {
           readBinary = url => {
             var xhr = new XMLHttpRequest();
@@ -95,16 +85,13 @@ var create_noita_random = (() => {
             return new Uint8Array(xhr.response);
           };
         }
-        readAsync = (url, onload, onerror) => {
-          fetch(url, { credentials: "same-origin" })
-            .then(response => {
-              if (response.ok) {
-                return response.arrayBuffer();
-              }
-              return Promise.reject(new Error(response.status + " : " + response.url));
-            })
-            .then(onload, onerror);
-        };
+        readAsync = url =>
+          fetch(url, { credentials: "same-origin" }).then(response => {
+            if (response.ok) {
+              return response.arrayBuffer();
+            }
+            return Promise.reject(new Error(response.status + " : " + response.url));
+          });
       }
     } else {
     }
@@ -225,19 +212,10 @@ var create_noita_random = (() => {
     }
     function getBinaryPromise(binaryFile) {
       if (!wasmBinary) {
-        return new Promise((resolve, reject) => {
-          readAsync(
-            binaryFile,
-            response => resolve(new Uint8Array(response)),
-            error => {
-              try {
-                resolve(getBinarySync(binaryFile));
-              } catch (e) {
-                reject(e);
-              }
-            },
-          );
-        });
+        return readAsync(binaryFile).then(
+          response => new Uint8Array(response),
+          () => getBinarySync(binaryFile),
+        );
       }
       return Promise.resolve().then(() => getBinarySync(binaryFile));
     }
@@ -277,7 +255,7 @@ var create_noita_random = (() => {
         wasmExports = instance.exports;
         wasmMemory = wasmExports["A"];
         updateMemoryViews();
-        wasmTable = wasmExports["G"];
+        wasmTable = wasmExports["E"];
         addOnInit(wasmExports["B"]);
         removeRunDependency("wasm-instantiate");
         return wasmExports;
@@ -306,7 +284,7 @@ var create_noita_random = (() => {
     var noExitRuntime = Module["noExitRuntime"] || true;
     var stackRestore = val => __emscripten_stack_restore(val);
     var stackSave = () => _emscripten_stack_get_current();
-    var UTF8Decoder = typeof TextDecoder != "undefined" ? new TextDecoder("utf8") : undefined;
+    var UTF8Decoder = typeof TextDecoder != "undefined" ? new TextDecoder() : undefined;
     var UTF8ArrayToString = (heapOrArray, idx, maxBytesToRead) => {
       var endIdx = idx + maxBytesToRead;
       var endPtr = idx;
@@ -2208,9 +2186,9 @@ var create_noita_random = (() => {
     var ___wasm_call_ctors = () => (___wasm_call_ctors = wasmExports["B"])();
     var ___getTypeName = a0 => (___getTypeName = wasmExports["C"])(a0);
     var _free = (Module["_free"] = a0 => (_free = Module["_free"] = wasmExports["D"])(a0));
-    var _malloc = (Module["_malloc"] = a0 => (_malloc = Module["_malloc"] = wasmExports["E"])(a0));
+    var _malloc = (Module["_malloc"] = a0 => (_malloc = Module["_malloc"] = wasmExports["F"])(a0));
     var _generate_path_map = (Module["_generate_path_map"] = (a0, a1, a2, a3, a4, a5) =>
-      (_generate_path_map = Module["_generate_path_map"] = wasmExports["F"])(a0, a1, a2, a3, a4, a5));
+      (_generate_path_map = Module["_generate_path_map"] = wasmExports["G"])(a0, a1, a2, a3, a4, a5));
     var __emscripten_stack_restore = a0 => (__emscripten_stack_restore = wasmExports["H"])(a0);
     var __emscripten_stack_alloc = a0 => (__emscripten_stack_alloc = wasmExports["I"])(a0);
     var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmExports["J"])();
@@ -2238,7 +2216,7 @@ var create_noita_random = (() => {
         if (ABORT) return;
         initRuntime();
         readyPromiseResolve(Module);
-        if (Module["onRuntimeInitialized"]) Module["onRuntimeInitialized"]();
+        Module["onRuntimeInitialized"]?.();
         postRun();
       }
       if (Module["setStatus"]) {

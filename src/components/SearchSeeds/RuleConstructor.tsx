@@ -13,7 +13,7 @@ import MapSearch from "./SearchViews/Map";
 import Search from "./SearchViews/Search";
 import { FC, useContext } from "react";
 import { Container } from "react-bootstrap";
-import { SearchContext } from "./SearchContext";
+import { useSearchContext } from "./SearchContext";
 import { getTreeTools } from "./node";
 import PacifistChest from "./SearchViews/PacifistChest";
 
@@ -151,7 +151,7 @@ type IRuleConstructor = (typeof RuleConstructors)[keyof typeof RuleConstructors]
 
 interface IRuleConstructorProps {}
 const RuleConstructor: FC<IRuleConstructorProps> = () => {
-  const { ruleTree, ruleDispatch } = useContext(SearchContext);
+  const { ruleTree, query, ruleDispatch } = useSearchContext();
   const rule = treeTools.getById(ruleTree, ruleTree.selectedRule);
   if (!rule) {
     return <></>;

@@ -56,8 +56,8 @@ export interface FavoriteItem {
 
 export interface SearchesItemConfig {
   name?: string;
-  from?: number;
-  to?: number;
+  from: number;
+  to: number;
   findAll?: boolean;
   rules: string;
 }
@@ -155,6 +155,8 @@ export class NoitaDB extends Dexie {
           uuid,
           config: {
             name: "",
+            from: 1,
+            to: Math.pow(2, 31),
             rules: btoa(
               JSON.stringify({
                 id: "root",
@@ -184,6 +186,29 @@ export class NoitaDB extends Dexie {
           .where("key")
           .equals("unlocked-spells")
           .modify({ val: Array(NOITA_SPELL_COUNT).fill(true) })
+          .catch(e => {
+            console.error(e);
+          });
+      });
+
+    // add to and from to all searches in the search table
+    this.version(10)
+      .stores({
+        searches: "++id, &uuid, config, createdAt, updatedAt",
+      })
+      .upgrade(async t => {
+        await ((t as any).db.searches as NoitaDB["searches"])
+          .toCollection()
+          .modify(s => {
+            s.config = {
+              // Not true before version 10
+              // @ts-ignore
+              from: 1,
+              // @ts-ignore
+              to: Math.pow(2, 31),
+              ...s.config,
+            };
+          })
           .catch(e => {
             console.error(e);
           });
@@ -309,31 +334,6 @@ async function populate() {
       val: true,
     },
   ]);
-
-  const uuid = randomUUID();
-
-  const initialSearch = await db.searches.add({
-    uuid,
-    config: {
-      name: "",
-      rules: btoa(
-        JSON.stringify({
-          id: "root",
-          type: RuleType.AND,
-          rules: [],
-          selectedRule: "search",
-        }),
-      ),
-    },
-    madeUsingVersion: APP_VERSION,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
-
-  await db.configItems.add({
-    key: "search-current-search-uuid",
-    val: uuid,
-  });
 }
 
 db.on("populate", populate);
@@ -353,6 +353,8 @@ export async function newSearch(): Promise<string> {
     uuid,
     config: {
       name: "",
+      from: 1,
+      to: Math.pow(2, 31),
       rules: btoa(
         JSON.stringify({
           id: "root",

@@ -113,23 +113,7 @@ export class GameInfoProvider extends EventTarget {
 
   async ready() {
     await this.loadPromise;
-    return Promise.allSettled(
-      Object.entries(this.providers).map(([k, p]) =>
-        p.ready().catch(e => {
-          console.error(k, e);
-        }),
-      ),
-    );
-  }
-
-  onRandomLoad(cb?) {
-    return new Promise<void>(async res => {
-      await this.ready();
-      if (cb) {
-        await cb();
-      }
-      res();
-    });
+    await Promise.all(Object.values(this.providers).map(p => p.ready()));
   }
 
   resetConfig(initialConfig: Partial<IProviderConfig>) {
@@ -159,6 +143,7 @@ export class GameInfoProvider extends EventTarget {
   }
 
   async buildInfoProviders(): Promise<IProviders> {
+    // We have to import like this so that vite can bundle them
     const imports = await Promise.allSettled([
       import("./InfoProviders/Alchemy"),
       import("./InfoProviders/AlwaysCast"),
