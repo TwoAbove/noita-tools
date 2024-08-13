@@ -58,7 +58,6 @@ const Search = () => {
     startCalculation,
     stopCalculation,
     computeJobName,
-    handleSeedEndChange,
     handleCustomSeedListChange,
     updateSearchConfig,
     findAll,
@@ -134,7 +133,7 @@ const Search = () => {
                     placeholder="Optional"
                     disabled={running || !solverReady}
                     value={seedEnd}
-                    onChange={e => handleSeedEndChange(parseInt(e.target.value, 10))}
+                    onChange={e => updateSearchConfig({ to: parseInt(e.target.value, 10) })}
                   />
                 </Form.Group>
               </Col>
