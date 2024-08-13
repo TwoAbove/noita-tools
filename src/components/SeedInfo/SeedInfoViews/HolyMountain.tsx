@@ -395,7 +395,7 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
           {!advanced && <span> Next: {localizeNumber(price)}</span>}
           <span> Total: {localizeNumber(total)}</span>
           {/* 50% per stack (multiplicative), rounded down to nearest int */}
-          <span>Lottery chance: {Math.round(Math.pow(0.5, lotteries) * 100)}%</span>
+          <span>Lottery chance: {Math.floor(Math.pow(0.5, lotteries) * 100)}%</span>
         </div>
         <div className="ms-auto" />
         <Button
