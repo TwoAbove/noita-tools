@@ -115,7 +115,7 @@ const Header = () => {
                 bottom: "-0.25rem",
               }}
             >
-              Build April 30 2024
+              Build August 12 2024
             </code>
           )}
           {isDevBranch && <div />}

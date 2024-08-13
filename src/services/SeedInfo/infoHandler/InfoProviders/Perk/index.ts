@@ -494,6 +494,12 @@ export class PerkInfoProvider extends InfoProvider {
                 this._G.SetValue(flag_name + "_PICKUP_COUNT", pickup_count + 1);
               }
             }
+            if (perk === "EXTRA_PERK") {
+              this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1);
+            }
+            if (perk === "PERKS_LOTTERY") {
+              lotteries += 1;
+            }
           };
 
           this.flag_pickup(perk);
@@ -513,14 +519,6 @@ export class PerkInfoProvider extends InfoProvider {
             handlePerkPickup(p1);
             this.flag_pickup(p2);
             handlePerkPickup(p2);
-          }
-
-          if (perk === "EXTRA_PERK") {
-            this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1);
-          }
-
-          if (perk === "PERKS_LOTTERY") {
-            lotteries += 1;
           }
           break;
         }

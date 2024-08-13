@@ -19,6 +19,8 @@ interface GameInfoContextType {
   data: Awaited<ReturnType<GameInfoProvider["provideAll"]>>;
 }
 
+export const GameInfoContext = createContext<GameInfoContextType>(null!);
+
 const waitToLoad = async (gameInfoProvider?: GameInfoProvider): Promise<void> => {
   if (gameInfoProvider) {
     await gameInfoProvider.ready();
@@ -30,7 +32,7 @@ const importGameInfoProvider = async (branch: string) => {
   return (await import("../../services/SeedInfo/infoHandler/index.ts")).default;
 };
 
-export const createGameInfoProvider = async (
+const createGameInfoProvider = async (
   branch: string,
   seed: string,
   unlockedSpells: boolean[],
@@ -48,7 +50,7 @@ export const createGameInfoProvider = async (
     }
   };
 
-  gameInfoProvider.onRandomLoad(() => {
+  gameInfoProvider.ready().then(() => {
     gameInfoProvider.randoms.SetWorldSeed(parseInt(seed, 10));
     gameInfoProvider.randoms.SetUnlockedSpells(unlockedSpells);
     handleProvideAll();
@@ -64,8 +66,6 @@ export const createGameInfoProvider = async (
 
   return gameInfoProvider;
 };
-
-export const GameInfoContext = createContext<GameInfoContextType>(null!);
 
 export const useGameInfoProvider = (
   seed: string,

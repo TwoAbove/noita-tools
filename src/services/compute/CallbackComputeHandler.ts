@@ -29,4 +29,8 @@ export class CallbackComputeHandler extends BaseComputeProvider {
       this.onUpdate(this.getStatus());
     }
   }
+
+  destruct() {
+    this.stop();
+  }
 }
