@@ -47,6 +47,7 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
   const [clusterHelpEnabled, setClusterHelpEnabled] = useState(false);
   const [clusterConnected, setClusterConnected] = useState(false);
   const [socketComputeProvider, setSocketComputeProvider] = useState<SocketComputeProvider>();
+  const [callbackComputeHandler, setCallbackComputeHandler] = useState<CallbackComputeHandler>();
   const [computeVersionMismatch, setComputeVersionMismatch] = useState<boolean>(false);
 
   // Load query data when currentSearchUUID changes
@@ -137,6 +138,8 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
     if (!chunkProvider || !ruleTree || !seedSolver) return;
 
     const newCallbackComputeHandler = new CallbackComputeHandler(setSolverStatus, chunkProvider, ruleTree, seedSolver);
+
+    setCallbackComputeHandler(newCallbackComputeHandler);
 
     return () => {
       newCallbackComputeHandler.destruct();
@@ -235,15 +238,15 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
     };
     fetch("/api/data", requestOptions).catch(console.error);
     socketComputeProvider?.start();
-    await CallbackComputeHandler.prototype.start?.().catch(console.error);
-  }, [ruleTree, socketComputeProvider]);
+    callbackComputeHandler?.start().catch(console.error);
+  }, [ruleTree, socketComputeProvider, callbackComputeHandler]);
 
   const stopCalculation = useCallback(async () => {
     socketComputeProvider?.stop();
     if (!chunkProvider?.customSeeds?.length) {
-      await CallbackComputeHandler.prototype.stop?.();
+      await callbackComputeHandler?.stop();
     }
-  }, [socketComputeProvider, chunkProvider]);
+  }, [socketComputeProvider, callbackComputeHandler, chunkProvider]);
 
   const handleCopy = useCallback(() => {
     const seedList = chunkProvider?.results.size ? [...chunkProvider.results.values()] : [];
