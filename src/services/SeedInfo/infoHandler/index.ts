@@ -113,7 +113,7 @@ export class GameInfoProvider extends EventTarget {
 
   async ready() {
     await this.loadPromise;
-    await Promise.all(Object.values(this.providers).map(p => p.ready()));
+    await Promise.allSettled(Object.values(this.providers).map(p => p.ready())).catch(e => console.error(e));
   }
 
   resetConfig(initialConfig: Partial<IProviderConfig>) {
