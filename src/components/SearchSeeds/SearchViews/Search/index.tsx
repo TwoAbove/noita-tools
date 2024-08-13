@@ -58,7 +58,6 @@ const Search = () => {
     startCalculation,
     stopCalculation,
     computeJobName,
-    handleComputeJobNameChange,
     handleSeedEndChange,
     handleCustomSeedListChange,
     updateSearchConfig,
@@ -110,7 +109,7 @@ const Search = () => {
                     id="SearchSeeds.name"
                     disabled={running || !solverReady}
                     value={computeJobName}
-                    onChange={e => handleComputeJobNameChange(e.target.value)}
+                    onChange={e => updateSearchConfig({ name: e.target.value })}
                   />
                 </Form.Group>
               </Col>

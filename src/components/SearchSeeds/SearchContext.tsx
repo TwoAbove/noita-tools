@@ -73,14 +73,12 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
     loadQuery();
   }, [currentSearchUUID]);
 
-  const updateSearchConfig = useCallback(
-    (config: Partial<SearchesItem["config"]>) => {
-      if (searchInstance) {
-        db.searches.update(searchInstance.id!, { config: { ...searchInstance.config, ...config } });
-      }
-    },
-    [searchInstance],
-  );
+  const updateSearchConfig = (config: Partial<SearchesItem["config"]>) => {
+    if (searchInstance) {
+      db.searches.update(searchInstance.id!, { config: { ...searchInstance.config, ...config } });
+      setQuery({ ...searchInstance, config: { ...searchInstance.config, ...config } });
+    }
+  };
 
   useEffect(() => {
     if (!searchInstance) return;
