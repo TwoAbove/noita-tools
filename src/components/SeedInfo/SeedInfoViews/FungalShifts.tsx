@@ -182,7 +182,6 @@ export const Shift: FC<IShiftProps> = props => {
   const handleTimerExpire = () => {
     const audio = new Audio("assets/notification-sound-7062.mp3");
     audio.play();
-    alert("Timer expired");
     setShowTimer(false);
   };
 
