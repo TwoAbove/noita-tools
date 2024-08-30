@@ -158,7 +158,7 @@ export const Shift: FC<IShiftProps> = props => {
   const { data, shifted, setShifted, materialProvider } = props;
   const [showId] = useContext(AlchemyConfigContext);
   const { isFavorite } = useMaterialFavorite();
-  const [audio] = useState(new Audio("public/notification-sound-7062.mp3"));
+  const [audio] = useState(new Audio("notification-sound-7062.mp3"));
 
   // TODO: More uniform if data.from and data.to is always an array?
   const from: Array<string> = [data.from].flat();
