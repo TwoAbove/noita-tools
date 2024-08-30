@@ -493,7 +493,7 @@ router.post("/webhook", async (req, res) => {
       const pledgeAmount = getPledgeAmount(patron);
       const amount = getComputeAmountForPledgeAmount(pledgeAmount);
 
-      let user = await User.findOne({ patreonId });
+      let user = await User.findOne({ patreonId: { $eq: patreonId } });
       if (!user) {
         user = await User.create({
           _id: new Types.ObjectId(),
@@ -520,7 +520,7 @@ router.post("/webhook", async (req, res) => {
       const patreonId = patron.relationships.user.data.id;
       const pledgeAmount = getPledgeAmount(patron);
       const amount = getComputeAmountForPledgeAmount(pledgeAmount);
-      const user = await User.findOne({ patreonId });
+      const user = await User.findOne({ patreonId: { $eq: patreonId } });
       if (!user) {
         // This should never happen
         console.error("User not found", patreonId);

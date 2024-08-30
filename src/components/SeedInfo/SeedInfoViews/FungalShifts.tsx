@@ -1,5 +1,6 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import { Stack, Form, Tooltip, OverlayTrigger, Table } from "react-bootstrap";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 import { GameInfoProvider } from "../../../services/SeedInfo/infoHandler";
 import { FungalInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Fungal";
@@ -107,15 +108,15 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
   heldMaterial,
 }) => {
   /*
-	Var 'materials' may contain multiple materials with the same display name.
-	This is because some materials like 'Flammable Gas' have static variants that are
-	pre-rendered in a scene. Static materials have their own material ID.
+  Var 'materials' may contain multiple materials with the same display name.
+  This is because some materials like 'Flammable Gas' have static variants that are
+  pre-rendered in a scene. Static materials have their own material ID.
 
-	These materials should not be displayed twice.
+  These materials should not be displayed twice.
 
-	To solve this, materials will be sorted in a new `Map` where the key is the material
-	name acts as the key and the material ids are stored in the value as an array.
-	*/
+  To solve this, materials will be sorted in a new `Map` where the key is the material
+  name acts as the key and the material ids are stored in the value as an array.
+  */
 
   const materialsByName = new Map();
   materials.forEach((name, id) => {
@@ -157,6 +158,7 @@ export const Shift: FC<IShiftProps> = props => {
   const { data, shifted, setShifted, materialProvider } = props;
   const [showId] = useContext(AlchemyConfigContext);
   const { isFavorite } = useMaterialFavorite();
+  const [audio] = useState(new Audio("notification-sound-7062.mp3"));
 
   // TODO: More uniform if data.from and data.to is always an array?
   const from: Array<string> = [data.from].flat();
@@ -176,6 +178,18 @@ export const Shift: FC<IShiftProps> = props => {
   const gold_to_x = data.gold_to_x;
   const grass_to_x = data.grass_to_x;
 
+  const [showTimer, setShowTimer] = useState(false);
+
+  const handleTimerExpire = () => {
+    [0, 5].forEach(i => setTimeout(() => audio.play(), i * 1000));
+    setShowTimer(false);
+  };
+
+  const handleSetShiftedClicked = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShifted(e.target.checked);
+    setShowTimer(e.target.checked);
+  };
+
   return (
     <tr className="align-middle">
       <td>
@@ -192,17 +206,44 @@ export const Shift: FC<IShiftProps> = props => {
         />
       </td>
       <td>
-        <OverlayTrigger placement="right" key="right" overlay={<Tooltip id={`tooltip-right`}>Shifted</Tooltip>}>
-          <Form.Check
-            checked={shifted}
-            onChange={e => {
-              setShifted(e.target.checked);
-            }}
-            type="checkbox"
-            id={`shifted`}
-            enterKeyHint="done"
-          />
-        </OverlayTrigger>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <OverlayTrigger placement="right" key="right" overlay={<Tooltip id={`tooltip-right`}>Shifted</Tooltip>}>
+            <Form.Check
+              checked={shifted}
+              onChange={handleSetShiftedClicked}
+              type="checkbox"
+              id={`shifted`}
+              enterKeyHint="done"
+            />
+          </OverlayTrigger>
+          {shifted && showTimer && (
+            <div
+              style={{
+                fontSize: "0.75rem",
+              }}
+            >
+              <CountdownCircleTimer
+                isPlaying
+                size={40}
+                strokeWidth={5}
+                duration={300}
+                colors={"#004777"}
+                onComplete={() => {
+                  handleTimerExpire();
+                }}
+              >
+                {({ remainingTime }) => remainingTime}
+              </CountdownCircleTimer>
+            </div>
+          )}
+        </div>
       </td>
     </tr>
   );
