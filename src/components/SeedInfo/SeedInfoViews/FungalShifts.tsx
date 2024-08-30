@@ -181,7 +181,7 @@ export const Shift: FC<IShiftProps> = props => {
   const [showTimer, setShowTimer] = useState(false);
 
   const handleTimerExpire = () => {
-    audio.play();
+    [0, 5].forEach(i => setTimeout(() => audio.play(), i * 1000));
     setShowTimer(false);
   };
 
@@ -233,7 +233,7 @@ export const Shift: FC<IShiftProps> = props => {
                 isPlaying
                 size={40}
                 strokeWidth={5}
-                duration={10}
+                duration={300}
                 colors={"#004777"}
                 onComplete={() => {
                   handleTimerExpire();
