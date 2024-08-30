@@ -233,7 +233,7 @@ export const Shift: FC<IShiftProps> = props => {
                 isPlaying
                 size={40}
                 strokeWidth={5}
-                duration={300}
+                duration={10}
                 colors={"#004777"}
                 onComplete={() => {
                   handleTimerExpire();
