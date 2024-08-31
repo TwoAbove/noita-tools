@@ -144,37 +144,38 @@ export class GameInfoProvider extends EventTarget {
 
   async buildInfoProviders(): Promise<IProviders> {
     // We have to import like this so that vite can bundle them
+    const importMap = {
+      Alchemy: () => import("./InfoProviders/Alchemy"),
+      AlwaysCast: () => import("./InfoProviders/AlwaysCast"),
+      Biome: () => import("./InfoProviders/Biome"),
+      BiomeModifier: () => import("./InfoProviders/BiomeModifier"),
+      FungalShift: () => import("./InfoProviders/FungalShift"),
+      Lottery: () => import("./InfoProviders/Lottery"),
+      Map: () => import("./InfoProviders/Map"),
+      Material: () => import("./InfoProviders/Material"),
+      Perk: () => import("./InfoProviders/Perk"),
+      Weather: () => import("./InfoProviders/Weather"),
+      Spell: () => import("./InfoProviders/Spell"),
+      StartingBombSpell: () => import("./InfoProviders/StartingBomb"),
+      StartingFlask: () => import("./InfoProviders/StartingFlask"),
+      StartingSpell: () => import("./InfoProviders/StartingSpell"),
+      Wand: () => import("./InfoProviders/Wand"),
+      WaterCave: () => import("./InfoProviders/WaterCave"),
+      Potion: () => import("./InfoProviders/Potion"),
+      PotionSecret: () => import("./InfoProviders/PotionSecret"),
+      PotionRandomMaterial: () => import("./InfoProviders/PotionRandomMaterial"),
+      PowderStash: () => import("./InfoProviders/PowderStash"),
+      ChestRandom: () => import("./InfoProviders/ChestRandom"),
+      PacifistChest: () => import("./InfoProviders/PacifistChest"),
+      ExcavationsiteCubeChamber: () => import("./InfoProviders/ExcavationsiteCubeChamber"),
+      SnowcaveSecretChamber: () => import("./InfoProviders/SnowcaveSecretChamber"),
+      SnowcastleSecretChamber: () => import("./InfoProviders/SnowcastleSecretChamber"),
+      Shop: () => import("./InfoProviders/Shop"),
+    };
+
     const imports = await Promise.allSettled(
-      [
-        import("./InfoProviders/Alchemy"),
-        import("./InfoProviders/AlwaysCast"),
-        import("./InfoProviders/Biome"),
-        import("./InfoProviders/BiomeModifier"),
-        import("./InfoProviders/FungalShift"),
-        import("./InfoProviders/Lottery"),
-        import("./InfoProviders/Map"),
-        import("./InfoProviders/Material"),
-        import("./InfoProviders/Perk"),
-        import("./InfoProviders/Weather"),
-        import("./InfoProviders/Spell"),
-        import("./InfoProviders/StartingBomb"),
-        import("./InfoProviders/StartingFlask"),
-        import("./InfoProviders/StartingSpell"),
-        import("./InfoProviders/Perk"),
-        import("./InfoProviders/Wand"),
-        import("./InfoProviders/WaterCave"),
-        import("./InfoProviders/Potion"),
-        import("./InfoProviders/PotionSecret"),
-        import("./InfoProviders/PotionRandomMaterial"),
-        import("./InfoProviders/PowderStash"),
-        import("./InfoProviders/ChestRandom"),
-        import("./InfoProviders/PacifistChest"),
-        import("./InfoProviders/ExcavationsiteCubeChamber"),
-        import("./InfoProviders/SnowcaveSecretChamber"),
-        import("./InfoProviders/SnowcastleSecretChamber"),
-        import("./InfoProviders/Shop"),
-      ].map(p =>
-        p.catch(e => {
+      Object.values(importMap).map(importFunc =>
+        importFunc().catch(e => {
           console.error(e);
           return null;
         }),
@@ -242,11 +243,11 @@ export class GameInfoProvider extends EventTarget {
       return false;
     };
 
-    imports.forEach(result => {
+    imports.forEach((result, index) => {
       if (result.status === "fulfilled" && result.value && typeof result.value === "object") {
         const ProviderClass = result.value.default;
         if (typeof ProviderClass === "function") {
-          const providerName = ProviderClass.name.replace(/InfoProvider$/, "");
+          const providerName = Object.keys(importMap)[index];
           queue.push([providerName, ProviderClass]);
         }
       }
