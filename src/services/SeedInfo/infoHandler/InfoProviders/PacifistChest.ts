@@ -3,7 +3,7 @@
 
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
-import { ChestRandomProvider } from "./ChestRandom";
+import { ChestRandomInfoProvider } from "./ChestRandom";
 
 import templeData from "../../data/temple-locations.json";
 import { IRandom } from "../../random";
@@ -52,9 +52,9 @@ const itemMap = {
 export class PacifistChestInfoProvider extends InfoProvider {
   temples = templeData;
 
-  chestProvider: ChestRandomProvider;
+  chestProvider: ChestRandomInfoProvider;
 
-  constructor(randoms: IRandom, chestProvider: ChestRandomProvider) {
+  constructor(randoms: IRandom, chestProvider: ChestRandomInfoProvider) {
     super(randoms);
     this.chestProvider = chestProvider;
   }
