@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { FungalInfoProvider } from "./";
+import { FungalShiftInfoProvider } from "./";
 import { loadRandom } from "../../../../../testHelpers";
 
-describe("FungalInfoProvider", () => {
+describe("FungalShiftInfoProvider", () => {
   const tests = [
     {
       seed: 123,
@@ -347,7 +347,7 @@ describe("FungalInfoProvider", () => {
     tests.forEach((t, i) => {
       it(`Should generate correct output #${i}`, async () => {
         const randoms = await loadRandom();
-        const ap = new FungalInfoProvider(randoms);
+        const ap = new FungalShiftInfoProvider(randoms);
         await ap.ready();
         randoms.SetWorldSeed(t.seed);
         const res = ap.provide();
