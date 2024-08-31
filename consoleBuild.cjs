@@ -119,8 +119,8 @@ require("esbuild")
     }
     {
       fs.copyFileSync(
-        path.resolve(__dirname, "src/services/SeedInfo/infoHandler/InfoProviders/Fungal/Fungal.wasm"),
-        path.resolve(__dirname, "console-build", "workers/Fungal.wasm"),
+        path.resolve(__dirname, "src/services/SeedInfo/infoHandler/InfoProviders/FungalShift/FungalShift.wasm"),
+        path.resolve(__dirname, "console-build", "workers/FungalShift.wasm"),
       );
     }
   });
