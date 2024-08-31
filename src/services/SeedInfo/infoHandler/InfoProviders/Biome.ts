@@ -29,3 +29,5 @@ export class BiomeInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default BiomeInfoProvider;

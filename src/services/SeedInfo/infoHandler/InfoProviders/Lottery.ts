@@ -25,3 +25,5 @@ export class LotteryInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default LotteryInfoProvider;

@@ -166,3 +166,5 @@ export class PotionInfoProvider extends InfoProvider {
   //   return isEqual(rule.val, info);
   // }
 }
+
+export default PotionInfoProvider;

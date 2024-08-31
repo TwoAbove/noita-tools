@@ -10,7 +10,7 @@ import type { FungalTransformation, MainModule } from "./Fungal.d.ts";
 
 import createModule from "./Fungal.mjs";
 
-export class FungalInfoProvider extends InfoProvider {
+export class FungalShiftInfoProvider extends InfoProvider {
   readyPromise: Promise<void>;
 
   fungal!: MainModule;
@@ -131,3 +131,5 @@ export type IFungalRule = Array<{
   flaskFrom?: boolean;
   flaskTo?: boolean;
 }>;
+
+export default FungalShiftInfoProvider;

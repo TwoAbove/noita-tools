@@ -597,3 +597,5 @@ export interface IPerkRule {
   all: string[][];
   deck: string[][];
 }
+
+export default PerkInfoProvider;

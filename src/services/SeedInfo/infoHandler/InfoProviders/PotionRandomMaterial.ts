@@ -253,3 +253,5 @@ export class PotionRandomMaterialInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default PotionRandomMaterialInfoProvider;

@@ -678,3 +678,5 @@ export interface IWandRule {
   cards?: string[];
   permanentCard?: string;
 }
+
+export default WandInfoProvider;

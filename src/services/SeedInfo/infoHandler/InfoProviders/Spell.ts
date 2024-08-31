@@ -38,3 +38,5 @@ export class SpellInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default SpellInfoProvider;

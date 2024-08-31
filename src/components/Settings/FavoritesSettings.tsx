@@ -8,9 +8,9 @@ import SpellSelect from "../SpellSelect";
 import { ConfigRow, ConfigTitle } from "./helpers";
 
 import useLocalStorage from "../../services/useLocalStorage";
-import { FungalInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Fungal";
+import { FungalShiftInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/FungalShift";
 
-const fungalInfoProvider = new FungalInfoProvider({} as any);
+const fungalInfoProvider = new FungalShiftInfoProvider({} as any);
 
 const materialsFrom = fungalInfoProvider.fungalData.materials_from.flatMap(m => m.materials);
 const materialsTo = fungalInfoProvider.fungalData.materials_to.map(m => m.material);

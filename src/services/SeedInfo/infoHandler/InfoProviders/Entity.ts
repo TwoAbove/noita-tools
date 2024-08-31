@@ -29,3 +29,5 @@ export class EntityInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default EntityInfoProvider;

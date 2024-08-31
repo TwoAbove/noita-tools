@@ -35,3 +35,5 @@ export class StartingBombSpellInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default StartingBombSpellInfoProvider;
