@@ -2,12 +2,12 @@
 import React, { useState, useEffect, FC } from "react";
 import { Row, Col, Container, Stack, Button } from "react-bootstrap";
 
-import { FungalInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Fungal";
+import { FungalShiftInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/FungalShift";
 import { IRule } from "../../../services/SeedInfo/infoHandler/IRule";
 import { Square } from "../../helpers";
 import { FlaskMaterialSelect } from "../../MaterialSelect";
 
-const fungalInfoProvider = new FungalInfoProvider({} as any);
+const fungalInfoProvider = new FungalShiftInfoProvider({} as any);
 
 interface IFungalShiftsProps {
   onUpdateConfig: (config: Partial<IRule>) => void;

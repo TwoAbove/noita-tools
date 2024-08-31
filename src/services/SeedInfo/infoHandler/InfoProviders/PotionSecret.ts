@@ -67,3 +67,5 @@ export class PotionSecretInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default PotionSecretInfoProvider;

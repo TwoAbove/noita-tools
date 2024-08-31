@@ -354,3 +354,5 @@ export class ShopInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default ShopInfoProvider;

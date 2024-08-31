@@ -20,7 +20,7 @@ export interface IItem {
   extra?: any;
 }
 
-export class ChestRandomProvider extends InfoProvider {
+export class ChestRandomInfoProvider extends InfoProvider {
   unlockedSpells: boolean[];
 
   constructor(randoms: IRandom, unlockedSpells: boolean[], spellInfoProvider: SpellInfoProvider) {
@@ -389,3 +389,5 @@ export class ChestRandomProvider extends InfoProvider {
     return true;
   }
 }
+
+export default ChestRandomInfoProvider;

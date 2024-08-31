@@ -514,12 +514,9 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
   const [perkStacks, setPerkStacks] = useState<IPerkChangeAction[][]>(() => infoProvider.config.perkStacks);
   const perkStack = perkStacks[perkStacks.length - 1];
 
-  const favorites = useFavoritePerks(
-    advanced ? infoProvider.providers.statelessPerk : infoProvider.providers.perk,
-    perkDeck,
-  );
+  const favorites = useFavoritePerks(infoProvider.providers.perk, perkDeck);
   const getPerkData = () => {
-    const perk = infoProvider.providers.statelessPerk;
+    const perk = infoProvider.providers.perk;
     const data = perk.provideStateless(perkStack);
     const hydrated = perk.hydrate(data.perks);
     return {

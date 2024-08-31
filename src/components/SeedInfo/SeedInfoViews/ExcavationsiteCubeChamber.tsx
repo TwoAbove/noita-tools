@@ -10,11 +10,11 @@ const ExcavationsiteCubeChamber = () => {
   const { gameInfoProvider } = useContext(GameInfoContext);
 
   const [wand, setWand] = React.useState(() =>
-    gameInfoProvider.providers.excavationSiteCubeChamber.provide(gameInfoProvider.config.seed),
+    gameInfoProvider.providers.excavationsiteCubeChamber.provide(gameInfoProvider.config.seed),
   );
 
   useEffect(() => {
-    const wand = gameInfoProvider.providers.excavationSiteCubeChamber.provide(gameInfoProvider.config.seed);
+    const wand = gameInfoProvider.providers.excavationsiteCubeChamber.provide(gameInfoProvider.config.seed);
     setWand(wand);
   }, [gameInfoProvider]);
 

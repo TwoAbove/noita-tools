@@ -50,3 +50,5 @@ export class AlwaysCastInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default AlwaysCastInfoProvider;

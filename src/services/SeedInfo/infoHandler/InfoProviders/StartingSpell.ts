@@ -70,3 +70,5 @@ export class StartingSpellInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default StartingSpellInfoProvider;

@@ -1,7 +1,7 @@
 import type { AlchemyInfoProvider } from "./InfoProviders/Alchemy";
 import type { BiomeInfoProvider } from "./InfoProviders/Biome";
 import type { BiomeModifierInfoProvider } from "./InfoProviders/BiomeModifier";
-import type { FungalInfoProvider } from "./InfoProviders/Fungal";
+import type { FungalShiftInfoProvider } from "./InfoProviders/FungalShift";
 import type { InfoProvider } from "./InfoProviders/Base";
 import type { IPerkChangeAction, PerkInfoProvider } from "./InfoProviders/Perk";
 import type { LotteryInfoProvider } from "./InfoProviders/Lottery";
@@ -22,23 +22,24 @@ import type { PotionRandomMaterialInfoProvider } from "./InfoProviders/PotionRan
 import type { WandInfoProvider } from "./InfoProviders/Wand";
 
 // Chests
-import type { ChestRandomProvider } from "./InfoProviders/ChestRandom";
-import type { PacifistChestProvider } from "./InfoProviders/PacifistChest";
+import type { ChestRandomInfoProvider } from "./InfoProviders/ChestRandom";
+import type { PacifistChestInfoProvider } from "./InfoProviders/PacifistChest";
 
 // Special biomes
 import type { ExcavationsiteCubeChamberInfoProvider } from "./InfoProviders/ExcavationsiteCubeChamber";
-import type { SnowcaveSecretChamberProvider } from "./InfoProviders/SnowcaveSecretChamber";
-import type { SnowcastleSecretChamberProvider } from "./InfoProviders/SnowcastleSecretChamber";
+import type { SnowcaveSecretChamberInfoProvider } from "./InfoProviders/SnowcaveSecretChamber";
+import type { SnowcastleSecretChamberInfoProvider } from "./InfoProviders/SnowcastleSecretChamber";
 
 import loadRandom, { IRandom } from "../random";
 import type { i18n } from "i18next";
+import { camelCaseName } from "./helpers";
 
 interface IProviders {
   alchemy: AlchemyInfoProvider;
   alwaysCast: AlwaysCastInfoProvider;
   biome: BiomeInfoProvider;
   biomeModifier: BiomeModifierInfoProvider;
-  fungalShift: FungalInfoProvider;
+  fungalShift: FungalShiftInfoProvider;
   lottery: LotteryInfoProvider;
   map: MapInfoProvider;
   material: MaterialInfoProvider;
@@ -49,7 +50,6 @@ interface IProviders {
   startingBombSpell: StartingBombSpellInfoProvider;
   startingFlask: StartingFlaskInfoProvider;
   startingSpell: StartingSpellInfoProvider;
-  statelessPerk: PerkInfoProvider;
   waterCave: WaterCaveInfoProvider;
   wand: WandInfoProvider;
 
@@ -58,12 +58,12 @@ interface IProviders {
   potionRandomMaterial: PotionRandomMaterialInfoProvider;
   powderStash: PowderStashInfoProvider;
 
-  chestRandom: ChestRandomProvider;
-  pacifistChest: PacifistChestProvider;
+  chestRandom: ChestRandomInfoProvider;
+  pacifistChest: PacifistChestInfoProvider;
 
-  excavationSiteCubeChamber: ExcavationsiteCubeChamberInfoProvider;
-  snowcaveSecretChamber: SnowcaveSecretChamberProvider;
-  snowcastleSecretChamber: SnowcastleSecretChamberProvider;
+  excavationsiteCubeChamber: ExcavationsiteCubeChamberInfoProvider;
+  snowcaveSecretChamber: SnowcaveSecretChamberInfoProvider;
+  snowcastleSecretChamber: SnowcastleSecretChamberInfoProvider;
 
   [key: string]: InfoProvider;
 }
@@ -144,127 +144,128 @@ export class GameInfoProvider extends EventTarget {
 
   async buildInfoProviders(): Promise<IProviders> {
     // We have to import like this so that vite can bundle them
-    const imports = await Promise.allSettled([
-      import("./InfoProviders/Alchemy"),
-      import("./InfoProviders/AlwaysCast"),
-      import("./InfoProviders/Biome"),
-      import("./InfoProviders/BiomeModifier"),
-      import("./InfoProviders/Fungal"),
-      import("./InfoProviders/Lottery"),
-      import("./InfoProviders/Map"),
-      import("./InfoProviders/Material"),
-      import("./InfoProviders/Perk"),
-      import("./InfoProviders/Weather"),
-      import("./InfoProviders/Spell"),
-      import("./InfoProviders/StartingBomb"),
-      import("./InfoProviders/StartingFlask"),
-      import("./InfoProviders/StartingSpell"),
-      import("./InfoProviders/Perk"),
-      import("./InfoProviders/Wand"),
-      import("./InfoProviders/WaterCave"),
-      import("./InfoProviders/Potion"),
-      import("./InfoProviders/PotionSecret"),
-      import("./InfoProviders/PotionRandomMaterial"),
-      import("./InfoProviders/PowderStash"),
-      import("./InfoProviders/ChestRandom"),
-      import("./InfoProviders/PacifistChest"),
-      import("./InfoProviders/Shop"),
-      import("./InfoProviders/ExcavationsiteCubeChamber"),
-      import("./InfoProviders/SnowcaveSecretChamber"),
-      import("./InfoProviders/SnowcastleSecretChamber"),
-    ]);
+    const imports = await Promise.allSettled(
+      [
+        import("./InfoProviders/Alchemy"),
+        import("./InfoProviders/AlwaysCast"),
+        import("./InfoProviders/Biome"),
+        import("./InfoProviders/BiomeModifier"),
+        import("./InfoProviders/FungalShift"),
+        import("./InfoProviders/Lottery"),
+        import("./InfoProviders/Map"),
+        import("./InfoProviders/Material"),
+        import("./InfoProviders/Perk"),
+        import("./InfoProviders/Weather"),
+        import("./InfoProviders/Spell"),
+        import("./InfoProviders/StartingBomb"),
+        import("./InfoProviders/StartingFlask"),
+        import("./InfoProviders/StartingSpell"),
+        import("./InfoProviders/Perk"),
+        import("./InfoProviders/Wand"),
+        import("./InfoProviders/WaterCave"),
+        import("./InfoProviders/Potion"),
+        import("./InfoProviders/PotionSecret"),
+        import("./InfoProviders/PotionRandomMaterial"),
+        import("./InfoProviders/PowderStash"),
+        import("./InfoProviders/ChestRandom"),
+        import("./InfoProviders/PacifistChest"),
+        import("./InfoProviders/ExcavationsiteCubeChamber"),
+        import("./InfoProviders/SnowcaveSecretChamber"),
+        import("./InfoProviders/SnowcastleSecretChamber"),
+        import("./InfoProviders/Shop"),
+      ].map(p =>
+        p.catch(e => {
+          console.error(e);
+          return null;
+        }),
+      ),
+    );
 
-    const [
-      alchemy,
-      alwaysCast,
-      biome,
-      biomeModifier,
-      fungalShift,
-      lottery,
-      map,
-      material,
-      perk,
-      weather,
-      spells,
-      startingBombSpell,
-      startingFlask,
-      startingSpell,
-      statelessPerk,
-      wand,
-      waterCave,
-      potion,
-      potionSecret,
-      potionRandomMaterial,
-      powderStash,
-      chestRandom,
-      pacifistChest,
-      shop,
-      excavationSiteCubeChamber,
-      snowcaveSecretChamber,
-      snowcastleSecretChamber,
-    ] = imports;
+    const providers: Partial<IProviders> = {};
+    const queue: [string, any][] = [];
 
-    const providers: any = {};
+    const getDependencies = (providerName: string): { deps: string[]; getArgs: () => any[] } => {
+      const baseArgs = [this.randoms];
+      switch (providerName) {
+        case "ChestRandom":
+          return {
+            deps: ["spell"],
+            getArgs: () => [...baseArgs, this.unlockedSpells, providers.spell],
+          };
+        case "PacifistChest":
+          return {
+            deps: ["chestRandom"],
+            getArgs: () => [...baseArgs, providers.chestRandom],
+          };
+        case "Shop":
+          return {
+            deps: ["wand", "spell"],
+            getArgs: () => [...baseArgs, providers.wand, providers.spell],
+          };
+        case "ExcavationsiteCubeChamber":
+          return {
+            deps: ["map", "wand"],
+            getArgs: () => [...baseArgs, providers.map, providers.wand],
+          };
+        case "SnowcaveSecretChamber":
+          return {
+            deps: ["map", "wand"],
+            getArgs: () => [...baseArgs, providers.map, providers.wand],
+          };
+        case "SnowcastleSecretChamber":
+          return {
+            deps: ["map"],
+            getArgs: () => [...baseArgs, providers.map],
+          };
+        case "Material":
+          return {
+            deps: [],
+            getArgs: () => [this.i18n],
+          };
+        default:
+          return {
+            deps: [],
+            getArgs: () => baseArgs,
+          };
+      }
+    };
 
-    if (alchemy && "value" in alchemy) providers.alchemy = new alchemy.value.AlchemyInfoProvider(this.randoms);
-    if (alwaysCast && "value" in alwaysCast)
-      providers.alwaysCast = new alwaysCast.value.AlwaysCastInfoProvider(this.randoms);
-    if (biome && "value" in biome) providers.biome = new biome.value.BiomeInfoProvider(this.randoms);
-    if (biomeModifier && "value" in biomeModifier)
-      providers.biomeModifier = new biomeModifier.value.BiomeModifierInfoProvider(this.randoms);
-    if (fungalShift && "value" in fungalShift)
-      providers.fungalShift = new fungalShift.value.FungalInfoProvider(this.randoms);
-    if (lottery && "value" in lottery) providers.lottery = new lottery.value.LotteryInfoProvider(this.randoms);
-    if (map && "value" in map) providers.map = new map.value.MapInfoProvider(this.randoms);
-    if (material && "value" in material) providers.material = new material.value.MaterialInfoProvider(this.i18n);
-    if (perk && "value" in perk) providers.perk = new perk.value.PerkInfoProvider(this.randoms);
-    if (weather && "value" in weather) providers.weather = new weather.value.WeatherInfoProvider(this.randoms);
-    if (spells && "value" in spells) providers.spells = new spells.value.SpellInfoProvider(this.randoms);
-    if (startingBombSpell && "value" in startingBombSpell)
-      providers.startingBombSpell = new startingBombSpell.value.StartingBombSpellInfoProvider(this.randoms);
-    if (startingFlask && "value" in startingFlask)
-      providers.startingFlask = new startingFlask.value.StartingFlaskInfoProvider(this.randoms);
-    if (startingSpell && "value" in startingSpell)
-      providers.startingSpell = new startingSpell.value.StartingSpellInfoProvider(this.randoms);
-    if (statelessPerk && "value" in statelessPerk)
-      providers.statelessPerk = new statelessPerk.value.PerkInfoProvider(this.randoms);
-    if (wand && "value" in wand) providers.wand = new wand.value.WandInfoProvider(this.randoms);
-    if (waterCave && "value" in waterCave)
-      providers.waterCave = new waterCave.value.WaterCaveInfoProvider(this.randoms);
-    if (potion && "value" in potion) providers.potion = new potion.value.PotionInfoProvider(this.randoms);
-    if (potionSecret && "value" in potionSecret)
-      providers.potionSecret = new potionSecret.value.PotionSecretInfoProvider(this.randoms);
-    if (potionRandomMaterial && "value" in potionRandomMaterial)
-      providers.potionRandomMaterial = new potionRandomMaterial.value.PotionRandomMaterialInfoProvider(this.randoms);
-    if (powderStash && "value" in powderStash)
-      providers.powderStash = new powderStash.value.PowderStashInfoProvider(this.randoms);
-    if (chestRandom && "value" in chestRandom)
-      providers.chestRandom = new chestRandom.value.ChestRandomProvider(
-        this.randoms,
-        this.unlockedSpells,
-        providers.spells,
-      );
-    if (pacifistChest && "value" in pacifistChest)
-      providers.pacifistChest = new pacifistChest.value.PacifistChestProvider(this.randoms, providers.chestRandom);
-    if (shop && "value" in shop)
-      providers.shop = new shop.value.ShopInfoProvider(this.randoms, providers.wand, providers.spells);
-    if (excavationSiteCubeChamber && "value" in excavationSiteCubeChamber)
-      providers.excavationSiteCubeChamber = new excavationSiteCubeChamber.value.ExcavationsiteCubeChamberInfoProvider(
-        this.randoms,
-        providers.map,
-        providers.wand,
-      );
-    if (snowcaveSecretChamber && "value" in snowcaveSecretChamber)
-      providers.snowcaveSecretChamber = new snowcaveSecretChamber.value.SnowcaveSecretChamberProvider(
-        this.randoms,
-        providers.map,
-        providers.wand,
-      );
-    if (snowcastleSecretChamber && "value" in snowcastleSecretChamber)
-      providers.snowcastleSecretChamber = new snowcastleSecretChamber.value.SnowcastleSecretChamberProvider(
-        this.randoms,
-        providers.map,
-      );
+    const createProvider = (providerName: string, ProviderClass: any) => {
+      const { deps, getArgs } = getDependencies(providerName);
+      if (deps.every(dep => providers[dep] !== undefined)) {
+        const args = getArgs();
+        if (args.every(arg => arg !== undefined)) {
+          providers[camelCaseName(providerName)] = new ProviderClass(...args);
+          return true;
+        }
+      }
+      return false;
+    };
+
+    imports.forEach(result => {
+      if (result.status === "fulfilled" && result.value && typeof result.value === "object") {
+        const ProviderClass = result.value.default;
+        if (typeof ProviderClass === "function") {
+          const providerName = ProviderClass.name.replace(/InfoProvider$/, "");
+          queue.push([providerName, ProviderClass]);
+        }
+      }
+    });
+
+    let iter = 0;
+
+    while (queue.length > 0) {
+      if (iter++ > 100) {
+        console.error("Too many iterations", queue);
+        break;
+      }
+      const [providerName, ProviderClass] = queue.shift()!;
+      if (!createProvider(providerName, ProviderClass)) {
+        queue.push([providerName, ProviderClass]);
+      }
+    }
+
+    console.log(providers);
 
     return providers as IProviders;
   }
@@ -285,7 +286,7 @@ export class GameInfoProvider extends EventTarget {
         this.config.perkWorldOffset,
         this.config.perkRerolls,
       ),
-      statelessPerks: this.providers.statelessPerk.provideStateless(
+      statelessPerks: this.providers.perk.provideStateless(
         this.config.perkStacks[this.config.perkStacks.length - 1],
         true,
       ),

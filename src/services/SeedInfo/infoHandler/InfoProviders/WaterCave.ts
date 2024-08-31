@@ -14,3 +14,5 @@ export class WaterCaveInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default WaterCaveInfoProvider;

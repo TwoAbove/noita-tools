@@ -94,3 +94,5 @@ export class PowderStashInfoProvider extends InfoProvider {
   //   return isEqual(rule.val, info);
   // }
 }
+
+export default PowderStashInfoProvider;

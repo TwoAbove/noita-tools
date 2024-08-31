@@ -57,3 +57,5 @@ export class MaterialInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default MaterialInfoProvider;

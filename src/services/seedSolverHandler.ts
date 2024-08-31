@@ -116,7 +116,7 @@ export class SeedSolver {
       };
     });
 
-    const res: number[] = [];
+    let res: number[] = [];
 
     let checked = 0;
 
@@ -128,7 +128,7 @@ export class SeedSolver {
           const { subFrom, subTo } = config;
           checked += subTo - subFrom;
           const r = await worker.searchChunk(subFrom, subTo, rules);
-          res.push(...r);
+          res = res.concat(r);
           await new Promise(res => setTimeout(res, 0));
         }
       }),

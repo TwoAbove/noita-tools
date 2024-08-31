@@ -49,7 +49,7 @@ const itemMap = {
   "data/entities/items/pickup/heart_fullhp.xml": null,
 };
 
-export class PacifistChestProvider extends InfoProvider {
+export class PacifistChestInfoProvider extends InfoProvider {
   temples = templeData;
 
   chestProvider: ChestRandomProvider;
@@ -109,3 +109,5 @@ export class PacifistChestProvider extends InfoProvider {
     return true;
   }
 }
+
+export default PacifistChestInfoProvider;

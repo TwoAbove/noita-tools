@@ -3,7 +3,7 @@ import { Stack, Form, Tooltip, OverlayTrigger, Table } from "react-bootstrap";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 import { GameInfoProvider } from "../../../services/SeedInfo/infoHandler";
-import { FungalInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Fungal";
+import { FungalShiftInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/FungalShift";
 import { MaterialInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Material";
 import { AlchemyConfigContext } from "../../AlchemyConfigContext";
 import { capitalize } from "../../../services/helpers";
@@ -148,7 +148,7 @@ export const FungalMaterialList: React.FC<IFungalMaterialListProps> = ({
 };
 
 interface IShiftProps {
-  data: ReturnType<FungalInfoProvider["provide"]>[number];
+  data: ReturnType<FungalShiftInfoProvider["provide"]>[number];
   shifted: boolean;
   setShifted: (shifted: boolean) => void;
   materialProvider: MaterialInfoProvider;
@@ -250,7 +250,7 @@ export const Shift: FC<IShiftProps> = props => {
 };
 
 interface IFungalShiftsProps {
-  fungalData: ReturnType<FungalInfoProvider["provide"]>;
+  fungalData: ReturnType<FungalShiftInfoProvider["provide"]>;
   infoProvider: GameInfoProvider;
 }
 

@@ -36,3 +36,5 @@ export class ExcavationsiteCubeChamberInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default ExcavationsiteCubeChamberInfoProvider;

@@ -187,3 +187,5 @@ export interface IWeatherRule {
   fog?: [number, number];
   clouds?: [number, number];
 }
+
+export default WeatherInfoProvider;

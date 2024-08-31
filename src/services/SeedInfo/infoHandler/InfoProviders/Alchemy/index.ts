@@ -70,3 +70,5 @@ export class AlchemyInfoProvider extends InfoProvider {
     return allLC && allAP;
   }
 }
+
+export default AlchemyInfoProvider;

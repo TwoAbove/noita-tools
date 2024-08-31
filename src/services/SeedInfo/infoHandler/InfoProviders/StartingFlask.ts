@@ -63,3 +63,5 @@ export class StartingFlaskInfoProvider extends InfoProvider {
     return true;
   }
 }
+
+export default StartingFlaskInfoProvider;

@@ -549,3 +549,5 @@ snowCave, 2160684, 1988
 snowCastle, 1104125, 25762
 vault, 2252795, 11505
 */
+
+export default MapInfoProvider;

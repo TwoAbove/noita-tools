@@ -6,7 +6,7 @@ import { InfoProvider } from "./Base";
 import { MapInfoProvider } from "./Map";
 
 // Hourglass chamber
-export class SnowcastleSecretChamberProvider extends InfoProvider {
+export class SnowcastleSecretChamberInfoProvider extends InfoProvider {
   mapInfoProvider: MapInfoProvider;
   constructor(randoms, mapInfoProvider: MapInfoProvider) {
     super(randoms);
@@ -29,3 +29,5 @@ export class SnowcastleSecretChamberProvider extends InfoProvider {
     return true;
   }
 }
+
+export default SnowcastleSecretChamberInfoProvider;

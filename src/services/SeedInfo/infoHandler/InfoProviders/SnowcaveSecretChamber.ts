@@ -16,7 +16,7 @@ const getWandArgs = (wand: string): [number, number, boolean] => {
   return [0, 0, false];
 };
 
-export class SnowcaveSecretChamberProvider extends InfoProvider {
+export class SnowcaveSecretChamberInfoProvider extends InfoProvider {
   wandInfoProvider: WandInfoProvider;
   mapInfoProvider: MapInfoProvider;
   constructor(randoms, mapInfoProvider: MapInfoProvider, wandInfoProvider: WandInfoProvider) {
@@ -41,3 +41,5 @@ export class SnowcaveSecretChamberProvider extends InfoProvider {
     return true;
   }
 }
+
+export default SnowcaveSecretChamberInfoProvider;
