@@ -6,9 +6,9 @@ import { includesSome, isNode, simd } from "../../../../helpers";
 import { IRule } from "../../IRule";
 import { InfoProvider } from "../Base";
 
-import type { FungalTransformation, MainModule } from "./Fungal.d.ts";
+import type { FungalTransformation, MainModule } from "./FungalShift.d.ts";
 
-import createModule from "./Fungal.mjs";
+import createModule from "./FungalShift.mjs";
 
 export class FungalShiftInfoProvider extends InfoProvider {
   readyPromise: Promise<void>;
@@ -36,13 +36,13 @@ export class FungalShiftInfoProvider extends InfoProvider {
     if (isNode) {
       // Must be in the same folder as this file
       // or else esbuild will not bundle it with the correct path
-      const wasmPath = new URL("./Fungal.wasm", import.meta.url).href;
+      const wasmPath = new URL("./FungalShift.wasm", import.meta.url).href;
       noitaRandomModule = new URL(wasmPath, import.meta.url).href;
     } else {
       const hasSIMD = await simd();
       noitaRandomModule = hasSIMD
-        ? new URL("./Fungal.wasm", import.meta.url).href
-        : new URL("./Fungal-base.wasm", import.meta.url).href;
+        ? new URL("./FungalShift.wasm", import.meta.url).href
+        : new URL("./FungalShift-base.wasm", import.meta.url).href;
     }
 
     const Module = await createModule({
