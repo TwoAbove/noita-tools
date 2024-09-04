@@ -1,5 +1,7 @@
 import React, { FC, useContext, useEffect, useReducer, useCallback, useState } from "react";
 
+import socketIOClient, { Socket } from "socket.io-client";
+
 import { SeedSolver } from "../../services/seedSolverHandler";
 import useLocalStorage from "../../services/useLocalStorage";
 import copy from "copy-to-clipboard";
@@ -42,6 +44,7 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
   const [solverReady, setSolverReady] = useState(false);
 
   // Cluster-related state
+  const [statsSocket, setStatsSocket] = useState<Socket | null>(null);
   const [clusterState, setClusterState] = useState({ hosts: 0, workers: 0, appetite: 0 });
   const [clusterHelpAvailable, setClusterHelpAvailable] = useState(false);
   const [clusterHelpEnabled, setClusterHelpEnabled] = useState(false);
@@ -181,24 +184,37 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
     setClusterHelpEnabled(prev => !prev);
   }, []);
 
+  const initializeStatsSocket = useCallback(() => {
+    const socket = socketIOClient(window.location.host);
+    setStatsSocket(socket);
+  }, []);
+
   useEffect(() => {
-    const getClusterStats = async () => {
-      if (!socketComputeProvider) return;
-      try {
-        socketComputeProvider.socket.io.emit("get_cluster_stats", (stats: any) => {
-          console.log(stats);
-          setClusterState(stats);
-          setClusterHelpAvailable(stats.workers > 0);
-        });
-      } catch (error) {
-        console.error("Error fetching cluster stats:", error);
+    initializeStatsSocket();
+    return () => {
+      if (statsSocket) {
+        statsSocket.disconnect();
       }
     };
+  }, [initializeStatsSocket]);
+
+  const getClusterStats = useCallback(() => {
+    if (!statsSocket) return;
+
+    statsSocket.emit("get_cluster_stats", (stats: any) => {
+      setClusterState(stats);
+      setClusterHelpAvailable(stats.workers > 0);
+    });
+  }, [statsSocket]);
+
+  useEffect(() => {
+    if (!statsSocket) return;
 
     const interval = setInterval(getClusterStats, 5000);
     getClusterStats();
+
     return () => clearInterval(interval);
-  }, []);
+  }, [getClusterStats, statsSocket]);
 
   useEffect(() => {
     if (!clusterHelpEnabled || !chunkProvider || !ruleTree) return;
