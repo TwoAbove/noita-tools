@@ -31,15 +31,15 @@ Current features include:
 You can use docker to simply spin up a compute node:
 
 ```bash
-docker run -it -e NOITOOL_USER_ID=xxx ghcr.io/twoabove/noitool-console-search:latest
+docker run -it -e NOITOOL_SESSION_TOKEN=xxx ghcr.io/twoabove/noitool-console-search:latest
 ```
 
-<!-- docker run -it --restart=always --pull=always -e NOITOOL_USER_ID=6456aff2478c4f8f91701018 ghcr.io/twoabove/noitool-console-search:latest-dev -->
+<!-- docker run -it --restart=always --pull=always -e NOITOOL_SESSION_TOKEN=6456aff2478c4f8f91701018 ghcr.io/twoabove/noitool-console-search:latest-dev -->
 
 Or for dev
 
 ```bash
-docker run -it -e NOITOOL_USER_ID=xxx -e NOITOOL_URL=https://dev.noitool.com/ ghcr.io/twoabove/noitool-console-search:latest-dev
+docker run -it -e NOITOOL_SESSION_TOKEN=xxx -e NOITOOL_URL=https://dev.noitool.com/ ghcr.io/twoabove/noitool-console-search:latest-dev
 ```
 
 #### CLI
@@ -60,7 +60,8 @@ console-search args (or env vars):
 
 - `--url` `NOITOOL_URL`: default <https://www.noitool.com/>. Change to <https://dev.noitool.com/> for the dev build
 - `--cores` `NOITOOL_CORES`: default `os.cpus()`. The amount of cores to use.
-- `--userId` `NOITOOL_USER_ID`: The user to connect as.
+- `--sessionToken` `NOITOOL_SESSION_TOKEN`: The user to connect as.
+- `--userId` `NOITOOL_USER_ID`: The user to connect as. Prefer NOITOOL_SESSION_TOKEN.
 - `--exit` `NOITOOL_EXIT` default `false`. Add if you want the worker to exit if there are no more jobs.
 - `--minRunTime` `NOITOOL_MIN_RUN_TIME` default `0`. This minimum amount of time (in seconds) that the worker will run for. If there are no more jobs, it will exit after this time. A value of 0 means that this is disabled.
 

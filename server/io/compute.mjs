@@ -125,7 +125,7 @@ export const handleCompute = (socket, io) => {
     user =
       (await User.findOne({ sessionToken: config.sessionToken })) || (await User.findOne({ patreonId: config.userId }));
     if (!user) {
-      socket.emit("compute:unauthorized");
+      socket.emit("compute:unauthorized", config);
       return;
     }
 
