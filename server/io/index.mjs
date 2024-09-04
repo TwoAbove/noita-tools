@@ -19,6 +19,15 @@ const allowedCORS = corsSchemes.flatMap(ext => corsDomains.map(d => ext + d));
 const handleConnection = (socket, io) => {
   handleLiveSeed(socket, io);
   handleCompute(socket, io);
+
+  socket.on("get_cluster_stats", () => {
+    console.log("get_cluster_stats");
+    socket.emit("cluster_stats", {
+      hosts: counts.hosts,
+      workers: Math.max(counts.workers, 1), // Always at least 1 thanks to ECS
+      appetite: counts.appetite,
+    });
+  });
 };
 
 const makeIO = (server, app) => {

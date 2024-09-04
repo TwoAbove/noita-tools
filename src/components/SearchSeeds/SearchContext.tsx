@@ -183,10 +183,13 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
 
   useEffect(() => {
     const getClusterStats = async () => {
+      if (!socketComputeProvider) return;
       try {
-        const newClusterState = await fetch("/api/cluster_stats").then(r => r.json());
-        setClusterState(newClusterState);
-        setClusterHelpAvailable(newClusterState.workers > 0);
+        socketComputeProvider.socket.io.emit("get_cluster_stats", (stats: any) => {
+          console.log(stats);
+          setClusterState(stats);
+          setClusterHelpAvailable(stats.workers > 0);
+        });
       } catch (error) {
         console.error("Error fetching cluster stats:", error);
       }
