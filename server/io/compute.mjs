@@ -1,5 +1,6 @@
 import { schedule } from "node-cron";
 import { User } from "../db.mjs";
+import { mongo } from "mongoose";
 
 export const counts = {
   hosts: 0,
@@ -123,9 +124,11 @@ export const handleCompute = (socket, io) => {
     }
 
     user =
-      (await User.findOne({ sessionToken: config.sessionToken })) || (await User.findOne({ patreonId: config.userId }));
+      (await User.findOne({ patreonId: config.userId })) ||
+      (await User.findOne({ sessionToken: mongoose.Types.ObjectId(config.sessionToken) }));
+
     if (!user) {
-      socket.emit("compute:unauthorized");
+      socket.emit("compute:unauthorized", config);
       return;
     }
 

@@ -29,12 +29,13 @@ SegfaultHandler.registerHandler("crash.log");
 console.log(`Noitool console search ${process.env.npm_package_version}`, argv, os.cpus().length);
 
 const missingArgs: string[] = [];
-if (!argv.userId) {
+if (!argv.userId && !argv.sessionToken) {
   missingArgs.push("--userId (or env NOITOOL_USER_ID)");
+  missingArgs.push("--sessionToken (or env NOITOOL_SESSION_TOKEN)");
 }
 
 if (missingArgs.length) {
-  console.log("Missing required arguments:", missingArgs.join(", "));
+  console.log("Missing one of the required arguments:", missingArgs.join(", "));
   process.exit(1);
 }
 
@@ -99,8 +100,10 @@ newComputeSocket.on("compute:version_mismatch", () => {
   exitHandler();
 });
 
-newComputeSocket.on("compute:unauthorized", () => {
+newComputeSocket.on("compute:unauthorized", config => {
   console.log("userID or sessionToken is invalid");
+  console.log("Used config:");
+  console.log(config);
   newComputeSocket.stop();
   exitHandler();
 });

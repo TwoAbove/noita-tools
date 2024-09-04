@@ -78,11 +78,11 @@ const PatreonData: FC<IPatreonDataProps> = ({ data }) => {
   return (
     <div>
       <p>
-        Connected as <b>{userName}</b>
-        <br />
+        Connected as <b>{userName}</b> (
         <small className="fw-light">
-          {patreonId} / {noitoolId}
+          <b>{patreonId}</b>
         </small>
+        )
       </p>
       <div>
         <p>
