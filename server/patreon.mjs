@@ -597,36 +597,46 @@ router.post("/webhook", async (req, res) => {
 });
 
 const updatePatreonCompute = async () => {
-  // all users with last update more than 1 month ago
   const logs = [];
+  let patreonData = null;
+
   try {
-    logs.push("Fetching patron members");
+    logs.push({ message: "Fetching patron members" });
     const lastMonth = new Date();
     lastMonth.setMonth(lastMonth.getMonth() - 1);
     const users = await User.find({
       "compute.lastReset": {
-        $lte: lastMonth,
+        $lt: lastMonth.toISOString(),
       },
     });
-    logs.push(`Found ${users.length} users: ${users.map(u => u.id)}`);
+    logs.push({ message: `Found ${users.length} users`, userIds: users.map(u => u.id) });
+
     for (const user of users) {
       const patron = patronMembersCache.find(m => m.relationships.user.data.id === user.patreonId);
+      logs.push({ message: "Patron data", patron });
+
       let tierId;
       if (patron) {
         const tierIds = patron.relationships.currently_entitled_tiers.data.map(t => t.id);
         tierId = tierIds[0];
       }
+
       const amount = getComputeAmountForTier(tierId);
-      logs.push(`User ${user.id} tierId ${tierId} amount ${amount}`);
-      user.compute.lastReset = Date.now();
+      logs.push({ message: "Compute amount calculated", userId: user.id, tierId, amount });
+
+      user.compute.lastReset = new Date().toISOString();
       user.compute.patreonComputeLeft = amount;
       await user.save();
+      logs.push({ message: "User updated", userId: user.id });
     }
   } catch (e) {
-    logs.push(e);
+    logs.push({ message: "Error in updatePatreonCompute", error: e.message });
+    console.error("Error in updatePatreonCompute", e);
   }
-  console.log(logs.join("\n"));
+
+  logAtEnd(logs, patreonData);
 };
+
 schedule("* * * * *", () => updatePatreonCompute());
 
 export default router;
