@@ -9,10 +9,6 @@ export const counts = {
 };
 const users = {};
 
-setInterval(() => {
-  console.info(users);
-}, 5000);
-
 const registerUserSocket = (userId, socketId, type, appetite = 0) => {
   if (!users[userId]) {
     users[userId] = { hosts: new Set(), workers: new Set() };
@@ -60,8 +56,13 @@ const pingLambda = () => {
 };
 
 setInterval(() => {
+  console.info(users);
   if (counts.hosts > 0) {
-    pingLambda();
+    const userWithHostsAndCompute = Object.values(users).some(user => user.hosts.size > 0 && user.computeLeft > 0);
+
+    if (userWithHostsAndCompute) {
+      pingLambda();
+    }
   }
 }, 10000);
 
