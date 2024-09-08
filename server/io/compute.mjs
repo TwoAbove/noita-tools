@@ -9,6 +9,10 @@ export const counts = {
 };
 const users = {};
 
+setInterval(() => {
+  console.info(users);
+}, 5000);
+
 const registerUserSocket = (userId, socketId, type, appetite = 0) => {
   if (!users[userId]) {
     users[userId] = { hosts: new Set(), workers: new Set() };
