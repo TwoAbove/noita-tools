@@ -1,6 +1,6 @@
 import { schedule } from "node-cron";
 import { User } from "../db.mjs";
-import { mongo } from "mongoose";
+import { mongoose } from "mongoose";
 
 export const counts = {
   hosts: 0,
