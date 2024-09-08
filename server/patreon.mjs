@@ -128,10 +128,13 @@ const getComputeAmountForTier = tierId => {
   let amount;
 
   switch (tierId) {
+    case undefined: {
+      amount = nonHamisAmount;
+      break;
+    }
     case "9702578": {
       // Hämis
       amount = hamisAmount;
-
       break;
     }
     case "9702590": {
@@ -619,7 +622,11 @@ const updatePatreonCompute = async () => {
       if (patron) {
         const tierIds = patron.relationships.currently_entitled_tiers.data.map(t => t.id);
         tierId = tierIds[0];
+      } else {
+        logs.push({ message: "User not found in patron members", userId: user.id });
       }
+
+      logs.push({ message: "Tier ID", tierId });
 
       const amount = getComputeAmountForTier(tierId);
       logs.push({ message: "Compute amount calculated", userId: user.id, tierId, amount });
