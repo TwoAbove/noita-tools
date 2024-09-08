@@ -197,6 +197,16 @@ const getComputeAmountForPledgeAmount = pledgeAmount => {
   return amount;
 };
 
+const logAtEnd = (logs, data) => {
+  const logObject = {
+    type: "PATREON_DEBUG",
+    timestamp: new Date().toISOString(),
+    logs: logs,
+    patreonData: data,
+  };
+  console.log(JSON.stringify(logObject));
+};
+
 router.get(
   "/redirect",
   RateLimit({
@@ -204,29 +214,45 @@ router.get(
     max: 60,
   }),
   async (req, res) => {
+    const logs = [];
+    let patreonData = null;
+
+    logs.push({ message: "Redirect route accessed", queryParams: req.query });
     // Login flow
     const { code, state } = req.query;
 
     if (state !== req.cookies.noitoolSessionToken) {
+      logs.push({
+        message: "Redirect state mismatch",
+        cookie: req.cookies.noitoolSessionToken,
+        state: state,
+      });
+      logAtEnd(logs, patreonData);
       res.redirect("/");
       return;
     }
 
     try {
       const tokens = await patreonOAuthClient.getTokens(code, process.env.PATREON_REDIRECT_URL);
+      logs.push({ message: "Tokens obtained" });
+      patreonData = { tokens };
 
       const data = await getIdentity(tokens.access_token);
+      logs.push({ message: "Identity data retrieved" });
+      patreonData.identity = data;
 
       const { id } = data.data;
 
       let user = await User.findOne({ patreonId: id });
+      logs.push({
+        message: user ? "User found" : "User not found",
+        userId: user ? user._id : null,
+      });
 
       if (!user) {
         user = await User.create({
           _id: new Types.ObjectId(),
-
           patreonData: tokens,
-
           patreonId: id,
           sessionToken: req.cookies.noitoolSessionToken,
           compute: {
@@ -236,35 +262,43 @@ router.get(
             providedComputeLeft: 0,
           },
         });
+        logs.push({ message: "New user created", userId: user._id });
 
         // handle new user
-
         let amount = +nonHamisAmount;
 
         // Check if user is a patron
         const patron = patronMembersCache.find(m => m.relationships.user.data.id === id);
+        logs.push({ message: "Patron check", patron });
         if (patron) {
           const tierIds = patron.relationships.currently_entitled_tiers.data.map(t => t.id);
           const tierId = tierIds[0];
           amount = getComputeAmountForTier(tierId);
+          logs.push({ message: "Patron found", tierId: tierId, amount });
         }
         user.compute.patreonComputeLeft = amount;
 
         await user.save();
+        logs.push({ message: "User saved with compute amount", amount });
       } else {
         user.patreonData = tokens;
         res.cookie("noitoolSessionToken", user.sessionToken, {
           maxAge: 1000 * 60 * 60 * 24 * 365,
           sameSite: "lax",
         });
+        logs.push({ message: "Existing user updated. Session token set." });
 
         await user.save();
       }
     } catch (e) {
-      console.error(e);
+      logs.push({ message: "Error in redirect route", error: e.message });
+      console.error("Error in redirect route", e);
+      logAtEnd(logs, patreonData);
       return res.redirect("/");
     }
 
+    logs.push({ message: "Redirect successful. Redirecting to /" });
+    logAtEnd(logs, patreonData);
     res.redirect("/");
   },
 );
@@ -472,16 +506,25 @@ const getPledgeAmount = patron =>
 
 // handle patreon webhook
 router.post("/webhook", async (req, res) => {
+  const logs = [];
+  let patreonData = null;
+
+  logs.push({ message: "Webhook received", event: req.headers["x-patreon-event"] });
   const headers = req.headers;
   const secret = headers["x-patreon-signature"];
-  console.log(headers);
+  logs.push({ message: "Headers received" });
+  patreonData = { headers };
+
   const hash = createHmac("md5", process.env.PATREON_WEBHOOK_SECRET).update(req.rawBody).digest("hex");
   if (hash !== secret) {
+    logs.push({ message: "Webhook authentication failed" });
+    logAtEnd(logs, patreonData);
     res.status(401).send(null);
     return;
   }
 
-  console.log("Patreon webhook", headers["x-patreon-event"], req.body);
+  logs.push({ message: "Webhook authenticated" });
+  patreonData.body = req.body;
 
   const trigger = headers["x-patreon-event"];
   const { body } = req;
@@ -492,16 +535,19 @@ router.post("/webhook", async (req, res) => {
       const patreonId = patron.relationships.user.data.id;
       const pledgeAmount = getPledgeAmount(patron);
       const amount = getComputeAmountForPledgeAmount(pledgeAmount);
+      logs.push({
+        message: "New pledge",
+        patreonId: patreonId,
+        pledgeAmount: pledgeAmount,
+        computeAmount: amount,
+      });
 
       let user = await User.findOne({ patreonId: { $eq: patreonId } });
       if (!user) {
         user = await User.create({
           _id: new Types.ObjectId(),
-
           patreonId,
-
           sessionToken: randomUUID(),
-
           compute: {
             lastReset: new Date(),
             resetDay: new Date().getDate(),
@@ -509,8 +555,10 @@ router.post("/webhook", async (req, res) => {
             providedComputeLeft: 0,
           },
         });
+        logs.push({ message: "New user created for pledge", userId: user.patreonId });
       } else {
         user.compute.patreonComputeLeft = amount;
+        logs.push({ message: "Existing user updated for pledge", userId: user.patreonId });
       }
       await user.save();
       break;
@@ -520,21 +568,31 @@ router.post("/webhook", async (req, res) => {
       const patreonId = patron.relationships.user.data.id;
       const pledgeAmount = getPledgeAmount(patron);
       const amount = getComputeAmountForPledgeAmount(pledgeAmount);
+      logs.push({
+        message: "Pledge update",
+        patreonId: patreonId,
+        newPledgeAmount: pledgeAmount,
+        newComputeAmount: amount,
+      });
       const user = await User.findOne({ patreonId: { $eq: patreonId } });
       if (!user) {
-        // This should never happen
-        console.error("User not found", patreonId);
+        logs.push({ message: "User not found for pledge update", patreonId: patreonId });
         break;
       }
       user.compute.patreonComputeLeft = amount;
       await user.save();
+      logs.push({ message: "User updated for pledge update", userId: user.id });
       break;
     }
     default: {
+      console.error("Unhandled webhook event", trigger);
+      logs.push({ message: "Unhandled webhook event", event: trigger });
       break;
     }
   }
 
+  logs.push({ message: "Webhook processing complete" });
+  logAtEnd(logs, patreonData);
   res.status(200).send(null);
 });
 
