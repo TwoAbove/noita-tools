@@ -119,18 +119,23 @@ const uploadToB2 = async (data, bucketId, fileName) => {
   if (!hasB2) {
     return;
   }
-  const uploadUrl = await b2.getUploadUrl({
-    bucketId,
-  });
+  try {
+    const uploadUrlResponse = await b2.getUploadUrl({
+      bucketId,
+    });
 
-  const upload = await b2.uploadFile({
-    uploadUrl,
-    uploadAuthToken: uploadUrl.data.authorizationToken,
-    fileName,
-    data,
-  });
+    const upload = await b2.uploadFile({
+      uploadUrl: uploadUrlResponse.data.uploadUrl,
+      uploadAuthToken: uploadUrlResponse.data.authorizationToken,
+      fileName,
+      data,
+    });
 
-  return upload;
+    return upload;
+  } catch (error) {
+    console.error("Error in uploadToB2:", error);
+    throw error;
+  }
 };
 
 const m = multer();
