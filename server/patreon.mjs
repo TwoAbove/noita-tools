@@ -17,7 +17,7 @@ const router = Router();
 
 const membersQuery = () => {
   const membersQueryParams = {
-    include: ["currently_entitled_tiers", "user"].join(","),
+    include: ["currently_entitled_tiers", "user", "currently_entitled_tiers.campaign"].join(","),
     "fields[member]": [
       "full_name",
       "is_follower",
@@ -25,7 +25,8 @@ const membersQuery = () => {
       "currently_entitled_amount_cents",
       "patron_status",
     ].join(","),
-    "fields[tier]": ["amount_cents", "published", "title", "url"].join(","),
+    "fields[tier]": ["amount_cents", "title", "description"].join(","),
+    "fields[campaign]": ["vanity"].join(","),
   };
 
   const membersQuery = new URL("https://www.patreon.com/api/oauth2/v2/campaigns/10343002/members");
@@ -58,7 +59,7 @@ const getPatreonPatronsData = async () => {
   }
 
   const tiers = data.included
-    .filter(i => i.type === "tier" && i.attributes.published)
+    .filter(i => i.type === "tier")
     .reduce((acc, tier) => {
       acc[tier.id] = tier;
       return acc;
@@ -87,9 +88,12 @@ const getPatreonPatronsData = async () => {
 };
 
 let patronCache = {};
+let tierCache = {};
 
 const updatePatrons = async () => {
-  patronCache = await getPatreonPatronsData();
+  const data = await getPatreonPatronsData();
+  patronCache = data.tierMembers;
+  tierCache = data.tiers;
 };
 
 updatePatrons();
@@ -132,29 +136,34 @@ const getComputeAmountForTier = tierId => {
       amount = nonHamisAmount;
       break;
     }
+    case "20133846": {
+      // Free
+      amount = +nonHamisAmount;
+      break;
+    }
     case "9702578": {
       // Hämis
-      amount = hamisAmount;
+      amount = +hamisAmount;
       break;
     }
     case "9702590": {
       // Hämis Hämis
-      amount = hamis2Amount;
+      amount = +hamis2Amount;
       break;
     }
     case "9702596": {
       // Hämis Hämis Hämis
-      amount = hamis3Amount;
+      amount = +hamis3Amount;
       break;
     }
     case "9704115": {
       // Hämis Hämis Hämis Hämis
-      amount = hamis4Amount;
+      amount = +hamis4Amount;
       break;
     }
     default: {
       amount = +nonHamisAmount;
-      console.error("Unknown tier", tierId);
+      console.error("Unknown tier", tierId, JSON.stringify(tierCache));
       break;
     }
   }
@@ -169,7 +178,6 @@ const getComputeAmountForPledgeAmount = pledgeAmount => {
     case 400: {
       // Hämis
       amount = hamisAmount;
-
       break;
     }
     case 800: {
@@ -189,7 +197,7 @@ const getComputeAmountForPledgeAmount = pledgeAmount => {
     }
     default: {
       amount = (1000 * 60 * 60 * 10 * 400) / pledgeAmount;
-      console.error("Unknown pledgeAmount", pledgeAmount);
+      console.error("Unknown pledgeAmount", pledgeAmount, JSON.stringify(tierCache));
       if (isNaN(amount)) {
         amount = hamis4Amount;
       }
