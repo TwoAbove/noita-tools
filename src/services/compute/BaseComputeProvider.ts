@@ -8,7 +8,7 @@ export class BaseComputeProvider {
   constructor(
     public onUpdate: (status: Status) => void,
     public chunkProvider: ChunkProvider,
-    public rules: ILogicRules
+    public rules: ILogicRules,
   ) {}
 
   start() {
@@ -25,7 +25,7 @@ export class BaseComputeProvider {
     return {
       running: this.running,
       checked: this.chunkProvider.progress,
-      results: [...this.chunkProvider.results.values()] || [],
+      results: [...this.chunkProvider.results.values()],
       estimate: this.chunkProvider.eta.estimate(),
       rate: this.chunkProvider.eta.rate(),
       currentChunk: this.chunkProvider.config.searchFrom,
