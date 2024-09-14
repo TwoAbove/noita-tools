@@ -47,15 +47,15 @@ let patronMembersCache = [];
 
 const getPatreonPatronsData = async () => {
   if (!process.env.PATREON_CREATORS_ACCESS_TOKEN) {
-    return {};
+    return { tierMembers: {}, tiers: {} };
   }
 
-  // TODO: Handler pagination
+  // TODO: Handle pagination
   const data = await membersQuery();
 
   if (data.errors) {
     console.error("Patreon API error", data.errors);
-    return {};
+    return { tierMembers: {}, tiers: {} };
   }
 
   const tiers = data.included
@@ -84,16 +84,36 @@ const getPatreonPatronsData = async () => {
       return acc;
     }, {});
 
-  return tierMembers;
+  tierMembers.Donation = {
+    tier: {
+      id: "donation",
+      type: "tier",
+      attributes: {
+        amount_cents: 0,
+        title: "Donation",
+        url: "",
+        description: "One-time donations",
+        created_at: new Date().toISOString(),
+        edited_at: new Date().toISOString(),
+        published: true,
+        published_at: new Date().toISOString(),
+        patron_count: 1,
+        requires_shipping: false,
+      },
+    },
+    members: ["BurritoSuicide"],
+  };
+
+  return { tierMembers, tiers };
 };
 
 let patronCache = {};
 let tierCache = {};
 
 const updatePatrons = async () => {
-  const data = await getPatreonPatronsData();
-  patronCache = data.tierMembers;
-  tierCache = data.tiers;
+  const { tierMembers, tiers } = await getPatreonPatronsData();
+  patronCache = tierMembers;
+  tierCache = tiers;
 };
 
 updatePatrons();

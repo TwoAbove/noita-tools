@@ -1,5 +1,5 @@
-import React, { FC, useState, Suspense, useEffect } from "react";
-import { Container, Stack, Button, Row, Col } from "react-bootstrap";
+import React, { FC, useState, useEffect } from "react";
+import { Row, Col } from "react-bootstrap";
 import Marquee from "react-fast-marquee";
 import { useIsOverflow } from "./helpers";
 
@@ -43,7 +43,7 @@ const PatronScroll: FC<{
   const patronsRow = (
     <div ref={ref} className="d-flex">
       {patrons.map((patron, i) => (
-        <div className="mx-1" key={patron}>
+        <div className="mx-1" key={`${patron}-${i}`}>
           {patron}
         </div>
       ))}
@@ -51,16 +51,9 @@ const PatronScroll: FC<{
     </div>
   );
 
-  // The link patreon returns is broken
-  // so redirect to patreon.
   const title = (
     <div className="mx-1">
-      <a
-        target="_blank"
-        rel="noreferrer"
-        href={`https://www.patreon.com/join/10343002`}
-        // href={`https://www.patreon.com${tierUrl}`}
-      >
+      <a target="_blank" rel="noreferrer" href={`https://www.patreon.com/join/10343002`}>
         {tier}
       </a>{" "}
       tier
@@ -88,41 +81,25 @@ const PatronScroll: FC<{
 
 const Patrons = () => {
   const [patrons, setPatrons] = useState<IPatrons>({});
+
   useEffect(() => {
     fetch("/api/patreon/patrons")
       .then(res => res.json())
       .then(data => {
-        const patrons = data;
-        patrons.Donation = {
-          members: ["BurritoSuicide"],
-          tier: {
-            attributes: {
-              amount_cents: 0,
-              title: "Donation",
-              url: "",
-            },
-          },
-        };
-        setPatrons(patrons);
+        setPatrons(data);
       })
       .catch(e => {
         console.error(e);
       });
   }, []);
 
-  const elements: JSX.Element[] = [];
-
-  Object.keys(patrons)
-    .sort((a, b) => patrons[b].tier.attributes.amount_cents - patrons[a].tier.attributes.amount_cents)
-    .forEach(tierId => {
-      const tier = patrons[tierId];
-
-      elements.push(
-        <Col key={tierId} className="p-2">
-          <PatronScroll patrons={tier.members} tier={tier.tier.attributes.title} tierUrl={tier.tier.attributes.url} />
-        </Col>
-      );
-    });
+  const elements: JSX.Element[] = Object.entries(patrons)
+    .sort(([, a], [, b]) => b.tier.attributes.amount_cents - a.tier.attributes.amount_cents)
+    .map(([tierId, tier]) => (
+      <Col key={tierId} className="p-2">
+        <PatronScroll patrons={tier.members} tier={tier.tier.attributes.title} tierUrl={tier.tier.attributes.url} />
+      </Col>
+    ));
 
   return (
     <Row xs={1} md={3} className="justify-content-start m-0 my-2">
