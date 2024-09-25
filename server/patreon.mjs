@@ -377,16 +377,16 @@ const loadPatreonClient = async (req, res, next) => {
     if (!response.ok) {
       console.error(`Patreon API error: ${response.status} ${response.statusText}`);
       if (response.status === 503) {
-        // Service Unavailable, we might want to retry after a delay
         return res.status(503).json({ error: "Patreon service temporarily unavailable" });
       }
-      // For other errors, we'll send a generic error message
-      return res.status(500).json({ error: "Error fetching Patreon data" });
+      return res.status(response.status).json({ error: "Error fetching Patreon data" });
     }
 
     const contentType = response.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-      // Handle non-JSON responses
+    if (
+      !contentType ||
+      !(contentType.includes("application/json") || contentType.includes("application/vnd.api+json"))
+    ) {
       console.error("Unexpected content type from Patreon API:", contentType);
       return res.status(500).json({ error: "Unexpected response from Patreon" });
     }
