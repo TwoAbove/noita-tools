@@ -16,10 +16,17 @@ var create_noita_random = (() => {
     var ENVIRONMENT_IS_WEB = typeof window == "object";
     var ENVIRONMENT_IS_WORKER = typeof importScripts == "function";
     var ENVIRONMENT_IS_NODE =
-      typeof process == "object" && typeof process.versions == "object" && typeof process.versions.node == "string";
+      typeof process == "object" &&
+      typeof process.versions == "object" &&
+      typeof process.versions.node == "string" &&
+      process.type != "renderer";
     if (ENVIRONMENT_IS_NODE) {
-      const { createRequire: createRequire } = await import("module");
-      var require = createRequire(import.meta.url);
+      const { createRequire } = await import("module");
+      let dirname = import.meta.url;
+      if (dirname.startsWith("data:")) {
+        dirname = "/";
+      }
+      var require = createRequire(dirname);
     }
     var moduleOverrides = Object.assign({}, Module);
     var arguments_ = [];
@@ -38,7 +45,9 @@ var create_noita_random = (() => {
     if (ENVIRONMENT_IS_NODE) {
       var fs = require("fs");
       var nodePath = require("path");
-      scriptDirectory = require("url").fileURLToPath(new URL("./", import.meta.url));
+      if (!import.meta.url.startsWith("data:")) {
+        scriptDirectory = nodePath.dirname(require("url").fileURLToPath(import.meta.url)) + "/";
+      }
       readBinary = filename => {
         filename = isFileURI(filename) ? new URL(filename) : nodePath.normalize(filename);
         var ret = fs.readFileSync(filename);
@@ -101,12 +110,9 @@ var create_noita_random = (() => {
     moduleOverrides = null;
     if (Module["arguments"]) arguments_ = Module["arguments"];
     if (Module["thisProgram"]) thisProgram = Module["thisProgram"];
-    if (Module["quit"]) quit_ = Module["quit"];
-    var wasmBinary;
-    if (Module["wasmBinary"]) wasmBinary = Module["wasmBinary"];
+    var wasmBinary = Module["wasmBinary"];
     var wasmMemory;
     var ABORT = false;
-    var EXITSTATUS;
     var HEAP8, HEAPU8, HEAP16, HEAPU16, HEAP32, HEAPU32, HEAPF32, HEAPF64;
     function updateMemoryViews() {
       var b = wasmMemory.buffer;
@@ -181,7 +187,6 @@ var create_noita_random = (() => {
       what = "Aborted(" + what + ")";
       err(what);
       ABORT = true;
-      EXITSTATUS = 1;
       what += ". Build with -sASSERTIONS for more info.";
       var e = new WebAssembly.RuntimeError(what);
       readyPromiseReject(e);
@@ -272,7 +277,7 @@ var create_noita_random = (() => {
           readyPromiseReject(e);
         }
       }
-      if (!wasmBinaryFile) wasmBinaryFile = findWasmBinary();
+      wasmBinaryFile ??= findWasmBinary();
       instantiateAsync(wasmBinary, wasmBinaryFile, info, receiveInstantiationResult).catch(readyPromiseReject);
       return {};
     }
@@ -372,15 +377,6 @@ var create_noita_random = (() => {
       get_adjusted_ptr() {
         return HEAPU32[(this.ptr + 16) >> 2];
       }
-      get_exception_ptr() {
-        var isPointer = ___cxa_is_pointer_type(this.get_type());
-        if (isPointer) {
-          return HEAPU32[this.excPtr >> 2];
-        }
-        var adjusted = this.get_adjusted_ptr();
-        if (adjusted !== 0) return adjusted;
-        return this.excPtr;
-      }
     }
     var exceptionLast = 0;
     var uncaughtExceptionCount = 0;
@@ -423,9 +419,7 @@ var create_noita_random = (() => {
       throw new InternalError(message);
     };
     var whenDependentTypesAreResolved = (myTypes, dependentTypes, getTypeConverters) => {
-      myTypes.forEach(function (type) {
-        typeDependencies[type] = dependentTypes;
-      });
+      myTypes.forEach(type => (typeDependencies[type] = dependentTypes));
       function onComplete(typeConverters) {
         var myTypeConverters = getTypeConverters(typeConverters);
         if (myTypeConverters.length !== myTypes.length) {
@@ -480,16 +474,13 @@ var create_noita_random = (() => {
       }
     }
     function registerType(rawType, registeredInstance, options = {}) {
-      if (!("argPackAdvance" in registeredInstance)) {
-        throw new TypeError("registerType registeredInstance requires argPackAdvance");
-      }
       return sharedRegisterType(rawType, registeredInstance, options);
     }
     var GenericWireTypeSize = 8;
     var __embind_register_bool = (rawType, name, trueValue, falseValue) => {
       name = readLatin1String(name);
       registerType(rawType, {
-        name: name,
+        name,
         fromWireType: function (wt) {
           return !!wt;
         },
@@ -633,7 +624,7 @@ var create_noita_random = (() => {
             smartPtr: ptr,
           });
         } else {
-          return makeClassHandle(this.registeredClass.instancePrototype, { ptrType: this, ptr: ptr });
+          return makeClassHandle(this.registeredClass.instancePrototype, { ptrType: this, ptr });
         }
       }
       var actualType = this.registeredClass.getActualType(rawPointer);
@@ -674,7 +665,7 @@ var create_noita_random = (() => {
         var $$ = handle.$$;
         var hasSmartPtr = !!$$.smartPtr;
         if (hasSmartPtr) {
-          var info = { $$: $$ };
+          var info = { $$ };
           finalizationRegistry.register(handle, info, handle);
         }
         return handle;
@@ -1204,35 +1195,32 @@ var create_noita_random = (() => {
     }
     function createJsInvoker(argTypes, isClassMethodFunc, returns, isAsync) {
       var needsDestructorStack = usesDestructorStack(argTypes);
-      var argCount = argTypes.length;
-      var argsList = "";
-      var argsListWired = "";
-      for (var i = 0; i < argCount - 2; ++i) {
-        argsList += (i !== 0 ? ", " : "") + "arg" + i;
-        argsListWired += (i !== 0 ? ", " : "") + "arg" + i + "Wired";
+      var argCount = argTypes.length - 2;
+      var argsList = [];
+      var argsListWired = ["fn"];
+      if (isClassMethodFunc) {
+        argsListWired.push("thisWired");
       }
-      var invokerFnBody = `\n        return function (${argsList}) {\n        if (arguments.length !== ${argCount - 2}) {\n          throwBindingError('function ' + humanName + ' called with ' + arguments.length + ' arguments, expected ${argCount - 2}');\n        }`;
+      for (var i = 0; i < argCount; ++i) {
+        argsList.push(`arg${i}`);
+        argsListWired.push(`arg${i}Wired`);
+      }
+      argsList = argsList.join(",");
+      argsListWired = argsListWired.join(",");
+      var invokerFnBody = `return function (${argsList}) {\n`;
       if (needsDestructorStack) {
         invokerFnBody += "var destructors = [];\n";
       }
       var dtorStack = needsDestructorStack ? "destructors" : "null";
       var args1 = ["humanName", "throwBindingError", "invoker", "fn", "runDestructors", "retType", "classParam"];
       if (isClassMethodFunc) {
-        invokerFnBody += "var thisWired = classParam['toWireType'](" + dtorStack + ", this);\n";
+        invokerFnBody += `var thisWired = classParam['toWireType'](${dtorStack}, this);\n`;
       }
-      for (var i = 0; i < argCount - 2; ++i) {
-        invokerFnBody += "var arg" + i + "Wired = argType" + i + "['toWireType'](" + dtorStack + ", arg" + i + ");\n";
-        args1.push("argType" + i);
+      for (var i = 0; i < argCount; ++i) {
+        invokerFnBody += `var arg${i}Wired = argType${i}['toWireType'](${dtorStack}, arg${i});\n`;
+        args1.push(`argType${i}`);
       }
-      if (isClassMethodFunc) {
-        argsListWired = "thisWired" + (argsListWired.length > 0 ? ", " : "") + argsListWired;
-      }
-      invokerFnBody +=
-        (returns || isAsync ? "var rv = " : "") +
-        "invoker(fn" +
-        (argsListWired.length > 0 ? ", " : "") +
-        argsListWired +
-        ");\n";
+      invokerFnBody += (returns || isAsync ? "var rv = " : "") + `invoker(${argsListWired});\n`;
       if (needsDestructorStack) {
         invokerFnBody += "runDestructors(destructors);\n";
       } else {
@@ -1340,6 +1328,7 @@ var create_noita_random = (() => {
       context,
       isPureVirtual,
       isAsync,
+      isNonnullReturn,
     ) => {
       var rawArgTypes = heap32VectorToArray(argCount, rawArgTypesAddr);
       methodName = readLatin1String(methodName);
@@ -1543,7 +1532,7 @@ var create_noita_random = (() => {
     var __embind_register_float = (rawType, name, size) => {
       name = readLatin1String(name);
       registerType(rawType, {
-        name: name,
+        name,
         fromWireType: value => value,
         toWireType: (destructors, value) => value,
         argPackAdvance: GenericWireTypeSize,
@@ -1551,7 +1540,16 @@ var create_noita_random = (() => {
         destructorFunction: null,
       });
     };
-    var __embind_register_function = (name, argCount, rawArgTypesAddr, signature, rawInvoker, fn, isAsync) => {
+    var __embind_register_function = (
+      name,
+      argCount,
+      rawArgTypesAddr,
+      signature,
+      rawInvoker,
+      fn,
+      isAsync,
+      isNonnullReturn,
+    ) => {
       var argTypes = heap32VectorToArray(argCount, rawArgTypesAddr);
       name = readLatin1String(name);
       name = getFunctionName(name);
@@ -1610,9 +1608,9 @@ var create_noita_random = (() => {
         };
       }
       registerType(primitiveType, {
-        name: name,
-        fromWireType: fromWireType,
-        toWireType: toWireType,
+        name,
+        fromWireType,
+        toWireType,
         argPackAdvance: GenericWireTypeSize,
         readValueFromPointer: integerReadValueFromPointer(name, size, minRange !== 0),
         destructorFunction: null,
@@ -1639,7 +1637,7 @@ var create_noita_random = (() => {
       registerType(
         rawType,
         {
-          name: name,
+          name,
           fromWireType: decodeMemoryView,
           argPackAdvance: GenericWireTypeSize,
           readValueFromPointer: decodeMemoryView,
@@ -1647,8 +1645,9 @@ var create_noita_random = (() => {
         { ignoreDuplicateRegistrations: true },
       );
     };
+    var EmValOptionalType = Object.assign({ optional: true }, EmValType);
     var __embind_register_optional = (rawOptionalType, rawType) => {
-      __embind_register_emval(rawOptionalType);
+      registerType(rawOptionalType, EmValOptionalType);
     };
     var stringToUTF8Array = (str, heap, outIdx, maxBytesToWrite) => {
       if (!(maxBytesToWrite > 0)) return 0;
@@ -1705,7 +1704,7 @@ var create_noita_random = (() => {
       name = readLatin1String(name);
       var stdStringIsUTF8 = name === "std::string";
       registerType(rawType, {
-        name: name,
+        name,
         fromWireType(value) {
           var length = HEAPU32[value >> 2];
           var payload = value + 4;
@@ -1879,7 +1878,7 @@ var create_noita_random = (() => {
         readCharAt = pointer => HEAPU32[pointer >> 2];
       }
       registerType(rawType, {
-        name: name,
+        name,
         fromWireType: value => {
           var length = HEAPU32[value >> 2];
           var str;
@@ -1925,7 +1924,7 @@ var create_noita_random = (() => {
       name = readLatin1String(name);
       registerType(rawType, {
         isVoid: true,
-        name: name,
+        name,
         argPackAdvance: 0,
         fromWireType: () => undefined,
         toWireType: (destructors, o) => undefined,
@@ -1992,7 +1991,7 @@ var create_noita_random = (() => {
         params.push("argType" + i);
         args.push(types[i]);
         functionBody += `  var arg${i} = argType${i}.readValueFromPointer(args${offset ? "+" + offset : ""});\n`;
-        offset += types[i]["argPackAdvance"];
+        offset += types[i].argPackAdvance;
       }
       var invoker = kind === 1 ? "new func" : "func.call";
       functionBody += `  var rv = ${invoker}(${argsList.join(", ")});\n`;
@@ -2018,6 +2017,7 @@ var create_noita_random = (() => {
       return Emval.toHandle(v);
     };
     var getHeapMax = () => 2147483648;
+    var alignMemory = (size, alignment) => Math.ceil(size / alignment) * alignment;
     var growMemory = size => {
       var b = wasmMemory.buffer;
       var pages = (size - b.byteLength + 65535) / 65536;
@@ -2034,11 +2034,10 @@ var create_noita_random = (() => {
       if (requestedSize > maxHeapSize) {
         return false;
       }
-      var alignUp = (x, multiple) => x + ((multiple - (x % multiple)) % multiple);
       for (var cutDown = 1; cutDown <= 4; cutDown *= 2) {
         var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown);
         overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296);
-        var newSize = Math.min(maxHeapSize, alignUp(Math.max(requestedSize, overGrownHeapSize), 65536));
+        var newSize = Math.min(maxHeapSize, alignMemory(Math.max(requestedSize, overGrownHeapSize), 65536));
         var replacement = growMemory(newSize);
         if (replacement) {
           return true;
@@ -2192,9 +2191,8 @@ var create_noita_random = (() => {
     var __emscripten_stack_restore = a0 => (__emscripten_stack_restore = wasmExports["H"])(a0);
     var __emscripten_stack_alloc = a0 => (__emscripten_stack_alloc = wasmExports["I"])(a0);
     var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmExports["J"])();
-    var ___cxa_is_pointer_type = a0 => (___cxa_is_pointer_type = wasmExports["K"])(a0);
     var dynCall_jiji = (Module["dynCall_jiji"] = (a0, a1, a2, a3, a4) =>
-      (dynCall_jiji = Module["dynCall_jiji"] = wasmExports["L"])(a0, a1, a2, a3, a4));
+      (dynCall_jiji = Module["dynCall_jiji"] = wasmExports["K"])(a0, a1, a2, a3, a4));
     Module["cwrap"] = cwrap;
     var calledRun;
     dependenciesFulfilled = function runCaller() {
@@ -2221,10 +2219,8 @@ var create_noita_random = (() => {
       }
       if (Module["setStatus"]) {
         Module["setStatus"]("Running...");
-        setTimeout(function () {
-          setTimeout(function () {
-            Module["setStatus"]("");
-          }, 1);
+        setTimeout(() => {
+          setTimeout(() => Module["setStatus"](""), 1);
           doRun();
         }, 1);
       } else {

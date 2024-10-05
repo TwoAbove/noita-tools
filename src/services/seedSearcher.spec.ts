@@ -78,6 +78,7 @@ describe("SeedSearcher", () => {
               val: [
                 {
                   type: 1,
+                  strict: true,
                   items: [],
                 },
                 null,
@@ -154,6 +155,7 @@ describe("SeedSearcher", () => {
             val: [
               {
                 type: 1,
+                strict: true,
                 items: [],
               },
               null,
@@ -197,6 +199,7 @@ describe("SeedSearcher", () => {
           val: [
             {
               type: 1,
+              strict: true,
               items: [],
             },
             null,
@@ -281,6 +284,7 @@ describe("SeedSearcher", () => {
                 val: [
                   {
                     type: 1,
+                    strict: true,
                     items: [],
                   },
                   null,
@@ -330,6 +334,7 @@ describe("SeedSearcher", () => {
               val: [
                 {
                   type: 1,
+                  strict: true,
                   items: [],
                 },
                 null,

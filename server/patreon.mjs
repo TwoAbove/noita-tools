@@ -111,9 +111,13 @@ let patronCache = {};
 let tierCache = {};
 
 const updatePatrons = async () => {
-  const { tierMembers, tiers } = await getPatreonPatronsData();
-  patronCache = tierMembers;
-  tierCache = tiers;
+  try {
+    const { tierMembers, tiers } = await getPatreonPatronsData();
+    patronCache = tierMembers;
+    tierCache = tiers;
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 updatePatrons();

@@ -294,13 +294,13 @@ export class ShopInfoProvider extends InfoProvider {
   ];
 
   test(rule: IRule): boolean {
-    const check = rule.strict ? includesAll : includesSome;
     for (let j = 0; j <= this.temples.length; j++) {
       const shop = rule.val[j];
       if (!shop) {
         continue;
       }
       try {
+        const check = shop.strict ? includesAll : includesSome;
         if (shop.type) {
           const info = this.provideLevel(j);
           if (shop.type !== info.type) {

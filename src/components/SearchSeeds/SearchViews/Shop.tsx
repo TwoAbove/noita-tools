@@ -1,5 +1,5 @@
 import React, { useReducer, useState, useEffect } from "react";
-import { Row, Col, Container, Stack, Button } from "react-bootstrap";
+import { Row, Col, Container, Stack, Button, Form } from "react-bootstrap";
 
 import WandIcon from "../../Icons/Wand";
 import Clickable from "../../Icons/Clickable";
@@ -12,16 +12,64 @@ import { Square } from "../../helpers";
 import SpellSelect from "../../SpellSelect";
 import WandSelect from "../../WandSelect";
 import cloneDeep from "lodash/cloneDeep.js";
+import { ConfigRow } from "../../Settings/helpers";
+
+interface WandAdditionalSettingsProps {
+  handleClickModal: () => void;
+}
+
+const WandAdditionalSettings = (props: WandAdditionalSettingsProps) => {
+  const { handleClickModal } = props;
+
+  return (
+    <Button onClick={handleClickModal} className="m-1">
+      Advanced Wand Filter
+    </Button>
+  );
+};
+
+interface SpellAdditionalSettingsProps {
+  strict: boolean;
+  handleClickModal: () => void;
+  handleAllSomeToggle: (val: boolean) => void;
+}
+
+const SpellAdditionalSettingsProps = (props: SpellAdditionalSettingsProps) => {
+  const { handleClickModal, handleAllSomeToggle, strict } = props;
+  return (
+    <>
+      <Button onClick={handleClickModal} className="m-1">
+        Advanced Spell Filter
+      </Button>
+      <div>
+        <ConfigRow
+          left={<>{strict ? "All" : "Some"}</>}
+          right={
+            <Form.Switch
+              checked={strict}
+              onChange={e => {
+                handleAllSomeToggle(e.target.checked);
+              }}
+              label=""
+            />
+          }
+        />
+      </div>
+    </>
+  );
+};
 
 interface IShopLevelProps {
   handleClicked: (string) => void;
   handleClickModal: () => void;
+  handleAllSomeToggle: (val: boolean) => void;
   shop: any;
   level: number;
+  strict: boolean;
 }
 
 const ShopLevel = (props: IShopLevelProps) => {
-  const { handleClicked, handleClickModal, shop, level } = props;
+  const { handleClicked, handleClickModal, handleAllSomeToggle, shop, level } = props;
   return (
     <Row>
       <Col>
@@ -41,10 +89,13 @@ const ShopLevel = (props: IShopLevelProps) => {
               <LightBulletIcon />
             </Clickable>
           </Stack>
-          {!!shop.type && (
-            <Button onClick={handleClickModal} className="m-1">
-              Advanced Filter
-            </Button>
+          {shop.type === IShopType.wand && <WandAdditionalSettings handleClickModal={handleClickModal} />}
+          {shop.type === IShopType.item && (
+            <SpellAdditionalSettingsProps
+              handleClickModal={handleClickModal}
+              handleAllSomeToggle={handleAllSomeToggle}
+              strict={shop.strict}
+            />
           )}
         </div>
       </Col>
@@ -52,9 +103,9 @@ const ShopLevel = (props: IShopLevelProps) => {
   );
 };
 
-type IConfig = Array<{ type: string; items: any[] }>;
+type IConfig = Array<{ type: string; items: any[]; strict: boolean }>;
 interface IAction {
-  action: string;
+  action: "type" | "spell-add" | "spell-remove" | "strict";
   level: number;
   data?: any;
 }
@@ -65,7 +116,7 @@ const shopReducer = (state: IConfig, a: IAction): IConfig => {
   switch (action) {
     case "type": {
       if (!newState[level]) {
-        newState[level] = { type: data, items: [] };
+        newState[level] = { type: data, items: [], strict: true };
       } else {
         newState[level].type = data;
       }
@@ -85,6 +136,10 @@ const shopReducer = (state: IConfig, a: IAction): IConfig => {
       newState[level].items.splice(newState[level].items.indexOf(data), 1);
       return newState;
     }
+    case "strict": {
+      newState[level].strict = data;
+      return newState;
+    }
   }
   return state;
 };
@@ -99,14 +154,15 @@ const Shop = (props: IShopProps) => {
   const [d, setModal] = useState<[number, number]>([-1, IShopType.item]);
   const level = d[0];
   const shopType = d[1];
-  const [shops, dispatch] = useReducer(shopReducer, config.val);
+  const [shops, dispatch] = useReducer(shopReducer, config.val, () => {
+    return config.val.map(shop => shop || { type: "", items: [], strict: true });
+  });
 
   useEffect(() => {
     onUpdateConfig({
       type: "shop",
       path: "",
       params: [],
-      strict: true,
       val: shops,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,7 +176,11 @@ const Shop = (props: IShopProps) => {
   };
 
   const handleTypeClicked = (l, type) => {
-    dispatch({ data: type, level: l, action: "type" });
+    dispatch({ action: "type", data: type, level: l });
+  };
+
+  const handleStrictSet = (l, val) => {
+    dispatch({ action: "strict", data: val, level: l });
   };
 
   const handleOpenAdvancedModal = (i, type) => {
@@ -142,7 +202,9 @@ const Shop = (props: IShopProps) => {
                 <ShopLevel
                   handleClicked={type => handleTypeClicked(i, type)}
                   handleClickModal={() => handleOpenAdvancedModal(i, shop.type)}
+                  handleAllSomeToggle={val => handleStrictSet(i, val)}
                   level={i}
+                  strict={shop.strict}
                   shop={shop || {}}
                   key={i}
                 />
