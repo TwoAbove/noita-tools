@@ -70,6 +70,37 @@ export interface SearchesItem {
   updatedAt: Date;
 }
 
+async function createDefaultSearch(db: NoitaDB) {
+  const uuid = randomUUID();
+  await db.searches.add({
+    uuid,
+    config: {
+      name: "Default Search",
+      from: 1,
+      to: Math.pow(2, 31),
+      rules: btoa(
+        JSON.stringify({
+          id: "root",
+          type: RuleType.AND,
+          rules: [],
+          selectedRule: "search",
+        }),
+      ),
+    },
+    madeUsingVersion: APP_VERSION,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+
+  const currentSearchUUID = await db.configItems.get({ key: "search-current-search-uuid" });
+  if (!currentSearchUUID) {
+    await db.configItems.put({
+      key: "search-current-search-uuid",
+      val: uuid,
+    });
+  }
+}
+
 export class NoitaDB extends Dexie {
   configItems!: Table<ConfigItem, number>;
   seedInfo!: Table<SeedInfoItem, number>;
@@ -214,6 +245,18 @@ export class NoitaDB extends Dexie {
           });
       });
 
+    // Fix for searches table - things don't work if there are no searches
+    this.version(11)
+      .stores({
+        searches: "++id, &uuid, config, createdAt, updatedAt",
+      })
+      .upgrade(async t => {
+        const searchCount = await ((t as any).db.searches as NoitaDB["searches"]).count();
+        if (searchCount === 0) {
+          await createDefaultSearch(this);
+        }
+      });
+
     this.errorOnOpen = this.open()
       .then(() => null)
       .catch(e => {
@@ -283,6 +326,13 @@ export class NoitaDB extends Dexie {
     });
   }
 
+  async ensureAtLeastOneSearchExists() {
+    const searchCount = await this.searches.count();
+    if (searchCount === 0) {
+      await createDefaultSearch(this);
+    }
+  }
+
   async exportDB() {
     return await exportDB(this);
   }
@@ -334,6 +384,8 @@ async function populate() {
       val: true,
     },
   ]);
+
+  await db.ensureAtLeastOneSearchExists();
 }
 
 db.on("populate", populate);

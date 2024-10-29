@@ -117,6 +117,8 @@ ssl
 
 dataScripts/src/mapsToObj/gen
 dataScripts/src/out
+dataScripts/noita-data/data
+dataScripts/noita-data/translations
 
 cypress/screenshots/
 
