@@ -12,3 +12,8 @@ export const isLocal = () => {
       window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/),
   );
 };
+
+// Used for matching urls like /test
+export const isFullPath = (target: string) => {
+  return window.location.pathname === target;
+};

@@ -111,9 +111,13 @@ let patronCache = {};
 let tierCache = {};
 
 const updatePatrons = async () => {
-  const { tierMembers, tiers } = await getPatreonPatronsData();
-  patronCache = tierMembers;
-  tierCache = tiers;
+  try {
+    const { tierMembers, tiers } = await getPatreonPatronsData();
+    patronCache = tierMembers;
+    tierCache = tiers;
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 updatePatrons();
@@ -361,14 +365,48 @@ const loadUser = async (req, res, next) => {
 };
 
 const loadPatreonClient = async (req, res, next) => {
-  const patreonUser = await getIdentity(req.user.patreonData.access_token);
-  if (patreonUser.errors) {
-    res.status(401).send(null);
-    return;
-  }
+  try {
+    const response = await fetch(
+      `https://www.patreon.com/api/oauth2/v2/identity?${new URLSearchParams({
+        "fields[user]": ["full_name", "url", "image_url"],
+      })}`,
+      {
+        headers: {
+          Authorization: `Bearer ${req.user.patreonData.access_token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
-  req.patreonUser = patreonUser.data;
-  next();
+    if (!response.ok) {
+      console.error(`Patreon API error: ${response.status} ${response.statusText}`);
+      if (response.status === 503) {
+        return res.status(503).json({ error: "Patreon service temporarily unavailable" });
+      }
+      return res.status(response.status).json({ error: "Error fetching Patreon data" });
+    }
+
+    const contentType = response.headers.get("content-type");
+    if (
+      !contentType ||
+      !(contentType.includes("application/json") || contentType.includes("application/vnd.api+json"))
+    ) {
+      console.error("Unexpected content type from Patreon API:", contentType);
+      return res.status(500).json({ error: "Unexpected response from Patreon" });
+    }
+
+    const patreonUser = await response.json();
+    if (patreonUser.errors) {
+      console.error("Patreon API returned errors:", patreonUser.errors);
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    req.patreonUser = patreonUser.data;
+    next();
+  } catch (error) {
+    console.error("Error in loadPatreonClient:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 const gatherMeData = (user, patreonUser) => {

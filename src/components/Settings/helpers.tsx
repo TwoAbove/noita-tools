@@ -11,7 +11,7 @@ interface IConfigRowProps {
 export const ConfigRow = (props: IConfigRowProps) => {
   // Maybe make this work with children and not left/right props?
   return (
-    <Row className="align-items-center">
+    <Row className="align-items-baseline justify-content-between">
       <Col>{props.left}</Col>
       <Col className="col-auto">{props.right}</Col>
     </Row>

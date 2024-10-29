@@ -46,8 +46,12 @@ export interface VectorFungalTransformation {
 }
 
 interface EmbindModule {
-  VectorString: {new(): VectorString};
-  VectorFungalTransformation: {new(): VectorFungalTransformation};
+  VectorString: {
+    new(): VectorString;
+  };
+  VectorFungalTransformation: {
+    new(): VectorFungalTransformation;
+  };
   PickForSeed(_0: number, _1: number): VectorFungalTransformation;
 }
 

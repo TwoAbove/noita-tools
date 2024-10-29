@@ -9,7 +9,7 @@ import TestBench from "./TestBench";
 import { Compute, ComputeConsole } from "./Compute";
 import { ProfileContext } from "./Profile/ProfileContext";
 
-import { isDev, isLocal } from "./utils";
+import { isDev, isFullPath, isLocal } from "./utils";
 
 const Body = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -46,7 +46,7 @@ const Body = () => {
 
   const isLoggedIn = !!patreonData;
 
-  const showTestBench = isDev() && isLocal();
+  const showTestBench = (isDev() && isLocal()) || isFullPath("/test");
   const showClusterCompute = isLoggedIn; // || isDev();
   const showClusterComputeConsole = false; // isLocal();
 
