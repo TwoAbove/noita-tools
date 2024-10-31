@@ -54,7 +54,7 @@ const getPatreonPatronsData = async () => {
   const data = await membersQuery();
 
   if (data.errors) {
-    console.error("Patreon API error", data.errors);
+    console.error("Patreon API error, membersQuery", data.errors);
     return { tierMembers: {}, tiers: {} };
   }
 
@@ -379,7 +379,7 @@ const loadPatreonClient = async (req, res, next) => {
     );
 
     if (!response.ok) {
-      console.error(`Patreon API error: ${response.status} ${response.statusText}`);
+      console.error(`Patreon API error, loadPatreonClient: ${response.status} ${response.statusText}`);
       if (response.status === 503) {
         return res.status(503).json({ error: "Patreon service temporarily unavailable" });
       }
