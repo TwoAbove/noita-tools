@@ -366,17 +366,41 @@ const loadUser = async (req, res, next) => {
 
 const loadPatreonClient = async (req, res, next) => {
   try {
-    const response = await fetch(
-      `https://www.patreon.com/api/oauth2/v2/identity?${new URLSearchParams({
-        "fields[user]": ["full_name", "url", "image_url"],
-      })}`,
-      {
-        headers: {
-          Authorization: `Bearer ${req.user.patreonData.access_token}`,
-          "Content-Type": "application/json",
+    const fetchIdentity = async accessToken => {
+      const response = await fetch(
+        `https://www.patreon.com/api/oauth2/v2/identity?${new URLSearchParams({
+          "fields[user]": ["full_name", "url", "image_url"],
+        })}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
         },
-      },
-    );
+      );
+      return response;
+    };
+
+    let response = await fetchIdentity(req.user.patreonData.access_token);
+
+    if (response.status === 401) {
+      try {
+        const refreshedTokens = await patreonOAuthClient.refreshToken(req.user.patreonData.refresh_token);
+        req.user.patreonData = refreshedTokens;
+        await req.user.save();
+
+        response = await fetchIdentity(refreshedTokens.access_token);
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+
+        res.clearCookie("noitoolSessionToken");
+
+        return res.status(401).json({
+          error: "Patreon authentication expired. You have been logged out. Please re-link your account.",
+          action: "LOGOUT",
+        });
+      }
+    }
 
     if (!response.ok) {
       console.error(`Patreon API error, loadPatreonClient: ${response.status} ${response.statusText}`);
