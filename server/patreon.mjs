@@ -15,6 +15,26 @@ const patreonOAuthClient = patreonOAuth(process.env.PATREON_CLIENT_ID, process.e
 
 const router = Router();
 
+let creatorAccessToken = process.env.PATREON_CREATORS_ACCESS_TOKEN;
+let creatorRefreshToken = process.env.PATREON_CREATORS_REFRESH_TOKEN;
+
+const refreshCreatorToken = async () => {
+  try {
+    const tokens = await patreonOAuthClient.refreshToken(creatorRefreshToken);
+    creatorAccessToken = tokens.access_token;
+    creatorRefreshToken = tokens.refresh_token;
+
+    process.env.PATREON_CREATORS_ACCESS_TOKEN = creatorAccessToken;
+    process.env.PATREON_CREATORS_REFRESH_TOKEN = creatorRefreshToken;
+
+    console.log("Creator tokens refreshed successfully");
+  } catch (error) {
+    console.error("Error refreshing creator tokens:", error);
+  }
+};
+
+schedule("0 0 */10 * *", refreshCreatorToken); // 10 days
+
 const membersQuery = () => {
   const membersQueryParams = {
     include: ["currently_entitled_tiers", "user", "currently_entitled_tiers.campaign"].join(","),
@@ -29,24 +49,35 @@ const membersQuery = () => {
     "fields[campaign]": ["vanity"].join(","),
   };
 
-  const membersQuery = new URL("https://www.patreon.com/api/oauth2/v2/campaigns/10343002/members");
+  const membersQueryURL = new URL("https://www.patreon.com/api/oauth2/v2/campaigns/10343002/members");
 
   Object.entries(membersQueryParams).forEach(([key, value]) => {
-    membersQuery.searchParams.append(key, value);
+    membersQueryURL.searchParams.append(key, value);
   });
 
-  return fetch(membersQuery.href, {
+  return fetch(membersQueryURL.href, {
     headers: {
-      Authorization: `Bearer ${process.env.PATREON_CREATORS_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${creatorAccessToken}`,
       "Content-Type": "application/json",
     },
-  }).then(r => r.json());
+  }).then(async r => {
+    if (r.status === 401) {
+      await refreshCreatorToken();
+      return fetch(membersQueryURL.href, {
+        headers: {
+          Authorization: `Bearer ${creatorAccessToken}`,
+          "Content-Type": "application/json",
+        },
+      }).then(r => r.json());
+    }
+    return r.json();
+  });
 };
 
 let patronMembersCache = [];
 
 const getPatreonPatronsData = async () => {
-  if (!process.env.PATREON_CREATORS_ACCESS_TOKEN) {
+  if (!creatorAccessToken) {
     return { tierMembers: {}, tiers: {} };
   }
 
