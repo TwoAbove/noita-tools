@@ -41,6 +41,13 @@ const ProfileProvider = props => {
       fetch("/api/patreon/me")
         .then(async res => {
           if (res.status === 401) {
+            const data = await res.json();
+            if (data.action === "LOGOUT") {
+              setPatreonData(null);
+              setPatreonDataLoading(false);
+              console.log(data.error);
+              return null;
+            }
             return null;
           }
           try {
