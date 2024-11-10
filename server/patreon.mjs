@@ -86,6 +86,9 @@ const getPatreonPatronsData = async () => {
 
   if (data.errors) {
     console.error("Patreon API error, membersQuery", data.errors);
+    if (data.errors[0].status == 401) {
+      await refreshCreatorToken();
+    }
     return { tierMembers: {}, tiers: {} };
   }
 
