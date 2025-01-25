@@ -21,7 +21,7 @@ const Spell: FC<ISpellProps> = ({ id, className, width, highlight, ...rest }) =>
 
   return (
     <Icon
-      className={classNames(className, highlight && "shadow" && "spell")}
+      className={classNames(className, highlight && "shadow" && "icon-spell")}
       width={width || "2rem"}
       uri={item.sprite}
       title={t(item.name)}
