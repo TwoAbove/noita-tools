@@ -46,7 +46,7 @@ const Perk = (props: IPerkProps) => {
           />
         )}
         <Icon
-          className={classNames(highlight && "shadow")}
+          className={classNames(highlight && "shadow" && "icon-perk")}
           uri={perk.perk_icon}
           alt={t(perk.ui_description)}
           title={t(perk.ui_name)}
