@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, ReactElement, useContext } from "react";
 import { Card, CardGroup, Container, ListGroup, ListGroupItem, Stack } from "react-bootstrap";
 
 import GameInfoProvider from "../../../services/SeedInfo/infoHandler";
@@ -16,7 +16,7 @@ interface IAlchemyProps {
   infoProvider: GameInfoProvider;
 }
 
-const AlchemyCard: FC<{ materials: string[]; Title: JSX.Element }> = ({ materials, Title }) => {
+const AlchemyCard: FC<{ materials: string[]; Title: ReactElement }> = ({ materials, Title }) => {
   const { isFavorite } = useMaterialFavorite();
   return (
     <Card style={{ width: "12rem" }}>

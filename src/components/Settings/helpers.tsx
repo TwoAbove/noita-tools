@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import { Form, Col, Row, Container } from "react-bootstrap";
 import { useDropzone, DropzoneOptions } from "react-dropzone";
 
@@ -55,8 +55,13 @@ export const PanelToggle = (props: IPanelToggleProps) => {
   );
 };
 
-export const DropZone = (props: { children?: React.ReactChild; onDrop: DropzoneOptions["onDrop"] }) => {
-  const { children, onDrop } = props;
+export const DropZone = ({
+  children,
+  onDrop,
+}: {
+  children: ReactElement | ReactElement[];
+  onDrop: DropzoneOptions["onDrop"];
+}) => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (

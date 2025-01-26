@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, ReactElement } from "react";
 import { Row, Col } from "react-bootstrap";
 import Marquee from "react-fast-marquee";
 import { useIsOverflow } from "./helpers";
@@ -93,7 +93,7 @@ const Patrons = () => {
       });
   }, []);
 
-  const elements: JSX.Element[] = Object.entries(patrons)
+  const elements: ReactElement[] = Object.entries(patrons)
     .sort(([, a], [, b]) => b.tier.attributes.amount_cents - a.tier.attributes.amount_cents)
     .map(([tierId, tier]) => (
       <Col key={tierId} className="p-2">

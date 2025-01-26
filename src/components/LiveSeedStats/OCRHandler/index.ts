@@ -24,7 +24,7 @@ const startCapture = async (displayMediaOptions: MediaStreamConstraints): Promis
 };
 
 interface OCRConfig {
-  canvasRef?: React.RefObject<HTMLCanvasElement>;
+  canvasRef?: React.RefObject<HTMLCanvasElement | null>;
   onUpdate?: () => void;
 }
 class OCRHandler extends EventTarget {
@@ -37,7 +37,7 @@ class OCRHandler extends EventTarget {
 
   fontData!: IFontCanvases;
 
-  canvasRef?: React.RefObject<HTMLCanvasElement>;
+  canvasRef?: OCRConfig["canvasRef"];
   onUpdate: () => void;
 
   lastCapture = new Date();
@@ -73,12 +73,6 @@ class OCRHandler extends EventTarget {
       },
       // logger: console.log,
       // logger: this.canvasRef ? console.log : () => { },
-    });
-    await worker.setParameters({
-      tessedit_pageseg_mode: Tesseract.PSM.AUTO_ONLY, // https://github.com/tesseract-ocr/tesseract/blob/4.0.0/src/ccstruct/publictypes.h#L163
-      tessjs_create_hocr: "0",
-      tessjs_create_tsv: "0",
-      tessjs_create_box: "0",
     });
 
     if (this.tesseractWorker) {
@@ -204,8 +198,20 @@ class OCRHandler extends EventTarget {
       ctx.drawImage(img, 0, 0);
     }
 
-    const res = await this.tesseractWorker.recognize(img as any);
-    const secondLine = res.data.lines[1]; // seed is on the second line always
+    const res = await this.tesseractWorker.recognize(
+      img as any,
+      {},
+      {
+        text: true,
+        blocks: true,
+        debug: true,
+      },
+    );
+    if (!res.data || !res.data.blocks) {
+      return;
+    }
+    const lines = res.data.blocks.map(block => block.paragraphs.map(paragraph => paragraph.lines)).flat(2);
+    const secondLine = lines[1]; // seed is on the second line always
     if (!secondLine) {
       return;
     }

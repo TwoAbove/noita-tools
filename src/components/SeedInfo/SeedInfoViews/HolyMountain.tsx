@@ -1,5 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { createContext, FC, memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  createContext,
+  FC,
+  memo,
+  ReactElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Button, Col, Form, Stack, Modal, Row, Table } from "react-bootstrap";
 
 import GameInfoProvider from "../../../services/SeedInfo/infoHandler";
@@ -327,7 +338,7 @@ interface IHolyMountainHeaderProps {
   lotteries: number;
   setAdvanced: (boolean) => void;
   handleOffset: (type: "+" | "-") => void;
-  offsetText: () => JSX.Element;
+  offsetText: () => ReactElement;
   handleReset: () => void;
   handleBack: () => void;
   isPerkFavorite: (string) => boolean;
