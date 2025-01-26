@@ -4,48 +4,51 @@ import React, { useState } from "react";
 export interface IClickableProps {
   clicked?: boolean;
   useHover?: boolean;
+  wikiUrl?: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }
 
-const Clickable = (props: IClickableProps | any) => {
-  const { clicked, useHover, children, onClick, ...rest } = props;
-  const childrenWithProps = React.Children.map(children, child => {
-    if (React.isValidElement(child)) {
-      return React.cloneElement(child, { ...rest });
-    }
-    return child;
-  });
+const Clickable = (props: IClickableProps) => {
+  const { clicked, useHover, children, onClick, wikiUrl, ...rest } = props;
   const [hovered, setHovered] = useState(false);
 
-  const handleMouseEnter = e => {
-    setHovered(true);
+  const handleClick = (e: React.MouseEvent) => {
+    // Left click should always trigger onClick and prevent link
+    if (e.button === 0) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (onClick) {
+        onClick();
+      }
+    }
   };
 
-  const handleMouseLeave = e => {
-    setHovered(false);
-  };
-
-  // Clicked-style is prioritized, then hovered-style, otherwise fallback to default style.
-  const clickedOrHoveredStyle = clicked ? "bg-info" : hovered ? "bg-light" : "bg-body";
+  const clickedOrHoveredStyle = hovered ? "bg-light" : "";
 
   return (
     <div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
-        cursor: "pointer",
         transition: "0.1s",
-      }}
-      onClick={e => {
-        if (onClick) {
-          e.preventDefault();
-          e.stopPropagation();
-          onClick();
-        }
+        position: "relative",
       }}
       className={classNames(clickedOrHoveredStyle, "p-1 rounded-1")}
     >
-      {childrenWithProps}
+      {wikiUrl ? (
+        <a
+          href={wikiUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={handleClick}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          {children}
+        </a>
+      ) : (
+        <div onClick={handleClick}>{children}</div>
+      )}
     </div>
   );
 };

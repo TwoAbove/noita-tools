@@ -6,7 +6,7 @@ import { StartingBombSpellInfoProvider } from "../../../services/SeedInfo/infoHa
 import { StartingFlaskInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/StartingFlask";
 import { StartingSpellInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/StartingSpell";
 
-import Icon from "../../Icons/Icon";
+import Entity from "../../Icons/Entity";
 import { StaticPotion } from "./Potion";
 
 interface IStartProps {
@@ -21,6 +21,7 @@ const Start = (props: IStartProps) => {
   const { startingFlask, startingSpell, startingBombSpell } = props;
   const startingSpellSpell = spells.provide(startingSpell.toUpperCase());
   const startingBombSpellSpell = spells.provide(startingBombSpell.toUpperCase());
+
   return (
     <Card
       className="border"
@@ -32,8 +33,18 @@ const Start = (props: IStartProps) => {
       <Card.Title className="mb-1 text-center m-0">Starting setup</Card.Title>
       <Card.Body className="d-flex justify-content-evenly p-0 mx-1 mb-1">
         <Stack className="justify-content-center" direction="horizontal" gap={3}>
-          <Icon uri={startingSpellSpell.sprite} />
-          <Icon uri={startingBombSpellSpell.sprite} />
+          <Entity
+            id="Spell"
+            entityParams={{
+              extra: startingSpell.toUpperCase(),
+            }}
+          />
+          <Entity
+            id="Spell"
+            entityParams={{
+              extra: startingBombSpell.toUpperCase(),
+            }}
+          />
           <StaticPotion material={startingFlask} />
         </Stack>
       </Card.Body>

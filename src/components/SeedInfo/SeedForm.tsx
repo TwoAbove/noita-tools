@@ -19,7 +19,6 @@ const SeedForm = (props: ISeedFormProps) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     onSubmit(seed);
-    setSeed("");
   };
 
   return (

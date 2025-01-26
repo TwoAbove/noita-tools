@@ -9,21 +9,20 @@ import {
   ShopInfoProvider,
 } from "../../../services/SeedInfo/infoHandler/InfoProviders/Shop";
 
-import Icon from "../../Icons/Icon";
+import Entity from "../../Icons/Entity";
 import { Wand } from "./Wand";
 
 const Item = (props: { item: IItemShop["items"][number]; className: string; highlight?: boolean }) => {
   const { item, highlight, className } = props;
-  const { t } = useTranslation("materials");
   return (
     <div
       className={classNames("m-2 text-center d-flex flex-column justify-content-center align-items-center", className)}
     >
-      <Icon
+      <Entity
+        id="Spell"
+        entityParams={{ extra: item.spell.id }}
         className={classNames(highlight && "shadow")}
-        uri={item.spell.sprite}
-        title={t(item.spell.name)}
-        background
+        width="2rem"
       />
       {localizeNumber(item.price)}
     </div>

@@ -406,7 +406,7 @@ const HolyMountainHeader = (props: IHolyMountainHeaderProps) => {
           {!advanced && <span> Next: {localizeNumber(price)}</span>}
           <span> Total: {localizeNumber(total)}</span>
           {/* 50% per stack (multiplicative), rounded down to nearest int */}
-          <span>Lottery chance: {Math.floor(Math.pow(0.5, lotteries) * 100)}%</span>
+          {/* <span>Lottery chance: {Math.floor(Math.pow(0.5, lotteries) * 100)}%</span> */}
         </div>
         <div className="ms-auto" />
         <Button
@@ -731,21 +731,28 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
   // If gamble is picked in a row, we need to add the last 2 perks from the row
   // to the pickedPerks.
   const pickedPerksWithGambles = () => {
-    const pickedPerks = cloneDeep(infoProvider.config.pickedPerks.get(infoProvider.config.perkWorldOffset)) || [];
-    for (let i = 0; i < pickedPerks.length; i++) {
-      if (pickedPerks[i]?.includes("GAMBLE")) {
-        const perkRow = props.perks[i];
-        const p1 = perkRow[perkRow.length - 2].id;
-        const p2 = perkRow[perkRow.length - 1].id;
-        pickedPerks[i].push(p1, p2);
+    const pickedPerks = cloneDeep(infoProvider.config.pickedPerks || new Map());
+    for (const [n, pp] of pickedPerks) {
+      for (let i = 0; i < pp.length; i++) {
+        if (pp[i]?.includes("GAMBLE")) {
+          const perkRow = props.perks[i];
+          const p1 = perkRow[perkRow.length - 2].id;
+          const p2 = perkRow[perkRow.length - 1].id;
+          pp[i].push(p1, p2);
+        }
       }
     }
     return pickedPerks;
   };
 
+  const currentPickedPerks = advanced ? pickedPerks : pickedPerksWithGambles().get(worldOffsetSimple) || [];
+  const lotteriesSimple = [...pickedPerksWithGambles().values()].reduce((c, n) => {
+    return c + n.filter(p => p?.includes("PERKS_LOTTERY")).length;
+  }, 0);
+
   const perkData: IPerkData = {
     perks: advanced ? perks : props.perks,
-    pickedPerks: advanced ? pickedPerks : pickedPerksWithGambles(),
+    pickedPerks: currentPickedPerks,
     perkRerolls: advanced
       ? perkRerolls
       : infoProvider.config.perkRerolls.get(infoProvider.config.perkWorldOffset) || [],
@@ -753,19 +760,10 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
     totalRerolls,
     rerollPrice,
     rerollTotal,
-    lotteries: 0,
     worldOffset: advanced ? worldOffset : infoProvider.config.perkWorldOffset,
+    lotteries: advanced ? pd.lotteries : lotteriesSimple,
     ...favorites,
   };
-
-  const lotteries = advanced
-    ? pd.lotteries
-    : perkData.pickedPerks.reduce((c, r) => {
-        const l = (r || []).filter(p => p === "PERKS_LOTTERY").length;
-        return c + l;
-      }, 0);
-
-  perkData.lotteries = lotteries;
 
   return (
     <HolyMountainContext.Provider value={{ advanced, setAdvanced, perkMethods, perkData }}>
