@@ -1,8 +1,6 @@
 import { useState, useContext } from "react";
 import { ListGroup, Form } from "react-bootstrap";
-// import { DarkModeToggle } from "react-dark-mode-toggle-2";
 
-// import { db } from "../services/db";
 import i18n from "../../i18n";
 
 import { ThemeContext } from "../ThemeContext";
@@ -156,16 +154,14 @@ const DarkMode = () => {
         </>
       }
       right={
-        <div className="m-1">
-          {/* <DarkModeToggle
-            onChange={checked => {
-              setTheme(checked ? "dark" : "light");
-            }}
-            isDarkMode={theme === "dark"}
-            size={60}
-          /> */}
-          NOOP
-        </div>
+        <Form.Switch
+          checked={theme === "dark"}
+          onChange={e => {
+            setTheme(e.target.checked ? "dark" : "light");
+          }}
+          id="dark-mode-switch"
+          label=""
+        />
       }
     />
   );
