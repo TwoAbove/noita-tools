@@ -173,10 +173,10 @@ const GeneralSettings = () => {
       <ConfigTitle title="General" subtitle="These settings modify how Noitool behaves or displays things." />
       <ListGroup variant="flush" className="mb-5 shadow">
         <ListGroup.Item>
-          <Locale />
+          <DarkMode />
         </ListGroup.Item>
         <ListGroup.Item>
-          <DarkMode />
+          <Locale />
         </ListGroup.Item>
         <ListGroup.Item>
           <AlchemyConfig />
