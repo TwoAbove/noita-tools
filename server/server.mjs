@@ -71,9 +71,10 @@ app.use("/api", apiRoutes);
 
 const getSecondsTillUtcMidnight = () => {
   const now = new Date();
-  const midnight = new Date(now);
-  midnight.setUTCHours(24, 0, 0, 0);
-  return Math.floor((midnight - now) / 1000);
+  const tomorrow = new Date(now);
+  tomorrow.setUTCHours(0, 0, 0, 0);
+  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  return Math.floor((tomorrow - now) / 1000);
 };
 
 const getDailySeed = async () => {
