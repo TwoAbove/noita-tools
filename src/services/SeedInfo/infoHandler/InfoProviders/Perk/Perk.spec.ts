@@ -70,6 +70,23 @@ describe("PerkInfoProvider", () => {
           ["BLEED_OIL", "EXTRA_PERK", "TELEPORTITIS"],
         ],
       },
+      {
+        seed: 1879996134,
+        params: {
+          maxLevels: 7,
+          perk_picks: new Map([[0, [, , , , , ["GAMBLE"]]]]),
+          worldOffset: 0,
+        },
+        ans: [
+          ["MEGA_BEAM_STONE", "PROTECTION_RADIOACTIVITY", "PERKS_LOTTERY"],
+          ["EXTRA_HP", "WORM_SMALLER_HOLES", "PLAGUE_RATS"],
+          ["EXTRA_MONEY_TRICK_KILL", "PROJECTILE_REPULSION", "REVENGE_TENTACLE"],
+          ["MOVEMENT_FASTER", "PROJECTILE_EATER_SECTOR", "PERSONAL_LASER"],
+          ["PROTECTION_EXPLOSION", "REMOVE_FOG_OF_WAR", "EXTRA_MANA"],
+          ["GAMBLE", "TRICK_BLOOD_MONEY", "REVENGE_EXPLOSION", "BLEED_OIL", "GENOME_MORE_LOVE"],
+          ["EXTRA_SLOTS", "HUNGRY_GHOST", "DISSOLVE_POWDERS"],
+        ],
+      },
     ];
     tests.forEach((t, i) => {
       it(`Should generate correct output #${i}`, async () => {

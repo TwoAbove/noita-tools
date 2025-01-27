@@ -24,7 +24,7 @@ const Clickable = (props: IClickableProps) => {
     }
   };
 
-  const clickedOrHoveredStyle = hovered ? "bg-light" : "";
+  const clickedOrHoveredStyle = clicked ? "bg-info" : hovered ? "bg-light" : "";
 
   return (
     <div
