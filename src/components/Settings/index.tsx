@@ -33,7 +33,7 @@ const Settings = props => {
       <Modal.Body>
         {gameInfoProvider && data ? (
           <GameInfoContext.Provider value={{ gameInfoProvider, data }}>
-            <NeedInputAlert />
+            {/* <NeedInputAlert /> */}
             {settingsComponents.map((Component, index) => (
               <div key={index}>
                 <Component />

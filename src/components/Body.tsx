@@ -47,7 +47,6 @@ const Body = () => {
   const isLoggedIn = !!patreonData;
 
   const showTestBench = (isDev() && isLocal()) || isFullPath("/test");
-  const showClusterCompute = isLoggedIn; // || isDev();
   const showClusterComputeConsole = false; // isLocal();
 
   return (
@@ -62,14 +61,12 @@ const Body = () => {
         <Tab eventKey="/live" title="Live game helper (beta)">
           <LiveSeedStats />
         </Tab>
+        <Tab eventKey="/compute" title="Compute Pool">
+          <Compute />
+        </Tab>
         {showTestBench && (
           <Tab eventKey="/test" title="TestBench">
             <TestBench />
-          </Tab>
-        )}
-        {showClusterCompute && (
-          <Tab eventKey="/compute" title="Compute">
-            <Compute />
           </Tab>
         )}
         {showClusterComputeConsole && (

@@ -11,6 +11,17 @@ import { ComputeSocket } from "../../../services/compute/ComputeSocket";
 import { localizeNumber } from "../../../services/helpers";
 import { VersionMisatch } from "../../misc/VersionMismatch";
 
+const testInfo = {
+  jobName: "10c893b9eb6d3fe021fe15de14ddd23d3a9c17a4",
+  chunkFrom: 1000,
+  chunkTo: 3000,
+  jobStats: {
+    checked: 15000,
+    estimate: 3600, // 1 hour in seconds
+    rate: 42.5,
+  },
+};
+
 const Compute = () => {
   const [computeSocket, setComputeSocket] = useState<ComputeSocket>();
 
@@ -55,33 +66,34 @@ const Compute = () => {
         window.location.reload();
       }
       setComputeVersionMismatch(true);
-      newComputeSocket.stop();
+      newComputeSocket.terminate();
     });
 
     setComputeSocket(newComputeSocket);
 
     return () => {
-      newComputeSocket.stop();
+      newComputeSocket.terminate();
     };
   }, [computeUrl, noitoolSessionToken, seedSolver, startAutomatically]);
 
   const handleStart = () => {
-    if (!computeSocket) {
-      return;
+    if (!computeSocket) return;
+    if (!computeSocket.connected) {
+      computeSocket.connect();
     }
     computeSocket.register();
     computeSocket.start().catch(e => {
       console.error(e);
-      computeSocket.stop();
+      computeSocket.stopComputing();
     });
   };
 
   const handleStop = () => {
-    if (!computeSocket) {
-      return;
-    }
-    computeSocket?.unregister();
-    computeSocket?.stop();
+    computeSocket?.stopComputing();
+  };
+
+  const handleDisconnect = () => {
+    computeSocket?.disconnect();
   };
 
   useEffect(() => {
@@ -100,86 +112,95 @@ const Compute = () => {
   }, [useCores]);
 
   return (
-    <Container>
-      <Row>
-        <p>This tab allows you to use this device's computing power to help with searches.</p>
-        <div className="ps-3">
-          <ul>
-            <li>If you're doing your own searches on other devices, this device's compute will be used for that.</li>
-            <li>
-              If not, you can help other users with their searches and earn compute time for your own future searches.
-            </li>
-            <li>To see how much compute time you have, go your profile page.</li>
-          </ul>
+    <Container className="py-4">
+      <div className="mb-4">
+        <h4>Compute Pool</h4>
+        <p className="text-muted mb-0">
+          This device's computing power can be used to help with searches on other devices. Connect to the compute pool
+          to contribute processing power for cluster-enabled searches.
+        </p>
+      </div>
+
+      <div className="border rounded p-3 mb-4">
+        <div className="d-flex align-items-center gap-3 mb-3">
+          <div className={`badge ${connected ? "bg-success" : "bg-secondary"}`}>
+            {connected ? "Connected" : "Not Connected"}
+          </div>
+          <div className={`badge ${computeRunning ? "bg-primary" : "bg-secondary"}`}>
+            {computeRunning ? "Running" : "Stopped"}
+          </div>
+          {computeRunning && !computeInfo.jobName && <div className="badge bg-warning">Waiting for next job</div>}
         </div>
-      </Row>
-      <hr />
-      <Row>
-        <p>{connected ? "Connected" : "Not Connected"}</p>{" "}
-      </Row>
-      {computeVersionMismatch && (
-        <Row className="mx-3 mb-3">
-          <VersionMisatch />
-        </Row>
-      )}
-      <Stack gap={3}>
-        <Row>
-          <Col md={3}>{computeRunning ? "Running" : "Stopped"}</Col>
-        </Row>
-        <Row>
-          {computeRunning && (
-            <Col md={8}>
-              {computeInfo.jobName ? (
-                <Col>
-                  <Col>Working on job: {computeInfo.jobName}</Col>
-                  <Col>
-                    Chunk {localizeNumber(computeInfo.chunkFrom)} - {localizeNumber(computeInfo.chunkTo)}
-                  </Col>
-                  <Col className="text-muted fw-light">
-                    Cluster stats: Seeds checked: {localizeNumber(computeInfo.jobStats.checked)} (Estimated time left:{" "}
-                    {humanize(computeInfo.jobStats.estimate * 1000, {
-                      round: true,
-                      units: ["h", "m"],
-                    })}
-                    , {localizeNumber(Math.round(computeInfo.jobStats.rate * 100) / 100)} avg seeds/s)
-                  </Col>
-                </Col>
-              ) : (
-                <Col>Waiting for next job</Col>
-              )}
-            </Col>
-          )}
-        </Row>
-        <Row>
-          <Col>
-            <Form.Group>
-              <Form.Label>Start automatically</Form.Label>
-              <Form.Check
-                type="switch"
-                checked={startAutomatically}
-                onChange={() => setStartAutomatically(!startAutomatically)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Automatically refresh Noitool if new version is available</Form.Label>
-              <Form.Check type="switch" checked={shouldRefresh} onChange={() => setShouldRefresh(!shouldRefresh)} />
-            </Form.Group>
+
+        {computeVersionMismatch && (
+          <div className="mb-3">
+            <VersionMisatch />
+          </div>
+        )}
+
+        {computeInfo.jobName && (
+          <div className="border-start border-4 border-primary ps-3 mb-3">
+            <h6 className="mb-2">Current Job: {computeInfo.jobName.substring(0, 6)}</h6>
+            <div className="text-muted small">
+              <div>
+                Processing seeds {localizeNumber(computeInfo.chunkFrom)} - {localizeNumber(computeInfo.chunkTo)}
+              </div>
+              <div>Seeds checked: {localizeNumber(computeInfo.jobStats.checked)}</div>
+              <div>
+                Time remaining:{" "}
+                {humanize(computeInfo.jobStats.estimate * 1000, {
+                  round: true,
+                  units: ["h", "m"],
+                })}
+              </div>
+              <div>Speed: {localizeNumber(Math.round(computeInfo.jobStats.rate * 100) / 100)} seeds/sec</div>
+            </div>
+          </div>
+        )}
+
+        <Row className="g-4">
+          <Col md={6}>
+            <div className="d-grid gap-2">
+              <Button
+                size="lg"
+                variant={computeRunning ? "outline-danger" : "primary"}
+                onClick={() => (computeRunning ? handleStop() : handleStart())}
+              >
+                {computeRunning ? "Stop Computing" : "Start Computing"}
+              </Button>
+            </div>
           </Col>
-          <Col>
-            <UseMultithreadingButton />
-          </Col>
-          <Col>
-            <Button disabled={computeRunning} onClick={() => handleStart()}>
-              Start
-            </Button>
-          </Col>
-          <Col>
-            <Button disabled={!computeRunning} onClick={() => handleStop()}>
-              Stop
-            </Button>
+          <Col md={6}>
+            <Stack gap={2}>
+              <UseMultithreadingButton />
+            </Stack>
           </Col>
         </Row>
-      </Stack>
+      </div>
+
+      <div className="border rounded p-3">
+        <h6 className="mb-3">Settings</h6>
+        <Row className="g-3">
+          <Col md={6}>
+            <Form.Check
+              type="switch"
+              id="auto-start"
+              label="Start automatically on page load"
+              checked={startAutomatically}
+              onChange={() => setStartAutomatically(!startAutomatically)}
+            />
+          </Col>
+          <Col md={6}>
+            <Form.Check
+              type="switch"
+              id="auto-refresh"
+              label="Auto-refresh noitool when new version available"
+              checked={shouldRefresh}
+              onChange={() => setShouldRefresh(!shouldRefresh)}
+            />
+          </Col>
+        </Row>
+      </div>
     </Container>
   );
 };
@@ -189,11 +210,9 @@ const withSupport = props => {
     return (
       <Container>
         <p>
-          Compute not supported on this device.
+          Compute not supported on this device. Please use a modern browser that supports OffscreenCanvas.
           <br />
-          If you are on a mobile apple device, they are not supported.
-          <br />
-          If on an apple desktop device, please use a Chromium browser (Chrome, edge, etc.) or Firefox.
+          If you are on a mobile apple device, iOS 17+ is required.
         </p>
       </Container>
     );

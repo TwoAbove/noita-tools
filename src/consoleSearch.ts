@@ -89,14 +89,14 @@ const newComputeSocket = new ComputeSocket({
     }
 
     console.log("Done!");
-    newComputeSocket.stop();
+    newComputeSocket.terminate();
     exitHandler();
   },
 });
 
 newComputeSocket.on("compute:version_mismatch", () => {
   console.log("Version mismatch. Please update your client.");
-  newComputeSocket.stop();
+  newComputeSocket.terminate();
   exitHandler();
 });
 
@@ -104,13 +104,13 @@ newComputeSocket.on("compute:unauthorized", config => {
   console.log("userID or sessionToken is invalid");
   console.log("Used config:");
   console.log(config);
-  newComputeSocket.stop();
+  newComputeSocket.terminate();
   exitHandler();
 });
 
 newComputeSocket.start().catch(e => {
   console.error(e);
-  newComputeSocket.stop();
+  newComputeSocket.terminate();
   exitHandler();
 });
 
@@ -121,7 +121,7 @@ process.on("SIGINT", () => {
     process.exit(1);
   }
   terminations++;
-  newComputeSocket.stop();
+  newComputeSocket.terminate();
   exitHandler();
 });
 process.on("SIGTERM", () => {
@@ -129,6 +129,6 @@ process.on("SIGTERM", () => {
     process.exit(1);
   }
   terminations++;
-  newComputeSocket.stop();
+  newComputeSocket.terminate();
   exitHandler();
 });

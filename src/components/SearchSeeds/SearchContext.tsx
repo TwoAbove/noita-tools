@@ -231,7 +231,7 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
 
     newComputeSocket.on("compute:version_mismatch", () => {
       setComputeVersionMismatch(true);
-      newComputeSocket.stop();
+      newComputeSocket.terminate();
     });
 
     const newSocketComputeProvider = new SocketComputeProvider(
@@ -244,7 +244,7 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
 
     return () => {
       setClusterConnected(false);
-      newComputeSocket.stop();
+      newComputeSocket.terminate();
       newSocketComputeProvider.destruct();
     };
   }, [chunkProvider, ruleTree, clusterHelpEnabled]);

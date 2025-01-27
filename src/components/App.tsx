@@ -1,5 +1,5 @@
 import React, { FC, useState, Suspense, useEffect, useContext } from "react";
-import { Container, Stack, Button, Row } from "react-bootstrap";
+import { Container, Stack, Button, Row, Modal } from "react-bootstrap";
 import { lazy } from "@loadable/component";
 import { useSearchParamsState } from "react-use-search-params-state";
 import Cookies from "js-cookie";
@@ -123,9 +123,9 @@ const Header = () => {
         <p className="fs-4 fw-light m-1 mt-0 my-1 text-center">Noita tools and helpers</p>
       </div>
       <div className=" d-flex pt-2 justify-content-end align-items-start">
-        <div className="mx-2">
+        {/* <div className="mx-2">
           <LazyProfile />
-        </div>
+        </div> */}
         <div className="mx-2">
           <LazySettings />
         </div>
@@ -171,10 +171,10 @@ const Footer = () => {
   return (
     <footer className="footer font-small p-1 pt-3">
       <Stack>
-        <div className="d-flex justify-content-center align-items-center text-center">
+        {/* <div className="d-flex justify-content-center align-items-center text-center">
           For a version of Noitool that follows&nbsp; <b>Noita beta</b>, check out&nbsp;
           <a href="https://dev.noitool.com/">dev.noitool.com</a>
-        </div>
+        </div> */}
         <div className="d-flex justify-content-center align-items-center text-center">
           <PatreonButton />
           <div className="mx-2">or</div>
@@ -201,7 +201,7 @@ const Footer = () => {
           <span className="fw-bold">
             Noitool <code className="ms-1">{APP_VERSION} </code>
           </span>
-          © 2023 <a href="https://seva.dev/">Seva Maltsev</a>
+          © 2025 <a href="https://seva.dev/">Seva Maltsev</a>
         </div>
       </Stack>
     </footer>
@@ -233,8 +233,7 @@ const OutdatedVersionHandler: FC<IOutdatedVersionHandlerProps> = props => {
           Noita has received an update, and Noitool is not yet compatible with it. <br />
         </p>
         <p>
-          For <code>noitool.com</code>, this is usually fixed within a few hours. For <code>dev.noitool.com</code>, it
-          might take a day or two. <br />
+          It might take <code>a day or two</code> to update Noitool. <br />
           Thank you for your patience!
         </p>
         <p>If you want to proceed, click the button below.</p>
@@ -302,19 +301,17 @@ const App: FC = () => {
     <OutdatedVersionHandler>
       <DBErrorHandler>
         <BrowserRouter>
-          <ProfileProvider>
-            <div className="App bg-gradient">
-              <div className="content bg-body rounded" style={{ minHeight: "85vh" }}>
-                <ThemeProvider>
-                  <AlchemyConfigProvider>
-                    <Header />
-                    {toShow}
-                  </AlchemyConfigProvider>
-                </ThemeProvider>
-              </div>
-              <Footer />
+          <div className="App bg-gradient">
+            <div className="content bg-body rounded" style={{ minHeight: "85vh" }}>
+              <ThemeProvider>
+                <AlchemyConfigProvider>
+                  <Header />
+                  {toShow}
+                </AlchemyConfigProvider>
+              </ThemeProvider>
             </div>
-          </ProfileProvider>
+            <Footer />
+          </div>
         </BrowserRouter>
       </DBErrorHandler>
     </OutdatedVersionHandler>

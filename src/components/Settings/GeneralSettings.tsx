@@ -148,6 +148,7 @@ const DarkMode = () => {
   const [theme, setTheme] = useContext(ThemeContext);
   return (
     <ConfigRow
+      className="py-4"
       left={
         <>
           <strong className="">Dark Mode</strong>
