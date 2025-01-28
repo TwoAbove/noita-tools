@@ -215,7 +215,7 @@ const membersQuery = async (cursor = null) => {
 
     return data;
   } catch (error) {
-    console.error("Failed to fetch members:", error);
+    console.error("Failed to fetch members:", error.body);
     return null;
   }
 };

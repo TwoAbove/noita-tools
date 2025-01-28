@@ -551,6 +551,7 @@ export class PerkInfoProvider extends InfoProvider {
       worldOffset,
       lotteries,
       pickedPerks: pickedState.get(worldOffset) || [],
+      pickedState,
       perks: perkState.get(worldOffset) || [],
       perkRerolls: rerollState.get(worldOffset) || [],
     };

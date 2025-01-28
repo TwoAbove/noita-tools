@@ -520,7 +520,12 @@ interface IHolyMountainContextProviderProps {
 // from action[] => old config.
 const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) => {
   const { infoProvider, perks: simplePerks, perkDeck } = props;
-  const [advanced, setAdvanced] = useState(false);
+  const [advanced, setAdvanced] = useState(() => infoProvider.config.perksAdvanced);
+
+  const handleAdvancedChange = (value: boolean) => {
+    setAdvanced(value);
+    infoProvider.updateConfig({ perksAdvanced: value });
+  };
 
   const [perkStacks, setPerkStacks] = useState<IPerkChangeAction[][]>(() => infoProvider.config.perkStacks);
   const perkStack = perkStacks[perkStacks.length - 1];
@@ -766,7 +771,7 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
   };
 
   return (
-    <HolyMountainContext.Provider value={{ advanced, setAdvanced, perkMethods, perkData }}>
+    <HolyMountainContext.Provider value={{ advanced, setAdvanced: handleAdvancedChange, perkMethods, perkData }}>
       {props.children}
     </HolyMountainContext.Provider>
   );

@@ -121,6 +121,7 @@ export class GameInfoProvider extends EventTarget {
       {},
       {
         seed: 1,
+        perksAdvanced: false,
         perkRerolls: new Map(),
         pickedPerks: new Map(),
         perkWorldOffset: 0,
@@ -271,6 +272,12 @@ export class GameInfoProvider extends EventTarget {
     // I think the c++ code should be immutable. Idea for next refactor.
     const worldSeed = Number(this.config.seed);
     this.randoms!.SetWorldSeed(worldSeed);
+
+    const statelessPerks = this.providers.perk.provideStateless(
+      this.config.perkStacks[this.config.perkStacks.length - 1],
+      true,
+    );
+
     return {
       alchemy: this.providers.alchemy.provide(),
       biomeModifiers: this.providers.biomeModifier.provide(),
@@ -283,12 +290,12 @@ export class GameInfoProvider extends EventTarget {
         this.config.perkWorldOffset,
         this.config.perkRerolls,
       ),
-      statelessPerks: this.providers.perk.provideStateless(
-        this.config.perkStacks[this.config.perkStacks.length - 1],
-        true,
-      ),
+      statelessPerks: statelessPerks,
       weather: this.providers.weather.provide(),
-      shop: this.providers.shop.provide(this.config.pickedPerks, this.config.perkWorldOffset),
+      shop: this.providers.shop.provide(
+        this.config.perksAdvanced ? statelessPerks.pickedState : this.config.pickedPerks,
+        this.config.perkWorldOffset,
+      ),
       startingBombSpell: this.providers.startingBombSpell.provide(),
       startingFlask: this.providers.startingFlask.provide(),
       startingSpell: this.providers.startingSpell.provide(),
@@ -299,6 +306,7 @@ export class GameInfoProvider extends EventTarget {
 
 interface IProviderConfig {
   seed: number;
+  perksAdvanced: boolean;
   perkRerolls: Map<number, number[]>;
   pickedPerks: Map<number, string[][]>;
   perkWorldOffset: number;
