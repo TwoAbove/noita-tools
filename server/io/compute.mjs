@@ -89,9 +89,6 @@ export const handleCompute = (socket, io) => {
     computeAppetite = config.appetite || 0;
     registerSocket(socket.id, type, computeAppetite);
 
-    if (type === "hosts") {
-      echoedCall(pingLambda, 2, 10);
-    }
     cb("ok");
   };
 

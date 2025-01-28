@@ -33,6 +33,8 @@ const Clickable = (props: IClickableProps) => {
       style={{
         transition: "0.1s",
         position: "relative",
+        display: "flex",
+        padding: "0.2rem",
       }}
       className={classNames(clickedOrHoveredStyle, "p-1 rounded-1")}
     >
@@ -42,12 +44,23 @@ const Clickable = (props: IClickableProps) => {
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleClick}
-          style={{ textDecoration: "none", color: "inherit" }}
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+            flex: 1,
+          }}
         >
           {children}
         </a>
       ) : (
-        <div onClick={handleClick}>{children}</div>
+        <div
+          onClick={handleClick}
+          style={{
+            flex: 1,
+          }}
+        >
+          {children}
+        </div>
       )}
     </div>
   );

@@ -24,7 +24,7 @@ const handleConnection = (socket, io) => {
     if (callback) {
       callback({
         hosts: counts.hosts,
-        workers: Math.max(counts.workers, 1), // Always at least 1 thanks to ECS
+        workers: counts.workers,
         appetite: counts.appetite,
       });
     }
@@ -35,7 +35,7 @@ const makeIO = (server, app) => {
   app.get("/api/cluster_stats", (req, res) => {
     res.json({
       hosts: counts.hosts,
-      workers: Math.max(counts.workers, 1), // Always at least 1 thanks to ECS
+      workers: counts.workers,
       appetite: counts.appetite,
     });
   });

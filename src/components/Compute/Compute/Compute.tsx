@@ -166,7 +166,7 @@ const Compute = () => {
                 variant={computeRunning ? "outline-danger" : "primary"}
                 onClick={() => (computeRunning ? handleStop() : handleStart())}
               >
-                {computeRunning ? "Stop Computing" : "Start Computing"}
+                {computeRunning ? "Leave compute pool" : "Join compute pool"}
               </Button>
             </div>
           </Col>

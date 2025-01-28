@@ -1,6 +1,5 @@
-import React, { FC, useState, Suspense, useEffect, useContext } from "react";
+import React, { FC, useState, Suspense, useEffect, useContext, lazy } from "react";
 import { Container, Stack, Button, Row, Modal } from "react-bootstrap";
-import { lazy } from "@loadable/component";
 import { useSearchParamsState } from "react-use-search-params-state";
 import Cookies from "js-cookie";
 
