@@ -28,17 +28,6 @@ SegfaultHandler.registerHandler("crash.log");
 
 console.log(`Noitool console search ${process.env.npm_package_version}`, argv, os.cpus().length);
 
-const missingArgs: string[] = [];
-if (!argv.userId && !argv.sessionToken) {
-  missingArgs.push("--userId (or env NOITOOL_USER_ID)");
-  missingArgs.push("--sessionToken (or env NOITOOL_SESSION_TOKEN)");
-}
-
-if (missingArgs.length) {
-  console.log("Missing one of the required arguments:", missingArgs.join(", "));
-  process.exit(1);
-}
-
 // const seedSolver = new SeedSolver(1, false);
 const seedSolver = new SeedSolver(argv.cores || os.cpus().length, false);
 
@@ -54,7 +43,6 @@ const newComputeSocket = new ComputeSocket({
   url: argv.url || "https://www.noitool.com/",
   version: process.env.npm_package_version || "0.0.0",
   sessionToken: argv.sessionToken,
-  userId: argv.userId,
   seedSolver: seedSolver as any,
   onUpdate: () => {
     if (!newComputeSocket.jobName) {

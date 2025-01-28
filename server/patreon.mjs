@@ -1,17 +1,16 @@
+import util from "util";
 import { Router } from "express";
 import { Types } from "mongoose";
 import { schedule } from "node-cron";
 import { randomUUID, createHmac } from "crypto";
 import RateLimit from "express-rate-limit";
 import patreon from "patreon";
-
 import { genSessionCookie } from "./helpers.mjs";
 import { User } from "./db.mjs";
 
 const patreonOAuth = patreon.oauth;
 const router = Router();
 
-// Token management
 class TokenManager {
   constructor(clientId, clientSecret) {
     this.patreonOAuthClient = patreonOAuth(clientId, clientSecret);
@@ -83,20 +82,16 @@ class TokenManager {
   }
 }
 
-// Initialize token manager
 const tokenManager = new TokenManager(process.env.PATREON_CLIENT_ID, process.env.PATREON_CLIENT_SECRET);
 
-// Schedule token refresh
 schedule("0 0 */10 * *", () => tokenManager.refreshCreatorToken());
 
-// Compute amount constants
 const nonHamisAmount = 1000 * 60 * 60 * 2; // 2 hours
 const hamisAmount = 1000 * 60 * 60 * 10; // 10 hours
 const hamis2Amount = 1000 * 60 * 60 * 20; // 20 hours
 const hamis3Amount = 1000 * 60 * 60 * 40; // 40 hours
 const hamis4Amount = 1000 * 60 * 60 * 800; // 80 hours
 
-// Compute amount helpers
 const getComputeAmountForTier = tierId => {
   let amount;
 
@@ -177,12 +172,11 @@ const getComputeAmountForPledgeAmount = pledgeAmount => {
   return amount;
 };
 
-// Cache management
 let patronMembersCache = [];
 let patronCache = {};
 let tierCache = {};
 
-const membersQuery = async () => {
+const membersQuery = async (cursor = null) => {
   const membersQueryParams = {
     include: ["currently_entitled_tiers", "user", "currently_entitled_tiers.campaign"].join(","),
     "fields[member]": [
@@ -196,6 +190,10 @@ const membersQuery = async () => {
     "fields[campaign]": ["vanity"].join(","),
   };
 
+  if (cursor) {
+    membersQueryParams["page[cursor]"] = cursor;
+  }
+
   const membersQueryURL = new URL("https://www.patreon.com/api/oauth2/v2/campaigns/10343002/members");
   Object.entries(membersQueryParams).forEach(([key, value]) => {
     membersQueryURL.searchParams.append(key, value);
@@ -205,19 +203,20 @@ const membersQuery = async () => {
     const response = await tokenManager.makeAuthorizedRequest(membersQueryURL.href, {
       headers: {
         "Content-Type": "application/json",
+        "User-Agent": "Noitool - Member Sync",
       },
     });
 
     const data = await response.json();
     if (data.errors) {
       console.error("Patreon API error, membersQuery:", data.errors);
-      return { tierMembers: {}, tiers: {} };
+      return null;
     }
 
     return data;
   } catch (error) {
     console.error("Failed to fetch members:", error);
-    return { tierMembers: {}, tiers: {} };
+    return null;
   }
 };
 
@@ -226,24 +225,46 @@ const getPatreonPatronsData = async () => {
     return { tierMembers: {}, tiers: {} };
   }
 
-  const data = await membersQuery();
+  let allMembers = [];
+  let tiers = {};
+  let nextCursor = null;
+  let isFirstPage = true;
 
-  if (data.errors) {
-    console.error("Patreon API error, membersQuery", data.errors);
-    return { tierMembers: {}, tiers: {} };
-  }
+  do {
+    const data = await membersQuery(nextCursor);
 
-  const tiers = data.included
-    .filter(i => i.type === "tier")
-    .reduce((acc, tier) => {
-      acc[tier.id] = tier;
-      return acc;
-    }, {});
+    if (!data) {
+      console.error("Failed to fetch members page");
+      break;
+    }
 
-  const members = data.data.filter(d => d.type === "member");
-  patronMembersCache = members;
+    // Store tier data from first page only as it contains all tiers
+    if (isFirstPage) {
+      tiers = data.included
+        .filter(i => i.type === "tier")
+        .reduce((acc, tier) => {
+          acc[tier.id] = tier;
+          return acc;
+        }, {});
+      isFirstPage = false;
+    }
 
-  const tierMembers = members
+    allMembers = allMembers.concat(data.data);
+    nextCursor = data.meta.pagination.cursors?.next;
+  } while (nextCursor);
+
+  patronMembersCache = allMembers;
+
+  const tierMembers = allMembers
+    .filter(member => {
+      // Include active patrons and those with free tier access
+      const isActivePaid = member.attributes.patron_status === "active_patron";
+      const hasTiers = member.relationships.currently_entitled_tiers.data.length > 0;
+      const isDeclined = member.attributes.patron_status === "declined_patron";
+      const isFormer = member.attributes.patron_status === "former_patron";
+
+      return isActivePaid || (hasTiers && !isDeclined && !isFormer);
+    })
     .sort((a, b) => b.attributes.lifetime_support_cents - a.attributes.lifetime_support_cents)
     .reduce((acc, member) => {
       const tierIds = member.relationships.currently_entitled_tiers.data.map(t => t.id);
@@ -282,7 +303,6 @@ const getPatreonPatronsData = async () => {
   return { tierMembers, tiers };
 };
 
-// Update patrons cache
 const updatePatrons = async () => {
   try {
     const { tierMembers, tiers } = await getPatreonPatronsData();
@@ -296,7 +316,6 @@ const updatePatrons = async () => {
 updatePatrons();
 schedule("* * * * *", updatePatrons);
 
-// Webhook handling
 const getPledgeAmount = patron =>
   patron?.attributes?.currently_entitled_amount_cents ||
   patron?.attributes?.pledge_amount_cents ||
@@ -394,7 +413,6 @@ router.post("/webhook", async (req, res) => {
   res.status(200).send(null);
 });
 
-// Update compute amounts
 const updatePatreonCompute = async () => {
   const logs = [];
   let patreonData = null;
@@ -442,7 +460,6 @@ const updatePatreonCompute = async () => {
 
 schedule("* * * * *", () => updatePatreonCompute());
 
-// User routes
 router.get("/patrons", async (req, res) => {
   res.send(patronCache);
 });
@@ -533,7 +550,6 @@ router.get(
 
         let amount = +nonHamisAmount;
 
-        // Check if user is a patron
         const patron = patronMembersCache.find(m => m.relationships.user.data.id === id);
         logs.push({ message: "Patron check", patron });
         if (patron) {
@@ -569,7 +585,6 @@ router.get(
   },
 );
 
-// Authentication middleware
 const authenticated = (req, res, next) => {
   const cookies = req.cookies;
   if (!cookies || !cookies.noitoolSessionToken) {
@@ -639,7 +654,6 @@ const loadPatreonClient = async (req, res, next) => {
   }
 };
 
-// User data route
 const gatherMeData = (user, patreonUser) => {
   const userId = patreonUser.id;
   const userName = patreonUser.attributes.full_name;
@@ -686,7 +700,6 @@ router.get(
   },
 );
 
-// Logout routes
 router.post(
   "/logout",
   RateLimit({
