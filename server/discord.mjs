@@ -49,7 +49,7 @@ if (errorChannelId) {
     const errorChannel = await client.channels.fetch(errorChannelId);
     if (errorChannel) {
       await errorChannel.send(
-        `An error occurred:\n\`\`\`\n${util.inspect(args, false, null, false).substring(0, 3500)}\n\`\`\``,
+        `An error occurred:\n\`\`\`\n${util.inspect(args, false, null, false).substring(0, 1900)}\n\`\`\``,
       );
     }
   }
