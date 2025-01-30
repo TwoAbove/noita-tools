@@ -177,14 +177,27 @@ const WandSelect = (props: IWandSelectProps) => {
   const { show, handleClose, onParamsChange, initialParams } = props;
   const { gameInfoProvider } = useContext(GameInfoContext);
   const { t } = useTranslation("materials");
-  const [params, setParams] = useState<IWandSearchParams>(() => ({
-    ...defaultParams,
-    ...initialParams,
-    gun: {
-      ...defaultParams.gun,
-      ...(initialParams?.gun || {}),
-    },
-  }));
+
+  // Update state initialization to use a useCallback to ensure consistent initial state
+  const getInitialParams = useMemo(() => {
+    const baseParams = {
+      ...defaultParams,
+      ...initialParams,
+      gun: {
+        ...defaultParams.gun,
+        ...(initialParams?.gun || {}),
+      },
+    };
+    return baseParams;
+  }, [initialParams]);
+
+  const [params, setParams] = useState<IWandSearchParams>(getInitialParams);
+
+  // Reset params when initialParams changes
+  useEffect(() => {
+    setParams(getInitialParams);
+  }, [getInitialParams]);
+
   const [spellSelectOpen, setSpellSelectOpen] = useState(false);
   const [alwaysCastOpen, setAlwaysCastOpen] = useState(false);
 
@@ -268,6 +281,32 @@ const WandSelect = (props: IWandSelectProps) => {
     speed_multiplier: 1,
   });
 
+  // Fix shuffle state calculation
+  const getShuffleState = (range: [number, number]): number => {
+    if (range[0] === 0 && range[1] === 0) return -1; // No
+    if (range[0] === 0 && range[1] === 1) return 0; // Any
+    if (range[0] === 1 && range[1] === 1) return 1; // Yes
+    return 0; // Default to Any for any other case
+  };
+
+  // Fix shuffle toggle handler
+  const handleShuffleToggle = (val: number) => {
+    const newRange: [number, number] =
+      val === -1
+        ? [0, 0] // No
+        : val === 0
+          ? [0, 1] // Any
+          : [1, 1]; // Yes
+
+    handleParamsChange({
+      ...params,
+      gun: {
+        ...params.gun,
+        shuffle_deck_when_empty: newRange,
+      },
+    });
+  };
+
   return (
     <Modal fullscreen="sm-down" scrollable show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -278,22 +317,8 @@ const WandSelect = (props: IWandSelectProps) => {
           <Col>
             <div className="d-flex gap-2">
               <TriStateToggle
-                state={
-                  params.gun.shuffle_deck_when_empty[0] === params.gun.shuffle_deck_when_empty[1]
-                    ? params.gun.shuffle_deck_when_empty[0] === 0
-                      ? -1
-                      : 1
-                    : 0
-                }
-                onChange={val =>
-                  setParams(prev => ({
-                    ...prev,
-                    gun: {
-                      ...prev.gun,
-                      shuffle_deck_when_empty: val === -1 ? [0, 0] : val === 0 ? [0, 1] : [1, 1],
-                    },
-                  }))
-                }
+                state={getShuffleState(params.gun.shuffle_deck_when_empty)}
+                onChange={handleShuffleToggle}
                 translationKey="$inventory_shuffle"
                 t={t}
               />
