@@ -280,6 +280,7 @@ const Shop = (props: IShopProps) => {
             shops[level]?.type === IShopType.item ? shops[level].items.map(item => (item as ShopSpellItem).spell) : []
           }
           show={level !== -1}
+          strict={shops[level]?.strict}
           showSelected
           handleClose={handleCloseAdvancedModal}
           handleOnClick={id => handleItemClickedAdd(id)}
