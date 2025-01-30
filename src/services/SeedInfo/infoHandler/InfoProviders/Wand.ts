@@ -667,8 +667,13 @@ export class WandInfoProvider extends InfoProvider {
       if (target.permanentCard === true && !wand.cards.permanentCard) {
         return false;
       }
-      if (typeof target.permanentCard === "string" && target.permanentCard !== wand.cards.permanentCard) {
-        return false;
+      if (Array.isArray(target.permanentCard)) {
+        if (!wand.cards.permanentCard) {
+          return false;
+        }
+        if (!target.permanentCard.includes(wand.cards.permanentCard)) {
+          return false;
+        }
       }
     }
 
@@ -702,7 +707,7 @@ export interface IWandRule {
   };
   cards?: string[];
   cardsStrict: boolean;
-  permanentCard?: string | null | true;
+  permanentCard?: string[] | null | true;
 }
 
 export default WandInfoProvider;

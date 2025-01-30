@@ -1,8 +1,7 @@
 import { FC, useContext, useEffect, useMemo, useState, useTransition } from "react";
 import { Modal, Row, Col, FormControl } from "react-bootstrap";
 import Fuse from "fuse.js";
-
-import Icon from "./Icons/Icon";
+import Spell from "./Icons/Spell";
 import Clickable from "./Icons/Clickable";
 
 import { useTranslation } from "react-i18next";
@@ -26,6 +25,7 @@ interface ISpellSelectProps {
   disabled?: boolean;
   filter?: boolean;
   strict?: boolean;
+  unique?: boolean;
 }
 
 const SpellSelect: FC<ISpellSelectProps> = ({
@@ -38,7 +38,8 @@ const SpellSelect: FC<ISpellSelectProps> = ({
   selected = [],
   disabled = false,
   filter = true,
-  strict = true,
+  strict = false,
+  unique = false,
 }) => {
   const [isPending, startTransition] = useTransition();
   const [selectedFilter, setSelectedFilter] = useState("");
@@ -67,11 +68,17 @@ const SpellSelect: FC<ISpellSelectProps> = ({
     filter && selectedFilter
       ? fuse.search(selectedFilter).map(s => s.item)
       : gameInfoProvider!.providers.spells.spellsArr
-  ).filter(s =>
-    level !== undefined && level >= 0
-      ? Object.keys(s.spawn_probabilities).includes(String(gameInfoProvider!.providers.shop.getShopLevel(level)))
-      : true,
-  );
+  ).filter(s => {
+    if (level !== undefined && level >= 0) {
+      if (!Object.keys(s.spawn_probabilities).includes(String(gameInfoProvider!.providers.shop.getShopLevel(level)))) {
+        return false;
+      }
+    }
+    if (unique && selected.includes(s.id)) {
+      return false;
+    }
+    return true;
+  });
 
   const handleFilter = e => {
     setSelectedFilter(e.target.value);
@@ -89,19 +96,19 @@ const SpellSelect: FC<ISpellSelectProps> = ({
         {isPending ? (
           <LoadingComponent />
         ) : (
-          showSelected &&
-          selected.length > 0 && (
+          showSelected && (
             <Row sm={8} className="p-3 justify-content-start align-items-center row-cols-auto">
-              {selected.map(s => {
-                const spell = gameInfoProvider!.providers.spells.spells[s];
-                return (
-                  <Col className="p-0 m-1" key={spell.id}>
-                    <Clickable useHover onClick={() => handleSelectedClicked(spell.id)}>
-                      <Icon uri={spell.sprite} alt={t(spell.description)} title={t(spell.name)} background />
-                    </Clickable>
+              {selected.length > 0 ? (
+                selected.map(s => (
+                  <Col className="p-0 m-1" key={s}>
+                    <Spell id={s} width="3rem" onClick={() => handleSelectedClicked(s)} />
                   </Col>
-                );
-              })}
+                ))
+              ) : (
+                <Col className="p-0 m-1">
+                  <Spell id="" width="3rem" />
+                </Col>
+              )}
             </Row>
           )
         )}
@@ -118,21 +125,16 @@ const SpellSelect: FC<ISpellSelectProps> = ({
           </Row>
         )}
         <Row sm={8} className="p-3 justify-content-center align-items-center row-cols-auto">
-          {spellsToShow.map(spell => {
-            return (
-              <Col className="p-0 m-1" key={spell.id}>
-                <Clickable useHover onClick={() => !disabled && handleOnClick(spell.id)}>
-                  <Icon
-                    uri={spell.sprite}
-                    alt={t(spell.description)}
-                    title={t(spell.name)}
-                    background
-                    style={disabled ? { opacity: 0.5 } : undefined}
-                  />
-                </Clickable>
-              </Col>
-            );
-          })}
+          {spellsToShow.map(spell => (
+            <Col className="p-0 m-1" key={spell.id}>
+              <Spell
+                id={spell.id}
+                width="3rem"
+                style={disabled ? { opacity: 0.5 } : undefined}
+                onClick={() => !disabled && handleOnClick(spell.id)}
+              />
+            </Col>
+          ))}
         </Row>
       </Modal.Body>
     </Modal>

@@ -29,7 +29,7 @@ interface IWandSearchParams {
   };
   cards: string[];
   cardsStrict: boolean;
-  permanentCard?: string | null | true;
+  permanentCard?: string[] | null | true;
 }
 
 const sliderConfigs: Record<string, ISliderConfig> = {
@@ -229,15 +229,25 @@ const WandSelect = (props: IWandSelectProps) => {
   const handleAlwaysCastAdd = (id: string) => {
     handleParamsChange({
       ...params,
-      permanentCard: id,
+      permanentCard:
+        params.permanentCard === true || params.permanentCard === null ? [id] : [...(params.permanentCard || []), id],
     });
-    setAlwaysCastOpen(false);
   };
 
-  const handleAlwaysCastRemove = () => {
+  const handleAlwaysCastRemove = (id?: string) => {
+    if (!id) {
+      handleParamsChange({
+        ...params,
+        permanentCard: undefined,
+      });
+      return;
+    }
+
     handleParamsChange({
       ...params,
-      permanentCard: undefined,
+      permanentCard: Array.isArray(params.permanentCard)
+        ? params.permanentCard.filter(spell => spell !== id)
+        : undefined,
     });
   };
 
@@ -338,23 +348,33 @@ const WandSelect = (props: IWandSelectProps) => {
           <Col>
             {params.permanentCard !== null && (
               <div className="p-3 border border-secondary rounded mb-3">
-                <h6 className="mb-3">Always Cast</h6>
-                <div className="d-flex align-items-center">
-                  {params.permanentCard && params.permanentCard !== undefined ? (
-                    <Entity
-                      id="Spell"
-                      entityParams={{ extra: params.permanentCard }}
-                      onClick={() => setAlwaysCastOpen(true)}
-                    />
-                  ) : (
-                    <SpellSlot onClick={() => params.permanentCard !== null && setAlwaysCastOpen(true)} />
-                  )}
-                  {params.permanentCard && params.permanentCard !== undefined && (
-                    <Button variant="outline-danger" size="sm" className="ms-2" onClick={handleAlwaysCastRemove}>
-                      Clear
-                    </Button>
+                <div className="d-flex justify-content-between mb-3">
+                  <h6 className="mb-0">Always Cast</h6>
+                  <Button variant="primary" size="sm" onClick={() => setAlwaysCastOpen(true)}>
+                    Add Spells
+                  </Button>
+                </div>
+                <div className="d-flex align-items-center flex-wrap gap-2">
+                  {Array.isArray(params.permanentCard) &&
+                    params.permanentCard.map(spell => (
+                      <Entity
+                        key={spell}
+                        id="Spell"
+                        entityParams={{ extra: spell }}
+                        onClick={() => setAlwaysCastOpen(true)}
+                      />
+                    ))}
+                  {(!Array.isArray(params.permanentCard) || params.permanentCard.length === 0) && (
+                    <div className="text-muted">
+                      {params.permanentCard === true ? "Any always cast" : "No always cast spells selected"}
+                    </div>
                   )}
                 </div>
+                {Array.isArray(params.permanentCard) && params.permanentCard.length > 0 && (
+                  <Button variant="outline-danger" size="sm" className="mt-2" onClick={() => handleAlwaysCastRemove()}>
+                    Clear All
+                  </Button>
+                )}
               </div>
             )}
 
@@ -411,7 +431,7 @@ const WandSelect = (props: IWandSelectProps) => {
         show={spellSelectOpen}
         selected={params.cards}
         showSelected
-        filter={false}
+        filter={true}
         strict={params.cardsStrict}
         disabled={params.cards.length >= params.gun.deck_capacity[1]}
         handleClose={() => setSpellSelectOpen(false)}
@@ -421,7 +441,10 @@ const WandSelect = (props: IWandSelectProps) => {
 
       <SpellSelect
         show={alwaysCastOpen}
-        selected={typeof params.permanentCard === "string" ? [params.permanentCard] : []}
+        selected={Array.isArray(params.permanentCard) ? params.permanentCard : []}
+        showSelected
+        filter={true}
+        unique={true}
         handleClose={() => setAlwaysCastOpen(false)}
         handleOnClick={handleAlwaysCastAdd}
         handleSelectedClicked={handleAlwaysCastRemove}
