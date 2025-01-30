@@ -421,7 +421,7 @@ const WandSelect = (props: IWandSelectProps) => {
 
       <SpellSelect
         show={alwaysCastOpen}
-        selected={params.permanentCard ? [params.permanentCard] : []}
+        selected={typeof params.permanentCard === "string" ? [params.permanentCard] : []}
         handleClose={() => setAlwaysCastOpen(false)}
         handleOnClick={handleAlwaysCastAdd}
         handleSelectedClicked={handleAlwaysCastRemove}

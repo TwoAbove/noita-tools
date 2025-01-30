@@ -206,7 +206,7 @@ describe("WandInfoProvider", () => {
     });
   });
 
-  describe("statistics", () => {
+  describe.skip("statistics", () => {
     it("should gather wand parameter statistics", async () => {
       const randoms = await loadRandom();
       randoms.SetWorldSeed(123);

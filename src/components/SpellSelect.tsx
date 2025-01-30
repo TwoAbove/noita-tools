@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useContext, useEffect, useMemo, useState, useTransition } from "react";
 import { Modal, Row, Col, FormControl } from "react-bootstrap";
 import Fuse from "fuse.js";

@@ -103,23 +103,26 @@ const ShopLevel = (props: IShopLevelProps) => {
   );
 };
 
-type IShopLevel = {
-  type?: IShopType;
-  strict: boolean;
-} & (
+type ShopWandItem = { wand: any };
+type ShopSpellItem = { spell: string };
+type ShopItem = ShopWandItem | ShopSpellItem;
+
+type IShopLevel =
+  | {
+      type: undefined;
+      items: ShopItem[];
+      strict: true;
+    }
   | {
       type: IShopType.wand;
-      items: Array<{ wand: any }>;
+      items: ShopWandItem[];
+      strict: boolean;
     }
   | {
       type: IShopType.item;
-      items: Array<{ spell: string }>;
-    }
-  | {
-      type: undefined;
-      items: [];
-    }
-);
+      items: ShopSpellItem[];
+      strict: boolean;
+    };
 
 type IConfig = Array<IShopLevel>;
 
@@ -171,7 +174,7 @@ const shopReducer = (state: IConfig, a: IAction): IConfig => {
       if (newState[level].type !== IShopType.item) {
         return state;
       }
-      newState[level].items.push({ spell: data });
+      (newState[level] as { items: ShopSpellItem[] }).items.push({ spell: data });
       return newState;
     }
     case "spell-remove": {
@@ -240,7 +243,7 @@ const Shop = (props: IShopProps) => {
   };
 
   const handleWandParamsUpdate = (level: number, params: any) => {
-    if (shops[level]?.type !== IShopType.wand) return;
+    if (shops[level].type !== IShopType.wand) return;
     dispatch({
       action: "wand-update",
       level,
@@ -273,7 +276,9 @@ const Shop = (props: IShopProps) => {
       {shopType === IShopType.item ? (
         <SpellSelect
           level={level}
-          selected={shops[level]?.items}
+          selected={
+            shops[level]?.type === IShopType.item ? shops[level].items.map(item => (item as ShopSpellItem).spell) : []
+          }
           show={level !== -1}
           showSelected
           handleClose={handleCloseAdvancedModal}
@@ -285,7 +290,9 @@ const Shop = (props: IShopProps) => {
           show={level !== -1}
           handleClose={handleCloseAdvancedModal}
           onParamsChange={params => handleWandParamsUpdate(level, params)}
-          initialParams={shops[level]?.items?.[0]?.wand}
+          initialParams={
+            shops[level]?.type === IShopType.wand ? (shops[level].items[0] as ShopWandItem)?.wand : undefined
+          }
         />
       )}
     </Container>
