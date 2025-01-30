@@ -638,14 +638,6 @@ export class WandInfoProvider extends InfoProvider {
   testGun(target: IWandRule, wand: ReturnType<WandInfoProvider["provide"]>): boolean {
     // Test gun properties
     for (const [k, v] of Object.entries(target.gun)) {
-      if (k === "shuffle_deck_when_empty") {
-        if (v[0] === v[1]) {
-          if (wand.gun[k] !== v[0]) {
-            return false;
-          }
-        }
-        continue;
-      }
       if (!between(wand.gun[k], v[0], v[1])) {
         return false;
       }

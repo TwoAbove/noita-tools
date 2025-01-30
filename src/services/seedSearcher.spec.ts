@@ -9,6 +9,7 @@ global.performance = require("perf_hooks").performance;
 describe("SeedSearcher", () => {
   const tests = [
     {
+      comment: "",
       config: {
         rules: {
           id: "1",
@@ -36,6 +37,7 @@ describe("SeedSearcher", () => {
       ans: 1151,
     },
     {
+      comment: "",
       config: {
         currentSeed: 7193400,
         rules: {
@@ -95,6 +97,49 @@ describe("SeedSearcher", () => {
         },
       },
       ans: 7193451,
+    },
+    {
+      config: {
+        currentSeed: 32675,
+        rules: {
+          id: "1",
+          type: RuleType.AND,
+          rules: [
+            {
+              id: "2",
+              type: "shop",
+              path: "",
+              params: [],
+              val: [
+                {
+                  type: 1,
+                  items: [
+                    {
+                      wand: {
+                        params: {
+                          x: 0,
+                          y: 0,
+                          cost: 0,
+                          level: 0,
+                          force_unshuffle: false,
+                          unshufflePerk: false,
+                        },
+                        gun: {
+                          shuffle_deck_when_empty: [0, 0],
+                        },
+                        permanentCard: ["NUKE"],
+                      },
+                    },
+                  ],
+                  strict: true,
+                },
+              ],
+              strict: true,
+            },
+          ],
+        },
+      },
+      ans: 41195,
     },
   ];
 
