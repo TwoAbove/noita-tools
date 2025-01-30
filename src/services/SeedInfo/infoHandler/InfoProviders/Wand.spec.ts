@@ -205,4 +205,77 @@ describe("WandInfoProvider", () => {
       });
     });
   });
+
+  describe("statistics", () => {
+    it("should gather wand parameter statistics", async () => {
+      const randoms = await loadRandom();
+      randoms.SetWorldSeed(123);
+      const provider = new WandInfoProvider(randoms);
+      await provider.ready();
+
+      const stats: Record<
+        number,
+        {
+          deck_capacity: number[];
+          actions_per_round: number[];
+          reload_time: number[];
+          shuffle_deck_when_empty: number[];
+          fire_rate_wait: number[];
+          spread_degrees: number[];
+          speed_multiplier: number[];
+          mana_charge_speed: number[];
+          mana_max: number[];
+        }
+      > = {};
+
+      const samples = 10000;
+      const levels = Array.from({ length: 12 }, (_, i) => i + 1);
+      const costs = Array.from({ length: 101 }, (_, i) => i * 10);
+
+      for (const level of levels) {
+        stats[level] = {
+          deck_capacity: [],
+          actions_per_round: [],
+          reload_time: [],
+          shuffle_deck_when_empty: [],
+          fire_rate_wait: [],
+          spread_degrees: [],
+          speed_multiplier: [],
+          mana_charge_speed: [],
+          mana_max: [],
+        };
+
+        for (let i = 0; i < samples; i++) {
+          const x = Math.floor(Math.random() * 10000);
+          const y = Math.floor(Math.random() * 10000);
+          const cost = costs[Math.floor(Math.random() * costs.length)];
+
+          const wand = provider.provide(x, y, cost, level, false, false);
+
+          Object.entries(wand.gun).forEach(([key, value]) => {
+            if (key in stats[level]) {
+              stats[level][key].push(value);
+            }
+          });
+        }
+
+        // Calculate statistics for this level
+        const levelStats = Object.entries(stats[level]).reduce(
+          (acc, [key, values]) => {
+            acc[key] = {
+              min: Math.min(...values),
+              max: Math.max(...values),
+            };
+            return acc;
+          },
+          {} as Record<string, any>,
+        );
+
+        console.log(`\n\nLevel ${level} Statistics:`);
+        Object.entries(levelStats).forEach(([key, stat]) => {
+          console.log(`${key}: Min: ${stat.min.toFixed(2)}, Max: ${stat.max.toFixed(2)}`);
+        });
+      }
+    });
+  });
 });

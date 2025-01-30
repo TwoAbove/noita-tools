@@ -104,6 +104,7 @@ interface EntityProps {
   preview?: boolean;
 
   className?: string;
+  style?: React.CSSProperties;
 
   size?: string;
   width?: string;

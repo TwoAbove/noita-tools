@@ -103,9 +103,28 @@ const ShopLevel = (props: IShopLevelProps) => {
   );
 };
 
-type IConfig = Array<{ type: string; items: any[]; strict: boolean }>;
+type IShopLevel = {
+  type?: IShopType;
+  strict: boolean;
+} & (
+  | {
+      type: IShopType.wand;
+      items: Array<{ wand: any }>;
+    }
+  | {
+      type: IShopType.item;
+      items: Array<{ spell: string }>;
+    }
+  | {
+      type: undefined;
+      items: [];
+    }
+);
+
+type IConfig = Array<IShopLevel>;
+
 interface IAction {
-  action: "type" | "spell-add" | "spell-remove" | "strict";
+  action: "type" | "spell-add" | "spell-remove" | "strict" | "wand-update";
   level: number;
   data?: any;
 }
@@ -113,20 +132,46 @@ interface IAction {
 const shopReducer = (state: IConfig, a: IAction): IConfig => {
   const { action, data, level } = a;
   const newState = cloneDeep(state);
+
+  if (!newState[level]) {
+    newState[level] = { type: undefined, items: [], strict: true };
+  }
+
   switch (action) {
     case "type": {
-      if (!newState[level]) {
-        newState[level] = { type: data, items: [], strict: true };
-      } else {
-        newState[level].type = data;
+      newState[level] = {
+        type: data,
+        items: [],
+        strict: true,
+      };
+      return newState;
+    }
+    case "wand-update": {
+      if (newState[level].type !== IShopType.wand) {
+        return state;
       }
+      newState[level].items = [
+        {
+          wand: {
+            params: {
+              x: 0,
+              y: 0,
+              cost: 0,
+              level: 0,
+              force_unshuffle: false,
+              unshufflePerk: false,
+            },
+            ...data,
+          },
+        },
+      ];
       return newState;
     }
     case "spell-add": {
-      if (!newState[level].items) {
-        newState[level].items = [];
+      if (newState[level].type !== IShopType.item) {
+        return state;
       }
-      newState[level].items.push(data);
+      newState[level].items.push({ spell: data });
       return newState;
     }
     case "spell-remove": {
@@ -159,13 +204,16 @@ const Shop = (props: IShopProps) => {
   });
 
   useEffect(() => {
-    onUpdateConfig({
+    // Only update if shops actually changed
+    const newConfig = {
       type: "shop",
       path: "",
       params: [],
       val: shops,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    };
+    if (JSON.stringify(config.val) !== JSON.stringify(shops)) {
+      onUpdateConfig(newConfig);
+    }
   }, [shops]);
 
   const handleItemClickedAdd = (thing: any) => {
@@ -189,6 +237,15 @@ const Shop = (props: IShopProps) => {
 
   const handleCloseAdvancedModal = () => {
     setModal([-1, 0]);
+  };
+
+  const handleWandParamsUpdate = (level: number, params: any) => {
+    if (shops[level]?.type !== IShopType.wand) return;
+    dispatch({
+      action: "wand-update",
+      level,
+      data: params,
+    });
   };
 
   return (
@@ -225,12 +282,10 @@ const Shop = (props: IShopProps) => {
         />
       ) : (
         <WandSelect
-          level={level}
-          selected={shops[level]?.items}
           show={level !== -1}
           handleClose={handleCloseAdvancedModal}
-          handleOnClick={id => handleItemClickedAdd(id)}
-          handleSelectedClicked={item => handleItemClickedRemove(item)}
+          onParamsChange={params => handleWandParamsUpdate(level, params)}
+          initialParams={shops[level]?.items?.[0]?.wand}
         />
       )}
     </Container>

@@ -310,31 +310,7 @@ export class ShopInfoProvider extends InfoProvider {
             return true;
           }
           if (info.type === IShopType.wand) {
-            for (const wand of info.items) {
-              for (const prop of this.wandProps) {
-                if (!shop.wand[prop]) {
-                  continue;
-                }
-                const [min, max] = shop.wand[prop];
-                if (!between(wand.gun[prop], min, max)) {
-                  return false;
-                }
-              }
-              if (shop.wand.cards) {
-                if (shop.wand.cards.permanentCard) {
-                }
-                if (
-                  !check(
-                    wand.cards.cards.map(i => String(i)),
-                    shop.wand.cards.cards.map(i => String(i)),
-                  )
-                ) {
-                  return false;
-                }
-              }
-              return true;
-            }
-            return false;
+            return info.items.some(wand => this.wandInfoProvider.testGun(shop.items[0].wand, wand));
           } else if (info.type === IShopType.item && shop.items.length) {
             // https://stackoverflow.com/a/3586788
             if (

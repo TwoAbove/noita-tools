@@ -22,6 +22,7 @@ export class CallbackComputeHandler extends BaseComputeProvider {
       const chunk = this.chunkProvider.getNextChunk(this.seedSolver.workerList.length);
       if (!chunk) {
         this.running = false;
+        this.onUpdate(this.getStatus());
         return;
       }
       const results = await this.seedSolver.searchChunk(chunk.from, chunk.to, this.rules);

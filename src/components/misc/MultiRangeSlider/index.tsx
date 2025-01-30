@@ -1,3 +1,3 @@
-import DoubleSlider from "./MultiRangeSlider";
+import MultiRangeSlider from "./MultiRangeSlider";
 
-export default DoubleSlider;
+export default MultiRangeSlider;
