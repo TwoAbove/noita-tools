@@ -3,7 +3,7 @@ import D from "decimal.js";
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
 import { IRandom } from "../../random";
-import { between } from "../../../helpers";
+import { between, includesAll, includesSome } from "../../../helpers";
 
 export enum ACTION_TYPE {
   PROJECTILE = 0,
@@ -608,6 +608,7 @@ export class WandInfoProvider extends InfoProvider {
     const gun = this.get_gun_data(cost, level, force_unshuffle, unshufflePerk).toObject();
     const ui = this.GetWandUI(gun);
     const cards = this.wand_add_random_cards(x, y, gun, level);
+
     return {
       gun,
       ui,
@@ -629,22 +630,43 @@ export class WandInfoProvider extends InfoProvider {
       rule.params.unshufflePerk,
     );
 
-    for (const [k, v] of Object.entries(rule.val.gun)) {
-      if (!between(generatedWand.gun[k], v[0], v[1])) {
+    this.testGun(rule.val, generatedWand);
+
+    return true;
+  }
+
+  testGun(target: IWandRule, wand: ReturnType<WandInfoProvider["provide"]>): boolean {
+    // Test gun properties
+    for (const [k, v] of Object.entries(target.gun)) {
+      if (!between(wand.gun[k], v[0], v[1])) {
         return false;
       }
     }
 
-    if (rule.val.cards && rule.val.cards.length) {
-      for (const card of rule.val.cards) {
-        if (!generatedWand.cards.cards.includes(card)) {
-          return false;
-        }
+    // Test spells if specified
+    if (target.cards?.length) {
+      const check = target.cardsStrict ? includesAll : includesSome;
+      if (!check(wand.cards.cards, target.cards)) {
+        return false;
       }
     }
 
-    if (rule.val.permanentCard && rule.val.permanentCard !== generatedWand.cards.permanentCard) {
-      return false;
+    // Test always cast spell
+    if (target.permanentCard !== undefined) {
+      if (target.permanentCard === null && wand.cards.permanentCard !== undefined) {
+        return false;
+      }
+      if (target.permanentCard === true && !wand.cards.permanentCard) {
+        return false;
+      }
+      if (Array.isArray(target.permanentCard)) {
+        if (!wand.cards.permanentCard) {
+          return false;
+        }
+        if (!target.permanentCard.includes(wand.cards.permanentCard)) {
+          return false;
+        }
+      }
     }
 
     return true;
@@ -676,7 +698,8 @@ export interface IWandRule {
     force_unshuffle?: [number, number];
   };
   cards?: string[];
-  permanentCard?: string;
+  cardsStrict: boolean;
+  permanentCard?: string[] | null | true;
 }
 
 export default WandInfoProvider;

@@ -1,218 +1,118 @@
-# GitHub does not support YAML anchors, so we can't just dedupe common
-# steps https://github.community/t/support-for-yaml-anchors/16128
-
 name: CI
 
-on: [pull_request]
+on:
+  pull_request:
+    branches: [main, develop]
+
+# Cancel in-progress runs on new commits to same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   setup:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Cache node_modules
-        uses: actions/cache@v2
+      - uses: actions/setup-node@v4
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
-      - name: Cache Cypress
-        uses: actions/cache@v2
-        with:
-          path: "/home/runner/.cache/Cypress"
-          key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
+          node-version: 20
           cache: "npm"
-          node-version: ${{ matrix.node }}
 
-      - name: Cache build
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-build
+      - name: Cache dependencies
+        uses: actions/cache/restore@v4
+        id: cache
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('build') }} }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          path: |
+            **/node_modules
+            /home/runner/.cache/Cypress
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Save dependencies cache
+        uses: actions/cache/save@v4
+        if: steps.cache.outputs.cache-hit != 'true'
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: npm install
-        run: npm install --immutable
+          path: |
+            **/node_modules
+            /home/runner/.cache/Cypress
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
   build:
     needs: setup
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Cache node_modules
-        uses: actions/cache@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
-      - name: Cache Cypress
-        uses: actions/cache@v2
-        with:
-          path: "/home/runner/.cache/Cypress"
-          key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
+          node-version: 20
           cache: "npm"
-          node-version: ${{ matrix.node }}
 
-      - name: Cache build
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-build
+      - name: Restore dependencies
+        uses: actions/cache/restore@v4
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('build') }} }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          path: |
+            **/node_modules
+            /home/runner/.cache/Cypress
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Check build
+      - name: Build
         env:
-          CI:
-            false # This is needed because node throws console.warn messages that
-            # get treated as errors in CI
+          CI: false
+          DISABLE_ESLINT_PLUGIN: true
         run: |
-          DISABLE_ESLINT_PLUGIN=true npm run build
-          if [ -d "./build" ]; then
-            echo "Build dir exists"
-            exit 0
-          else
+          npm run build
+          if [ ! -d "./build" ]; then
+            echo "Build directory missing"
             exit 1
           fi
 
   test:
     needs: setup
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Cache node_modules
-        uses: actions/cache@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
-      - name: Cache Cypress
-        uses: actions/cache@v2
-        with:
-          path: "/home/runner/.cache/Cypress"
-          key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
+          node-version: 20
           cache: "npm"
-          node-version: ${{ matrix.node }}
 
-      - name: Cache build
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-build
+      - name: Restore dependencies
+        uses: actions/cache/restore@v4
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('build') }} }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          path: |
+            **/node_modules
+            /home/runner/.cache/Cypress
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Test
-        run: npm run test
+      - name: Run tests
+        run: npm test
         env:
           CI: true
 
   e2e:
     needs: setup
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Cache node_modules
-        uses: actions/cache@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-tests-node-modules-${{ github.sha }}
-      - name: Cache Cypress
-        uses: actions/cache@v2
-        with:
-          path: "/home/runner/.cache/Cypress"
-          key: ${{ runner.os }}-tests-cypress-${{ github.sha }}
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
+          node-version: 20
           cache: "npm"
-          node-version: ${{ matrix.node }}
 
-      - name: Cache build
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-build
+      - name: Restore dependencies
+        uses: actions/cache/restore@v4
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('build') }} }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          path: |
+            **/node_modules
+            /home/runner/.cache/Cypress
+          key: deps-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: e2e
+      - name: Run E2E tests
         run: npm run e2e
         env:
-          CI:
-            false # This is needed because node throws console.warn messages that
-            # get treated as errors in CI
+          CI: false

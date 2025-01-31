@@ -88,6 +88,27 @@ export class ComputeSocket extends SocketHandler {
     );
   }
 
+  connect() {
+    if (!this.connected) {
+      this.io.connect();
+    }
+  }
+
+  disconnect() {
+    this.stopComputing();
+    this.unregister();
+    this.io.disconnect();
+  }
+
+  stopComputing() {
+    this.running = false;
+    this.jobName = "";
+    this.jobStats = undefined;
+    this.chunkTo = 0;
+    this.chunkFrom = 0;
+    this.onUpdate();
+  }
+
   async start() {
     if (this.running) {
       return;
@@ -130,7 +151,7 @@ export class ComputeSocket extends SocketHandler {
 
             res();
           } catch (e) {
-            this.stop();
+            this.terminate();
             res();
             throw e;
           }
@@ -139,11 +160,7 @@ export class ComputeSocket extends SocketHandler {
     }
   }
 
-  stop() {
-    this.running = false;
-    console.log("Stop");
-    this.onUpdate();
-    this.unregister();
-    this.io.disconnect();
+  terminate() {
+    this.disconnect();
   }
 }

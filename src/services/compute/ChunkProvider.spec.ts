@@ -8,11 +8,14 @@ vi.mock("lodash", async () => {
 
 import { uniqueId as mockUniqueId } from "lodash";
 
+const uniqueId = vi.mocked(mockUniqueId);
+
 describe("ChunkProvider", () => {
   let config: IComputeHandlerConfig;
   let chunkProvider: ChunkProvider;
 
   beforeEach(() => {
+    vi.useFakeTimers();
     config = {
       searchFrom: 0,
       searchTo: 100000,
@@ -24,6 +27,8 @@ describe("ChunkProvider", () => {
   });
 
   afterEach(() => {
+    vi.clearAllTimers();
+    vi.useRealTimers();
     vi.resetAllMocks();
   });
 
@@ -96,7 +101,7 @@ describe("ChunkProvider", () => {
 
   describe("getNextChunk", () => {
     beforeEach(() => {
-      mockUniqueId.mockReturnValue("chunk_1");
+      uniqueId.mockReturnValue("chunk_1");
     });
 
     it("should return a new chunk if no orphan chunks are available", () => {
@@ -107,6 +112,7 @@ describe("ChunkProvider", () => {
         to: 10,
         status: "pending",
         appetite: 1,
+        crashId: expect.any(Object),
       });
     });
 
@@ -131,6 +137,7 @@ describe("ChunkProvider", () => {
         to: 10,
         status: "pending",
         appetite: 1,
+        crashId: expect.any(Object),
       });
       chunk = chunkProvider.getNextChunk(1);
       expect(chunk).toEqual({
@@ -139,6 +146,7 @@ describe("ChunkProvider", () => {
         to: 20,
         status: "pending",
         appetite: 1,
+        crashId: expect.any(Object),
       });
       chunk = chunkProvider.getNextChunk(1);
       expect(chunk).toEqual({
@@ -147,6 +155,7 @@ describe("ChunkProvider", () => {
         to: 30,
         status: "pending",
         appetite: 1,
+        crashId: expect.any(Object),
       });
     });
 
@@ -174,7 +183,6 @@ describe("ChunkProvider", () => {
       });
 
       it("should get next chunk with modified chunk size based on appetite and confidence", () => {
-        vi.useFakeTimers();
         const chunkProvider = new ChunkProvider({
           searchFrom: 0,
           searchTo: 100000,
@@ -195,12 +203,9 @@ describe("ChunkProvider", () => {
         expect(chunk).not.toBeNull();
         expect(chunk!.to - chunk!.from).toBe(idealChunkSize);
         expect(chunk!.status).toBe("pending");
-
-        vi.useRealTimers();
       });
 
       it("should get next chunk with modified chunk size based on appetite and confidence", () => {
-        vi.useFakeTimers();
         const chunkProvider = new ChunkProvider({
           searchFrom: 0,
           searchTo: 100000,
@@ -221,12 +226,9 @@ describe("ChunkProvider", () => {
         expect(chunk).not.toBeNull();
         expect(chunk!.to - chunk!.from).toBe(idealChunkSize);
         expect(chunk!.status).toBe("pending");
-
-        vi.useRealTimers();
       });
 
       it("should get next chunk with min chunk size", () => {
-        vi.useFakeTimers();
         const chunkProvider = new ChunkProvider({
           searchFrom: 0,
           searchTo: 100000,
@@ -247,8 +249,6 @@ describe("ChunkProvider", () => {
         expect(chunk).not.toBeNull();
         expect(chunk!.to - chunk!.from).toBe(10);
         expect(chunk!.status).toBe("pending");
-
-        vi.useRealTimers();
       });
     });
   });
@@ -257,7 +257,6 @@ describe("ChunkProvider", () => {
     let chunk: ChunkStatus;
 
     beforeEach(() => {
-      vi.useFakeTimers();
       chunk = {
         chunkId: "chunk_1",
         from: 0,
@@ -266,10 +265,6 @@ describe("ChunkProvider", () => {
         appetite: 1,
       };
       chunkProvider.registerChunk(chunk);
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
     });
 
     it("should move the chunk to the orphanChunks array after the timeout", () => {

@@ -22,7 +22,6 @@ Current features include:
 ### Prerequisites
 
 - The machine should have node installed (ideally v18.6+) and npm.
-- Follow to <https://www.noitool.com/?profile=true> and link your patreon account. Under your patreon username, there will now be an id like `6456aff2478c4f8f91701018`
 
 ### Installing and connecting
 
@@ -31,15 +30,15 @@ Current features include:
 You can use docker to simply spin up a compute node:
 
 ```bash
-docker run -it -e NOITOOL_USER_ID=xxx ghcr.io/twoabove/noitool-console-search:latest
+docker run -it -e ghcr.io/twoabove/noitool-console-search:latest
 ```
 
-<!-- docker run -it --restart=always --pull=always -e NOITOOL_USER_ID=27708123 ghcr.io/twoabove/noitool-console-search:latest-dev -->
+<!-- docker run -it --restart=always --pull=always ghcr.io/twoabove/noitool-console-search:latest-dev -->
 
 Or for dev
 
 ```bash
-docker run -it -e NOITOOL_USER_ID=xxx -e NOITOOL_URL=https://dev.noitool.com/ ghcr.io/twoabove/noitool-console-search:latest-dev
+docker run -it -e NOITOOL_URL=https://dev.noitool.com/ ghcr.io/twoabove/noitool-console-search:latest-dev
 ```
 
 #### CLI
@@ -96,6 +95,8 @@ Also, I took inspiration from [cr4xy](https://cr4xy.dev/noita/) for extra featur
 
 ## Development
 
+### Setup
+
 I use linux or mac for development, so I can't guarantee that everything works on windows. On windows, you can use WSL2 to run the dev environment.
 
 Prerequisites:
@@ -104,9 +105,9 @@ Prerequisites:
 - Node
 - `chokidar` (`npm install -g chokidar-cli`)
 - [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed if you want to work with the c++ code
-- [Nota data](https://noita.wiki.gg/wiki/Modding#Extracting_data_files) if you want to modify the data files
+- [Nota data](https://noita.wiki.gg/wiki/Modding#Extracting_data_files) if you want to modify the data files. Place the data files in `dataScripts/noita-data`
 
-Before running `npm run dev`, please copy the `.env.example` file to `.env.local` and fill in the values. For non-patreon and discord features, you can leave the file as-is.
+Before running `npm run dev`, please copy the `.env.example` file to `.env` and fill in the values. For non-patreon and discord features, you can leave the file as-is.
 
 Also, run `docker compose up -d` to easily spin up a local db instance.
 
@@ -126,9 +127,9 @@ ln -s ~/.steam/debian-installation/steamapps/common/Noita/data/fonts dataScripts
 
 Use the ./dataScripts/full_parse.sh script to clean and parse the data files.
 
-For emscripten, some edits need to be done to enable the closure compiler:
-
 ### emscripten installation and required changes
+
+For emscripten, some edits need to be done to enable the closure compiler.
 
 I recommend using the git repo to install emsdk. Install the latest version.
 
@@ -138,4 +139,4 @@ When running `npm run dev` a build script will listen to changes in `.cpp` files
 
 For vscode to work with the c++ files, install the [c++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-Then, go to `C/C++: Edit configurations (UI)` and add `<emscripten installation path>/upstream/emscripten/cache/**` to `Include path` so that vscode can find the emscripten headers.
+Then, go to `C/C++: Edit configurations (UI)` and add `<emscripten installation path>/upstream/emscripten/cache/**` to `Include path` so that vscode can find the emscripten headers. They will be available after the first build.

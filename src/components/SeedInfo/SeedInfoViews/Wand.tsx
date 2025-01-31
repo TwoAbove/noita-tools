@@ -6,6 +6,7 @@ import { localizeNumber, ticksToS } from "../../../services/helpers";
 import { SpellInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Spell";
 
 import Icon from "../../Icons/Icon";
+import Entity from "../../Icons/Entity";
 import type { WandInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Wand";
 
 const spellInfoProvider = new SpellInfoProvider({} as any);
@@ -85,11 +86,12 @@ const Wand = (props: {
                 <tr>
                   <th scope="row">{t("$inventory_alwayscasts")}</th>
                   <td>
-                    <Icon
+                    <Entity
+                      id="Spell"
+                      entityParams={{
+                        extra: item.cards.permanentCard,
+                      }}
                       size="2rem"
-                      uri={spellInfoProvider.provide(item.cards.permanentCard).sprite}
-                      title={t(spellInfoProvider.provide(item.cards.permanentCard).name)}
-                      background
                     />
                   </td>
                 </tr>
@@ -110,17 +112,19 @@ const Wand = (props: {
         {cardsToShow.map((cardRow, ii) => {
           return (
             <Row className="justify-content-start" xs={spellsPerRow} key={ii}>
-              {cardRow.map((card, i) => {
-                let s: any = spellInfoProvider.provide(card);
-                if (isNull(card)) {
-                  s = null;
-                }
-                return (
-                  <Col className="p-0 mb-1 me-1" key={i}>
-                    {s && <Icon size="1.75rem" uri={s.sprite} title={t(s.name)} background />}
-                  </Col>
-                );
-              })}
+              {cardRow.map((card, i) => (
+                <Col className="p-0 mb-1 me-1" key={i}>
+                  {card && (
+                    <Entity
+                      id="Spell"
+                      entityParams={{
+                        extra: card,
+                      }}
+                      size="1.75rem"
+                    />
+                  )}
+                </Col>
+              ))}
             </Row>
           );
         })}

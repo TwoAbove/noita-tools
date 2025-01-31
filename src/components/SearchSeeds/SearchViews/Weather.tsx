@@ -1,11 +1,8 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, FC } from "react";
 import { Row, Col, Container, Button, Form } from "react-bootstrap";
-import ReactSlider from "react-slider";
 
 import { MaterialInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Material";
 import { IRule } from "../../../services/SeedInfo/infoHandler/IRule";
-
-import Clickable from "../../Icons/Clickable";
 
 import i18n from "../../../i18n";
 import DoubleSlider from "../../misc/MultiRangeSlider";

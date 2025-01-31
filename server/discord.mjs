@@ -48,7 +48,9 @@ if (errorChannelId) {
   async function sendErrorToDiscord(...args) {
     const errorChannel = await client.channels.fetch(errorChannelId);
     if (errorChannel) {
-      await errorChannel.send(`An error occurred:\n\`\`\`\n${util.inspect(args, false, null, false)}\n\`\`\``);
+      await errorChannel.send(
+        `An error occurred:\n\`\`\`\n${util.inspect(args, false, null, false).substring(0, 1900)}\n\`\`\``,
+      );
     }
   }
   const consoleError = console.error;

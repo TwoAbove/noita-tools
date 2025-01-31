@@ -1,181 +1,90 @@
+import util from "util";
 import { Router } from "express";
 import { Types } from "mongoose";
 import { schedule } from "node-cron";
 import { randomUUID, createHmac } from "crypto";
-
 import RateLimit from "express-rate-limit";
-
-import { User } from "./db.mjs";
-import { genSessionCookie } from "./helpers.mjs";
-
 import patreon from "patreon";
+import { genSessionCookie } from "./helpers.mjs";
+import { User } from "./db.mjs";
+
 const patreonOAuth = patreon.oauth;
-
-const patreonOAuthClient = patreonOAuth(process.env.PATREON_CLIENT_ID, process.env.PATREON_CLIENT_SECRET);
-
 const router = Router();
 
-let creatorAccessToken = process.env.PATREON_CREATORS_ACCESS_TOKEN;
-let creatorRefreshToken = process.env.PATREON_CREATORS_REFRESH_TOKEN;
-
-const refreshCreatorToken = async () => {
-  try {
-    const tokens = await patreonOAuthClient.refreshToken(creatorRefreshToken);
-    creatorAccessToken = tokens.access_token;
-    creatorRefreshToken = tokens.refresh_token;
-
-    process.env.PATREON_CREATORS_ACCESS_TOKEN = creatorAccessToken;
-    process.env.PATREON_CREATORS_REFRESH_TOKEN = creatorRefreshToken;
-
-    console.log("Creator tokens refreshed successfully");
-  } catch (error) {
-    console.error("Error refreshing creator tokens:", error);
+class TokenManager {
+  constructor(clientId, clientSecret) {
+    this.patreonOAuthClient = patreonOAuth(clientId, clientSecret);
+    this.creatorAccessToken = process.env.PATREON_CREATORS_ACCESS_TOKEN;
+    this.creatorRefreshToken = process.env.PATREON_CREATORS_REFRESH_TOKEN;
   }
-};
 
-schedule("0 0 */10 * *", refreshCreatorToken); // 10 days
+  async refreshCreatorToken() {
+    try {
+      const tokens = await this.patreonOAuthClient.refreshToken(this.creatorRefreshToken);
+      this.creatorAccessToken = tokens.access_token;
+      this.creatorRefreshToken = tokens.refresh_token;
 
-const membersQuery = () => {
-  const membersQueryParams = {
-    include: ["currently_entitled_tiers", "user", "currently_entitled_tiers.campaign"].join(","),
-    "fields[member]": [
-      "full_name",
-      "is_follower",
-      "lifetime_support_cents",
-      "currently_entitled_amount_cents",
-      "patron_status",
-    ].join(","),
-    "fields[tier]": ["amount_cents", "title", "description"].join(","),
-    "fields[campaign]": ["vanity"].join(","),
-  };
-
-  const membersQueryURL = new URL("https://www.patreon.com/api/oauth2/v2/campaigns/10343002/members");
-
-  Object.entries(membersQueryParams).forEach(([key, value]) => {
-    membersQueryURL.searchParams.append(key, value);
-  });
-
-  return fetch(membersQueryURL.href, {
-    headers: {
-      Authorization: `Bearer ${creatorAccessToken}`,
-      "Content-Type": "application/json",
-    },
-  }).then(async r => {
-    if (r.status === 401) {
-      await refreshCreatorToken();
-      return fetch(membersQueryURL.href, {
-        headers: {
-          Authorization: `Bearer ${creatorAccessToken}`,
-          "Content-Type": "application/json",
-        },
-      }).then(r => r.json());
+      console.log("Creator tokens refreshed successfully");
+      return tokens;
+    } catch (error) {
+      console.error("Error refreshing creator tokens:", error);
+      throw error;
     }
-    return r.json();
-  });
-};
-
-let patronMembersCache = [];
-
-const getPatreonPatronsData = async () => {
-  if (!creatorAccessToken) {
-    return { tierMembers: {}, tiers: {} };
   }
 
-  // TODO: Handle pagination
-  const data = await membersQuery();
-
-  if (data.errors) {
-    console.error("Patreon API error, membersQuery", data.errors);
-    return { tierMembers: {}, tiers: {} };
+  async refreshUserToken(user) {
+    try {
+      const tokens = await this.patreonOAuthClient.refreshToken(user.patreonData.refresh_token);
+      user.patreonData = tokens;
+      await user.save();
+      return tokens;
+    } catch (error) {
+      console.error("Error refreshing user token:", error);
+      throw error;
+    }
   }
 
-  const tiers = data.included
-    .filter(i => i.type === "tier")
-    .reduce((acc, tier) => {
-      acc[tier.id] = tier;
-      return acc;
-    }, {});
+  async makeAuthorizedRequest(url, options, user = null) {
+    let token = user ? user.patreonData.access_token : this.creatorAccessToken;
+    let attempts = 0;
+    const maxAttempts = 2;
 
-  const members = data.data.filter(d => d.type === "member");
-  patronMembersCache = members;
+    while (attempts < maxAttempts) {
+      try {
+        const response = await fetch(url, {
+          ...options,
+          headers: {
+            ...options.headers,
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-  const tierMembers = members
-    .sort((a, b) => b.attributes.lifetime_support_cents - a.attributes.lifetime_support_cents)
-    .reduce((acc, member) => {
-      const tierIds = member.relationships.currently_entitled_tiers.data.map(t => t.id);
-      tierIds.forEach(tierId => {
-        if (!acc[tierId]) {
-          acc[tierId] = {
-            tier: tiers[tierId],
-            members: [],
-          };
+        if (response.status === 401) {
+          if (user) {
+            const tokens = await this.refreshUserToken(user);
+            token = tokens.access_token;
+          } else {
+            const tokens = await this.refreshCreatorToken();
+            token = tokens.access_token;
+          }
+          attempts++;
+          continue;
         }
-        acc[tierId].members.push(member.attributes.full_name);
-      });
-      return acc;
-    }, {});
 
-  tierMembers.Donation = {
-    tier: {
-      id: "donation",
-      type: "tier",
-      attributes: {
-        amount_cents: 0,
-        title: "Donation",
-        url: "",
-        description: "One-time donations",
-        created_at: new Date().toISOString(),
-        edited_at: new Date().toISOString(),
-        published: true,
-        published_at: new Date().toISOString(),
-        patron_count: 1,
-        requires_shipping: false,
-      },
-    },
-    members: ["BurritoSuicide"],
-  };
+        return response;
+      } catch (error) {
+        console.error("API request failed:", error);
+        throw error;
+      }
+    }
 
-  return { tierMembers, tiers };
-};
-
-let patronCache = {};
-let tierCache = {};
-
-const updatePatrons = async () => {
-  try {
-    const { tierMembers, tiers } = await getPatreonPatronsData();
-    patronCache = tierMembers;
-    tierCache = tiers;
-  } catch (e) {
-    console.error(e);
+    throw new Error("Max retry attempts reached");
   }
-};
+}
 
-updatePatrons();
-schedule("* * * * *", updatePatrons); // every minute
+const tokenManager = new TokenManager(process.env.PATREON_CLIENT_ID, process.env.PATREON_CLIENT_SECRET);
 
-router.get("/patrons", async (req, res) => {
-  res.send(patronCache);
-});
-
-const getIdentity = async token => {
-  const identityQueryParams = {
-    "fields[user]": ["full_name", "url", "image_url"],
-  };
-
-  const identityQuery = new URL("https://www.patreon.com/api/oauth2/v2/identity");
-
-  Object.entries(identityQueryParams).forEach(([key, value]) => {
-    identityQuery.searchParams.append(key, value);
-  });
-
-  return fetch(identityQuery.href, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  }).then(r => r.json());
-};
+schedule("0 0 */10 * *", () => tokenManager.refreshCreatorToken());
 
 const nonHamisAmount = 1000 * 60 * 60 * 2; // 2 hours
 const hamisAmount = 1000 * 60 * 60 * 10; // 10 hours
@@ -263,364 +172,149 @@ const getComputeAmountForPledgeAmount = pledgeAmount => {
   return amount;
 };
 
-const logAtEnd = (logs, data) => {
-  const logObject = {
-    type: "PATREON_DEBUG",
-    timestamp: new Date().toISOString(),
-    logs: logs,
-    patreonData: data,
+let patronMembersCache = [];
+let patronCache = {};
+let tierCache = {};
+
+const membersQuery = async (cursor = null) => {
+  const membersQueryParams = {
+    include: ["currently_entitled_tiers", "user", "currently_entitled_tiers.campaign"].join(","),
+    "fields[member]": [
+      "full_name",
+      "is_follower",
+      "lifetime_support_cents",
+      "currently_entitled_amount_cents",
+      "patron_status",
+    ].join(","),
+    "fields[tier]": ["amount_cents", "title", "description"].join(","),
+    "fields[campaign]": ["vanity"].join(","),
   };
-  console.log(JSON.stringify(logObject));
-};
 
-router.get(
-  "/redirect",
-  RateLimit({
-    windowMs: 1 * 60 * 1000, // 1 minute
-    max: 60,
-  }),
-  async (req, res) => {
-    const logs = [];
-    let patreonData = null;
-
-    logs.push({ message: "Redirect route accessed", queryParams: req.query });
-    // Login flow
-    const { code, state } = req.query;
-
-    if (state !== req.cookies.noitoolSessionToken) {
-      logs.push({
-        message: "Redirect state mismatch",
-        cookie: req.cookies.noitoolSessionToken,
-        state: state,
-      });
-      logAtEnd(logs, patreonData);
-      res.redirect("/");
-      return;
-    }
-
-    try {
-      const tokens = await patreonOAuthClient.getTokens(code, process.env.PATREON_REDIRECT_URL);
-      logs.push({ message: "Tokens obtained" });
-      patreonData = { tokens };
-
-      const data = await getIdentity(tokens.access_token);
-      logs.push({ message: "Identity data retrieved" });
-      patreonData.identity = data;
-
-      const { id } = data.data;
-
-      let user = await User.findOne({ patreonId: id });
-      logs.push({
-        message: user ? "User found" : "User not found",
-        userId: user ? user._id : null,
-      });
-
-      if (!user) {
-        user = await User.create({
-          _id: new Types.ObjectId(),
-          patreonData: tokens,
-          patreonId: id,
-          sessionToken: req.cookies.noitoolSessionToken,
-          compute: {
-            lastReset: new Date(),
-            resetDay: new Date().getDate(),
-            patreonComputeLeft: 0,
-            providedComputeLeft: 0,
-          },
-        });
-        logs.push({ message: "New user created", userId: user._id });
-
-        // handle new user
-        let amount = +nonHamisAmount;
-
-        // Check if user is a patron
-        const patron = patronMembersCache.find(m => m.relationships.user.data.id === id);
-        logs.push({ message: "Patron check", patron });
-        if (patron) {
-          const tierIds = patron.relationships.currently_entitled_tiers.data.map(t => t.id);
-          const tierId = tierIds[0];
-          amount = getComputeAmountForTier(tierId);
-          logs.push({ message: "Patron found", tierId: tierId, amount });
-        }
-        user.compute.patreonComputeLeft = amount;
-
-        await user.save();
-        logs.push({ message: "User saved with compute amount", amount });
-      } else {
-        user.patreonData = tokens;
-        res.cookie("noitoolSessionToken", user.sessionToken, {
-          maxAge: 1000 * 60 * 60 * 24 * 365,
-          sameSite: "lax",
-        });
-        logs.push({ message: "Existing user updated. Session token set." });
-
-        await user.save();
-      }
-    } catch (e) {
-      logs.push({ message: "Error in redirect route", error: e.message });
-      console.error("Error in redirect route", e);
-      logAtEnd(logs, patreonData);
-      return res.redirect("/");
-    }
-
-    logs.push({ message: "Redirect successful. Redirecting to /" });
-    logAtEnd(logs, patreonData);
-    res.redirect("/");
-  },
-);
-
-const authenticated = (req, res, next) => {
-  const cookies = req.cookies;
-  if (!cookies || !cookies.noitoolSessionToken) {
-    res.status(401).send(null);
-    return;
+  if (cursor) {
+    membersQueryParams["page[cursor]"] = cursor;
   }
 
-  next();
-};
-
-const loadUser = async (req, res, next) => {
-  const cookies = req.cookies;
-
-  const user = await User.findOne({
-    sessionToken: cookies.noitoolSessionToken,
+  const membersQueryURL = new URL("https://www.patreon.com/api/oauth2/v2/campaigns/10343002/members");
+  Object.entries(membersQueryParams).forEach(([key, value]) => {
+    membersQueryURL.searchParams.append(key, value);
   });
 
-  if (!user) {
-    res.status(401).send(null);
-    return;
-  }
-
-  req.user = user;
-  next();
-};
-
-const loadPatreonClient = async (req, res, next) => {
   try {
-    const fetchIdentity = async accessToken => {
-      const response = await fetch(
-        `https://www.patreon.com/api/oauth2/v2/identity?${new URLSearchParams({
-          "fields[user]": ["full_name", "url", "image_url"],
-        })}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      return response;
-    };
+    const response = await tokenManager.makeAuthorizedRequest(membersQueryURL.href, {
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Noitool - Member Sync",
+      },
+    });
 
-    let response = await fetchIdentity(req.user.patreonData.access_token);
-
-    if (response.status === 401) {
-      try {
-        const refreshedTokens = await patreonOAuthClient.refreshToken(req.user.patreonData.refresh_token);
-        req.user.patreonData = refreshedTokens;
-        await req.user.save();
-
-        response = await fetchIdentity(refreshedTokens.access_token);
-      } catch (refreshError) {
-        console.error("Error refreshing token:", refreshError);
-
-        res.clearCookie("noitoolSessionToken");
-
-        return res.status(401).json({
-          error: "Patreon authentication expired. You have been logged out. Please re-link your account.",
-          action: "LOGOUT",
-        });
-      }
+    const data = await response.json();
+    if (data.errors) {
+      console.error("Patreon API error, membersQuery:", data.errors);
+      return null;
     }
 
-    if (!response.ok) {
-      console.error(`Patreon API error, loadPatreonClient: ${response.status} ${response.statusText}`);
-      if (response.status === 503) {
-        return res.status(503).json({ error: "Patreon service temporarily unavailable" });
-      }
-      return res.status(response.status).json({ error: "Error fetching Patreon data" });
-    }
-
-    const contentType = response.headers.get("content-type");
-    if (
-      !contentType ||
-      !(contentType.includes("application/json") || contentType.includes("application/vnd.api+json"))
-    ) {
-      console.error("Unexpected content type from Patreon API:", contentType);
-      return res.status(500).json({ error: "Unexpected response from Patreon" });
-    }
-
-    const patreonUser = await response.json();
-    if (patreonUser.errors) {
-      console.error("Patreon API returned errors:", patreonUser.errors);
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    req.patreonUser = patreonUser.data;
-    next();
+    return data;
   } catch (error) {
-    console.error("Error in loadPatreonClient:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Failed to fetch members:", error.body);
+    return null;
   }
 };
 
-const gatherMeData = (user, patreonUser) => {
-  const userId = patreonUser.id;
-  const userName = patreonUser.attributes.full_name;
-  const userUrl = patreonUser.attributes.url;
-  const userImageUrl = patreonUser.attributes.image_url;
+const getPatreonPatronsData = async () => {
+  if (!tokenManager.creatorAccessToken) {
+    return { tierMembers: {}, tiers: {} };
+  }
 
-  let data = {
-    patreonId: userId,
-    noitoolId: user.id,
-    userName,
-    url: userUrl,
-    avatar: userImageUrl,
+  let allMembers = [];
+  let tiers = {};
+  let nextCursor = null;
+  let isFirstPage = true;
 
-    resetDay: user.compute.resetDay,
-    patreonComputeLeft: user.compute.patreonComputeLeft,
-    providedComputeLeft: user.compute.providedComputeLeft,
-    computeLeft: user.compute.patreonComputeLeft + user.compute.providedComputeLeft,
+  do {
+    const data = await membersQuery(nextCursor);
+
+    if (!data) {
+      console.error("Failed to fetch members page");
+      break;
+    }
+
+    // Store tier data from first page only as it contains all tiers
+    if (isFirstPage) {
+      tiers = data.included
+        .filter(i => i.type === "tier")
+        .reduce((acc, tier) => {
+          acc[tier.id] = tier;
+          return acc;
+        }, {});
+      isFirstPage = false;
+    }
+
+    allMembers = allMembers.concat(data.data);
+    nextCursor = data.meta.pagination.cursors?.next;
+  } while (nextCursor);
+
+  patronMembersCache = allMembers;
+
+  const tierMembers = allMembers
+    .filter(member => {
+      // Include active patrons and those with free tier access
+      const isActivePaid = member.attributes.patron_status === "active_patron";
+      const hasTiers = member.relationships.currently_entitled_tiers.data.length > 0;
+      const isDeclined = member.attributes.patron_status === "declined_patron";
+      const isFormer = member.attributes.patron_status === "former_patron";
+
+      return isActivePaid || (hasTiers && !isDeclined && !isFormer);
+    })
+    .sort((a, b) => b.attributes.lifetime_support_cents - a.attributes.lifetime_support_cents)
+    .reduce((acc, member) => {
+      const tierIds = member.relationships.currently_entitled_tiers.data.map(t => t.id);
+      tierIds.forEach(tierId => {
+        if (!acc[tierId]) {
+          acc[tierId] = {
+            tier: tiers[tierId],
+            members: [],
+          };
+        }
+        acc[tierId].members.push(member.attributes.full_name);
+      });
+      return acc;
+    }, {});
+
+  tierMembers.Donation = {
+    tier: {
+      id: "donation",
+      type: "tier",
+      attributes: {
+        amount_cents: 0,
+        title: "Donation",
+        url: "",
+        description: "One-time donations",
+        created_at: new Date().toISOString(),
+        edited_at: new Date().toISOString(),
+        published: true,
+        published_at: new Date().toISOString(),
+        patron_count: 1,
+        requires_shipping: false,
+      },
+    },
+    members: ["BurritoSuicide"],
   };
 
-  const patronData = patronMembersCache.find(p => p.relationships.user.data.id === userId && p.type === "member");
-
-  if (!patronData) {
-    data.activePatron = false;
-  }
-  if (patronData) {
-    data.activePatron = patronData.attributes.patron_status === "active_patron";
-  }
-
-  return data;
+  return { tierMembers, tiers };
 };
 
-router.get(
-  "/me",
-  RateLimit({
-    windowMs: 1 * 60 * 1000, // 1 minute
-    max: 600,
-  }),
-  authenticated,
-  loadUser,
-  loadPatreonClient,
-  async (req, res) => {
-    res.setHeader("Cache-Control", "public, max-age=60");
-    res.send(gatherMeData(req.user, req.patreonUser));
-  },
-);
+const updatePatrons = async () => {
+  try {
+    const { tierMembers, tiers } = await getPatreonPatronsData();
+    patronCache = tierMembers;
+    tierCache = tiers;
+  } catch (e) {
+    console.error(e);
+  }
+};
 
-// router.get('/me/db/:collection', authenticated, loadUser, async (req, res) => {
-// 	const user = req.user;
-// 	const state = user.noitoolState;
-
-// 	const collection = state[req.params.collection];
-
-// 	if (!collection) {
-// 		res.status(404).send(null);
-// 		return;
-// 	}
-
-// 	res.send(Buffer.from(collection.data));
-// });
-
-// const m = multer();
-// router.post(
-// 	'/me/db/:collection',
-// 	m.any(),
-// 	authenticated,
-// 	loadUser,
-// 	async (req, res) => {
-// 		const user = req.user;
-
-// 		const collection = req.params.collection;
-// 		const data = req.files[0].buffer.toString('base64');
-
-// 		const hash = createHash('sha256')
-// 			.update(data)
-// 			.digest('hex');
-
-// 		user.noitoolState[collection] = {
-// 			hash,
-// 			data,
-// 			updateAt: Date.now()
-// 		};
-
-// 		await user.save();
-
-// 		res.send('ok');
-// 	}
-// );
-
-// router.get(
-// 	'/me/db/:collection/check',
-// 	authenticated,
-// 	loadUser,
-// 	async (req, res) => {
-// 		const user = req.user;
-
-// 		const hash = req.query.hash;
-
-// 		let key = '';
-// 		switch (req.params.collection) {
-// 			case 'configItems':
-// 				key = 'configItems';
-// 				break;
-// 			default:
-// 		}
-
-// 		if (!key) {
-// 			res.status(404).send({});
-// 			return;
-// 		}
-
-// 		const collection = user.noitoolState[key];
-
-// 		let status = 'not_exists';
-
-// 		if (collection) {
-// 			status = 'exists';
-// 		}
-
-// 		res.send({
-// 			status,
-// 			same: collection ? collection.hash === hash : null,
-// 			updatedAt: new Date()
-// 		});
-// 	}
-// );
-
-router.post(
-  "/logout",
-  RateLimit({
-    windowMs: 1 * 60 * 1000, // 1 minute
-    max: 60,
-  }),
-  authenticated,
-  async (req, res) => {
-    res.clearCookie("noitoolSessionToken");
-    genSessionCookie(res);
-
-    res.status(200).send(null);
-  },
-);
-
-router.post(
-  "/logout_all",
-  RateLimit({
-    windowMs: 1 * 60 * 1000, // 1 minute
-    max: 60,
-  }),
-  authenticated,
-  loadUser,
-  async (req, res) => {
-    res.clearCookie("noitoolSessionToken");
-    genSessionCookie(res);
-    res.status(200).send(null);
-    const user = req.user;
-    user.sessionToken = randomUUID();
-  },
-);
+updatePatrons();
+schedule("* * * * *", updatePatrons);
 
 const getPledgeAmount = patron =>
   patron?.attributes?.currently_entitled_amount_cents ||
@@ -628,7 +322,6 @@ const getPledgeAmount = patron =>
   patron?.will_pay_amount_cents ||
   patron?.attributes?.will_pay_amount_cents;
 
-// handle patreon webhook
 router.post("/webhook", async (req, res) => {
   const logs = [];
   let patreonData = null;
@@ -766,5 +459,277 @@ const updatePatreonCompute = async () => {
 };
 
 schedule("* * * * *", () => updatePatreonCompute());
+
+router.get("/patrons", async (req, res) => {
+  res.send(patronCache);
+});
+
+const getIdentity = async token => {
+  const identityQueryParams = {
+    "fields[user]": ["full_name", "url", "image_url"],
+  };
+
+  const identityQuery = new URL("https://www.patreon.com/api/oauth2/v2/identity");
+
+  Object.entries(identityQueryParams).forEach(([key, value]) => {
+    identityQuery.searchParams.append(key, value);
+  });
+
+  try {
+    const response = await tokenManager.makeAuthorizedRequest(
+      identityQuery.href,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      { patreonData: { access_token: token } },
+    );
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching identity:", error);
+    throw error;
+  }
+};
+
+router.get(
+  "/redirect",
+  RateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 60,
+  }),
+  async (req, res) => {
+    const logs = [];
+    let patreonData = null;
+
+    logs.push({ message: "Redirect route accessed", queryParams: req.query });
+    const { code, state } = req.query;
+
+    if (state !== req.cookies.noitoolSessionToken) {
+      logs.push({
+        message: "Redirect state mismatch",
+        cookie: req.cookies.noitoolSessionToken,
+        state: state,
+      });
+      logAtEnd(logs, patreonData);
+      res.redirect("/");
+      return;
+    }
+
+    try {
+      const tokens = await tokenManager.patreonOAuthClient.getTokens(code, process.env.PATREON_REDIRECT_URL);
+      logs.push({ message: "Tokens obtained" });
+      patreonData = { tokens };
+
+      const data = await getIdentity(tokens.access_token);
+      logs.push({ message: "Identity data retrieved" });
+      patreonData.identity = data;
+
+      const { id } = data.data;
+
+      let user = await User.findOne({ patreonId: id });
+      logs.push({
+        message: user ? "User found" : "User not found",
+        userId: user ? user._id : null,
+      });
+
+      if (!user) {
+        user = await User.create({
+          _id: new Types.ObjectId(),
+          patreonData: tokens,
+          patreonId: id,
+          sessionToken: req.cookies.noitoolSessionToken,
+          compute: {
+            lastReset: new Date(),
+            resetDay: new Date().getDate(),
+            patreonComputeLeft: 0,
+            providedComputeLeft: 0,
+          },
+        });
+        logs.push({ message: "New user created", userId: user._id });
+
+        let amount = +nonHamisAmount;
+
+        const patron = patronMembersCache.find(m => m.relationships.user.data.id === id);
+        logs.push({ message: "Patron check", patron });
+        if (patron) {
+          const tierIds = patron.relationships.currently_entitled_tiers.data.map(t => t.id);
+          const tierId = tierIds[0];
+          amount = getComputeAmountForTier(tierId);
+          logs.push({ message: "Patron found", tierId: tierId, amount });
+        }
+        user.compute.patreonComputeLeft = amount;
+
+        await user.save();
+        logs.push({ message: "User saved with compute amount", amount });
+      } else {
+        user.patreonData = tokens;
+        res.cookie("noitoolSessionToken", user.sessionToken, {
+          maxAge: 1000 * 60 * 60 * 24 * 365,
+          sameSite: "lax",
+        });
+        logs.push({ message: "Existing user updated. Session token set." });
+
+        await user.save();
+      }
+    } catch (e) {
+      logs.push({ message: "Error in redirect route", error: e.message });
+      console.error("Error in redirect route", e);
+      logAtEnd(logs, patreonData);
+      return res.redirect("/");
+    }
+
+    logs.push({ message: "Redirect successful. Redirecting to /" });
+    logAtEnd(logs, patreonData);
+    res.redirect("/");
+  },
+);
+
+const authenticated = (req, res, next) => {
+  const cookies = req.cookies;
+  if (!cookies || !cookies.noitoolSessionToken) {
+    res.status(401).send(null);
+    return;
+  }
+  next();
+};
+
+const loadUser = async (req, res, next) => {
+  const cookies = req.cookies;
+
+  const user = await User.findOne({
+    sessionToken: cookies.noitoolSessionToken,
+  });
+
+  if (!user) {
+    res.status(401).send(null);
+    return;
+  }
+
+  req.user = user;
+  next();
+};
+
+const loadPatreonClient = async (req, res, next) => {
+  try {
+    const identityURL = new URL("https://www.patreon.com/api/oauth2/v2/identity");
+    identityURL.searchParams.append("fields[user]", ["full_name", "url", "image_url"].join(","));
+
+    const response = await tokenManager.makeAuthorizedRequest(
+      identityURL.href,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      req.user,
+    );
+
+    if (!response.ok) {
+      console.error(`Patreon API error: ${response.status} ${response.statusText}`);
+      if (response.status === 503) {
+        return res.status(503).json({ error: "Patreon service temporarily unavailable" });
+      }
+      return res.status(response.status).json({ error: "Error fetching Patreon data" });
+    }
+
+    const patreonUser = await response.json();
+    if (patreonUser.errors) {
+      console.error("Patreon API returned errors:", patreonUser.errors);
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    req.patreonUser = patreonUser.data;
+    next();
+  } catch (error) {
+    console.error("Error in loadPatreonClient:", error);
+    if (error.message === "Max retry attempts reached") {
+      res.clearCookie("noitoolSessionToken");
+      return res.status(401).json({
+        error: "Patreon authentication expired. Please re-link your account.",
+        action: "LOGOUT",
+      });
+    }
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const gatherMeData = (user, patreonUser) => {
+  const userId = patreonUser.id;
+  const userName = patreonUser.attributes.full_name;
+  const userUrl = patreonUser.attributes.url;
+  const userImageUrl = patreonUser.attributes.image_url;
+
+  let data = {
+    patreonId: userId,
+    noitoolId: user.id,
+    userName,
+    url: userUrl,
+    avatar: userImageUrl,
+
+    resetDay: user.compute.resetDay,
+    patreonComputeLeft: user.compute.patreonComputeLeft,
+    providedComputeLeft: user.compute.providedComputeLeft,
+    computeLeft: user.compute.patreonComputeLeft + user.compute.providedComputeLeft,
+  };
+
+  const patronData = patronMembersCache.find(p => p.relationships.user.data.id === userId && p.type === "member");
+
+  if (!patronData) {
+    data.activePatron = false;
+  }
+  if (patronData) {
+    data.activePatron = patronData.attributes.patron_status === "active_patron";
+  }
+
+  return data;
+};
+
+router.get(
+  "/me",
+  RateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 600,
+  }),
+  authenticated,
+  loadUser,
+  loadPatreonClient,
+  async (req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=60");
+    res.send(gatherMeData(req.user, req.patreonUser));
+  },
+);
+
+router.post(
+  "/logout",
+  RateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 60,
+  }),
+  authenticated,
+  async (req, res) => {
+    res.clearCookie("noitoolSessionToken");
+    genSessionCookie(res);
+    res.status(200).send(null);
+  },
+);
+
+router.post(
+  "/logout_all",
+  RateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 60,
+  }),
+  authenticated,
+  loadUser,
+  async (req, res) => {
+    res.clearCookie("noitoolSessionToken");
+    genSessionCookie(res);
+    res.status(200).send(null);
+    const user = req.user;
+    user.sessionToken = randomUUID();
+    await user.save();
+  },
+);
 
 export default router;

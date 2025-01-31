@@ -6,11 +6,12 @@ import { GameInfoProvider } from "../../../services/SeedInfo/infoHandler";
 import { FungalShiftInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/FungalShift";
 import { MaterialInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Material";
 import { AlchemyConfigContext } from "../../AlchemyConfigContext";
-import { capitalize } from "../../../services/helpers";
+import { capitalize, getWikiUrl } from "../../../services/helpers";
 import { useTranslation } from "react-i18next";
 import { useMaterialFavorite } from "./helpers";
 import classNames from "classnames";
 import i18n from "../../../i18n";
+import Clickable from "../../Icons/Clickable";
 
 const materialProvider = new MaterialInfoProvider(i18n);
 
@@ -46,32 +47,37 @@ export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor =
   const { isFavorite } = useMaterialFavorite();
   const name = materialProvider.translate(ids[0]);
   const material = materialProvider.provide(ids[0]);
+  const wikiUrl = getWikiUrl(name);
 
   const calculatedSize = `calc(1rem * ${size})`;
   const fontSize = `calc(0.85rem * ${size})`;
   const questionSize = `calc(0.75rem * ${size})`;
 
   return (
-    <div
-      className={classNames(ids.some(isFavorite) && "text-info", "d-flex align-items-center text-center", className)}
-      style={{
-        fontSize,
-      }}
-    >
-      {showColor && (
-        <div
-          className={"d-flex align-center rounded-3 me-1 border border-light align-items-center justify-content-center"}
-          style={{
-            width: calculatedSize,
-            height: calculatedSize,
-            backgroundColor: "#" + (material.color || "00000000"),
-          }}
-        >
-          <span style={{ fontSize: questionSize }}>{material.color ? "" : "?"}</span>
-        </div>
-      )}
-      {capitalize(name)} {showId && <span className="text-muted fw-light">{`(${ids.join(", ")})`}</span>}
-    </div>
+    <Clickable wikiUrl={wikiUrl}>
+      <div
+        className={classNames(ids.some(isFavorite) && "text-info", "d-flex align-items-center text-center", className)}
+        style={{
+          fontSize,
+        }}
+      >
+        {showColor && (
+          <div
+            className={
+              "d-flex align-center rounded-3 me-1 border border-light align-items-center justify-content-center"
+            }
+            style={{
+              width: calculatedSize,
+              height: calculatedSize,
+              backgroundColor: "#" + (material.color || "00000000"),
+            }}
+          >
+            <span style={{ fontSize: questionSize }}>{material.color ? "" : "?"}</span>
+          </div>
+        )}
+        {capitalize(name)} {showId && <span className="text-muted fw-light">{`(${ids.join(", ")})`}</span>}
+      </div>
+    </Clickable>
   );
 };
 
@@ -191,7 +197,7 @@ export const Shift: FC<IShiftProps> = props => {
   };
 
   return (
-    <tr className="align-middle">
+    <>
       <td>
         <FungalMaterialList materials={fromMaterials} direction={Direction.From} heldMaterial={data.flaskFrom} />
       </td>
@@ -245,7 +251,7 @@ export const Shift: FC<IShiftProps> = props => {
           )}
         </div>
       </td>
-    </tr>
+    </>
   );
 };
 
@@ -269,17 +275,17 @@ const FungalShifts = (props: IFungalShiftsProps) => {
   return (
     <Table striped hover borderless size="sm">
       <tbody>
-        {fungalData.map((data, i) => {
-          return (
+        {fungalData.map((data, i) => (
+          <tr key={i + t("$current_language")} className="align-middle">
+            <td className="text-muted">{i + 1}</td>
             <Shift
-              key={i + t("$current_language")}
               data={data}
               shifted={!!infoProvider.config.fungalShifts[i]}
               setShifted={handleSetShifted(i)}
               materialProvider={infoProvider.providers.material}
             />
-          );
-        })}
+          </tr>
+        ))}
       </tbody>
     </Table>
   );

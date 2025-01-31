@@ -15,9 +15,11 @@ import PowderStash from "../SeedInfo/SeedInfoViews/PowderStash";
 import { useTranslation } from "react-i18next";
 import { MaterialInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Material";
 import { EntityInfoProvider } from "../../services/SeedInfo/infoHandler/InfoProviders/Entity";
+import { getWikiUrl } from "../../services/helpers";
 
 import { MeditationCube, HourGlass, BuriedEye } from "./EntityIcons";
 import MemoizedNormalMapRenderer from "./normals/NormalMapRender";
+import Clickable from "./Clickable";
 
 const materials = new MaterialInfoProvider({} as any);
 const entities = new EntityInfoProvider({} as any);
@@ -86,7 +88,13 @@ const NonPreview = ({ id, action, ...rest }) => {
   const name = entity.name;
   const animations = entity.animations as any;
   const image = animations.actions[action || animations.default || "default"]?.src[0];
-  return <Icon uri={image} title={t(name)} {...rest} />;
+  const wikiUrl = getWikiUrl(t(name));
+
+  return (
+    <Clickable wikiUrl={wikiUrl}>
+      <Icon uri={image} title={t(name)} {...rest} />
+    </Clickable>
+  );
 };
 
 interface EntityProps {
@@ -94,6 +102,9 @@ interface EntityProps {
   action?: string;
   entityParams?: any;
   preview?: boolean;
+
+  className?: string;
+  style?: React.CSSProperties;
 
   size?: string;
   width?: string;
@@ -199,21 +210,26 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
   if (entity.itemImage && entity.itemImage.image) {
     const name = entity.itemImage.item_name;
     const image = entity.itemImage.image.src;
-    return <Icon uri={image} title={t(name)} {...rest} />;
+    const wikiUrl = getWikiUrl(t(name));
+
+    return (
+      <Clickable wikiUrl={wikiUrl}>
+        <Icon uri={image} title={t(name)} {...rest} />
+      </Clickable>
+    );
   }
 
   if (entity.animations) {
-    // TODO: animate
     const animations = entity.animations;
-
-    if (!entity.animations) {
-    }
-
     const image = animations.actions[action || animations.default || "default"]?.src[0];
+    const name = entity.ui_name || entity.name || entity.itemImage.item_name;
+    const wikiUrl = getWikiUrl(t(name));
 
-    const name = entity.ui_name || entity.name;
-
-    return <Icon uri={image} title={t(name)} {...rest} />;
+    return (
+      <Clickable wikiUrl={wikiUrl}>
+        <Icon uri={image} title={t(name)} {...rest} />
+      </Clickable>
+    );
   }
 
   if (entity.physicsImage) {

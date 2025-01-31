@@ -1,5 +1,4 @@
-import { lazy } from "@loadable/component";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import LoadingComponent from "../LoadingComponent";
 
 // To tree shake any test features in TestBench

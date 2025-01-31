@@ -1,17 +1,19 @@
-import React, { ReactNode } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import { Form, Col, Row, Container } from "react-bootstrap";
 import { useDropzone, DropzoneOptions } from "react-dropzone";
+import classNames from "classnames";
 
 import useLocalStorage from "../../services/useLocalStorage";
 
 interface IConfigRowProps {
   left: React.ReactElement;
   right: React.ReactElement;
+  className?: string;
 }
 export const ConfigRow = (props: IConfigRowProps) => {
   // Maybe make this work with children and not left/right props?
   return (
-    <Row className="align-items-baseline justify-content-between">
+    <Row className={classNames("align-items-baseline justify-content-between", props.className)}>
       <Col>{props.left}</Col>
       <Col className="col-auto">{props.right}</Col>
     </Row>
@@ -55,8 +57,13 @@ export const PanelToggle = (props: IPanelToggleProps) => {
   );
 };
 
-export const DropZone = (props: { children?: React.ReactChild; onDrop: DropzoneOptions["onDrop"] }) => {
-  const { children, onDrop } = props;
+export const DropZone = ({
+  children,
+  onDrop,
+}: {
+  children: ReactElement | ReactElement[];
+  onDrop: DropzoneOptions["onDrop"];
+}) => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (

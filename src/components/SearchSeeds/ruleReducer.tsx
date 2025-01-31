@@ -47,7 +47,7 @@ interface IImportAction {
 
 type IActions = IAddAction | ISelectAction | IUpdateAction | IDeleteAction | IMoveAction | IImportAction;
 
-export const initialRuleState = {
+export const initialRuleState: IState = {
   id: "root",
   type: RuleType.AND,
   rules: [],

@@ -231,7 +231,7 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
 
     newComputeSocket.on("compute:version_mismatch", () => {
       setComputeVersionMismatch(true);
-      newComputeSocket.stop();
+      newComputeSocket.terminate();
     });
 
     const newSocketComputeProvider = new SocketComputeProvider(
@@ -244,7 +244,7 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
 
     return () => {
       setClusterConnected(false);
-      newComputeSocket.stop();
+      newComputeSocket.terminate();
       newSocketComputeProvider.destruct();
     };
   }, [chunkProvider, ruleTree, clusterHelpEnabled]);
@@ -306,7 +306,7 @@ const SearchContextProvider: FC<{ children: React.ReactNode }> = ({ children }) 
 
   const running = solverStatus?.running;
   const seedsChecked = chunkProvider?.progress || 0;
-  const totalSeeds = searchInstance ? searchInstance.config.to - searchInstance.config.from + 1 : 0;
+  const totalSeeds = searchInstance ? searchInstance.config.to - searchInstance.config.from : 0;
   const percentChecked = Math.floor((seedsChecked / totalSeeds) * 100);
   const seedsPerSecond = solverStatus?.rate;
 

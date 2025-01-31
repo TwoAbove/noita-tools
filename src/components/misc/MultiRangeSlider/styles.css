@@ -5,6 +5,7 @@
   border-radius: 1rem;
   position: relative;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .horizontal-slider.disabled {

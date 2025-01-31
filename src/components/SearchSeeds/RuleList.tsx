@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useRef, useState } from "react";
+import React, { FC, useCallback, useContext, useEffect, useRef, useState } from "react";
 import {
   Container,
   Stack,
@@ -35,6 +35,17 @@ const treeTools = getTreeTools("id", "rules");
 
 type IIDRule = IRule & { id: string };
 
+function useDragRef(drag: (el: HTMLDivElement) => void) {
+  return useCallback(
+    (element: HTMLDivElement | null) => {
+      if (element) {
+        drag(element);
+      }
+    },
+    [drag],
+  );
+}
+
 interface IRuleProps extends IIDRule {
   deletable?: boolean;
   draggable?: boolean;
@@ -54,6 +65,8 @@ const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable, titleProps, high
     [id, type, deletable, draggable],
   );
 
+  const handleDragRef = useDragRef(drag);
+
   const active = ruleTree.selectedRule === id;
 
   const handleDelete = () => {
@@ -65,7 +78,7 @@ const Rule: FC<IRuleProps> = ({ id, type, deletable, draggable, titleProps, high
 
   return (
     <Stack direction="horizontal" gap={2} className="align-items-center" ref={dragPreview} {...(collected as any)}>
-      {draggable && <i className="bi bi-grip-vertical" ref={drag}></i>}
+      {draggable && <i className="bi bi-grip-vertical" ref={handleDragRef}></i>}
       <ListGroup.Item
         active={active}
         action
@@ -92,7 +105,7 @@ const LogicRule: FC<ILogicRuleProps> = ({ type, id, rules, deletable, draggable 
   const handleDelete = () => {
     ruleDispatch({ action: "delete", data: id });
   };
-  const [dragProps, dragRef, dragPreviewRef] = useDrag(
+  const [dragProps, drag, dragPreview] = useDrag(
     () => ({
       type: "rule",
       item: { id },
@@ -103,7 +116,10 @@ const LogicRule: FC<ILogicRuleProps> = ({ type, id, rules, deletable, draggable 
     [id, type, rules, deletable, draggable],
   );
 
-  const [dropProps, dropRef] = useDrop(
+  const dragRef = useDragRef(drag);
+  const dragPreviewRef = useDragRef(dragPreview);
+
+  const [dropProps, drop] = useDrop(
     () => ({
       accept: "rule",
       drop: (item: any, monitor) => {
@@ -141,6 +157,7 @@ const LogicRule: FC<ILogicRuleProps> = ({ type, id, rules, deletable, draggable 
     }),
     [id, type, rules, deletable, draggable],
   );
+  const dropRef = useDragRef(drop);
   const rule = RuleConstructors[type];
   return (
     <Card

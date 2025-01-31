@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useContext, useEffect, useMemo, useState, useTransition } from "react";
 import { Modal, Row, Col, FormControl } from "react-bootstrap";
 import Fuse from "fuse.js";
-
-import Icon from "./Icons/Icon";
+import Spell from "./Icons/Spell";
 import Clickable from "./Icons/Clickable";
 
 import { useTranslation } from "react-i18next";
@@ -24,6 +22,10 @@ interface ISpellSelectProps {
   handleClose: () => void;
   handleOnClick: (id: string) => void;
   handleSelectedClicked: (id: string) => void;
+  disabled?: boolean;
+  filter?: boolean;
+  strict?: boolean;
+  unique?: boolean;
 }
 
 const SpellSelect: FC<ISpellSelectProps> = ({
@@ -34,9 +36,13 @@ const SpellSelect: FC<ISpellSelectProps> = ({
   handleOnClick,
   handleSelectedClicked,
   selected = [],
+  disabled = false,
+  filter = true,
+  strict = false,
+  unique = false,
 }) => {
   const [isPending, startTransition] = useTransition();
-  const [filter, setFilter] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("");
   const { t, i18n } = useTranslation("materials");
 
   const { gameInfoProvider } = useContext(GameInfoContext);
@@ -58,63 +64,77 @@ const SpellSelect: FC<ISpellSelectProps> = ({
     });
   }, [t, i18n, i18n.language, translatedShop]);
 
-  const spellsToShow = (filter ? fuse.search(filter).map(s => s.item) : gameInfoProvider!.providers.spells.spellsArr)
-    .filter(s =>
-      level !== undefined && level >= 0
-        ? Object.keys(s.spawn_probabilities).includes(String(gameInfoProvider!.providers.shop.getShopLevel(level)))
-        : true,
-    )
-    .filter(s => !selected.includes(s.id));
+  const spellsToShow = (
+    filter && selectedFilter
+      ? fuse.search(selectedFilter).map(s => s.item)
+      : gameInfoProvider!.providers.spells.spellsArr
+  ).filter(s => {
+    if (level !== undefined && level >= 0) {
+      if (!Object.keys(s.spawn_probabilities).includes(String(gameInfoProvider!.providers.shop.getShopLevel(level)))) {
+        return false;
+      }
+    }
+    if (unique && selected.includes(s.id)) {
+      return false;
+    }
+    return true;
+  });
 
   const handleFilter = e => {
-    setFilter(e.target.value);
+    setSelectedFilter(e.target.value);
   };
 
   return (
     <Modal fullscreen="sm-down" scrollable show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Spell Select</Modal.Title>
+        <Modal.Title>
+          Spell Select {disabled && <small className="text-muted">(Max capacity reached)</small>}
+          {filter && <small className="text-muted ms-2">({strict ? "All required" : "Any of these"})</small>}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {isPending ? (
           <LoadingComponent />
         ) : (
-          showSelected &&
-          selected.length > 0 && (
+          showSelected && (
             <Row sm={8} className="p-3 justify-content-start align-items-center row-cols-auto">
-              {selected.map(s => {
-                const spell = gameInfoProvider!.providers.spells.spells[s];
-                return (
-                  <Col className="p-0 m-1" key={spell.id}>
-                    <Clickable useHover onClick={() => handleSelectedClicked(spell.id)}>
-                      <Icon uri={spell.sprite} alt={t(spell.description)} title={t(spell.name)} background />
-                    </Clickable>
+              {selected.length > 0 ? (
+                selected.map(s => (
+                  <Col className="p-0 m-1" key={s}>
+                    <Spell id={s} width="3rem" onClick={() => handleSelectedClicked(s)} />
                   </Col>
-                );
-              })}
+                ))
+              ) : (
+                <Col className="p-0 m-1">
+                  <Spell id="" width="3rem" />
+                </Col>
+              )}
             </Row>
           )
         )}
-        <Row className="p-1 ps-4 pe-4 align-items-center">
-          <FormControl
-            type="search"
-            placeholder="Filter"
-            className=""
-            aria-label="Filter"
-            value={filter}
-            onChange={handleFilter}
-          />
-        </Row>
+        {filter && (
+          <Row className="p-1 ps-4 pe-4 align-items-center">
+            <FormControl
+              type="search"
+              placeholder="Filter"
+              className=""
+              aria-label="Filter"
+              value={selectedFilter}
+              onChange={handleFilter}
+            />
+          </Row>
+        )}
         <Row sm={8} className="p-3 justify-content-center align-items-center row-cols-auto">
-          {spellsToShow.map(spell => {
-            return (
-              <Col className="p-0 m-1" key={spell.id}>
-                <Clickable useHover onClick={() => handleOnClick(spell.id)}>
-                  <Icon uri={spell.sprite} alt={t(spell.description)} title={t(spell.name)} background />
-                </Clickable>
-              </Col>
-            );
-          })}
+          {spellsToShow.map(spell => (
+            <Col className="p-0 m-1" key={spell.id}>
+              <Spell
+                id={spell.id}
+                width="3rem"
+                style={disabled ? { opacity: 0.5 } : undefined}
+                onClick={() => !disabled && handleOnClick(spell.id)}
+              />
+            </Col>
+          ))}
         </Row>
       </Modal.Body>
     </Modal>

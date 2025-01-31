@@ -1,8 +1,6 @@
 import { useState, useContext } from "react";
 import { ListGroup, Form } from "react-bootstrap";
-import { DarkModeToggle } from "react-dark-mode-toggle-2";
 
-// import { db } from "../services/db";
 import i18n from "../../i18n";
 
 import { ThemeContext } from "../ThemeContext";
@@ -150,21 +148,21 @@ const DarkMode = () => {
   const [theme, setTheme] = useContext(ThemeContext);
   return (
     <ConfigRow
+      className="py-4"
       left={
         <>
           <strong className="">Dark Mode</strong>
         </>
       }
       right={
-        <div className="m-1">
-          <DarkModeToggle
-            onChange={checked => {
-              setTheme(checked ? "dark" : "light");
-            }}
-            isDarkMode={theme === "dark"}
-            size={60}
-          />
-        </div>
+        <Form.Switch
+          checked={theme === "dark"}
+          onChange={e => {
+            setTheme(e.target.checked ? "dark" : "light");
+          }}
+          id="dark-mode-switch"
+          label=""
+        />
       }
     />
   );
@@ -176,10 +174,10 @@ const GeneralSettings = () => {
       <ConfigTitle title="General" subtitle="These settings modify how Noitool behaves or displays things." />
       <ListGroup variant="flush" className="mb-5 shadow">
         <ListGroup.Item>
-          <Locale />
+          <DarkMode />
         </ListGroup.Item>
         <ListGroup.Item>
-          <DarkMode />
+          <Locale />
         </ListGroup.Item>
         <ListGroup.Item>
           <AlchemyConfig />

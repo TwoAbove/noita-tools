@@ -1,5 +1,4 @@
-import React, { Suspense } from "react";
-import { lazy } from "@loadable/component";
+import { Suspense, lazy } from "react";
 
 import LoadingComponent from "../LoadingComponent";
 
