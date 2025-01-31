@@ -18,13 +18,19 @@ interface WasmModule {
 }
 
 type EmbindString = ArrayBuffer|Uint8Array|Uint8ClampedArray|Int8Array|string;
-export interface VectorString {
+export interface ClassHandle {
+  isAliasOf(other: ClassHandle): boolean;
+  delete(): void;
+  deleteLater(): this;
+  isDeleted(): boolean;
+  clone(): this;
+}
+export interface VectorString extends ClassHandle {
   push_back(_0: EmbindString): void;
   resize(_0: number, _1: EmbindString): void;
   size(): number;
   get(_0: number): EmbindString | undefined;
   set(_0: number, _1: EmbindString): boolean;
-  delete(): void;
 }
 
 export type FungalTransformation = {
@@ -36,13 +42,12 @@ export type FungalTransformation = {
   grass_to_x: EmbindString
 };
 
-export interface VectorFungalTransformation {
+export interface VectorFungalTransformation extends ClassHandle {
   push_back(_0: FungalTransformation): void;
   resize(_0: number, _1: FungalTransformation): void;
   size(): number;
   get(_0: number): FungalTransformation | undefined;
   set(_0: number, _1: FungalTransformation): boolean;
-  delete(): void;
 }
 
 interface EmbindModule {
