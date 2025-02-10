@@ -46,11 +46,11 @@ export class MaterialInfoProvider extends InfoProvider {
     };
   }
 
-  translate(materialName: string) {
+  translate(materialName: string, lng?: string) {
     if (!this.i18n?.t) {
       return materialName;
     }
-    return this.i18n.t(this.provide(materialName).ui_name, { ns: "materials" });
+    return this.i18n.t(this.provide(materialName).ui_name, { ns: "materials", lng });
   }
 
   test(rule: IRule): boolean {
