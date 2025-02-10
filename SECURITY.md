@@ -6,4 +6,4 @@ Only the most recent version (that is on `master` branch) is supported and all f
 
 ## Reporting a Vulnerability
 
-If you found a vulnerability, send me an email me@seva.dev with the title `Noitool - x` so that I know it's for this app. Thank you for the proactivity!
+If you found a vulnerability, send me an email <me@noitool.com> with the title `Noitool - x` so that I know it's for this app. Thank you for the proactivity!
