@@ -27,7 +27,7 @@ class TokenManager {
       console.log("Creator tokens refreshed successfully");
       return tokens;
     } catch (error) {
-      console.error("Error refreshing creator tokens:", error);
+      console.error("Error refreshing creator tokens:", error.body || error);
       throw error;
     }
   }
@@ -39,7 +39,7 @@ class TokenManager {
       await user.save();
       return tokens;
     } catch (error) {
-      console.error("Error refreshing user token:", error);
+      console.error("Error refreshing user token:", error.body || error);
       throw error;
     }
   }
@@ -73,7 +73,7 @@ class TokenManager {
 
         return response;
       } catch (error) {
-        console.error("API request failed:", error);
+        console.error("API request failed:", error.body || error);
         throw error;
       }
     }
