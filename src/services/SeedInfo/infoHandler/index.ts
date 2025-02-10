@@ -144,7 +144,7 @@ export class GameInfoProvider extends EventTarget {
   }
 
   async buildInfoProviders(): Promise<IProviders> {
-    // We have to import like this so that vite can bundle them
+    // We have to import like this so that vite can code split properly
     const importMap = {
       alchemy: () => import("./InfoProviders/Alchemy"),
       alwaysCast: () => import("./InfoProviders/AlwaysCast"),
