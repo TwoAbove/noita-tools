@@ -737,7 +737,10 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
   // to the pickedPerks.
   const pickedPerksWithGambles = () => {
     const pickedPerks = cloneDeep(infoProvider.config.pickedPerks || new Map());
-    for (const [n, pp] of pickedPerks) {
+    for (const [offset, pp] of pickedPerks) {
+      if (offset !== worldOffsetSimple) {
+        continue;
+      }
       for (let i = 0; i < pp.length; i++) {
         if (pp[i]?.includes("GAMBLE")) {
           const perkRow = props.perks[i];
