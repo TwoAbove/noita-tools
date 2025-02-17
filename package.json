@@ -118,7 +118,7 @@
     "use-deep-compare-effect": "^1.8.1",
     "vite": "^6.0.11",
     "vite-plugin-comlink": "^5.1.0",
-    "vitest": "^3.0.4",
+    "vitest": "^3.0.5",
     "web-vitals": "^4.2.4",
     "xml2js": "^0.6.2",
     "xmldom": "^0.6.0"
