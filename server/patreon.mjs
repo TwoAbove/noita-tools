@@ -215,7 +215,14 @@ const membersQuery = async (cursor = null) => {
 
     return data;
   } catch (error) {
-    console.error("Failed to fetch members:", error.body);
+    console.error(
+      "Failed to fetch members:",
+      typeof error === "object"
+        ? error instanceof Error
+          ? error.message
+          : JSON.stringify(error, Object.getOwnPropertyNames(error))
+        : error,
+    );
     return null;
   }
 };
