@@ -83,7 +83,7 @@ const Patrons = () => {
   }, []);
 
   const elements: ReactElement[] = Object.entries(patrons)
-    .sort(([, a], [, b]) => b.tier.attributes.amount_cents - a.tier.attributes.amount_cents)
+    .sort(([, a], [, b]) => (b.tier?.attributes?.amount_cents ?? 0) - (a.tier?.attributes?.amount_cents ?? 0))
     .map(([tierId, tier]) => (
       <Col key={tierId} className="p-2">
         <PatronScroll patrons={tier.members} tier={tier.tier.attributes.title} tierUrl={tier.tier.attributes.url} />
