@@ -3,12 +3,12 @@ import { Row, Col } from "react-bootstrap";
 import Marquee from "react-fast-marquee";
 
 export interface Patron {
-  tier: Tier;
+  tier?: Tier;
   members: string[];
 }
 
 export interface Tier {
-  attributes: Attributes;
+  attributes?: Attributes;
   id: string;
   type: string;
 }
@@ -83,12 +83,21 @@ const Patrons = () => {
   }, []);
 
   const elements: ReactElement[] = Object.entries(patrons)
-    .sort(([, a], [, b]) => (b.tier?.attributes?.amount_cents ?? 0) - (a.tier?.attributes?.amount_cents ?? 0))
-    .map(([tierId, tier]) => (
-      <Col key={tierId} className="p-2">
-        <PatronScroll patrons={tier.members} tier={tier.tier.attributes.title} tierUrl={tier.tier.attributes.url} />
-      </Col>
-    ));
+    .sort(([tierId, a], [_, b]) => {
+      const amountA = a.tier?.attributes?.amount_cents ?? 0;
+      const amountB = b.tier?.attributes?.amount_cents ?? 0;
+      return amountB - amountA;
+    })
+    .map(([tierId, patron]) => {
+      const tierName = patron.tier?.attributes?.title || tierId;
+      const tierUrl = patron.tier?.attributes?.url || "";
+
+      return (
+        <Col key={tierId} className="p-2">
+          <PatronScroll patrons={patron.members} tier={tierName} tierUrl={tierUrl} />
+        </Col>
+      );
+    });
 
   return (
     <Row xs={1} md={3} className="justify-content-start m-0 my-2">
