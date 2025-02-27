@@ -101,6 +101,7 @@ Prerequisites:
 
 - Docker (for compose)
 - Node
+- Bun (for running the server)
 - `chokidar` (`npm install -g chokidar-cli`)
 - [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed if you want to work with the c++ code
 - [Nota data](https://noita.wiki.gg/wiki/Modding#Extracting_data_files) if you want to modify the data files. Place the data files in `dataScripts/noita-data`

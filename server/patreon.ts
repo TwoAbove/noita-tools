@@ -1,22 +1,78 @@
 import util from "util";
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { schedule } from "node-cron";
 import { randomUUID, createHmac } from "crypto";
 import RateLimit from "express-rate-limit";
 import patreon from "patreon";
-import { genSessionCookie } from "./helpers.mjs";
+import { genSessionCookie } from "./helpers";
 
 const patreonOAuth = patreon.oauth;
 const router = Router();
 
+interface PatreonTokens {
+  access_token: string;
+  refresh_token: string;
+}
+
+interface PatreonTier {
+  id: string;
+  type: string;
+  attributes: {
+    amount_cents: number;
+    title: string;
+    url?: string;
+    description: string;
+    created_at: string;
+    edited_at: string;
+    published: boolean;
+    published_at: string;
+    patron_count: number;
+    requires_shipping: boolean;
+  };
+}
+
+interface PatreonMember {
+  id: string;
+  type: string;
+  attributes: {
+    full_name: string;
+    patron_status: string;
+    lifetime_support_cents: number;
+    currently_entitled_amount_cents: number;
+    is_follower: boolean;
+  };
+  relationships: {
+    currently_entitled_tiers: {
+      data: Array<{ id: string; type: string }>;
+    };
+  };
+}
+
+interface TierMemberGroup {
+  tier: PatreonTier;
+  members: string[];
+}
+
+interface TierMembersCache {
+  [tierId: string]: TierMemberGroup;
+}
+
+interface TierCache {
+  [tierId: string]: PatreonTier;
+}
+
 class TokenManager {
-  constructor(clientId, clientSecret) {
+  private patreonOAuthClient: any;
+  private creatorAccessToken: string;
+  private creatorRefreshToken: string;
+
+  constructor(clientId: string, clientSecret: string) {
     this.patreonOAuthClient = patreonOAuth(clientId, clientSecret);
-    this.creatorAccessToken = process.env.PATREON_CREATORS_ACCESS_TOKEN;
-    this.creatorRefreshToken = process.env.PATREON_CREATORS_REFRESH_TOKEN;
+    this.creatorAccessToken = process.env.PATREON_CREATORS_ACCESS_TOKEN || "";
+    this.creatorRefreshToken = process.env.PATREON_CREATORS_REFRESH_TOKEN || "";
   }
 
-  async refreshCreatorToken() {
+  async refreshCreatorToken(): Promise<PatreonTokens> {
     try {
       const tokens = await this.patreonOAuthClient.refreshToken(this.creatorRefreshToken);
       this.creatorAccessToken = tokens.access_token;
@@ -24,12 +80,12 @@ class TokenManager {
       console.log("Creator tokens refreshed successfully");
       return tokens;
     } catch (error) {
-      console.error("Error refreshing creator tokens:", error.body || error);
+      console.error("Error refreshing creator tokens:", error instanceof Error ? error.message : error);
       throw error;
     }
   }
 
-  async makeAuthorizedRequest(url, options) {
+  async makeAuthorizedRequest(url: string, options: RequestInit) {
     let token = this.creatorAccessToken;
     let attempts = 0;
     const maxAttempts = 2;
@@ -53,24 +109,23 @@ class TokenManager {
 
         return response;
       } catch (error) {
-        console.error("API request failed:", error.body || error);
+        console.error("API request failed:", error instanceof Error ? error.message : error);
         throw error;
       }
     }
-
     throw new Error("Max retry attempts reached");
   }
 }
 
-const tokenManager = new TokenManager(process.env.PATREON_CLIENT_ID, process.env.PATREON_CLIENT_SECRET);
+const tokenManager = new TokenManager(process.env.PATREON_CLIENT_ID || "", process.env.PATREON_CLIENT_SECRET || "");
 
 schedule("0 0 */10 * *", () => tokenManager.refreshCreatorToken());
 
-let patronMembersCache = [];
-let patronCache = {};
-let tierCache = {};
+let patronMembersCache: PatreonMember[] = [];
+let patronCache: TierMembersCache = {};
+let tierCache: TierCache = {};
 
-const membersQuery = async (cursor = null) => {
+const membersQuery = async (cursor: string | null = null) => {
   const membersQueryParams = {
     include: ["currently_entitled_tiers", "user", "currently_entitled_tiers.campaign"].join(","),
     "fields[member]": [
@@ -100,23 +155,14 @@ const membersQuery = async (cursor = null) => {
         "User-Agent": "Noitool - Member Sync",
       },
     });
-
     const data = await response.json();
-    if (data.errors) {
+    if ("errors" in data) {
       console.error("Patreon API error, membersQuery:", data.errors);
       return null;
     }
-
     return data;
   } catch (error) {
-    console.error(
-      "Failed to fetch members:",
-      typeof error === "object"
-        ? error instanceof Error
-          ? error.message
-          : JSON.stringify(error, Object.getOwnPropertyNames(error))
-        : error,
-    );
+    console.error("Failed to fetch members:", error instanceof Error ? error.message : JSON.stringify(error));
     return null;
   }
 };
@@ -126,9 +172,9 @@ const getPatreonPatronsData = async () => {
     return { tierMembers: {}, tiers: {} };
   }
 
-  let allMembers = [];
-  let tiers = {};
-  let nextCursor = null;
+  let allMembers: PatreonMember[] = [];
+  let tiers: TierCache = {};
+  let nextCursor: string | null = null;
   let isFirstPage = true;
 
   do {
@@ -140,8 +186,8 @@ const getPatreonPatronsData = async () => {
 
     if (isFirstPage) {
       tiers = data.included
-        .filter(i => i.type === "tier")
-        .reduce((acc, tier) => {
+        .filter((i: any) => i.type === "tier")
+        .reduce((acc: TierCache, tier: PatreonTier) => {
           acc[tier.id] = tier;
           return acc;
         }, {});
@@ -149,7 +195,7 @@ const getPatreonPatronsData = async () => {
     }
 
     allMembers = allMembers.concat(data.data);
-    nextCursor = data.meta.pagination.cursors?.next;
+    nextCursor = data.meta.pagination.cursors?.next || null;
   } while (nextCursor);
 
   patronMembersCache = allMembers;
@@ -163,7 +209,7 @@ const getPatreonPatronsData = async () => {
       return isActivePaid || (hasTiers && !isDeclined && !isFormer);
     })
     .sort((a, b) => b.attributes.lifetime_support_cents - a.attributes.lifetime_support_cents)
-    .reduce((acc, member) => {
+    .reduce((acc: TierMembersCache, member) => {
       const tierIds = member.relationships.currently_entitled_tiers.data.map(t => t.id);
       tierIds.forEach(tierId => {
         if (!acc[tierId]) {
@@ -184,7 +230,6 @@ const getPatreonPatronsData = async () => {
       attributes: {
         amount_cents: 0,
         title: "Donation",
-        url: "",
         description: "One-time donations",
         created_at: new Date().toISOString(),
         edited_at: new Date().toISOString(),
@@ -213,11 +258,11 @@ const updatePatrons = async () => {
 updatePatrons();
 schedule("* * * * *", updatePatrons);
 
-router.get("/patrons", async (req, res) => {
+router.get("/patrons", async (req: Request, res: Response) => {
   res.send(patronCache);
 });
 
-function logAtEnd(logs, patreonData) {
+function logAtEnd(logs: any, patreonData: any) {
   console.log({
     timeStamp: new Date().toISOString(),
     logs,
