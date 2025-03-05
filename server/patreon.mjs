@@ -465,7 +465,7 @@ const updatePatreonCompute = async () => {
   logAtEnd(logs, patreonData);
 };
 
-schedule("* * * * *", () => updatePatreonCompute());
+// schedule("* * * * *", () => updatePatreonCompute());
 
 router.get("/patrons", async (req, res) => {
   res.send(patronCache);
