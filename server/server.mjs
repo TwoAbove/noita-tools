@@ -1,4 +1,3 @@
-import handler from "serve-handler";
 import express, { static as expressStatic } from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
@@ -248,5 +247,3 @@ const shutdown = signal => err => {
 process.on("SIGTERM", shutdown("SIGTERM")).on("SIGINT", shutdown("SIGINT"));
 
 process.on("uncaughtException", shutdown("SIGINT"));
-
-import "./jobs/index.mjs";

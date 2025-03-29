@@ -16,7 +16,6 @@
     "dotenv-flow": "^4.1.0",
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
-    "mongoose": "^8.9.5",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.3",
