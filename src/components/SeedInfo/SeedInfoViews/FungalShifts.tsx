@@ -12,6 +12,7 @@ import { useMaterialFavorite } from "./helpers";
 import classNames from "classnames";
 import i18n from "../../../i18n";
 import Clickable from "../../Icons/Clickable";
+import useLocalStorage from "../../../services/useLocalStorage";
 
 const materialProvider = new MaterialInfoProvider(i18n);
 
@@ -166,6 +167,7 @@ export const Shift: FC<IShiftProps> = props => {
   const [showId] = useContext(AlchemyConfigContext);
   const { isFavorite } = useMaterialFavorite();
   const [audio] = useState(new Audio("notification-sound-7062.mp3"));
+  const [playFungalShiftAudio] = useLocalStorage("play-fungal-shift-audio", true);
 
   // TODO: More uniform if data.from and data.to is always an array?
   const from: Array<string> = [data.from].flat();
@@ -188,7 +190,9 @@ export const Shift: FC<IShiftProps> = props => {
   const [showTimer, setShowTimer] = useState(false);
 
   const handleTimerExpire = () => {
-    [0, 5].forEach(i => setTimeout(() => audio.play(), i * 1000));
+    if (playFungalShiftAudio) {
+      [0, 5].forEach(i => setTimeout(() => audio.play(), i * 1000));
+    }
     setShowTimer(false);
   };
 

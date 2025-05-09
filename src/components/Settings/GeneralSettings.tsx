@@ -144,6 +144,31 @@ export const ShowAlwaysCastRow = () => {
   );
 };
 
+export const PlayFungalShiftAudio = () => {
+  const [playFungalShiftAudio, setPlayFungalShiftAudio] = useLocalStorage("play-fungal-shift-audio", true);
+
+  return (
+    <ConfigRow
+      left={
+        <>
+          <strong className="">Play 'Fungal Shift Ready' Sound</strong>
+          <p className="text-muted fw-light mb-0">Play sound when the 5 minute cooldown for fungal shift is over.</p>
+        </>
+      }
+      right={
+        <Form.Switch
+          checked={playFungalShiftAudio}
+          onChange={e => {
+            setPlayFungalShiftAudio(e.target.checked);
+          }}
+          id="play-fungal-shift-audio-config-switch"
+          label=""
+        />
+      }
+    />
+  );
+};
+
 const DarkMode = () => {
   const [theme, setTheme] = useContext(ThemeContext);
   return (
@@ -187,6 +212,9 @@ const GeneralSettings = () => {
         </ListGroup.Item>
         <ListGroup.Item>
           <ShowAlwaysCastRow />
+        </ListGroup.Item>
+        <ListGroup.Item>
+          <PlayFungalShiftAudio />
         </ListGroup.Item>
       </ListGroup>
     </>
