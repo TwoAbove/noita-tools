@@ -107,8 +107,6 @@ Prerequisites:
 
 Before running `npm run dev`, please copy the `.env.example` file to `.env` and fill in the values. For non-patreon and discord features, you can leave the file as-is.
 
-Also, run `docker compose up -d` to easily spin up a local db instance.
-
 ### Noita data
 
 You will need to unpack Noita wak data (see [here](https://noita.wiki.gg/wiki/Modding#Extracting_data_files)) and copy/link several things into the `dataScripts/noita-data` folder. Note that `translations` and `fonts` are in the main Noita folder, not in the `Nolla_Games_Noita` folder.
