@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { IPerkChangeStateType, PerkInfoProvider, IPerkChangeAction, ISelectAction } from "./";
-import { loadRandom, getPerk } from "../../../../../testHelpers";
-import NoitaRandomItem from "../../../../../services/SeedInfo/random";
+import { loadRandom } from "../../../testHelpers"; // Corrected path
+import { NoitaRandomItem } from "../../random"; // Corrected path
+import { getPerk } from "../../../../../testHelpers"; // getPerk seems to be from testHelpers too
 
 describe("PerkInfoProvider", () => {
   beforeEach(() => {
@@ -209,6 +210,7 @@ describe("PerkInfoProvider", () => {
   });
 
   it('should correctly handle EXTRA_PERK from GAMBLE in provideStateless without double counting', async () => {
+    await loadRandom(); // Load WASM random generator
     const randoms = new NoitaRandomItem(12345); // Use a fixed seed for reproducibility
     const perkProvider = new PerkInfoProvider(randoms);
     await perkProvider.ready(); // Ensure perks are loaded if actual data is partially used

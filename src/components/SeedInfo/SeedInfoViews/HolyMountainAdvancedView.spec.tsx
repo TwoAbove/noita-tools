@@ -2,7 +2,8 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import HolyMountainAdvancedView from './HolyMountainAdvancedView';
 import { GameInfoProvider } from '../../../services/SeedInfo/infoHandler';
-import NoitaRandomItem from '../../../services/SeedInfo/random'; // Corrected import path
+import { NoitaRandomItem } from '../../../services/SeedInfo/random'; // Corrected import path
+import { loadRandom } from '../../../testHelpers'; // Added import
 
 // Mock PerkRow to simplify testing the view itself
 jest.mock('./PerkRow', () => ({
@@ -11,9 +12,11 @@ jest.mock('./PerkRow', () => ({
 }));
 
 describe('HolyMountainAdvancedView', () => {
-  it('renders without crashing and displays mocked PerkRows', () => {
+  it('renders without crashing and displays mocked PerkRows', async () => { // Made async
+    await loadRandom(); // Called loadRandom
+    const randoms = new NoitaRandomItem(1); // Instantiated after loadRandom
     // Casting to 'any' for simplicity in mock, as GameInfoProvider is complex
-    const mockInfoProvider = new GameInfoProvider({} as any, {} as any, {} as any, new NoitaRandomItem(1)); 
+    const mockInfoProvider = new GameInfoProvider({} as any, {} as any, {} as any, randoms); 
     const mockProps = {
       shopData: [{} as any], // Provide minimal shop data for each row
       perkData: [[]], 
