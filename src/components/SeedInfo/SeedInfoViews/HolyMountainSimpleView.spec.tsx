@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import HolyMountainSimpleView from './HolyMountainSimpleView';
 import { GameInfoProvider } from '../../../services/SeedInfo/infoHandler';
-import { NoitaRandomItem } from '../../../services/SeedInfo/random'; // Corrected import path
-import { loadRandom } from '../../../testHelpers'; // Added import
+// NoitaRandomItem import removed as loadRandom now provides the instance
+import { loadRandom } from '../../../testHelpers'; 
 
 // Mock PerkRow to simplify testing the view itself
 jest.mock('./PerkRow', () => ({
@@ -12,9 +12,8 @@ jest.mock('./PerkRow', () => ({
 }));
 
 describe('HolyMountainSimpleView', () => {
-  it('renders without crashing and displays mocked PerkRows', async () => { // Made async
-    await loadRandom(); // Called loadRandom
-    const randoms = new NoitaRandomItem(1); // Instantiated after loadRandom
+  it('renders without crashing and displays mocked PerkRows', async () => { 
+    const randoms = await loadRandom(1); // Use seed 1
     // Casting to 'any' for simplicity in mock, as GameInfoProvider is complex
     const mockInfoProvider = new GameInfoProvider({} as any, {} as any, {} as any, randoms); 
     const mockProps = {

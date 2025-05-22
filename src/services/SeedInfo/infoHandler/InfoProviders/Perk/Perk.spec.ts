@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { IPerkChangeStateType, PerkInfoProvider, IPerkChangeAction, ISelectAction } from "./";
-import { loadRandom } from "../../../testHelpers"; // Corrected path
-import { NoitaRandomItem } from "../../random"; // Corrected path
-import { getPerk } from "../../../../../testHelpers"; // getPerk seems to be from testHelpers too
+import { loadRandom } from "../../../testHelpers"; 
+// NoitaRandomItem import removed as it's no longer directly instantiated
+import { getPerk } from "../../../../../testHelpers"; 
 
 describe("PerkInfoProvider", () => {
   beforeEach(() => {
@@ -210,9 +210,9 @@ describe("PerkInfoProvider", () => {
   });
 
   it('should correctly handle EXTRA_PERK from GAMBLE in provideStateless without double counting', async () => {
-    await loadRandom(); // Load WASM random generator
-    const randoms = new NoitaRandomItem(12345); // Use a fixed seed for reproducibility
-    const perkProvider = new PerkInfoProvider(randoms);
+    const randoms = await loadRandom(12345); // Load WASM random generator with seed
+    const perkProvider = new PerkInfoProvider(); // Constructor takes no args
+    perkProvider.randoms = randoms; // Assign randoms instance
     await perkProvider.ready(); // Ensure perks are loaded if actual data is partially used
 
     const mockPerksData = {
