@@ -210,9 +210,10 @@ describe("PerkInfoProvider", () => {
   });
 
   it('should correctly handle EXTRA_PERK from GAMBLE in provideStateless without double counting', async () => {
-    const randoms = await loadRandom(12345); // Load WASM random generator with seed
-    const perkProvider = new PerkInfoProvider(); // Constructor takes no args
-    perkProvider.randoms = randoms; // Assign randoms instance
+    const randoms = await loadRandom(); // Load WASM random generator
+    randoms.SetWorldSeed(12345);      // Set seed on the instance
+    const perkProvider = new PerkInfoProvider(randoms); // Pass randoms to constructor
+    // perkProvider.randoms = randoms; // This line should be removed if present
     await perkProvider.ready(); // Ensure perks are loaded if actual data is partially used
 
     const mockPerksData = {

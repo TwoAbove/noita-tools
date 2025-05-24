@@ -13,7 +13,8 @@ jest.mock('./PerkRow', () => ({
 
 describe('HolyMountainAdvancedView', () => {
   it('renders without crashing and displays mocked PerkRows', async () => { 
-    const randoms = await loadRandom(1); // Use seed 1
+    const randoms = await loadRandom(); // No seed here
+    randoms.SetWorldSeed(1);           // Set seed on the instance. Use seed 1 or any other.
     // Casting to 'any' for simplicity in mock, as GameInfoProvider is complex
     const mockInfoProvider = new GameInfoProvider({} as any, {} as any, {} as any, randoms); 
     const mockProps = {
