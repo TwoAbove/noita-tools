@@ -22,7 +22,7 @@ const Spell: FC<ISpellProps> = ({ id, className, width, highlight, onClick, styl
   const [t] = useTranslation("materials");
 
   const item = spells.provide(id);
-  const wikiUrl = getWikiUrl(id);
+  const wikiUrl = getWikiUrl(id, t(item.name, { lng: "en" }));
 
   return (
     <Clickable useHover wikiUrl={wikiUrl} onClick={onClick}>

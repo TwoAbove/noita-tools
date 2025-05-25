@@ -137,13 +137,15 @@ const wikiLinkMap: { [spellId: string]: string } = {
   "FUNKY_SPELL": "%3F%3F%3F_(Spell)"
 };
 
-export function getWikiUrl(name: string) {
-  if (wikiLinkMap[name]) {
-    return `https://noita.wiki.gg/wiki/${wikiLinkMap[name]}`;
+export function getWikiUrl(id: string, translatedName: string) {
+  // Check if the id exists in wikiLinkMap
+  if (id && wikiLinkMap.hasOwnProperty(id)) {
+    return `https://noita.wiki.gg/wiki/${wikiLinkMap[id]}`;
   }
-  return `https://noita.wiki.gg/wiki/${name
+  // Fallback to using the translatedName with the original logic
+  return `https://noita.wiki.gg/wiki/${translatedName
     .replace(/(^|\s)\S/g, l => l.toUpperCase())
     .replace("(One-off)", "(Perk)")
     .replace(/\s*\(Perk\)$/, "") // Remove "(Perk)" suffix if it exists
-    .replace(/\s+/g, "_")}`; // More reliable space replacement
+    .replace(/\s+/g, "_")}`;
 }
