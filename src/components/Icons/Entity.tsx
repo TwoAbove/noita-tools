@@ -210,7 +210,7 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
   if (entity.itemImage && entity.itemImage.image) {
     const name = entity.itemImage.item_name;
     const image = entity.itemImage.image.src;
-    const wikiUrl = getWikiUrl(t(name));
+    const wikiUrl = getWikiUrl(entity.name, t(name));
 
     return (
       <Clickable wikiUrl={wikiUrl}>
@@ -223,7 +223,7 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
     const animations = entity.animations;
     const image = animations.actions[action || animations.default || "default"]?.src[0];
     const name = entity.ui_name || entity.name || entity.itemImage.item_name;
-    const wikiUrl = getWikiUrl(t(name));
+    const wikiUrl = getWikiUrl(entity.name, t(name));
 
     return (
       <Clickable wikiUrl={wikiUrl}>

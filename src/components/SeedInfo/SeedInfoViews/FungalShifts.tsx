@@ -49,7 +49,7 @@ export const FungalMaterial: React.FC<IFungalMaterialProps> = ({ id, showColor =
   const name = materialProvider.translate(ids[0]);
   const engName = materialProvider.translate(ids[0], "en");
   const material = materialProvider.provide(ids[0]);
-  const wikiUrl = getWikiUrl(engName);
+  const wikiUrl = getWikiUrl(ids[0], engName);
 
   const calculatedSize = `calc(1rem * ${size})`;
   const fontSize = `calc(0.85rem * ${size})`;
