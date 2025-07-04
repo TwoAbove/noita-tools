@@ -11,7 +11,7 @@ compile_module() {
     -o $output_file.mjs \
     --std=c++20 \
     --extern-pre-js="$script_dir/pre.js" \
-    --embind-emit-tsd $output_file.d.ts \
+    --emit-tsd $output_file.d.ts \
     -s WASM=1 \
     -s FILESYSTEM=0 \
     -s ALLOW_MEMORY_GROWTH=1 \

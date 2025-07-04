@@ -88,7 +88,7 @@ const NonPreview = ({ id, action, ...rest }) => {
   const name = entity.name;
   const animations = entity.animations as any;
   const image = animations.actions[action || animations.default || "default"]?.src[0];
-  const wikiUrl = getWikiUrl(t(name, { lng: "en" }));
+  const wikiUrl = getWikiUrl(id, t(name, { lng: "en" }));
 
   return (
     <Clickable wikiUrl={wikiUrl}>
@@ -210,7 +210,7 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
   if (entity.itemImage && entity.itemImage.image) {
     const name = entity.itemImage.item_name;
     const image = entity.itemImage.image.src;
-    const wikiUrl = getWikiUrl(t(name));
+    const wikiUrl = getWikiUrl(entity.name, t(name));
 
     return (
       <Clickable wikiUrl={wikiUrl}>
@@ -223,7 +223,7 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
     const animations = entity.animations;
     const image = animations.actions[action || animations.default || "default"]?.src[0];
     const name = entity.ui_name || entity.name || entity.itemImage.item_name;
-    const wikiUrl = getWikiUrl(t(name));
+    const wikiUrl = getWikiUrl(entity.name, t(name));
 
     return (
       <Clickable wikiUrl={wikiUrl}>

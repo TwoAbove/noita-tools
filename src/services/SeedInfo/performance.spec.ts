@@ -1,7 +1,6 @@
-import { describe, it, expect } from "vitest";
+import { describe, it } from "vitest";
 import { loadRandom, getUnlockedSpells } from "../../testHelpers";
 import GameInfoProvider from "./infoHandler";
-import { performance } from "perf_hooks";
 
 type IPerf = {
   key: string;
