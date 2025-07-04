@@ -29,7 +29,7 @@ const Perk = (props: IPerkProps) => {
   const [t] = useTranslation("materials");
 
   const item = alwaysCast ? spells.provide(alwaysCast) : null;
-  const wikiUrl = getWikiUrl(t(item?.name || perk.ui_name, { lng: "en" }));
+  const wikiUrl = getWikiUrl(perk.id, t(item?.name || perk.ui_name, { lng: "en" }));
 
   return (
     <div className={classNames(className, "position-relative")}>

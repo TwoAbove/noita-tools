@@ -105,10 +105,48 @@ export const simd = async () =>
 
 export const isNode = typeof process === "object" && typeof require === "function";
 
-export function getWikiUrl(name: string) {
-  return `https://noita.wiki.gg/wiki/${name
+const wikiLinkMap: { [spellId: string]: string } = {
+  KANTELE_A: "Note_spells",
+  KANTELE_D: "Note_spells",
+  KANTELE_DIS: "Note_spells",
+  KANTELE_E: "Note_spells",
+  KANTELE_G: "Note_spells",
+  OCARINA_B: "Note_spells",
+  OCARINA_C: "Note_spells",
+  OCARINA_D: "Note_spells",
+  OCARINA_E: "Note_spells",
+  OCARINA_F: "Note_spells",
+  OCARINA_GSHARP: "Note_spells",
+  OCARINA_A2: "Note_spells",
+  X_RAY: "All-Seeing_Eye",
+  LONG_DISTANCE_CAST: "Long-Distance_Cast",
+  HITFX_CRITICAL_WATER: "Critical_on_Wet_(Water)_Enemies",
+  PINGPONG_PATH: "Ping-Pong_Path",
+  FIREBALL_RAY_LINE: "Two-Way_Fireball_Thrower",
+  CHAOS_POLYMORPH_FIELD: "Circle_of_Unstable_Metamorphosis",
+  LEVITATION_FIELD: "Circle_of_Buoyancy",
+  TELEPORTATION_FIELD: "Circle_of_Displacement",
+  BERSERK_FIELD: "Circle_of_Fervour",
+  SHIELD_FIELD: "Circle_of_Shielding",
+  FREEZE_FIELD: "Circle_of_Stillness",
+  POLYMORPH_FIELD: "Circle_of_Transmogrification",
+  ELECTROCUTION_FIELD: "Circle_of_Thunder",
+  ALCOHOL_BLAST: "Explosion_of_Spirits",
+  POISON_BLAST: "Explosion_of_Poison",
+  THUNDER_BLAST: "Explosion_of_Thunder",
+  FUNKY_SPELL: "%3F%3F%3F_(Spell)",
+};
+
+export function getWikiUrl(id: string, translatedName: string) {
+  // Check if the id exists in wikiLinkMap
+  if (id && wikiLinkMap[id]) {
+    return `https://noita.wiki.gg/wiki/${wikiLinkMap[id]}`;
+  }
+  const name = translatedName
     .replace(/(^|\s)\S/g, l => l.toUpperCase())
     .replace("(One-off)", "(Perk)")
     .replace(/\s*\(Perk\)$/, "") // Remove "(Perk)" suffix if it exists
-    .replace(/\s+/g, "_")}`; // More reliable space replacement
+    .replace(/\s+/g, "_");
+  // Fallback to using the translatedName with the original logic
+  return `https://noita.wiki.gg/wiki/${name}`;
 }
