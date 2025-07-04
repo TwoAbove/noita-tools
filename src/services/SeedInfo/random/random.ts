@@ -155,14 +155,14 @@ export const genRandom = async (Module: IRandomModule) => {
   });
 
   const random_next = (rnd: IRND, min: number, max: number) => {
-    let result = Module.ProceduralRandomf(rnd.x, rnd.y, min, max);
+    const result = Module.ProceduralRandomf(rnd.x, rnd.y, min, max);
     rnd.y++;
     return result;
   };
 
   const pick_random_from_table_backwards = <T>(t: T[], rnd: IRND) => {
     let result: T | undefined;
-    let len = t.length;
+    const len = t.length;
 
     for (let i = len - 1; i >= 0; i--) {
       if (random_next(rnd, 0.0, 1.0) <= (t[i] as any).chance) {

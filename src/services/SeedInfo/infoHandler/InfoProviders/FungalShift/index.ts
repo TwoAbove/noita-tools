@@ -6,9 +6,16 @@ import { includesSome, isNode, simd } from "../../../../helpers";
 import { IRule } from "../../IRule";
 import { InfoProvider } from "../Base";
 
-import type { FungalTransformation, MainModule } from "./FungalShift.d.ts";
+import type { FungalTransformation, MainModule, VectorString } from "./FungalShift.d.ts";
 
 import createModule from "./FungalShift.mjs";
+
+type CorrectedFungalTransformation = Omit<FungalTransformation, "from" | "to" | "gold_to_x" | "grass_to_x"> & {
+  from: string[];
+  to: string;
+  gold_to_x: string;
+  grass_to_x: string;
+};
 
 export class FungalShiftInfoProvider extends InfoProvider {
   readyPromise: Promise<void>;
@@ -59,7 +66,7 @@ export class FungalShiftInfoProvider extends InfoProvider {
   provide() {
     const worldSeed = this.randoms.GetWorldSeed();
     const res = this.fungal.PickForSeed(worldSeed, 20);
-    const fungalData: any = [];
+    const fungalData: CorrectedFungalTransformation[] = [];
     for (let i = 0; i < res.size(); i++) {
       const item = res.get(i) as FungalTransformation;
       const from: string[] = [];
@@ -70,27 +77,20 @@ export class FungalShiftInfoProvider extends InfoProvider {
         flaskTo: item.flaskTo,
         flaskFrom: item.flaskFrom,
         from: from,
-        to: item.to,
-        gold_to_x: item.gold_to_x,
-        grass_to_x: item.grass_to_x,
+        to: item.to?.toString() ?? "",
+        gold_to_x: item.gold_to_x?.toString() ?? "",
+        grass_to_x: item.grass_to_x?.toString() ?? "",
       });
     }
     return fungalData;
   }
 
-  //   let info: {
-  //     flaskTo: boolean;
-  //     flaskFrom: boolean;
-  //     from: string[];
-  //     to: string;
-  // }[]
-
   test(rule: IRule<IFungalRule>): boolean {
-    let info = this.provide();
+    const info = this.provide();
     if (!rule.val) {
       return false;
     }
-    for (let i = 0; i <= info.length; i++) {
+    for (let i = 0; i < info.length; i++) {
       if (!rule.val[i]) {
         continue;
       }
@@ -105,11 +105,22 @@ export class FungalShiftInfoProvider extends InfoProvider {
         return false;
       }
 
+      const gold_to_x = rule.val[i].gold_to_x;
+      if (gold_to_x && gold_to_x.valueOf() !== info[i].gold_to_x.valueOf()) {
+        return false;
+      }
+
+      const grass_to_x = rule.val[i].grass_to_x;
+      console.log(grass_to_x, info[i].grass_to_x, grass_to_x?.valueOf() !== info[i].grass_to_x.valueOf());
+      if (grass_to_x && grass_to_x.valueOf() !== info[i].grass_to_x.valueOf()) {
+        return false;
+      }
+
       const from = rule.val[i].from;
       if (
         from &&
         !includesSome(
-          from!.flatMap(l => l.split(",")),
+          from.flatMap(l => l.split(",")),
           info[i].from,
         )
       ) {
@@ -117,7 +128,7 @@ export class FungalShiftInfoProvider extends InfoProvider {
       }
 
       const to = rule.val[i].to;
-      if (to && !to!.includes(info[i].to)) {
+      if (to && to.length > 0 && !to.includes(info[i].to)) {
         return false;
       }
     }
@@ -130,6 +141,8 @@ export type IFungalRule = Array<{
   to?: string;
   flaskFrom?: boolean;
   flaskTo?: boolean;
+  gold_to_x?: string;
+  grass_to_x?: string;
 }>;
 
 export default FungalShiftInfoProvider;

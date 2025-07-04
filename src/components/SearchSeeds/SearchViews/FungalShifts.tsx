@@ -175,10 +175,46 @@ const FungalShifts: FC<IFungalShiftsProps> = ({ onUpdateConfig, config }) => {
       <FlaskMaterialSelect
         show={selectOpen.open}
         selected={getSelected(selectOpen.row, selectOpen.type)}
+        type={selectOpen.type}
         useFlask={getFlask(selectOpen.row, selectOpen.type)}
         list={getList(selectOpen.type)}
         handleClose={() => handleClose()}
         handleHeldMaterial={val => handleHeldMaterial(selectOpen.row, selectOpen.type, val)}
+        goldToGold={getFlask(selectOpen.row, selectOpen.type) && !!fungalShifts[selectOpen.row]?.gold_to_x}
+        holyGrassToHolyGrass={getFlask(selectOpen.row, selectOpen.type) && !!fungalShifts[selectOpen.row]?.grass_to_x}
+        handleGoldToGold={val => {
+          console.log("handleGoldToGold", selectOpen.row, selectOpen.type, val);
+          if (selectOpen.row === undefined || selectOpen.type === undefined) {
+            return;
+          }
+          if (selectOpen.type === "to") {
+            if (!fungalShifts[selectOpen.row]) {
+              fungalShifts[selectOpen.row] = {};
+            }
+            if (val) {
+              fungalShifts[selectOpen.row]["gold_to_x"] = "gold";
+            } else {
+              delete fungalShifts[selectOpen.row]["gold_to_x"];
+            }
+            setFungalShifts([...fungalShifts]);
+          }
+        }}
+        handleHolyGrassToHolyGrass={val => {
+          if (selectOpen.row === undefined || selectOpen.type === undefined) {
+            return;
+          }
+          if (selectOpen.type === "to") {
+            if (!fungalShifts[selectOpen.row]) {
+              fungalShifts[selectOpen.row] = {};
+            }
+            if (val) {
+              fungalShifts[selectOpen.row]["grass_to_x"] = "grass_holy";
+            } else {
+              delete fungalShifts[selectOpen.row]["grass_to_x"];
+            }
+            setFungalShifts([...fungalShifts]);
+          }
+        }}
         handleOnUpdate={list => handleSelect(list, selectOpen.row, selectOpen.type)}
       />
     </Container>
