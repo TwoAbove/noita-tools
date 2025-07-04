@@ -88,7 +88,7 @@ const NonPreview = ({ id, action, ...rest }) => {
   const name = entity.name;
   const animations = entity.animations as any;
   const image = animations.actions[action || animations.default || "default"]?.src[0];
-  const wikiUrl = getWikiUrl(t(name, { lng: "en" }));
+  const wikiUrl = getWikiUrl(id, t(name, { lng: "en" }));
 
   return (
     <Clickable wikiUrl={wikiUrl}>

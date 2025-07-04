@@ -17,7 +17,7 @@ interface IFungalShiftsProps {
 interface IOpen {
   open: boolean;
   row?: number;
-  type?: string;
+  type?: "from" | "to";
 }
 
 const materialsFrom = fungalInfoProvider.fungalData.materials_from.map(m => m.materials);
@@ -49,10 +49,7 @@ const FungalShifts: FC<IFungalShiftsProps> = ({ onUpdateConfig, config }) => {
     return new Set<string>(fungalShifts[row][type]);
   };
 
-  const isSelected = (row, type) => {
-    if (typeof row === "undefined") {
-      return false;
-    }
+  const isSelected = (row: number, type: "from" | "to") => {
     if (!fungalShifts[row]) {
       return false;
     }
@@ -126,7 +123,7 @@ const FungalShifts: FC<IFungalShiftsProps> = ({ onUpdateConfig, config }) => {
     setFungalShifts([...fungalShifts]);
   };
 
-  const handleOpen = (row: number, type: string) => {
+  const handleOpen = (row: number, type: "from" | "to") => {
     setSelectOpen({ open: true, row, type });
   };
 
@@ -180,8 +177,16 @@ const FungalShifts: FC<IFungalShiftsProps> = ({ onUpdateConfig, config }) => {
         list={getList(selectOpen.type)}
         handleClose={() => handleClose()}
         handleHeldMaterial={val => handleHeldMaterial(selectOpen.row, selectOpen.type, val)}
-        goldToGold={getFlask(selectOpen.row, selectOpen.type) && !!fungalShifts[selectOpen.row]?.gold_to_x}
-        holyGrassToHolyGrass={getFlask(selectOpen.row, selectOpen.type) && !!fungalShifts[selectOpen.row]?.grass_to_x}
+        goldToGold={
+          selectOpen.row !== undefined &&
+          getFlask(selectOpen.row, selectOpen.type) &&
+          !!fungalShifts[selectOpen.row]?.gold_to_x
+        }
+        holyGrassToHolyGrass={
+          selectOpen.row !== undefined &&
+          getFlask(selectOpen.row, selectOpen.type) &&
+          !!fungalShifts[selectOpen.row]?.grass_to_x
+        }
         handleGoldToGold={val => {
           console.log("handleGoldToGold", selectOpen.row, selectOpen.type, val);
           if (selectOpen.row === undefined || selectOpen.type === undefined) {

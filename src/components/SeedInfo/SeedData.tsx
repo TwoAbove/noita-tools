@@ -168,6 +168,7 @@ const QuirkModal = props => {
                 from: ["water"],
                 to: "lava",
                 gold_to_x: "gold",
+                grass_to_x: "grass_holy",
               },
               {
                 flaskTo: true,
@@ -175,6 +176,7 @@ const QuirkModal = props => {
                 from: ["water"],
                 to: "lava",
                 gold_to_x: "pea_soup",
+                grass_to_x: "grass_holy",
               },
             ]}
             infoProvider={
