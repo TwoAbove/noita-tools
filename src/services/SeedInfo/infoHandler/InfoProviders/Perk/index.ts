@@ -506,9 +506,9 @@ export class PerkInfoProvider extends InfoProvider {
               const l = perks[row].length;
               perks[row].push(p1);
               selected[row][l] = p1;
-              if (p1 === "EXTRA_PERK") {
-                this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1);
-              }
+              // if (p1 === "EXTRA_PERK") {
+              //   this._G.SetValue("TEMPLE_PERK_COUNT", this._G.GetValue("TEMPLE_PERK_COUNT") + 1);
+              // } // This line is now removed/commented
               this.handlePerkPickup(p1);
             }
           }
