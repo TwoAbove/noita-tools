@@ -132,7 +132,6 @@
     "dev-win": "concurrently --restart-tries -1 \"nodemon --experimental-modules ./server/index.mjs\" \"vite\"",
     "dev": "NODE_ENV=development concurrently --restart-tries -1 'nodemon --experimental-modules ./server/index.mjs' 'vite' 'bash watch_build.sh'",
     "e2e": "npm run build && concurrently -k  -s first 'cypress run' 'PORT=3000 npm run start'",
-    "prepare": "husky install",
     "start": "node --experimental-modules ./server/index.mjs",
     "test": "vitest"
   },
