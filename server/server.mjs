@@ -76,20 +76,81 @@ const getSecondsTillUtcMidnight = () => {
   return Math.floor((tomorrow - now) / 1000);
 };
 
-const getDailySeed = async () => {
-  const ans = await fetch("http://takapuoli.noitagame.com/callback/").then(r => r.text());
-  daily.push([new Date().toISOString(), ans]);
-  const [versionHash, dailySeed, practiceSeed, x] = ans.split(";");
-  return dailySeed;
-};
+class DailySeedCache {
+  constructor() {
+    this.seed = null;
+    this.lock = false;
+  }
+
+  async fetchSeed() {
+    if (this.lock) {
+      while (this.lock) {
+        await new Promise(resolve => setTimeout(resolve, 250));
+      }
+      return;
+    }
+
+    this.lock = true;
+
+    try {
+      const response = await fetch("http://takapuoli.noitagame.com/callback/", {
+        timeout: 5000,
+        headers: {
+          "User-Agent": "Noitool/1.0",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.text();
+      const [versionHash, dailySeed, practiceSeed, x] = data.split(";");
+
+      this.seed = dailySeed.trim();
+
+      daily.push([new Date().toISOString(), data]);
+    } catch (error) {
+      console.error("Failed to fetch daily seed:", error);
+      throw error;
+    } finally {
+      this.lock = false;
+    }
+  }
+
+  clear() {
+    this.seed = null;
+    this.lastFetch = null;
+    this.lastFetchDate = null;
+  }
+}
+
+const dailySeedCache = new DailySeedCache();
+dailySeedCache.fetchSeed();
+schedule("*/15 * * * *", async () => {
+  await dailySeedCache.fetchSeed();
+});
 
 app.get("/api/daily-seed", async (req, res) => {
-  const dailySeed = await getDailySeed();
+  try {
+    const dailySeed = await dailySeedCache.seed;
 
-  // We can cache this till 00:00 UTC - changes daily
-  res.append("Cache-Control", `max-age=${getSecondsTillUtcMidnight()}`);
+    if (!dailySeed) {
+      throw new Error("Daily seed not available");
+    }
 
-  res.send({ seed: dailySeed });
+    // We can cache this till 00:00 UTC - changes daily
+    res.append("Cache-Control", `max-age=${getSecondsTillUtcMidnight()}`);
+    res.append("Content-Type", "application/json");
+
+    res.send({ seed: dailySeed });
+  } catch (error) {
+    console.error("Error fetching daily seed:", error);
+    res.status(503).json({
+      error: "Failed to fetch daily seed",
+      message: error.message,
+    });
+  }
 });
 
 app.post("/api/data", (req, res) => {
