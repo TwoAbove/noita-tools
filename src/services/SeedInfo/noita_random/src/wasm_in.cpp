@@ -77,6 +77,8 @@ EMSCRIPTEN_BINDINGS(my_module)
     emscripten::function<int, int, int>("GetWidthFromPix", &GetWidthFromPix);
     emscripten::function<int, int, int, int>("GetWidthFromPixWithOffset", &GetWidthFromPix);
     register_vector<int>("IntVector");
+    register_vector<unsigned int>("UIntVector");
+    // Test comment
     emscripten::function("GetGlobalPos", &GetGlobalPos);
     emscripten::function("GetTilePos", &GetTilePos);
     emscripten::function("SetUnlockedSpells", &SetUnlockedSpells, allow_raw_pointers());
