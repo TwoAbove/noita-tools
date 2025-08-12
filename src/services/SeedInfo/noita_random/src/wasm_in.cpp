@@ -49,8 +49,6 @@ string _GetRandomAction(double x, double y, int level, int offset = 0)
     return s.id;
 }
 
-#include "wang/wang.cpp"
-
 #include <emscripten/bind.h>
 
 using namespace emscripten;
@@ -74,41 +72,5 @@ EMSCRIPTEN_BINDINGS(my_module)
     emscripten::function<string>("GetRandomActionWithType", &_GetRandomActionWithType);
     emscripten::function<string>("GetRandomAction", &_GetRandomAction);
     emscripten::function("RoundHalfOfEven", &RoundHalfOfEven);
-    emscripten::function<int, int, int>("GetWidthFromPix", &GetWidthFromPix);
-    emscripten::function<int, int, int, int>("GetWidthFromPixWithOffset", &GetWidthFromPix);
-    register_vector<int>("IntVector");
-    emscripten::function("GetGlobalPos", &GetGlobalPos);
-    emscripten::function("GetTilePos", &GetTilePos);
     emscripten::function("SetUnlockedSpells", &SetUnlockedSpells, allow_raw_pointers());
-    // emscripten::function("GenerateMap", &generate_map, allow_raw_pointers());
-    emscripten::class_<MapHandler>("MapHandler")
-        .constructor<uint, uint, unsigned long, bool, bool, int, int, int>(emscripten::allow_raw_pointers())
-        .function("generate_map", &MapHandler::generate_map, emscripten::allow_raw_pointers())
-        .function("iterateMap", &MapHandler::iterateMap, emscripten::allow_raw_pointers())
-        .function("somePixels", &MapHandler::somePixels, emscripten::allow_raw_pointers())
-        .function("getMap", &MapHandler::getMap)
-        .function("toBig", &MapHandler::toBig)
-        .function("drawImageData", &MapHandler::drawImageData, emscripten::allow_raw_pointers())
-        .property("width", &MapHandler::width)
-        .property("height", &MapHandler::height)
-        .property<int>(
-            "map",
-            [](const MapHandler &self) -> uintptr_t
-            {
-                return reinterpret_cast<uintptr_t>(self.map);
-            },
-            [](MapHandler &self, const uintptr_t ptr)
-            {
-                self.map = reinterpret_cast<unsigned char *>(ptr);
-            })
-        .property<int>(
-            "bigMap",
-            [](const MapHandler &self) -> uintptr_t
-            {
-                return reinterpret_cast<uintptr_t>(self.bigMap);
-            },
-            [](MapHandler &self, const uintptr_t ptr)
-            {
-                self.bigMap = reinterpret_cast<unsigned char *>(ptr);
-            });
 }

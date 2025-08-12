@@ -1,4 +1,5 @@
 #!/bin/bash
+source "/app/emsdk/emsdk_env.sh"
 
 # echo "Script triggered for file: $1"
 
@@ -25,26 +26,27 @@ compile_module() {
 
 # Get the script's directory
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$script_dir"
 
-# Check if a file path is provided
-if [ "$#" -eq 1 ]; then
-  changed_file="$1"
-  dir=$(dirname "$changed_file")
-  module_name=$(basename "$dir")
+compile() {
+  dir="$1"
+  module_name="$2"
+  output_file="${module_name}"
 
-  if [[ "$changed_file" == *.cpp ]]; then
-    output_file="${module_name}"
-    cd "$dir"
+  echo "Compiling $module_name"
 
-    # Compile only the module related to the changed file
-    compile_module "$output_file" "-msse2 -msimd128"
-    compile_module "$output_file-base" ""
+  cd "$dir"
 
-    du -sh "$output_file.wasm"
-    du -sh "$output_file.mjs"
+  # Compile the module
+  compile_module "$output_file" "-msse2 -msimd128"
+  compile_module "$output_file-base" ""
 
-    cd "$script_dir"
-  fi
-else
-  echo "No file path provided"
-fi
+  du -sh "$output_file.wasm"
+  du -sh "$output_file.mjs"
+
+  cd "$script_dir"
+}
+
+compile "InfoProviders/Alchemy" "Alchemy"
+compile "InfoProviders/FungalShift" "Fungal"
+compile "InfoProviders/Map/module" "Map"

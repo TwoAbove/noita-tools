@@ -29,7 +29,7 @@ run_empp() {
     -s NO_EXIT_RUNTIME=1 \
     -s ENVIRONMENT="web,worker,node" \
     -s EXPORT_NAME="create_noita_random" \
-    -s "EXPORTED_FUNCTIONS=['_generate_path_map','_free','_malloc']" \
+    -s "EXPORTED_FUNCTIONS=['_free','_malloc']" \
     -s "EXPORTED_RUNTIME_METHODS='cwrap'" \
     src/wasm_in.cpp
 }

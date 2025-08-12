@@ -8,7 +8,7 @@
 #include <functional>
 #include <algorithm>
 
-#include "../noita_random.cpp"
+#include "../../../../noita_random/src/noita_random.cpp"
 #include "stb_hbwang.h"
 #include "coalmine_hax.cpp"
 #include "jps.hh"

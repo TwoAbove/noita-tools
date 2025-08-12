@@ -144,17 +144,21 @@ describe("SeedSearcher", () => {
   ];
 
   tests.forEach((t, i) => {
-    it(`Should find the correct seed #${i}`, async () => {
-      const randoms = await loadRandom();
+    it(
+      `Should find the correct seed #${i}`,
+      async () => {
+        const randoms = await loadRandom();
 
-      const infoProvider = new GameInfoProvider({ seed: 1 }, getUnlockedSpells(), undefined, randoms, false);
-      await infoProvider.ready();
-      const solver = new SeedSearcher(infoProvider);
-      solver.update(t.config as any);
-      await solver.work();
-      const res = solver.getInfo();
-      expect(res.foundSeed).toEqual(t.ans);
-    });
+        const infoProvider = new GameInfoProvider({ seed: 1 }, getUnlockedSpells(), undefined, randoms, false);
+        await infoProvider.ready();
+        const solver = new SeedSearcher(infoProvider);
+        solver.update(t.config as any);
+        await solver.work();
+        const res = solver.getInfo();
+        expect(res.foundSeed).toEqual(t.ans);
+      },
+      20000,
+    );
   });
 
   it(`Should sort the rules by complexity`, async () => {

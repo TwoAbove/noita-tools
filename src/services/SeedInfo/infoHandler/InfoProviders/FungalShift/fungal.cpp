@@ -215,16 +215,16 @@ PickForSeed(uint ws, int maxShifts = 20)
       std::string gold_to_x = "gold";
       std::string grass_to_x = "grass_holy";
 
-      if (random_nexti(ws, rnd, 1, 100) <= 75)
+      if (random_next(ws, rnd, 1, 100) <= 75)
       {
-        if (random_nexti(ws, rnd, 1, 100) <= 50)
+        if (random_next(ws, rnd, 1, 100) <= 50)
         {
           flaskFrom = true;
         }
         else
         {
           flaskTo = true;
-          if (random_nexti(ws, rnd, 1, 1000) != 1)
+          if (random_next(ws, rnd, 1, 1000) != 1)
           {
             // he he
             gold_to_x = randoms.random_from_array(greedy_materials);
