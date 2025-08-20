@@ -14,8 +14,8 @@ import React, {
 import { Button, Col, Form, Stack, Modal, Row, Table } from "react-bootstrap";
 
 import GameInfoProvider from "../../../services/SeedInfo/infoHandler";
-import WandIcon from "../../Icons/Wand";
-import LightBulletIcon from "../../Icons/LightBullet";
+// WandIcon, LightBulletIcon, Square, IShopType are moved to ShopComponent.tsx
+// Entity is moved to PacifistChest.tsx
 import { localizeNumber, removeFromArr } from "../../../services/helpers";
 import {
   IGenRowAction,
@@ -28,8 +28,9 @@ import {
   IShiftAction,
   PerkInfoProvider,
 } from "../../../services/SeedInfo/infoHandler/InfoProviders/Perk";
-import { IShopItems, IShopType, ShopInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Shop";
-import { Square } from "../../helpers";
+// IShopType is used by ShopComponent, IShopItems is used by HolyMountainProps and PerkRow
+import { IShopItems, ShopInfoProvider, IShopType } from "../../../services/SeedInfo/infoHandler/InfoProviders/Shop";
+// Square is used by ShopComponent
 import ShopItems from "./ShopItems";
 import { useTranslation } from "react-i18next";
 import Perk from "../../Icons/Perk";
@@ -38,255 +39,24 @@ import { db, FavoriteType, FavoriteItem } from "../../../services/db";
 import useLocalStorage from "../../../services/useLocalStorage";
 import { useSpellFavorite, useFavoritePerks } from "./helpers";
 import classNames from "classnames";
-import Entity from "../../Icons/Entity";
-import { IItem } from "../../../services/SeedInfo/infoHandler/InfoProviders/ChestRandom";
+// Entity related props are in PacifistChest.tsx
+import { IItem } from "../../../services/SeedInfo/infoHandler/InfoProviders/ChestRandom"; // IItem is still needed for pacifistChestItems
 import { cloneDeep } from "lodash";
+
+// PerkRow is now used by HolyMountainSimpleView and HolyMountainAdvancedView
+// import PerkRow from "./PerkRow"; 
+// RerollPane is now part of PerkRow.tsx
+import HolyMountainSimpleView from "./HolyMountainSimpleView";
+import HolyMountainAdvancedView from "./HolyMountainAdvancedView";
 
 const perkWidth = "3rem";
 const gamblePerkDiff = "-0.8rem";
 
-interface IRerollPaneProps {
-  handleRerollUndo?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+// IRerollPaneProps and RerollPane component moved to RerollPane.tsx
+// IPacifistChestProps and PacifistChest component moved to PacifistChest.tsx
+// Shop component (now ShopComponent) and its props moved to ShopComponent.tsx
 
-  loaded: boolean;
-  advanced: boolean;
-  rerollsForLevel: number;
-  nextRerollPrices: number;
-  rerollsToFavorite?: number;
-  favoritesInNextReroll?: number;
-
-  handleReroll: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleLoad: () => void;
-}
-const RerollPane = (props: IRerollPaneProps) => {
-  const {
-    handleRerollUndo,
-    rerollsToFavorite,
-    favoritesInNextReroll,
-    loaded,
-    advanced,
-    rerollsForLevel,
-    nextRerollPrices,
-    handleReroll,
-    handleLoad,
-  } = props;
-  return (
-    <div className="d-flex justify-content-center">
-      {!loaded && advanced ? (
-        <Button className="mx-auto" onClick={handleLoad} size="sm">
-          Load
-        </Button>
-      ) : (
-        <>
-          {handleRerollUndo && !advanced && (
-            <Button variant="outline-primary" onClick={handleRerollUndo} size="sm" disabled={!rerollsForLevel}>
-              {"<"}
-            </Button>
-          )}
-          {advanced && <div>Next: {nextRerollPrices}</div>}
-          <span className="m-2">{rerollsForLevel || 0}</span>
-          <Button variant="outline-primary" onClick={handleReroll} size="sm">
-            <div className="position-relative">
-              {">"}
-              {rerollsToFavorite && (
-                <div className="position-absolute top-0 start-100 text-info translate-middle">
-                  {rerollsToFavorite || ""}
-                </div>
-              )}
-            </div>
-          </Button>
-        </>
-      )}
-    </div>
-  );
-};
-
-interface IPacifistChestProps {
-  items: IItem[];
-}
-// TODO: Extract this into it's own file to decouple
-const PacifistChest: FC<IPacifistChestProps> = ({ items }) => {
-  const goldReward = items.filter(r => r.entity.includes("goldnugget"));
-  const nonGoldReward = items.filter(r => !r.entity.includes("goldnugget"));
-  let goldSumm = goldReward.reduce<number>((c, r) => {
-    // either goldnugget or goldnugget_x
-    const gn = r.entity.split("/")[4].split(".")[0];
-    if (gn === "goldnugget") {
-      return c + 10;
-    }
-    const number = gn.replace("goldnugget_", "");
-    return c + parseInt(number, 10);
-  }, 0);
-  return (
-    <>
-      {goldSumm > 0 && (
-        <div className="d-flex m-2 flex-column align-content-center justify-content-center align-items-center">
-          <Entity width="1rem" height="1rem" id="data/entities/items/pickup/goldnugget.xml" />
-          {goldSumm}
-        </div>
-      )}
-      {nonGoldReward.map((r, i) => (
-        <Entity preview key={`${r.entity} - ${i}`} id={r.entity} entityParams={{ extra: r.extra, x: r.x, y: r.y }} />
-      ))}
-    </>
-  );
-};
-
-// TODO: Extract this into it's own file to decouple
-const Shop = ({ type, handleOpenShopInfo, favoriteSpells }) => {
-  const Icon = type === IShopType.wand ? WandIcon : LightBulletIcon;
-  return (
-    <Button
-      className="position-relative"
-      onClick={handleOpenShopInfo}
-      variant={favoriteSpells.length ? "outline-info" : "outline-primary"}
-      size="sm"
-    >
-      <Square>
-        <Icon />
-        {favoriteSpells.length ? <div className="position-absolute top-0 end-0 pe-1">{favoriteSpells.length}</div> : ""}
-      </Square>
-    </Button>
-  );
-};
-
-interface IPerkRowProps {
-  pickedPerks: string[];
-  perkRerolls: number;
-  nextRerollPrices: number;
-  shop: IShopItems;
-  perks: IPerk[];
-  advanced: boolean;
-  rerollsToFavorite?: number;
-  favoritesInNextReroll?: number;
-  showAllAlwaysCast?: boolean;
-  infoProvider: GameInfoProvider;
-  pacifistChestItems: IItem[];
-
-  handleReroll: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleRerollUndo?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleClickPerk: (pos: number | string) => void;
-  isRerollable: (i: number, perks: number) => boolean;
-  handleOpenShopInfo: () => void;
-  handleLoad: () => void;
-  isPerkFavorite: (id: string) => boolean;
-  isSpellFavorite: (id: string) => boolean;
-  getAlwaysCast: (i: number, perks: number) => string;
-}
-const PerkRow: FC<IPerkRowProps> = props => {
-  const {
-    pacifistChestItems,
-    rerollsToFavorite,
-    favoritesInNextReroll,
-    advanced,
-    pickedPerks,
-    perkRerolls,
-    nextRerollPrices,
-    shop,
-    perks,
-    showAllAlwaysCast,
-    infoProvider,
-    handleReroll,
-    handleRerollUndo,
-    handleClickPerk,
-    isRerollable,
-    getAlwaysCast,
-    handleOpenShopInfo,
-    handleLoad,
-    isPerkFavorite,
-    isSpellFavorite,
-  } = props;
-  const numberOfGambles = pickedPerks?.filter(p => p === "GAMBLE").length;
-  const type = shop.type;
-  const rerollsForLevel = perkRerolls ? perkRerolls : 0;
-  const perksToShow = (numberOfGambles > 0 ? perks?.slice(0, -2 * numberOfGambles) : perks) || [];
-  const gamblePerks = perks?.slice(-2 * numberOfGambles) || [];
-  const spellIds: string[] =
-    shop.type === IShopType.wand
-      ? shop.items.flatMap(i => [i.cards.permanentCard, ...i.cards.cards].filter(Boolean) as string[])
-      : shop.items.map(i => i.spell.id);
-  const favoriteSpells = spellIds.filter(id => isSpellFavorite(id));
-
-  const rowHasAlwaysCast = perks.find(p => p.id === "ALWAYS_CAST");
-
-  return (
-    <tr>
-      <td>
-        <Shop type={type} handleOpenShopInfo={handleOpenShopInfo} favoriteSpells={favoriteSpells} />
-      </td>
-      <td style={{ height: "4rem" }} className="d-flex align-content-center justify-content-around align-items-center">
-        <PacifistChest items={pacifistChestItems} />
-      </td>
-      <td className="w-100">
-        <Stack direction="horizontal" className="justify-content-center" gap={3}>
-          {perksToShow &&
-            perksToShow.map((perk, i) => {
-              const rerollable = isRerollable(i, perksToShow.length);
-              const alwaysCast =
-                perk.id === "ALWAYS_CAST" || (rowHasAlwaysCast && showAllAlwaysCast)
-                  ? getAlwaysCast(i, perksToShow.length)
-                  : undefined;
-              const fav = isPerkFavorite(perk.id);
-              return (
-                <Perk
-                  className={fav && "border border-info border-3"}
-                  highlight={fav}
-                  rerollable={rerollable}
-                  key={perk.ui_name + i}
-                  onClick={() => handleClickPerk(advanced ? i : perk.id)}
-                  clicked={!advanced ? pickedPerks?.includes(perk.id) : pickedPerks && !!pickedPerks[i]}
-                  perk={perk}
-                  alwaysCast={alwaysCast}
-                />
-              );
-            })}
-          {!!numberOfGambles &&
-            new Array(numberOfGambles).fill("").map((_, i) => {
-              return (
-                <div key={i} className="d-flex ms-4 position-relative" style={{ width: "2rem" }}>
-                  {/* Hard coded to make it more pretty */}
-                  <div
-                    className="position-absolute top-0 start-0 translate-middle"
-                    style={{
-                      marginRight: "-1rem",
-                      marginTop: "-0.25rem",
-                      zIndex: 1,
-                    }}
-                  >
-                    <Perk
-                      width={`calc(${perkWidth} + ${gamblePerkDiff})`}
-                      key={gamblePerks[i * 2].ui_name}
-                      perk={gamblePerks[i * 2]}
-                    />
-                  </div>
-                  <div className="position-absolute top-50 start-100 translate-middle" style={{ marginTop: "0.25rem" }}>
-                    <Perk
-                      width={`calc(${perkWidth} + ${gamblePerkDiff})`}
-                      key={gamblePerks[i * 2 + 1].ui_name}
-                      perk={gamblePerks[i * 2 + 1]}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-        </Stack>
-      </td>
-      <td>
-        <RerollPane
-          rerollsToFavorite={rerollsToFavorite}
-          favoritesInNextReroll={favoritesInNextReroll}
-          handleReroll={handleReroll}
-          handleRerollUndo={handleRerollUndo}
-          loaded={!!perks?.length}
-          advanced={advanced}
-          rerollsForLevel={rerollsForLevel}
-          nextRerollPrices={nextRerollPrices}
-          handleLoad={handleLoad}
-        />
-      </td>
-    </tr>
-  );
-};
+// IPerkRowProps and PerkRow component moved to PerkRow.tsx
 
 const PerkDeckModal = props => {
   const { perkDeck, show, handleClose, isPerkFavorite } = props;
@@ -758,23 +528,26 @@ const HolyMountainContextProvider = (props: IHolyMountainContextProviderProps) =
     return c + n.filter(p => p?.includes("PERKS_LOTTERY")).length;
   }, 0);
 
-  const perkData: IPerkData = {
-    perks: advanced ? perks : props.perks,
-    pickedPerks: currentPickedPerks,
+  // Adjusting the structure of perkData provided by the context
+  const contextOutputPerkData: IPerkData = {
+    perks: perks, // This is pd.perks (advanced view perks from provideStateless)
+    pickedPerks: currentPickedPerks, // Already mode-aware
     perkRerolls: advanced
-      ? perkRerolls
-      : infoProvider.config.perkRerolls.get(infoProvider.config.perkWorldOffset) || [],
-    nextRerollPrices: advanced ? nextRerollPrices : new Map(),
+      ? perkRerolls // from pd (advanced)
+      : infoProvider.config.perkRerolls.get(worldOffsetSimple) || [], // simple mode
+    worldOffset: advanced ? worldOffset : worldOffsetSimple, // mode-aware
+    lotteries: advanced ? pd.lotteries : lotteriesSimple, // mode-aware
+    nextRerollPrices: advanced ? nextRerollPrices : new Map(), // mode-aware (simple gets empty map)
+    
+    // Common/shared data
     totalRerolls,
     rerollPrice,
     rerollTotal,
-    worldOffset: advanced ? worldOffset : infoProvider.config.perkWorldOffset,
-    lotteries: advanced ? pd.lotteries : lotteriesSimple,
-    ...favorites,
+    ...favorites, // rerollsToFavorite, favoritesInNextReroll, isFavorite (perk)
   };
 
   return (
-    <HolyMountainContext.Provider value={{ advanced, setAdvanced: handleAdvancedChange, perkMethods, perkData }}>
+    <HolyMountainContext.Provider value={{ advanced, setAdvanced: handleAdvancedChange, perkMethods, perkData: contextOutputPerkData }}>
       {props.children}
     </HolyMountainContext.Provider>
   );
@@ -790,7 +563,7 @@ interface IHolyMountainProps {
 const HolyMountain = (props: IHolyMountainProps) => {
   const { shop, infoProvider, perkDeck } = props;
 
-  const { advanced, setAdvanced, perkMethods, perkData } = useContext(HolyMountainContext);
+  const { advanced, setAdvanced, perkMethods, perkData: contextPerkData } = useContext(HolyMountainContext);
   const {
     handleReroll,
     handleRerollUndo,
@@ -801,25 +574,27 @@ const HolyMountain = (props: IHolyMountainProps) => {
     handleGenRowAdvanced,
   } = perkMethods;
   const {
-    perks,
+    perks: advancedPerks, // Renaming to avoid conflict with props.perks for SimpleView
     pickedPerks,
     perkRerolls,
-    totalRerolls,
-    rerollPrice,
-    rerollTotal,
-    worldOffset,
-    lotteries,
+    totalRerolls, // This is used by HolyMountainHeader
+    rerollPrice,  // Used by HolyMountainHeader
+    rerollTotal,  // Used by HolyMountainHeader
+    worldOffset,  // This is the mode-aware worldOffset from context
+    lotteries,    // Mode-aware lotteries from context
     rerollsToFavorite,
     favoritesInNextReroll,
-    isFavorite,
-    nextRerollPrices,
-  } = perkData;
+    isFavorite, // This is perk favorite check
+    nextRerollPrices, // Mode-aware from context
+  } = contextPerkData;
+
   const [showInitialLottery] = useLocalStorage("show-initial-lottery", true);
   const [showAlwaysCastRow] = useLocalStorage("show-always-cast-row", false);
 
+  // adjustedLotteries uses lotteries from contextPerkData which is already mode-aware.
   const adjustedLotteries = lotteries === 0 ? Number(showInitialLottery) : lotteries;
 
-  const { isFavorite: isSpellFavorite } = useSpellFavorite();
+  const { isFavorite: isSpellFavoriteFn } = useSpellFavorite(); // Renamed to avoid conflict
 
   // const offset = infoProvider.config.perkWorldOffset;
   const [shopSelected, setShopSelected] = useState(-1);
@@ -895,70 +670,68 @@ const HolyMountain = (props: IHolyMountainProps) => {
         handleOffset={handleOffset}
         handleBack={handleBack}
         offsetText={OffsetText}
-        isPerkFavorite={isFavorite}
-        lotteries={lotteries}
+        isPerkFavorite={isFavorite} // Pass the isFavorite from context (perk favorite)
+        lotteries={lotteries} // Pass lotteries from context (mode-aware)
       />
-      <Table borderless responsive="xs" size="sm">
-        <thead className="text-center text-nowrap">
-          <tr>
-            <th>Shop</th>
-            <th>Pacifist Chest</th>
-            <th>Perks</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array(7 - Number(!!worldOffset))
-            .fill("")
-            .map((_, level) => {
-              const row = perks[level] || [];
-              return (
-                <PerkRow
-                  key={`${worldOffset}-${level}`}
-                  advanced={advanced}
-                  pickedPerks={pickedPerks[level]}
-                  perkRerolls={perkRerolls[level]}
-                  perks={row}
-                  shop={shop[level]}
-                  rerollsToFavorite={rerollsToFavorite}
-                  favoritesInNextReroll={favoritesInNextReroll}
-                  nextRerollPrices={
-                    nextRerollPrices.get(worldOffset) ? nextRerollPrices.get(worldOffset)[level] : undefined
-                  }
-                  isPerkFavorite={isFavorite}
-                  showAllAlwaysCast={showAlwaysCastRow}
-                  infoProvider={infoProvider}
-                  isSpellFavorite={isSpellFavorite}
-                  handleRerollUndo={e => handleRerollUndo(e, level)}
-                  handleReroll={e => handleReroll(e, level)}
-                  handleClickPerk={id => handleClickPerk(level, id)()}
-                  pacifistChestItems={pacifistChestItems(level, worldOffset)}
-                  isRerollable={(i, l) =>
-                    infoProvider.providers.lottery.provide(level, i, l, worldOffset, adjustedLotteries)
-                  }
-                  getAlwaysCast={(i, l) => infoProvider.providers.alwaysCast.provide(level, i, l, worldOffset)}
-                  handleOpenShopInfo={() => handleOpenShopInfo(level)}
-                  handleLoad={() => handleGenRowAdvanced(level)}
-                />
-              );
-            })}
-        </tbody>
-      </Table>
+      {advanced ? (
+        <HolyMountainAdvancedView
+          shopData={props.shop}
+          perkData={advancedPerks} 
+          pickedPerksData={pickedPerks} 
+          perkRerollsData={perkRerolls} 
+          worldOffsetData={worldOffset} 
+          pacifistChestItemsFn={pacifistChestItems}
+          infoProvider={props.infoProvider}
+          lotteriesData={adjustedLotteries} 
+          favoritesData={{ rerollsToFavorite, favoritesInNextReroll, isFavorite }}
+          isSpellFavoriteFn={isSpellFavoriteFn}
+          onReroll={(e, level) => handleReroll(e, level)}
+          onClickPerk={(level, pos) => handleClickPerk(level, pos)}
+          onOpenShopInfo={handleOpenShopInfo}
+          onLoadPerkRow={(level) => handleGenRowAdvanced(level)}
+          showAlwaysCastRow={showAlwaysCastRow}
+          nextRerollPricesData={nextRerollPrices}
+        />
+      ) : (
+        <HolyMountainSimpleView
+          shopData={props.shop}
+          perkData={props.perks} 
+          pickedPerksData={pickedPerks} 
+          perkRerollsData={perkRerolls} 
+          worldOffsetData={worldOffset} 
+          pacifistChestItemsFn={pacifistChestItems}
+          infoProvider={props.infoProvider}
+          lotteriesData={adjustedLotteries} 
+          favoritesData={{ rerollsToFavorite, favoritesInNextReroll, isFavorite }}
+          isSpellFavoriteFn={isSpellFavoriteFn}
+          onReroll={(e, level) => handleReroll(e, level)}
+          onRerollUndo={(e, level) => handleRerollUndo(e, level)} 
+          onClickPerk={(level, id) => handleClickPerk(level, id)} 
+          onOpenShopInfo={handleOpenShopInfo}
+          showAlwaysCastRow={showAlwaysCastRow}
+          nextRerollPricesData={nextRerollPrices} 
+        />
+      )}
+      {/* 
+      The large commented-out Table block that was here has been removed.
+      Any other unused variables specific to that old table structure
+      would have been implicitly handled by the previous refactoring steps
+      where data sourcing was centralized via context or props.
+      */}
       <ShopItems
         shop={shop[shopSelected]}
         show={shopSelected >= 0}
         handleClose={() => handleOpenShopInfo(-1)}
-        isFavorite={isSpellFavorite}
+        isFavorite={isSpellFavoriteFn} // Use the renamed spell favorite function
       />
     </div>
   );
 };
 
-const e = props => (
+const HolyMountainWrapper = props => ( // Renamed 'e' to 'HolyMountainWrapper' for clarity
   <HolyMountainContextProvider perkDeck={props.perkDeck} perks={props.perks} infoProvider={props.infoProvider}>
-    {" "}
     <HolyMountain {...props} />
   </HolyMountainContextProvider>
 );
 
-export default e;
+export default HolyMountainWrapper; // Export the wrapper
