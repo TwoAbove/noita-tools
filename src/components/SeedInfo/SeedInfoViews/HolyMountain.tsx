@@ -15,6 +15,7 @@ import { Button, Col, Form, Stack, Modal, Row, Table } from "react-bootstrap";
 
 import GameInfoProvider from "../../../services/SeedInfo/infoHandler";
 import WandIcon from "../../Icons/Wand";
+import BadgesWrapper, {CountBadge} from "../../Icons/BadgesWrapper";
 import LightBulletIcon from "../../Icons/LightBullet";
 import { localizeNumber, removeFromArr } from "../../../services/helpers";
 import {
@@ -135,6 +136,26 @@ const PacifistChest: FC<IPacifistChestProps> = ({ items }) => {
 // TODO: Extract this into it's own file to decouple
 const Shop = ({ type, handleOpenShopInfo, favoriteSpells }) => {
   const Icon = type === IShopType.wand ? WandIcon : LightBulletIcon;
+
+  // group duplicate favorite spells and count occurrences
+  const favoriteSpellsGrouped : Map<string, number> = favoriteSpells.reduce((acc, spell) => {
+    acc.set(spell, (acc.get(spell) ?? 0) + 1); return acc;
+  }, new Map<string, number>());
+  
+
+  // add favorite spell icons with badges for counts
+  const favSpellIcons = Array.from(favoriteSpellsGrouped.entries()).map(([spell, count]) => (
+    <BadgesWrapper key={spell} badges={[CountBadge({ text: count.toString() })]}>
+      <Entity
+        key={spell}
+        width="1rem"
+        height="1rem"
+        id="Spell"
+        entityParams={{ extra: spell }}
+      />
+    </BadgesWrapper>
+  ));
+
   return (
     <Button
       className="position-relative"
@@ -142,9 +163,9 @@ const Shop = ({ type, handleOpenShopInfo, favoriteSpells }) => {
       variant={favoriteSpells.length ? "outline-info" : "outline-primary"}
       size="sm"
     >
+      {!favSpellIcons.length ? "" : <div className="d-flex">{favSpellIcons}</div>}
       <Square>
         <Icon />
-        {favoriteSpells.length ? <div className="position-absolute top-0 end-0 pe-1">{favoriteSpells.length}</div> : ""}
       </Square>
     </Button>
   );
