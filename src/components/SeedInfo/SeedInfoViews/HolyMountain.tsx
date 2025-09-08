@@ -158,12 +158,12 @@ const Shop = ({ type, handleOpenShopInfo, favoriteSpells }) => {
 
   return (
     <Button
-      className="position-relative"
+      className="position-relative w-100"
       onClick={handleOpenShopInfo}
       variant={favoriteSpells.length ? "outline-info" : "outline-primary"}
       size="sm"
     >
-      {!favSpellIcons.length ? "" : <div className="d-flex">{favSpellIcons}</div>}
+      {favSpellIcons.length > 0 && <div style={{display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', marginBottom: '-0.7rem'}}>{favSpellIcons}</div>}
       <Square>
         <Icon />
       </Square>
