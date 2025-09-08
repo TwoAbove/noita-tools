@@ -18,7 +18,7 @@ export default function BadgesWrapper({ children, badges, size = 1 }: { children
     }
 
     return (
-        <div className="position-relative" style={{ marginBottom: "-0.7rem" }}>
+        <div className="position-relative">
           {children}
           <div className="position-absolute" style={{
             top: "-0.2rem",
