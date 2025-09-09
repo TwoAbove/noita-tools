@@ -77,7 +77,6 @@ const SpellFavorites = () => {
     setVal(e.target.valueAsNumber);
   };
 
-
   return (
     <ConfigRow
       left={
