@@ -189,6 +189,52 @@ const getRuleStats = (rules: IRules[]) => {
   return ruleStats;
 };
 
+const extractDailySeedData = (fullJson: any): Array<{ date: string; seed: string; rawData: string }> => {
+  const seenDailySeedCombos = new Map<string, { date: string; seed: string; rawData: string }>();
+
+  fullJson.forEach((json: any) => {
+    if (json.daily && Array.isArray(json.daily)) {
+      json.daily.forEach((dailyEntry: [string, string]) => {
+        const [dateString, rawData] = dailyEntry;
+
+        if (!dateString || !rawData) return;
+
+        // Format is: versionHash;dailySeed;practiceSeed;x
+        const parts = rawData.split(";");
+        if (parts.length < 2 || !parts[1].trim()) return;
+
+        const seed = parts[1].trim();
+        const dateOnly = dateString.split("T")[0];
+        const key = `${dateOnly}:${seed}`;
+
+        if (!seenDailySeedCombos.has(key)) {
+          seenDailySeedCombos.set(key, {
+            date: dateString,
+            seed: seed,
+            rawData: rawData,
+          });
+        }
+      });
+    }
+  });
+
+  const uniqueData = Array.from(seenDailySeedCombos.values());
+  uniqueData.sort((a, b) => a.date.localeCompare(b.date));
+
+  return uniqueData;
+};
+
+const exportDailySeedsToCSV = (dailySeeds: Array<{ date: string; seed: string; rawData: string }>) => {
+  const csvHeader = "Date,Seed,RawData\n";
+  const csvRows = dailySeeds
+    .map(item => `"${item.date}","${item.seed}","${item.rawData.replace(/"/g, '""')}"`)
+    .join("\n");
+
+  const csvContent = csvHeader + csvRows;
+  fs.writeFileSync("./src/out/dailySeeds.csv", csvContent);
+  console.log(`Exported ${dailySeeds.length} daily seeds to ./src/out/dailySeeds.csv`);
+};
+
 (async () => {
   if (!fileExistsSync("./src/out/fullJson.json")) {
     await downloadFromB2();
@@ -197,8 +243,11 @@ const getRuleStats = (rules: IRules[]) => {
   const fullJson = JSON.parse(fs.readFileSync("./src/out/fullJson.json", "utf8"));
 
   const rules = parseFiles(fullJson);
+  const dailySeeds = extractDailySeedData(fullJson);
 
   console.table(getRuleStats(rules));
+
+  exportDailySeedsToCSV(dailySeeds);
 })();
 
 export {};
