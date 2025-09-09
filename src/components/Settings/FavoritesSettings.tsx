@@ -72,6 +72,12 @@ const SpellFavorites = () => {
   const query = useLiveQuery(() => db.favorites.where({ type: FavoriteType.Spell }).toArray(), [], []);
   const selected = query.map(q => q.key);
 
+  const [val, setVal] = useLocalStorage("favorite-spell-preview-max-count", 2);
+  const handleRange = (e: any) => {
+    setVal(e.target.valueAsNumber);
+  };
+
+
   return (
     <ConfigRow
       left={
@@ -89,9 +95,17 @@ const SpellFavorites = () => {
             handleSelectedClicked={spell => handleSelect(spell)}
             show={open}
           />
-          <Button onClick={() => setOpen(true)} size="sm">
-            Select Spells
-          </Button>
+          <Stack direction="horizontal">
+            <div className="d-flex justify-content-center">
+              <Form.Group as={Col} xs={6} controlId="code">
+                <Form.Label className="m-0">Preview count: {val}</Form.Label>
+                <Form.Range value={val} onChange={handleRange} min="0" max="12" />
+              </Form.Group>
+            </div>
+            <Button onClick={() => setOpen(true)} size="sm">
+              Select Spells
+            </Button>
+          </Stack>
         </>
       }
     />

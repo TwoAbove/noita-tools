@@ -137,14 +137,15 @@ const PacifistChest: FC<IPacifistChestProps> = ({ items }) => {
 const Shop = ({ type, handleOpenShopInfo, favoriteSpells }) => {
   const Icon = type === IShopType.wand ? WandIcon : LightBulletIcon;
 
+  const [maxFavoriteSpellPreview] = useLocalStorage("favorite-spell-preview-max-count", 2);
+
   // group duplicate favorite spells and count occurrences
   const favoriteSpellsGrouped : Map<string, number> = favoriteSpells.reduce((acc, spell) => {
     acc.set(spell, (acc.get(spell) ?? 0) + 1); return acc;
   }, new Map<string, number>());
-  
 
   // add favorite spell icons with badges for counts
-  const favSpellIcons = Array.from(favoriteSpellsGrouped.entries()).map(([spell, count]) => (
+  let favSpellIcons = Array.from(favoriteSpellsGrouped.entries()).slice(0, maxFavoriteSpellPreview).map(([spell, count]) => (
     <BadgesWrapper key={spell} badges={[CountBadge({ text: count.toString() })]}>
       <Entity
         key={spell}
@@ -155,6 +156,11 @@ const Shop = ({ type, handleOpenShopInfo, favoriteSpells }) => {
       />
     </BadgesWrapper>
   ));
+
+  const countSlicedFavSpells = favoriteSpellsGrouped.size - maxFavoriteSpellPreview;
+  if (countSlicedFavSpells > 0) {
+    favSpellIcons.push(<span key="more" className="text-body" style={{alignSelf: 'center', paddingLeft: '0.2rem', fontSize: '0.7rem'}}>(+{countSlicedFavSpells})</span>);
+  }
 
   return (
     <Button
