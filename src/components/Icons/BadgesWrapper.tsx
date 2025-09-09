@@ -1,14 +1,8 @@
-/* 
-TODO planned and discussed
-  unshure how to work with badges maybe refactor the alwaysCast from Perk to use Icon with Badge instead background paramenter.
- skipped sizing for now
-*/
-export const CountBadge = ({text} : {text: String}) => (<div className="bg-white text-black link-black" style={{ 
+export const CountBadge = ({text} : {text: String}) => (<div className="text-body" style={{ 
     fontSize: "0.5rem",
     lineHeight: "0.8rem",
     width: "0.7rem", 
     height: "0.7rem", 
-    borderRadius: "50%"
 }}>{text}</div>);
 
 
