@@ -128,7 +128,6 @@ const wikiLinkMap: { [spellId: string]: string } = {
   TELEPORTATION_FIELD: "Circle_of_Displacement",
   BERSERK_FIELD: "Circle_of_Fervour",
   SHIELD_FIELD: "Circle_of_Shielding",
-  FREEZE_FIELD: "Circle_of_Stillness",
   POLYMORPH_FIELD: "Circle_of_Transmogrification",
   ELECTROCUTION_FIELD: "Circle_of_Thunder",
   ALCOHOL_BLAST: "Explosion_of_Spirits",
