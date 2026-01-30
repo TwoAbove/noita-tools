@@ -1,12 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import React, { useContext } from "react";
+import React from "react";
 
 import Alchemy from "./SeedInfoViews/Alchemy";
-
 import GameInfoProvider from "../../services/SeedInfo/infoHandler";
 
-// import Map from './SeedInfoViews/Map';
 import Weather from "./SeedInfoViews/Weather";
 import Start from "./SeedInfoViews/Start";
 import Biome from "./SeedInfoViews/Biome";
@@ -19,55 +15,47 @@ import { useLiveQuery } from "dexie-react-hooks";
 import MapComponent from "./SeedInfoViews/Map";
 import ExcavationsiteCubeChamber from "./SeedInfoViews/ExcavationsiteCubeChamber";
 import SnowcaveSecretChamber from "./SeedInfoViews/SnowcaveSecretChamber";
-import SnowcastleSecretChamber from "./SeedInfoViews/SnowcastleSecretChamber";
+// import SnowcastleSecretChamber from "./SeedInfoViews/SnowcastleSecretChamber";
 
-const WithShow = ({ id, children }) => {
+interface WithShowProps {
+  id: string;
+  children: React.ReactNode;
+}
+
+const WithShow: React.FC<WithShowProps> = ({ id, children }) => {
   const config = useLiveQuery(() => db.configItems.get({ key: `panel-${id}-config` }));
   const hasConfig = !!config;
 
   if (hasConfig && !config.val) {
-    return <div></div>;
+    return <div />;
   }
 
   return <div>{children}</div>;
 };
 
-const SeedInfo = ({ data, infoProvider, seed, isDaily }) => {
+interface SeedInfoProps {
+  data: any; // Ideally we should export the return type of provideAll from GameInfoProvider
+  infoProvider: GameInfoProvider;
+  seed?: string | number;
+  isDaily?: boolean;
+}
+
+const SeedInfo: React.FC<SeedInfoProps> = ({ data, infoProvider, isDaily }) => {
   const searchParams = new URLSearchParams(document.location.search);
   const showMap = !!searchParams.get("map");
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-        flexDirection: "row",
-
-        gap: "1rem",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          flexDirection: "column",
-          gap: "1rem",
-          flexGrow: 1,
-          width: "min-content",
-        }}
-      >
+    <div className="flex flex-row flex-wrap justify-between gap-4">
+      <div className="flex flex-grow w-min flex-col flex-wrap gap-4">
         <WithShow id="holy-mountain">
-          <HolyMountain infoProvider={infoProvider} shop={data.shop} perks={data.perks} perkDeck={data.perkDeck} />
+          <HolyMountain
+            infoProvider={infoProvider}
+            shop={data.shop}
+            perks={data.perks}
+            perkDeck={data.perkDeck}
+          />
         </WithShow>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "1rem",
-            justifyContent: "space-around",
-          }}
-        >
+        <div className="flex flex-wrap justify-around gap-4">
           {!isDaily && (
             <WithShow id="start">
               <Start
@@ -89,7 +77,7 @@ const SeedInfo = ({ data, infoProvider, seed, isDaily }) => {
           <WithShow id="biome">
             <Biome infoProvider={infoProvider} biomeData={data.biomeModifiers} />
           </WithShow>
-          <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+          <div className="flex justify-center gap-4">
             <WithShow id="secret-wands">
               <ExcavationsiteCubeChamber />
               <SnowcaveSecretChamber />
