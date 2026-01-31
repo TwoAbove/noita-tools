@@ -1,5 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { queryClient } from "./services/queryClient";
 
 import "react-virtualized/styles.css";
 
@@ -27,9 +30,10 @@ function sendToAnalytics(metric: any) {
 // reportWebVitals(sendToAnalytics);
 const root = createRoot(document.getElementById("root")!);
 root.render(
-  // <React.StrictMode>
-  <App />,
-  // </React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <App />
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>,
 );
 
 // If you want your app to work offline and load faster, you can change
