@@ -8,10 +8,14 @@ import {
   RAIN_TYPE_SNOW,
   RAIN_TYPE_LIQUID,
 } from "../../../services/SeedInfo/infoHandler/InfoProviders/Weather";
-import { MaterialInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Material";
-import { Card, Container } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import i18n from "../../../i18n";
+// import { MaterialInfoProvider } from "../../../services/SeedInfo/infoHandler/InfoProviders/Material";
+import {
+  useMaterials,
+  useMaterialDisplayName,
+} from "../../../services/SeedInfo/infoHandler/InfoProviders/Material/useMaterialInfo";
+import { Card } from "react-bootstrap";
+// import { useTranslation } from "react-i18next";
+// import i18n from "../../../i18n";
 import { hexTorgba } from "../../../services/imageActions/commonImageActions";
 
 interface IWeatherProps {
@@ -19,7 +23,7 @@ interface IWeatherProps {
   infoProvider: GameInfoProvider;
 }
 
-const materials = new MaterialInfoProvider(i18n);
+// const materials = new MaterialInfoProvider(i18n);
 
 const PrecipitationClouds: FC<{ weather: IWeather }> = ({ weather }) => {
   return (
@@ -57,9 +61,10 @@ const PrecipitationDuration: FC<{ weather: IWeather }> = ({ weather }) => {
 };
 
 const PrecipitationDescription: FC<{ weather: IWeather }> = ({ weather }) => {
+  const getMaterialName = useMaterialDisplayName();
   let materialName = "Clear";
   if (weather.rain_material) {
-    materialName = materials.translate(weather.rain_material);
+    materialName = getMaterialName(weather.rain_material);
   }
   return (
     <span style={{ fontSize: "2rem" }} className="me-3 text-capitalize">
@@ -107,10 +112,23 @@ const PrecipitationIcon: FC<{ weather: IWeather }> = ({ weather }) => {
 };
 
 const Weather: FC<IWeatherProps> = ({ weather }) => {
+  const { data: materials } = useMaterials();
   let color = "#ffef88";
 
-  if (weather.rain_material) {
-    const material = materials.provide(weather.rain_material);
+  if (weather.rain_material && materials) {
+    // const material = materials.provide(weather.rain_material);
+    // Simple lookup since we don't have the class anymore, but wait, provide had logic?
+    // "provide" in MaterialInfoProvider was:
+    // if (materialName.charAt(0) === "(") return { ui_name: materialName };
+    // let found = this.materials[materialName];
+    // if (found) return found;
+    // return { ui_name: materialName };
+    const materialName = weather.rain_material;
+    let material: any = { ui_name: materialName };
+    if (materialName.charAt(0) !== "(" && materials[materialName]) {
+      material = materials[materialName];
+    }
+
     const [a, r, g, b] = hexTorgba(material?.graphics?.color || material.wang_color);
     color = `rgba(${r},${g},${b},${a})`;
   }
