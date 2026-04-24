@@ -1,2 +1,12 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
+Allow: /
+Allow: /robots.txt
+Allow: /llms.txt
+Allow: /.well-known/llms.txt
+Disallow: /api/data
+Disallow: /api/stats
+Disallow: /api/db_debug
+Disallow: /api/db_dump
+Disallow: /compute-console
+Crawl-delay: 10

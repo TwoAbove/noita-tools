@@ -3,6 +3,7 @@ import { Server as SocketIOServer } from "socket.io";
 import { handleLiveSeed } from "./liveSeed.mjs";
 import { handleCompute, counts } from "./compute.mjs";
 import { rooms } from "./rooms.mjs";
+import { logger } from "../logger.mjs";
 
 const corsDomains = [
   "dev.noitool.com",
@@ -53,11 +54,11 @@ const makeIO = (server, app) => {
   });
 
   io.engine.on("connection_error", err => {
-    console.log(err);
+    logger.warn("Socket.IO connection error", err);
   });
 
   io.on("connection", socket => {
-    console.log("New connection");
+    logger.info("Socket connected", { id: socket.id });
     handleConnection(socket, io);
   });
 

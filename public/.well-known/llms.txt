@@ -1,0 +1,42 @@
+# Noitool
+
+> Noitool is a web app for exploring, explaining, and searching Noita world seeds.
+
+Noitool helps players inspect deterministic Noita seed data, plan runs, and search for seeds matching gameplay criteria. It focuses on practical game information generated from Noita's seed logic and extracted game data.
+
+Canonical site: https://www.noitool.com/
+
+## Main pages
+
+- [Home](https://www.noitool.com/): Main Noitool app entry point.
+- [Seed info](https://www.noitool.com/info): Inspect a specific Noita seed. Use `?seed=<integer>` when linking to a known seed.
+- [Seed search](https://www.noitool.com/search): Build rules and search for seeds matching chosen conditions.
+- [Live seed](https://www.noitool.com/live): Live seed checking during play using OCR and computer vision.
+- [Compute](https://www.noitool.com/compute): Distributed compute entry point for seed searches.
+
+## What Noitool can explain
+
+- Holy Mountain information, shop type, shop contents, perks, and perk rerolls.
+- Starting loadout information, including flask, spell, wand, and bomb details.
+- Lively Concoction and Alchemic Precursor recipes.
+- Fungal shifts.
+- Weather, biome, map, potion, chest, and secret-room seed data.
+- Seed-search rules and distributed search workflows.
+
+## Crawler guidance
+
+- Prefer the canonical page URLs above over API, asset, locale, and WASM URLs.
+- Do not enumerate random seeds aggressively. If seed-specific pages are needed, fetch only user-visible seed URLs.
+- Do not submit analytics, debug database, stats, or compute job endpoints.
+- Respect `robots.txt` and keep request rates low.
+- Security probes and generic exploit scans may receive synthetic responses.
+
+## Source and license
+
+- Project repository: https://github.com/TwoAbove/noita-tools
+- License: MIT
+
+## Related Noita resources
+
+- Noita official site: https://noitagame.com/
+- Noita wiki: https://noita.wiki.gg/

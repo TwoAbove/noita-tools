@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { schedule } from "node-cron";
 import patreon from "patreon";
+import { logger } from "./logger.mjs";
 
 const patreonOAuth = patreon.oauth;
 const router = Router();
@@ -16,9 +17,9 @@ class TokenManager {
       this.creatorAccessToken = process.env.PATREON_CREATORS_ACCESS_TOKEN;
       this.creatorRefreshToken = process.env.PATREON_CREATORS_REFRESH_TOKEN;
 
-      console.log("TokenManager initialized successfully");
+      logger.info("TokenManager initialized successfully");
     } catch (error) {
-      console.error("Failed to initialize Patreon OAuth client:", error);
+      logger.error("Failed to initialize Patreon OAuth client", error);
       throw error;
     }
   }
@@ -29,7 +30,7 @@ class TokenManager {
     }
 
     try {
-      console.log("Attempting to refresh Patreon creator tokens");
+      logger.info("Attempting to refresh Patreon creator tokens");
       const tokens = await this.patreonOAuthClient.refreshToken(this.creatorRefreshToken);
 
       if (!tokens || !tokens.access_token || !tokens.refresh_token) {
@@ -38,10 +39,10 @@ class TokenManager {
 
       this.creatorAccessToken = tokens.access_token;
       this.creatorRefreshToken = tokens.refresh_token;
-      console.log("Creator tokens refreshed successfully");
+      logger.info("Creator tokens refreshed successfully");
       return tokens;
     } catch (error) {
-      console.error("Error refreshing creator tokens:", {
+      logger.error("Error refreshing creator tokens", {
         error: error.body || error,
         status: error.status,
         message: error.message,
@@ -52,7 +53,7 @@ class TokenManager {
 
   async makeAuthorizedRequest(url, options) {
     if (!this.creatorAccessToken) {
-      console.warn("No creator access token available, skipping request");
+      logger.warn("No creator access token available, skipping request");
       throw new Error("No valid access token available");
     }
 
@@ -62,7 +63,7 @@ class TokenManager {
 
     while (attempts < maxAttempts) {
       try {
-        console.log(`Making authorized request to ${url}, attempt ${attempts + 1}`);
+        logger.info(`Making authorized request to ${url}, attempt ${attempts + 1}`);
         const response = await fetch(url, {
           ...options,
           headers: {
@@ -72,14 +73,14 @@ class TokenManager {
         });
 
         if (response.status === 401) {
-          console.log("Received 401, attempting token refresh...");
+          logger.warn("Received 401, attempting token refresh");
           try {
             const tokens = await this.refreshCreatorToken();
             token = tokens.access_token;
             attempts++;
             continue;
           } catch (refreshError) {
-            console.error("Token refresh failed:", refreshError);
+            logger.error("Token refresh failed", refreshError);
             throw refreshError;
           }
         }
@@ -92,11 +93,11 @@ class TokenManager {
       } catch (error) {
         attempts++;
         if (attempts >= maxAttempts) {
-          console.error(`Max retry attempts (${maxAttempts}) reached for ${url}:`, error);
+          logger.error(`Max retry attempts (${maxAttempts}) reached for ${url}`, error);
           throw error;
         }
 
-        console.warn(`Request attempt ${attempts} failed, retrying...`, error);
+        logger.warn(`Request attempt ${attempts} failed, retrying`, error);
         await new Promise(resolve => setTimeout(resolve, 1000 * attempts)); // Exponential backoff
       }
     }
@@ -118,16 +119,16 @@ const requiredEnvVars = [
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingEnvVars.length > 0) {
-  console.warn("Patreon OAuth configuration incomplete. Missing environment variables:", missingEnvVars);
-  console.warn("Patreon integration will be disabled until these variables are set.");
+  logger.warn("Patreon OAuth configuration incomplete. Missing environment variables", missingEnvVars);
+  logger.warn("Patreon integration will be disabled until these variables are set");
 } else {
-  console.log("Patreon OAuth configuration complete. Token manager initialized successfully.");
+  logger.info("Patreon OAuth configuration complete. Token manager initialized successfully");
 }
 
 schedule("0 0 */10 * *", () => {
   if (tokenManager.creatorAccessToken) {
     tokenManager.refreshCreatorToken().catch(error => {
-      console.error("Scheduled token refresh failed:", error);
+      logger.error("Scheduled token refresh failed", error);
     });
   }
 });
@@ -168,7 +169,7 @@ const membersQuery = async (cursor = null) => {
 
     const data = await response.json();
     if (data.errors) {
-      console.error("Patreon API error, membersQuery:", {
+      logger.error("Patreon API error, membersQuery", {
         errors: data.errors,
         url: membersQueryURL.href,
         status: response.status,
@@ -179,7 +180,7 @@ const membersQuery = async (cursor = null) => {
 
     return data;
   } catch (error) {
-    console.error("Failed to fetch members:", {
+    logger.error("Failed to fetch members", {
       error: error.message,
       url: membersQueryURL.href,
       stack: error.stack,
@@ -201,7 +202,7 @@ const getPatreonPatronsData = async () => {
   do {
     const data = await membersQuery(nextCursor);
     if (!data) {
-      console.error("Failed to fetch members page");
+      logger.error("Failed to fetch members page");
       break;
     }
 
@@ -271,7 +272,7 @@ const updatePatrons = async () => {
     patronCache = tierMembers;
     tierCache = tiers;
   } catch (e) {
-    console.error(e);
+    logger.error("Failed to update patrons", e);
   }
 };
 
