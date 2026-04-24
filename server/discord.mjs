@@ -1,5 +1,6 @@
 import util from "util";
 import { REST, Routes, Client, GatewayIntentBits } from "discord.js";
+import { logger } from "./logger.mjs";
 
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.DISCORD_CLIENT_ID;
@@ -16,20 +17,20 @@ const rest = new REST({ version: "10" }).setToken(token);
 
 (async () => {
   try {
-    console.log("Started refreshing application (/) commands.");
+    logger.info("Started refreshing application commands");
 
     await rest.put(Routes.applicationCommands(clientId), { body: commands });
 
-    console.log("Successfully reloaded application (/) commands.");
+    logger.info("Successfully reloaded application commands");
   } catch (error) {
-    console.error(error);
+    logger.error("Failed to refresh Discord application commands", error);
   }
 })();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
 client.on("ready", async () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  logger.info(`Logged in as ${client.user.tag}`);
 });
 
 client.on("interactionCreate", async interaction => {
@@ -45,32 +46,31 @@ client.on("interactionCreate", async interaction => {
 });
 
 if (errorChannelId) {
+  const chunk = (value, size) => {
+    const chunks = [];
+    for (let index = 0; index < value.length; index += size) {
+      chunks.push(value.slice(index, index + size));
+    }
+    return chunks;
+  };
+
   async function sendErrorToDiscord(...args) {
     const errorChannel = await client.channels.fetch(errorChannelId);
     if (errorChannel) {
-      await errorChannel.send(
-        `An error occurred:\n\`\`\`\n${util.inspect(args, false, null, false).substring(0, 1900)}\n\`\`\``,
-      );
+      const message = util.inspect(args, false, null, false);
+      for (const part of chunk(message, 1900)) {
+        await errorChannel.send(`An error occurred:\n\`\`\`\n${part}\n\`\`\``);
+      }
     }
   }
-  const consoleError = console.error;
-  console.error = (...args) => {
-    console.log(args);
-    if (args.length) {
-      sendErrorToDiscord(args);
-    }
-    return consoleError(...args);
-  };
 
-  // Catch all unhandled promise rejections and send them to the Discord channel
   process.on("unhandledRejection", async (reason, promise) => {
-    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+    logger.error("Unhandled rejection", { promise, reason });
     await sendErrorToDiscord(reason);
   });
 
-  // Catch all uncaught exceptions and send them to the Discord channel
   process.on("uncaughtException", async error => {
-    console.error("Uncaught Exception:", error);
+    logger.error("Uncaught exception", error);
     await sendErrorToDiscord(error);
     process.exit(1);
   });

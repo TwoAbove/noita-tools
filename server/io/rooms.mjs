@@ -1,3 +1,5 @@
+import { logger } from "../logger.mjs";
+
 const rooms = new Set();
 
 const randomText = (chars, length) => {
@@ -13,13 +15,13 @@ const chars = "1234";
 
 const getRoomNumber = () => {
   if (rooms.size > Math.pow(10, roomLength)) {
-    console.error("Rooms full");
+    logger.error("Rooms full");
     return;
   }
   let finalNumber;
   while (!finalNumber) {
     const tryNumber = randomText(chars, roomLength);
-    if (!rooms[tryNumber]) {
+    if (!rooms.has(tryNumber)) {
       finalNumber = tryNumber;
     }
   }

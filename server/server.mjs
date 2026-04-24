@@ -1,5 +1,4 @@
 import express, { static as expressStatic } from "express";
-import morgan from "morgan";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { schedule } from "node-cron";
@@ -12,6 +11,8 @@ import { randomUUID } from "crypto";
 import { createServer } from "http";
 
 import { genSessionCookie } from "./helpers.mjs";
+import { logger } from "./logger.mjs";
+import { scraperGuard } from "./scraperGuard.mjs";
 
 const PORT = process.env.PORT || 3001;
 
@@ -26,7 +27,29 @@ const app = express();
 
 app.set("trust proxy", 2);
 
-app.use(morgan("combined"));
+app.use(scraperGuard);
+app.use((req, res, next) => {
+  const startedAt = process.hrtime.bigint();
+  const request = {
+    method: req.method,
+    url: req.originalUrl,
+    path: req.path,
+    ip: req.ip,
+    referrer: req.get("referer") || req.get("referrer") || "",
+    userAgent: req.get("user-agent") || "",
+  };
+
+  res.on("finish", () => {
+    logger.http("request", {
+      ...request,
+      status: res.statusCode,
+      bytes: res.getHeader("content-length"),
+      responseTimeMs: Number(process.hrtime.bigint() - startedAt) / 1e6,
+    });
+  });
+
+  next();
+});
 app.use(cookieParser());
 app.use(
   bodyParser.json({
@@ -111,7 +134,7 @@ class DailySeedCache {
 
       daily.push([new Date().toISOString(), data]);
     } catch (error) {
-      console.error("Failed to fetch daily seed:", error);
+      logger.error("Failed to fetch daily seed", error);
       throw error;
     } finally {
       this.lock = false;
@@ -145,7 +168,7 @@ app.get("/api/daily-seed", async (req, res) => {
 
     res.send({ seed: dailySeed });
   } catch (error) {
-    console.error("Error fetching daily seed:", error);
+    logger.error("Error fetching daily seed", error);
     res.status(503).json({
       error: "Failed to fetch daily seed",
       message: error.message,
@@ -198,7 +221,7 @@ const uploadToB2 = async (data, bucketId, fileName, maxRetries = 3) => {
       });
 
       if (attempt > 0) {
-        console.log(`Upload succeeded after ${attempt} retries`);
+        logger.info(`Upload succeeded after ${attempt} retries`);
       }
 
       return upload;
@@ -208,13 +231,11 @@ const uploadToB2 = async (data, bucketId, fileName, maxRetries = 3) => {
 
       if (attempt <= maxRetries) {
         const delay = Math.min(1000 * 2 ** (attempt - 1), 30000);
-        console.warn(`Upload attempt ${attempt} failed, retrying in ${delay}ms...`);
-        console.warn(`   Error: ${error.message}`);
+        logger.warn(`Upload attempt ${attempt} failed, retrying in ${delay}ms`, error);
 
         await new Promise(resolve => setTimeout(resolve, delay));
       } else {
-        console.error(`Upload failed after ${maxRetries} retries:`);
-        console.error(`   Final error: ${error.message}`);
+        logger.error(`Upload failed after ${maxRetries} retries`, error);
       }
     }
   }
@@ -229,15 +250,15 @@ app.post("/api/db_debug/", m.any(), async (req, res) => {
 
   try {
     const upload = await uploadToB2(req.files[0].buffer, "93c80a630c6d59a37add0615", `${id}.db`);
-    console.log(`Debug database uploaded: ${id}.db`);
+    logger.info(`Debug database uploaded: ${id}.db`);
   } catch (error) {
-    console.error(`Failed to upload debug database ${id}:`, error.message);
+    logger.error(`Failed to upload debug database ${id}`, error);
   }
 });
 
 app.get("/m/*", async (req, res) => {
   const m = req.params[0];
-  console.log(JSON.stringify(m));
+  logger.info("Map ping", { path: m });
   res.append("Cache-Control", "immutable, max-age=360");
   res.send({});
 });
@@ -289,12 +310,16 @@ app.use(
 );
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  logger.error("Unhandled request error", {
+    method: req.method,
+    url: req.originalUrl,
+    error: err,
+  });
   res.status(500).send("Server error");
 });
 
 server.listen(PORT, () => {
-  console.log(`Running at http://localhost:${PORT}`);
+  logger.info(`Running at http://localhost:${PORT}`);
 });
 
 const uploadStats = async () => {
@@ -306,37 +331,37 @@ const uploadStats = async () => {
   const fileName = `${new Date().toISOString()}.json`;
 
   try {
-    console.log(`Uploading daily stats (${data.length + stats.length + daily.length} items)...`);
+    logger.info(`Uploading daily stats (${data.length + stats.length + daily.length} items)`);
 
     const upload = await uploadToB2(Buffer.from(JSON.stringify(dataToUpload)), "93c80a630c6d59a37add0615", fileName, 5);
 
-    console.log(`Daily stats uploaded successfully: ${fileName}`);
+    logger.info(`Daily stats uploaded successfully: ${fileName}`);
     data = [];
     stats = [];
   } catch (e) {
-    console.error(`Failed to upload daily stats after all retries: ${e.message}`);
-    console.error(`Data will be preserved for next attempt`);
+    logger.error("Failed to upload daily stats after all retries", e);
+    logger.warn("Data will be preserved for next attempt");
   }
 };
 
 schedule("0 0 * * *", uploadStats);
 
 const shutdown = signal => err => {
-  if (err) console.error(err.stack || err);
+  if (err) logger.error(`Shutdown requested by ${signal}`, err);
   if (process.env.NODE_ENV !== "production") {
-    console.log("Not Production, exiting non-gracefully");
+    logger.info("Not Production, exiting non-gracefully");
     process.exit(0);
   }
   setTimeout(() => {
-    console.error("Waited 10s, exiting non-gracefully");
+    logger.error("Waited 10s, exiting non-gracefully");
     process.exit(1);
   }, 10000).unref();
   Promise.allSettled([uploadStats(), new Promise(res => server.close(res))]).then(() => {
-    console.log("Gracefully shut down");
+    logger.info("Gracefully shut down");
     process.exit(0);
   });
 };
 
-process.on("SIGTERM", shutdown("SIGTERM")).on("SIGINT", shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM")()).on("SIGINT", () => shutdown("SIGINT")());
 
-process.on("uncaughtException", shutdown("SIGINT"));
+process.on("uncaughtException", shutdown("uncaughtException"));

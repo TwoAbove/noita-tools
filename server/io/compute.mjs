@@ -1,3 +1,5 @@
+import { logger } from "../logger.mjs";
+
 export const counts = {
   hosts: 0,
   workers: 0,
@@ -25,33 +27,34 @@ const unregisterSocket = (socketId, type, appetite = 0) => {
   }
 };
 
-const pingLambda = () => {
+const pingLambda = async () => {
   if (!process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT) {
     return;
   }
 
-  return fetch(process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT, {
-    method: "POST",
-    body: JSON.stringify({
-      hosts: counts.hosts,
-      cluster: process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER,
-      bearer: process.env.START_SEARCH_CLUSTER_LAMBDA_BEARER,
-    }),
-    headers: { "Content-Type": "application/json" },
-  })
-    .catch(console.error)
-    .then(() => {
-      console.log(
-        "Pinged lambda",
-        process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT,
-        counts.hosts,
-        process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER,
-      );
+  try {
+    await fetch(process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT, {
+      method: "POST",
+      body: JSON.stringify({
+        hosts: counts.hosts,
+        cluster: process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER,
+        bearer: process.env.START_SEARCH_CLUSTER_LAMBDA_BEARER,
+      }),
+      headers: { "Content-Type": "application/json" },
     });
+    logger.info(
+      "Pinged lambda",
+      process.env.START_SEARCH_CLUSTER_LAMBDA_ENDPOINT,
+      counts.hosts,
+      process.env.START_SEARCH_CLUSTER_LAMBDA_CLUSTER,
+    );
+  } catch (error) {
+    logger.error("Failed to ping lambda", error);
+  }
 };
 
 setInterval(() => {
-  console.info(sockets);
+  logger.debug("Compute sockets", sockets);
   if (counts.hosts > 0) {
     pingLambda();
   }

@@ -475,7 +475,6 @@ const generateEntities = async () => {
 
     if (entityData.Base) {
       for (const B of entityData.Base) {
-        // console.log(`	${B.$.file}`);
         const seb = (await entityMemo(B.$.file, () => tryGetXML(getCleanedFile(path.resolve(noitaData, B.$.file), ""))))
           .Entity;
         const subEntityBase = await parseEntity(seb);
