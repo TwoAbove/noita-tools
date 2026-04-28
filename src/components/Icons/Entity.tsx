@@ -32,11 +32,6 @@ Promise.all([materials.ready(), entities.ready()]).then(() => {
 const questionMark =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAIAAABvrngfAAAABnRSTlMAAAAAAABupgeRAAAAJ0lEQVR4nGNkYGB4O+EhAwMDAwODcIE8AzIfjY1N6O2Eh1iU4NMCAGxKETbGzzNZAAAAAElFTkSuQmCC";
 
-const getTranslatedEntityName = (t, id: string, options = {}) => {
-  const name = entities.getDisplayNameKey(id);
-  return name ? t(name, options) : id;
-};
-
 interface IWandModalProps {
   x: number;
   y: number;
@@ -90,10 +85,10 @@ const WandModal: FC<IWandModalProps> = ({ x, y, cost, level, force_unshuffle }) 
 const NonPreview = ({ id, action, onClick, ...rest }) => {
   const [t] = useTranslation("materials");
   const entity = entities.provide(id);
-  const name = getTranslatedEntityName(t, id);
+  const name = entities.getDisplayName(id, t);
   const animations = entity.animations as any;
   const image = animations.actions[action || animations.default || "default"]?.src[0];
-  const wikiUrl = getWikiUrl(id, getTranslatedEntityName(t, id, { lng: "en" }));
+  const wikiUrl = getWikiUrl(id, entities.getDisplayName(id, t, { lng: "en" }));
 
   return (
     <Clickable wikiUrl={wikiUrl} onClick={onClick}>
@@ -204,7 +199,7 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
 
   if (id === "data/entities/items/pickup/powder_stash.xml") {
     if (!preview) {
-      const name = getTranslatedEntityName(t, id);
+      const name = entities.getDisplayName(id, t);
       const animations = entity.animations;
       const image = animations.actions[action || animations.default || "default"]?.src[0];
       return <Icon uri={image} title={name} onClick={onClick} {...rest} />;
@@ -214,9 +209,9 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
   }
 
   if (entity.itemImage && entity.itemImage.image) {
-    const name = getTranslatedEntityName(t, id);
+    const name = entities.getDisplayName(id, t);
     const image = entity.itemImage.image.src;
-    const wikiUrl = getWikiUrl(id, getTranslatedEntityName(t, id, { lng: "en" }));
+    const wikiUrl = getWikiUrl(id, entities.getDisplayName(id, t, { lng: "en" }));
 
     return (
       <Clickable wikiUrl={wikiUrl} onClick={onClick}>
@@ -228,8 +223,8 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
   if (entity.animations) {
     const animations = entity.animations;
     const image = animations.actions[action || animations.default || "default"]?.src[0];
-    const name = getTranslatedEntityName(t, id);
-    const wikiUrl = getWikiUrl(id, getTranslatedEntityName(t, id, { lng: "en" }));
+    const name = entities.getDisplayName(id, t);
+    const wikiUrl = getWikiUrl(id, entities.getDisplayName(id, t, { lng: "en" }));
 
     return (
       <Clickable wikiUrl={wikiUrl} onClick={onClick}>

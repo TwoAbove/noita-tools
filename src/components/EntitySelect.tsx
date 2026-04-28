@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Modal, ModalProps, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
@@ -9,9 +9,32 @@ import { EntityInfoProvider } from "../services/SeedInfo/infoHandler/InfoProvide
 
 let entitiesLoaded = false;
 const entities = new EntityInfoProvider({} as any);
-entities.ready().then(() => {
+const entitiesReady = entities.ready().then(() => {
   entitiesLoaded = true;
 });
+
+const useEntitiesLoaded = () => {
+  const [loaded, setLoaded] = useState(entitiesLoaded);
+
+  useEffect(() => {
+    if (loaded) {
+      return;
+    }
+
+    let active = true;
+    entitiesReady.then(() => {
+      if (active) {
+        setLoaded(true);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [loaded]);
+
+  return loaded;
+};
 
 const subtextMap = {
   Spell: ({ t }) => <div>Spell</div>,
@@ -57,16 +80,18 @@ interface IEntityViewProps {
   onClick: () => void;
 }
 const EntityView: FC<IEntityViewProps> = ({ id, onClick }) => {
-  if (!entitiesLoaded) {
-    return <>...</>;
-  }
-  const name = entities.getDisplayNameKey(id);
   const Subtext = subtextMap[id];
   const [t] = useTranslation("materials");
+  const loaded = useEntitiesLoaded();
+
+  if (!loaded) {
+    return <>...</>;
+  }
+
   return (
     <>
       <Entity id={id} onClick={onClick} />
-      {(Subtext && <Subtext t={t} />) || (name && t(name))}
+      {(Subtext && <Subtext t={t} />) || entities.getDisplayName(id, t)}
     </>
   );
 };
