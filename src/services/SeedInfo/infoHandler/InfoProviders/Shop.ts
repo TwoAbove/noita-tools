@@ -316,7 +316,7 @@ export class ShopInfoProvider extends InfoProvider {
             if (
               !check(
                 info.items.map(i => String(i.spell.id)),
-                shop.items.map(i => String(i)),
+                shop.items.map(i => String(i.spell)),
               )
             ) {
               return false;

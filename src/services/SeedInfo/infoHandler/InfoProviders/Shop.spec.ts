@@ -104,4 +104,31 @@ describe("ShopInfoProvider", () => {
       });
     });
   });
+
+  describe("#test", () => {
+    it("matches selected spells in item shops", async () => {
+      const randoms = await loadRandom();
+      const wandInfoProvider = new WandInfoProvider(randoms);
+      await wandInfoProvider.ready();
+      const ap = new ShopInfoProvider(randoms, wandInfoProvider, spellInfoProvider);
+
+      randoms.SetWorldSeed(123);
+
+      expect(
+        ap.test({
+          id: "shop-rule",
+          type: "shop",
+          val: [
+            null,
+            null,
+            {
+              type: IShopType.item,
+              items: [{ spell: "RECHARGE" }],
+              strict: true,
+            },
+          ],
+        }),
+      ).toBe(true);
+    });
+  });
 });
