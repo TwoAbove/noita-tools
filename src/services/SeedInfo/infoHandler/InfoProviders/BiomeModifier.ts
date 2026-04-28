@@ -4,6 +4,10 @@
 import { IRule } from "../IRule";
 import { InfoProvider } from "./Base";
 
+type BiomeModifierResult = {
+  [biome: string]: ReturnType<BiomeModifierInfoProvider["get_modifier"]>;
+};
+
 export class BiomeModifierInfoProvider extends InfoProvider {
   biomeModifierPromise = import("../../data/obj/biome_modifiers.json")
     .catch(e => {
@@ -12,8 +16,9 @@ export class BiomeModifierInfoProvider extends InfoProvider {
     })
     .then((biomeModifiersData: any) => {
       this.modifiers = biomeModifiersData.default;
+      this.modifierList = Object.values(this.modifiers);
 
-      this.availableBiomeModifiers = Object.values<any>(this.modifiers).reduce(
+      this.availableBiomeModifiers = this.modifierList.reduce(
         (c, bm) => {
           for (const biome in c) {
             if (bm.does_not_apply_to_biome && bm.does_not_apply_to_biome.includes(biome)) {
@@ -50,7 +55,10 @@ export class BiomeModifierInfoProvider extends InfoProvider {
   ];
 
   modifiers;
+  modifierList: any[] = [];
   availableBiomeModifiers;
+  cachedSeed?: number;
+  cachedResult?: BiomeModifierResult;
 
   CHANCE_OF_MODIFIER_PER_BIOME = 0.1;
   CHANCE_OF_MODIFIER_COALMINE = 0.2;
@@ -127,11 +135,22 @@ export class BiomeModifierInfoProvider extends InfoProvider {
   }
 
   provide() {
-    let biome_modifiers = this.modifiers;
+    const seed = this.randoms.GetWorldSeed();
+    if (this.cachedSeed === seed && this.cachedResult) {
+      return { ...this.cachedResult };
+    }
 
-    let result: {
-      [biome: string]: ReturnType<BiomeModifierInfoProvider["get_modifier"]>;
-    } = {};
+    const result = this.generateModifiers();
+    this.cachedSeed = seed;
+    this.cachedResult = result;
+    return { ...result };
+  }
+
+  generateModifiers() {
+    let biome_modifiers = this.modifiers;
+    const modifierList = this.modifierList;
+
+    let result: BiomeModifierResult = {};
 
     let biomes = this.biomes;
 
@@ -154,7 +173,7 @@ export class BiomeModifierInfoProvider extends InfoProvider {
       let biome_names = biomes[i];
       let modifier;
       if (this.has_modifiers(biome_names[0], ctx)) {
-        modifier = this.randoms.pick_random_from_table_weighted(rnd, Object.values(biome_modifiers));
+        modifier = this.randoms.pick_random_from_table_weighted(rnd, modifierList);
       }
 
       for (let j = 0; j < biome_names.length; j++) {

@@ -7,24 +7,26 @@ import logUpdate from "log-update";
 import { ComputeSocket } from "./services/compute/ComputeSocket";
 import SeedSolver from "./services/seedSolverHandler.node";
 
-const argv = require("yargs/yargs")(process.argv.slice(2))
+const argv = yargs(hideBin(process.argv))
   .env("NOITOOL")
   .option("url", {
     default: "https://www.noitool.com",
   })
   .option("cores", {
     default: 0,
+    type: "number",
   })
   .option("userId", {})
+  .option("sessionToken", {
+    type: "string",
+  })
   .option("exit", {
     default: false,
   })
   .option("minRunTime", {
     default: 0,
-  }).argv;
-
-var SegfaultHandler = require("segfault-handler");
-SegfaultHandler.registerHandler("crash.log");
+  })
+  .parseSync();
 
 console.log(`Noitool console search ${process.env.npm_package_version}`, argv, os.cpus().length);
 

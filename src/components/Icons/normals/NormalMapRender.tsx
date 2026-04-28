@@ -1,8 +1,9 @@
 import { memo, useEffect, useState } from "react";
+import type { ImgHTMLAttributes } from "react";
 import Icon from "../Icon";
 import NoitaTexture from "./noitaTexture";
 
-interface INormalMapRendererProps {
+interface INormalMapRendererProps extends ImgHTMLAttributes<HTMLImageElement> {
   materialColor: any;
   imageSrc: any;
 }

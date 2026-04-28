@@ -11,10 +11,10 @@ watch_and_build() {
   ) &
 }
 
-# Watch 'infoHandler' directory for changes in .cpp files
-watch_and_build "src/services/SeedInfo/infoHandler" "**/**/*.cpp" "./build.sh"
+# Watch shared Zig SeedInfo wasm components
+watch_and_build "src/services/SeedInfo/wasm" "**/*.zig" "./build.sh"
 
-# Watch 'noita_random' directory for any changes
+# Watch map/wang wasm bindings
 watch_and_build "src/services/SeedInfo/noita_random" "**/*.cpp" "./build.sh"
 
 echo "Watching for changes..."

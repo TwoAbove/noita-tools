@@ -7,8 +7,10 @@ import { InfoProvider } from "./Base";
 
 export class BiomeInfoProvider extends InfoProvider {
   biomes = biomesData;
+  biomesById = new Map(this.biomes.map(biome => [biome.id, biome]));
+
   provide(biomeId: string) {
-    let found = this.biomes.find(e => e.id === biomeId);
+    const found = this.biomesById.get(biomeId);
     if (found) return found;
     console.warn("Could not find biome: " + biomeId);
     return {
@@ -17,7 +19,7 @@ export class BiomeInfoProvider extends InfoProvider {
   }
 
   isPrimary(biomeId: string) {
-    let found = this.biomes.find(e => e.id === biomeId);
+    const found = this.biomesById.get(biomeId);
     return found && found.translated_name !== "";
   }
 

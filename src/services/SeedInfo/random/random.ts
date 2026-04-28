@@ -1,28 +1,16 @@
-// import {
-// 	ProceduralRandomf,
-// 	Random,
-// 	ProceduralRandomi
-// } from './noita_random/noita_random.cpp';
-// const wasm = await import('./noita_random/noita_random.cpp');
-
 import D, { Decimal } from "decimal.js";
 import cloneDeep from "lodash/cloneDeep.js";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const logify =
-  func =>
-  (...args) => {
-    // console.groupCollapsed(func);
-    const res = func(...args);
-    console.log(...args, res);
-    console.trace();
-    console.groupEnd();
-    return res;
-  };
+export type WasmAllocation = {
+  ptr: number;
+  delete(): void;
+  valueOf(): number;
+  [Symbol.toPrimitive](): number;
+};
 
 export class MapHandler {
-  map!: number; // ptr
-  bigMap!: number; // ptr
+  map!: number;
+  bigMap!: number;
 
   constructor(
     public width: number,
@@ -51,19 +39,16 @@ export class MapHandler {
     return String();
   }
   toBig() {}
-  drawImageData(path: string, impl: string, gx: number, gy: number, color_to_material_table: number) {}
+  drawImageData(path: string, impl: string, gx: number, gy: number, color_to_material_table: number | WasmAllocation) {}
 }
 export interface IRandomModule {
   HEAPU32: any;
   Module: any;
 
-  printErr: any;
-  print: any;
-  cwrap: any;
-  _generate_map: any;
-  _generate_path_map: any;
+  printErr?: any;
+  print?: any;
 
-  doLeakCheck: () => void;
+  doLeakCheck?: () => void;
 
   ProceduralRandomf(arg0: number, arg1: number, arg2: number, arg3: number): number;
 
@@ -85,8 +70,7 @@ export interface IRandomModule {
 
   SetWorldSeed(arg0: number): void;
   GetWorldSeed(): number;
-
-  PickForSeed(): string;
+  SeededRandom?(seed: number, x: number, y: number): number;
 
   GetRandomAction(x: number, y: number, level: number, i: number): string;
 
@@ -113,19 +97,17 @@ export interface IRandomModule {
   ): void;
 
   GetGlobalPos(x: number, y: number): { get: (number) => number };
-  GetLocalPos(x: number, y: number, gx: number, gy: number): { get: (number) => number };
+  GetLocalPos?: (x: number, y: number, gx: number, gy: number) => { get: (number) => number };
   GetTilePos(gx: number, gy: number): { get: (number) => number };
   GeneratePathMap(...args): void;
 
-  SetUnlockedSpells(i: number, val: number): void;
+  SetUnlockedSpells?(i: number, val: number): void;
   GetWidthFromPix(x1: number, x2: number): number;
   GetWidthFromPixWithOffset(x1: number, x2: number, offset: number): number;
 
   MapHandler: typeof MapHandler;
-  MakeMapHandler: any;
 
-  MapUIntUInt: any;
-  objToMapUIntUIntPtr: (obj: any) => number;
+  objToColorToMaterialTablePtr: (obj: any) => WasmAllocation;
 }
 
 interface IRND {
@@ -134,8 +116,13 @@ interface IRND {
 }
 
 export const genRandom = async (Module: IRandomModule) => {
-  Module.GenerateMap = Module._generate_map;
-  Module.GeneratePathMap = Module._generate_path_map;
+  const spells = (await import("../data/spells.json")).default;
+  const spellsArr = spells as Array<{
+    id: string;
+    type: number;
+    spawn_probabilities: Partial<Record<string, number>>;
+  }>;
+  let unlockedSpells: boolean[] = [];
 
   Module.print = function (text) {
     if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(" ");
@@ -184,9 +171,6 @@ export const genRandom = async (Module: IRandomModule) => {
     probability: Decimal;
   }
   const pick_random_from_table_weighted = <T>(rnd: IRND, t: T[]) => {
-    // if (t.length === 0) {
-    // 	return null;
-    // }
     const table: Array<T & ITable> = cloneDeep(t) as any;
 
     let weight_sum = new D(0.0);
@@ -217,22 +201,111 @@ export const genRandom = async (Module: IRandomModule) => {
   };
 
   const SetUnlockedSpells = (spells: boolean[]) => {
-    // For some reason using the pointer method like GenerateMap
-    // doesn't work - we get an error when calling, so we
-    // do this.
-    for (let i = 0; i < spells.length; i++) {
-      Module.SetUnlockedSpells(i, Number(spells[i]));
+    unlockedSpells = spells;
+    if (Module.SetUnlockedSpells) {
+      for (let i = 0; i < spells.length; i++) {
+        Module.SetUnlockedSpells(i, Number(spells[i]));
+      }
     }
   };
 
-  const objToMapUIntUIntPtr = (obj: any) => {
-    const myMapObj = new Module.MapUIntUInt();
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        myMapObj.set(parseInt(key, 16), parseInt(obj[key], 16));
+  const getSpawnProbability = (spell: (typeof spellsArr)[number], level: number) =>
+    spell.spawn_probabilities[level] ?? 0;
+
+  const seededRandom = (seed: number, x: number, y: number) => {
+    if (!Module.SeededRandom) {
+      throw new Error("RNG wasm module did not provide SeededRandom");
+    }
+    return Module.SeededRandom(seed, Math.fround(x), Math.fround(y));
+  };
+
+  const GetRandomAction = (x: number, y: number, level: number, offset = 0) => {
+    const seed = Module.GetWorldSeed() + offset;
+    let sum = 0;
+    for (let i = 0; i < spellsArr.length; i++) {
+      if (!unlockedSpells[i]) {
+        continue;
+      }
+      sum += getSpawnProbability(spellsArr[i], level);
+    }
+
+    let accumulated = sum * seededRandom(seed, x, y);
+    for (let i = 0; i < spellsArr.length; i++) {
+      if (!unlockedSpells[i]) {
+        continue;
+      }
+      const spell = spellsArr[i];
+      const probability = getSpawnProbability(spell, level);
+      if (probability === 0) {
+        continue;
+      }
+      if (probability >= accumulated) {
+        return spell.id;
+      }
+      accumulated -= probability;
+    }
+
+    return spellsArr[0].id;
+  };
+
+  const GetRandomActionWithType = (x: number, y: number, level: number, type: number, offset = 0) => {
+    const seed = Module.GetWorldSeed() + offset;
+    let sum = 0;
+    for (let i = 0; i < spellsArr.length; i++) {
+      if (!unlockedSpells[i]) {
+        continue;
+      }
+      if (spellsArr[i].type === type) {
+        sum += getSpawnProbability(spellsArr[i], level);
       }
     }
-    return myMapObj;
+
+    let accumulated = sum * seededRandom(seed, x, y);
+    for (let i = 0; i < spellsArr.length; i++) {
+      if (!unlockedSpells[i]) {
+        continue;
+      }
+      const spell = spellsArr[i];
+      if (spell.type !== type) {
+        continue;
+      }
+      const probability = getSpawnProbability(spell, level);
+      if (probability > 0 && probability >= accumulated) {
+        return spell.id;
+      }
+      accumulated -= probability;
+    }
+
+    const rand = Math.trunc(seededRandom(seed, x, y) * spellsArr.length);
+    let spell = spellsArr[0];
+    for (let j = 0; j < spellsArr.length; j++) {
+      spell = spellsArr[(j + rand) % spellsArr.length];
+      if (spell.type === type && getSpawnProbability(spell, level) > 0) {
+        if (!unlockedSpells[j]) {
+          continue;
+        }
+        return spell.id;
+      }
+      j++;
+    }
+
+    return spell.id;
+  };
+
+  const objToColorToMaterialTablePtr = (obj: any) => {
+    const entries = Object.entries(obj);
+    const data = [entries.length];
+    for (const [key, value] of entries) {
+      data.push(parseInt(key, 16), parseInt(String(value), 16));
+    }
+    const ptr = Module._malloc(data.length * 4);
+    new Uint32Array(Module.HEAPU32.buffer, ptr, data.length).set(data);
+    return {
+      ptr,
+      delete: () => Module._free(ptr),
+      valueOf: () => ptr,
+      [Symbol.toPrimitive]: () => ptr,
+    };
   };
 
   return {
@@ -247,10 +320,9 @@ export const genRandom = async (Module: IRandomModule) => {
     SetRandomSeed: Module.SetRandomSeed,
     SetWorldSeed: Module.SetWorldSeed,
     GetWorldSeed: Module.GetWorldSeed,
-    PickForSeed: Module.PickForSeed,
     RoundHalfOfEven: Module.RoundHalfOfEven,
-    GetRandomAction: Module.GetRandomAction,
-    GetRandomActionWithType: Module.GetRandomActionWithType,
+    GetRandomAction,
+    GetRandomActionWithType,
     GetWidthFromPix: Module.GetWidthFromPix,
     GetWidthFromPixWithOffset: Module.GetWidthFromPixWithOffset,
     GetGlobalPos: Module.GetGlobalPos,
@@ -266,6 +338,6 @@ export const genRandom = async (Module: IRandomModule) => {
     pick_random_from_table_backwards,
     pick_random_from_table_weighted,
 
-    objToMapUIntUIntPtr,
+    objToColorToMaterialTablePtr,
   };
 };

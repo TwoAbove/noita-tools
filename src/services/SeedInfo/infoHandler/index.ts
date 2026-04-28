@@ -233,11 +233,8 @@ export class GameInfoProvider extends EventTarget {
     const createProvider = (providerKey: string, ProviderClass: any) => {
       const { deps, getArgs } = getDependencies(providerKey);
       if (deps.every(dep => providers[dep] !== undefined)) {
-        const args = getArgs();
-        if (args.every(arg => arg !== undefined)) {
-          providers[providerKey] = new ProviderClass(...args);
-          return true;
-        }
+        providers[providerKey] = new ProviderClass(...getArgs());
+        return true;
       }
       return false;
     };

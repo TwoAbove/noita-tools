@@ -1,114 +1,166 @@
 #include "noita_random.cpp"
 
-int Randomi(double a, double b)
-{
-    return g_rng.Random((int)RoundHalfOfEven(a), (int)RoundHalfOfEven(b));
-}
-
-int Randomi(int a, int b)
-{
-    return g_rng.Random(a, b);
-}
-
-int Randomi(double a)
-{
-    return (int)g_rng.Random((int)0, (int)RoundHalfOfEven(a));
-}
-
-float Random()
-{
-    return g_rng.Next();
-}
-
-void SetRandomSeed(double x, double y)
-{
-    g_rng.SetRandomSeed(world_seed, x, y);
-}
-
-float ProceduralRandomf(double x, double y, double a, double b)
-{
-    g_rng.SetRandomSeed(world_seed, x, y);
-    return a + ((b - a) * g_rng.Next());
-}
-
-int ProceduralRandomi(double x, double y, double a, double b)
-{
-    g_rng.SetRandomSeed(world_seed, x, y);
-    return g_rng.Random((int)RoundHalfOfEven(a), (int)RoundHalfOfEven(b));
-}
-
-string _GetRandomActionWithType(double x, double y, int level, int type, int offset = 0)
-{
-    Spell s = GetRandomActionWithType(x, y, level, type, offset);
-    return s.id;
-}
-
-string _GetRandomAction(double x, double y, int level, int offset = 0)
-{
-    Spell s = GetRandomAction(x, y, level, offset);
-    return s.id;
-}
-
 #include "wang/wang.cpp"
 
-#include <emscripten/bind.h>
+#include <cstdint>
 
-using namespace emscripten;
-
-EMSCRIPTEN_BINDINGS(my_module)
+extern "C"
 {
-    register_map<uint, uint>("MapUIntUInt");
+    void SetWorldSeedRaw(uint32_t seed)
+    {
+        SetWorldSeed(seed);
+    }
 
-    emscripten::function<int, int, int>("Random", &Randomi);
-    emscripten::function<int, double, double>("Random", &Randomi);
-    emscripten::function<int, double>("Random", &Randomi);
-    emscripten::function<float>("Random", &Random);
-    emscripten::function<float>("Randomf", &Random);
-    emscripten::function("ProceduralRandomf", &ProceduralRandomf);
-    emscripten::function("ProceduralRandomi", &ProceduralRandomi);
-    emscripten::function("SetRandomSeed", &SetRandomSeed);
-    emscripten::function("SetWorldSeed", &SetWorldSeed);
-    emscripten::function("GetWorldSeed", &GetWorldSeed);
-    emscripten::function("RandomDistributionf", &RandomDistributionf);
-    emscripten::function("RandomDistribution", &RandomDistribution);
-    emscripten::function<string>("GetRandomActionWithType", &_GetRandomActionWithType);
-    emscripten::function<string>("GetRandomAction", &_GetRandomAction);
-    emscripten::function("RoundHalfOfEven", &RoundHalfOfEven);
-    emscripten::function<int, int, int>("GetWidthFromPix", &GetWidthFromPix);
-    emscripten::function<int, int, int, int>("GetWidthFromPixWithOffset", &GetWidthFromPix);
-    register_vector<int>("IntVector");
-    emscripten::function("GetGlobalPos", &GetGlobalPos);
-    emscripten::function("GetTilePos", &GetTilePos);
-    emscripten::function("SetUnlockedSpells", &SetUnlockedSpells, allow_raw_pointers());
-    // emscripten::function("GenerateMap", &generate_map, allow_raw_pointers());
-    emscripten::class_<MapHandler>("MapHandler")
-        .constructor<uint, uint, unsigned long, bool, bool, int, int, int>(emscripten::allow_raw_pointers())
-        .function("generate_map", &MapHandler::generate_map, emscripten::allow_raw_pointers())
-        .function("iterateMap", &MapHandler::iterateMap, emscripten::allow_raw_pointers())
-        .function("somePixels", &MapHandler::somePixels, emscripten::allow_raw_pointers())
-        .function("getMap", &MapHandler::getMap)
-        .function("toBig", &MapHandler::toBig)
-        .function("drawImageData", &MapHandler::drawImageData, emscripten::allow_raw_pointers())
-        .property("width", &MapHandler::width)
-        .property("height", &MapHandler::height)
-        .property<int>(
-            "map",
-            [](const MapHandler &self) -> uintptr_t
-            {
-                return reinterpret_cast<uintptr_t>(self.map);
-            },
-            [](MapHandler &self, const uintptr_t ptr)
-            {
-                self.map = reinterpret_cast<unsigned char *>(ptr);
-            })
-        .property<int>(
-            "bigMap",
-            [](const MapHandler &self) -> uintptr_t
-            {
-                return reinterpret_cast<uintptr_t>(self.bigMap);
-            },
-            [](MapHandler &self, const uintptr_t ptr)
-            {
-                self.bigMap = reinterpret_cast<unsigned char *>(ptr);
-            });
+    uint32_t GetWorldSeedRaw()
+    {
+        return GetWorldSeed();
+    }
+
+    int GetWidthFromPixRaw(int a, int b)
+    {
+        return GetWidthFromPix(a, b);
+    }
+
+    int GetWidthFromPixWithOffsetRaw(int a, int b, int offset)
+    {
+        return GetWidthFromPix(a, b, offset);
+    }
+
+    int GetGlobalPosX(int x, int y)
+    {
+        return GetGlobalPosXValue(x, y);
+    }
+
+    int GetGlobalPosY(int x, int y)
+    {
+        return GetGlobalPosYValue(x, y);
+    }
+
+    int GetTilePosX(int gx, int gy)
+    {
+        return GetTilePosXValue(gx, gy);
+    }
+
+    int GetTilePosY(int gx, int gy)
+    {
+        return GetTilePosYValue(gx, gy);
+    }
+
+    uintptr_t PngImageDecode(const unsigned char *pngData, uint32_t len)
+    {
+        image *img = (image *)malloc(sizeof(image));
+        *img = load_png_bytes(pngData, len);
+        return reinterpret_cast<uintptr_t>(img);
+    }
+
+    void PngImageDelete(uintptr_t handle)
+    {
+        image *img = reinterpret_cast<image *>(handle);
+        free_png_image(img);
+        free(img);
+    }
+
+    uintptr_t MapHandlerNew(
+        uint32_t width,
+        uint32_t height,
+        uint32_t color,
+        int isCoalMine,
+        int shouldBlockOutRooms,
+        uintptr_t randomMaterials,
+        int worldX,
+        int worldY)
+    {
+        MapHandler *handler = (MapHandler *)malloc(sizeof(MapHandler));
+        handler->init(
+            width,
+            height,
+            color,
+            isCoalMine != 0,
+            shouldBlockOutRooms != 0,
+            randomMaterials,
+            worldX,
+            worldY);
+        return reinterpret_cast<uintptr_t>(handler);
+    }
+
+    void MapHandlerDelete(uintptr_t handle)
+    {
+        MapHandler *handler = reinterpret_cast<MapHandler *>(handle);
+        handler->destroy();
+        free(handler);
+    }
+
+    uintptr_t MapHandlerMapPtr(uintptr_t handle)
+    {
+        return reinterpret_cast<uintptr_t>(reinterpret_cast<MapHandler *>(handle)->map);
+    }
+
+    uintptr_t MapHandlerBigMapPtr(uintptr_t handle)
+    {
+        return reinterpret_cast<uintptr_t>(reinterpret_cast<MapHandler *>(handle)->bigMap);
+    }
+
+    void MapHandlerGenerateMap(uintptr_t handle, const unsigned char *pngData, uint32_t len)
+    {
+        reinterpret_cast<MapHandler *>(handle)->generate_map(pngData, len);
+    }
+
+    void MapHandlerToBig(uintptr_t handle)
+    {
+        reinterpret_cast<MapHandler *>(handle)->toBig();
+    }
+
+    void MapHandlerDrawImageData(
+        uintptr_t handle,
+        uintptr_t imageHandle,
+        int gx,
+        int gy,
+        uintptr_t colorToMaterialTable)
+    {
+        reinterpret_cast<MapHandler *>(handle)->drawImageData(
+            reinterpret_cast<image *>(imageHandle),
+            gx,
+            gy,
+            colorToMaterialTable);
+    }
+
+    void GenerateMapRaw(
+        unsigned char *rgbaTiles,
+        uint32_t color,
+        uint32_t tilesWidth,
+        uint32_t tilesHeight,
+        unsigned char *result,
+        uint32_t mapWidth,
+        uint32_t mapHeight,
+        int isCoalMine,
+        int shouldBlockOutRooms,
+        uintptr_t randomMaterials,
+        int worldX,
+        int worldY)
+    {
+        generate_map_from_rgba_tiles(
+            rgbaTiles,
+            tilesWidth,
+            tilesHeight,
+            result,
+            mapWidth,
+            mapHeight,
+            color,
+            isCoalMine != 0,
+            shouldBlockOutRooms != 0,
+            reinterpret_cast<unsigned int *>(randomMaterials),
+            worldX - WORLD_OFFSET_X,
+            worldY - WORLD_OFFSET_Y);
+    }
+
+    void GeneratePathMapRaw(
+        unsigned char *map,
+        uint32_t mapWidth,
+        uint32_t mapHeight,
+        unsigned char *result,
+        int worldX,
+        int worldY)
+    {
+        generate_path_map(map, mapWidth, mapHeight, result, worldX, worldY);
+    }
 }

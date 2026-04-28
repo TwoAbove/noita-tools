@@ -1,44 +1,17 @@
 const fs = require("fs");
 const path = require("path");
 
-// const requireResolvePlugin = require('@chialab/esbuild-plugin-require-resolve');
-// const { resolve } = require('path');
-// const tsc = require('tsc-prog');
-
-// rimraf console-build/* && tsc --project ./tsconfig.lambda.json && copyfiles -u 1 src/**/*.wasm console-build
-
-// tsc.build({
-// 	basePath: __dirname,
-// 	configFilePath: 'tsconfig.lambda.json',
-// 	copyOtherToOutDir: true,
-// 	clean: { outDir: true }
-// });
-
-// writeFileSync(
-// 	resolve(__dirname, 'console-build/package.json'),
-// 	JSON.stringify(
-// 		{
-// 			// type: 'commonjs',
-// 			main: './lambdaSearch.js'
-// 			// exports: {
-// 			// '.': {
-// 			// require: './lambdaSearch.js' // CJS
-// 			// "import": "./index.mjs"   // ESM
-// 			// }
-// 			// }
-// 		},
-// 		null,
-// 		2
-// 	)
-// );
-
 const mkDir = dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
 };
 
-["console-build", "console-build/workers", "console-build/noita_random"].forEach(mkDir);
+["console-build", "console-build/workers", "console-build/noita_random", "console-build/wasm"].forEach(mkDir);
+
+const copyFile = (from, to) => {
+  fs.copyFileSync(path.resolve(__dirname, from), path.resolve(__dirname, to));
+};
 
 const pkg = require(path.resolve("./package.json"));
 
@@ -58,7 +31,7 @@ require("esbuild")
     metafile: true,
     sourcemap: true,
     // minify: true,
-    target: ["node20"],
+    target: ["node22.16"],
     format: "esm",
     banner: {
       js: `import { createRequire } from 'module';const require = createRequire(import.meta.url);`,
@@ -79,7 +52,6 @@ require("esbuild")
     );
 
     {
-      // Need to figure out how to correctly fix URL requires with esbuild
       const fixFile = path.resolve(__dirname, "console-build", "consoleSearch.js");
       let f = fs.readFileSync(fixFile, "utf8");
       let result = f.replace("../workers/seedSearcher.worker.node.ts", "./workers/seedSearcher.worker.node.js");
@@ -87,7 +59,6 @@ require("esbuild")
     }
 
     {
-      // Need to figure out how to correctly fix URL requires with esbuild
       const fixFile = path.resolve(__dirname, "console-build", "workers/seedSearcher.worker.node.js");
       let f = fs.readFileSync(fixFile, "utf8");
       let result = "" + f;
@@ -98,29 +69,20 @@ require("esbuild")
     }
 
     {
-      // Need to figure out how to correctly fix URL requires with esbuild
       const fixFile = path.resolve(__dirname, "console-build", "workers/seedSearcher.worker.node.js");
       let f = fs.readFileSync(fixFile, "utf8");
       let result = f.replace("./nodeImageActions", "../services/imageActions/nodeImageActions.js");
       fs.writeFileSync(fixFile, result);
     }
 
-    {
-      fs.copyFileSync(
-        path.resolve(__dirname, "src/services/SeedInfo/noita_random/noita_random.wasm"),
-        path.resolve(__dirname, "console-build", "noita_random/noita_random.wasm"),
-      );
-    }
-    {
-      fs.copyFileSync(
-        path.resolve(__dirname, "src/services/SeedInfo/infoHandler/InfoProviders/Alchemy/Alchemy.wasm"),
-        path.resolve(__dirname, "console-build", "workers/Alchemy.wasm"),
-      );
-    }
-    {
-      fs.copyFileSync(
-        path.resolve(__dirname, "src/services/SeedInfo/infoHandler/InfoProviders/FungalShift/FungalShift.wasm"),
-        path.resolve(__dirname, "console-build", "workers/FungalShift.wasm"),
-      );
-    }
+    copyFile("src/services/SeedInfo/noita_random/noita_random.wasm", "console-build/noita_random/noita_random.wasm");
+    copyFile("src/services/SeedInfo/wasm/rng.wasm", "console-build/wasm/rng.wasm");
+    copyFile(
+      "src/services/SeedInfo/infoHandler/InfoProviders/Alchemy/Alchemy.wasm",
+      "console-build/workers/Alchemy.wasm",
+    );
+    copyFile(
+      "src/services/SeedInfo/infoHandler/InfoProviders/FungalShift/FungalShift.wasm",
+      "console-build/workers/FungalShift.wasm",
+    );
   });

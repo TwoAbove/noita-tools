@@ -51,12 +51,17 @@ const params = {
   startingSpell: (x, y) => [],
   wand: (x, y) => [x, y, 60, 3, false, false],
   waterCave: (x, y) => [],
-  excavationSiteCubeChamber: (x, y) => [x, y],
+  excavationsiteCubeChamber: (x, y) => [x, y],
   snowcaveSecretChamber: (x, y) => [x, y],
+  snowcastleSecretChamber: (x, y) => [x, y],
 };
 
 const getParams = (provider: string, x: any, y: any, seed): any[] => {
-  return params[provider](x, y, seed);
+  const paramsForProvider = params[provider];
+  if (!paramsForProvider) {
+    throw new Error(`Missing perf params for provider: ${provider}`);
+  }
+  return paramsForProvider(x, y, seed);
 };
 
 const getStats = (timings: IPerf["allTimings"]): IPerf["stats"] => {
@@ -100,55 +105,89 @@ const printStats = (info: { [provider: string]: IPerf }) => {
   console.table(data);
 };
 
-describe.skip("Performance", () => {
-  const box = 20;
-  const seedBox = 20;
+const statsRows = (info: { [provider: string]: IPerf }) =>
+  Object.keys(info)
+    .map(provider => ({ name: provider, ...info[provider].stats }))
+    .sort((a, b) => b.avg - a.avg);
 
-  it(`Generate infoProvider performance`, async () => {
-    const res: { [provider: string]: IPerf } = {};
-    const randoms = await loadRandom();
+const perfEnv = typeof process === "object" ? process.env : {};
+const perfDescribe = perfEnv.NOITOOL_PERF === "1" ? describe : describe.skip;
+const defaultSkippedProviders = new Set(["statelessPerk", "map"]);
+const providerFilter = new Set(
+  (perfEnv.NOITOOL_PERF_PROVIDERS || "")
+    .split(",")
+    .map(provider => provider.trim())
+    .filter(Boolean),
+);
 
-    const infoProvider = new GameInfoProvider({ seed: 1 }, getUnlockedSpells(), undefined, randoms, false);
+const positiveIntEnv = (key: string, fallback: number) => {
+  const value = Number(perfEnv[key]);
+  return Number.isFinite(value) && value > 0 ? Math.floor(value) : fallback;
+};
 
-    await infoProvider.ready();
+const includeProvider = (provider: string) => {
+  if (providerFilter.size > 0) {
+    return providerFilter.has(provider);
+  }
+  return !defaultSkippedProviders.has(provider);
+};
 
-    const providers = Object.keys(infoProvider.providers);
+perfDescribe("Performance", () => {
+  const box = positiveIntEnv("NOITOOL_PERF_BOX", 20);
+  const seedBox = positiveIntEnv("NOITOOL_PERF_SEEDS", 20);
 
-    for (const provider of providers) {
-      if (["statelessPerk", "map"].includes(provider)) {
-        continue;
-      }
-      const timings: IPerf["allTimings"] = [];
+  it(
+    `Generate infoProvider performance`,
+    async () => {
+      const res: { [provider: string]: IPerf } = {};
+      const randoms = await loadRandom();
 
-      let action = "provide";
-      if (provider === "shop") {
-        action = "provideLevel";
-      }
+      const infoProvider = new GameInfoProvider({ seed: 1 }, getUnlockedSpells(), undefined, randoms, false);
 
-      for (let seed = 1; seed < seedBox; seed++) {
-        infoProvider.updateConfig({ seed });
-        for (let x = 0; x < box; x++) {
-          for (let y = 0; y < box; y++) {
-            const startTime = performance.now();
-            const res = infoProvider.providers[provider][action](...getParams(provider, x, y, seed));
-            const endTime = performance.now();
-            timings.push({
-              seed,
-              time: endTime - startTime,
-              x,
-              y,
-            });
+      await infoProvider.ready();
+
+      const providers = Object.keys(infoProvider.providers).filter(includeProvider);
+
+      for (const provider of providers) {
+        if (provider === "statelessPerk") {
+          continue;
+        }
+        const timings: IPerf["allTimings"] = [];
+
+        let action = "provide";
+        if (provider === "shop") {
+          action = "provideLevel";
+        }
+
+        for (let seed = 1; seed < seedBox; seed++) {
+          infoProvider.updateConfig({ seed });
+          for (let x = 0; x < box; x++) {
+            for (let y = 0; y < box; y++) {
+              const startTime = performance.now();
+              const res = infoProvider.providers[provider][action](...getParams(provider, x, y, seed));
+              const endTime = performance.now();
+              timings.push({
+                seed,
+                time: endTime - startTime,
+                x,
+                y,
+              });
+            }
           }
         }
+
+        res[provider] = {
+          key: provider,
+          stats: getStats(timings),
+          allTimings: timings,
+        };
       }
 
-      res[provider] = {
-        key: provider,
-        stats: getStats(timings),
-        allTimings: timings,
-      };
-    }
-
-    printStats(res);
-  });
+      printStats(res);
+      if (perfEnv.NOITOOL_PERF_JSON === "1") {
+        console.log(`NOITOOL_PERF_RESULT ${JSON.stringify(statsRows(res))}`);
+      }
+    },
+    positiveIntEnv("NOITOOL_PERF_TIMEOUT", 120_000),
+  );
 });

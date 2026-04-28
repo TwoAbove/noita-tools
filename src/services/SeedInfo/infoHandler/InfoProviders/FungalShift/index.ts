@@ -1,16 +1,13 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import fungalMaterialsData from "../../../data/fungal-materials.json";
-import { includesSome, isNode, simd } from "../../../../helpers";
+import { includesSome } from "../../../../helpers";
+import { loadFungalWasm, type FungalWasmExports } from "../../../wasm/compiled";
+import { materialName } from "../../../wasm/materials";
 import { IRule } from "../../IRule";
 import { InfoProvider } from "../Base";
 
-import type { FungalTransformation, MainModule, VectorString } from "./FungalShift.d.ts";
-
-import createModule from "./FungalShift.mjs";
-
-type CorrectedFungalTransformation = Omit<FungalTransformation, "from" | "to" | "gold_to_x" | "grass_to_x"> & {
+type FungalTransformation = {
+  flaskTo: boolean;
+  flaskFrom: boolean;
   from: string[];
   to: string;
   gold_to_x: string;
@@ -20,7 +17,7 @@ type CorrectedFungalTransformation = Omit<FungalTransformation, "from" | "to" | 
 export class FungalShiftInfoProvider extends InfoProvider {
   readyPromise: Promise<void>;
 
-  fungal!: MainModule;
+  fungal!: FungalWasmExports;
   fungalData = fungalMaterialsData;
 
   constructor(randoms: InfoProvider["randoms"]) {
@@ -34,52 +31,28 @@ export class FungalShiftInfoProvider extends InfoProvider {
   }
 
   async loadWasm() {
-    // Unfortunately, I couldn't get dynamic imports to work with wasm modules
-    // I think it's because of bundling and supporting both node and browser
-    // and using a CRA template from 5 years ago.
-    // So in all info providers, I have to import the wasm module like this
-    // with the path hardcoded and lots of duplicate code :(
-    let noitaRandomModule: string;
-    if (isNode) {
-      // Must be in the same folder as this file
-      // or else esbuild will not bundle it with the correct path
-      const wasmPath = new URL("./FungalShift.wasm", import.meta.url).href;
-      noitaRandomModule = new URL(wasmPath, import.meta.url).href;
-    } else {
-      const hasSIMD = await simd();
-      noitaRandomModule = hasSIMD
-        ? new URL("./FungalShift.wasm", import.meta.url).href
-        : new URL("./FungalShift-base.wasm", import.meta.url).href;
-    }
-
-    const Module = await createModule({
-      locateFile(path: string) {
-        if (path.endsWith(".wasm")) {
-          return noitaRandomModule;
-        }
-        return path;
-      },
-    });
-    this.fungal = Module as MainModule;
+    this.fungal = await loadFungalWasm(new URL("./FungalShift.wasm", import.meta.url).href);
   }
 
   provide() {
     const worldSeed = this.randoms.GetWorldSeed();
-    const res = this.fungal.PickForSeed(worldSeed, 20);
-    const fungalData: CorrectedFungalTransformation[] = [];
-    for (let i = 0; i < res.size(); i++) {
-      const item = res.get(i) as FungalTransformation;
+    const shiftCount = this.fungal.PickFungal(worldSeed, 20);
+    const fungalData: FungalTransformation[] = [];
+
+    for (let i = 0; i < shiftCount; i++) {
       const from: string[] = [];
-      for (let j = 0; j < item.from.size(); j++) {
-        from.push(item.from.get(j)?.toString() ?? "");
+      const fromCount = this.fungal.GetFungalFromCount(i);
+      for (let j = 0; j < fromCount; j++) {
+        from.push(materialName(this.fungal.GetFungalFromMaterial(i, j)));
       }
+
       fungalData.push({
-        flaskTo: item.flaskTo,
-        flaskFrom: item.flaskFrom,
-        from: from,
-        to: item.to?.toString() ?? "",
-        gold_to_x: item.gold_to_x?.toString() ?? "",
-        grass_to_x: item.grass_to_x?.toString() ?? "",
+        flaskTo: Boolean(this.fungal.GetFungalFlaskTo(i)),
+        flaskFrom: Boolean(this.fungal.GetFungalFlaskFrom(i)),
+        from,
+        to: materialName(this.fungal.GetFungalTo(i)),
+        gold_to_x: materialName(this.fungal.GetFungalGoldToX(i)),
+        grass_to_x: materialName(this.fungal.GetFungalGrassToX(i)),
       });
     }
     return fungalData;
@@ -111,7 +84,6 @@ export class FungalShiftInfoProvider extends InfoProvider {
       }
 
       const grass_to_x = rule.val[i].grass_to_x;
-      console.log(grass_to_x, info[i].grass_to_x, grass_to_x?.valueOf() !== info[i].grass_to_x.valueOf());
       if (grass_to_x && grass_to_x.valueOf() !== info[i].grass_to_x.valueOf()) {
         return false;
       }

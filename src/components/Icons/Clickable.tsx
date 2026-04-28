@@ -14,13 +14,10 @@ const Clickable = (props: IClickableProps) => {
   const [hovered, setHovered] = useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
-    // Left click should always trigger onClick and prevent link
-    if (e.button === 0) {
+    if (e.button === 0 && onClick) {
       e.preventDefault();
       e.stopPropagation();
-      if (onClick) {
-        onClick();
-      }
+      onClick();
     }
   };
 

@@ -141,7 +141,10 @@ const PacifistChest: FC<IPacifistChestProps> = ({ onUpdateConfig, config }) => {
                           <div
                             key={`${id}-${j}`}
                             className="d-flex flex-column justify-content-center align-items-center text-center"
-                            onClick={() => handleDelete(id, i)}
+                            onClick={event => {
+                              event.preventDefault();
+                              handleDelete(id, i);
+                            }}
                           >
                             <Entity id={id} />
                             {Subtext && <Subtext />}
