@@ -19,6 +19,7 @@ const itemMap = {
   "data/entities/items/pickup/potion_secret.xml": null,
   "data/entities/items/pickup/potion_random_material.xml": null,
   "data/entities/items/pickup/spell_refresh.xml": null,
+  "data/entities/animals/illusions/shaman_wind.xml": null,
   "data/entities/items/pickup/safe_haven.xml": null,
   "data/entities/items/pickup/moon.xml": null,
   "data/entities/items/pickup/thunderstone.xml": null,

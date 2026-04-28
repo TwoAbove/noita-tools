@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { getUnlockedSpells, loadRandom } from "../testHelpers";
 import GameInfoProvider from "./SeedInfo/infoHandler";
+import { IShopType } from "./SeedInfo/infoHandler/InfoProviders/Shop";
 import { RuleType } from "./SeedInfo/infoHandler/IRule";
 import { SeedSearcher } from "./seedSearcher";
 
@@ -155,6 +156,42 @@ describe("SeedSearcher", () => {
       const res = solver.getInfo();
       expect(res.foundSeed).toEqual(t.ans);
     });
+  });
+
+  it("Should find seeds with selected item-shop spells", async () => {
+    const randoms = await loadRandom();
+
+    const infoProvider = new GameInfoProvider({ seed: 1 }, getUnlockedSpells(), undefined, randoms, false);
+    await infoProvider.ready();
+    const solver = new SeedSearcher(infoProvider);
+    solver.update({
+      currentSeed: 123,
+      seedEnd: 123,
+      rules: {
+        id: "1",
+        type: RuleType.AND,
+        rules: [
+          {
+            id: "2",
+            type: "shop",
+            path: "",
+            params: [],
+            val: [
+              null,
+              null,
+              {
+                type: IShopType.item,
+                strict: true,
+                items: [{ spell: "RECHARGE" }],
+              },
+            ],
+          },
+        ],
+      },
+    } as any);
+    await solver.work();
+
+    expect(solver.getInfo().foundSeed).toEqual(123);
   });
 
   it(`Should sort the rules by complexity`, async () => {

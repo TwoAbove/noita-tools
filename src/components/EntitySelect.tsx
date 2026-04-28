@@ -39,6 +39,7 @@ const useEntitiesLoaded = () => {
 const subtextMap = {
   Spell: ({ t }) => <div>Spell</div>,
   "data/entities/animals/illusions/dark_alchemist.xml": ({ t }) => <div>{t("$animal_dark_alchemist")}</div>,
+  "data/entities/animals/illusions/shaman_wind.xml": ({ t }) => <div>{t("$animal_shaman_wind")}</div>,
   "data/entities/items/pickup/potion_secret.xml": ({ t }) => (
     <div>
       {t("$item_potion")} <br /> Secret

@@ -170,9 +170,17 @@ export class ChestRandomInfoProvider extends InfoProvider {
         }
       } else if (rnd <= 54) {
         // Spell refresh
-        entities.push({
-          entity: "data/entities/items/pickup/spell_refresh.xml",
-        });
+        rnd = this.randoms.Random(0, 100);
+
+        if (rnd <= 98) {
+          entities.push({
+            entity: "data/entities/items/pickup/spell_refresh.xml",
+          });
+        } else {
+          entities.push({
+            entity: "data/entities/animals/illusions/shaman_wind.xml",
+          });
+        }
       } else if (rnd <= 60) {
         // Misc items
         const opts = [

@@ -18,6 +18,7 @@ describe("EntityInfoProvider", () => {
     expect(entities.getDisplayNameKey("data/entities/animals/illusions/dark_alchemist.xml")).toBe(
       "$animal_dark_alchemist",
     );
+    expect(entities.getDisplayNameKey("data/entities/animals/illusions/shaman_wind.xml")).toBe("$animal_shaman_wind");
   });
 
   it("translates display names with an id fallback", () => {
