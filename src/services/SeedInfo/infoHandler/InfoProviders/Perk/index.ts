@@ -6,7 +6,6 @@ import { includesAll, includesSome, Objectify } from "../../../../helpers";
 import { IRule } from "../../IRule";
 import { InfoProvider } from "../Base";
 import { Global } from "../Global";
-import cloneDeep from "lodash/cloneDeep.js";
 
 export enum IPerkChangeStateType {
   shift,
@@ -42,17 +41,36 @@ export interface IRerollAction {
 export type IPerkChangeAction = IShiftAction | ISetAction | IGenRowAction | ISelectAction | IRerollAction;
 
 type IPerkType = Objectify<typeof import("../../../data/obj/perks.json")>;
+type PerkDeckCache = [string[], Record<string, number>];
 
 // The perk deck is generated in perk_get_spawn_order from the world seed, so we can cache the initial
 // generation of the perk deck and reuse it for all perk info providers
 let lastMemoizedPerkDeckSeed: number | null = null;
-let cachedPerkDeck: unknown = [];
-const memoizedPerkDeck = <T>(seed: number, fn: () => T): T => {
+let cachedPerkDeck: PerkDeckCache = [[], {}];
+// The deck is consumed by row generation, but stackable counts are read-only after generation.
+const clonePerkDeck = ([perkDeck, stackableCount]: PerkDeckCache): PerkDeckCache => [perkDeck.slice(), stackableCount];
+const memoizedPerkDeck = (seed: number, fn: () => PerkDeckCache): PerkDeckCache => {
   if (seed !== lastMemoizedPerkDeckSeed) {
     lastMemoizedPerkDeckSeed = seed;
     cachedPerkDeck = fn();
   }
-  return structuredClone(cachedPerkDeck) as T;
+  return clonePerkDeck(cachedPerkDeck);
+};
+
+const clonePerkPicks = (perkPicks?: Map<number, string[][]>) => {
+  const result = new Map<number, string[][]>();
+  if (!perkPicks) {
+    return result;
+  }
+
+  for (const [world, rows] of perkPicks) {
+    result.set(
+      world,
+      rows.map(row => [...row]),
+    );
+  }
+
+  return result;
 };
 
 export type IPerk = IPerkType[string];
@@ -303,7 +321,7 @@ export class PerkInfoProvider extends InfoProvider {
   };
 
   getPerkDeck(returnPerkObjects?: boolean) {
-    const result = this.perk_get_spawn_order();
+    const result: any[] = this.perk_get_spawn_order();
     if (returnPerkObjects) {
       for (let i = 0; i < result.length; i++) {
         result[i] = this.perks[result[i]];
@@ -374,7 +392,7 @@ export class PerkInfoProvider extends InfoProvider {
     worldOffset?: number,
     rerolls?: Map<number, number[]>,
   ): IPerk[][] {
-    const perkPicks = cloneDeep(_perkPicks) || new Map();
+    const perkPicks = clonePerkPicks(_perkPicks);
     worldOffset = worldOffset || 0;
     if (!maxLevels || maxLevels === -1) maxLevels = Infinity;
 
@@ -385,11 +403,13 @@ export class PerkInfoProvider extends InfoProvider {
 
     while (true) {
       let i = 0;
+      const picksForWorld = perkPicks.get(world) || [];
+      const worldRerolls = rerolls?.get(world) || [];
+
       for (const loc of this.temples) {
         if (i >= maxLevels) break;
         if (worldOffset !== 0 && world !== 0 && i + 1 === this.temples.length) break;
 
-        const picksForWorld = perkPicks.get(world) || [];
         const picks = picksForWorld[i] || [];
 
         // Generate base row
@@ -397,8 +417,7 @@ export class PerkInfoProvider extends InfoProvider {
         let row = this.generateRow(perkCount);
 
         // Handle rerolls if needed
-        const worldRerolls = rerolls?.get(world) || [];
-        if (rerolls?.has(world) && worldRerolls[i] > 0) {
+        if (worldRerolls[i] > 0) {
           row = this.rerollRow(row, worldRerolls[i]);
         }
 

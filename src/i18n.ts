@@ -6,7 +6,7 @@ import { initReactI18next } from "react-i18next";
 i18n
   // load translation using http -> see /public/locales
   // learn more: https://github.com/i18next/i18next-http-backend
-  .use(new Backend({ loadPath: "/translations/{{lng}}/{{ns}}" }))
+  .use(Backend)
   // detect user language
   // learn more: https://github.com/i18next/i18next-browser-languageDetector
   .use(LanguageDetector)
@@ -20,6 +20,9 @@ i18n
 
     ns: ["materials", "app"],
     defaultNS: "app",
+    backend: {
+      loadPath: "/locales/{{lng}}/{{ns}}.json",
+    },
 
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default

@@ -1,43 +1,55 @@
 #!/bin/bash
 
-# To watch, use
-# while inotifywait -e close_write **; do sh build.sh; done
+set -euo pipefail
 
-# For memory debugging, add these:
-# -s WARN_UNALIGNED=1 \
-# -Wover-aligned \
-# -fsanitize=address \
-# --profiling \
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# TODO: --closure 1 seems to be bugged where it crashes the build, so check on this in the future
+cd "$script_dir"
 
-OS="$(uname)"
-ARCH="$(uname -m)"
+if ! command -v zig >/dev/null 2>&1; then
+  echo "zig not found. Install Zig to build noita_random wasm." >&2
+  exit 1
+fi
 
-run_empp() {
-  output_file="$1"
-  shift
+exports=(
+  malloc
+  free
+  SetWorldSeedRaw
+  GetWorldSeedRaw
+  GetWidthFromPixRaw
+  GetWidthFromPixWithOffsetRaw
+  GetGlobalPosX
+  GetGlobalPosY
+  GetTilePosX
+  GetTilePosY
+  PngImageDecode
+  PngImageDelete
+  MapHandlerNew
+  MapHandlerDelete
+  MapHandlerMapPtr
+  MapHandlerBigMapPtr
+  MapHandlerGenerateMap
+  MapHandlerToBig
+  MapHandlerDrawImageData
+  GenerateMapRaw
+  GeneratePathMapRaw
+)
 
-  em++ --bind -O3 "$@" \
-    -o "$output_file" \
-    --std=c++20 \
-    --extern-pre-js="pre.js" \
-    -s WASM=1 \
-    -s FILESYSTEM=0 \
-    -s ALLOW_MEMORY_GROWTH=1 \
-    -s MODULARIZE=1 \
-    -s NO_EXIT_RUNTIME=1 \
-    -s ENVIRONMENT="web,worker,node" \
-    -s EXPORT_NAME="create_noita_random" \
-    -s "EXPORTED_FUNCTIONS=['_generate_path_map','_free','_malloc']" \
-    -s "EXPORTED_RUNTIME_METHODS='cwrap'" \
-    src/wasm_in.cpp
-}
+export_flags=(-Wl,--export-memory -Wl,--initial-memory=67108864 -Wl,--strip-all)
+for export_name in "${exports[@]}"; do
+  export_flags+=("-Wl,--export=$export_name")
+done
 
-run_empp noita_random.mjs -msse2 -msimd128
-run_empp noita_random-base.mjs
+zig c++ \
+  -target wasm32-wasi \
+  -mexec-model=reactor \
+  -O3 \
+  -std=c++20 \
+  -fno-exceptions \
+  -fno-rtti \
+  "${export_flags[@]}" \
+  -o noita_random.wasm \
+  src/wasm_in.cpp
 
-# To see what the size is to sanity-check
 du -sh noita_random.wasm
-du -sh noita_random.mjs
 echo ""

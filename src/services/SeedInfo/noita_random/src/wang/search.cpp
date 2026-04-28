@@ -1,13 +1,11 @@
 #pragma once
 
-#include <array>
-#include <queue>
-#include <stack>
-#include <memory>
-#include <vector>
-#include <map>
+#include <stdlib.h>
+#include <string.h>
 
 #include "pix.cpp"
+
+const unsigned long NO_PARENT = (unsigned long)-1;
 
 void fill(unsigned char *map,
           int w,
@@ -26,6 +24,34 @@ void fill(unsigned char *map,
   }
 }
 
+struct FloodPoint
+{
+  unsigned int x;
+  unsigned int y;
+};
+
+struct FloodStack
+{
+  FloodPoint *items;
+  unsigned long len;
+  unsigned long cap;
+};
+
+static void flood_stack_push(FloodStack *stack, unsigned int x, unsigned int y)
+{
+  if (stack->len == stack->cap)
+  {
+    stack->cap = stack->cap == 0 ? 256 : stack->cap * 2;
+    stack->items = (FloodPoint *)realloc(stack->items, stack->cap * sizeof(FloodPoint));
+  }
+  stack->items[stack->len++] = FloodPoint{x, y};
+}
+
+static FloodPoint flood_stack_pop(FloodStack *stack)
+{
+  return stack->items[--stack->len];
+}
+
 void floodFill(unsigned char *map,
                uint width,
                uint height,
@@ -34,144 +60,154 @@ void floodFill(unsigned char *map,
                unsigned long fromColor,
                unsigned long toColor)
 {
-  stack<pair<uint, uint>> s;
-  unsigned char *visited = (unsigned char *)calloc(width * height, 1);
-
-  if (initialX < 0 || initialX >= width || initialY < 0 || initialY >= height)
+  if (initialX >= width || initialY >= height)
   {
     return;
   }
 
-  s.push(std::make_pair(initialX, initialY));
+  unsigned char *visited = (unsigned char *)calloc(width * height, 1);
+  FloodStack stack = {};
+
+  flood_stack_push(&stack, initialX, initialY);
   visited[getPos(width, 1, initialX, initialY)] = true;
 
-  int filled = 0;
-
-  auto tryNext = [&map, &width, &height, &s, &visited, &fromColor, &toColor](uint nx, uint ny)
+  while (stack.len > 0)
   {
-    if (nx < 0 || nx >= width || ny < 0 || ny >= height)
-    {
-      return;
-    }
-
-    unsigned long p = getPos(width, 1, nx, ny);
-    if (visited[p] == true)
-    {
-      return;
-    }
-
-    unsigned long nc = getPixelColor(map, p * 3);
-    if (nc != fromColor || nc == toColor)
-    {
-      return;
-    }
-
-    visited[p] = true;
-    s.push(std::make_pair(nx, ny));
-  };
-
-  while (!s.empty())
-  {
-    auto pos = s.top();
-    const int x = pos.first;
-    const int y = pos.second;
-    s.pop();
+    FloodPoint pos = flood_stack_pop(&stack);
+    const int x = pos.x;
+    const int y = pos.y;
 
     setPixelColor(map, width, x, y, toColor);
-    filled++;
 
-    tryNext(x - 1, y);
-    tryNext(x + 1, y);
-    tryNext(x, y - 1);
-    tryNext(x, y + 1);
+    const int next[4][2] = {
+        {x - 1, y},
+        {x + 1, y},
+        {x, y - 1},
+        {x, y + 1},
+    };
+
+    for (int i = 0; i < 4; i++)
+    {
+      int nx = next[i][0];
+      int ny = next[i][1];
+      if (nx < 0 || ny < 0 || (uint)nx >= width || (uint)ny >= height)
+      {
+        continue;
+      }
+
+      unsigned long p = getPos(width, 1, nx, ny);
+      if (visited[p])
+      {
+        continue;
+      }
+
+      unsigned long nc = getPixelColor(map, p * 3);
+      if (nc != fromColor || nc == toColor)
+      {
+        continue;
+      }
+
+      visited[p] = true;
+      flood_stack_push(&stack, nx, ny);
+    }
   }
+
+  free(stack.items);
   free(visited);
 }
 
-struct Node
+struct SearchNode
 {
   int x;
   int y;
-
-  int targetX;
-  int targetY;
-
-  unsigned long parentPos;
-
-  Node(int _x, int _y)
-  {
-    x = _x;
-    y = _y;
-  }
-
-  Node(int _x, int _y, int _targetX, int _targetY, unsigned long _parentPos = -1)
-  {
-    x = _x;
-    y = _y;
-    targetX = _targetX;
-    targetY = _targetY;
-    parentPos = _parentPos;
-  }
-
-  // Node(int _x, int _y, int _targetX, int _targetY)
-  // {
-  //   x = _x;
-  //   y = _y;
-  //   targetX = _targetX;
-  //   targetY = _targetY;
-  // }
-
-  bool operator<(const Node &b) const
-  {
-    const int h = Manhattan();
-    const int hb = b.Manhattan();
-    return h < hb;
-  }
-  bool operator>(const Node &b) const
-  {
-    const int h = Manhattan();
-    const int hb = b.Manhattan();
-    return h > hb;
-  }
-
-  int H() const
-  {
-    return ManhattanDown();
-  }
-
-  int Manhattan() const
-  {
-    const int dx = abs(x - targetX);
-    const int dy = abs(y - targetY);
-    return (dx + dy);
-  }
-
-  int ManhattanDown() const
-  {
-    const int dy = abs(y - targetY);
-    return (dy);
-  }
-  int Chebyshev() const
-  {
-    const int dx = abs(x - targetX);
-    const int dy = abs(y - targetY);
-    return max(dx, dy);
-  }
-  int Euclidean() const
-  {
-    const int dx = abs(x - targetX);
-    const int dy = abs(y - targetY);
-    return (int)sqrt(dx * dx + dy * dy);
-  }
+  unsigned long parent;
+  unsigned long order;
 };
 
-struct NodeComparator
+struct NodeHeap
 {
-  bool operator()(const shared_ptr<Node> &a, const shared_ptr<Node> &b) const
-  {
-    return a->H() >= b->H();
-  }
+  SearchNode *items;
+  unsigned long len;
+  unsigned long cap;
+  int targetY;
 };
+
+static int node_priority(const NodeHeap *heap, const SearchNode *node)
+{
+  int dy = node->y - heap->targetY;
+  return dy < 0 ? -dy : dy;
+}
+
+static bool node_less(const NodeHeap *heap, const SearchNode *a, const SearchNode *b)
+{
+  int ap = node_priority(heap, a);
+  int bp = node_priority(heap, b);
+  if (ap != bp)
+  {
+    return ap < bp;
+  }
+  return a->order < b->order;
+}
+
+static void heap_swap(SearchNode *a, SearchNode *b)
+{
+  SearchNode tmp = *a;
+  *a = *b;
+  *b = tmp;
+}
+
+static void heap_push(NodeHeap *heap, SearchNode node)
+{
+  if (heap->len == heap->cap)
+  {
+    heap->cap = heap->cap == 0 ? 256 : heap->cap * 2;
+    heap->items = (SearchNode *)realloc(heap->items, heap->cap * sizeof(SearchNode));
+  }
+
+  unsigned long i = heap->len++;
+  heap->items[i] = node;
+  while (i > 0)
+  {
+    unsigned long parent = (i - 1) / 2;
+    if (!node_less(heap, &heap->items[i], &heap->items[parent]))
+    {
+      break;
+    }
+    heap_swap(&heap->items[i], &heap->items[parent]);
+    i = parent;
+  }
+}
+
+static SearchNode heap_pop(NodeHeap *heap)
+{
+  SearchNode result = heap->items[0];
+  heap->items[0] = heap->items[--heap->len];
+
+  unsigned long i = 0;
+  while (true)
+  {
+    unsigned long left = i * 2 + 1;
+    unsigned long right = left + 1;
+    unsigned long best = i;
+
+    if (left < heap->len && node_less(heap, &heap->items[left], &heap->items[best]))
+    {
+      best = left;
+    }
+    if (right < heap->len && node_less(heap, &heap->items[right], &heap->items[best]))
+    {
+      best = right;
+    }
+    if (best == i)
+    {
+      break;
+    }
+    heap_swap(&heap->items[i], &heap->items[best]);
+    i = best;
+  }
+
+  return result;
+}
 
 class Search
 {
@@ -182,76 +218,68 @@ public:
   int targetX;
   int targetY;
   char *visited;
-  std::unordered_map<unsigned long, shared_ptr<Node>> nodeList;
+  unsigned long *parents;
+  unsigned long endPos = NO_PARENT;
 
-  priority_queue<shared_ptr<Node>, vector<shared_ptr<Node>>, NodeComparator> pq;
+  NodeHeap heap = {};
+  unsigned long order = 0;
 
-  Search(unsigned char _map[], int _width, int _height, int _targetX, int _targetY)
+  Search(unsigned char _map[], int _width, int _height, int _targetX, int _targetY, unsigned long *_parents)
   {
     map = _map;
     width = _width;
     height = _height;
     targetX = _targetX;
     targetY = _targetY;
+    parents = _parents;
     visited = (char *)calloc(width * height, 1);
+    heap.targetY = targetY;
   }
 
   ~Search()
   {
+    free(heap.items);
     free(visited);
   }
 
   bool findPath(int x, int y)
   {
+    unsigned long start = pos(x, y);
     setVisited(x, y);
-    shared_ptr<Node> _n = make_shared<Node>(x, y, targetX, targetY);
-    nodeList[pos(x, y)] = _n;
-    pq.push(_n);
-    while (!pq.empty())
+    parents[start] = NO_PARENT;
+    heap_push(&heap, SearchNode{x, y, NO_PARENT, order++});
+
+    while (heap.len > 0)
     {
-      shared_ptr<Node> n = pq.top();
-      if (atTarget(n))
+      SearchNode n = heap_pop(&heap);
+      if (atTarget(&n))
       {
+        endPos = pos(n.x, n.y);
         return true;
       }
-      int x = n->x;
-      int y = n->y;
-      pq.pop();
-      tryNext(x, y - 1, n);
-      tryNext(x - 1, y, n);
-      tryNext(x + 1, y, n);
-      tryNext(x, y + 1, n);
+
+      tryNext(n.x, n.y - 1, &n);
+      tryNext(n.x - 1, n.y, &n);
+      tryNext(n.x + 1, n.y, &n);
+      tryNext(n.x, n.y + 1, &n);
     }
     return false;
   }
 
-  // pos() roughly caches the result of getPos to avoid cache misses.
-  // see One-place cache: https://en.wikibooks.org/wiki/Optimizing_C%2B%2B/General_optimization_techniques/Memoization
-  // This is not thread safe, but we don't need it to be.
-  // If WASM ever supports threads, we would still thread on the map gen level.
   unsigned long pos(int x, int y) const
   {
-    static int prev_x = 0;
-    static int prev_y = 0;
-    static unsigned long result = 0;
-    if (x == prev_x && y == prev_y)
-    {
-      return result;
-    }
-    prev_x = x;
-    prev_y = y;
-    result = getPos(width, 1, x, y);
-    return result;
+    return getPos(width, 1, x, y);
   }
 
 private:
-  bool tryNext(int x, int y, shared_ptr<Node> n)
+  bool tryNext(int x, int y, SearchNode *n)
   {
-    if (isVisited(x, y))
+    if (!valid(x, y))
     {
       return false;
     }
-    if (!valid(x, y)) {
+    if (isVisited(x, y))
+    {
       return false;
     }
     if (!traversable(x, y))
@@ -259,11 +287,11 @@ private:
       return false;
     }
 
-    setVisited(x, y);
     unsigned long p = pos(x, y);
-    shared_ptr<Node> _n = make_shared<Node>(x, y, targetX, targetY, pos(n->x, n->y));
-    nodeList[p] = _n;
-    pq.push(_n);
+    unsigned long parent = pos(n->x, n->y);
+    setVisited(x, y);
+    parents[p] = parent;
+    heap_push(&heap, SearchNode{x, y, parent, order++});
     return true;
   }
 
@@ -293,7 +321,7 @@ private:
     return c == COLOR_BLACK || c == COLOR_COFFEE || c == COLOR_FROZEN_VAULT_MINT || c == COLOR_HELL_GREEN;
   }
 
-  bool atTarget(shared_ptr<Node> n) const
+  bool atTarget(SearchNode *n) const
   {
     return targetY == n->y;
   }

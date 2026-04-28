@@ -28,7 +28,7 @@ Table of Contents:
 
 ### Prerequisites
 
-- The machine should have node installed (ideally v18.6+) and npm.
+- The machine should have Node 22.16.0 installed and npm.
 
 ### Installing and connecting
 
@@ -102,7 +102,7 @@ Prerequisites:
 - Docker (for compose)
 - Node
 - `chokidar` (`npm install -g chokidar-cli`)
-- [emscripten](https://emscripten.org/docs/getting_started/downloads.html) is installed if you want to work with the c++ code
+- [Zig](https://ziglang.org/download/) is installed if you want to work with the SeedInfo wasm modules or map/wang C++ wasm
 - [Nota data](https://noita.wiki.gg/wiki/Modding#Extracting_data_files) if you want to modify the data files. Place the data files in `dataScripts/noita-data`
 
 Before running `npm run dev`, please copy the `.env.example` file to `.env` and fill in the values. For non-patreon and discord features, you can leave the file as-is.
@@ -124,19 +124,11 @@ ln -s ~/.steam/debian-installation/steamapps/common/Noita/data/fonts dataScripts
 
 Use the `./dataScripts/full_parse.sh` script to clean and parse the data files.
 
-### emscripten installation and required changes
+### Wasm modules
 
-For emscripten, some edits need to be done to enable the closure compiler.
-
-I recommend using the git repo to install emsdk. Install the latest version.
-
-Installation (after emscripten): `npm i`
-
-When running `npm run dev` a build script will listen to changes in `.cpp` files and rebuild the wasm files.
+When running `npm run dev`, a build script listens to changes in map/wang `.cpp` files and SeedInfo `.zig` files and rebuilds the wasm files. Run `npm run build-seed-wasm` to rebuild the SeedInfo Zig modules, or `npm run build-noita_random` to rebuild the map/wang module.
 
 For vscode to work with the c++ files, install the [c++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
-
-Then, go to `C/C++: Edit configurations (UI)` and add `<emscripten installation path>/upstream/emscripten/cache/**` to `Include path` so that vscode can find the emscripten headers. They will be available after the first build.
 
 ## Related projects
 

@@ -15,12 +15,13 @@ export class SnowcastleSecretChamberInfoProvider extends InfoProvider {
 
   provide(seed: number) {
     const points = this.mapInfoProvider.provide(27, 24, seed);
+    const spells: string[] = [];
 
-    const spells = points.interestPoints
-      .points!.filter(p => p.item === "Spell")!
-      .map(spellPoint => spellPoint.extra.spell);
-
-    console.log(spells);
+    for (const point of points.interestPoints.points!) {
+      if (point.item === "Spell") {
+        spells.push(point.extra.spell);
+      }
+    }
 
     return spells;
   }

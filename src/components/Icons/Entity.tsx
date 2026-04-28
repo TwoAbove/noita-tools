@@ -82,17 +82,17 @@ const WandModal: FC<IWandModalProps> = ({ x, y, cost, level, force_unshuffle }) 
   );
 };
 
-const NonPreview = ({ id, action, ...rest }) => {
+const NonPreview = ({ id, action, onClick, ...rest }) => {
   const [t] = useTranslation("materials");
   const entity = entities.provide(id);
-  const name = entity.name;
+  const name = entities.getDisplayName(id, t);
   const animations = entity.animations as any;
   const image = animations.actions[action || animations.default || "default"]?.src[0];
-  const wikiUrl = getWikiUrl(id, t(name, { lng: "en" }));
+  const wikiUrl = getWikiUrl(id, entities.getDisplayName(id, t, { lng: "en" }));
 
   return (
-    <Clickable wikiUrl={wikiUrl}>
-      <Icon uri={image} title={t(name)} {...rest} />
+    <Clickable wikiUrl={wikiUrl} onClick={onClick}>
+      <Icon uri={image} title={name} {...rest} />
     </Clickable>
   );
 };
@@ -110,23 +110,23 @@ interface EntityProps {
   width?: string;
   height?: string;
 
-  onClick?: () => unknown;
+  onClick?: () => void;
 }
 
-export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = false, ...rest }) => {
+export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview = false, onClick, ...rest }) => {
   const [t] = useTranslation("materials");
 
   // TODO: maybe ENUM is better?
   if (id === "Spell") {
     if (!entityParams.extra) {
-      return <Spell id="LIGHT_BULLET" width="2.5rem" {...rest} />;
+      return <Spell id="LIGHT_BULLET" width="2.5rem" onClick={onClick} {...rest} />;
     }
-    return <Spell id={entityParams.extra} {...rest} />;
+    return <Spell id={entityParams.extra} onClick={onClick} {...rest} />;
   }
 
   if (id.startsWith("data/entities/items/wand_")) {
     if (!preview) {
-      return <Entity id="data/entities/items/starting_wand.xml" {...rest} />;
+      return <Entity id="data/entities/items/starting_wand.xml" onClick={onClick} {...rest} />;
     }
     const {
       x,
@@ -141,30 +141,30 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
   if (id === "data/entities/items/pickup/potion.xml") {
     const { x, y } = entityParams;
     if (!preview) {
-      return <NonPreview id={id} action={action} {...rest} />;
+      return <NonPreview id={id} action={action} onClick={onClick} {...rest} />;
     }
     return <GeneratedPotion x={x} y={y} />;
   }
   if (id === "data/entities/items/pickup/potion_secret.xml") {
     const { x, y } = entityParams;
     if (!preview) {
-      return <NonPreview id={id} action={action} {...rest} />;
+      return <NonPreview id={id} action={action} onClick={onClick} {...rest} />;
     }
     return <PotionSecret x={x} y={y} />;
   }
   if (id === "data/entities/items/pickup/potion_random_material.xml") {
     const { x, y } = entityParams;
     if (!preview) {
-      return <NonPreview id={id} action={action} {...rest} />;
+      return <NonPreview id={id} action={action} onClick={onClick} {...rest} />;
     }
     return <PotionRandomMaterial x={x} y={y} />;
   }
 
   if (id === "data/entities/misc/custom_cards/bomb.xml") {
     if (!preview) {
-      return <NonPreview id={id} action={action} {...rest} />;
+      return <NonPreview id={id} action={action} onClick={onClick} {...rest} />;
     }
-    return <Spell id="BOMB" {...rest} />;
+    return <Spell id="BOMB" onClick={onClick} {...rest} />;
   }
 
   if (id === "data/biome_impl/excavationsite/meditation_cube_visual.png") {
@@ -182,7 +182,7 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
   const entity = entities.provide(id);
 
   if (!entity) {
-    return <Icon uri={questionMark} title={id} />;
+    return <Icon uri={questionMark} title={id} onClick={onClick} />;
   }
 
   if (id.includes("goldnugget")) {
@@ -191,6 +191,7 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
       <MemoizedNormalMapRenderer
         materialColor={material.graphics.color}
         imageSrc={entity.physicsImage.image.src}
+        onClick={onClick}
         {...rest}
       />
     );
@@ -198,23 +199,23 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
 
   if (id === "data/entities/items/pickup/powder_stash.xml") {
     if (!preview) {
-      const name = entity.name;
+      const name = entities.getDisplayName(id, t);
       const animations = entity.animations;
       const image = animations.actions[action || animations.default || "default"]?.src[0];
-      return <Icon uri={image} title={t(name)} {...rest} />;
+      return <Icon uri={image} title={name} onClick={onClick} {...rest} />;
     }
     const { x, y } = entityParams;
     return <PowderStash x={x} y={y} />;
   }
 
   if (entity.itemImage && entity.itemImage.image) {
-    const name = entity.itemImage.item_name;
+    const name = entities.getDisplayName(id, t);
     const image = entity.itemImage.image.src;
-    const wikiUrl = getWikiUrl(entity.name, t(name));
+    const wikiUrl = getWikiUrl(id, entities.getDisplayName(id, t, { lng: "en" }));
 
     return (
-      <Clickable wikiUrl={wikiUrl}>
-        <Icon uri={image} title={t(name)} {...rest} />
+      <Clickable wikiUrl={wikiUrl} onClick={onClick}>
+        <Icon uri={image} title={name} {...rest} />
       </Clickable>
     );
   }
@@ -222,12 +223,12 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
   if (entity.animations) {
     const animations = entity.animations;
     const image = animations.actions[action || animations.default || "default"]?.src[0];
-    const name = entity.ui_name || entity.name || entity.itemImage.item_name;
-    const wikiUrl = getWikiUrl(entity.name, t(name));
+    const name = entities.getDisplayName(id, t);
+    const wikiUrl = getWikiUrl(id, entities.getDisplayName(id, t, { lng: "en" }));
 
     return (
-      <Clickable wikiUrl={wikiUrl}>
-        <Icon uri={image} title={t(name)} {...rest} />
+      <Clickable wikiUrl={wikiUrl} onClick={onClick}>
+        <Icon uri={image} title={name} {...rest} />
       </Clickable>
     );
   }
@@ -238,11 +239,12 @@ export const Entity: FC<EntityProps> = ({ id, action, entityParams = {}, preview
       <MemoizedNormalMapRenderer
         materialColor={material.graphics.color}
         imageSrc={entity.physicsImage.image.src}
+        onClick={onClick}
         {...rest}
       />
     );
   }
-  return <Icon uri={questionMark} title={id} />;
+  return <Icon uri={questionMark} title={id} onClick={onClick} />;
 };
 
 export default Entity;
