@@ -231,7 +231,7 @@ export class MapInfoProvider extends InfoProvider {
         type: InterestType.PixelScene,
       });
 
-      const ctmtptr = this.randoms.objToMapUIntUIntPtr(color_to_material_table);
+      const ctmtptr = this.randoms.objToColorToMaterialTablePtr(color_to_material_table);
       mh.drawImageData(path, this.biomeImpls[path].src, gx, gy, ctmtptr);
       // this.randoms.Module._free(ctmtptr);
       ctmtptr.delete();

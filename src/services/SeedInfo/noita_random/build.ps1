@@ -1,25 +1,49 @@
-if (!(Get-Command emcc -ErrorAction Ignore)) {
-  Write-Error -Message "Emscripten Compiler Frontend (emcc) not found! Did you add it to the PATH?" -Exception ([System.Management.Automation.CommandNotFoundException]::new()) -ErrorAction Stop
+if (!(Get-Command zig -ErrorAction Ignore)) {
+  Write-Error -Message "Zig not found! Did you add it to the PATH?" -Exception ([System.Management.Automation.CommandNotFoundException]::new()) -ErrorAction Stop
 }
 
-if(!(Test-Path $PSScriptRoot\src\wasm_in.cpp) -or !(Test-Path $PSScriptRoot\pre.js)) {
-  Write-Error -Message "This script must be placed in the same directory as files 'wasm_in.cpp' and 'pre.js'!" -Exception ([System.IO.FileNotFoundException]::new()) -ErrorAction Stop
+if (!(Test-Path $PSScriptRoot\src\wasm_in.cpp)) {
+  Write-Error -Message "Missing src\wasm_in.cpp" -Exception ([System.IO.FileNotFoundException]::new()) -ErrorAction Stop
 }
 
-emcc --bind -Oz -msimd128 `
-  -o $PSScriptRoot\noita_random.js `
-  --std=c++17 `
-  --extern-pre-js="$PSScriptRoot\pre.js" `
-  -s WASM=1 `
-  -s STRICT_JS=1 `
-  -s EXPORT_ES6=1 `
-  -s FILESYSTEM=0 `
-  -s ALLOW_MEMORY_GROWTH=1 `
-  -s MODULARIZE=1 `
-  -s ASSERTIONS=1 `
-  -s NO_EXIT_RUNTIME=1 `
-  -s ENVIRONMENT="web,worker" `
-  -s EXPORT_NAME="create_noita_random" `
-  -s "EXPORTED_FUNCTIONS=['_generate_map','_generate_path_map']" `
-  -s "EXPORTED_RUNTIME_METHODS='cwrap'" `
+$exports = @(
+  "malloc",
+  "free",
+  "SetWorldSeedRaw",
+  "GetWorldSeedRaw",
+  "GetWidthFromPixRaw",
+  "GetWidthFromPixWithOffsetRaw",
+  "GetGlobalPosX",
+  "GetGlobalPosY",
+  "GetTilePosX",
+  "GetTilePosY",
+  "PngImageDecode",
+  "PngImageDelete",
+  "MapHandlerNew",
+  "MapHandlerDelete",
+  "MapHandlerMapPtr",
+  "MapHandlerBigMapPtr",
+  "MapHandlerGenerateMap",
+  "MapHandlerToBig",
+  "MapHandlerDrawImageData",
+  "GenerateMapRaw",
+  "GeneratePathMapRaw"
+)
+
+$exportFlags = @("-Wl,--export-memory", "-Wl,--initial-memory=67108864", "-Wl,--strip-all")
+foreach ($exportName in $exports) {
+  $exportFlags += "-Wl,--export=$exportName"
+}
+
+zig c++ `
+  -target wasm32-wasi `
+  -mexec-model=reactor `
+  -O3 `
+  -std=c++20 `
+  -fno-exceptions `
+  -fno-rtti `
+  @exportFlags `
+  -o $PSScriptRoot\noita_random.wasm `
   $PSScriptRoot\src\wasm_in.cpp
+
+exit $LASTEXITCODE

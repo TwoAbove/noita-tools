@@ -25,6 +25,23 @@ export class EntityInfoProvider extends InfoProvider {
     return this.entities[id];
   }
 
+  getDisplayNameKey(id: string) {
+    const entity = this.provide(id);
+    if (!entity) {
+      return undefined;
+    }
+
+    if (entity.ui_name) {
+      return entity.ui_name;
+    }
+
+    if (entity.name && entity.name !== "unknown") {
+      return entity.name;
+    }
+
+    return entity.itemImage?.item_name || entity.name;
+  }
+
   test(rule: IRule): boolean {
     return true;
   }

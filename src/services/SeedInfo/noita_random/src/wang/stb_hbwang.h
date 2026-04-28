@@ -1,11 +1,11 @@
 #pragma once
+#define STB_HBWANG_ASSERT(x) ((void)0)
+#define STBI_ASSERT(x) ((void)0)
+#define STBI_NO_FAILURE_STRINGS
+#define STBI_NO_STDIO
+#define STBI_ONLY_PNG
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h" // http://nothings.org/stb_image.c
-
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h" // http://nothings.org/stb/stb_image_write.h
-
-#include <functional>
 
 /* stbhw - v0.7 -  http://nothings.org/gamedev/herringbone
    Herringbone Wang Tile Generator - Sean Barrett 2014 - public domain
@@ -219,6 +219,8 @@ typedef struct
 
 } stbhw_config;
 
+typedef uint (*stbhw_rand_func)(void *user);
+
 // returns description of last error produced by any function (not thread-safe)
 STBHW_EXTERN const char *stbhw_get_last_error(void);
 
@@ -237,7 +239,7 @@ STBHW_EXTERN void stbhw_free_tileset(stbhw_tileset *ts);
 // not thread-safe (uses a global data structure to avoid memory management)
 // weighting should be NULL, as non-NULL weighting is currently untested
 int stbhw_generate_image(stbhw_tileset *ts, int **weighting,
-                         unsigned char *pixels, int stride_in_bytes, int w, int h, std::function<uint()> rand);
+                         unsigned char *pixels, int stride_in_bytes, int w, int h, stbhw_rand_func rand, void *rand_user);
 
 // computes the size needed for the template image
 STBHW_EXTERN void stbhw_get_template_size(stbhw_config *c, int *w, int *h);
@@ -530,7 +532,7 @@ static int stbhw__process_template(stbhw__process *p)
             }
          }
       }
-      assert(ypos == size_y);
+      STB_HBWANG_ASSERT(ypos == size_y);
    }
    else
    {
@@ -572,7 +574,7 @@ static int stbhw__process_template(stbhw__process *p)
             }
          }
       }
-      assert(ypos == size_y);
+      STB_HBWANG_ASSERT(ypos == size_y);
    }
    return 1;
 }
@@ -612,7 +614,8 @@ static stbhw_tile *stbhw__choose_tile(stbhw_tile **list, int numlist,
                                       signed char *a, signed char *b, signed char *c,
                                       signed char *d, signed char *e, signed char *f,
                                       int **weighting,
-                                      std::function<uint()> getRandom)
+                                      stbhw_rand_func getRandom,
+                                      void *randomUser)
 {
    int i, n, m = 1 << 30, pass;
    for (pass = 0; pass < 2; ++pass)
@@ -656,7 +659,7 @@ static stbhw_tile *stbhw__choose_tile(stbhw_tile **list, int numlist,
          stbhw_error = "couldn't find tile matching constraints";
          return NULL;
       }
-      m = getRandom() % n;
+      m = getRandom(randomUser) % n;
    }
    STB_HBWANG_ASSERT(0);
    return NULL;
@@ -667,13 +670,13 @@ static int stbhw__match(int x, int y)
    return c_color[y][x] == c_color[y + 1][x + 1];
 }
 
-static int stbhw__weighted(int num_options, int *weights, std::function<uint()> getRandom)
+static int stbhw__weighted(int num_options, int *weights, stbhw_rand_func getRandom, void *randomUser)
 {
    int k, total, choice;
    total = 0;
    for (k = 0; k < num_options; ++k)
       total += weights[k];
-   choice = getRandom() % total;
+   choice = getRandom(randomUser) % total;
    total = 0;
    for (k = 0; k < num_options; ++k)
    {
@@ -685,7 +688,7 @@ static int stbhw__weighted(int num_options, int *weights, std::function<uint()> 
    return k;
 }
 
-static int stbhw__change_color(int old_color, int num_options, int *weights, std::function<uint()> getRandom)
+static int stbhw__change_color(int old_color, int num_options, int *weights, stbhw_rand_func getRandom, void *randomUser)
 {
    if (weights)
    {
@@ -694,7 +697,7 @@ static int stbhw__change_color(int old_color, int num_options, int *weights, std
       for (k = 0; k < num_options; ++k)
          if (k != old_color)
             total += weights[k];
-      choice = getRandom() % total;
+      choice = getRandom(randomUser) % total;
       total = 0;
       for (k = 0; k < num_options; ++k)
       {
@@ -710,14 +713,14 @@ static int stbhw__change_color(int old_color, int num_options, int *weights, std
    }
    else
    {
-      int offset = 1 + getRandom() % (num_options - 1);
+      int offset = 1 + getRandom(randomUser) % (num_options - 1);
       return (old_color + offset) % num_options;
    }
 }
 
 // generate a map that is w * h pixels (3-bytes each)
 // returns 1 on success, 0 on error
-int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *output, int stride, int w, int h, std::function<uint()> getRandom)
+int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *output, int stride, int w, int h, stbhw_rand_func getRandom, void *randomUser)
 {
    int sidelen = ts->short_side_len;
    int xmax = (w / sidelen) + 6;
@@ -739,9 +742,9 @@ int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *outp
          {
             int p = (i - j + 1) & 3; // corner type
             if (weighting == NULL || weighting[p] == 0 || cc[p] == 1)
-               c_color[j][i] = getRandom() % cc[p];
+               c_color[j][i] = getRandom(randomUser) % cc[p];
             else
-               c_color[j][i] = stbhw__weighted(cc[p], weighting[p], getRandom);
+               c_color[j][i] = stbhw__weighted(cc[p], weighting[p], getRandom, randomUser);
          }
       }
 #ifndef STB_HBWANG_NO_REPITITION_REDUCTION
@@ -758,13 +761,13 @@ int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *outp
             {
                int p = ((i + 1) - (j + 1) + 1) & 3;
                if (cc[p] > 1)
-                  c_color[j + 1][i + 1] = stbhw__change_color(c_color[j + 1][i + 1], cc[p], weighting ? weighting[p] : NULL, getRandom);
+                  c_color[j + 1][i + 1] = stbhw__change_color(c_color[j + 1][i + 1], cc[p], weighting ? weighting[p] : NULL, getRandom, randomUser);
             }
             if (stbhw__match(i, j) && stbhw__match(i + 1, j) && stbhw__match(i + 2, j) && stbhw__match(i, j + 1) && stbhw__match(i + 1, j + 1) && stbhw__match(i + 2, j + 1))
             {
                int p = ((i + 2) - (j + 1) + 1) & 3;
                if (cc[p] > 1)
-                  c_color[j + 1][i + 2] = stbhw__change_color(c_color[j + 1][i + 2], cc[p], weighting ? weighting[p] : NULL, getRandom);
+                  c_color[j + 1][i + 2] = stbhw__change_color(c_color[j + 1][i + 2], cc[p], weighting ? weighting[p] : NULL, getRandom, randomUser);
             }
          }
       }
@@ -798,7 +801,8 @@ int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *outp
                    &c_color[j + 2][i + 2], &c_color[j + 2][i + 3], &c_color[j + 2][i + 4],
                    &c_color[j + 3][i + 2], &c_color[j + 3][i + 3], &c_color[j + 3][i + 4],
                    weighting,
-                   getRandom);
+                   getRandom,
+                   randomUser);
                if (t == NULL)
                   return 0;
                stbhw__draw_h_tile(output, stride, w, h, xpos, ypos, t, sidelen);
@@ -814,7 +818,8 @@ int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *outp
                    &c_color[j + 2][i + 5], &c_color[j + 3][i + 5], &c_color[j + 4][i + 5],
                    &c_color[j + 2][i + 6], &c_color[j + 3][i + 6], &c_color[j + 4][i + 6],
                    weighting,
-                   getRandom);
+                   getRandom,
+                   randomUser);
                if (t == NULL)
                   return 0;
                stbhw__draw_v_tile(output, stride, w, h, xpos, ypos, t, sidelen);
@@ -859,7 +864,8 @@ int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *outp
                    &v_color[j + 2][i + 2], &v_color[j + 2][i + 4],
                    &h_color[j + 3][i + 2], &h_color[j + 3][i + 3],
                    weighting,
-                   getRandom);
+                   getRandom,
+                   randomUser);
                if (t == NULL)
                   return 0;
                stbhw__draw_h_tile(output, stride, w, h, xpos, ypos, t, sidelen);
@@ -877,7 +883,8 @@ int stbhw_generate_image(stbhw_tileset *ts, int **weighting, unsigned char *outp
                    &v_color[j + 3][i + 5], &v_color[j + 3][i + 6],
                    &h_color[j + 4][i + 5],
                    weighting,
-                   getRandom);
+                   getRandom,
+                   randomUser);
                if (t == NULL)
                   return 0;
                stbhw__draw_v_tile(output, stride, w, h, xpos, ypos, t, sidelen);

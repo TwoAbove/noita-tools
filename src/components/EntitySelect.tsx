@@ -60,14 +60,13 @@ const EntityView: FC<IEntityViewProps> = ({ id, onClick }) => {
   if (!entitiesLoaded) {
     return <>...</>;
   }
-  const entity = entities.provide(id);
-  const name = entity?.name;
+  const name = entities.getDisplayNameKey(id);
   const Subtext = subtextMap[id];
   const [t] = useTranslation("materials");
   return (
     <>
       <Entity id={id} onClick={onClick} />
-      {(Subtext && <Subtext t={t} />) || t(name)}
+      {(Subtext && <Subtext t={t} />) || (name && t(name))}
     </>
   );
 };
