@@ -202,5 +202,41 @@ describe("PerkInfoProvider", () => {
         expect(res).toEqual(t.ans);
       });
     });
+
+    it("counts Extra Perk from Gamble once in advanced mode", async () => {
+      const randoms = await loadRandom();
+      const ap = new PerkInfoProvider(randoms);
+      await ap.ready();
+      randoms.SetWorldSeed(835278105);
+
+      const state: Parameters<PerkInfoProvider["provideStateless"]>[0] = [];
+
+      for (let level = 0; level < 7; level++) {
+        state.push({ type: IPerkChangeStateType.genRow, data: level });
+      }
+
+      for (let world = 1; world <= 4; world++) {
+        state.push({ type: IPerkChangeStateType.shift, data: 1 });
+        if (world < 4) {
+          for (let level = 0; level < 6; level++) {
+            state.push({ type: IPerkChangeStateType.genRow, data: level });
+          }
+        }
+      }
+
+      state.push({ type: IPerkChangeStateType.genRow, data: 0 });
+
+      const east4 = ap.provideStateless(state);
+      const gamblePos = east4.perks[0].indexOf("GAMBLE");
+      expect(gamblePos).not.toBe(-1);
+
+      state.push({ type: IPerkChangeStateType.select, data: { row: 0, pos: gamblePos } });
+      state.push({ type: IPerkChangeStateType.genRow, data: 1 });
+
+      const afterGamble = ap.provideStateless(state);
+
+      expect(afterGamble.perks[0].slice(-2)).toEqual(["FAST_PROJECTILES", "EXTRA_PERK"]);
+      expect(afterGamble.perks[1]).toHaveLength(4);
+    });
   });
 });
