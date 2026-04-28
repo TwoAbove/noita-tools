@@ -23,6 +23,7 @@ const availableItems = [
   "data/entities/items/pickup/potion_random_material.xml",
   "data/entities/items/pickup/powder_stash.xml",
   "data/entities/items/pickup/spell_refresh.xml",
+  "data/entities/animals/illusions/shaman_wind.xml",
   "data/entities/items/pickup/heart.xml",
   "data/entities/items/pickup/heart_better.xml",
   "data/entities/items/pickup/heart_fullhp.xml",

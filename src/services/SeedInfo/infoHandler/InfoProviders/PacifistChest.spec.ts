@@ -18,8 +18,8 @@ describe("PacifistChestInfoProvider", () => {
       },
       ans: [
         {
-          entity: "data/entities/items/pickup/spell_refresh.xml",
-          pos_x: -68,
+          entity: "data/entities/animals/illusions/shaman_wind.xml",
+          pos_x: -78,
           pos_y: 1371,
           x: 431.7,
           y: 2054.1,
@@ -145,8 +145,26 @@ describe("PacifistChestInfoProvider", () => {
       ans: [
         {
           entity: "data/entities/items/pickup/spell_refresh.xml",
-          pos_x: -70,
-          pos_y: 1374,
+          pos_x: -73,
+          pos_y: 1375,
+          x: 431.7,
+          y: 2054.1,
+        },
+      ],
+    },
+    {
+      seed: 1023565730,
+      params: {
+        level: 0,
+        worldOffset: 0,
+        fallback: 0,
+        greed: false,
+      },
+      ans: [
+        {
+          entity: "data/entities/animals/illusions/shaman_wind.xml",
+          pos_x: -79,
+          pos_y: 1375,
           x: 431.7,
           y: 2054.1,
         },
