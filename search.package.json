@@ -5,7 +5,7 @@
   "private": true,
   "homepage": "https://www.noitool.com/",
   "engines": {
-    "node": "22.16.0"
+    "node": ">=22.23.4 <23"
   },
   "scripts": {
     "start": "node --no-warnings=ExperimentalWarning consoleSearch.js"

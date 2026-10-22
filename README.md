@@ -28,7 +28,7 @@ Table of Contents:
 
 ### Prerequisites
 
-- The machine should have Node 22.16.0 installed and npm.
+- The machine should have Node 22 (22.23.4 or newer) installed and npm.
 
 ### Installing and connecting
 

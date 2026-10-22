@@ -1,4 +1,4 @@
-FROM node:22.16.0-slim AS build-image
+FROM node:22-slim AS build-image
 
 RUN apt-get update && \
   apt-get install -y \
@@ -23,7 +23,7 @@ COPY . .
 
 RUN npm run console-build
 
-FROM node:22.16.0-slim
+FROM node:22-slim
 
 RUN apt-get update && \
   apt-get install -y \
