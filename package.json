@@ -5,7 +5,7 @@
   "type": "module",
   "homepage": "https://www.noitool.com/",
   "engines": {
-    "node": "22.16.0"
+    "node": ">=22.23.4 <23"
   },
   "dependencies": {
     "@gideo-llc/backblaze-b2-upload-any": "^0.1.4",
