@@ -5,10 +5,9 @@
   "type": "module",
   "homepage": "https://www.noitool.com/",
   "engines": {
-    "node": ">=22.23.4 <23"
+    "node": ">=26.13.0 <27"
   },
   "dependencies": {
-    "@gideo-llc/backblaze-b2-upload-any": "^0.1.4",
     "@napi-rs/canvas": "^0.1.70",
     "@types/yargs": "^17.0.33",
     "axios": "^1.9.0",
@@ -22,7 +21,6 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.2",
     "node-cron": "^3.0.3",
-    "patreon": "^0.4.1",
     "react-countdown-circle-timer": "^3.2.1",
     "react-use-search-params-state": "^2.0.1",
     "serve-handler": "^6.1.6",
@@ -165,5 +163,15 @@
   "optionalDependencies": {
     "bufferutil": "^4.0.9",
     "utf-8-validate": "^6.0.5"
+  },
+  "allowScripts": {
+    "esbuild@0.25.4": true,
+    "@swc/core@1.11.24": true,
+    "sharp@0.34.1": true,
+    "cypress@14.3.3": true,
+    "bufferutil@4.0.9": true,
+    "utf-8-validate@6.0.5": true,
+    "fsevents@2.3.3": true,
+    "tesseract.js": false
   }
 }
